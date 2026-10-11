@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Spherical Astronomy · Modern Almagest</title>
+
+	<!-- KaTeX (equation typesetting) -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+
+	<!-- Shared theme -->
+	<link rel="stylesheet" href="../shared/theme.css">
+</head>
+
+<body>
+<main>
+	<h1>Spherical Astronomy</h1>
+	<p class="sub">
+		Interactive companion to <em>A Modern Almagest</em> (Richard Fitzpatrick).
+		Drag the sphere to rotate it.
+	</p>
+
+	<nav id="tabs">
+		<button data-tab="s0" class="active">1 · Sphere &amp; motions</button>
+		<button data-tab="c1">2 · Celestial</button>
+		<button data-tab="c2">3 · Ecliptic</button>
+		<button data-tab="c3">4 · Horizontal</button>
+		<button data-tab="t1">5 · Ecliptic ⇄ celestial</button>
+		<button data-tab="t2">6 · Celestial → horizontal</button>
+		<button data-tab="a1">7 · Meridian transits</button>
+		<button data-tab="a2">8 · Climes &amp; solstices</button>
+	</nav>
+
+	<!-- ===================== SECTION S0: SPHERE & MOTIONS ===================== -->
+	<section id="s0" class="show">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-s0" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-earth">■</span> celestial equator &nbsp;
+					<span class="c-sun">■</span> ecliptic &nbsp;
+					● stars &nbsp;
+					<span class="c-sun">●</span> sun &nbsp;
+					<span class="c-planet">■</span> ε = 23°26′
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>Hours</label>
+					<input type="range" id="h0" min="0" max="24" step="0.1" value="0" data-unit=" h">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Sun λ☉</label>
+					<input type="range" id="ls0" min="0" max="360" step="1" value="30">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button id="play0">▶ Play diurnal motion</button>
+				</div>
+				<div id="o-s0"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>The celestial sphere</h2>
+			<p>
+				Stars are so far away that, seen from Earth, they all seem to sit on one huge sphere centred on us.
+				We only use <em>directions</em>, so only angles on this sphere matter.
+				Earth is a point compared to it, which is why two observers at different places see a star in the same angular position.
+			</p>
+
+			<h2>Motion 1 · diurnal</h2>
+			<p>
+				The <em>whole</em> sphere (stars, sun, planets) turns east→west once per sidereal day about the celestial axis PP′, the extension of Earth's rotation axis.
+				Drag the <b>Hours</b> slider: relative positions never change.
+			</p>
+
+			<h2>Motion 2 · intrinsic</h2>
+			<p>
+				Superimposed on this, the sun, moon and planets slowly drift west→east against the stars.
+				The sun traces one fixed great circle in a year, the <b class="c-sun">ecliptic</b>, tilted by ε = 23°26′ to the <b class="c-earth">celestial equator</b>.
+				Move <b>Sun λ☉</b>.
+			</p>
+
+			<h2>The vernal equinox V</h2>
+			<p>
+				The two circles cross at two points.
+				V is the one where the sun crosses the equator going <em>north</em>, called the vernal equinox or spring equinox; the other is the autumnal equinox V′.
+			</p>
+			<div class="box">
+				V is not stationary with respect to the fixed stars.
+				Search precession of equinoxes to learn more.
+			</div>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION C1: CELESTIAL ===================== -->
+	<section id="c1">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-c1" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-earth">■</span> celestial equator (fundamental circle) &nbsp;
+					<span class="c-earth">■</span> thick blue arc: α along the equator &nbsp;
+					<span class="c-planet">■</span> thick red arc: δ up its meridian
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>α (R.A.)</label>
+					<input type="range" id="al1" min="0" max="360" value="60">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>δ (decl.)</label>
+					<input type="range" id="de1" min="-90" max="90" value="45">
+					<output></output>
+				</div>
+				<div id="o-c1"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>How the system is built</h2>
+			<p>
+				We use three mutually perpendicular unit vectors to define celestial coordinates: <b>v</b> points to the vernal equinox,
+				<b>p</b> to the north celestial pole, and <b>u</b> completes the set (on the equator, 90° east of V).
+				Any direction can be written <b>r</b> = x<b>v</b> + y<b>u</b> + z<b>p</b>, and each number is the dot product with the axis:
+				x = <b>r·v</b>, etc.
+			</p>
+			<p>
+				<b>Equatorial plane:</b> the plane containing the celestial equator (Earth's equator extended).<br>
+				<b>Declination δ</b>: angle of R above or below the equatorial plane (±90° at the poles).<br>
+				<b>Right ascension α</b>: project R onto the equatorial plane, then measure the angle from V eastward, 0° - 360° (or 0 - 24 h, 15° = 1 h).
+			</p>
+			<span class="eq" data-tex="\mathbf r=\cos\delta\cos\alpha\,\mathbf v+\cos\delta\sin\alpha\,\mathbf u+\sin\delta\,\mathbf p\quad(2.1)"></span>
+			<span class="eq" data-tex="\sin\delta=\mathbf r\cdot\mathbf p,\qquad \tan\alpha=\dfrac{\mathbf r\cdot\mathbf u}{\mathbf r\cdot\mathbf v}\quad(2.2,2.3)"></span>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION C2: ECLIPTIC ===================== -->
+	<section id="c2">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-c2" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-sun">■</span> ecliptic (fundamental circle) &nbsp;
+					<span class="c-earth">■</span> celestial equator
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>λ (ecl. long.)</label>
+					<input type="range" id="la2" min="0" max="360" value="60">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>β (ecl. lat.)</label>
+					<input type="range" id="be2" min="-90" max="90" value="50">
+					<output></output>
+				</div>
+				<div id="o-c2"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>How the system is built</h2>
+			<p><b>Ecliptic:</b> the ecliptic is the sun's apparent path across the celestial sphere.</p>
+			<p><b>Ecliptic plane:</b> the plane containing the ecliptic. It is tilted ε = 23°26′ because Earth's axis is tilted. Its poles are Q (north) and Q′.</p>
+			<p><b>Origin:</b> V lies on both circles, so it is the zero of λ too.</p>
+			<p><b>Ecliptic longitude λ</b> runs along the ecliptic, west→east, in the sun's direction of travel.</p>
+			<p><b>Ecliptic latitude β</b> is the angle above/below the ecliptic plane.</p>
+			<p>The planets stay within a few degrees of β = 0, which is why this system suits the sun, moon and planets.</p>
+			<p>New axes: <b>v</b> points to the vernal equinox, <b>s</b> to the summer solstice, at λ = 90°, and <b>q</b> to the ecliptic pole.</p>
+			<span class="eq" data-tex="\mathbf r=\cos\beta\cos\lambda\,\mathbf v+\cos\beta\sin\lambda\,\mathbf s+\sin\beta\,\mathbf q\quad(2.8)"></span>
+			<span class="eq" data-tex="\sin\beta=\mathbf r\cdot\mathbf q,\qquad \tan\lambda=\dfrac{\mathbf r\cdot\mathbf s}{\mathbf r\cdot\mathbf v}\quad(2.9,2.10)"></span>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION C3: HORIZONTAL ===================== -->
+	<section id="c3">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-c3" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-deferent">■</span> local horizon (fundamental circle) &nbsp;
+					<span class="c-earth">■</span> celestial equator
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>A (azimuth)</label>
+					<input type="range" id="A3" min="0" max="360" value="65">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>a (altitude)</label>
+					<input type="range" id="a3" min="-90" max="90" value="35">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>L (latitude)</label>
+					<input type="range" id="L4" min="-90" max="90" value="75">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>α₀ (time)</label>
+					<input type="range" id="a04" min="0" max="360" value="270">
+					<output></output>
+				</div>
+				<div id="o-c3"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>How the system is built</h2>
+			<p>This one belongs to an <b>observer</b> on the surface of the earth at site X.</p>
+			<p><b>Horizon:</b> the plane tangent to the earth at X, with zenith Z overhead and nadir Z′ underfoot.</p>
+			<p><b>Local meridian:</b> the plane that passes through the north and south compass points and the zenith. The north celestial pole lies on the meridian plane.</p>
+			<p><b>Latitude L:</b> the angle between the north compass point and the north celestial pole. The horizon is therefore tilted by 90° - L with respect to the equator.</p>
+			<p><b>Altitude a:</b> angle above the horizon.</p>
+			<p><b>Azimuth A:</b> angle from the north point, toward east (N 0°, E 90°, S 180°, W 270°).</p>
+			<p>Axes: <b>n</b> (north), <b>e</b> (east), <b>z</b> (zenith).</p>
+			<p>
+				Since the local meridian passes through the poles, all the objects on it have the same right ascension α₀, which is the right ascension currently on the meridian.
+				The hour angle t = α₀ - α is the angle between the meridian and the object.
+			</p>
+			<p>
+				Because of diurnal motion, α₀ grows 15° per hour.
+				Drag it and the horizon turns under the stars: a and A of a fixed star change continuously.
+			</p>
+			<span class="eq" data-tex="\mathbf r=\cos a\sin A\,\mathbf e+\cos a\cos A\,\mathbf n+\sin a\,\mathbf z\quad(2.27)"></span>
+			<span class="eq" data-tex="\sin a=\mathbf r\cdot\mathbf z,\qquad \tan A=\dfrac{\mathbf r\cdot\mathbf e}{\mathbf r\cdot\mathbf n}\quad(2.28,2.29)"></span>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION T1: ECLIPTIC <-> CELESTIAL ===================== -->
+	<section id="t1">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-t1" width="720" height="520"></canvas>
+				<p class="note">
+					<b>The two triples.</b>
+					<span class="c-earth">■</span> celestial axes (v, u, p).
+					<span class="c-sun">■</span> ecliptic axes (v, s, q), obtained by rotating the blue ones about <b>v</b> by ε = 23°26′.
+					The yellow circle is the ecliptic plane.
+					R does not move, only the axes used to describe it.
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>λ</label>
+					<input type="range" id="la5" min="0" max="360" value="60">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>β</label>
+					<input type="range" id="be5" min="-90" max="90" value="15">
+					<output></output>
+				</div>
+				<div id="o-t1"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>Derivation</h2>
+			<p>
+				The two systems share <b>v</b>; the ecliptic axes are the equatorial ones <em>rotated by ε about <b>v</b></em>.
+				Applying a rotation to <b>u</b>, <b>p</b> we get <b>s</b>, <b>q</b>:
+			</p>
+			<span class="eq" data-tex="\mathbf s=\cos\epsilon\,\mathbf u+\sin\epsilon\,\mathbf p,\qquad \mathbf q=-\sin\epsilon\,\mathbf u+\cos\epsilon\,\mathbf p\quad(2.4,2.5)"></span>
+
+			<p class="note">
+				In matrix form: the pair (u, p) is rotated by ε in the plane perpendicular to v, while v stays fixed (this is the picture above):
+			</p>
+			<span class="eq" data-tex="\begin{pmatrix}\mathbf s\\\mathbf q\end{pmatrix}=\begin{pmatrix}\cos\epsilon&amp;\sin\epsilon\\-\sin\epsilon&amp;\cos\epsilon\end{pmatrix}\begin{pmatrix}\mathbf u\\\mathbf p\end{pmatrix},\qquad \mathbf v\ \text{unchanged}"></span>
+
+			<p>Insert these in Eq. (2.8) and collect terms in <b>v</b>, <b>u</b>, <b>p</b>:</p>
+			<span class="eq" data-tex="\mathbf r=\cos\beta\cos\lambda\,\mathbf v+(\cos\beta\sin\lambda\cos\epsilon-\sin\beta\sin\epsilon)\,\mathbf u+(\cos\beta\sin\lambda\sin\epsilon+\sin\beta\cos\epsilon)\,\mathbf p"></span>
+
+			<p>Compare with Eq. (2.1): the same vector, so the coefficients match.</p>
+			<span class="eq" data-tex="\sin\delta=\cos\epsilon\sin\beta+\sin\epsilon\cos\beta\sin\lambda\quad(2.13)"></span>
+			<span class="eq" data-tex="\tan\alpha=\dfrac{\cos\epsilon\cos\beta\sin\lambda-\sin\epsilon\sin\beta}{\cos\beta\cos\lambda}\quad(2.14)"></span>
+
+			<p>The inverse uses <b>u</b> = cos ε <b>s</b> - sin ε <b>q</b>, <b>p</b> = sin ε <b>s</b> + cos ε <b>q</b> (2.6, 2.7):</p>
+			<span class="eq" data-tex="\sin\beta=\cos\epsilon\sin\delta-\sin\epsilon\cos\delta\sin\alpha,\quad \tan\lambda=\dfrac{\cos\epsilon\cos\delta\sin\alpha+\sin\epsilon\sin\delta}{\cos\delta\cos\alpha}\quad(2.11,2.12)"></span>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION T2: CELESTIAL -> HORIZONTAL ===================== -->
+	<section id="t2">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-t2" width="720" height="520"></canvas>
+				<p class="note">
+					<b>The meridian plane</b> (<span class="c-epicycle">violet ring</span>) contains <b>p</b> and <b>m</b>, the equator point on the meridian, at angle α₀ from <b>v</b>.
+					Rotating the pair (p, m) by L inside this plane gives <b>n</b> and <b>z</b>; <b>e</b> is perpendicular to the plane.
+					<span class="c-deferent">Green circle</span>: the horizon.
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>α</label>
+					<input type="range" id="al6" min="0" max="360" value="60">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>δ</label>
+					<input type="range" id="de6" min="-90" max="90" value="25">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>L</label>
+					<input type="range" id="L6" min="-90" max="90" value="55">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>α₀</label>
+					<input type="range" id="a06" min="0" max="360" value="30">
+					<output></output>
+				</div>
+				<div id="o-t2"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>Derivation</h2>
+			<p>
+				The point on the equator crossing the meridian has unit vector <b>m</b> = sin α₀ <b>u</b> + cos α₀ <b>v</b>.
+				In the meridian plane, the north point and zenith are <b>m</b> and <b>p</b> rotated by L:
+			</p>
+			<span class="eq" data-tex="\mathbf n=\cos L\,\mathbf p-\sin L\,\mathbf m,\qquad \mathbf z=\sin L\,\mathbf p+\cos L\,\mathbf m\quad(2.17,2.18)"></span>
+
+			<p class="note">That is a rotation by L of the pair (p, m) inside the meridian plane, as drawn above:</p>
+			<span class="eq" data-tex="\begin{pmatrix}\mathbf n\\\mathbf z\end{pmatrix}=\begin{pmatrix}\cos L&amp;-\sin L\\\sin L&amp;\cos L\end{pmatrix}\begin{pmatrix}\mathbf p\\\mathbf m\end{pmatrix}"></span>
+
+			<p>and east is perpendicular to the meridian. Written in <b>v</b>, <b>u</b>, <b>p</b>:</p>
+			<span class="eq" data-tex="\mathbf e=-\sin\alpha_0\,\mathbf v+\cos\alpha_0\,\mathbf u"></span>
+			<span class="eq" data-tex="\mathbf n=-\sin L\cos\alpha_0\,\mathbf v-\sin L\sin\alpha_0\,\mathbf u+\cos L\,\mathbf p"></span>
+			<span class="eq" data-tex="\mathbf z=\cos L\cos\alpha_0\,\mathbf v+\cos L\sin\alpha_0\,\mathbf u+\sin L\,\mathbf p\quad(2.21\text{-}2.23)"></span>
+
+			<p>Now dot the object's vector (2.1) with each.</p>
+			<p><b>r</b>·<b>z</b> = cos δ cos α cos L cos α₀ + cos δ sin α cos L sin α₀ + sin δ sin L.</p>
+			<p>
+				Using the trig identity cos(α-α₀) = cos α cos α₀ + sin α sin α₀, and equating with <b>r</b>·<b>z</b> in the horizontal coordinates, we get:
+			</p>
+			<span class="eq" data-tex="\sin a=\sin L\sin\delta+\cos L\cos\delta\cos(\alpha-\alpha_0)\quad(2.30)"></span>
+
+			<p>
+				Likewise <b>r</b>·<b>e</b> = cos δ sin(α-α₀) and <b>r</b>·<b>n</b> = cos L sin δ - sin L cos δ cos(α-α₀), hence
+			</p>
+			<span class="eq" data-tex="\tan A=\dfrac{\cos\delta\sin(\alpha-\alpha_0)}{\cos L\sin\delta-\sin L\cos\delta\cos(\alpha-\alpha_0)}\quad(2.31)"></span>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION A1: MERIDIAN TRANSITS ===================== -->
+	<section id="a1">
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-a1" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-deferent">■</span> horizon &nbsp;
+					<span class="c-earth">■</span> celestial equator &nbsp;
+					<span class="c-planet">■</span> daily path of the object (δ fixed) &nbsp;
+					grey ring = meridian.
+					Drag to rotate; the dashed part of the path is below the horizon.
+				</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>L (latitude)</label>
+					<input type="range" id="L2" min="-90" max="90" step="1" value="45">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>δ (declination)</label>
+					<input type="range" id="del2" min="-90" max="90" step="1" value="25">
+					<output></output>
+				</div>
+				<div id="o-a1"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>Derivation</h2>
+			<p class="note">Altitude of any object, with t = α₀ - α the hour angle:</p>
+			<span class="eq" data-tex="\sin a=\sin L\sin\delta+\cos L\cos\delta\cos t \quad (2.30)"></span>
+
+			<p class="note">Upper transit (t = 0): sin a₊ = cos(L - δ). Lower transit (t = 180°): sin a₋ = -cos(L + δ). Hence</p>
+			<span class="eq" data-tex="a_+=90^\circ-|L-\delta|\ (2.34),\qquad a_-=|L+\delta|-90^\circ\ (2.35)"></span>
+
+			<p class="note">
+				Never sets if a₋ &gt; 0, i.e. |L+δ| &gt; 90°.
+				Never rises if a₊ &lt; 0, i.e. |L-δ| &gt; 90°.
+			</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION A2: CLIMES AND SOLSTICES ===================== -->
+	<section id="a2">
+		<div class="card top">
+			<div class="viz">
+				<canvas id="daychart" width="640" height="460"></canvas>
+				<p class="note">Day length through the year (x: solar longitude λ, 0°-360°) for the chosen latitude.</p>
+			</div>
+
+			<div class="side">
+				<div class="ctl">
+					<label>L (latitude)</label>
+					<input type="range" id="L3" min="-90" max="90" step="1" value="45">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>λ☉ (sun)</label>
+					<input type="range" id="lam3" min="0" max="360" step="1" value="90">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button data-target="lam3" data-value="0">Vernal equinox</button>
+					<button data-target="lam3" data-value="90">Summer solstice</button>
+					<button data-target="lam3" data-value="180">Autumnal equinox</button>
+					<button data-target="lam3" data-value="270">Winter solstice</button>
+				</div>
+				<div id="o-a2"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>Derivation</h2>
+			<span class="eq" data-tex="\sin\delta=\sin\epsilon\sin\lambda \quad (2.15)"></span>
+
+			<p class="note">
+				Sunrise/sunset: a = 0 in (2.30) gives cos t<sub>h</sub> = -tan L tan δ (2.59), so the day lasts 2t<sub>h</sub>/15° hours.
+				At the solstice (δ = ε) this is the longest day:
+			</p>
+			<span class="eq" data-tex="\text{longest day}=180^\circ+2\sin^{-1}(\tan L\tan\epsilon)\ \text{time-degrees}"></span>
+			<span class="eq" data-tex="a_{\text{noon}}=90^\circ-|L-\delta|"></span>
+
+			<p class="note">
+				Beyond the arctic circle, |L| &gt; 90° − ε, the product tan L tan δ reaches ±1 and the equation has no solution: the sun stays above (or below) the horizon all day.
+				Around the solstice this lasts a fraction of the year, assuming a uniformly moving sun (Sect. 2.12):
+			</p>
+			<span class="eq" data-tex="\text{polar day}\approx 365.24\ \text{d}\times\left(\tfrac12-\dfrac{\sin^{-1}(\cos L/\sin\epsilon)}{180^\circ}\right)"></span>
+		</div>
+
+		<div class="card">
+			<h2>Terrestrial climes (cf. Table 2.4)</h2>
+			<p class="note">
+				Longest day in hours (h) and minutes (m); above the arctic circle in days (d) and hours (h).
+				Noon altitudes in degrees and arc-minutes, N/S = side of the zenith.
+			</p>
+			<table id="climes"></table>
+		</div>
+	</section>
+</main>
+
+<script src="../shared/common.js"></script>
+<script src="spherical_astronomy.js"></script>
+</body>
+</html>
