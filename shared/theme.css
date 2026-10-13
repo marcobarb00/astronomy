@@ -190,11 +190,12 @@ table {
 	font-variant-numeric: tabular-nums;
 }
 
+/* Headers and cells are centred so the columns line up under their titles. */
 th,
 td {
 	padding: 3px 8px;
 	border-bottom: 1px solid var(--line);
-	text-align: right;
+	text-align: center;
 }
 
 tr.hl td {

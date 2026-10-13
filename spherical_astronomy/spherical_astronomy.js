@@ -758,12 +758,12 @@ function dayLengthTex(cosTh, length) {
 		return '\\text{midnight sun: }\\cos t_h\\le -1\\Rightarrow\\ \\text{the sun never sets (24 h)}';
 	}
 
-	return `\\text{day}=2t_h/15^\\circ/\\text{h}=\\mathbf{${hmTex(length)}}`;
+	return `\\text{day}=2t_h/ (15^\\circ/\\text{h}) =\\mathbf{${hmTex(length)}}`;
 }
 
 /* Table of climes for |L| = 0..90 every 5 degrees; the row nearest to L is highlighted. */
 function buildClimesTable(L) {
-	const header = '<tr><th>L</th><th>Longest day</th><th>Summer-solstice noon</th><th>Equinox noon</th><th>Winter-solstice noon</th></tr>';
+	const header = '<tr><th>L</th><th>time the sun stays up for</th><th>Summer-solstice noon</th><th>Equinox noon</th><th>Winter-solstice noon</th></tr>';
 	const rows = [];
 
 	for (let lat = 0; lat <= 90; lat += 5) {
