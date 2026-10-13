@@ -436,20 +436,64 @@
 
 		<div class="card theory">
 			<h2>Derivation</h2>
-			<span class="eq" data-tex="\sin\delta=\sin\epsilon\sin\lambda \quad (2.15)"></span>
 
-			<p class="note">
-				Sunrise/sunset: a = 0 in (2.30) gives cos t<sub>h</sub> = -tan L tan δ (2.59), so the day lasts 2t<sub>h</sub>/15° hours.
-				At the solstice (δ = ε) this is the longest day:
+			<p>
+				<b>Sunrise and sunset.</b>
+				At these moments the sun's altitude is a = 0.
+				Put this in Eq. (2.30), with hour angle t = α₀ − α:
 			</p>
-			<span class="eq" data-tex="\text{longest day}=180^\circ+2\sin^{-1}(\tan L\tan\epsilon)\ \text{time-degrees}"></span>
-			<span class="eq" data-tex="a_{\text{noon}}=90^\circ-|L-\delta|"></span>
+			<span class="eq" data-tex="0=\sin L\sin\delta+\cos L\cos\delta\cos t_h"></span>
+
+			<p>
+				Solving for t<sub>h</sub>, the hour angle of sunrise and sunset:
+			</p>
+			<span class="eq" data-tex="\cos t_h=-\tan L\tan\delta\quad(2.59)"></span>
+			<span class="eq" data-tex="t_h=\cos^{-1}\!\left(-\tan L\tan\delta\right)"></span>
+
+			<p>
+				<b>Length of the day.</b>
+				The sun rises at hour angle −t<sub>h</sub> and sets at +t<sub>h</sub>, so it is up for 2t<sub>h</sub> of time-degrees.
+				The sky turns 15° per hour, so:
+			</p>
+			<span class="eq" data-tex="T=\dfrac{2\,t_h}{15^\circ/\text{h}}=\dfrac{2}{15^\circ}\cos^{-1}\!\left(-\tan L\tan\delta\right)\ \text{hours}"></span>
+
+			<p>
+				The solar declination comes from the sun's ecliptic longitude:
+			</p>
+			<span class="eq" data-tex="\sin\delta=\sin\epsilon\sin\lambda\quad(2.15)"></span>
+
+			<p>
+				<b>Why 180° and sin⁻¹ appear in the book's formula.</b>
+				Use the identity cos⁻¹(−x) = 90° + sin⁻¹(x).
+				Then the same day length reads:
+			</p>
+			<span class="eq" data-tex="T=\underbrace{12\ \text{h}}_{180^\circ/15^\circ}+\dfrac{2}{15^\circ}\sin^{-1}\!\left(\tan L\tan\delta\right)\ \text{hours}"></span>
 
 			<p class="note">
-				Beyond the arctic circle, |L| &gt; 90° − ε, the product tan L tan δ reaches ±1 and the equation has no solution: the sun stays above (or below) the horizon all day.
-				Around the solstice this lasts a fraction of the year, assuming a uniformly moving sun (Sect. 2.12):
+				Both forms are identical.
+				The sin⁻¹ form splits the answer into the equinox day (δ = 0 gives tan δ = 0, so exactly 12 h = 180 time-degrees) plus a correction.
+				The correction is positive when L and δ have the same sign (summer) and negative otherwise (winter).
+			</p>
+
+			<p>
+				<b>Longest day.</b>
+				It occurs at the summer solstice (δ = ε), for latitudes below the arctic circle:
+			</p>
+			<span class="eq" data-tex="T_{\max}=\dfrac{2}{15^\circ}\cos^{-1}\!\left(-\tan L\tan\epsilon\right)=12+\dfrac{2}{15^\circ}\sin^{-1}\!\left(\tan L\tan\epsilon\right)\ \text{hours}"></span>
+
+			<p>
+				<b>Polar regions.</b>
+				Beyond the arctic circle, |L| &gt; 90° − ε, the product tan L tan δ reaches ±1 and the equation has no solution.
+				The sun stays above (or below) the horizon all day.
+				Around the solstice this lasts a fraction of the year, assuming a uniformly moving sun:
 			</p>
 			<span class="eq" data-tex="\text{polar day}\approx 365.24\ \text{d}\times\left(\tfrac12-\dfrac{\sin^{-1}(\cos L/\sin\epsilon)}{180^\circ}\right)"></span>
+
+			<p>
+				<b>Noon altitude.</b>
+				Eq. (2.30) with t = 0 gives:
+			</p>
+			<span class="eq" data-tex="a_{\text{noon}}=90^\circ-|L-\delta|"></span>
 		</div>
 
 		<div class="card">
