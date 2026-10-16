@@ -66,29 +66,57 @@
 
 		<div class="card theory">
 			<h2>The celestial sphere</h2>
+
 			<p>
-				Stars are so far away that, seen from Earth, they all seem to sit on one huge sphere centred on us.
+				<b>Why a sphere.</b>
+				Stars are so far away that, seen from Earth, they all seem to sit on one huge sphere centered on us.
 				We only use <em>directions</em>, so only angles on this sphere matter.
-				Earth is a point compared to it, which is why two observers at different places see a star in the same angular position.
+			</p>
+			<p>
+				<b>Why the observer does not matter.</b>
+				Earth is a point compared to the sphere, so two observers at different places see a star at the same angular position.
 			</p>
 
 			<h2>Motion 1 · diurnal</h2>
+
 			<p>
-				The <em>whole</em> sphere (stars, sun, planets) turns east→west once per sidereal day about the celestial axis PP′, the extension of Earth's rotation axis.
-				Drag the <b>Hours</b> slider: relative positions never change.
+				<b>What turns.</b>
+				The <em>whole</em> sphere (stars, sun, planets) turns east→west about the celestial axis PP′, the extension of Earth's rotation axis.
+				One turn takes one sidereal day, so the angle turned after a time t in hours is:
+			</p>
+			<span class="eq" data-tex="\Delta\varphi=15^\circ/\text{h}\times t"></span>
+
+			<p>
+				<b>What stays fixed.</b>
+				Drag the <b>Hours</b> slider: the relative positions of all objects never change, and only P and P′ stay put.
 			</p>
 
 			<h2>Motion 2 · intrinsic</h2>
+
 			<p>
-				Superimposed on this, the sun, moon and planets slowly drift west→east against the stars.
-				The sun traces one fixed great circle in a year, the <b class="c-sun">ecliptic</b>, tilted by ε = 23°26′ to the <b class="c-earth">celestial equator</b>.
-				Move <b>Sun λ☉</b>.
+				<b>The drift.</b>
+				On top of the diurnal rotation, the sun, moon and planets slowly drift west→east against the stars.
+			</p>
+			<p>
+				<b>The ecliptic.</b>
+				The sun traces one fixed great circle in a year, the <b class="c-sun">ecliptic</b>.
+				It is tilted by ε = 23°26′ to the <b class="c-earth">celestial equator</b>.
+				Its position on the ecliptic is its ecliptic longitude λ☉ (move the <b>Sun λ☉</b> slider).
+				The sun's declination follows from the tilt:
+			</p>
+			<span class="eq" data-tex="\sin\delta_\odot=\sin\epsilon\,\sin\lambda_\odot\quad(2.15)"></span>
+
+			<p class="note">
+				At λ☉ = 90° this gives δ☉ = ε, the summer solstice.
 			</p>
 
 			<h2>The vernal equinox V</h2>
+
 			<p>
+				<b>Definition.</b>
 				The two circles cross at two points.
-				V is the one where the sun crosses the equator going <em>north</em>, called the vernal equinox or spring equinox; the other is the autumnal equinox V′.
+				V is the one where the sun crosses the equator going <em>north</em>, called the vernal or spring equinox.
+				The other is the autumnal equinox V′, directly opposite.
 			</p>
 			<div class="box">
 				V is not stationary with respect to the fixed stars.
@@ -126,19 +154,41 @@
 
 		<div class="card theory">
 			<h2>How the system is built</h2>
+
 			<p>
-				We use three mutually perpendicular unit vectors to define celestial coordinates: <b>v</b> points to the vernal equinox,
-				<b>p</b> to the north celestial pole, and <b>u</b> completes the set (on the equator, 90° east of V).
-				Any direction can be written <b>r</b> = x<b>v</b> + y<b>u</b> + z<b>p</b>, and each number is the dot product with the axis:
-				x = <b>r·v</b>, etc.
+				<b>The axes.</b>
+				Three mutually perpendicular unit vectors define the frame:
+				<b>v</b> points to the vernal equinox, <b>p</b> to the north celestial pole, and <b>u</b> completes the set (on the equator, 90° east of V).
 			</p>
+
 			<p>
-				<b>Equatorial plane:</b> the plane containing the celestial equator (Earth's equator extended).<br>
-				<b>Declination δ</b>: angle of R above or below the equatorial plane (±90° at the poles).<br>
-				<b>Right ascension α</b>: project R onto the equatorial plane, then measure the angle from V eastward, 0° - 360° (or 0 - 24 h, 15° = 1 h).
+				<b>Components of a direction.</b>
+				Any direction <b>r</b> can be written as a sum along the three axes.
+				Each coefficient is the dot product of <b>r</b> with that axis:
+			</p>
+			<span class="eq" data-tex="\mathbf r=x\,\mathbf v+y\,\mathbf u+z\,\mathbf p,\qquad x=\mathbf r\cdot\mathbf v,\quad y=\mathbf r\cdot\mathbf u,\quad z=\mathbf r\cdot\mathbf p"></span>
+
+			<p>
+				<b>Declination δ.</b>
+				The fundamental plane is the equatorial plane (Earth's equator extended).
+				δ is the angle of R above or below it, from −90° to +90° (the poles).
+				It fixes the component along <b>p</b>:
+			</p>
+			<span class="eq" data-tex="\sin\delta=\mathbf r\cdot\mathbf p\quad(2.2)"></span>
+
+			<p>
+				<b>Right ascension α.</b>
+				Project R onto the equatorial plane, then measure the angle from V eastward, from 0° to 360°.
+				Hours can be used instead: 24 h = 360°, so 15° = 1 h.
+				The ratio of the two in-plane components gives the angle:
+			</p>
+			<span class="eq" data-tex="\tan\alpha=\dfrac{\mathbf r\cdot\mathbf u}{\mathbf r\cdot\mathbf v}\quad(2.3)"></span>
+
+			<p>
+				<b>Putting it together.</b>
+				The projection of R on the plane has length cos δ, so:
 			</p>
 			<span class="eq" data-tex="\mathbf r=\cos\delta\cos\alpha\,\mathbf v+\cos\delta\sin\alpha\,\mathbf u+\sin\delta\,\mathbf p\quad(2.1)"></span>
-			<span class="eq" data-tex="\sin\delta=\mathbf r\cdot\mathbf p,\qquad \tan\alpha=\dfrac{\mathbf r\cdot\mathbf u}{\mathbf r\cdot\mathbf v}\quad(2.2,2.3)"></span>
 		</div>
 	</section>
 
@@ -170,15 +220,47 @@
 
 		<div class="card theory">
 			<h2>How the system is built</h2>
-			<p><b>Ecliptic:</b> the ecliptic is the sun's apparent path across the celestial sphere.</p>
-			<p><b>Ecliptic plane:</b> the plane containing the ecliptic. It is tilted ε = 23°26′ because Earth's axis is tilted. Its poles are Q (north) and Q′.</p>
-			<p><b>Origin:</b> V lies on both circles, so it is the zero of λ too.</p>
-			<p><b>Ecliptic longitude λ</b> runs along the ecliptic, west→east, in the sun's direction of travel.</p>
-			<p><b>Ecliptic latitude β</b> is the angle above/below the ecliptic plane.</p>
-			<p>The planets stay within a few degrees of β = 0, which is why this system suits the sun, moon and planets.</p>
-			<p>New axes: <b>v</b> points to the vernal equinox, <b>s</b> to the summer solstice, at λ = 90°, and <b>q</b> to the ecliptic pole.</p>
+
+			<p>
+				<b>The fundamental circle.</b>
+				The ecliptic is the sun's apparent path across the celestial sphere.
+				The plane containing it is the ecliptic plane, tilted by ε = 23°26′ because Earth's axis is tilted.
+				Its poles are Q (north) and Q′ (south).
+			</p>
+
+			<p>
+				<b>The origin.</b>
+				V lies on both the equator and the ecliptic, so it is also the zero of ecliptic longitude.
+			</p>
+
+			<p>
+				<b>The axes.</b>
+				<b>v</b> points to the vernal equinox, <b>s</b> to the summer solstice (λ = 90°) and <b>q</b> to the ecliptic pole.
+				Any direction is then:
+			</p>
+			<span class="eq" data-tex="\mathbf r=x\,\mathbf v+y\,\mathbf s+z\,\mathbf q,\qquad x=\mathbf r\cdot\mathbf v,\quad y=\mathbf r\cdot\mathbf s,\quad z=\mathbf r\cdot\mathbf q"></span>
+
+			<p>
+				<b>Ecliptic latitude β.</b>
+				The angle above or below the ecliptic plane, which fixes the component along <b>q</b>:
+			</p>
+			<span class="eq" data-tex="\sin\beta=\mathbf r\cdot\mathbf q\quad(2.9)"></span>
+
+			<p>
+				<b>Ecliptic longitude λ.</b>
+				The angle from V along the ecliptic, west→east, in the sun's direction of travel:
+			</p>
+			<span class="eq" data-tex="\tan\lambda=\dfrac{\mathbf r\cdot\mathbf s}{\mathbf r\cdot\mathbf v}\quad(2.10)"></span>
+
+			<p>
+				<b>Putting it together.</b>
+			</p>
 			<span class="eq" data-tex="\mathbf r=\cos\beta\cos\lambda\,\mathbf v+\cos\beta\sin\lambda\,\mathbf s+\sin\beta\,\mathbf q\quad(2.8)"></span>
-			<span class="eq" data-tex="\sin\beta=\mathbf r\cdot\mathbf q,\qquad \tan\lambda=\dfrac{\mathbf r\cdot\mathbf s}{\mathbf r\cdot\mathbf v}\quad(2.9,2.10)"></span>
+
+			<p class="note">
+				The planets stay within a few degrees of β = 0, which is why this system suits the sun, moon and planets.
+				The sun itself always has β = 0.
+			</p>
 		</div>
 	</section>
 
@@ -220,23 +302,60 @@
 
 		<div class="card theory">
 			<h2>How the system is built</h2>
-			<p>This one belongs to an <b>observer</b> on the surface of the earth at site X.</p>
-			<p><b>Horizon:</b> the plane tangent to the earth at X, with zenith Z overhead and nadir Z′ underfoot.</p>
-			<p><b>Local meridian:</b> the plane that passes through the north and south compass points and the zenith. The north celestial pole lies on the meridian plane.</p>
-			<p><b>Latitude L:</b> the angle between the north compass point and the north celestial pole. The horizon is therefore tilted by 90° - L with respect to the equator.</p>
-			<p><b>Altitude a:</b> angle above the horizon.</p>
-			<p><b>Azimuth A:</b> angle from the north point, toward east (N 0°, E 90°, S 180°, W 270°).</p>
-			<p>Axes: <b>n</b> (north), <b>e</b> (east), <b>z</b> (zenith).</p>
+
 			<p>
-				Since the local meridian passes through the poles, all the objects on it have the same right ascension α₀, which is the right ascension currently on the meridian.
-				The hour angle t = α₀ - α is the angle between the meridian and the object.
+				<b>An observer's system.</b>
+				Unlike the previous two, this one belongs to an observer on Earth's surface at site X.
 			</p>
+
 			<p>
-				Because of diurnal motion, α₀ grows 15° per hour.
-				Drag it and the horizon turns under the stars: a and A of a fixed star change continuously.
+				<b>Horizon and zenith.</b>
+				The horizon is the plane tangent to the earth at X.
+				The zenith Z is the point overhead and the nadir Z′ the point underfoot.
+			</p>
+
+			<p>
+				<b>Local meridian.</b>
+				The plane through the north and south compass points and the zenith.
+				The north celestial pole lies in this plane, raised above the north point by the terrestrial latitude L.
+				The horizon is therefore tilted with respect to the equator by:
+			</p>
+			<span class="eq" data-tex="\text{tilt}=90^\circ-L"></span>
+
+			<p>
+				<b>The axes.</b>
+				<b>n</b> points north, <b>e</b> east and <b>z</b> to the zenith:
+			</p>
+			<span class="eq" data-tex="\mathbf r=x\,\mathbf e+y\,\mathbf n+z\,\mathbf z,\qquad x=\mathbf r\cdot\mathbf e,\quad y=\mathbf r\cdot\mathbf n,\quad z=\mathbf r\cdot\mathbf z"></span>
+
+			<p>
+				<b>Altitude a.</b>
+				The angle above the horizon (negative below it):
+			</p>
+			<span class="eq" data-tex="\sin a=\mathbf r\cdot\mathbf z\quad(2.28)"></span>
+
+			<p>
+				<b>Azimuth A.</b>
+				The angle from the north point, toward the east (N 0°, E 90°, S 180°, W 270°):
+			</p>
+			<span class="eq" data-tex="\tan A=\dfrac{\mathbf r\cdot\mathbf e}{\mathbf r\cdot\mathbf n}\quad(2.29)"></span>
+
+			<p>
+				<b>Putting it together.</b>
 			</p>
 			<span class="eq" data-tex="\mathbf r=\cos a\sin A\,\mathbf e+\cos a\cos A\,\mathbf n+\sin a\,\mathbf z\quad(2.27)"></span>
-			<span class="eq" data-tex="\sin a=\mathbf r\cdot\mathbf z,\qquad \tan A=\dfrac{\mathbf r\cdot\mathbf e}{\mathbf r\cdot\mathbf n}\quad(2.28,2.29)"></span>
+
+			<p>
+				<b>Time enters through α₀.</b>
+				All objects on the meridian have the same right ascension, called α₀.
+				The angle between the meridian and an object of right ascension α is its hour angle:
+			</p>
+			<span class="eq" data-tex="t=\alpha_0-\alpha"></span>
+
+			<p>
+				Because of diurnal motion, α₀ grows by 15° per hour.
+				Drag the <b>α₀</b> slider and the horizon turns under the stars: a and A of a fixed star change continuously.
+			</p>
 		</div>
 	</section>
 
@@ -271,26 +390,57 @@
 
 		<div class="card theory">
 			<h2>Derivation</h2>
+
 			<p>
-				The two systems share <b>v</b>; the ecliptic axes are the equatorial ones <em>rotated by ε about <b>v</b></em>.
-				Applying a rotation to <b>u</b>, <b>p</b> we get <b>s</b>, <b>q</b>:
+				<b>The idea.</b>
+				R is a single direction in space.
+				The two systems only describe it with different axes, so we need the relation between the axes.
+			</p>
+
+			<p>
+				<b>Relating the axes.</b>
+				Both systems share <b>v</b>.
+				The ecliptic axes are the equatorial ones <em>rotated by ε about <b>v</b></em>:
 			</p>
 			<span class="eq" data-tex="\mathbf s=\cos\epsilon\,\mathbf u+\sin\epsilon\,\mathbf p,\qquad \mathbf q=-\sin\epsilon\,\mathbf u+\cos\epsilon\,\mathbf p\quad(2.4,2.5)"></span>
 
 			<p class="note">
-				In matrix form: the pair (u, p) is rotated by ε in the plane perpendicular to v, while v stays fixed (this is the picture above):
+				In matrix form, the pair (u, p) is rotated by ε in the plane perpendicular to v, while v stays fixed (this is the picture above):
 			</p>
 			<span class="eq" data-tex="\begin{pmatrix}\mathbf s\\\mathbf q\end{pmatrix}=\begin{pmatrix}\cos\epsilon&amp;\sin\epsilon\\-\sin\epsilon&amp;\cos\epsilon\end{pmatrix}\begin{pmatrix}\mathbf u\\\mathbf p\end{pmatrix},\qquad \mathbf v\ \text{unchanged}"></span>
 
-			<p>Insert these in Eq. (2.8) and collect terms in <b>v</b>, <b>u</b>, <b>p</b>:</p>
+			<p>
+				<b>Ecliptic → celestial.</b>
+				Insert these in Eq. (2.8) and collect the terms in <b>v</b>, <b>u</b> and <b>p</b>:
+			</p>
 			<span class="eq" data-tex="\mathbf r=\cos\beta\cos\lambda\,\mathbf v+(\cos\beta\sin\lambda\cos\epsilon-\sin\beta\sin\epsilon)\,\mathbf u+(\cos\beta\sin\lambda\sin\epsilon+\sin\beta\cos\epsilon)\,\mathbf p"></span>
 
-			<p>Compare with Eq. (2.1): the same vector, so the coefficients match.</p>
+			<p>
+				Compare with Eq. (2.1): it is the same vector, so the coefficients must match.
+				The <b>p</b> coefficient gives δ:
+			</p>
 			<span class="eq" data-tex="\sin\delta=\cos\epsilon\sin\beta+\sin\epsilon\cos\beta\sin\lambda\quad(2.13)"></span>
+
+			<p>
+				The ratio of the <b>u</b> and <b>v</b> coefficients gives α:
+			</p>
 			<span class="eq" data-tex="\tan\alpha=\dfrac{\cos\epsilon\cos\beta\sin\lambda-\sin\epsilon\sin\beta}{\cos\beta\cos\lambda}\quad(2.14)"></span>
 
-			<p>The inverse uses <b>u</b> = cos ε <b>s</b> - sin ε <b>q</b>, <b>p</b> = sin ε <b>s</b> + cos ε <b>q</b> (2.6, 2.7):</p>
-			<span class="eq" data-tex="\sin\beta=\cos\epsilon\sin\delta-\sin\epsilon\cos\delta\sin\alpha,\quad \tan\lambda=\dfrac{\cos\epsilon\cos\delta\sin\alpha+\sin\epsilon\sin\delta}{\cos\delta\cos\alpha}\quad(2.11,2.12)"></span>
+			<p>
+				<b>Celestial → ecliptic.</b>
+				Go the other way using the inverse rotation of the axes:
+			</p>
+			<span class="eq" data-tex="\mathbf u=\cos\epsilon\,\mathbf s-\sin\epsilon\,\mathbf q,\qquad \mathbf p=\sin\epsilon\,\mathbf s+\cos\epsilon\,\mathbf q\quad(2.6,2.7)"></span>
+
+			<p>
+				Inserting them in Eq. (2.1) and comparing with Eq. (2.8), as before:
+			</p>
+			<span class="eq" data-tex="\sin\beta=\cos\epsilon\sin\delta-\sin\epsilon\cos\delta\sin\alpha\quad(2.11)"></span>
+			<span class="eq" data-tex="\tan\lambda=\dfrac{\cos\epsilon\cos\delta\sin\alpha+\sin\epsilon\sin\delta}{\cos\delta\cos\alpha}\quad(2.12)"></span>
+
+			<p class="note">
+				The readout above uses the first set to get δ and α, then the second to recover β and λ as a check.
+			</p>
 		</div>
 	</section>
 
@@ -333,29 +483,68 @@
 
 		<div class="card theory">
 			<h2>Derivation</h2>
+
 			<p>
-				The point on the equator crossing the meridian has unit vector <b>m</b> = sin α₀ <b>u</b> + cos α₀ <b>v</b>.
-				In the meridian plane, the north point and zenith are <b>m</b> and <b>p</b> rotated by L:
+				<b>The idea.</b>
+				As in the previous tab, R does not move.
+				We only express the same direction in the observer's axes <b>e</b>, <b>n</b>, <b>z</b> instead of <b>v</b>, <b>u</b>, <b>p</b>.
+			</p>
+
+			<p>
+				<b>The meridian point.</b>
+				The point of the equator crossing the meridian has right ascension α₀, so its unit vector is:
+			</p>
+			<span class="eq" data-tex="\mathbf m=\cos\alpha_0\,\mathbf v+\sin\alpha_0\,\mathbf u\quad(2.19)"></span>
+
+			<p>
+				<b>North and zenith.</b>
+				Inside the meridian plane, the north point and the zenith are <b>p</b> and <b>m</b> rotated by L:
 			</p>
 			<span class="eq" data-tex="\mathbf n=\cos L\,\mathbf p-\sin L\,\mathbf m,\qquad \mathbf z=\sin L\,\mathbf p+\cos L\,\mathbf m\quad(2.17,2.18)"></span>
 
-			<p class="note">That is a rotation by L of the pair (p, m) inside the meridian plane, as drawn above:</p>
+			<p class="note">
+				In matrix form, a rotation by L of the pair (p, m) inside the meridian plane, as drawn above:
+			</p>
 			<span class="eq" data-tex="\begin{pmatrix}\mathbf n\\\mathbf z\end{pmatrix}=\begin{pmatrix}\cos L&amp;-\sin L\\\sin L&amp;\cos L\end{pmatrix}\begin{pmatrix}\mathbf p\\\mathbf m\end{pmatrix}"></span>
 
-			<p>and east is perpendicular to the meridian. Written in <b>v</b>, <b>u</b>, <b>p</b>:</p>
-			<span class="eq" data-tex="\mathbf e=-\sin\alpha_0\,\mathbf v+\cos\alpha_0\,\mathbf u"></span>
-			<span class="eq" data-tex="\mathbf n=-\sin L\cos\alpha_0\,\mathbf v-\sin L\sin\alpha_0\,\mathbf u+\cos L\,\mathbf p"></span>
-			<span class="eq" data-tex="\mathbf z=\cos L\cos\alpha_0\,\mathbf v+\cos L\sin\alpha_0\,\mathbf u+\sin L\,\mathbf p\quad(2.21\text{-}2.23)"></span>
-
-			<p>Now dot the object's vector (2.1) with each.</p>
-			<p><b>r</b>·<b>z</b> = cos δ cos α cos L cos α₀ + cos δ sin α cos L sin α₀ + sin δ sin L.</p>
 			<p>
-				Using the trig identity cos(α-α₀) = cos α cos α₀ + sin α sin α₀, and equating with <b>r</b>·<b>z</b> in the horizontal coordinates, we get:
+				<b>East.</b>
+				East is perpendicular to the meridian plane, so it lies on the equator, 90° ahead of <b>m</b>:
+			</p>
+			<span class="eq" data-tex="\mathbf e=-\sin\alpha_0\,\mathbf v+\cos\alpha_0\,\mathbf u\quad(2.21)"></span>
+
+			<p>
+				<b>All three in the celestial basis.</b>
+				Substituting <b>m</b> into the expressions for <b>n</b> and <b>z</b>:
+			</p>
+			<span class="eq" data-tex="\mathbf n=-\sin L\cos\alpha_0\,\mathbf v-\sin L\sin\alpha_0\,\mathbf u+\cos L\,\mathbf p\quad(2.22)"></span>
+			<span class="eq" data-tex="\mathbf z=\cos L\cos\alpha_0\,\mathbf v+\cos L\sin\alpha_0\,\mathbf u+\sin L\,\mathbf p\quad(2.23)"></span>
+
+			<p>
+				<b>Altitude.</b>
+				Dot the object's vector (2.1) with <b>z</b>:
+			</p>
+			<span class="eq" data-tex="\mathbf r\cdot\mathbf z=\cos\delta\cos L\,(\cos\alpha\cos\alpha_0+\sin\alpha\sin\alpha_0)+\sin\delta\sin L"></span>
+
+			<p>
+				The bracket is cos(α − α₀), and <b>r</b>·<b>z</b> = sin a, hence:
 			</p>
 			<span class="eq" data-tex="\sin a=\sin L\sin\delta+\cos L\cos\delta\cos(\alpha-\alpha_0)\quad(2.30)"></span>
 
 			<p>
-				Likewise <b>r</b>·<b>e</b> = cos δ sin(α-α₀) and <b>r</b>·<b>n</b> = cos L sin δ - sin L cos δ cos(α-α₀), hence
+				<b>Azimuth.</b>
+				Dot (2.1) with <b>e</b> and with <b>n</b>.
+				The east component is:
+			</p>
+			<span class="eq" data-tex="\mathbf r\cdot\mathbf e=\cos\delta\sin(\alpha-\alpha_0)"></span>
+
+			<p>
+				The north component is:
+			</p>
+			<span class="eq" data-tex="\mathbf r\cdot\mathbf n=\cos L\sin\delta-\sin L\cos\delta\cos(\alpha-\alpha_0)"></span>
+
+			<p>
+				Their ratio is tan A:
 			</p>
 			<span class="eq" data-tex="\tan A=\dfrac{\cos\delta\sin(\alpha-\alpha_0)}{\cos L\sin\delta-\sin L\cos\delta\cos(\alpha-\alpha_0)}\quad(2.31)"></span>
 		</div>
@@ -392,15 +581,52 @@
 
 		<div class="card theory">
 			<h2>Derivation</h2>
-			<p class="note">Altitude of any object, with t = α₀ - α the hour angle:</p>
-			<span class="eq" data-tex="\sin a=\sin L\sin\delta+\cos L\cos\delta\cos t \quad (2.30)"></span>
 
-			<p class="note">Upper transit (t = 0): sin a₊ = cos(L - δ). Lower transit (t = 180°): sin a₋ = -cos(L + δ). Hence</p>
-			<span class="eq" data-tex="a_+=90^\circ-|L-\delta|\ (2.34),\qquad a_-=|L+\delta|-90^\circ\ (2.35)"></span>
+			<p>
+				<b>Altitude through the day.</b>
+				An object of declination δ has hour angle t = α₀ − α.
+				Its altitude follows from Eq. (2.30):
+			</p>
+			<span class="eq" data-tex="\sin a=\sin L\sin\delta+\cos L\cos\delta\cos t\quad(2.30)"></span>
+
+			<p>
+				<b>Upper transit.</b>
+				The object is highest when cos t = 1, i.e. t = 0.
+				Then, using the cosine of a difference:
+			</p>
+			<span class="eq" data-tex="\sin a_+=\sin L\sin\delta+\cos L\cos\delta=\cos(L-\delta)"></span>
+
+			<p>
+				Since sin a = cos(90° − a), and the altitude must stay in the range −90° to 90°:
+			</p>
+			<span class="eq" data-tex="a_+=90^\circ-|L-\delta|\quad(2.34)"></span>
+
+			<p>
+				<b>Lower transit.</b>
+				The object is lowest when cos t = −1, i.e. t = 180°:
+			</p>
+			<span class="eq" data-tex="\sin a_-=\sin L\sin\delta-\cos L\cos\delta=-\cos(L+\delta)"></span>
+			<span class="eq" data-tex="a_-=|L+\delta|-90^\circ\quad(2.35)"></span>
+
+			<p>
+				<b>Three classes of object.</b>
+				The daily path lies between a₋ and a₊, so it is enough to look at their signs.
+				An object never sets if even its lowest point is above the horizon:
+			</p>
+			<span class="eq" data-tex="a_->0\ \Longleftrightarrow\ |L+\delta|>90^\circ"></span>
+
+			<p>
+				It never rises if even its highest point is below the horizon:
+			</p>
+			<span class="eq" data-tex="a_+<0\ \Longleftrightarrow\ |L-\delta|>90^\circ"></span>
+
+			<p>
+				Otherwise it rises and sets every day.
+			</p>
 
 			<p class="note">
-				Never sets if a₋ &gt; 0, i.e. |L+δ| &gt; 90°.
-				Never rises if a₊ &lt; 0, i.e. |L-δ| &gt; 90°.
+				At the equator (L = 0°) every object rises and sets.
+				At the poles (L = ±90°) the horizon coincides with the celestial equator, so objects on one side never set and objects on the other never rise.
 			</p>
 		</div>
 	</section>

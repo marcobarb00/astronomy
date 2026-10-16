@@ -592,7 +592,7 @@ function renderA1() {
 	drawMarkedVector(stage, upperTransit, 'upper transit', COL.planet, 2, 9, -8);
 	drawMarkedVector(stage, lowerTransit, 'lower transit', COL.planet, 2, 9, -8);
 
-	// angles near the centre, all in the meridian (x-z) plane
+	// angles near the center, all in the meridian (x-z) plane
 	strokePath(stage, sampleArc(north, zenith, L, 0.8), COL.earth, 3);
 	labelArc(stage, 'L', north, zenith, L, 0.95, COL.earth);
 	strokePath(stage, sampleArc(meridianEquator, pole, delta, 0.6), COL.planet, 3);
