@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hipparchus' Model</title>
+
+	<!-- KaTeX (equation typesetting) -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+
+	<!-- Shared theme, then the styles that only this page needs -->
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="hipparchus_model.css">
+</head>
+
+<body>
+<main>
+	<p class="back"><a href="../index.html">← All pages</a></p>
+
+	<h1>Hipparchus' Model</h1>
+	<p class="sub">
+		The astronomy of Hipparchus of Nicaea (c. 190 – c. 120 BCE), step by step:
+		what he inherited, what he added, and what he left to Ptolemy.
+		Drag the spheres to rotate them.
+	</p>
+
+	<nav id="tabs">
+		<button data-tab="start" class="active">1 · Starting point</button>
+		<button data-tab="catalogue">2 · Star catalogue</button>
+		<button data-tab="precession">3 · Precession</button>
+		<button data-tab="sun">4 · The Sun</button>
+		<button data-tab="epicycle">5 · Eccentric &amp; epicycle</button>
+		<button data-tab="moon">6 · The Moon</button>
+		<button data-tab="tools">7 · Tools &amp; limits</button>
+	</nav>
+
+	<!-- ===================== SECTION START: THE STARTING POINT ===================== -->
+	<section id="start" class="show">
+
+		<div class="card">
+			<h2>Who was Hipparchus, and how do we know?</h2>
+			<p>
+				Hipparchus was born in Nicaea (today İznik, Turkey) and observed mostly from Rhodes;
+				his dated observations run from 162 to 127 BCE.
+				Almost all of his writings are lost.
+				The only one that survives is a commentary on Aratus' poem <em>Phaenomena</em> and on Eudoxus' description of the constellations.
+				Everything else we know mainly through Ptolemy's <em>Almagest</em> (c. 150 CE),
+				which quotes him, uses his observations and often keeps his models.
+			</p>
+			<p>
+				Each idea on this page carries a badge saying where it came from.
+			</p>
+			<div class="legend">
+				<span class="origin babylonian">Inherited · Babylonian</span>
+				records and periods from Mesopotamian astronomy.
+			</div>
+			<div class="legend">
+				<span class="origin greek">Inherited · Greek</span>
+				ideas and geometry of earlier Greek astronomers and mathematicians.
+			</div>
+			<div class="legend">
+				<span class="origin own">Hipparchus</span>
+				his own contribution, as far as the sources let us say.
+			</div>
+			<div class="legend">
+				<span class="origin debated">Debated</span>
+				attribution or details still discussed by historians.
+			</div>
+			<div class="legend">
+				<span class="origin later">Later</span>
+				what Ptolemy or modern astronomy added afterwards.
+			</div>
+		</div>
+
+		<div class="card">
+			<h2>What was on the table around 150 BCE</h2>
+			<ol class="lineage">
+				<li>
+					<span class="when">from 747 BCE</span>
+					<span class="origin babylonian">Inherited · Babylonian</span>
+					Dated records of eclipses and planetary phenomena, kept in Babylon for centuries;
+					arithmetic schemes that predict the Moon with periods known to great precision;
+					sexagesimal numbers and the zodiac of twelve 30° signs.
+				</li>
+				<li>
+					<span class="when">c. 370 BCE</span>
+					<span class="origin greek">Inherited · Greek</span>
+					Eudoxus of Cnidus: nested spheres turning uniformly about the Earth (the simulation below),
+					and a description of the constellations on a celestial globe.
+				</li>
+				<li>
+					<span class="when">c. 350 BCE</span>
+					<span class="origin greek">Inherited · Greek</span>
+					Aristotle: a spherical Earth at rest at the center of a spherical cosmos;
+					the heavens made of a substance whose natural motion is circular and eternal.
+				</li>
+				<li>
+					<span class="when">c. 330 BCE</span>
+					<span class="origin greek">Inherited · Greek</span>
+					Callippus adds spheres to Eudoxus' system, among other things to make the seasons unequal;
+					Meton and Euctemon (432 BCE) and Callippus give season lengths and calendar cycles.
+				</li>
+				<li>
+					<span class="when">c. 290 BCE</span>
+					<span class="origin greek">Inherited · Greek</span>
+					Timocharis and Aristyllus measure star positions in Alexandria;
+					Aristarchus estimates the relative distances of Sun and Moon.
+				</li>
+				<li>
+					<span class="when">c. 200 BCE</span>
+					<span class="origin greek">Inherited · Greek</span>
+					Apollonius of Perge: the geometry of eccentric circles and epicycles, and their equivalence.
+				</li>
+			</ol>
+		</div>
+
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-eu" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-sun">■</span> ecliptic (sphere 2) &nbsp;
+					<span class="c-deferent">■</span> sphere 3 &nbsp;
+					<span class="c-epicycle">■</span> sphere 4 &nbsp;
+					<span class="c-planet">■</span> the planet's path &nbsp;
+					dashed lines: the spheres' axes
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">Eudoxus' spheres for one planet</h2>
+				<div class="presets" id="eu-planets">
+					<button data-choice="saturn">Saturn</button>
+					<button data-choice="jupiter" class="active">Jupiter</button>
+					<button data-choice="mars">Mars (Eudoxus' period)</button>
+					<button data-choice="marsTrue">Mars (true period)</button>
+				</div>
+				<div class="ctl">
+					<label>Tilt i</label>
+					<input type="range" id="eu-i" min="0" max="60" step="1" value="13">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Synodic period</label>
+					<input type="range" id="eu-syn" min="100" max="800" step="10" value="390" data-unit=" d">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Sidereal period</label>
+					<input type="range" id="eu-sid" min="1" max="30" step="0.01" value="12" data-unit=" yr" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Speed</label>
+					<input type="range" id="eu-speed" min="5" max="200" step="5" value="60" data-unit=" d/s">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Trail</label>
+					<input type="range" id="eu-trail" min="0.1" max="3" step="0.1" value="1" data-unit=" syn.">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button id="eu-play">▶ Play</button>
+				</div>
+				<div id="o-eu"></div>
+				<p class="note">
+					Tilts are G. V. Schiaparelli's 1875 reconstruction; the periods are those Simplicius attributes to Eudoxus.
+				</p>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>The geocentric frame</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Aristotle)</span>
+			</p>
+			<p>
+				Hipparchus never questions the frame he received: a spherical Earth at rest at the center,
+				and a sphere of fixed stars turning once a day around it.
+				The Sun, the Moon and the five planets drift slowly eastward against the stars,
+				close to the ecliptic.
+				Aristarchus had proposed a moving Earth a century earlier, but Hipparchus, like almost everyone, ignored it.
+			</p>
+
+			<h2>Uniform circular motion: the homocentric spheres</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Eudoxus)</span>
+			</p>
+			<p>
+				Every motion in the heavens must be built from uniform rotations of circles or spheres.
+				Eudoxus gave each planet four spheres, all centered on the Earth.
+				Sphere 2 carries the planet along the zodiac in its sidereal period.
+				Spheres 3 and 4 turn in opposite directions, in the synodic period, about axes tilted by i;
+				together they move the planet on a figure-eight, the <em>hippopede</em>, around its mean position.
+				When the backward speed on the figure-eight beats the forward speed of sphere 2, the planet goes retrograde.
+			</p>
+			<span class="eq" data-tex="\mathbf P(t)=R_{\text{2}}(\omega_{\text{sid}}t)\;R_{\text{3}}(\omega_{\text{syn}}t)\;R_{\text{4}}(-\omega_{\text{syn}}t)\;\mathbf P_0,\qquad |\mathbf P(t)|=1"></span>
+			<p>
+				The half-length of the figure-eight equals the tilt i, while its height in latitude is only a fraction of a degree for small tilts.
+			</p>
+
+			<h2>What was left unsolved</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek</span>
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<ul>
+				<li>
+					<b>Distances never change.</b>
+					Every body stays on a sphere centered on the Earth, so it cannot look brighter or larger at one time than at another.
+					Mars and Venus obviously do, and the Moon's apparent size varies.
+					Simplicius reports that Autolycus of Pitane had already raised the objection.
+				</li>
+				<li>
+					<b>The seasons.</b>
+					The four seasons have different lengths. Callippus added spheres to reproduce this, but only qualitatively.
+				</li>
+				<li>
+					<b>No numbers.</b>
+					The spheres were not fitted to dated observations, so they could not predict where a body would be on a given day.
+					The Babylonians could predict, with arithmetic tables, but they had no geometric picture.
+				</li>
+			</ul>
+			<div class="box">
+				Hipparchus' program was to join the two traditions: geometric models built from uniform circles,
+				with parameters derived from dated observations.
+				Try the Mars presets: with the true synodic period of 780 days, even a tilt of 60° gives no retrograde motion,
+				and it already throws the planet some 15° off the ecliptic.
+			</div>
+			<p class="note">
+				Sources: Aristotle, <em>Metaphysics</em> Λ 8; Simplicius, commentary on <em>De caelo</em>;
+				Almagest I 3–8 (Toomer); O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em> (1975).
+			</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION CATALOGUE: THE STAR CATALOGUE ===================== -->
+	<section id="catalogue">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-cat" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-earth">■</span> celestial equator &nbsp;
+					<span class="c-sun">■</span> ecliptic &nbsp;
+					● stars, sized by magnitude class &nbsp;
+					dashed circle: stars that never rise at Rhodes &nbsp;
+					thick arcs: the coordinates of the chosen star
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">The sky of the catalogue</h2>
+				<div class="row">
+					<span class="lbl">Epoch</span>
+					<span class="presets" id="cat-epoch">
+						<button data-choice="-128" class="active">Hipparchus (129 BCE)</button>
+						<button data-choice="2025">Today</button>
+					</span>
+				</div>
+				<div class="row">
+					<span class="lbl">Grid</span>
+					<span class="presets" id="cat-grid">
+						<button data-choice="equator" class="active">Equatorial</button>
+						<button data-choice="ecliptic">Ecliptic</button>
+					</span>
+				</div>
+				<div class="row">
+					<label class="lbl" for="cat-star">Star</label>
+					<select id="cat-star"></select>
+				</div>
+				<div id="o-cat"></div>
+				<p class="note">
+					Modern positions carried back with a uniform precession of 50.3″ per year; the obliquity is kept at its present value.
+				</p>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>The celestial sphere</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Eudoxus, Aratus)</span>
+			</p>
+			<p>
+				The stars are treated as fixed on one sphere, with the Earth a point at its center.
+				Eudoxus had described the constellations as drawn on a globe, and Aratus had put the description into verse.
+				Hipparchus' surviving commentary checks them against the sky and corrects them,
+				giving risings, settings and culminations with numbers.
+			</p>
+
+			<h2>A catalogue with coordinates</h2>
+			<p class="origins">
+				<span class="origin own">Hipparchus</span>
+				<span class="origin debated">Debated</span>
+			</p>
+			<p>
+				Hipparchus was the first to list stars with numerical positions, so that later astronomers could tell whether anything had moved.
+				Pliny says he was prompted by a new star.
+				Ptolemy refers to his work on the stars several times, and modern estimates give it about 850 stars.
+				Which coordinates did he use?
+				The commentary on Aratus mixes declinations and positions measured along the equator;
+				a fragment of his catalogue found in 2022 under a later text (the <em>Codex Climaci Rescriptus</em>)
+				gives stars of Corona Borealis in equatorial coordinates.
+				Ptolemy's own catalogue of 1022 stars uses ecliptic coordinates, λ and β.
+				Switch the grid to compare the two systems.
+			</p>
+			<span class="eq" data-tex="\sin\delta=\sin\beta\cos\epsilon+\cos\beta\sin\epsilon\sin\lambda"></span>
+			<span class="eq" data-tex="\tan\alpha=\frac{\sin\lambda\cos\epsilon-\tan\beta\sin\epsilon}{\cos\lambda}"></span>
+			<p class="note">
+				ε is the obliquity of the ecliptic. Hipparchus measured from Rhodes (latitude about 36°):
+				the dashed circle around the south pole shows the part of the sky he could never see.
+			</p>
+		</div>
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-mag" width="720" height="300"></canvas>
+				<p class="note">
+					Top: the six classes as drawn on the sphere. Bars: the light received, on the modern scale, relative to class 1.
+				</p>
+			</div>
+
+			<div class="side theory">
+				<h2 class="first">Magnitudes</h2>
+				<p class="origins">
+					<span class="origin debated">Probably Hipparchus</span>
+					<span class="origin later">Later · Pogson (1856)</span>
+				</p>
+				<p>
+					Stars are sorted into six classes: the brightest are "of the first magnitude",
+					the faintest visible are "of the sixth".
+					The scale is first attested in Ptolemy's catalogue, and is usually credited to Hipparchus.
+				</p>
+				<p>
+					The eye responds roughly to ratios of brightness, so equal steps in class are roughly equal ratios of light.
+					N. Pogson fixed the modern definition: five classes are exactly a factor of 100.
+				</p>
+				<span class="eq" data-tex="m_1-m_2=-2.5\,\log_{10}\frac{F_1}{F_2},\qquad\frac{F_{m}}{F_{m+1}}=100^{1/5}\approx 2.512"></span>
+			</div>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION PRECESSION ===================== -->
+	<section id="precession">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas class="sph" id="cv-pre" width="720" height="520"></canvas>
+				<p class="note">
+					<span class="c-sun">■</span> ecliptic (fixed) &nbsp;
+					<span class="c-earth">■</span> equator of the year and celestial pole P &nbsp;
+					<span class="c-earth">- -</span> the pole's circle around the ecliptic pole Q &nbsp;
+					<span class="c-planet">■</span> Spica's distance ahead of the autumnal equinox ♎︎ &nbsp;
+					grey ticks: the equinox in the years of the presets
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">The equinoxes slide along the ecliptic</h2>
+				<div class="ctl">
+					<label>Year</label>
+					<input type="range" id="pre-year" min="-12000" max="14000" step="1" value="-129" data-unit="">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Speed</label>
+					<input type="range" id="pre-speed" min="10" max="2000" step="10" value="300" data-unit=" yr/s">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button data-target="pre-year" data-value="-293">Timocharis</button>
+					<button data-target="pre-year" data-value="-129">Hipparchus</button>
+					<button data-target="pre-year" data-value="139">Ptolemy</button>
+					<button data-target="pre-year" data-value="2025">Today</button>
+					<button data-target="pre-year" data-value="13700">Vega near the pole</button>
+				</div>
+				<div class="presets">
+					<button id="pre-play">▶ Play</button>
+				</div>
+				<div id="o-pre"></div>
+			</div>
+		</div>
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-prechart" width="720" height="440"></canvas>
+				<p class="note">
+					Every star's longitude grows by the same amount, so the shift λ − λ(2000) of different stars falls on one line.
+					<span class="c-earth">■</span> modern rate &nbsp;
+					<span class="c-epicycle">- -</span> Ptolemy's 1° per century &nbsp;
+					<span class="c-planet">■</span> the slope through the two Spica readings &nbsp;
+					<span class="c-planet">●</span> Spica &nbsp;
+					<span class="c-sun">●</span> Regulus
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">Hipparchus' comparison</h2>
+				<div class="ctl">
+					<label>Timocharis</label>
+					<input type="range" id="pre-timo" min="7" max="9" step="0.1" value="8" data-dec="1">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Hipparchus</label>
+					<input type="range" id="pre-hipp" min="5" max="7" step="0.1" value="6" data-dec="1">
+					<output></output>
+				</div>
+				<p class="note">
+					How far Spica stood ahead of the autumnal equinox, c. 293 BCE and c. 130 BCE.
+				</p>
+				<div id="o-prechart"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>The old records</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Timocharis, Aristyllus)</span>
+				<span class="origin babylonian">Inherited · Babylonian</span>
+			</p>
+			<p>
+				About 160 years before Hipparchus, Timocharis had observed the Moon covering Spica and other stars in Alexandria.
+				Hipparchus also had older solstice observations (Meton, 432 BCE; Aristarchus, 280 BCE)
+				and Babylonian eclipse records, which he used for the length of the year.
+			</p>
+
+			<h2>The discovery</h2>
+			<p class="origins">
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<p>
+				From lunar eclipses, which give the Moon's position and hence that of a nearby star relative to the Sun,
+				Hipparchus found that Spica was about 6° ahead of the autumnal equinox in his own time,
+				and about 8° in Timocharis' time.
+				The stars keep their distances from one another, so it is the equinoxes that move,
+				backwards along the ecliptic: he called it the "displacement of the solstitial and equinoctial points".
+				Ptolemy quotes his conclusion: the motion is "not less than 1/100 of a degree" per year (Almagest VII 2).
+			</p>
+			<span class="eq" data-tex="\Delta\lambda=p\,\Delta t,\qquad p\ge\frac{1^\circ}{100\ \text{yr}}=36''/\text{yr}"></span>
+			<p>
+				Spica's latitude had stayed at about 2° south of the ecliptic, while its declination had changed.
+				Hence the turning happens about the poles of the ecliptic, not of the equator (Almagest VII 3).
+				Hipparchus remained cautious: Timocharis' observations were crude, and the interval short.
+			</p>
+
+			<h2>Two kinds of year</h2>
+			<p class="origins">
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<p>
+				Because the equinoxes move, the year of the seasons (from equinox to equinox) is shorter than the year measured against the stars.
+				Hipparchus defined the year by the seasons, and found it shorter than 365¼ days by about 1/300 of a day,
+				by comparing his solstices with those of Meton and Aristarchus (Almagest III 1).
+			</p>
+			<span class="eq" data-tex="T_{\text{tropical}}=365+\tfrac14-\tfrac{1}{300}=365;14,48\ \text{d}\quad(\text{modern }365.2422\ \text{d})"></span>
+
+			<h2>Afterwards</h2>
+			<p class="origins">
+				<span class="origin later">Later · Ptolemy, Newton</span>
+			</p>
+			<p>
+				Ptolemy compared his own positions with Hipparchus' and adopted exactly 1° per century, too small by almost a third
+				(see his Regulus on the chart). A full turn takes about 25 800 years.
+				Newton explained it: the Sun and the Moon pull on the Earth's equatorial bulge, and the Earth's axis turns like a spinning top.
+			</p>
+			<p class="note">Sources: Almagest III 1, VII 1–3 (Toomer).</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION SUN: THE ECCENTRIC ===================== -->
+	<section id="sun">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-sun" width="760" height="560"></canvas>
+				<p class="note">
+					<span class="c-sun">■</span> the Sun's circle, split into the four seasons &nbsp;
+					<span class="c-earth">●</span> Earth &nbsp;
+					Z: center of the circle &nbsp;
+					<span class="c-planet">- -</span> line of apsides.
+					The offset of Z is drawn larger than it is (Zoom); the numbers are not.
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">From two seasons to the model</h2>
+				<div class="presets" id="sun-presets">
+					<button data-choice="hipparchus" class="active">Hipparchus</button>
+					<button data-choice="modern">Today</button>
+					<button data-choice="equal">Equal seasons</button>
+				</div>
+				<div class="ctl">
+					<label>Spring</label>
+					<input type="range" id="sun-spring" min="89" max="97" step="0.01" value="94.5" data-unit=" d" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Summer</label>
+					<input type="range" id="sun-summer" min="89" max="97" step="0.01" value="92.5" data-unit=" d" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Zoom</label>
+					<input type="range" id="sun-zoom" min="1" max="8" step="0.5" value="5" data-unit="×">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Speed</label>
+					<input type="range" id="sun-speed" min="5" max="120" step="5" value="30" data-unit=" d/s">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button id="sun-play">▶ Play</button>
+				</div>
+				<div id="o-sun"></div>
+			</div>
+		</div>
+
+		<div class="card">
+			<h2 class="first">The equation of center over one year</h2>
+			<canvas id="cv-sunchart" width="1000" height="320"></canvas>
+			<p class="note">
+				q = true − mean longitude. Dashed lines: the ends of the seasons; the black line is the current day.
+				q is zero when the Sun passes the apogee (late spring) and the perigee (late autumn): from apogee to perigee the Sun lags behind its mean position, from perigee to apogee it runs ahead.
+			</p>
+		</div>
+
+		<div class="card theory">
+			<h2>The problem: unequal seasons</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Meton, Euctemon, Callippus)</span>
+			</p>
+			<p>
+				The equinoxes and solstices are 90° apart on the ecliptic, yet the Sun takes different times to go from one to the next.
+				The older Greek astronomers had already measured unequal seasons.
+				Hipparchus timed equinoxes and solstices himself and took spring as 94½ days and summer as 92½ days.
+			</p>
+
+			<h2>The tool: an eccentric circle</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Apollonius)</span>
+			</p>
+			<p>
+				Keep the motion uniform and circular, but put the Earth off the center of the circle.
+				Seen from the center Z, the Sun moves at a constant rate;
+				seen from the Earth, it is slower near the apogee (the far point) and faster near the perigee.
+			</p>
+
+			<h2>The numbers: eccentricity from the season lengths</h2>
+			<p class="origins">
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<p>
+				Ptolemy says that Hipparchus solved the problem "with great care" using the two season lengths as his only data (Almagest III 4),
+				and gives the solution. Let n be the Sun's mean motion and T₁, T₂ the lengths of spring and summer.
+				Spring plus summer go from equinox to equinox: a straight line through the Earth, which cuts the circle at a distance Z<sub>y</sub> from its center.
+			</p>
+			<span class="eq" data-tex="n\,(T_1+T_2)=180^\circ+2\sin^{-1}Z_y"></span>
+			<span class="eq" data-tex="n\,T_1=90^\circ+\sin^{-1}Z_y+\sin^{-1}Z_x"></span>
+			<span class="eq" data-tex="e=\sqrt{Z_x^2+Z_y^2}\approx\frac{1}{24},\qquad\lambda_A=\tan^{-1}\frac{Z_y}{Z_x}\approx 65;30^\circ"></span>
+			<p>
+				The apogee lies at Gemini 5½°, 24½° before the summer solstice.
+				Then the model predicts the other two seasons, and the Sun's true longitude on any day:
+			</p>
+			<span class="eq" data-tex="\lambda_\odot=\lambda_A+\tan^{-1}\frac{\sin M}{e+\cos M},\qquad q_{\max}=\sin^{-1}e\approx 2;23^\circ"></span>
+			<p class="note">
+				M is the mean anomaly, the angle at Z from the apogee, growing by n each day.
+				The year is Hipparchus' own 365;14,48 days.
+			</p>
+
+			<h2>Afterwards</h2>
+			<p class="origins">
+				<span class="origin later">Later · Ptolemy, Kepler</span>
+			</p>
+			<p>
+				Ptolemy found the same season lengths in his own time and kept Hipparchus' model unchanged,
+				concluding that the apogee does not move. It does: the "Today" preset puts it near 103°.
+				In Kepler's ellipse the Sun sits at a focus; the eccentric circle imitates it with an offset of twice the orbital eccentricity
+				(2 × 0.0167 ≈ 1/30 today).
+			</p>
+			<p class="note">Sources: Almagest III 1, III 3, III 4 (Toomer); A. Jones, J. Hist. Astron. 22 (1991).</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION EPICYCLE: ECCENTRIC AND EPICYCLE ===================== -->
+	<section id="epicycle">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-equiv" width="600" height="600"></canvas>
+				<p class="note">
+					<span class="c-sun">■</span> eccentric circle around Z &nbsp;
+					<span class="c-deferent">■</span> deferent around the Earth E &nbsp;
+					<span class="c-epicycle">■</span> epicycle and its radius &nbsp;
+					dashed: the parallelogram E–Z–P–C
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">Two constructions, one point</h2>
+				<div class="presets" id="eq-mode">
+					<button data-choice="both" class="active">Both</button>
+					<button data-choice="eccentric">Eccentric</button>
+					<button data-choice="epicycle">Epicycle</button>
+				</div>
+				<div class="ctl">
+					<label>Offset e</label>
+					<input type="range" id="eq-e" min="0.05" max="0.5" step="0.01" value="0.25" data-unit="" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Speed</label>
+					<input type="range" id="eq-speed" min="5" max="90" step="5" value="30" data-unit="°/s">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button id="eq-play">▶ Play</button>
+				</div>
+				<div id="o-equiv"></div>
+			</div>
+		</div>
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-loops" width="600" height="600"></canvas>
+				<p class="note">
+					The path over one turn of the deferent.
+					<span class="c-planet">■</span> stretches where the body moves backward as seen from the Earth.
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">Speed up the epicycle</h2>
+				<div class="ctl">
+					<label>Ratio r/R</label>
+					<input type="range" id="lp-r" min="0.05" max="0.9" step="0.01" value="0.35" data-unit="" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Turns k</label>
+					<input type="range" id="lp-k" min="0" max="12" step="1" value="6" data-unit="" data-dec="0">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button data-target="lp-k" data-value="0">k = 0 (the Sun)</button>
+					<button data-target="lp-k" data-value="1">k = 1</button>
+					<button data-target="lp-k" data-value="8">k = 8</button>
+				</div>
+				<div id="o-loops"></div>
+				<p class="note">
+					k counts the epicycle's turns per turn of the deferent, measured against the fixed stars.
+					The Play button of the card above also moves this one.
+				</p>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>The geometry</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Apollonius of Perge, c. 200 BCE)</span>
+			</p>
+			<p>
+				An epicycle is a small circle whose center C moves uniformly on a larger circle, the deferent, centered on the Earth;
+				the body moves uniformly on the epicycle.
+				Apollonius studied both this construction and the eccentric circle,
+				and proved where a body on an epicycle appears to stand still before going backward (quoted by Ptolemy, Almagest XII 1).
+			</p>
+
+			<h2>The equivalence</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Apollonius)</span>
+				<span class="origin own">Used by Hipparchus</span>
+			</p>
+			<p>
+				Take an epicycle of radius e, equal to the offset of the eccentric, whose radius CP always points the same way as the line of apsides
+				(it turns once per revolution, backwards, relative to the line EC).
+				Then E, Z, P and C form a parallelogram, and P is the same point in both constructions:
+			</p>
+			<span class="eq" data-tex="\mathbf P=\underbrace{\mathbf Z+\mathbf u(\bar\lambda)}_{\text{eccentric}}=\underbrace{\mathbf u(\bar\lambda)+\mathbf Z}_{\text{epicycle}},\qquad\mathbf u(\bar\lambda)=(\cos\bar\lambda,\ \sin\bar\lambda)"></span>
+			<p>
+				Hipparchus knew both versions: Theon of Smyrna quotes him remarking that it deserves a mathematician's attention
+				how such different hypotheses lead to the same results. For the Moon he worked out both (tab 6).
+				Ptolemy states that the two give the same phenomena and chooses the eccentric for the Sun because it needs one motion instead of two (Almagest III 3–4).
+			</p>
+
+			<h2>Retrograde loops, and what Hipparchus did not do</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Apollonius)</span>
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<p>
+				With the epicycle turning faster, the body makes loops. In the second card, the path is
+			</p>
+			<span class="eq" data-tex="z(\theta)=R\,e^{i\theta}+r\,e^{ik\theta},\qquad\text{retrograde at the perigee}\iff k\,r>R"></span>
+			<p>
+				This is the tool needed for the planets. Hipparchus, according to Ptolemy, "did not even make a beginning" of a planetary theory:
+				he collected the planetary observations and showed that the models of his time did not fit them (Almagest IX 2).
+				Each planet has two anomalies, one tied to the Sun and one tied to the zodiac, and the loops change size around the sky:
+				a single epicycle cannot do both.
+			</p>
+			<p class="note">Sources: Almagest III 3, IX 2, XII 1 (Toomer); Neugebauer (1975) pp. 149–150, 263–270.</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION MOON: THE FIRST ANOMALY ===================== -->
+	<section id="moon">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-moon" width="600" height="600"></canvas>
+				<p class="note">
+					<span class="c-deferent">■</span> deferent &nbsp;
+					<span class="c-epicycle">■</span> epicycle &nbsp;
+					<span class="c-planet">■</span> true direction of the Moon &nbsp;
+					grey dashed: mean direction &nbsp;
+					<span class="c-sun">●</span> the Sun's direction.
+					The epicycle is drawn larger than it is (Zoom).
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">Hipparchus' lunar model</h2>
+				<div class="presets">
+					<button data-target="moon-r" data-value="4.7667">Hipparchus: epicycle 4;46</button>
+					<button data-target="moon-r" data-value="6.25">Hipparchus: eccentre 6;15</button>
+					<button data-target="moon-r" data-value="5.25">Ptolemy 5;15</button>
+				</div>
+				<div class="ctl">
+					<label>Epicycle r</label>
+					<input type="range" id="moon-r" min="3" max="8" step="0.0167" value="4.7667">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Zoom</label>
+					<input type="range" id="moon-zoom" min="1" max="6" step="0.5" value="3" data-unit="×">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Speed</label>
+					<input type="range" id="moon-speed" min="0.5" max="10" step="0.5" value="2" data-unit=" d/s">
+					<output></output>
+				</div>
+				<div class="presets">
+					<button id="moon-play">▶ Play</button>
+				</div>
+				<div id="o-moon"></div>
+			</div>
+		</div>
+
+		<div class="card">
+			<h2 class="first">The equation of anomaly over two months</h2>
+			<canvas id="cv-moonchart" width="1000" height="320"></canvas>
+			<p class="note">
+				<span class="c-planet">■</span> current radius &nbsp;
+				<span class="c-epicycle">■</span> Hipparchus' epicycle (4;46) &nbsp;
+				<span class="c-deferent">■</span> Hipparchus' eccentre (6;15 as an epicycle) &nbsp;
+				grey dashed: Ptolemy (5;15).
+				The pattern repeats every anomalistic month, about 27.55 days.
+			</p>
+		</div>
+
+		<div class="card theory">
+			<h2>The periods</h2>
+			<p class="origins">
+				<span class="origin babylonian">Inherited · Babylonian</span>
+				<span class="origin own">Checked by Hipparchus</span>
+			</p>
+			<p>
+				The Moon's speed varies along its orbit, and the fast point itself drifts around the zodiac:
+				the Moon returns to the same speed (an anomalistic month, 27.55 days) a little later than it returns to the same star (27.32 days).
+				Ptolemy writes as if Hipparchus derived the periods from eclipses;
+				in fact they are Babylonian, and Hipparchus confirmed them by comparing eclipses of his own time with Babylonian ones
+				some 345 years older (Toomer's note to Almagest IV 2).
+			</p>
+			<span class="eq" data-tex="1\ \text{synodic month}=29;31,50,8,20\ \text{d}=29.530594\ \text{d}"></span>
+			<span class="eq" data-tex="251\ \text{synodic months}=269\ \text{anomalistic months}\Rightarrow 27.5545\ \text{d}"></span>
+			<span class="eq" data-tex="5458\ \text{synodic months}=5923\ \text{draconitic months}\Rightarrow 27.2122\ \text{d}"></span>
+			<p class="note">
+				Modern values: 29.530589, 27.554550 and 27.212221 days. The draconitic month brings the Moon back to the same node, and so governs eclipses.
+			</p>
+
+			<h2>The geometry of the first anomaly</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Apollonius)</span>
+				<span class="origin own">Hipparchus</span>
+			</p>
+			<p>
+				Hipparchus turned these periods into circles.
+				The epicycle center moves at the mean motion in longitude, 13;10,35° a day;
+				the Moon goes round the epicycle at the motion in anomaly, 13;3,54° a day, moving westward at the apogee.
+				The equation of anomaly is the angle between the mean and the true directions:
+			</p>
+			<span class="eq" data-tex="q(\alpha)=-\tan^{-1}\frac{r\sin\alpha}{60+r\cos\alpha},\qquad q_{\max}=\sin^{-1}\frac{r}{60}"></span>
+
+			<h2>Eclipses fix the size of the epicycle</h2>
+			<p class="origins">
+				<span class="origin babylonian">Inherited · Babylonian (records)</span>
+				<span class="origin own">Hipparchus (method)</span>
+			</p>
+			<p>
+				At the middle of a lunar eclipse the Moon is exactly opposite the Sun, and the solar model gives the Sun's longitude:
+				so the Moon's true position is known, without any instrument and without parallax.
+				Three eclipses give three true positions at known times; the mean motions give the corresponding mean positions;
+				the three differences fix the radius of the epicycle and the Moon's place on it.
+				Hipparchus used one triple observed in Babylon (383–382 BCE) and one in Alexandria (around 200 BCE).
+			</p>
+			<p>
+				He got two different answers: 6;15 with the eccentre and 4;46 with the epicycle (Almagest IV 11).
+				Some concluded that the two hypotheses were not equivalent.
+				Ptolemy showed that they are, and blamed errors in Hipparchus' time intervals; his own value is 5;15.
+			</p>
+
+			<h2>Afterwards</h2>
+			<p class="origins">
+				<span class="origin later">Later · Ptolemy</span>
+			</p>
+			<p>
+				Eclipses only test the model at full Moon.
+				Away from the syzygies the Moon can stray more than 2° from it: this "second anomaly" (evection) was established by Ptolemy,
+				partly with observations of Hipparchus himself (Almagest V 3), and required moving the center of the deferent.
+			</p>
+			<p class="note">Sources: Almagest IV 2–11, V 3 (Toomer); Toomer, "Hipparchus' empirical basis for his lunar mean motions", Centaurus 24 (1980).</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION TOOLS: TOOLS AND LIMITS ===================== -->
+	<section id="tools">
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-chord" width="520" height="520"></canvas>
+				<p class="note">
+					<span class="c-planet">■</span> chord &nbsp;
+					<span class="c-earth">■</span> half-chord, the modern sine &nbsp;
+					<span class="c-sun">■</span> arc θ
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">The table of chords</h2>
+				<div class="row">
+					<span class="lbl">Radius</span>
+					<span class="presets" id="ch-radius">
+						<button data-choice="3438" class="active">R = 3438 (Hipparchus)</button>
+						<button data-choice="60">R = 60 (Ptolemy)</button>
+					</span>
+				</div>
+				<div class="ctl">
+					<label>Arc θ</label>
+					<input type="range" id="ch-angle" min="0" max="180" step="0.5" value="60">
+					<output></output>
+				</div>
+				<div id="o-chord"></div>
+				<div class="table-wrap">
+					<table id="chords"></table>
+				</div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>Trigonometry before trigonometry</h2>
+			<p class="origins">
+				<span class="origin babylonian">Inherited · Babylonian (sexagesimal numbers, 360°)</span>
+				<span class="origin greek">Inherited · Greek (Euclid, Archimedes)</span>
+				<span class="origin own">Hipparchus</span>
+				<span class="origin debated">Debated (reconstruction)</span>
+			</p>
+			<p>
+				Every model on this page turns an angle into a length or back (the eccentricity of the Sun, the epicycle of the Moon).
+				The Greeks did this with the chord of an arc, the straight line joining its ends.
+				Theon of Alexandria says Hipparchus wrote a work on chords in twelve books; it is the first table of the kind we hear of, and it is lost.
+				G. J. Toomer reconstructed it from a few results computed with it:
+				steps of 7½°, and a radius of 3438 units, so that the radius is measured in minutes of arc (21 600′ / 2π).
+				It could be built with plane geometry alone: the chord of the supplement, and of half an arc, from a known chord.
+			</p>
+			<span class="eq" data-tex="\text{Crd}\,\theta=2R\sin\frac{\theta}{2},\qquad\text{Crd}^2\,\frac{\theta}{2}=R\,\bigl(2R-\text{Crd}\,(180^\circ-\theta)\bigr)"></span>
+			<p class="note">
+				Ptolemy's table (Almagest I 11) has steps of ½° on a radius of 60; Indian astronomers later tabulated half-chords, our sines, with the same radius 3438.
+			</p>
+		</div>
+
+		<div class="card top">
+			<div class="viz">
+				<canvas id="cv-ecl" width="720" height="300"></canvas>
+				<p class="note">
+					In a lunar eclipse the Moon crosses the Earth's shadow. The width of the shadow at the Moon, in Moon radii (k),
+					links the two parallaxes: π<sub>M</sub> + π<sub>S</sub> = θ<sub>M</sub>(1 + k), taking the Sun as large in the sky as the Moon.
+				</p>
+			</div>
+
+			<div class="side">
+				<h2 class="first">The eclipse diagram</h2>
+				<div class="presets" id="ecl-presets">
+					<button data-choice="hipparchus" class="active">Hipparchus</button>
+					<button data-choice="ptolemy">Ptolemy</button>
+				</div>
+				<div class="ctl">
+					<label>Moon (Earth radii)</label>
+					<input type="range" id="ecl-moon" min="50" max="80" step="0.01" value="67.33" data-unit="" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Shadow k</label>
+					<input type="range" id="ecl-ratio" min="2" max="3" step="0.01" value="2.5" data-unit="" data-dec="2">
+					<output></output>
+				</div>
+				<div class="ctl">
+					<label>Moon radius</label>
+					<input type="range" id="ecl-size" min="14" max="18" step="0.01" value="16.62" data-unit="′" data-dec="2">
+					<output></output>
+				</div>
+				<div id="o-ecl"></div>
+			</div>
+		</div>
+
+		<div class="card theory">
+			<h2>How far are the Moon and the Sun?</h2>
+			<p class="origins">
+				<span class="origin greek">Inherited · Greek (Aristarchus)</span>
+				<span class="origin own">Hipparchus</span>
+				<span class="origin debated">Debated (known through Pappus)</span>
+			</p>
+			<p>
+				Aristarchus had estimated that the Sun is 18 to 20 times farther than the Moon.
+				Hipparchus' book <em>On sizes and distances</em> is lost; Pappus' commentary on the Almagest summarises it.
+				In book 1 he used a solar eclipse (now identified as 14 March 190 BCE) that was total near the Hellespont
+				and covered four fifths of the Sun in Alexandria: the difference is a parallax of the Moon.
+				Assuming the Sun too far to have any parallax, he found the Moon between 71 and 83 Earth radii away.
+				In book 2 he gave the Sun the smallest parallax one could hope to notice (about 7′, i.e. 490 Earth radii)
+				and found the Moon at least 62 and on average 67⅓ Earth radii away.
+			</p>
+			<p>
+				The eclipse diagram above shows why he could not do better.
+				The two parallaxes add up to a fixed quantity, and the Sun's share is a tiny difference of two nearly equal numbers:
+				one Earth radius more or less for the Moon changes the Sun's distance enormously.
+				With Hipparchus' assumptions (the Moon 1/650 of its circle, the shadow 2½ Moons wide, Almagest IV 9)
+				a Moon at 67⅓ gives a Sun near 490 Earth radii, as in his book 2.
+				Ptolemy, with slightly different numbers, found 1210 (Almagest V 15).
+			</p>
+			<p class="note">
+				Modern values: the Moon at about 60 Earth radii, the Sun at about 23 500.
+				Sources: Almagest IV 9, V 11–16 (Toomer, with notes); G. J. Toomer, "Hipparchus on the distances of the sun and moon",
+				Archive for History of Exact Sciences 14 (1974).
+			</p>
+		</div>
+
+		<div class="card theory">
+			<h2>What Hipparchus left undone</h2>
+			<p class="origins">
+				<span class="origin own">Hipparchus</span>
+				<span class="origin later">Later · Ptolemy</span>
+			</p>
+			<p>
+				Hipparchus had models with numbers for the Sun and for the Moon at syzygy, a star catalogue, precession, a trigonometry and the distances of the Moon.
+				For the five planets he only collected observations and showed that the existing models failed.
+				Ptolemy, three centuries later, built on all of this: he kept the Sun, corrected the Moon,
+				extended the catalogue to 1022 stars, and built the planetary theory with the epicycle and the equant.
+			</p>
+			<div class="recap-wrap">
+				<table class="recap">
+					<tr>
+						<th>Topic</th>
+						<th>Inherited</th>
+						<th>Hipparchus</th>
+						<th>Ptolemy and later</th>
+					</tr>
+					<tr>
+						<td>Frame</td>
+						<td>Aristotle, Eudoxus: Earth at the center, uniform circles</td>
+						<td>kept it, and asked for numbers</td>
+						<td>kept it</td>
+					</tr>
+					<tr>
+						<td>Stars</td>
+						<td>Eudoxus' globe, Aratus, Timocharis' positions</td>
+						<td>first catalogue with coordinates; magnitudes (probably)</td>
+						<td>catalogue of 1022 stars in ecliptic coordinates</td>
+					</tr>
+					<tr>
+						<td>Precession</td>
+						<td>older star positions and solstices</td>
+						<td>discovered it: at least 1° per century</td>
+						<td>exactly 1° per century (true: 1° in 72 years)</td>
+					</tr>
+					<tr>
+						<td>Sun</td>
+						<td>unequal seasons; Apollonius' eccentric</td>
+						<td>e = 1/24, apogee at 65½°, year 365;14,48 d</td>
+						<td>unchanged</td>
+					</tr>
+					<tr>
+						<td>Moon</td>
+						<td>Babylonian periods and eclipse records</td>
+						<td>epicycle from eclipse triples (4;46 or 6;15)</td>
+						<td>5;15 and the second anomaly</td>
+					</tr>
+					<tr>
+						<td>Distances</td>
+						<td>Aristarchus' method</td>
+						<td>lunar parallax from an eclipse: Moon at 67⅓ Earth radii</td>
+						<td>Moon 59, Sun 1210 Earth radii</td>
+					</tr>
+					<tr>
+						<td>Planets</td>
+						<td>Babylonian records; Apollonius' epicycle and stations</td>
+						<td>compiled the observations; no theory</td>
+						<td>epicycle, eccentric deferent and equant</td>
+					</tr>
+				</table>
+			</div>
+			<p class="next">
+				Next:
+				<!-- TODO: point this to ../ptolemy_model/index.html once the page exists. -->
+				<a class="placeholder" aria-disabled="true" title="Coming soon">Ptolemy's Model (coming soon)</a>
+				&nbsp;·&nbsp;
+				<a href="../copernican_revolution/index.html">The Copernican revolution</a>
+			</p>
+			<p class="note">Sources: Almagest IX 2 (Toomer).</p>
+		</div>
+	</section>
+
+	<!-- Add one <section> per new tab here -->
+</main>
+
+<script src="../shared/common.js"></script>
+<script src="hipparchus_model.js"></script>
+<script src="tab_start.js"></script>
+<script src="tab_catalogue.js"></script>
+<script src="tab_precession.js"></script>
+<script src="tab_sun.js"></script>
+<script src="tab_epicycle.js"></script>
+<script src="tab_moon.js"></script>
+<script src="tab_tools.js"></script>
+</body>
+</html>
