@@ -264,7 +264,7 @@ function appendBadge(containerId, prefix, badgeText) {
 
 /* ==========================================================================
    5. CANVAS HELPERS
-   A "stage" bundles a canvas, its 2D context and the projection centre/radius
+   A "stage" bundles a canvas, its 2D context and the projection center/radius
    so that drawing helpers do not need many positional parameters.
    All 3D points live in the fixed celestial basis (v, u, p).
    ========================================================================== */

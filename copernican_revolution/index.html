@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>The Copernican revolution</title>
+
+	<!-- Shared theme, then the styles that only this page needs -->
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="copernican_revolution.css">
+</head>
+
+<body>
+<main>
+	<h1>The Copernican revolution</h1>
+	<p class="sub">
+		From Ptolemy's stationary Earth to a Sun-centered planetary system,
+		and what "center" really means.
+	</p>
+
+	<!-- Tabs not built yet are disabled; enable each one when its section exists. -->
+	<nav id="tabs">
+		<button data-tab="tl" class="active">1 · Timeline</button>
+		<button data-tab="sun">2 · Ptolemy's sources</button>
+		<button data-tab="frames" disabled>3 · One motion, three frames</button>
+		<button data-tab="loops" disabled>4 · Retrograde loops</button>
+		<button data-tab="models" disabled>5 · Model comparison</button>
+		<button data-tab="center" disabled>6 · What is "center"?</button>
+	</nav>
+
+	<!-- ===================== SECTION TL: TIMELINE ===================== -->
+	<section id="tl" class="show">
+
+		<div class="card">
+			<h2>Two thousand years in a few pictures</h2>
+			<p class="note">
+				Filter by theme to follow one thread at a time.
+				Open "More" on an entry for context and caveats.
+			</p>
+			<div class="presets" id="filters"></div>
+			<ol class="timeline" id="timeline"></ol>
+		</div>
+
+		<div class="card">
+			<h2>Where do Mercury and Venus go?</h2>
+			<p>
+				Everything beyond the Sun is easy to rank: the slower a planet crosses the zodiac,
+				the farther away it is.
+				Mercury and Venus break the rule, because they never leave the Sun's side and
+				take one year to go round the sky, like the Sun itself.
+				Ancient and medieval astronomers answered the question in several ways.
+			</p>
+			<div id="orders"></div>
+			<p class="note">
+				Distances in Ptolemy's system were only chosen to keep the spheres nested.
+				Copernicus could compute them, in units of the Earth–Sun distance,
+				from the planets' observed loops.
+			</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION SUN: PTOLEMY'S SOURCES ===================== -->
+	<section id="sun">
+
+		<div class="card">
+			<h2>What Ptolemy inherited, and what he added</h2>
+			<p>
+				The Almagest (c. 150 CE) is a synthesis.
+				The Sun comes from Hipparchus, the epicycle from Apollonius and Hipparchus,
+				and the equant, as far as we can tell, from Ptolemy himself.
+				Each card below states what the idea explains, how Ptolemy justified it,
+				which loose ends it leaves, and where to read more.
+			</p>
+			<p class="note">
+				Roman numerals are Almagest books.
+				Ptolemy often gives results without showing how he found them,
+				so "how he justified it" is partly the reconstruction of historians.
+			</p>
+		</div>
+
+		<div id="topics"></div>
+	</section>
+
+	<!-- Add one <section> per new tab here -->
+</main>
+
+<script src="../shared/common.js"></script>
+<script src="copernican_revolution.js"></script>
+<script src="tab_ptolemy.js"></script>
+</body>
+</html>

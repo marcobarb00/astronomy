@@ -1,0 +1,327 @@
+/* ==========================================================================
+   COPERNICAN REVOLUTION - page-specific styles
+   Loaded after ../shared/theme.css. Only uses the shared :root variables.
+   ========================================================================== */
+
+/* ---------- Tabs that are not built yet ---------- */
+nav button:disabled {
+	opacity: .45;
+	cursor: not-allowed;
+}
+
+/* ---------- Theme colours (one per thread of the story) ---------- */
+.tone-methods  { --tone: var(--earth); }
+.tone-models   { --tone: var(--sun); }
+.tone-order    { --tone: var(--deferent); }
+.tone-center   { --tone: var(--epicycle); }
+.tone-evidence { --tone: var(--planet); }
+
+/* ---------- Filter buttons ---------- */
+.presets button {
+	border-left: 4px solid var(--tone, var(--line));
+}
+
+.presets button.off {
+	opacity: .4;
+}
+
+/* ---------- Timeline ---------- */
+.timeline {
+	position: relative;
+	margin: 16px 0 0;
+	padding: 0 0 0 28px;
+	list-style: none;
+}
+
+/* the vertical rail */
+.timeline::before {
+	content: "";
+	position: absolute;
+	top: 6px;
+	bottom: 6px;
+	left: 8px;
+	width: 2px;
+	background: var(--line);
+}
+
+/* text on the left, illustration on the right */
+.event {
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+	margin: 0 0 14px;
+	padding: 10px 14px;
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--tone);
+	border-radius: 10px;
+	background: var(--card);
+}
+
+/* the dot on the rail */
+.event::before {
+	content: "";
+	position: absolute;
+	top: 16px;
+	left: -27px;
+	width: 12px;
+	height: 12px;
+	border: 2px solid var(--card);
+	border-radius: 50%;
+	background: var(--tone);
+	box-shadow: 0 0 0 1px var(--line);
+}
+
+.event[hidden] {
+	display: none;
+}
+
+@media (max-width: 560px) {
+	.event {
+		grid-template-columns: 1fr;
+	}
+}
+
+.event .when {
+	color: var(--muted);
+	font-size: .85rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.event h3 {
+	margin: 2px 0 4px;
+	font-size: 1.02rem;
+}
+
+.event p {
+	margin: 4px 0;
+}
+
+.event summary {
+	cursor: pointer;
+	color: var(--muted);
+	font-size: .88rem;
+}
+
+/* ---------- Illustrations ---------- */
+
+/* Drawn diagram (inline SVG built in the JS). */
+.vignette {
+	display: block;
+	width: 160px;
+	height: 90px;
+	border-radius: 8px;
+	background: var(--bg);
+}
+
+/* Optional real image (public-domain scan, with its credit). */
+.event figure {
+	width: 160px;
+	margin: 0;
+}
+
+.event figure img {
+	display: block;
+	width: 100%;
+	height: 90px;
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.event figcaption {
+	margin-top: 2px;
+	color: var(--muted);
+	font-size: .7rem;
+	line-height: 1.3;
+}
+
+/* SVG shapes: colours come from the shared theme variables. */
+.v-ring {
+	fill: none;
+	stroke: var(--line);
+	stroke-width: 1.8;
+}
+
+.v-guide {
+	fill: none;
+	stroke: var(--muted);
+	stroke-width: 1;
+	stroke-dasharray: 3 3;
+}
+
+.v-earth  { fill: var(--earth); }
+.v-sun    { fill: var(--sun); }
+.v-planet { fill: var(--planet); }
+.v-green  { fill: var(--deferent); }
+.v-violet { fill: var(--epicycle); }
+.v-muted  { fill: var(--muted); }
+.v-shadow { fill: var(--bg); }
+
+.v-ring.earth    { stroke: var(--earth); }
+.v-ring.sun      { stroke: var(--sun); }
+.v-ring.green    { stroke: var(--deferent); }
+.v-ring.violet   { stroke: var(--epicycle); }
+
+/* ---------- Order of the planets ---------- */
+.order-row {
+	margin: 14px 0;
+}
+
+.order-row h3 {
+	margin: 0 0 6px;
+	font-size: .95rem;
+	font-weight: 600;
+}
+
+.order-row .note {
+	margin: 4px 0 0;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.chip {
+	padding: 3px 12px;
+	border: 1px solid var(--line);
+	border-bottom: 3px solid var(--tone, var(--line));
+	border-radius: 999px;
+	background: var(--bg);
+	font-size: .88rem;
+}
+
+/* a body circling the Sun rather than the Earth */
+.chip.around-sun {
+	border-style: dashed;
+}
+
+/* Arrows in the drawings (shaft; the head takes a fill class) */
+.v-arrow {
+	stroke: var(--planet);
+	stroke-width: 2;
+}
+
+/* ==========================================================================
+   TAB 2 - PTOLEMY'S SOURCES
+   ========================================================================== */
+
+/* the summary text on the left, its diagram (if any) on the right */
+.topic {
+	border-left: 4px solid var(--tone);
+}
+
+.topic-head {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+	gap: 20px;
+	align-items: start;
+}
+
+/* two-panel diagrams go under the text, at a larger size */
+.topic-head.stacked {
+	grid-template-columns: 1fr;
+}
+
+@media (max-width: 900px) {
+	.topic-head {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Labelled diagrams (inline SVG built in tab_ptolemy.js) */
+.diagram {
+	margin: 18px 0 0;
+}
+
+.diagram svg {
+	display: block;
+	width: 100%;
+	max-width: 440px;
+	height: auto;
+	margin: 0 auto;
+	border-radius: 10px;
+	background: var(--bg);
+}
+
+/* panels sit side by side and wrap one per row on a phone */
+.diagram .panels {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 12px;
+}
+
+.diagram.wide svg {
+	flex: 1 1 260px;
+	max-width: 320px;
+	margin: 0;
+}
+
+.diagram.wide figcaption {
+	max-width: 652px;
+}
+
+.diagram figcaption {
+	max-width: 440px;
+	margin: 6px auto 0;
+	color: var(--muted);
+	font-size: .82rem;
+	line-height: 1.4;
+}
+
+.d-label {
+	fill: var(--ink);
+	font-size: 12px;
+	/* a halo in the background colour keeps labels readable over lines */
+	paint-order: stroke;
+	stroke: var(--bg);
+	stroke-width: 3px;
+	stroke-linejoin: round;
+}
+
+.d-label.muted  { fill: var(--muted); }
+.d-label.planet { fill: var(--planet); }
+.d-label.green  { fill: #5c9a70; }
+.d-label.violet { fill: #8a6cc0; }
+.d-label.title  { font-weight: 600; font-size: 13px; }
+
+.v-ring.planet { stroke: var(--planet); }
+.v-ring.muted  { stroke: var(--muted); stroke-width: 1.2; }
+.v-ring.thick  { stroke-width: 2.6; }
+.v-guide.solid { stroke-dasharray: none; }
+
+.d-vector {
+	stroke-width: 2.2;
+}
+
+.d-vector.sun    { stroke: var(--sun); }
+.d-vector.planet { stroke: var(--planet); }
+
+.topic h3 {
+	margin: 14px 0 4px;
+	font-size: .95rem;
+	color: var(--muted);
+	font-weight: 600;
+}
+
+.topic ul {
+	margin: 0;
+	padding-left: 20px;
+}
+
+.topic li {
+	margin: 4px 0;
+}
+
+/* source list: smaller, quieter */
+.sources li {
+	color: var(--muted);
+	font-size: .85rem;
+}
+
+.sources a {
+	color: inherit;
+}
