@@ -325,3 +325,88 @@ nav button:disabled {
 .sources a {
 	color: inherit;
 }
+
+
+/* ==========================================================================
+   TAB 3 - MODEL COMPARISON
+   ========================================================================== */
+
+/* Two views side by side, stacked on narrow screens. */
+#frames .pair {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 16px;
+}
+
+@media (max-width: 800px) {
+	#frames .pair {
+		grid-template-columns: 1fr;
+	}
+}
+
+#frames .pair .card h2 {
+	margin-top: 0;
+}
+
+/* Controls laid out in two columns of sliders. */
+#frames .controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	column-gap: 28px;
+}
+
+@media (max-width: 800px) {
+	#frames .controls {
+		grid-template-columns: 1fr;
+	}
+}
+
+#frames .ctl {
+	grid-template-columns: 130px 1fr 70px;
+}
+
+#frames .toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+#frames .toolbar .lbl {
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+#frames .presets button.active {
+	background: var(--earth);
+	border-color: var(--earth);
+	color: #fff;
+}
+
+#frames .check {
+	font-size: .9rem;
+	color: var(--muted);
+}
+
+#frames input[type=range]:disabled {
+	opacity: .45;
+}
+
+#frames #clock {
+	font-variant-numeric: tabular-nums;
+}
+
+#frames .table-wrap {
+	overflow-x: auto;
+}
+	
+
+/* plain preset buttons here: no theme stripe */
+#frames .presets button {
+	border-left: 1px solid var(--line);
+}
+
+#frames .presets button.active {
+	border-left-color: var(--earth);
+}
