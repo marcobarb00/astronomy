@@ -1,0 +1,199 @@
+/* ==========================================================================
+   HIPPARCHUS' MODEL - page-specific styles
+   Loaded after ../shared/theme.css. Only uses the shared :root variables.
+
+   TABLE OF CONTENTS
+	 1. Page header
+	 2. Origin badges and legend
+	 3. Lineage list (tab 1)
+	 4. Side panels and controls
+	 5. Tables
+	 6. Links to other pages
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. PAGE HEADER
+   ========================================================================== */
+
+.back {
+	margin: 0 0 8px;
+	font-size: .9rem;
+}
+
+.back a,
+.next a {
+	color: var(--earth);
+}
+
+/* A heading at the very top of a card or panel needs no top margin. */
+h2.first {
+	margin-top: 0;
+}
+
+/* Canvases that can be dragged to rotate the sphere. */
+canvas.sph {
+	cursor: grab;
+}
+
+
+/* ==========================================================================
+   2. ORIGIN BADGES AND LEGEND
+   Each badge has a coloured stripe (--tone) taken from the shared palette:
+	 babylonian -> sun, greek -> deferent, own -> planet,
+	 later -> epicycle, debated -> muted (dashed border).
+   ========================================================================== */
+
+.origin {
+	display: inline-block;
+	margin: 2px 6px 2px 0;
+	padding: 1px 10px;
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--tone, var(--line));
+	border-radius: 999px;
+	background: var(--bg);
+	color: var(--ink);
+	font-size: .78rem;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.origin.babylonian { --tone: var(--sun); }
+.origin.greek      { --tone: var(--deferent); }
+.origin.own        { --tone: var(--planet); }
+.origin.later      { --tone: var(--epicycle); }
+.origin.debated    { --tone: var(--muted); border-style: dashed; }
+
+/* The row of badges under a heading. */
+.origins {
+	margin: -2px 0 8px;
+}
+
+/* One line of the badge legend. */
+.legend {
+	margin: 4px 0;
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+
+/* ==========================================================================
+   3. LINEAGE LIST (TAB 1)
+   ========================================================================== */
+
+.lineage {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lineage li {
+	margin: 0 0 10px;
+	padding: 6px 12px;
+	border-left: 3px solid var(--line);
+}
+
+.lineage .when {
+	display: inline-block;
+	min-width: 92px;
+	color: var(--muted);
+	font-size: .85rem;
+	font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================================
+   4. SIDE PANELS AND CONTROLS
+   ========================================================================== */
+
+/* Longer labels than the shared default (90px). */
+.side .ctl {
+	grid-template-columns: 112px 1fr 76px;
+}
+
+/* A label followed by a group of buttons or a menu. */
+.side .row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 10px;
+	align-items: center;
+	margin: 6px 0;
+}
+
+.side .lbl {
+	min-width: 48px;
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+.side select {
+	padding: 4px 8px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--card);
+	color: var(--ink);
+	font: inherit;
+	font-size: .9rem;
+}
+
+/* The chosen button of a group. */
+.presets button.active {
+	background: var(--earth);
+	border-color: var(--earth);
+	color: var(--card);
+}
+
+/* Read-outs typeset with KaTeX. */
+.side [id^="o-"] {
+	margin-top: 10px;
+}
+
+
+/* ==========================================================================
+   5. TABLES
+   ========================================================================== */
+
+.table-wrap {
+	max-height: 330px;
+	margin-top: 10px;
+	overflow: auto;
+}
+
+/* The recap table may scroll sideways on a phone, but is never clipped. */
+.recap-wrap {
+	margin-top: 10px;
+	overflow-x: auto;
+}
+
+/* The recap table holds sentences, so it reads better left-aligned. */
+.recap {
+	font-size: .88rem;
+}
+
+.recap th,
+.recap td {
+	padding: 6px 8px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.recap td:first-child {
+	font-weight: 600;
+}
+
+
+/* ==========================================================================
+   6. LINKS TO OTHER PAGES
+   ========================================================================== */
+
+.next {
+	margin-top: 14px;
+	font-weight: 600;
+}
+
+/* A link to a page that does not exist yet. */
+.next .placeholder {
+	color: var(--muted);
+	border-bottom: 1px dashed var(--muted);
+	cursor: not-allowed;
+}
