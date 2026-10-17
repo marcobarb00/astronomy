@@ -57,20 +57,14 @@
 		<h2 id="sphere">The sky on a date</h2>
 
 		<p>
-			The celestial sphere in the equatorial frame. The axis points to the
-			north celestial pole <strong>P</strong>; the
-			<span class="c-earth">equator</span> is the great circle 90° from it.
-			The <span class="c-sun">ecliptic</span> crosses the equator at the
-			vernal point <strong class="c-sun">γ</strong>, the origin of right
-			ascension and of ecliptic longitude, and carries the Sun at its
-			reference position for the chosen date. An observer on the Greenwich
-			meridian at latitude $\varphi$ has the zenith
-			<strong class="c-deferent">Z</strong> straight overhead, and the
-			<span class="c-deferent">horizon</span> is the great circle 90° from Z:
-			the Sun is up when it lies on Z's side of it. The dashed circle is the
-			daily path of <span class="c-planet">Vega</span>
-			($\delta = +38.8^\circ$); a star never sets when
-			$\delta > 90^\circ - \varphi$.
+			The sky of an observer on the Greenwich meridian. The horizon is fixed
+			ground; as the date and the time change, the sky turns about the pole
+			and the Sun moves along the ecliptic.
+		</p>
+
+		<p>
+			A star never sets when its declination is $\delta > 90^\circ - \varphi$:
+			try Vega at different latitudes.
 			<span class="badge" data-origin="greek"></span>
 		</p>
 
@@ -104,13 +98,43 @@
 					<div class="readout" id="sphere-readout"></div>
 				</div>
 			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's ground plane; N, E, S, W are its cardinal points</dd>
+						<dt class="c-deferent">Z</dt>
+						<dd>the zenith, straight overhead</dd>
+						<dt>P</dt>
+						<dd>the north celestial pole; the sky turns about this axis, at altitude $\varphi$</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the great circle 90° from P</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>the Sun's yearly path</dd>
+						<dt class="c-sun">γ</dt>
+						<dd>the vernal point, where the ecliptic crosses the equator: the origin of $\alpha$ and $\lambda$</dd>
+						<dt class="c-planet">Vega</dt>
+						<dd>a bright star ($\delta = +38.8^\circ$); the dashed circle is its daily path</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>LST</dt>
+						<dd>local sidereal time: the right ascension on the meridian</dd>
+						<dt>$\lambda_\odot$</dt>
+						<dd>the Sun's ecliptic longitude</dd>
+						<dt>$\alpha_\odot,\ \delta_\odot$</dt>
+						<dd>its right ascension and declination</dd>
+						<dt>$a_\odot$</dt>
+						<dd>its altitude above the horizon (negative: below it)</dd>
+					</dl>
+				</div>
+			</div>
 			<figcaption>
-				Drag the sphere to turn it; lines behind it are faded. Read-out:
-				the local sidereal time LST (the right ascension on the meridian),
-				the Sun's ecliptic longitude $\lambda_\odot$, its right ascension
-				$\alpha_\odot$ and declination $\delta_\odot$, and its altitude
-				$a_\odot$ above the horizon (the angle from the horizon towards Z).
-				The date and time also move the marker on the next figure.
+				Drag the sphere to turn the view; lines behind it are faded. The date
+				and time also move the dot on the next figure.
 			</figcaption>
 		</figure>
 
@@ -141,10 +165,15 @@
 
 		<p>
 			The simplest solar model moves the Sun uniformly along the ecliptic,
-			$\lambda_\text{model} = \bar\lambda_0 + \dfrac{360^\circ}{Y}\,(t - t_0)$,
-			with $\bar\lambda_0 = 280.466^\circ$ at $t_0 = $ J2000. The curve shows
-			$\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$ against the
-			reference Sun. The faint dashed ghost uses Hipparchus' year,
+			with $\bar\lambda_0 = 280.466^\circ$ at $t_0 = $ J2000 and a year of
+			$Y$ days:
+		</p>
+
+		$$\lambda_\text{model} = \bar\lambda_0 + \frac{360^\circ}{Y}\,(t - t_0)$$
+
+		<p>
+			The curve shows its error $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
+			against the reference Sun. The ghost uses Hipparchus' year,
 			$Y = 365\tfrac14 - \tfrac1{300}$ days.
 			<span class="badge" data-origin="hipparchus"></span>
 		</p>
@@ -158,10 +187,8 @@
 			<div id="fig-error"></div>
 			<figcaption>
 				Change the length of the year and press <em>Keep as ghost</em> to
-				compare. Over long spans each curve is drawn as a band between its
-				smallest and largest error within one year. Under the pointer, a
-				dashed line marks the date whose errors are read below the plot.
-				Each span has a fixed scale that holds every value of the slider.
+				compare. Each span has a fixed scale that holds every value of the
+				slider.
 			</figcaption>
 		</figure>
 
