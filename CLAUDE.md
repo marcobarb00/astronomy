@@ -65,7 +65,7 @@ same style:
   jitters. For a quantity the reader steps through one unit at a time (a
   day), add previous / next buttons centred under the slider
   (`.ctl.stepper` with `button[data-target][data-step]`, see
-  `templates/demo.html`).
+  `templates/demo.html`); held down, they repeat and speed up.
 - Scales never jump while a control moves. When a slider changes what is
   plotted, fix the axis range to cover every value the slider allows, with
   the bound computed by a script. A scale may change only when the reader

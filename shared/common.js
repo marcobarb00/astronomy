@@ -435,10 +435,72 @@ function applyPreset(button) {
 	slider.dispatchEvent(new Event('input'));
 }
 
-/* Wire every button inside root that drives a slider: presets and
-   previous / next steppers. */
+/* Press and hold on a step button: one step at once, then, after a
+   pause, repeated steps that speed up (milliseconds). */
+const STEP_HOLD_DELAY = 400;       // before the first repeat
+const STEP_REPEAT_START = 150;     // first interval between repeats
+const STEP_REPEAT_FASTEST = 25;    // shortest interval (40 steps per second)
+const STEP_REPEAT_FACTOR = 0.85;   // each interval is this times the previous
+
+/* A step button repeats while held (mouse, pen or finger). The click that
+   follows a press is ignored, so a short press is still exactly one step;
+   a click from the keyboard (Enter, Space) is one step too. */
+function wireStepButton(button) {
+	let timer = null;
+	let pressed = false;
+
+	const stop = () => {
+		clearTimeout(timer);
+		timer = null;
+	};
+
+	const repeat = interval => {
+		applyPreset(button);
+		timer = setTimeout(() => {
+			repeat(Math.max(STEP_REPEAT_FASTEST, interval * STEP_REPEAT_FACTOR));
+		}, interval);
+	};
+
+	button.addEventListener('pointerdown', event => {
+		if (event.button !== 0) {
+			return;
+		}
+
+		pressed = true;
+		button.setPointerCapture(event.pointerId);
+		applyPreset(button);
+		timer = setTimeout(() => repeat(STEP_REPEAT_START), STEP_HOLD_DELAY);
+	});
+
+	button.addEventListener('pointerup', stop);
+	button.addEventListener('lostpointercapture', stop);
+
+	button.addEventListener('pointercancel', () => {
+		stop();
+		pressed = false;      // no click follows a cancelled press
+	});
+
+	button.addEventListener('click', () => {
+		if (pressed) {
+			pressed = false;  // already stepped on pointerdown
+			return;
+		}
+
+		applyPreset(button);
+	});
+
+	// a long press on a phone must not open the context menu
+	button.addEventListener('contextmenu', event => event.preventDefault());
+}
+
+/* Wire every button inside root that drives a slider: presets set a value,
+   step buttons (data-step) step it and repeat while held. */
 function wirePresets(root = document) {
 	root.querySelectorAll('button[data-target]').forEach(button => {
-		button.addEventListener('click', () => applyPreset(button));
+		if (button.dataset.step !== undefined) {
+			wireStepButton(button);
+		} else {
+			button.addEventListener('click', () => applyPreset(button));
+		}
 	});
 }
