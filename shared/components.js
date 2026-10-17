@@ -99,7 +99,7 @@ const Site = (function () {
 			path: 'act1-stage/01-turning-sky/index.html'
 		},
 		{
-			number: '1.2', act: 1, ready: false,
+			number: '1.2', act: 1, ready: true,
 			title: 'Frames',
 			question: 'How do we name a direction, and how do we change names?',
 			path: 'act1-stage/02-frames/index.html'

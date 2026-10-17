@@ -40,22 +40,6 @@ const CLASS_TEXT = {
 	never: '\\text{never rises}'
 };
 
-/* A row of buttons, one per star; the chosen one is marked active.
-   onChoose(star) runs when another star is picked. */
-function buildStarChoice(container, names, chosen, onChoose) {
-	names.forEach(name => {
-		const button = makeEl('button', name === chosen ? 'active' : '', name);
-
-		button.type = 'button';
-		button.addEventListener('click', () => {
-			container.querySelectorAll('button').forEach(other => other.classList.remove('active'));
-			button.classList.add('active');
-			onChoose(Stars.find(name));
-		});
-		container.appendChild(button);
-	});
-}
-
 /* Split a curve of horizon-frame points into runs above and below the
    horizon, so each run can get its own style. Consecutive runs share
    their end point, so the curve stays continuous. */
@@ -82,29 +66,6 @@ function splitByHorizon(points) {
 /* A star's daily circle (declination dec) through a frame matrix. */
 function dailyCircle(dec, matrix) {
 	return sampleParametric(ra => matApply(matrix, fromLonLat(ra, dec)), 2);
-}
-
-/* Label a 3D point on the screen side that faces away from 'awayFrom'
-   (a 3D point or a screen position { x, y }), so two nearby labels
-   never overlap. */
-function labelAway(sphere, text, point, awayFrom, color) {
-	const gap = 12;
-	const q = sphere.project(point);
-	const r = Array.isArray(awayFrom) ? sphere.project(awayFrom) : awayFrom;
-	const length = Math.hypot(q.x - r.x, q.y - r.y) || 1;
-	const ux = (q.x - r.x) / length;
-	const uy = (q.y - r.y) / length;
-
-	sphere.ctx.font = LABEL_FONT;
-
-	const width = sphere.ctx.measureText(text).width;
-
-	// left-aligned text on its baseline: shift it so its box sits on the far side
-	sphere.label(text, point, {
-		color: color,
-		dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - (1 - Math.abs(ux)) * width / 2,
-		dy: gap * uy + (uy > 0 ? 13 : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * 5
-	});
 }
 
 
@@ -140,10 +101,10 @@ const skyFigure = {
 		wirePresets(figure);
 		wirePlayButton(byId('sky-play'), byId('sky-time'), PLAY_HOURS_PER_SECOND);
 
-		buildStarChoice(byId('sky-stars'),
+		buildChoice(byId('sky-stars'),
 			['Polaris', 'Dubhe', 'Vega', 'Mintaka', 'Sirius', 'Antares', 'Canopus', 'Acrux'],
-			this.star.name, star => {
-				this.star = star;
+			this.star.name, name => {
+				this.star = Stars.find(name);
 				this.update();
 			});
 
@@ -257,7 +218,7 @@ const skyFigure = {
 		});
 
 		s.point(point, { color: COL.planet, radius: 6, ring: true });
-		labelAway(s, this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
+		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
 
@@ -284,8 +245,8 @@ const outsideFigure = {
 		wireSlider(byId('out-time'), () => this.update(), hm);
 		wirePlayButton(byId('out-play'), byId('out-time'), PLAY_HOURS_PER_SECOND);
 
-		buildStarChoice(byId('out-stars'), ['Vega', 'Sirius', 'Canopus'], this.star.name, star => {
-			this.star = star;
+		buildChoice(byId('out-stars'), ['Vega', 'Sirius', 'Canopus'], this.star.name, name => {
+			this.star = Stars.find(name);
 			this.update();
 		});
 
@@ -372,15 +333,15 @@ const outsideFigure = {
 		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
 
 		// the star's label beyond the star, Z's label beyond the zenith
-		labelAway(s, this.star.name, starPoint, zenith, COL.planet);
-		labelAway(s, 'Z', zenith, starPoint, COL.deferent);
+		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
+		s.labelAway('Z', zenith, starPoint, COL.deferent);
 
 		// the arc's label off its middle, on the side away from the sphere's centre
 		const normal = { x: -(b.y - a.y), y: b.x - a.x };
 		const m = s.project(middle);
 		const outward = (m.x - s.cx) * normal.x + (m.y - s.cy) * normal.y > 0 ? 1 : -1;
 
-		labelAway(s, '90° − a', middle, { x: m.x - outward * normal.x, y: m.y - outward * normal.y }, COL.planet);
+		s.labelAway('90° − a', middle, { x: m.x - outward * normal.x, y: m.y - outward * normal.y }, COL.planet);
 	}
 };
 
@@ -601,10 +562,10 @@ const testFigure = {
 		wireSlider(byId('test-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
 
-		buildStarChoice(byId('test-stars'),
+		buildChoice(byId('test-stars'),
 			['Sirius', 'Mintaka', 'Vega', 'Antares', 'Capella', 'Canopus'],
-			this.star.name, star => {
-				this.star = star;
+			this.star.name, name => {
+				this.star = Stars.find(name);
 				this.update();
 			});
 
