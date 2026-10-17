@@ -3,7 +3,7 @@
      PAGE 1.1 · THE TURNING SKY
      Act I, the stage. The sky as a rigid sphere of directions turning about
      the polar axis; the observer's latitude; stars that never set, rise and
-     set, or never rise. Numbers: scripts/numbers/1.1-turning-sky.js.
+     set, or never rise. Numbers: tools/numbers/1.1-turning-sky.js.
      ========================================================================== -->
 <html lang="en">
 <head>
@@ -65,6 +65,23 @@
 			<span class="badge" data-origin="greek"></span>
 		</p>
 
+		<!-- A photo: public domain / CC0 only, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/star-trails-polaris.jpg" width="1920" height="1442" loading="lazy"
+				alt="Long-exposure photo of the northern sky: star trails drawn as concentric arcs around Polaris, with trees in silhouette.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				The northern sky over North Bengal, Bangladesh, in 108 stacked exposures.
+				Every star draws an arc, and all the arcs share one centre, the
+				celestial pole; Polaris, the bright dot near it, barely moves. Arcs far
+				from the pole are long, those near it short, yet all span the same
+				angle. The faint straight streaks are satellites.
+				<span class="credit">Youniverse Multiverse, 2022,
+					<a href="https://commons.wikimedia.org/wiki/File:Star_stack_Star_trail.jpg">Wikimedia Commons</a>,
+					CC0 (public domain).</span>
+			</figcaption>
+		</figure>
+
 		<p>
 			Ptolemy says what gave the idea away: "the revolution of the
 			ever-visible stars, which was observed to be circular, and always
@@ -105,6 +122,7 @@
 						<button type="button" data-target="sky-lat" data-value="90">north pole</button>
 						<button type="button" data-target="sky-lat" data-value="51.5">London</button>
 						<button type="button" data-target="sky-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="sky-lat" data-value="36">Rhodes</button>
 						<button type="button" data-target="sky-lat" data-value="31.2">Alexandria</button>
 						<button type="button" data-target="sky-lat" data-value="0">equator</button>
 						<button type="button" data-target="sky-lat" data-value="-33.9">Sydney</button>
@@ -197,10 +215,24 @@
 		$$R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}.$$
 
 		<p>
+			With $\theta > 0$, $R_z(\theta)$ carries the $x$ axis towards the $y$
+			axis: from the meridian towards the east. Seen from outside the sphere,
+			above P, that is an anticlockwise turn.
+		</p>
+
+		<p>
+			The sky turns the other way. A star crosses the meridian and then moves
+			west, so seen from above P the sky turns clockwise. (From the ground,
+			facing the pole, the same motion looks anticlockwise.) A turn by an
+			angle $H$ to the west is therefore a turn by $-H$ in the sense of
+			$R_z$.
+		</p>
+
+		<p>
 			A star at angular distance $\delta$ from the equator crosses the
 			meridian at $(\cos\delta, 0, \sin\delta)$. Let $H$ be the angle the sky
-			has turned since then, the <em>hour angle</em> (page 1.3 ties it to the
-			clock). The sky turns westward, from $+y$ towards $-y$, so
+			has turned since then, the <em>hour angle</em>: it grows with time, by
+			about 15° an hour (page 1.3 ties it to the clock). Then
 		</p>
 
 		$$\mathbf s(H) = R_z(-H) \begin{pmatrix} \cos\delta \\ 0 \\ \sin\delta \end{pmatrix} = \begin{pmatrix} \cos\delta\cos H \\ -\cos\delta\sin H \\ \sin\delta \end{pmatrix}.$$
@@ -216,26 +248,72 @@
 
 		<p>
 			The observer's own frame is the horizon frame: $x$ towards the south
-			point, $y$ east, $z$ towards the zenith. Both frames share the east–west
-			axis, so one is the other tilted about $y$:
+			point, $y$ east, $z$ towards the zenith.
 		</p>
-
-		$$R_y(\theta) = \begin{pmatrix} \cos\theta & 0 & \sin\theta \\ 0 & 1 & 0 \\ -\sin\theta & 0 & \cos\theta \end{pmatrix}, \qquad \mathbf s_\text{hor} = R_y(\varphi - 90^\circ)\, \mathbf s.$$
 
 		<p>
-			Check it on the pole: $R_y(\varphi - 90^\circ)(0, 0, 1)^T = (-\cos\varphi,
-			0, \sin\varphi)^T$. That direction points north ($-x$) at altitude
-			$\varphi$, the observation of section 1.
+			Why south and not north? For a northern observer the equator crosses
+			the meridian south of the zenith, so the sky frame's $x$ axis points
+			south too. With both $x$ axes on the same side and the east axis shared,
+			the two frames differ by one tilt. An $x$ axis pointing north would force
+			$y$ to point west, to keep the frame right-handed, and minus signs would
+			appear everywhere. (Meeus, ch. 13, also counts the azimuth from the
+			south.)
 		</p>
+
+		<p>
+			So the sky frame is the horizon frame tilted about the east–west axis,
+			$y$, by a rotation
+		</p>
+
+		$$R_y(\theta) = \begin{pmatrix} \cos\theta & 0 & \sin\theta \\ 0 & 1 & 0 \\ -\sin\theta & 0 & \cos\theta \end{pmatrix}, \qquad R_y(\theta) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} \sin\theta \\ 0 \\ \cos\theta \end{pmatrix}.$$
+
+		<p>
+			Which angle? The tilt must carry the zenith direction onto the pole P.
+			P stands on the meridian at altitude $\varphi$ in the north, so it lies
+			$90^\circ - \varphi$ from the zenith, on the north side ($-x$). With
+			$\theta > 0$, $R_y(\theta)$ tips $z$ towards $+x$, the south. We need a
+			tip of $90^\circ - \varphi$ towards the north, so $\theta = -(90^\circ -
+			\varphi) = \varphi - 90^\circ$:
+		</p>
+
+		$$\mathbf s_\text{hor} = R_y(\varphi - 90^\circ)\, \mathbf s.$$
+
+		<p>
+			Three checks:
+		</p>
+
+		<ul>
+			<li>The pole: $R_y(\varphi - 90^\circ)(0, 0, 1)^T = (-\cos\varphi, 0,
+				\sin\varphi)^T$, north at altitude $\varphi$.</li>
+			<li>The equator's meridian point: $R_y(\varphi - 90^\circ)(1, 0, 0)^T =
+				(\sin\varphi, 0, \cos\varphi)^T$, south at altitude $90^\circ -
+				\varphi$.</li>
+			<li>At the north pole, $\varphi = 90^\circ$: no tilt, and P is at the
+				zenith.</li>
+		</ul>
 
 		<h3>Altitude as a dot product</h3>
 
 		<p>
-			The altitude $a$ of a star is its angle above the horizon, so
-			$\sin a$ is the $z$ component of $\mathbf s_\text{hor}$, that is, the
-			dot product with the zenith. In the sky frame the zenith is the third
-			row of $R_y(\varphi - 90^\circ)$, $\hat{\mathbf z} = (\cos\varphi, 0,
-			\sin\varphi)$, and so
+			The altitude $a$ of a star is its angle above the horizon plane. The
+			zenith is perpendicular to that plane, so the angle between the star and
+			the zenith, the <em>zenith distance</em>, is $90^\circ - a$.
+		</p>
+
+		<p>
+			For two unit vectors, the dot product is the cosine of the angle between
+			them: $\hat{\mathbf z} \cdot \mathbf s = \cos(90^\circ - a) = \sin a$. In
+			the horizon frame $\hat{\mathbf z} = (0, 0, 1)$, and the dot product
+			just picks out the $z$ component of $\mathbf s_\text{hor}$.
+		</p>
+
+		<p>
+			The star is simpler in the sky frame, so move the zenith there instead.
+			A rotation keeps dot products: $(0,0,1)^T \cdot (R\,\mathbf s) =
+			(R^T (0,0,1)^T) \cdot \mathbf s$. The vector $R^T(0, 0, 1)^T$ is the
+			third row of $R_y(\varphi - 90^\circ)$, the zenith seen from the sky
+			frame: $\hat{\mathbf z} = (\cos\varphi, 0, \sin\varphi)$. So
 		</p>
 
 		<div class="box">
@@ -357,6 +435,21 @@
 			equator as its pole, and the elevation of the pole as its radius, is
 			always visible, and all stars within that circle are always visible"
 			(<em>Almagest</em> II 6). <span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			In modern terms: draw the small circle centred on the north celestial
+			pole, with an angular radius equal to the pole's altitude $\varphi$. It
+			just touches the horizon at the north point. A star inside it is less
+			than $\varphi$ from the pole: $90^\circ - \delta < \varphi$, which is
+			again $\delta > 90^\circ - \varphi$.
+		</p>
+
+		<p>
+			As the sky turns, that star stays at the same distance from P, so it
+			never gets as far as the horizon. Its mirror image around the south pole
+			holds the stars that never rise. Both are the dashed purple circles of
+			Figure 1.
 		</p>
 
 		<p>
@@ -501,7 +594,7 @@
 			Ptolemy measured the meridian altitudes of the noon Sun with a bronze
 			ring and a stone quadrant (<em>Almagest</em> I 12). He gives the
 			equator's distance from the zenith at Alexandria, which is the
-			latitude, as 30;58° (30.97°, <em>Almagest</em> V 12), 14′ below the
+			latitude, as 30°58′ (30.97°, <em>Almagest</em> V 12), 14′ below the
 			modern 31°12′. <span class="badge" data-origin="ptolemy"></span>
 		</p>
 
@@ -531,6 +624,14 @@
 			same all night, so the fit absorbs them.
 		</p>
 
+		<p>
+			The model's star is at its true altitude $a$; the sky shows it at $a +
+			R$. So the model's error is $\Delta a = a_\text{model} - a_\text{real} =
+			-R$: Figure 4 is the refraction itself, followed through one turn of the
+			sky. It is plotted as an error, model minus sky, as every error on this
+			site will be.
+		</p>
+
 		<!-- Figure 4: the model against the sky -->
 		<figure class="fig">
 			<div class="fig-row">
@@ -558,7 +659,7 @@
 					<p class="key-title">In the figure</p>
 					<dl class="key">
 						<dt class="c-planet">curve</dt>
-						<dd>$\Delta a = a_\text{model} - a_\text{real}$ in arcminutes, while the real star is above the horizon</dd>
+						<dd>$\Delta a = a_\text{model} - a_\text{real} = -R$ in arcminutes, while the real star is above the horizon</dd>
 						<dt>dots</dt>
 						<dd>the model's rising and setting</dd>
 						<dt class="c-planet">dots</dt>
@@ -596,6 +697,8 @@
 			same 34′ then buys 14.2 minutes at each end.
 		</p>
 
+		<!-- TODO(2.1): rewrite this paragraph when page 2.1 exists: say that the
+		     error curve starts there and link to it (STRUCTURE.md §4, page 2.1). -->
 		<p>
 			The site has no longitude to test yet, so no error curve on this page.
 			It appears on page 2.1, once the Sun has a model.
@@ -689,7 +792,7 @@
 				(a) For what fraction of the day is Sirius ($\delta = -16.72^\circ$)
 				above the horizon at Alexandria ($31.2^\circ$), Rome and London?
 				(b) Ptolemy takes Rhodes at $\varphi = 36^\circ$ with the obliquity
-				$\varepsilon = 23;51,20^\circ$ ($23.856^\circ$), the Sun's declination
+				$\varepsilon = 23^\circ 51' 20''$ ($23.856^\circ$), the Sun's declination
 				at the summer solstice. Find the longest day (<em>Almagest</em> II 2–3).
 				Check both in Figure 3.
 			</p>
@@ -708,7 +811,7 @@
 					9 h 01 min.
 				</p>
 				<p>
-					(b) $-\tan 36^\circ \tan 23.856^\circ = -0.3213$, so $H_0 =
+					(b) $-\tan 36^\circ \tan 23^\circ 51' 20'' = -0.3213$, so $H_0 =
 					108.741^\circ$. The Sun is up for $2H_0 / 15^\circ = 14.4988$ hours:
 					Ptolemy's $14\tfrac12$ hours. The shortest day, at $\delta = -\varepsilon$,
 					is $24 - 14.4988 = 9.5012$ hours, as $f(\delta) + f(-\delta) = 1$
@@ -730,18 +833,37 @@
 			</p>
 			<details class="hint">
 				<p>
-					Sunrise is when the top edge of the Sun appears. The Sun's radius is
-					16′. Near the horizon, at $\delta \approx 0$, its altitude changes at
-					$15^\circ \cos\varphi$ per hour.
+					Sunrise is when the top edge of the Sun appears; the Sun's radius is
+					16′. How fast does the Sun climb at sunrise? Differentiate the
+					altitude formula with respect to $H$.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
 					Sunrise and sunset are counted when the Sun's top edge touches the
 					seen horizon. The centre is then $34' + 16' = 50'$ below the true
-					horizon: refraction plus the radius. Rising at $15^\circ \cos\varphi =
-					9.34^\circ$ per hour, it needs about $0.833 / 9.34$ h $= 5.4$ min to
-					climb those 50′, at each end: about 10.7 min.
+					horizon: refraction plus the radius.
+				</p>
+				<p>
+					How fast does the Sun climb there? Differentiate $\sin a = \sin\varphi
+					\sin\delta + \cos\varphi\cos\delta\cos H$:
+				</p>
+				$$\cos a \, \frac{da}{dH} = -\cos\varphi \cos\delta \sin H.$$
+				<p>
+					At sunrise on the equinox $a \approx 0$, $\delta = 0$ and $H =
+					-90^\circ$ (a quarter turn before noon), so $da/dH = \cos\varphi$. The
+					Sun's hour angle grows $15^\circ$ per hour, so it climbs $15^\circ
+					\cos\varphi = 9.34^\circ$ per hour at Greenwich.
+				</p>
+				<p>
+					Geometrically: the Sun runs along the equator at $15^\circ$ an hour,
+					and the equator cuts the horizon at the east point at an angle
+					$90^\circ - \varphi$. Only the share $\sin(90^\circ - \varphi) =
+					\cos\varphi$ of that motion is upward.
+				</p>
+				<p>
+					Climbing 50′ ($0.833^\circ$) at $9.34^\circ$ per hour takes about 5.4
+					min, at each end of the day: about 10.7 min in all.
 				</p>
 				<p>
 					The script splits the reference Sun's 12 h 10 min 10 s exactly:
@@ -776,7 +898,7 @@
 				(refraction).</li>
 			<li>Star positions: SIMBAD (CDS, Strasbourg), ICRS J2000, retrieved
 				2026-10-17. Precession: J. Vondrák, N. Capitaine, P. Wallace (2011).</li>
-			<li>Every number on this page: <code>scripts/numbers/1.1-turning-sky.js</code>.</li>
+			<li>Every number on this page: <code>tools/numbers/1.1-turning-sky.js</code>.</li>
 		</ul>
 
 		<!-- Previous / next, from the site map -->
