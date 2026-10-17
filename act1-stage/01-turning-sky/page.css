@@ -1,0 +1,72 @@
+/* ==========================================================================
+   PAGE 1.1 · THE TURNING SKY - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. Figure 3: two panels with their controls underneath
+	 3. Phone width
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here are short ("41.9°", "23h56m"). */
+figure.fig {
+	--ctl-output: 5em;
+}
+
+/* The star buttons keep one width, so the row does not reflow when the
+   active one changes. */
+.star-choice button {
+	min-width: 5.6em;
+}
+
+/* The play button keeps its width between "play" and "pause". */
+button.play {
+	min-width: 6.5em;
+}
+
+
+/* ==========================================================================
+   2. FIGURE 3: TWO PANELS WITH THEIR CONTROLS UNDERNEATH
+   ========================================================================== */
+
+.panels,
+.panel-controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+.panel-controls {
+	margin-top: 10px;
+}
+
+/* "(a) altitude through one turn" above each panel. */
+.panel-title {
+	margin: 0 0 4px;
+	color: var(--muted);
+	font-size: .9rem;
+	font-weight: 600;
+}
+
+
+/* ==========================================================================
+   3. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 860px) {
+	.panels,
+	.panel-controls {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* "declination δ" needs a little more than the shared 74px label column */
+	.panel-controls .ctl {
+		grid-template-columns: 104px minmax(0, 1fr) var(--ctl-output);
+	}
+}

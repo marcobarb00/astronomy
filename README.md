@@ -14,9 +14,11 @@ and style rules are in [`CLAUDE.md`](CLAUDE.md).
 | `index.html` | The hub: the five acts as a map. Pages are greyed out until they exist. |
 | `shared/` | Theme, shared code, the reference ephemeris and its tests (`shared/tests.html`). |
 | `shared/models/` | Models built on one page and reused by later pages. |
+| `act1-stage/01-turning-sky/` | Page 1.1 · The turning sky. |
 | `templates/page.html` | The page template, with every shared component once. |
 | `templates/demo.html` | A demo of the sphere, plot, error curve and exercise working together. |
 | `archive/` | The earlier pages, kept for reference and not linked from the site. |
+| `tools/numbers/` | The script behind each page's numbers, run with Node. |
 
 ## Running locally
 
@@ -27,7 +29,8 @@ python3 -m http.server
 ```
 
 then open <http://localhost:8000/>. Run `shared/tests.html` after changing
-`shared/time.js` or `shared/ephemeris.js`.
+`shared/time.js`, `shared/ephemeris.js`, `shared/stars.js` or a model in
+`shared/models/`.
 
 ## Publishing a page
 
