@@ -1,3 +1,32 @@
+/* ==========================================================================
+   PREDICTING THE SKY - SHARED THEME (theme.css)
+   One stylesheet for the whole site. Pages may add CSS for their own
+   figures, never new colours: every colour below is a :root variable or a
+   tint of one (color-mix with the card or background colour).
+
+   TABLE OF CONTENTS
+	 1. Palette (fixed, shared with COL in common.js)
+	 2. Base typography
+	 3. Site bar and page header
+	 4. Article layout and sticky table of contents
+	 5. Prose, equations, tables
+	 6. Cards, boxes, colour keys
+	 7. Figures, controls and figure keys
+	 8. Origin badges
+	 9. Exercises
+	10. Detour cards
+	11. Sources and previous / next navigation
+	12. Plot legends and the error-curve widget
+	13. Hub
+	14. Test page
+	15. Phone width
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. PALETTE
+   ========================================================================== */
+
 /* ==========================================================
    SHARED THEME - keep identical across all simulations
    ========================================================== */
@@ -15,32 +44,57 @@
 	--radius:   14px;
 }
 
-/* ---------- Base layout ---------- */
+
+/* ==========================================================================
+   2. BASE TYPOGRAPHY
+   ========================================================================== */
+
 * {
 	box-sizing: border-box;
 }
 
-body {
-	margin: 0;
-	padding: 24px 16px 60px;
-	background: var(--bg);
-	color: var(--ink);
-	font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+html {
+	scroll-behavior: smooth;
 }
 
-main {
-	max-width: 1180px;
-	margin: 0 auto;
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+a {
+	color: color-mix(in srgb, var(--earth) 70%, var(--ink));
+	text-underline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+	line-height: 1.25;
 }
 
 h1 {
-	font-size: 1.6rem;
-	margin: 0 0 4px;
+	font-size: 2rem;
+	margin: 0 0 6px;
 }
 
 h2 {
-	font-size: 1.15rem;
-	margin: 22px 0 8px;
+	font-size: 1.4rem;
+	margin: 48px 0 12px;
+	scroll-margin-top: 16px;
+}
+
+h3 {
+	font-size: 1.1rem;
+	margin: 28px 0 8px;
+	scroll-margin-top: 16px;
+}
+
+.note {
+	color: var(--muted);
+	font-size: .9rem;
 }
 
 .sub {
@@ -48,174 +102,166 @@ h2 {
 	margin: 0 0 18px;
 }
 
-/* ---------- Tabs ---------- */
-nav {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
-	margin-bottom: 16px;
+
+/* ==========================================================================
+   3. SITE BAR AND PAGE HEADER
+   ========================================================================== */
+
+/* Thin bar at the top of every page with the way back to the hub. */
+.site-bar {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 14px 20px 0;
+	font-size: .9rem;
 }
 
-nav button {
-	border: 1px solid var(--line);
-	background: var(--card);
+.site-bar a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+.site-bar a:hover {
 	color: var(--ink);
-	padding: 8px 14px;
-	border-radius: 999px;
+}
+
+/* The page title block: "Act II · 2.1", title, guiding question. */
+.page-head {
+	margin: 8px 0 28px;
+}
+
+.page-number {
+	color: var(--muted);
+	font-size: .85rem;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	margin: 0 0 4px;
+}
+
+.question {
+	font-size: 1.2rem;
+	font-style: italic;
+	color: color-mix(in srgb, var(--ink) 75%, var(--muted));
+	margin: 4px 0 0;
+}
+
+
+/* ==========================================================================
+   4. ARTICLE LAYOUT AND STICKY TABLE OF CONTENTS
+   ========================================================================== */
+
+/* Two columns: the contents on the left, the article on the right. */
+.page {
+	display: grid;
+	grid-template-columns: 210px minmax(0, 1fr);
+	gap: 44px;
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 12px 20px 80px;
+}
+
+/* Plain pages (hub, tests) use a single centred column. */
+.single {
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 12px 20px 80px;
+}
+
+article {
+	min-width: 0;
+	max-width: 900px;
+}
+
+.toc {
+	position: sticky;
+	top: 20px;
+	align-self: start;
+	max-height: calc(100vh - 40px);
+	overflow-y: auto;
+	font-size: .9rem;
+}
+
+.toc summary {
+	font-weight: 600;
+	color: var(--muted);
 	cursor: pointer;
-	font: inherit;
-	font-size: .88rem;
+	list-style: none;
+	margin-bottom: 8px;
 }
 
-nav button.active {
-	background: var(--earth);
-	border-color: var(--earth);
-	color: #fff;
-}
-
-section {
+.toc summary::-webkit-details-marker {
 	display: none;
 }
 
-section.show {
+.toc ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-left: 2px solid var(--line);
+}
+
+.toc li a {
 	display: block;
-}
-
-/* ---------- Cards and the "visual + controls on top" layout ---------- */
-.card {
-	background: var(--card);
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	padding: 16px;
-	margin-bottom: 16px;
-	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
-}
-
-.top {
-	display: grid;
-	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-	gap: 18px;
-	align-items: start;
-}
-
-@media (max-width: 800px) {
-	.top {
-		grid-template-columns: 1fr;
-	}
-}
-
-canvas {
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-	touch-action: none;
-}
-
-/* ---------- Controls ---------- */
-.ctl {
-	display: grid;
-	grid-template-columns: 90px 1fr 70px;
-	gap: 8px;
-	align-items: center;
-	margin: 6px 0;
-}
-
-.ctl label {
+	padding: 4px 0 4px 12px;
+	margin-left: -2px;
+	border-left: 2px solid transparent;
 	color: var(--muted);
-	font-size: .9rem;
+	text-decoration: none;
 }
 
-.ctl output {
-	text-align: right;
-	font-variant-numeric: tabular-nums;
+.toc li a:hover {
+	color: var(--ink);
 }
 
-input[type=range] {
-	width: 100%;
-	accent-color: var(--earth);
+/* The section currently in view (set by the scroll-spy in components.js). */
+.toc li a.active {
+	color: var(--ink);
+	border-left-color: var(--earth);
+	font-weight: 600;
 }
 
-.presets button {
-	border: 1px solid var(--line);
-	background: var(--bg);
-	border-radius: 8px;
-	padding: 4px 10px;
-	margin: 2px 4px 2px 0;
+
+/* ==========================================================================
+   5. PROSE, EQUATIONS, TABLES
+   ========================================================================== */
+
+/* Text keeps a readable measure; figures use the whole column. */
+article > p,
+article > ul,
+article > ol,
+article > h2,
+article > h3,
+article section > p,
+article section > ul,
+article section > ol {
+	max-width: 70ch;
+}
+
+/* Kicker above each section title: "1 · Observation". */
+.step {
+	display: block;
+	color: var(--muted);
+	font-size: .8rem;
+	font-weight: 600;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	margin-bottom: 2px;
+}
+
+/* Long routine algebra may be folded (STRUCTURE.md §2). */
+details.fold {
+	margin: 12px 0;
+	max-width: 70ch;
+}
+
+details.fold > summary {
 	cursor: pointer;
-	font: inherit;
-	font-size: .85rem;
-}
-
-/* ---------- Text helpers ---------- */
-.note {
 	color: var(--muted);
-	font-size: .9rem;
 }
 
-.badge {
-	display: inline-block;
-	padding: 2px 10px;
-	border-radius: 999px;
-	background: var(--bg);
-	border: 1px solid var(--line);
-}
-
-.box {
-	background: #fbf8ee;
-	border-left: 4px solid var(--sun);
-	padding: 8px 12px;
-	border-radius: 8px;
-	margin: 10px 0;
-	font-size: .93rem;
-}
-
-.box.warn {
-	background: #fbefee;
-	border-left-color: var(--planet);
-}
-
-/* Colour keys: legend squares and coloured words in the text */
-.c-earth    { color: var(--earth); }
-.c-planet   { color: var(--planet); }
-.c-sun      { color: var(--sun); }
-.c-deferent { color: var(--deferent); }
-.c-epicycle { color: var(--epicycle); }
-
-/* ---------- Tables ---------- */
-table {
-	border-collapse: collapse;
-	width: 100%;
-	font-size: .85rem;
-	font-variant-numeric: tabular-nums;
-}
-
-/* Headers and cells are centred so the columns line up under their titles. */
-th,
-td {
-	padding: 3px 8px;
-	border-bottom: 1px solid var(--line);
-	text-align: center;
-}
-
-tr.hl td {
-	background: #fbf3dc;
-}
-
-/* ---------- Equations ----------
-   Equations never wrap; any overflow scrolls quietly instead of
-   showing a scrollbar. */
+/* Equations never wrap; any overflow scrolls quietly. */
 .eq {
 	display: block;
 	margin: 6px 0;
-}
-
-.side .eq {
-	font-size: .9em;
-}
-
-.theory .eq {
-	font-size: .95em;
 }
 
 .eq,
@@ -225,14 +271,847 @@ tr.hl td {
 	scrollbar-width: none;
 }
 
-.eq::-webkit-scrollbar {
+.eq::-webkit-scrollbar,
+.katex-display::-webkit-scrollbar {
 	display: none;
 }
 
 .katex-display {
-	margin: .35em 0;
+	margin: .6em 0;
+	max-width: 70ch;
 }
 
 .katex {
 	white-space: nowrap;
+	font-size: 1.05em;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: .88rem;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Headers and cells are centered so the columns line up under their titles. */
+th,
+td {
+	padding: 4px 8px;
+	border-bottom: 1px solid var(--line);
+	text-align: center;
+}
+
+tr.hl td {
+	background: color-mix(in srgb, var(--sun) 15%, var(--card));
+}
+
+code {
+	font-size: .9em;
+	background: color-mix(in srgb, var(--line) 50%, var(--card));
+	padding: 1px 4px;
+	border-radius: 4px;
+}
+
+
+/* ==========================================================================
+   6. CARDS, BOXES, COLOUR KEYS
+   ========================================================================== */
+
+.card {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 16px;
+	margin-bottom: 16px;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+/* Highlighted remark (key result, definition). */
+.box {
+	background: color-mix(in srgb, var(--sun) 10%, var(--card));
+	border-left: 4px solid var(--sun);
+	padding: 10px 14px;
+	border-radius: 8px;
+	margin: 14px 0;
+	max-width: 70ch;
+}
+
+.box.warn {
+	background: color-mix(in srgb, var(--planet) 10%, var(--card));
+	border-left-color: var(--planet);
+}
+
+/* Colour keys: coloured words in the text that match the figures. */
+.c-earth    { color: var(--earth); }
+.c-planet   { color: var(--planet); }
+.c-sun      { color: var(--sun); }
+.c-deferent { color: var(--deferent); }
+.c-epicycle { color: var(--epicycle); }
+.c-muted    { color: var(--muted); }
+
+
+/* ==========================================================================
+   7. FIGURES, CONTROLS AND FIGURE KEYS
+   ========================================================================== */
+
+figure.fig {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 16px;
+	margin: 22px 0;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+/* Visual and controls side by side; stacked on narrow screens. */
+.fig-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+figcaption {
+	color: var(--muted);
+	font-size: .9rem;
+	margin-top: 12px;
+	max-width: 80ch;
+}
+
+/* "Figure 3." label inserted by components.js. */
+.fig-label {
+	color: var(--ink);
+	font-weight: 600;
+	margin-right: 4px;
+}
+
+canvas {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+}
+
+/* 3D spheres are dragged: the canvas captures touch gestures. */
+canvas.sphere3d {
+	touch-action: none;
+	cursor: grab;
+}
+
+canvas.sphere3d:active {
+	cursor: grabbing;
+}
+
+/* 2D plots let the page scroll vertically under a finger. */
+canvas.plot2d {
+	touch-action: pan-y;
+}
+
+/* One slider row: label, slider, value. The value column has a FIXED
+   width: if it followed its text ("1 Jan" / "21 Mar"), the track would
+   resize while dragging and the thumb would jump under the pointer.
+   A figure with longer values sets --ctl-output on the figure. */
+.ctl {
+	--ctl-output: 7em;
+	display: grid;
+	grid-template-columns: 90px minmax(0, 1fr) var(--ctl-output);
+	gap: 8px;
+	align-items: center;
+	margin: 6px 0;
+}
+
+/* A slider with previous / next buttons on a second line, centred under
+   the row, so the track keeps the length of the other rows.
+	 <div class="ctl stepper"> label, input, output,
+		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */
+.stepper-buttons {
+	grid-column: 1 / -1;
+	justify-self: center;
+	display: flex;
+	gap: 6px;
+	margin-top: -2px;
+}
+
+.stepper-btn {
+	padding: 2px 10px;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--bg);
+	color: var(--ink);
+	font: inherit;
+	font-size: .85rem;
+	cursor: pointer;
+
+	/* held down to repeat: no text selection, callout or double-tap zoom */
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	touch-action: manipulation;
+}
+
+.stepper-btn:active {
+	border-color: var(--earth);
+}
+
+.stepper-btn:hover {
+	border-color: var(--muted);
+}
+
+.ctl label {
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+.ctl output {
+	overflow: hidden;
+	text-align: right;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	font-size: 1rem;
+}
+
+/* Sliders drawn with the palette (the browser default picks its own
+   contrasting track colour). */
+input[type=range] {
+	width: 100%;
+	height: 20px;
+	margin: 0;
+	background: transparent;
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+	height: 4px;
+	border-radius: 2px;
+	background: var(--line);
+}
+
+input[type=range]::-moz-range-track {
+	height: 4px;
+	border-radius: 2px;
+	background: var(--line);
+}
+
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 16px;
+	height: 16px;
+	margin-top: -6px;
+	border-radius: 50%;
+	background: var(--earth);
+	border: 2px solid var(--card);
+	box-shadow: 0 0 0 1px var(--earth);
+}
+
+input[type=range]::-moz-range-thumb {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--earth);
+	border: 2px solid var(--card);
+	box-shadow: 0 0 0 1px var(--earth);
+}
+
+input[type=range]:focus-visible {
+	outline: 2px solid color-mix(in srgb, var(--earth) 50%, var(--card));
+	outline-offset: 2px;
+}
+
+/* Small buttons: presets, span choice, "keep as ghost". */
+.presets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 8px 0;
+}
+
+.presets button,
+button.small {
+	border: 1px solid var(--line);
+	background: var(--bg);
+	color: var(--ink);
+	border-radius: 8px;
+	padding: 4px 10px;
+	cursor: pointer;
+	font: inherit;
+	font-size: .85rem;
+}
+
+.presets button:hover,
+button.small:hover {
+	border-color: var(--muted);
+}
+
+.presets button.active {
+	background: var(--earth);
+	border-color: var(--earth);
+	color: var(--card);
+}
+
+/* Live numbers next to a figure, about the size of the body text. */
+.readout {
+	font-size: 1rem;
+	font-variant-numeric: tabular-nums;
+	margin-top: 8px;
+}
+
+
+/* Figure key: one line per element of a figure, instead of a paragraph
+   of explanations (CLAUDE.md). A figure may have several keys ("In the
+   figure", "Read-out"); they sit side by side when there is room.
+	 <div class="keys">
+		 <div><p class="key-title">In the figure</p>
+			 <dl class="key"><dt>Z</dt><dd>the zenith ...</dd></dl></div>
+	 </div> */
+.keys {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 12px 32px;
+	margin-top: 14px;
+	padding-top: 12px;
+	border-top: 1px solid var(--line);
+}
+
+.key-title {
+	margin: 0 0 6px;
+	color: var(--muted);
+	font-size: .8rem;
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+dl.key {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	gap: 5px 12px;
+	margin: 0;
+	font-size: .95rem;
+	line-height: 1.45;
+}
+
+dl.key dt {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+dl.key dd {
+	margin: 0;
+}
+
+
+/* ==========================================================================
+   8. ORIGIN BADGES (STRUCTURE.md §7.1)
+   Each origin takes one palette colour through --badge.
+   ========================================================================== */
+
+.badge {
+	--badge: var(--muted);
+	display: inline-block;
+	padding: 1px 9px;
+	border-radius: 999px;
+	font-size: .78rem;
+	font-weight: 600;
+	letter-spacing: .02em;
+	line-height: 1.5;
+	vertical-align: .1em;
+	white-space: nowrap;
+	color: color-mix(in srgb, var(--badge) 60%, var(--ink));
+	background: color-mix(in srgb, var(--badge) 16%, var(--card));
+	border: 1px solid color-mix(in srgb, var(--badge) 45%, var(--card));
+}
+
+.badge[data-origin="babylonian"] { --badge: var(--sun); }
+.badge[data-origin="greek"]      { --badge: var(--deferent); }
+.badge[data-origin="hipparchus"],
+.badge[data-origin="ptolemy"],
+.badge[data-origin="copernicus"],
+.badge[data-origin="kepler"]     { --badge: var(--epicycle); }
+.badge[data-origin="modern"]     { --badge: var(--earth); }
+
+.badge[data-origin="debated"] {
+	--badge: var(--planet);
+	border-style: dashed;
+}
+
+
+/* ==========================================================================
+   9. EXERCISES (STRUCTURE.md §7.2)
+   ========================================================================== */
+
+.exercise {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-left: 4px solid var(--epicycle);
+	border-radius: var(--radius);
+	padding: 14px 18px;
+	margin: 18px 0;
+	max-width: 76ch;
+}
+
+/* "Exercise 2 · Derive", built by components.js. */
+.exercise-head {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin-bottom: 6px;
+	font-weight: 600;
+}
+
+.exercise-kind {
+	color: color-mix(in srgb, var(--epicycle) 60%, var(--ink));
+	font-size: .8rem;
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.exercise details {
+	border-top: 1px solid var(--line);
+	padding: 8px 0 2px;
+	margin-top: 8px;
+}
+
+.exercise summary {
+	cursor: pointer;
+	color: var(--muted);
+	font-weight: 600;
+	font-size: .92rem;
+}
+
+.exercise summary:hover {
+	color: var(--ink);
+}
+
+.exercise details[open] summary {
+	margin-bottom: 6px;
+}
+
+
+/* ==========================================================================
+   10. DETOUR CARDS (STRUCTURE.md §7.4)
+   ========================================================================== */
+
+.detour {
+	display: block;
+	max-width: 70ch;
+	margin: 16px 0;
+	padding: 10px 14px;
+	border: 1px dashed var(--line);
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--bg) 60%, var(--card));
+	color: var(--muted);
+	font-size: .92rem;
+}
+
+.detour strong {
+	color: color-mix(in srgb, var(--muted) 60%, var(--ink));
+}
+
+a.detour {
+	text-decoration: none;
+}
+
+a.detour:hover {
+	border-color: var(--muted);
+	color: var(--ink);
+}
+
+
+/* ==========================================================================
+   11. SOURCES AND PREVIOUS / NEXT NAVIGATION
+   ========================================================================== */
+
+.sources li {
+	margin: 4px 0;
+}
+
+.pager {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 14px;
+	margin-top: 48px;
+	padding-top: 20px;
+	border-top: 1px solid var(--line);
+}
+
+.pager a,
+.pager span {
+	display: block;
+	padding: 12px 16px;
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--card);
+	text-decoration: none;
+	color: var(--ink);
+}
+
+.pager .next {
+	text-align: right;
+	grid-column: 2;
+}
+
+.pager a:hover {
+	border-color: var(--muted);
+}
+
+/* A neighbour that is not written yet. */
+.pager span {
+	color: var(--muted);
+	background: transparent;
+	border-style: dashed;
+}
+
+.pager small {
+	display: block;
+	color: var(--muted);
+	font-size: .8rem;
+}
+
+
+/* ==========================================================================
+   12. PLOT LEGENDS AND THE ERROR-CURVE WIDGET
+   ========================================================================== */
+
+.legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+	font-size: .88rem;
+	margin: 8px 0 0;
+}
+
+.legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+/* The line sample in front of a legend entry. */
+.swatch {
+	display: inline-block;
+	width: 22px;
+	height: 0;
+	border-top: 3px solid currentColor;
+}
+
+.swatch.ghost {
+	opacity: .45;
+	border-top-style: dashed;
+	border-top-width: 2px;
+}
+
+/* A point marker (e.g. the chosen date) instead of a line. */
+.swatch.dot {
+	width: 10px;
+	height: 10px;
+	margin: 0 6px;
+	border-top: none;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+/* A filled band (a min / max envelope, a shaded region). */
+.swatch.band {
+	height: 12px;
+	border-top: none;
+	border-radius: 2px;
+	background: currentColor;
+	opacity: .45;
+}
+
+.swatch.band.ghost {
+	opacity: .2;
+	border: 1px dashed currentColor;
+}
+
+.legend-item.ghost {
+	color: var(--muted);
+}
+
+.errorcurve-tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.errorcurve-note {
+	color: var(--muted);
+	font-size: .9rem;
+	margin-top: 6px;
+}
+
+.errorcurve-note:empty {
+	display: none;
+}
+
+.errorcurve-readout {
+	min-height: 1.6em;
+	font-size: 1rem;
+	font-variant-numeric: tabular-nums;
+	margin-top: 6px;
+}
+
+
+/* ==========================================================================
+   13. HUB
+   ========================================================================== */
+
+.hub-head {
+	margin: 24px 0 36px;
+}
+
+.hub-head h1 {
+	font-size: 2.4rem;
+}
+
+.hub-head .lead {
+	font-size: 1.15rem;
+	max-width: 62ch;
+	margin: 12px 0 0;
+}
+
+/* The five acts as a path: a vertical line through numbered acts. */
+.acts {
+	position: relative;
+	padding-left: 28px;
+	border-left: 2px solid var(--line);
+	margin-left: 10px;
+}
+
+.act {
+	position: relative;
+	margin-bottom: 34px;
+}
+
+/* The dot on the path in front of each act. */
+.act::before {
+	content: "";
+	position: absolute;
+	left: -38px;
+	top: 6px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--card);
+	border: 3px solid var(--act, var(--earth));
+}
+
+.act-title {
+	margin: 0;
+	font-size: 1.25rem;
+}
+
+.act-title small {
+	color: var(--muted);
+	font-weight: 400;
+	font-size: .9rem;
+	margin-left: 6px;
+}
+
+.act-blurb {
+	color: var(--muted);
+	margin: 2px 0 12px;
+}
+
+.tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	gap: 12px;
+}
+
+.tile {
+	display: block;
+	padding: 12px 14px;
+	border: 1px solid var(--line);
+	border-top: 3px solid var(--act, var(--earth));
+	border-radius: 12px;
+	background: var(--card);
+	color: var(--ink);
+	text-decoration: none;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+a.tile:hover {
+	border-color: var(--muted);
+}
+
+.tile-number {
+	color: var(--muted);
+	font-size: .8rem;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+.tile-title {
+	display: block;
+	font-weight: 600;
+	margin: 2px 0 4px;
+}
+
+.tile-question {
+	display: block;
+	color: var(--muted);
+	font-size: .88rem;
+	line-height: 1.4;
+}
+
+/* A page that does not exist yet: greyed out, not a link. */
+.tile.unready {
+	opacity: .55;
+	box-shadow: none;
+	border-top-color: var(--line);
+	background: transparent;
+}
+
+.soon {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 0 7px;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	font-size: .72rem;
+	font-weight: 400;
+	color: var(--muted);
+	vertical-align: .1em;
+}
+
+.hub-foot {
+	color: var(--muted);
+	font-size: .88rem;
+	margin-top: 40px;
+	padding-top: 16px;
+	border-top: 1px solid var(--line);
+}
+
+
+/* ==========================================================================
+   14. TEST PAGE
+   ========================================================================== */
+
+.summary {
+	padding: 12px 16px;
+	border-radius: var(--radius);
+	font-weight: 600;
+	margin: 16px 0 24px;
+	border: 1px solid var(--line);
+}
+
+.summary.pass {
+	background: color-mix(in srgb, var(--deferent) 18%, var(--card));
+	border-color: var(--deferent);
+}
+
+.summary.fail {
+	background: color-mix(in srgb, var(--planet) 15%, var(--card));
+	border-color: var(--planet);
+}
+
+.tests td:first-child,
+.tests th:first-child {
+	text-align: left;
+}
+
+.tests td.num {
+	text-align: right;
+}
+
+.tests .group td {
+	background: var(--bg);
+	font-weight: 600;
+	text-align: left;
+	padding-top: 14px;
+}
+
+.verdict {
+	font-weight: 700;
+	font-size: .8rem;
+	letter-spacing: .05em;
+}
+
+.verdict.pass {
+	color: color-mix(in srgb, var(--deferent) 55%, var(--ink));
+}
+
+.verdict.fail {
+	color: var(--planet);
+}
+
+.table-scroll {
+	overflow-x: auto;
+}
+
+
+/* ==========================================================================
+   15. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 860px) {
+	body {
+		font-size: 16px;
+	}
+
+	/* The contents move above the article and fold away. */
+	.page {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 8px;
+		padding: 8px 16px 60px;
+	}
+
+	.single {
+		padding: 8px 16px 60px;
+	}
+
+	.site-bar {
+		padding: 12px 16px 0;
+	}
+
+	.toc {
+		position: static;
+		max-height: none;
+		background: var(--card);
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		padding: 10px 14px;
+	}
+
+	.toc summary {
+		margin-bottom: 0;
+	}
+
+	.toc details[open] summary {
+		margin-bottom: 8px;
+	}
+
+	.fig-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	figure.fig {
+		padding: 12px;
+	}
+
+	h1 {
+		font-size: 1.6rem;
+	}
+
+	.hub-head h1 {
+		font-size: 1.9rem;
+	}
+
+	.pager {
+		grid-template-columns: 1fr;
+	}
+
+	.pager .next {
+		grid-column: 1;
+	}
+
+	.ctl {
+		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
+	}
+
 }
