@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tests · Predicting the Sky</title>
+
+	<!-- Shared theme -->
+	<link rel="stylesheet" href="theme.css">
+
+	<!-- The code under test -->
+	<script defer src="common.js"></script>
+	<script defer src="time.js"></script>
+	<script defer src="ephemeris.js"></script>
+	<script defer src="tests.js"></script>
+</head>
+
+<body>
+<div class="site-bar"><a href="../index.html">← Predicting the Sky</a></div>
+
+<main class="single">
+	<header class="page-head">
+		<p class="page-number">Shared code</p>
+		<h1>Tests of time.js and ephemeris.js</h1>
+		<p class="sub">
+			Each case is a worked example from J. Meeus, <em>Astronomical Algorithms</em>
+			(2nd ed., 1998), a value from the SOFA / ERFA test suite, a position from
+			JPL Horizons (DE441), or an internal consistency check. The tolerance of
+			each ephemeris case is the accuracy documented in the header of
+			<code>ephemeris.js</code>: the reference sky uses Standish's Keplerian
+			elements, so it is not expected to match Meeus' full VSOP87 results to
+			the arcsecond.
+		</p>
+	</header>
+
+	<div id="summary" class="summary">Running…</div>
+
+	<div class="card table-scroll">
+		<table class="tests">
+			<thead>
+				<tr>
+					<th>Case</th>
+					<th>Source</th>
+					<th>Expected</th>
+					<th>Computed</th>
+					<th>Error</th>
+					<th>Tolerance</th>
+					<th>Result</th>
+				</tr>
+			</thead>
+			<tbody id="results"></tbody>
+		</table>
+	</div>
+</main>
+</body>
+</html>
