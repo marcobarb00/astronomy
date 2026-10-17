@@ -65,6 +65,16 @@ const ERROR_PERIOD = {
 	neptune: 368
 };
 
+/* The same windows in words, for the note that explains the bands. */
+const ERROR_PERIOD_TEXT = {
+	sun: 'one year',
+	moon: 'about one month'
+};
+
+/* Shown in the read-out line while the pointer is away from the plot, so
+   the dashed pointer line never goes unexplained (CLAUDE.md). */
+const ERROR_READOUT_HINT = 'Point at the plot: a dashed line marks a date, and each curve\'s error there is read here.';
+
 
 /* ==========================================================================
    2. CONSTRUCTION AND DOM
@@ -112,7 +122,9 @@ class ErrorCurve {
 
 		this.container.classList.add('errorcurve');
 		this.legendBox = makeEl('div');
-		this.readout = makeEl('div', 'errorcurve-readout', '&nbsp;');
+		this.readout = makeEl('div', 'errorcurve-readout');
+		this.readout.textContent = ERROR_READOUT_HINT;
+		this.bandNote = makeEl('div', 'errorcurve-note');
 
 		const initialYears = (this.end - this.start) / 365.25;
 
@@ -140,7 +152,7 @@ class ErrorCurve {
 
 		tools.append(spanButtons, ghostButtons);
 		wrapper.appendChild(canvas);
-		this.container.append(tools, wrapper, this.legendBox, this.readout);
+		this.container.append(tools, wrapper, this.legendBox, this.bandNote, this.readout);
 
 		this.plot = new Plot2D(canvas, {
 			x: [this.startYear(), this.endYear()],
@@ -439,12 +451,23 @@ class ErrorCurve {
 		}
 
 		Plot2D.legend(this.legendBox, items);
+		this.updateBandNote();
 		this.clearButton.disabled = !this.ghosts.some(ghost => ghost.pinned);
 	}
 
 	/* Does the range reach beyond the dates where the ephemeris is valid? */
 	showsOutOfRange() {
 		return this.start < Ephem.RANGE.start || this.end > Ephem.RANGE.end;
+	}
+
+	/* Explain the bands whenever some curve is drawn as one. */
+	updateBandNote() {
+		const hasBand = (this.curves ?? []).some(curve => curve.sample.isBand);
+		const window = ERROR_PERIOD_TEXT[this.body] ?? `${Math.round(this.period)} days`;
+
+		this.bandNote.textContent = hasBand ?
+			`Over this span each curve is a band, from its smallest to its largest error within ${window}.` :
+			'';
 	}
 
 
@@ -455,7 +478,7 @@ class ErrorCurve {
 	/* Date under the pointer and the exact Delta lambda of every curve. */
 	showReadout(year) {
 		if (year === null) {
-			this.readout.innerHTML = '&nbsp;';
+			this.readout.textContent = ERROR_READOUT_HINT;
 			return;
 		}
 

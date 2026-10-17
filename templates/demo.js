@@ -39,9 +39,24 @@ function formatDay(day) {
 
 /* ==========================================================================
    1. FIGURE 1: THE SKY ON A DATE
-   The base frame is equatorial: x towards the vernal point, z towards the
-   north celestial pole. The observer is on the Greenwich meridian.
+   Drawn in the observer's frame, so the horizon is fixed ground and the
+   sky turns above it: x towards the south point, y towards the east
+   point, z towards the zenith. The observer is on the Greenwich meridian.
    ========================================================================== */
+
+const HORIZON_POINTS = [
+	['S', [1, 0, 0]],
+	['E', [0, 1, 0]],
+	['N', [-1, 0, 0]],
+	['W', [0, -1, 0]]
+];
+
+/* Equatorial -> horizon frame for latitude phi and local sidereal time:
+   turn the sky by -LST about the pole (the meridian onto the x axis),
+   then tilt the pole down to altitude phi in the north. */
+function equatorialToHorizon(latitude, lst) {
+	return matMul(rotY(latitude - 90), rotZ(-lst));
+}
 
 const skyFigure = {
 	sphere: null,
@@ -49,8 +64,8 @@ const skyFigure = {
 
 	init() {
 		this.sphere = new Sphere3D(byId('fig-sphere'), {
-			yaw: 300,
-			pitch: 20,
+			yaw: 210,
+			pitch: 18,
 			onDraw: () => this.draw()
 		});
 
@@ -60,7 +75,8 @@ const skyFigure = {
 		wirePresets(byId('fig-sphere').closest('figure'));
 	},
 
-	/* Recompute every position, then the read-out and the drawing. */
+	/* Recompute every position in the horizon frame, then the read-out
+	   and the drawing. */
 	update() {
 		const jdUT = chosenJdUT();
 		const jdTT = Time.ttFromUt(jdUT);
@@ -68,16 +84,26 @@ const skyFigure = {
 		const sun = Ephem.sun(jdTT);
 		const sunEq = Ephem.equatorial(sun, jdTT);
 		const lst = Time.lst(jdUT, 0);
-		const latitude = readNumber('latitude');
-		const zenith = fromLonLat(lst, latitude);
-		const sunVector = matApply(rotX(eps), fromLonLat(sun.lon, sun.lat));
+		const M = equatorialToHorizon(readNumber('latitude'), lst);
+		const toSky = v => matApply(M, v);
+		const eclipticToEquator = rotX(eps);
 
-		this.state = { eps, sun, sunVector, zenith, lst, latitude };
-		this.showReadout(jdUT, sunEq, asin(dot3(sunVector, zenith)));
+		this.state = {
+			sun: sun,
+			lst: lst,
+			pole: toSky([0, 0, 1]),
+			equator: [toSky([1, 0, 0]), toSky([0, 1, 0])],
+			ecliptic: [toSky([1, 0, 0]), toSky(matApply(eclipticToEquator, [0, 1, 0]))],
+			vernalPoint: toSky([1, 0, 0]),
+			vega: toSky(fromLonLat(VEGA.ra, VEGA.dec)),
+			sunPoint: toSky(matApply(eclipticToEquator, fromLonLat(sun.lon, sun.lat)))
+		};
+
+		this.showReadout(sunEq, asin(this.state.sunPoint[2]));
 		this.sphere.redraw();
 	},
 
-	showReadout(jdUT, sunEq, altitude) {
+	showReadout(sunEq, altitude) {
 		const { sun, lst } = this.state;
 
 		showLines('sphere-readout', [
@@ -94,37 +120,42 @@ const skyFigure = {
 		}
 
 		const s = this.sphere;
-		const { eps, sunVector, zenith } = this.state;
-		const eclipticB = [0, cos(eps), sin(eps)];
+		const st = this.state;
 
 		s.outline();
+		this.drawGround();
 
-		// horizon: a shaded plane perpendicular to the zenith
-		const [h1, h2] = planeBasis(zenith);
-
-		s.fillPlane(h1, h2, { color: COL.deferent, alpha: 0.14 });
-		s.circle(h1, h2, { color: COL.deferent, width: 2 });
-
-		// equator and ecliptic
-		s.circle([1, 0, 0], [0, 1, 0], { color: COL.earth, width: 2 });
-		s.circle([1, 0, 0], eclipticB, { color: COL.sun, width: 2 });
-
-		// polar axis (arrow towards the north pole P), zenith, vernal point
-		s.axis([0, 0, 1.2], 'P', { color: COL.muted });
-		s.path([[0, 0, 0], [0, 0, -1.2]], { color: COL.muted, width: 1 });
-		s.point(zenith, { color: COL.deferent, radius: 4 });
-		s.label('Z', zenith, { color: COL.deferent });
-		s.point([1, 0, 0], { color: COL.sun, radius: 3 });
-		s.label('γ', [1, 0, 0], { color: COL.sun, dx: -16, dy: 18 });   // below-left: clear of the Sun at the equinox
+		// the sky: equator, ecliptic, the pole axis
+		s.circle(st.equator[0], st.equator[1], { color: COL.earth, width: 2 });
+		s.circle(st.ecliptic[0], st.ecliptic[1], { color: COL.sun, width: 2 });
+		s.axis(scale(st.pole, 1.2), 'P', { color: COL.muted });
+		s.path([ORIGIN, scale(st.pole, -1.2)], { color: COL.muted, width: 1 });
+		s.point(st.vernalPoint, { color: COL.sun, radius: 3 });
+		s.label('γ', st.vernalPoint, { color: COL.sun, dx: -16, dy: 18 });   // below-left: clear of the Sun at the equinox
 
 		// Vega and its daily circle
-		s.smallCircle([0, 0, 1], 90 - VEGA.dec, { color: COL.planet, width: 1.5, dash: [5, 4] });
-		s.point(fromLonLat(VEGA.ra, VEGA.dec), { color: COL.planet, radius: 4 });
-		s.label('Vega', fromLonLat(VEGA.ra, VEGA.dec), { color: COL.planet });
+		s.smallCircle(st.pole, 90 - VEGA.dec, { color: COL.planet, width: 1.5, dash: [5, 4] });
+		s.point(st.vega, { color: COL.planet, radius: 4 });
+		s.label('Vega', st.vega, { color: COL.planet });
 
 		// the Sun
-		s.point(sunVector, { color: COL.sun, radius: 8, ring: true });
-		s.label('Sun', sunVector, { color: COL.ink, dx: 10 });
+		s.point(st.sunPoint, { color: COL.sun, radius: 8, ring: true });
+		s.label('Sun', st.sunPoint, { color: COL.ink, dx: 10 });
+	},
+
+	/* The observer's fixed ground: horizon, cardinal points, zenith. */
+	drawGround() {
+		const s = this.sphere;
+
+		s.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
+		s.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
+
+		HORIZON_POINTS.forEach(([name, point]) => {
+			s.label(name, scale(point, 1.08), { color: COL.deferent, dx: -5, dy: 5 });
+		});
+
+		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
+		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });   // left: Vega passes near the zenith
 	}
 };
 
