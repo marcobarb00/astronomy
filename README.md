@@ -18,7 +18,7 @@ and style rules are in [`CLAUDE.md`](CLAUDE.md).
 | `templates/page.html` | The page template, with every shared component once. |
 | `templates/demo.html` | A demo of the sphere, plot, error curve and exercise working together. |
 | `archive/` | The earlier pages, kept for reference and not linked from the site. |
-| `scripts/numbers/` | The script behind each page's numbers, run with Node. |
+| `tools/numbers/` | The script behind each page's numbers, run with Node. |
 
 ## Running locally
 

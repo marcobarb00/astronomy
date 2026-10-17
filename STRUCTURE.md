@@ -133,6 +133,10 @@ The first anomaly and the simplest complete model.
 - **Figures:** the eccentric with the four seasons; $q(t)$ over a year.
   **First appearance of the error curve:** uniform circle versus eccentric
   versus the reference Sun.
+- **When building:** rewrite the last paragraph of page 1.1's Test ("The site
+  has no longitude to test yet…", marked `TODO(2.1)` in
+  `act1-stage/01-turning-sky/index.html`): say that the error curve starts
+  here and link to this page.
 - **Exercises:** the worked exercise "Hipparchus' Sun from two numbers"
   (fit $e \approx 0.041$, $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and
   $92\tfrac12$ days; predict autumn and winter).
@@ -330,8 +334,10 @@ once on the page.
 | $\Delta\lambda$ | model minus reference, in arcminutes |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
-helpers in `shared/common.js`. Sexagesimal values (e.g. $2;29$) are shown when
-quoting a historical source, always with their decimal value.
+helpers in `shared/common.js`. An angle quoted from a historical source is
+written in degrees, minutes and seconds ($23^\circ 51' 20''$), always with its
+decimal value; other sexagesimal quantities, such as ratios on a radius of 60,
+keep the source's notation ($2;30$), also with their decimal value.
 
 The sign convention for $q$ and the anomalies is fixed on page 2.1 and used
 everywhere afterwards.
@@ -362,7 +368,7 @@ Two or three per page, of four kinds:
 Each exercise has an optional hint and a full worked answer, both collapsed.
 **Every numerical answer is computed by a script, not by hand**, and the
 script's output is what goes in the answer. The script is kept in
-`scripts/numbers/` (one per page, loading the shared code in Node), with any
+`tools/numbers/` (one per page, loading the shared code in Node), with any
 raw data it was built from.
 
 ### 7.3 The error curve
@@ -412,7 +418,7 @@ STRUCTURE.md               this file
 shared/                    see §8
   models/
 templates/                 page template and a demo of the shared components
-scripts/numbers/           the script behind each page's numbers (§7.2)
+tools/numbers/             the script behind each page's numbers (§7.2)
 act0-hook/
   01-mars-tonight/         index.html, page.js, page.css (optional)
 act1-stage/

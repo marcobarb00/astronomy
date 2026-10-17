@@ -1,10 +1,10 @@
 /* ==========================================================================
-   NUMBERS FOR PAGE 1.1 "THE TURNING SKY" (scripts/numbers/1.1-turning-sky.js)
+   NUMBERS FOR PAGE 1.1 "THE TURNING SKY" (tools/numbers/1.1-turning-sky.js)
    Loads the site's shared code (common, time, ephemeris, stars and the
    model models/diurnal.js) in a Node vm context and prints every number
    quoted on the page, in page order.
 
-   Run from the repository root:  node scripts/numbers/1.1-turning-sky.js
+   Run from the repository root:  node tools/numbers/1.1-turning-sky.js
 
    TABLE OF CONTENTS
 	 1. Loading the shared code
@@ -69,14 +69,14 @@ function clock(jdUT) {
 	return hms(hours).replace(/h|m/g, ':').replace(/\.\d\ds$/, '');
 }
 
-const sexagesimal = (d, m = 0, s = 0) => d + m / 60 + s / 3600;
+const dms = (d, m = 0, s = 0) => d + m / 60 + s / 3600;      // 23°51'20" -> degrees
 const title = text => console.log(`\n=== ${text} ===`);
 const star = name => Stars.find(name);
 
 /* The latitudes used on the page. */
 const PLACES = {
 	alexandria: 31.2,                    // modern, 31°12' N
-	alexandriaPtolemy: sexagesimal(30, 58),
+	alexandriaPtolemy: dms(30, 58),
 	rhodes: 36,                          // Ptolemy, Almagest II 2
 	rome: 41.9,
 	london: 51.5,
@@ -198,7 +198,7 @@ title('Exercise 2: fraction of the day above the horizon');
 		` H0 = ${H0.toFixed(2)}, f = ${(H0 / 180).toFixed(3)}, up ${hm(clockHours(2 * H0))} of clock time`);
 });
 
-const eps = sexagesimal(23, 51, 20);
+const eps = dms(23, 51, 20);
 const H0Rhodes = Diurnal.risingHourAngle(eps, PLACES.rhodes);
 
 console.log(`Rhodes: -tan 36 tan(23;51,20) = ${(-tan(36) * tan(eps)).toFixed(4)}, H0 = ${H0Rhodes.toFixed(3)},` +
@@ -248,7 +248,10 @@ const lengths = {};
 });
 console.log(`split: Sun's own motion ${(lengths.geometric - 720).toFixed(1)} min, refraction +${(lengths.refraction - lengths.geometric).toFixed(1)} min,` +
 	` radius +${(lengths.limb - lengths.refraction).toFixed(1)} min, total +${(lengths.limb - 720).toFixed(1)} min`);
-console.log(`estimate 2 x 0.833 deg / (15 cos phi deg/h) = ${(2 * (50 / 60) / (15 * cos(PLACES.greenwich)) * 60).toFixed(1)} min`);
+const climb = 15 * cos(PLACES.greenwich);    // deg per hour at sunrise, delta = 0 (da/dH = cos phi)
+
+console.log(`climb at sunrise: 15 cos(phi) = ${climb.toFixed(2)} deg/h; 50' takes ${((50 / 60) / climb * 60).toFixed(1)} min at each end`);
+console.log(`estimate 2 x 0.833 deg / (15 cos phi deg/h) = ${(2 * (50 / 60) / climb * 60).toFixed(1)} min`);
 
 
 /* ==========================================================================
