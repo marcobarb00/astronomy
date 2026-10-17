@@ -63,6 +63,12 @@
 		</p>
 
 		<p>
+			Step one day at a time with <em>next day</em>: at the same clock time the
+			sky has turned about 1° further, because the stars come back to the
+			same place about 4 minutes earlier each day.
+		</p>
+
+		<p>
 			A star never sets when its declination is $\delta > 90^\circ - \varphi$:
 			try Vega at different latitudes.
 			<span class="badge" data-origin="greek"></span>
@@ -74,10 +80,16 @@
 					<canvas id="fig-sphere"></canvas>
 				</div>
 				<div>
-					<div class="ctl">
+					<div class="ctl stepper">
 						<label for="day">date</label>
 						<input id="day" type="range" min="1" max="365" step="1" value="80">
 						<output></output>
+						<span class="stepper-buttons">
+							<button type="button" class="stepper-btn" data-target="day" data-step="-1"
+								aria-label="previous day">‹ previous day</button>
+							<button type="button" class="stepper-btn" data-target="day" data-step="1"
+								aria-label="next day">next day ›</button>
+						</span>
 					</div>
 					<div class="ctl">
 						<label for="hour">time (UT)</label>
