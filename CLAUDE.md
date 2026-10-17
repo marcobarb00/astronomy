@@ -37,6 +37,47 @@ same style:
 - Format the equations with KaTeX.
 - Only when it is useful, generate 3D diagrams.
 
+### Rules for every figure
+
+- Every element shown in a figure (a labelled point, a letter, a curve, a
+  shaded region, a symbol in a read-out, a line that follows the pointer)
+  is explained. If it is not worth explaining, remove it. Shared widgets
+  explain their own built-in elements (the error curve does it for its
+  pointer line and its bands), so pages need not repeat them.
+- Explain the elements in a figure key, one line per element, not in a
+  paragraph: `<div class="keys">` with one or more `<dl class="key">`
+  ("In the figure", "Read-out"), styled by `shared/theme.css` (see
+  `templates/page.html`). The caption only says what to do with the figure
+  and what to notice.
+- Choose the frame of a figure so that a control moves only what it is
+  about. An observer's sky is drawn in the horizon frame: changing the date,
+  the time or the latitude turns the sky, never the ground.
+- Text in and next to a figure is easy to read: read-outs and slider values
+  at the size of the body text, labels drawn on a canvas at 13 px or more.
+  The shared theme and `plot2d.js` / `sphere3d.js` already do this; do not
+  shrink them per page.
+- A legend sample looks like the mark it describes: a dot for a point, a line
+  for a curve, a band for a filled region, faint and dashed for a ghost
+  (`Plot2D.legend` takes `mark: 'line' | 'dot' | 'band'`).
+- A control never moves under the pointer. The value beside a slider sits in
+  a fixed-width column (`--ctl-output` in `shared/theme.css`): never let it
+  follow its text, or the track resizes while dragging and the value
+  jitters. For a quantity the reader steps through one unit at a time (a
+  day), add previous / next buttons centred under the slider
+  (`.ctl.stepper` with `button[data-target][data-step]`, see
+  `templates/demo.html`); held down, they repeat and speed up.
+- Scales never jump while a control moves. When a slider changes what is
+  plotted, fix the axis range to cover every value the slider allows, with
+  the bound computed by a script. A scale may change only when the reader
+  changes the view (e.g. a span preset). `Plot2D` and `ErrorCurve` print a
+  console warning when data leaves the scale: a page must not trigger it.
+
+### Writing
+
+- No walls of text: short paragraphs of one idea each, about four lines at
+  most. Split a longer explanation, or move what belongs to a figure into
+  its key.
+
 ## Sources
 
 The reference books (Ptolemy's *Almagest*, Copernicus' *De Revolutionibus*,

@@ -251,6 +251,13 @@ The first anomaly and the simplest complete model.
   flat; all previous error curves overlaid.
 - **Exercises:** solve Kepler's equation by fixed-point and Newton iteration;
   compare the convergence.
+- **Caution (reference sky):** the reference planets in `shared/ephemeris.js`
+  are themselves Keplerian (Standish's elements). A Kepler model with modern
+  elements would match them almost by construction, so the error curve's last
+  step would look misleadingly good. This page must either compare Kepler's
+  own parameters (the *Rudolphine Tables*, 1627) with the reference, or use
+  VSOP87 as the reference on this page. The same applies to any later page
+  that judges a Keplerian model at the arcminute level.
 - **Hands over:** to the epilogue.
 
 ### Epilogue
@@ -443,7 +450,13 @@ Modern references:
   examples for the tests, and the truncated lunar theory used as the
   reference Moon.
 - E. M. Standish, *Keplerian Elements for Approximate Positions of the Major
-  Planets* (JPL): the planetary reference.
+  Planets* (JPL): the planetary reference. Being Keplerian, it cannot judge a
+  Keplerian model (see page 4.4).
+- J. Vondrák, N. Capitaine, P. Wallace, *New precession expressions, valid
+  for long time intervals* (A&A, 2011), as in SOFA / ERFA: the precession
+  used by the reference sky.
+- JPL Horizons (DE441): the yardstick for the reference sky's documented
+  accuracy and for some of the tests.
 - J. Evans, *The History and Practice of Ancient Astronomy*.
 - O. Neugebauer, *A History of Ancient Mathematical Astronomy*.
 

@@ -3,31 +3,48 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Astronomy</title>
+	<title>Predicting the Sky</title>
+	<meta name="description" content="From the celestial sphere to Kepler: an interactive course in classical positional astronomy.">
+
+	<!-- Shared theme and components (the site map lives in components.js) -->
 	<link rel="stylesheet" href="shared/theme.css">
+	<script defer src="shared/common.js"></script>
+	<script defer src="shared/components.js"></script>
 </head>
 
 <body>
-<main>
-	<h1>Astronomy concepts</h1>
+<main class="single">
+	<header class="hub-head">
+		<p class="page-number">An interactive course in classical positional astronomy</p>
+		<h1>Predicting the Sky</h1>
+		<p class="lead">
+			By the end you can compute where the Sun, the Moon and a planet are on a
+			given date, using geometric models you derived yourself, and you know how
+			wrong each model is and why.
+		</p>
+		<p class="lead">
+			Every page either adds a piece to that machine or removes an error the
+			previous piece left behind; a running <em>error curve</em> shows the
+			model against the real sky, page after page.
+		</p>
+	</header>
 
-	<div class="card">
-		<h2><a href="hipparchus_model/index.html">Hipparchus' Model</a></h2>
-		<p class="note">Step by step from Eudoxus' spheres to Hipparchus' star catalogue, precession, solar and lunar models, chords and distances, with the origin of each idea.</p>
-	</div>
+	<!-- The five acts and the epilogue, built from the site map -->
+	<div id="map"></div>
 
-	<div class="card">
-		<h2><a href="copernican_revolution/index.html">The Copernican revolution</a></h2>
-		<p class="note">Timeline from Hipparcus to Newton, epicycles versus orbits and retrograde loops, and what "center" means.</p>
-	</div>
-
-	<div class="card">
-		<h2><a href="spherical_astronomy/index.html">Spherical Astronomy (Richard Fitzpatrick, Modern almagest, chapter 2)</a></h2>
-		<p class="note">Celestial, ecliptic and horizontal coordinates, meridian transits, climes and solstices.</p>
-	</div>
-
-
-	<!-- Add one card per new chapter here -->
+	<footer class="hub-foot">
+		Sources: Ptolemy's <em>Almagest</em>, Copernicus' <em>De Revolutionibus</em>,
+		R. Fitzpatrick's <em>A Modern Almagest</em>, J. Meeus' <em>Astronomical
+		Algorithms</em> and E. M. Standish's planetary elements (JPL).
+		Pages marked <span class="soon">in preparation</span> are not written yet.
+	</footer>
 </main>
+
+<script>
+	/* The hub: draw the map of acts once the shared scripts have loaded. */
+	document.addEventListener('DOMContentLoaded', () => {
+		Site.renderHub(byId('map'));
+	});
+</script>
 </body>
 </html>

@@ -1,0 +1,238 @@
+/* ==========================================================
+   SHARED THEME - keep identical across all simulations
+   ========================================================== */
+:root {
+	--bg:       #f6f4ef;   /* page background             */
+	--card:     #ffffff;   /* card / panel background     */
+	--ink:      #2f3440;   /* main text                   */
+	--muted:    #7b8190;   /* secondary text, grid lines  */
+	--line:     #e2ded4;   /* borders                     */
+	--earth:    #6f9bd1;   /* earth / equator             */
+	--planet:   #d77a7a;   /* planet / object of interest */
+	--sun:      #e6b450;   /* sun / ecliptic              */
+	--deferent: #8fbf9f;   /* deferent                    */
+	--epicycle: #a58bd0;   /* epicycle                    */
+	--radius:   14px;
+}
+
+/* ---------- Base layout ---------- */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 24px 16px 60px;
+	background: var(--bg);
+	color: var(--ink);
+	font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+	max-width: 1180px;
+	margin: 0 auto;
+}
+
+h1 {
+	font-size: 1.6rem;
+	margin: 0 0 4px;
+}
+
+h2 {
+	font-size: 1.15rem;
+	margin: 22px 0 8px;
+}
+
+.sub {
+	color: var(--muted);
+	margin: 0 0 18px;
+}
+
+/* ---------- Tabs ---------- */
+nav {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+}
+
+nav button {
+	border: 1px solid var(--line);
+	background: var(--card);
+	color: var(--ink);
+	padding: 8px 14px;
+	border-radius: 999px;
+	cursor: pointer;
+	font: inherit;
+	font-size: .88rem;
+}
+
+nav button.active {
+	background: var(--earth);
+	border-color: var(--earth);
+	color: #fff;
+}
+
+section {
+	display: none;
+}
+
+section.show {
+	display: block;
+}
+
+/* ---------- Cards and the "visual + controls on top" layout ---------- */
+.card {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 16px;
+	margin-bottom: 16px;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+.top {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	gap: 18px;
+	align-items: start;
+}
+
+@media (max-width: 800px) {
+	.top {
+		grid-template-columns: 1fr;
+	}
+}
+
+canvas {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	touch-action: none;
+}
+
+/* ---------- Controls ---------- */
+.ctl {
+	display: grid;
+	grid-template-columns: 90px 1fr 70px;
+	gap: 8px;
+	align-items: center;
+	margin: 6px 0;
+}
+
+.ctl label {
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+.ctl output {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+input[type=range] {
+	width: 100%;
+	accent-color: var(--earth);
+}
+
+.presets button {
+	border: 1px solid var(--line);
+	background: var(--bg);
+	border-radius: 8px;
+	padding: 4px 10px;
+	margin: 2px 4px 2px 0;
+	cursor: pointer;
+	font: inherit;
+	font-size: .85rem;
+}
+
+/* ---------- Text helpers ---------- */
+.note {
+	color: var(--muted);
+	font-size: .9rem;
+}
+
+.badge {
+	display: inline-block;
+	padding: 2px 10px;
+	border-radius: 999px;
+	background: var(--bg);
+	border: 1px solid var(--line);
+}
+
+.box {
+	background: #fbf8ee;
+	border-left: 4px solid var(--sun);
+	padding: 8px 12px;
+	border-radius: 8px;
+	margin: 10px 0;
+	font-size: .93rem;
+}
+
+.box.warn {
+	background: #fbefee;
+	border-left-color: var(--planet);
+}
+
+/* Colour keys: legend squares and coloured words in the text */
+.c-earth    { color: var(--earth); }
+.c-planet   { color: var(--planet); }
+.c-sun      { color: var(--sun); }
+.c-deferent { color: var(--deferent); }
+.c-epicycle { color: var(--epicycle); }
+
+/* ---------- Tables ---------- */
+table {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: .85rem;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Headers and cells are centered so the columns line up under their titles. */
+th,
+td {
+	padding: 3px 8px;
+	border-bottom: 1px solid var(--line);
+	text-align: center;
+}
+
+tr.hl td {
+	background: #fbf3dc;
+}
+
+/* ---------- Equations ----------
+   Equations never wrap; any overflow scrolls quietly instead of
+   showing a scrollbar. */
+.eq {
+	display: block;
+	margin: 6px 0;
+}
+
+.side .eq {
+	font-size: .9em;
+}
+
+.theory .eq {
+	font-size: .95em;
+}
+
+.eq,
+.katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: none;
+}
+
+.eq::-webkit-scrollbar {
+	display: none;
+}
+
+.katex-display {
+	margin: .35em 0;
+}
+
+.katex {
+	white-space: nowrap;
+}
