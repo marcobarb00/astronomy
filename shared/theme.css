@@ -379,7 +379,8 @@ figcaption {
 }
 
 /* A photo (public domain or CC0 only, CLAUDE.md): an image with a
-   caption saying what to notice, and a credit line.
+   caption saying what to notice, and a credit line. It is as wide as the
+   paragraphs (70ch, border included), never wider.
 	 <figure class="photo"><img ...><figcaption> ...
 		 <span class="credit">author, year, source, licence</span>
 	 </figcaption></figure> */
@@ -389,7 +390,7 @@ figure.photo {
 	border-radius: var(--radius);
 	padding: 12px;
 	margin: 22px 0;
-	max-width: 760px;
+	max-width: 70ch;
 	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
 }
 
