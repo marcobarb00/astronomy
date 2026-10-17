@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE TEMPLATE - copy this file and page.js to the page's folder,
+     e.g. act2-sun/01-uneven-year/index.html, then:
+	   1. change every "../" in the paths below to "../../" (pages are two
+	      levels deep, this template one level);
+	   2. set data-page on <body> to the page's number in the site map
+	      (shared/components.js), and set ready: true there when publishing;
+	   3. empty <header class="page-head"></header> to have the title and the
+	      guiding question filled from the site map;
+	   4. follow the rhythm of STRUCTURE.md §5: observation, model, fit,
+	      test, residual, then exercises, sources and previous / next.
+     Every shared component appears once below.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Page template · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme (pages may add a page.css for their figures, never new colours) -->
+	<link rel="stylesheet" href="../shared/theme.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../shared/common.js"></script>
+	<script defer src="../shared/time.js"></script>
+	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/sphere3d.js"></script>
+	<script defer src="../shared/plot2d.js"></script>
+	<script defer src="../shared/errorcurve.js"></script>
+	<script defer src="../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.1">
+<div class="page">
+
+	<!-- Sticky table of contents, built from the article's <h2> -->
+	<nav class="toc" aria-label="Contents"></nav>
+
+	<article>
+
+		<!-- Page header. Leave it empty to fill it from the site map. -->
+		<header class="page-head">
+			<p class="page-number">Act N · N.N</p>
+			<h1>Page title</h1>
+			<p class="question">The guiding question of the page?</p>
+		</header>
+
+		<p>
+			One or two sentences of introduction: what the reader will be able to
+			do at the end of the page, and how it connects to the previous one.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>What is seen</h2>
+
+		<p>
+			What is seen in the sky, with numbers. Inline mathematics is written
+			between dollar signs, as in $\lambda = \bar\lambda + q$. Each idea
+			carries its origin:
+			<span class="badge" data-origin="hipparchus"></span>
+		</p>
+
+		<!-- ============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>The geometric idea</h2>
+
+		<p>The geometric idea, derived. Key equations are displayed:</p>
+
+		$$\delta = \arcsin(\sin\varepsilon \, \sin\lambda)$$
+
+		<!-- A figure: visual on the left, controls and read-out on the right -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="fig-declination"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="eps">obliquity ε</label>
+						<input id="eps" type="range" min="0" max="40" step="0.1" value="23.4">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="eps" data-value="eps">today</button>
+						<button type="button" data-target="eps" data-value="0">no tilt</button>
+					</div>
+					<div class="readout" id="declination-readout"></div>
+				</div>
+			</div>
+			<figcaption>
+				What the figure shows, what to try with the controls, and the colour
+				key: the <span class="c-sun">Sun's declination</span> over a year.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>Finding the parameters</h2>
+
+		<p>How the model's parameters are obtained from observations.</p>
+
+		<details class="fold">
+			<summary>Routine algebra (folded)</summary>
+			<p>Long routine steps may be folded; the key steps stay visible above.</p>
+		</details>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>Against the real sky</h2>
+
+		<p>The model against the reference sky, with the error curve.</p>
+
+		<figure class="fig">
+			<div id="fig-error"></div>
+			<figcaption>
+				The error curve $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
+				in arcminutes. Faint dashed curves are earlier models.
+			</figcaption>
+		</figure>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What is still wrong</h2>
+
+		<p>
+			What is still wrong, and the question that the next page answers.
+		</p>
+
+		<aside class="detour" data-topic="nutation"></aside>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				The statement. Every number in the answer comes from a script, and the
+				script's output is what is quoted.
+			</p>
+			<details class="hint">
+				<p>An optional hint.</p>
+			</details>
+			<details class="answer">
+				<p>The full worked answer, with $\LaTeX$ where needed.</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> III 4 (transl. G. J. Toomer).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 5.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>
