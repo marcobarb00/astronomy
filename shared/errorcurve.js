@@ -73,10 +73,13 @@ const ERROR_PERIOD = {
 class ErrorCurve {
 
 	/* options: body | reference, start, end (JD TT), spans
-	   ([{ label, years }] centred on the current range), resolution (days),
-	   period (days, the error's main period: sets the band's window),
-	   units ('auto' | 'arcmin' | 'deg'), yMax (fixed half-range, in the
-	   chosen units), xLabel. */
+	   ([{ label, years, yMax, units }] centred on the current range),
+	   resolution (days), period (days, the error's main period: sets the
+	   band's window), units ('auto' | 'arcmin' | 'deg'), yMax (fixed
+	   half-range, in the chosen units), xLabel.
+	   Without yMax the vertical scale follows the curves. When a slider
+	   changes a model, give each span (or the widget) a yMax large enough
+	   for every slider value, so the axis does not jump while dragging. */
 	constructor(container, options = {}) {
 		this.container = container;
 		this.body = options.body ?? null;
@@ -88,6 +91,8 @@ class ErrorCurve {
 		this.period = options.period ?? ERROR_PERIOD[this.body] ?? 365.25;
 		this.units = options.units ?? 'auto';
 		this.yMax = options.yMax ?? null;
+		this.span = null;
+		this.rescale = true;      // choose the scale at the next update
 		this.models = [];
 		this.ghosts = [];
 		this.cache = null;
@@ -103,9 +108,13 @@ class ErrorCurve {
 		const wrapper = makeEl('div');
 		const canvas = makeEl('canvas');
 
+		canvas.id = `${this.container.id || 'errorcurve'}-plot`;
+
 		this.container.classList.add('errorcurve');
 		this.legendBox = makeEl('div');
 		this.readout = makeEl('div', 'errorcurve-readout', '&nbsp;');
+
+		const initialYears = (this.end - this.start) / 365.25;
 
 		this.spans.forEach(span => {
 			const button = makeEl('button', '', span.label);
@@ -113,6 +122,12 @@ class ErrorCurve {
 			button.type = 'button';
 			button.addEventListener('click', () => this.chooseSpan(span, button));
 			spanButtons.appendChild(button);
+
+			// the preset that matches the initial range starts active
+			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
+				this.span = span;
+				button.classList.add('active');
+			}
 		});
 
 		this.pinButton = makeEl('button', '', 'Keep as ghost');
@@ -160,12 +175,14 @@ class ErrorCurve {
 	   used in the hover read-out. */
 	addModel(model) {
 		this.models.push(Object.assign({ id: `model${this.models.length}` }, model));
+		this.rescale = true;
 		this.update();
 	}
 
 	/* A faint curve from an earlier model, for comparison. */
 	addGhost(ghost) {
 		this.ghosts.push(Object.assign({ id: `ghost${this.ghosts.length}` }, ghost));
+		this.rescale = true;
 		this.update();
 	}
 
@@ -199,6 +216,7 @@ class ErrorCurve {
 		this.start = start;
 		this.end = end;
 		this.cache = null;
+		this.rescale = true;
 		this.update();
 	}
 
@@ -206,6 +224,8 @@ class ErrorCurve {
 	chooseSpan(span, button) {
 		const centre = (this.start + this.end) / 2;
 		const halfDays = span.years * 365.25 / 2;
+
+		this.span = span;
 
 		this.spanButtons.querySelectorAll('button').forEach(b => {
 			b.classList.toggle('active', b === button);
@@ -305,7 +325,7 @@ class ErrorCurve {
 
 	/* Sample every curve and choose the vertical scale. */
 	sampleAll() {
-		let largest = 1;
+		let largest = 0;
 
 		this.curves = [...this.ghosts, ...this.models].map(entry => {
 			const sample = this.sampleCurve(entry.fn);
@@ -315,15 +335,38 @@ class ErrorCurve {
 			return { entry, sample, ghost: this.ghosts.includes(entry) };
 		});
 
-		this.inDegrees = this.units === 'deg' ||
-			(this.units === 'auto' && largest > ERROR_DEGREES_THRESHOLD);
+		if (this.rescale) {
+			this.chooseScale(Math.max(largest, 1));
+			this.rescale = false;
+		}
 
-		const unitFactor = this.inDegrees ? 1 / 60 : 1;
-		const half = this.yMax ?? niceCeiling(largest * unitFactor * 1.08);
+		this.checkScale(largest);
+	}
 
-		this.unitFactor = unitFactor;
-		this.plot.setRange([this.startYear(), this.endYear()], [-half, half]);
+	/* The scale changes only when the view changes (new range, span or
+	   curve), never while a slider moves a model (CLAUDE.md): a span preset
+	   may fix it (yMax, units), otherwise it fits the curves of that moment. */
+	chooseScale(largest) {
+		const units = this.span?.units ?? this.units;
+		const fixedHalf = this.span?.yMax ?? this.yMax;
+
+		this.inDegrees = units === 'deg' ||
+			(units === 'auto' && largest > ERROR_DEGREES_THRESHOLD);
+		this.unitFactor = this.inDegrees ? 1 / 60 : 1;
+		this.half = fixedHalf ?? niceCeiling(largest * this.unitFactor * 1.08);
+
+		this.plot.setRange([this.startYear(), this.endYear()], [-this.half, this.half]);
 		this.plot.yLabel = this.inDegrees ? 'Δλ (degrees)' : 'Δλ (arcminutes)';
+	}
+
+	/* Warn (once) when a curve leaves the scale: the page must give the
+	   span a yMax that covers every value its sliders allow. */
+	checkScale(largest) {
+		if (largest * this.unitFactor > this.half && !this.warnedScale) {
+			this.warnedScale = true;
+			console.warn(`ErrorCurve "${this.container.id}": a curve leaves the scale ` +
+				`(±${this.half}); set yMax to cover every value of the sliders.`);
+		}
 	}
 
 
@@ -374,18 +417,34 @@ class ErrorCurve {
 		}
 	}
 
-	/* Legend entries for the ghosts, then the models. */
+	/* Legend entries for the ghosts, then the models, each sample drawn
+	   like its curve (a line, or a band over long spans), and the shading
+	   of the dates outside the reference's range when it is visible. */
 	updateLegend() {
-		const items = [...this.ghosts, ...this.models].map(entry => {
+		const items = (this.curves ?? []).map(({ entry, sample, ghost }) => {
 			return {
 				label: entry.label,
 				color: entry.color ?? COL.muted,
-				ghost: this.ghosts.includes(entry)
+				mark: sample.isBand ? 'band' : 'line',
+				ghost: ghost
 			};
 		});
 
+		if (this.showsOutOfRange()) {
+			items.push({
+				label: 'outside the valid range of the reference sky',
+				color: COL.muted,
+				mark: 'band'
+			});
+		}
+
 		Plot2D.legend(this.legendBox, items);
 		this.clearButton.disabled = !this.ghosts.some(ghost => ghost.pinned);
+	}
+
+	/* Does the range reach beyond the dates where the ephemeris is valid? */
+	showsOutOfRange() {
+		return this.start < Ephem.RANGE.start || this.end > Ephem.RANGE.end;
 	}
 
 

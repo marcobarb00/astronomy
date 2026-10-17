@@ -42,7 +42,7 @@ const FAR_SIDE_ALPHA = 0.25;       // opacity of path segments behind the sphere
 const FAR_ARROW_ALPHA = 0.35;      // opacity of arrows pointing away from the viewer
 const ARROW_HEAD_SIZE = 9;         // px
 const DRAG_DEGREES_PER_PX = 0.5;
-const LABEL_FONT = '600 14px system-ui, sans-serif';
+const LABEL_FONT = '600 15px system-ui, sans-serif';
 
 
 /* ==========================================================================

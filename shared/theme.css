@@ -424,7 +424,7 @@ canvas.plot2d {
 	text-align: right;
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
-	font-size: .92rem;
+	font-size: 1rem;
 }
 
 /* Sliders drawn with the palette (the browser default picks its own
@@ -507,15 +507,11 @@ button.small:hover {
 	color: var(--card);
 }
 
-/* Live numbers next to a figure. */
+/* Live numbers next to a figure, about the size of the body text. */
 .readout {
-	font-size: .9rem;
+	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 8px;
-}
-
-.readout .eq {
-	font-size: .92em;
 }
 
 
@@ -720,6 +716,30 @@ a.detour:hover {
 	border-top-width: 2px;
 }
 
+/* A point marker (e.g. the chosen date) instead of a line. */
+.swatch.dot {
+	width: 10px;
+	height: 10px;
+	margin: 0 6px;
+	border-top: none;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+/* A filled band (a min / max envelope, a shaded region). */
+.swatch.band {
+	height: 12px;
+	border-top: none;
+	border-radius: 2px;
+	background: currentColor;
+	opacity: .45;
+}
+
+.swatch.band.ghost {
+	opacity: .2;
+	border: 1px dashed currentColor;
+}
+
 .legend-item.ghost {
 	color: var(--muted);
 }
@@ -733,9 +753,8 @@ a.detour:hover {
 }
 
 .errorcurve-readout {
-	min-height: 1.5em;
-	color: var(--muted);
-	font-size: .85rem;
+	min-height: 1.6em;
+	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 6px;
 }
