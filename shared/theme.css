@@ -11,7 +11,7 @@
 	 4. Article layout and sticky table of contents
 	 5. Prose, equations, tables
 	 6. Cards, boxes, colour keys
-	 7. Figures and controls
+	 7. Figures, controls and figure keys
 	 8. Origin badges
 	 9. Exercises
 	10. Detour cards
@@ -351,7 +351,7 @@ code {
 
 
 /* ==========================================================================
-   7. FIGURES AND CONTROLS
+   7. FIGURES, CONTROLS AND FIGURE KEYS
    ========================================================================== */
 
 figure.fig {
@@ -512,6 +512,50 @@ button.small:hover {
 	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 8px;
+}
+
+
+/* Figure key: one line per element of a figure, instead of a paragraph
+   of explanations (CLAUDE.md). A figure may have several keys ("In the
+   figure", "Read-out"); they sit side by side when there is room.
+	 <div class="keys">
+		 <div><p class="key-title">In the figure</p>
+			 <dl class="key"><dt>Z</dt><dd>the zenith ...</dd></dl></div>
+	 </div> */
+.keys {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 12px 32px;
+	margin-top: 14px;
+	padding-top: 12px;
+	border-top: 1px solid var(--line);
+}
+
+.key-title {
+	margin: 0 0 6px;
+	color: var(--muted);
+	font-size: .8rem;
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+dl.key {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
+	gap: 5px 12px;
+	margin: 0;
+	font-size: .95rem;
+	line-height: 1.45;
+}
+
+dl.key dt {
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+dl.key dd {
+	margin: 0;
 }
 
 
@@ -750,6 +794,16 @@ a.detour:hover {
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
+}
+
+.errorcurve-note {
+	color: var(--muted);
+	font-size: .9rem;
+	margin-top: 6px;
+}
+
+.errorcurve-note:empty {
+	display: none;
 }
 
 .errorcurve-readout {
