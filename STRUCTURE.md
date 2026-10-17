@@ -95,18 +95,33 @@ The language needed to state any prediction.
   origin; transformations as compositions of rotations; the spherical
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** one fixed direction shown in two frames at once; the axes
-  rotate, the point does not.
-- **Exercises:** derive ecliptic → equatorial; the right ascension and
-  declination of the Sun at $\lambda = 60^\circ$; the altitude of a star at
-  transit.
-- **Hands over:** frames are fixed, but the sky turns: we need time.
+  rotate, the point does not (ecliptic and equator; equator and horizon, both
+  drawn in the equatorial frame). The Sun's $\delta$ and $\alpha - \lambda$
+  against $\lambda$, with Ptolemy's tables.
+- **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
+  $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
+- **Test:** the formulas against Ptolemy's tables of declination and right
+  ascension (*Almagest* I 15–16); the frames with a fixed obliquity against
+  the real Sun's $(\alpha, \delta)$.
+- **Exercises:** the inverse, equatorial → ecliptic, by transposing (the
+  forward transformation is derived in the text, which needs it); the right
+  ascension and declination of the Sun at $\lambda = 60^\circ$; the angle
+  between the ecliptic and the horizon (the altitude at transit was already
+  page 1.1's).
+- **Introduces:** $\theta$, the angle the sky has turned since γ crossed the
+  meridian, and $H = \theta - \alpha$; page 1.3 names $\theta$ the local
+  sidereal time and reads it off a clock.
+- **Hands over:** the obliquity and the origin drift (page 2.3); first, the
+  turn $\theta$ is still a free slider: we need time.
 
 #### 1.3 · Clocks
 
 - **Question:** what time is it according to the sky?
 - **Learn:** sidereal day versus solar day (one extra turn per year);
-  sidereal time; hour angle $H = \text{LST} - \alpha$; mean solar time;
-  Julian Date as a continuous time scale.
+  sidereal time; hour angle $H = \text{LST} - \alpha$ (page 1.2 already wrote
+  $H = \theta - \alpha$, with $\theta$ the turn of the sky: here
+  $\theta = \text{LST}$); mean solar time; Julian Date as a continuous time
+  scale.
 - **Payoff:** day length as a function of latitude and date; transit times
   of stars. Day length counts the Sun's upper limb with refraction
   ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
@@ -151,6 +166,9 @@ The first anomaly and the simplest complete model.
   onto the equator); their sum; the analemma.
 - **Figures:** the two components and their sum over a year; the analemma
   drawn as the Sun's position at mean noon.
+- **When building:** the obliquity part is the reduction to the equator,
+  $\alpha - \lambda$, already plotted in Figure 3(b) of page 1.2
+  (`Frames.reduction` in `shared/models/frames.js`).
 - **Exercises:** compute the equation of time on a given date and split it
   into its two parts; find the dates when it vanishes.
 - **Hands over:** the orientation of the whole picture is not fixed either.
@@ -322,10 +340,13 @@ once on the page.
 |---|---|
 | $\alpha,\ \delta$ | right ascension, declination |
 | $\lambda,\ \beta$ | ecliptic longitude, latitude |
-| $A,\ a$ | azimuth, altitude |
+| $A,\ a$ | azimuth (from north through east), altitude |
 | $\varphi$ | observer's latitude |
 | $\varepsilon$ | obliquity of the ecliptic |
-| $H$ | hour angle |
+| $H$ | hour angle, $H = \theta - \alpha$ |
+| $\theta$ | the angle the sky has turned since γ crossed the meridian (local sidereal time, page 1.3) |
+| γ | the vernal point, origin of $\alpha$ and $\lambda$ (♈ in older books) |
+| P, K, Z | north celestial pole, north ecliptic pole, zenith |
 | $\bar\lambda$ | mean longitude |
 | $M$ | mean anomaly, measured from the apogee |
 | $q$ | equation of centre ($\lambda = \bar\lambda + q$) |
@@ -404,11 +425,11 @@ from a local static server.
 | `shared/components.js` | Badges, exercises with hint and answer, detour cards, sticky table of contents, previous/next navigation. |
 | `shared/tests.html` | A test page that checks the ephemeris and time functions against published worked examples and prints pass/fail. |
 
-Models built on one page and reused later (the turning sky, the solar
-eccentric, the lunar epicycle, the planetary equant) live in `shared/models/`
-so later pages and the error-curve ghosts can call them. A model that does not
-predict a longitude (the turning sky, `models/diurnal.js`) exports plain
-functions instead of `make()`.
+Models built on one page and reused later (the turning sky, the frames, the
+solar eccentric, the lunar epicycle, the planetary equant) live in
+`shared/models/` so later pages and the error-curve ghosts can call them. A
+model that does not predict a longitude (the turning sky, `models/diurnal.js`;
+the frames, `models/frames.js`) exports plain functions instead of `make()`.
 
 ## 9. Repository layout
 

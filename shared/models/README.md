@@ -22,3 +22,4 @@ instead of `make()`, since the error curve cannot judge it.
 | File | Page | Contents |
 |---|---|---|
 | `diurnal.js` | 1.1 | `Diurnal`: the turning sky. Frames (sky, horizon), altitude, culminations, rising hour angle, fraction of a turn above the horizon. |
+| `frames.js` | 1.2 | `Frames`: the equatorial, ecliptic and horizon frames. Rotation matrices and the multiplied-out formulas between them, azimuth from the north, the reduction to the equator, the angle between the ecliptic and the horizon; Ptolemy's obliquity and his tables of declination and right ascension (*Almagest* I 15–16). |
