@@ -35,6 +35,25 @@ same style:
   earth / planet / sun / deferent / epicycle colours) and the shared `COL`
   palette in the JS are the shared theme: reuse them, do not invent new colours.
 - Format the equations with KaTeX.
+
+### Rules for every figure
+
+- Every element shown in a figure (a labelled point, a letter, a curve, a
+  shaded region, a symbol in a read-out, a line that follows the pointer)
+  is explained in the text or the caption. If it is not worth explaining,
+  remove it.
+- Text in and next to a figure is easy to read: read-outs and slider values
+  at the size of the body text, labels drawn on a canvas at 13 px or more.
+  The shared theme and `plot2d.js` / `sphere3d.js` already do this; do not
+  shrink them per page.
+- A legend sample looks like the mark it describes: a dot for a point, a line
+  for a curve, a band for a filled region, faint and dashed for a ghost
+  (`Plot2D.legend` takes `mark: 'line' | 'dot' | 'band'`).
+- Scales never jump while a control moves. When a slider changes what is
+  plotted, fix the axis range to cover every value the slider allows, with
+  the bound computed by a script. A scale may change only when the reader
+  changes the view (e.g. a span preset). `Plot2D` and `ErrorCurve` print a
+  console warning when data leaves the scale: a page must not trigger it.
 - Only when it is useful, generate 3D diagrams.
 
 ## Sources
