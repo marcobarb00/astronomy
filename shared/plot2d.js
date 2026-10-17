@@ -32,8 +32,8 @@
    1. CONSTANTS
    ========================================================================== */
 
-const PLOT_FONT = '12px system-ui, sans-serif';
-const PLOT_LABEL_FONT = '600 12px system-ui, sans-serif';
+const PLOT_FONT = '13px system-ui, sans-serif';
+const PLOT_LABEL_FONT = '600 13px system-ui, sans-serif';
 const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 
 
@@ -313,6 +313,23 @@ class Plot2D {
 		this.ctx.setLineDash([]);
 	}
 
+	/* A figure's scale must show every value its controls allow (CLAUDE.md):
+	   warn, once per plot, when data falls outside the y range. Pass
+	   style.clip = true where cutting the curve is intended (e.g. tan). */
+	checkInside(ys, style) {
+		if (style.clip || this.warnedOutside) {
+			return;
+		}
+
+		const outside = ys.some(y => Number.isFinite(y) && (y < this.y[0] || y > this.y[1]));
+
+		if (outside) {
+			this.warnedOutside = true;
+			console.warn(`Plot2D "${this.canvas.id}": data outside the y range [${this.y}]; ` +
+				'widen the fixed range to cover every value of the controls.');
+		}
+	}
+
 	/* Polyline through (xs[i], ys[i]); NaN / null values break the line.
 	   style.breakAt (optional) breaks it where |dy| jumps more than that
 	   (e.g. 180 for a wrapped longitude). */
@@ -320,6 +337,7 @@ class Plot2D {
 		const { ctx } = this;
 		let penDown = false;
 
+		this.checkInside(ys, style);
 		this.clip();
 		this.stroke(style);
 		ctx.beginPath();
@@ -395,6 +413,7 @@ class Plot2D {
 	marker(x, y, style = {}) {
 		const { ctx } = this;
 
+		this.checkInside([y], style);
 		ctx.fillStyle = style.color ?? COL.planet;
 		ctx.beginPath();
 		ctx.arc(this.px(x), this.py(y), style.radius ?? 5, 0, TAU);
@@ -436,7 +455,9 @@ class Plot2D {
 	/* ======================================================================
 	   6. LEGEND (HTML)
 	   Built in HTML, not on the canvas, so labels can carry KaTeX ($...$).
-	   items: [{ label, color, ghost }]
+	   items: [{ label, color, mark, ghost }]. The sample must look like
+	   the mark it describes (CLAUDE.md): mark 'line' (default), 'dot' for
+	   a point, 'band' for a filled region; ghost makes it faint and dashed.
 	   ====================================================================== */
 
 	static legend(container, items) {
@@ -445,7 +466,8 @@ class Plot2D {
 
 		items.forEach(item => {
 			const entry = makeEl('span', 'legend-item' + (item.ghost ? ' ghost' : ''));
-			const swatch = makeEl('span', 'swatch' + (item.ghost ? ' ghost' : ''));
+			const mark = item.mark && item.mark !== 'line' ? ` ${item.mark}` : '';
+			const swatch = makeEl('span', 'swatch' + mark + (item.ghost ? ' ghost' : ''));
 			const label = makeEl('span', '', item.label);
 
 			swatch.style.color = item.color;

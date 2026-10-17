@@ -1,6 +1,6 @@
 /* ==========================================================================
    DEMO OF THE SHARED COMPONENTS - SCRIPT (demo.js)
-   One date (day of 2026 + time UT) drives three figures:
+   Three figures; the chosen date (day of 2026 + time UT) drives the first two:
 	 1. a 3D celestial sphere   (Sphere3D, Time, Ephem)
 	 2. a 2D plot               (Plot2D, Ephem.equationOfTime)
 	 3. an error curve          (ErrorCurve: uniform circle vs reference Sun)
@@ -94,7 +94,7 @@ const skyFigure = {
 		}
 
 		const s = this.sphere;
-		const { eps, sunVector, zenith, latitude } = this.state;
+		const { eps, sunVector, zenith } = this.state;
 		const eclipticB = [0, cos(eps), sin(eps)];
 
 		s.outline();
@@ -109,13 +109,13 @@ const skyFigure = {
 		s.circle([1, 0, 0], [0, 1, 0], { color: COL.earth, width: 2 });
 		s.circle([1, 0, 0], eclipticB, { color: COL.sun, width: 2 });
 
-		// polar axis, zenith, vernal point
+		// polar axis (arrow towards the north pole P), zenith, vernal point
 		s.axis([0, 0, 1.2], 'P', { color: COL.muted });
-		s.arrow([0, 0, 0], [0, 0, -1.2], { color: COL.muted, width: 1 });
+		s.path([[0, 0, 0], [0, 0, -1.2]], { color: COL.muted, width: 1 });
 		s.point(zenith, { color: COL.deferent, radius: 4 });
 		s.label('Z', zenith, { color: COL.deferent });
 		s.point([1, 0, 0], { color: COL.sun, radius: 3 });
-		s.label('γ', [1, 0, 0], { color: COL.sun });
+		s.label('γ', [1, 0, 0], { color: COL.sun, dx: -16, dy: 18 });   // below-left: clear of the Sun at the equinox
 
 		// Vega and its daily circle
 		s.smallCircle([0, 0, 1], 90 - VEGA.dec, { color: COL.planet, width: 1.5, dash: [5, 4] });
@@ -125,11 +125,6 @@ const skyFigure = {
 		// the Sun
 		s.point(sunVector, { color: COL.sun, radius: 8, ring: true });
 		s.label('Sun', sunVector, { color: COL.ink, dx: 10 });
-
-		// latitude caption in the corner
-		s.ctx.fillStyle = COL.muted;
-		s.ctx.font = '13px system-ui, sans-serif';
-		s.ctx.fillText(`φ = ${latitude}°`, 10, s.height - 10);
 	}
 };
 
@@ -158,7 +153,7 @@ const eotFigure = {
 
 		Plot2D.legend(byId('eot-legend'), [
 			{ label: 'equation of time $E$ (reference Sun)', color: COL.sun },
-			{ label: 'chosen date', color: COL.planet }
+			{ label: 'chosen date', color: COL.planet, mark: 'dot' }
 		]);
 	},
 
@@ -224,10 +219,14 @@ const errorFigure = {
 			body: 'sun',
 			start: start,
 			end: start + 365.25,
+			// Fixed scales, so the axis does not jump while the slider moves:
+			// the largest |Δλ| for any Y in [365.20, 365.30] d and for the
+			// ghost is 205' over 1 year, 222' over 10 years and 17.6° over
+			// 500 years (computed by script).
 			spans: [
-				{ label: '1 year', years: 1 },
-				{ label: '10 years', years: 10 },
-				{ label: '500 years', years: 500 }
+				{ label: '1 year', years: 1, yMax: 250, units: 'arcmin' },
+				{ label: '10 years', years: 10, yMax: 250, units: 'arcmin' },
+				{ label: '500 years', years: 500, yMax: 20, units: 'deg' }
 			]
 		});
 

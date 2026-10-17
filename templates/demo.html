@@ -50,20 +50,27 @@
 			Everything on this page comes from <code>shared/</code>: the Sun's
 			position from the reference ephemeris, clock and sidereal time from
 			<code>time.js</code>, a draggable sphere, a 2D plot and the error-curve
-			widget. One date drives all three figures.
+			widget. One date drives the first two figures.
 		</p>
 
 		<!-- =============================== SPHERE =============================== -->
 		<h2 id="sphere">The sky on a date</h2>
 
 		<p>
-			The celestial sphere in the equatorial frame: the
-			<span class="c-earth">equator</span>, the
-			<span class="c-sun">ecliptic</span> with the Sun at its reference
-			position, the <span class="c-deferent">horizon</span> of an observer on
-			the Greenwich meridian at latitude $\varphi$, and the daily circle of
-			<span class="c-planet">Vega</span> ($\delta = +38.8^\circ$). A star is
-			circumpolar when $\delta > 90^\circ - \varphi$.
+			The celestial sphere in the equatorial frame. The axis points to the
+			north celestial pole <strong>P</strong>; the
+			<span class="c-earth">equator</span> is the great circle 90° from it.
+			The <span class="c-sun">ecliptic</span> crosses the equator at the
+			vernal point <strong class="c-sun">γ</strong>, the origin of right
+			ascension and of ecliptic longitude, and carries the Sun at its
+			reference position for the chosen date. An observer on the Greenwich
+			meridian at latitude $\varphi$ has the zenith
+			<strong class="c-deferent">Z</strong> straight overhead, and the
+			<span class="c-deferent">horizon</span> is the great circle 90° from Z:
+			the Sun is up when it lies on Z's side of it. The dashed circle is the
+			daily path of <span class="c-planet">Vega</span>
+			($\delta = +38.8^\circ$); a star never sets when
+			$\delta > 90^\circ - \varphi$.
 			<span class="badge" data-origin="greek"></span>
 		</p>
 
@@ -98,8 +105,12 @@
 				</div>
 			</div>
 			<figcaption>
-				Drag the sphere to turn it. Lines behind the sphere are faded. The
-				date and time also move the marker on the next two figures.
+				Drag the sphere to turn it; lines behind it are faded. Read-out:
+				the local sidereal time LST (the right ascension on the meridian),
+				the Sun's ecliptic longitude $\lambda_\odot$, its right ascension
+				$\alpha_\odot$ and declination $\delta_\odot$, and its altitude
+				$a_\odot$ above the horizon (the angle from the horizon towards Z).
+				The date and time also move the marker on the next figure.
 			</figcaption>
 		</figure>
 
@@ -120,7 +131,8 @@
 			<div class="readout" id="eot-readout">&nbsp;</div>
 			<figcaption>
 				Positive values: the sundial is ahead of the clock. The dot is the
-				date chosen above.
+				date chosen above. Under the pointer, a dashed line marks the day
+				whose value is read below the plot.
 			</figcaption>
 		</figure>
 
@@ -146,8 +158,10 @@
 			<div id="fig-error"></div>
 			<figcaption>
 				Change the length of the year and press <em>Keep as ghost</em> to
-				compare. Over long spans each pixel column is drawn as the band
-				between the smallest and the largest error.
+				compare. Over long spans each curve is drawn as a band between its
+				smallest and largest error within one year. Under the pointer, a
+				dashed line marks the date whose errors are read below the plot.
+				Each span has a fixed scale that holds every value of the slider.
 			</figcaption>
 		</figure>
 
