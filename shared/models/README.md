@@ -16,4 +16,9 @@ Conventions for a model file `shared/models/<name>.js`:
   computed by a script or quoted from the source.
 - No DOM at load time; header and section comments as in the other shared files.
 
-Empty for now: the first model arrives with page 2.1.
+A model that does not predict a longitude exports plain, documented functions
+instead of `make()`, since the error curve cannot judge it.
+
+| File | Page | Contents |
+|---|---|---|
+| `diurnal.js` | 1.1 | `Diurnal`: the turning sky. Frames (sky, horizon), altitude, culminations, rising hour angle, fraction of a turn above the horizon. |

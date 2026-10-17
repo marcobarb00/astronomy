@@ -72,20 +72,25 @@ The language needed to state any prediction.
 - **Learn:** the celestial sphere as a model of directions; diurnal rotation
   as a rotation about the polar axis; the role of the observer's latitude
   $\varphi$; circumpolar, rising and never-rising stars; the horizon.
-- **Math:** unit vectors, rotation matrices $R_x(\theta)$, $R_z(\theta)$,
-  the altitude of a star as a dot product.
+- **Math:** unit vectors, rotation matrices $R_y(\theta)$ (the tilt about the
+  east–west axis) and $R_z(\theta)$ (the turn), the altitude of a star as a dot
+  product; the turning Earth and the turning sky give the same altitudes.
 - **Figures:** 3D sphere with horizon, pole and a star's daily circle;
   latitude and time sliders.
 - **Exercises:** the condition $\delta > 90^\circ - \varphi$ for a circumpolar
   star; the fraction of the day a star of declination $\delta$ is above the
-  horizon.
+  horizon (and Ptolemy's longest day at Rhodes); the equinox day, 10 minutes
+  longer than the model's 12 hours (refraction and the Sun's radius).
+- **Test:** the model's altitude against the real sky; the residual is
+  refraction near the horizon (`Ephem.refraction`).
 - **Hands over:** "rotation about the pole" needs coordinates to be stated
   precisely.
 
 #### 1.2 · Frames
 
 - **Question:** how do we name a direction, and how do we change names?
-- **Learn:** equatorial $(\alpha, \delta)$, ecliptic $(\lambda, \beta)$ and
+- **Learn:** equatorial $(\alpha, \delta)$ ($\delta$ was met on page 1.1 as the
+  distance from the equator; $\alpha$ completes it), ecliptic $(\lambda, \beta)$ and
   horizontal $(A, a)$ frames, each defined by a fundamental plane and an
   origin; transformations as compositions of rotations; the spherical
   trigonometry formulas obtained by multiplying out the matrices.
@@ -103,7 +108,8 @@ The language needed to state any prediction.
   sidereal time; hour angle $H = \text{LST} - \alpha$; mean solar time;
   Julian Date as a continuous time scale.
 - **Payoff:** day length as a function of latitude and date; transit times
-  of stars.
+  of stars. Day length counts the Sun's upper limb with refraction
+  ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
 - **Exercises:** how many sidereal days in a year and why; when a given star
   transits at the reader's longitude on a given night.
 - **Hands over:** we assumed the Sun moves uniformly along the ecliptic. It
@@ -287,7 +293,9 @@ Every page follows the same rhythm:
 1. **Observation.** What is seen in the sky, with numbers.
 2. **Model.** The geometric idea, derived.
 3. **Fit.** How the model's parameters are obtained from observations.
-4. **Test.** The model against the reference sky, with the error curve.
+4. **Test.** The model against the reference sky, with the error curve from
+   page 2.1 on. Act I has no longitude model: its pages test the quantity
+   they predict (an altitude, a rising time).
 5. **Residual.** What is still wrong, and the question for the next page.
 
 Followed by:
@@ -353,7 +361,9 @@ Two or three per page, of four kinds:
 
 Each exercise has an optional hint and a full worked answer, both collapsed.
 **Every numerical answer is computed by a script, not by hand**, and the
-script's output is what goes in the answer.
+script's output is what goes in the answer. The script is kept in
+`scripts/numbers/` (one per page, loading the shared code in Node), with any
+raw data it was built from.
 
 ### 7.3 The error curve
 
@@ -382,14 +392,17 @@ from a local static server.
 | `shared/sphere3d.js` | Drawing a draggable 3D sphere on a canvas: projection, great circles, arcs, labels, front/back styling. |
 | `shared/plot2d.js` | Simple 2D plots: axes, curves, markers, legends. Used by the error curve and other graphs. |
 | `shared/time.js` | Julian Date, calendar conversions, sidereal time. |
-| `shared/ephemeris.js` | The reference sky: geocentric ecliptic longitudes of the Sun, the Moon and the planets from modern analytical theories (see §11). Documents its accuracy and range. |
+| `shared/ephemeris.js` | The reference sky: geocentric ecliptic longitudes of the Sun, the Moon and the planets from modern analytical theories (see §11), precession, and atmospheric refraction. Documents its accuracy and range. |
+| `shared/stars.js` | Bright stars (J2000 positions and proper motions from SIMBAD) and their positions of date. |
 | `shared/errorcurve.js` | The error-curve widget (§7.3). |
 | `shared/components.js` | Badges, exercises with hint and answer, detour cards, sticky table of contents, previous/next navigation. |
 | `shared/tests.html` | A test page that checks the ephemeris and time functions against published worked examples and prints pass/fail. |
 
-Models built on one page and reused later (the solar eccentric, the lunar
-epicycle, the planetary equant) live in `shared/models/` so later pages and
-the error-curve ghosts can call them.
+Models built on one page and reused later (the turning sky, the solar
+eccentric, the lunar epicycle, the planetary equant) live in `shared/models/`
+so later pages and the error-curve ghosts can call them. A model that does not
+predict a longitude (the turning sky, `models/diurnal.js`) exports plain
+functions instead of `make()`.
 
 ## 9. Repository layout
 
@@ -399,6 +412,7 @@ STRUCTURE.md               this file
 shared/                    see §8
   models/
 templates/                 page template and a demo of the shared components
+scripts/numbers/           the script behind each page's numbers (§7.2)
 act0-hook/
   01-mars-tonight/         index.html, page.js, page.css (optional)
 act1-stage/
@@ -457,6 +471,8 @@ Modern references:
   used by the reference sky.
 - JPL Horizons (DE441): the yardstick for the reference sky's documented
   accuracy and for some of the tests.
+- SIMBAD (CDS, Strasbourg): star positions and proper motions (ICRS J2000)
+  for `shared/stars.js`.
 - J. Evans, *The History and Practice of Ancient Astronomy*.
 - O. Neugebauer, *A History of Ancient Mathematical Astronomy*.
 
