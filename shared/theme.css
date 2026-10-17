@@ -11,7 +11,7 @@
 	 4. Article layout and sticky table of contents
 	 5. Prose, equations, tables
 	 6. Cards, boxes, colour keys
-	 7. Figures, controls and figure keys
+	 7. Figures, controls and figure keys (and photos)
 	 8. Origin badges
 	 9. Exercises
 	10. Detour cards
@@ -376,6 +376,38 @@ figcaption {
 	font-size: .9rem;
 	margin-top: 12px;
 	max-width: 80ch;
+}
+
+/* A photo (public domain or CC0 only, CLAUDE.md): an image with a
+   caption saying what to notice, and a credit line.
+	 <figure class="photo"><img ...><figcaption> ...
+		 <span class="credit">author, year, source, licence</span>
+	 </figcaption></figure> */
+figure.photo {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 12px;
+	margin: 22px 0;
+	max-width: 760px;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+figure.photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+figure.photo figcaption {
+	margin-top: 10px;
+}
+
+.credit {
+	display: block;
+	margin-top: 4px;
+	font-size: .8rem;
 }
 
 /* "Figure 3." label inserted by components.js. */

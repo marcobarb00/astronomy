@@ -11,7 +11,7 @@ shared code in Node, and prints the numbers quoted on the page.
 Run from the repository root, e.g.
 
 ```
-node scripts/numbers/1.1-turning-sky.js
+node tools/numbers/1.1-turning-sky.js
 ```
 
 `data/` holds the raw downloads the shared data were copied from, with the

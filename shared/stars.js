@@ -7,7 +7,7 @@
    SOURCE
 	 SIMBAD (CDS, Strasbourg), table "basic": ICRS right ascension and
 	 declination at epoch J2000 (Hipparcos-based) and proper motions,
-	 retrieved 2026-10-17 with scripts/numbers/data/fetch-stars.sh. Values are
+	 retrieved 2026-10-17 with tools/numbers/data/fetch-stars.sh. Values are
 	 copied as returned, in degrees and milliarcseconds per year
 	 (pmra = mu_alpha cos delta, as in SIMBAD).
 

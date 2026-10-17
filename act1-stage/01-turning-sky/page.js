@@ -8,7 +8,7 @@
 	 4. the model against the sky (2D: altitude error from refraction)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
    sphere3d.js, plot2d.js, components.js.
-   Every number quoted in the prose comes from scripts/numbers/1.1-turning-sky.js.
+   Every number quoted in the prose comes from tools/numbers/1.1-turning-sky.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
@@ -563,7 +563,7 @@ const dayFigure = {
    Over one turn, the model's altitude minus the real one. The model's
    star is fitted on the night (its position of TEST_EPOCH); the real sky
    adds refraction. Fixed scale: the deepest value is -34.4' (a star on
-   the seen horizon), computed in scripts/numbers/1.1-turning-sky.js.
+   the seen horizon), computed in tools/numbers/1.1-turning-sky.js.
    ========================================================================== */
 
 const TEST_Y_RANGE = [-40, 5];         // arcminutes

@@ -72,6 +72,19 @@ same style:
   changes the view (e.g. a span preset). `Plot2D` and `ErrorCurve` print a
   console warning when data leaves the scale: a page must not trigger it.
 
+### Photos
+
+- When a photo helps (the sky itself, an instrument, a historical object),
+  add one. Use only images in the public domain or under CC0: check the
+  licence on the source page, never assume it.
+- Save it, at web size, in the page's `images/` folder, and record the
+  author, date, source URL and licence in `images/CREDITS.md`.
+- Show it as `<figure class="photo">` (styled by `shared/theme.css`). The
+  caption says what to notice, as for a figure, and ends with a credit line
+  (author, year, source, licence). Everything visible in the photo that the
+  caption relies on is explained (e.g. the satellite streaks across star
+  trails).
+
 ### Writing
 
 - No walls of text: short paragraphs of one idea each, about four lines at
