@@ -93,7 +93,7 @@ const Site = (function () {
 			path: 'act0-hook/01-mars-tonight/'
 		},
 		{
-			number: '1.1', act: 1, ready: false,
+			number: '1.1', act: 1, ready: true,
 			title: 'The turning sky',
 			question: 'What moves, and around what?',
 			path: 'act1-stage/01-turning-sky/'

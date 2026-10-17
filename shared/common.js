@@ -11,7 +11,7 @@
 	 4. Formatting helpers    (degrees, sexagesimal, hours, days, TeX)
 	 5. Colour helpers        (translucent versions of the palette)
 	 6. DOM and KaTeX helpers
-	 7. UI wiring helpers     (sliders, presets)
+	 7. UI wiring helpers     (sliders, presets, play button)
    ========================================================================== */
 
 
@@ -503,4 +503,55 @@ function wirePresets(root = document) {
 			button.addEventListener('click', () => applyPreset(button));
 		}
 	});
+}
+
+/* Play / pause button that runs a slider forward at 'unitsPerSecond'
+   (slider units, e.g. hours), wrapping from max back to min. Grabbing
+   the slider or using its keys pauses it, so the thumb never moves
+   under the pointer (CLAUDE.md). Returns { pause }. */
+function wirePlayButton(button, slider, unitsPerSecond) {
+	const playLabel = '▶ play';
+	const pauseLabel = '❚❚ pause';
+	let playing = false;
+	let lastTime = null;
+
+	const advance = now => {
+		if (!playing) {
+			return;
+		}
+
+		if (lastTime !== null) {
+			const min = Number(slider.min);
+			const max = Number(slider.max);
+			let value = Number(slider.value) + (now - lastTime) / 1000 * unitsPerSecond;
+
+			if (value > max) {
+				value = min + (value - max);
+			}
+
+			slider.value = value;
+			slider.dispatchEvent(new Event('input'));
+		}
+
+		lastTime = now;
+		requestAnimationFrame(advance);
+	};
+
+	const setPlaying = on => {
+		playing = on;
+		lastTime = null;
+		button.textContent = on ? pauseLabel : playLabel;
+		button.setAttribute('aria-pressed', on ? 'true' : 'false');
+
+		if (on) {
+			requestAnimationFrame(advance);
+		}
+	};
+
+	button.addEventListener('click', () => setPlaying(!playing));
+	slider.addEventListener('pointerdown', () => setPlaying(false));
+	slider.addEventListener('keydown', () => setPlaying(false));
+	setPlaying(false);
+
+	return { pause: () => setPlaying(false) };
 }

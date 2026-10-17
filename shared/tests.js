@@ -4,7 +4,8 @@
    examples of J. Meeus, Astronomical Algorithms (2nd ed., 1998), the SOFA /
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
-   pass / fail with the error.
+   pass / fail with the error. Also checks stars.js and the model of the
+   turning sky (models/diurnal.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -18,7 +19,8 @@
 	 9. Ephemeris: long-term precession (SOFA / ERFA)
 	10. Ephemeris: JPL Horizons spot checks (DE441)
 	11. Internal consistency
-	12. Run
+	12. Refraction, stars and the turning sky (Meeus ch. 16, 21; page 1.1)
+	13. Run
    ========================================================================== */
 
 
@@ -773,7 +775,166 @@ function testConsistency() {
 
 
 /* ==========================================================================
-   12. RUN
+   12. REFRACTION, STARS AND THE TURNING SKY
+   ========================================================================== */
+
+function testRefraction() {
+	group('Refraction · ephemeris.js (Meeus ch. 16)');
+
+	check({
+		name: 'Refraction at apparent altitude 0°30′',
+		source: 'Ex. 16.a',
+		expected: 28.754,
+		computed: Ephem.refractionOfApparent(0.5) * 60,
+		tol: 0.001,
+		unit: '′',
+		show: x => x.toFixed(3) + '′'
+	});
+
+	// Saemundsson (true -> apparent) against Bennett (apparent -> true).
+	let worst = 0;
+
+	for (let h = -0.5; h <= 90; h += 0.05) {
+		const R = Ephem.refraction(h);
+
+		worst = Math.max(worst, Math.abs(Ephem.refractionOfApparent(h + R) - R));
+	}
+
+	check({
+		name: 'Saemundsson vs Bennett, true altitude −0.5° … 90°',
+		source: '16.3, 16.4',
+		expected: 0,
+		computed: worst,
+		tol: 4,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: x => (x * 60).toFixed(3) + '′'
+	});
+}
+
+function testStarPrecession() {
+	group('Precession of a star · ephemeris.js (Meeus ch. 21)');
+
+	// Example 21.b: theta Persei, J2000 to 2028 Nov 13.19 TD, with the
+	// proper motion in right ascension given in seconds of time per year.
+	const years = (2462088.69 - Time.J2000) / 365.25;
+	const ra0 = (2 + 44 / 60 + 11.986 / 3600) * 15 + 0.03425 * years * 15 / 3600;
+	const dec0 = 49 + 13 / 60 + 42.48 / 3600 - 0.0895 * years / 3600;
+	const p = Ephem.precessEquatorial(ra0, dec0, Time.J2000, 2462088.69);
+
+	check({
+		name: 'θ Persei, right ascension',
+		source: 'Ex. 21.b',
+		expected: (2 + 46 / 60 + 11.331 / 3600) * 15,
+		computed: p.ra,
+		tol: 0.05,
+		unit: 's',
+		scale: 240,
+		show: x => hms(x / 15, 3),
+		angle: true
+	});
+
+	check({
+		name: 'θ Persei, declination',
+		source: 'Ex. 21.b',
+		expected: 49 + 20 / 60 + 54.54 / 3600,
+		computed: p.dec,
+		tol: 0.5,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDms
+	});
+
+	// Stars.ofDate at J2000 is the catalogue position itself.
+	const vega = Stars.find('Vega');
+	const vegaJ2000 = Stars.ofDate(vega, Time.J2000);
+
+	check({
+		name: 'Stars.ofDate(Vega, J2000) = catalogue',
+		source: 'stars.js',
+		expected: vega.dec,
+		computed: vegaJ2000.dec,
+		tol: 0.001,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDeg
+	});
+}
+
+function testDiurnal() {
+	group('The turning sky · models/diurnal.js (page 1.1)');
+
+	// Almagest II 3: at Rhodes (phi = 36°) with Ptolemy's obliquity
+	// 23;51,20 the longest day is 14 1/2 equinoctial hours.
+	const eps = 23 + 51 / 60 + 20 / 3600;
+	const longestDay = 2 * Diurnal.risingHourAngle(eps, 36) / 15;
+
+	check({
+		name: 'Longest day at Rhodes, φ = 36°',
+		source: 'Almagest II 3',
+		expected: 14.5,
+		computed: longestDay,
+		tol: 0.5,
+		unit: 'min',
+		scale: 60,
+		show: h => h.toFixed(4) + ' h'
+	});
+
+	// The matrices agree with the altitude formula, and the fractions of
+	// stars of opposite declination add up to one turn.
+	let worstAltitude = 0;
+	let worstFraction = 0;
+
+	for (let phi = -85; phi <= 85; phi += 17) {
+		for (let dec = -80; dec <= 80; dec += 23) {
+			for (let theta = 0; theta < 360; theta += 41) {
+				const ra = 123;
+				const v = matApply(Diurnal.equatorialToHorizon(phi, theta), fromLonLat(ra, dec));
+				const a = Diurnal.altitude(dec, Diurnal.hourAngle(theta, ra), phi);
+
+				worstAltitude = Math.max(worstAltitude, Math.abs(asin(v[2]) - a));
+			}
+
+			worstFraction = Math.max(worstFraction,
+				Math.abs(Diurnal.fractionAbove(dec, phi) + Diurnal.fractionAbove(-dec, phi) - 1));
+		}
+	}
+
+	check({
+		name: 'R_y(φ − 90°) R_z(−θ) vs sin a formula',
+		source: 'page 1.1',
+		expected: 0,
+		computed: worstAltitude,
+		tol: 0.01,          // asin loses digits near the zenith
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: x => x.toExponential(1) + '°'
+	});
+
+	check({
+		name: 'f(δ) + f(−δ) = 1',
+		source: 'page 1.1',
+		expected: 0,
+		computed: worstFraction,
+		tol: 1e-9,
+		show: x => x.toExponential(1)
+	});
+
+	check({
+		name: 'One turn of the sky',
+		source: 'Meeus 12.4',
+		expected: 23 + 56 / 60 + 4.0905 / 3600,
+		computed: Diurnal.TURN_HOURS,
+		tol: 0.01,
+		unit: 's',
+		scale: 3600,
+		show: h => hms(h, 3)
+	});
+}
+
+
+/* ==========================================================================
+   13. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -786,5 +947,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	testPrecession();
 	testHorizons();
 	testConsistency();
+	testRefraction();
+	testStarPrecession();
+	testDiurnal();
 	render();
 });
