@@ -1,6 +1,6 @@
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: FRAMES (models/frames.js)
-   The model of page 1.2: three frames on the sphere of directions, each a
+   The model of page 1.2: three frames on the celestial sphere, each a
    fundamental great circle, its pole and an origin on it; changing frames
    is a rotation. Needs common.js and models/diurnal.js. Touches no DOM,
    so it can be loaded in Node.
