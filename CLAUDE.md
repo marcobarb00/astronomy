@@ -59,6 +59,13 @@ same style:
 - A legend sample looks like the mark it describes: a dot for a point, a line
   for a curve, a band for a filled region, faint and dashed for a ghost
   (`Plot2D.legend` takes `mark: 'line' | 'dot' | 'band'`).
+- A control never moves under the pointer. The value beside a slider sits in
+  a fixed-width column (`--ctl-output` in `shared/theme.css`): never let it
+  follow its text, or the track resizes while dragging and the value
+  jitters. For a quantity the reader steps through one unit at a time (a
+  day), add previous / next buttons centred under the slider
+  (`.ctl.stepper` with `button[data-target][data-step]`, see
+  `templates/demo.html`).
 - Scales never jump while a control moves. When a slider changes what is
   plotted, fix the axis range to cover every value the slider allows, with
   the bound computed by a script. A scale may change only when the reader
