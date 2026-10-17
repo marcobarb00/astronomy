@@ -26,6 +26,7 @@
 	 - Nutation: the short series of Meeus ch. 22 (0.5" in longitude).
 	 - Aberration: Meeus 25.10 (Sun) and 23.2 (planets).
 	 - Equation of time: Meeus 28.1.
+	 - Atmospheric refraction: Meeus 16.3 (Bennett) and 16.4 (Saemundsson).
 
    VALID RANGE
 	 3000 BC to 3000 AD (Ephem.RANGE), the range of Standish's Table 2.
@@ -72,7 +73,7 @@
 	 5. Obliquity, nutation, precession
 	 6. Coordinate transformations
 	 7. Geocentric positions: Sun, Moon, planets
-	 8. Derived quantities: sidereal time, equation of time
+	 8. Derived quantities: sidereal time, equation of time, refraction
 	 9. Export
    ========================================================================== */
 
@@ -587,6 +588,25 @@ const Ephem = (function () {
 		return { lon: p.lon, lat: p.lat };
 	}
 
+	/* Matrix taking J2000 mean equatorial vectors to the mean equator and
+	   equinox of date: its rows are the equinox, the 90° point and the
+	   pole of the equator of date (frame bias neglected, < 0.03"). */
+	function equatorOfDateMatrix(jdTT) {
+		const pole = equatorPole(jdTT);
+		const equinox = normalize3(cross3(pole, eclipticPole(jdTT)));
+
+		return [equinox, cross3(pole, equinox), pole];
+	}
+
+	/* Precess equatorial coordinates (deg) from the mean equator and
+	   equinox of jdFrom to those of jdTo: { ra, dec }. */
+	function precessEquatorial(ra, dec, jdFrom, jdTo) {
+		const j2000 = matApply(transpose(equatorOfDateMatrix(jdFrom)), fromLonLat(ra, dec));
+		const p = toLonLat(matApply(equatorOfDateMatrix(jdTo), j2000));
+
+		return { ra: p.lon, dec: p.lat };
+	}
+
 
 	/* ======================================================================
 	   6. COORDINATE TRANSFORMATIONS
@@ -778,6 +798,39 @@ const Ephem = (function () {
 	}
 
 
+	/* ---------- Atmospheric refraction ----------
+	   Standard air (1010 mbar, 10 °C), J. Meeus, Astronomical Algorithms,
+	   ch. 16. The two formulas agree within 4" (checked in tests.html).
+	   Near the horizon the real refraction changes with the weather by
+	   several arcminutes. */
+
+	/* Refraction R (deg) of a star at TRUE (airless) altitude h (deg),
+	   Saemundsson, Meeus 16.4: apparent altitude = h + R. Below the
+	   apparent horizon (h < -0.6°) a star is not seen: returns 0 under
+	   h = -1°, where the formula stops being meaningful. */
+	function refraction(trueAltitude) {
+		if (trueAltitude < -1) {
+			return 0;
+		}
+
+		const R = 1.02 / tan(trueAltitude + 10.3 / (trueAltitude + 5.11));
+
+		return Math.max(0, R) / 60;
+	}
+
+	/* Refraction R (deg) of a star seen at APPARENT altitude h0 (deg),
+	   Bennett, Meeus 16.3: true altitude = h0 - R. */
+	function refractionOfApparent(apparentAltitude) {
+		if (apparentAltitude < -1) {
+			return 0;
+		}
+
+		const R = 1 / tan(apparentAltitude + 7.31 / (apparentAltitude + 4.4));
+
+		return Math.max(0, R) / 60;
+	}
+
+
 	/* ======================================================================
 	   9. EXPORT
 	   ====================================================================== */
@@ -799,6 +852,7 @@ const Ephem = (function () {
 		obliquity,
 		nutation,
 		precessEcliptic,
+		precessEquatorial,
 		eclipticPole,
 		equatorPole,
 		eclipticToEquatorial,
@@ -806,6 +860,8 @@ const Ephem = (function () {
 		equatorial,
 		apparentSiderealTime,
 		sunMeanLongitude,
-		equationOfTime
+		equationOfTime,
+		refraction,
+		refractionOfApparent
 	};
 })();
