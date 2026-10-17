@@ -79,11 +79,11 @@ same style:
   licence on the source page, never assume it.
 - Save it, at web size, in the page's `images/` folder, and record the
   author, date, source URL and licence in `images/CREDITS.md`.
-- Show it as `<figure class="photo">` (styled by `shared/theme.css`). The
-  caption says what to notice, as for a figure, and ends with a credit line
-  (author, year, source, licence). Everything visible in the photo that the
-  caption relies on is explained (e.g. the satellite streaks across star
-  trails).
+- Show it as `<figure class="photo">` (styled by `shared/theme.css`, which
+  makes it as wide as the paragraphs, never wider). The caption says what to
+  notice, as for a figure, and ends with a credit line (author, year, source,
+  licence). Everything visible in the photo that the caption relies on is
+  explained (e.g. the satellite streaks across star trails).
 
 ### Writing
 
