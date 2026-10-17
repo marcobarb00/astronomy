@@ -417,18 +417,28 @@ function wireSlider(input, onChange, formatter = null) {
 	syncOutput();
 }
 
-/* Preset buttons set a slider: data-target = slider id, data-value = number or "eps". */
+/* A button that drives a slider (data-target = slider id):
+	 data-value = a value to set (a number, or "eps" for the obliquity), or
+	 data-step  = an amount to add (e.g. -1 / +1 for previous / next day),
+				  kept within the slider's min and max. */
 function applyPreset(button) {
 	const slider = byId(button.dataset.target);
-	const isEps = button.dataset.value === 'eps';
 
-	slider.value = isEps ? EPS : button.dataset.value;
+	if (button.dataset.step !== undefined) {
+		const next = Number(slider.value) + Number(button.dataset.step);
+
+		slider.value = clamp(next, Number(slider.min), Number(slider.max));
+	} else {
+		slider.value = button.dataset.value === 'eps' ? EPS : button.dataset.value;
+	}
+
 	slider.dispatchEvent(new Event('input'));
 }
 
-/* Wire every preset button inside root. */
+/* Wire every button inside root that drives a slider: presets and
+   previous / next steppers. */
 function wirePresets(root = document) {
-	root.querySelectorAll('.presets button[data-target]').forEach(button => {
+	root.querySelectorAll('button[data-target]').forEach(button => {
 		button.addEventListener('click', () => applyPreset(button));
 	});
 }

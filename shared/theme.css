@@ -406,13 +406,44 @@ canvas.plot2d {
 	touch-action: pan-y;
 }
 
-/* One slider row: label, slider, value. */
+/* One slider row: label, slider, value. The value column has a FIXED
+   width: if it followed its text ("1 Jan" / "21 Mar"), the track would
+   resize while dragging and the thumb would jump under the pointer.
+   A figure with longer values sets --ctl-output on the figure. */
 .ctl {
+	--ctl-output: 7em;
 	display: grid;
-	grid-template-columns: 90px minmax(0, 1fr) minmax(82px, max-content);
+	grid-template-columns: 90px minmax(0, 1fr) var(--ctl-output);
 	gap: 8px;
 	align-items: center;
 	margin: 6px 0;
+}
+
+/* A slider with previous / next buttons on a second line, centred under
+   the row, so the track keeps the length of the other rows.
+	 <div class="ctl stepper"> label, input, output,
+		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */
+.stepper-buttons {
+	grid-column: 1 / -1;
+	justify-self: center;
+	display: flex;
+	gap: 6px;
+	margin-top: -2px;
+}
+
+.stepper-btn {
+	padding: 2px 10px;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--bg);
+	color: var(--ink);
+	font: inherit;
+	font-size: .85rem;
+	cursor: pointer;
+}
+
+.stepper-btn:hover {
+	border-color: var(--muted);
 }
 
 .ctl label {
@@ -421,6 +452,7 @@ canvas.plot2d {
 }
 
 .ctl output {
+	overflow: hidden;
 	text-align: right;
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
@@ -1069,6 +1101,7 @@ a.tile:hover {
 	}
 
 	.ctl {
-		grid-template-columns: 74px minmax(0, 1fr) minmax(70px, max-content);
+		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
 	}
+
 }
