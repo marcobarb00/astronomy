@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>The Copernican revolution</title>
+
+	<!-- Shared theme, then the styles that only this page needs -->
+	<!-- KaTeX (equation typesetting, tab 3) -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="copernican_revolution.css">
+</head>
+
+<body>
+<main>
+	<h1>The Copernican revolution</h1>
+	<p class="sub">
+		From Ptolemy's stationary Earth to a Sun-centered planetary system,
+		and what "center" really means.
+	</p>
+
+	<!-- Tabs not built yet are disabled; enable each one when its section exists. -->
+	<nav id="tabs">
+		<button data-tab="tl" class="active">1 · Timeline</button>
+		<button data-tab="sun">2 · Ptolemy's sources</button>
+		<button data-tab="frames">3 · Model comparison</button>
+		<button data-tab="center" disabled>4 · What is "center"?</button>
+	</nav>
+
+	<!-- ===================== SECTION TL: TIMELINE ===================== -->
+	<section id="tl" class="show">
+
+		<div class="card">
+			<h2>Two thousand years in a few pictures</h2>
+			<p class="note">
+				Filter by theme to follow one thread at a time.
+				Open "More" on an entry for context and caveats.
+			</p>
+			<div class="presets" id="filters"></div>
+			<ol class="timeline" id="timeline"></ol>
+		</div>
+
+		<div class="card">
+			<h2>Where do Mercury and Venus go?</h2>
+			<p>
+				Everything beyond the Sun is easy to rank: the slower a planet crosses the zodiac,
+				the farther away it is.
+				Mercury and Venus break the rule, because they never leave the Sun's side and
+				take one year to go round the sky, like the Sun itself.
+				Ancient and medieval astronomers answered the question in several ways.
+			</p>
+			<div id="orders"></div>
+			<p class="note">
+				Distances in Ptolemy's system were only chosen to keep the spheres nested.
+				Copernicus could compute them, in units of the Earth–Sun distance,
+				from the planets' observed loops.
+			</p>
+		</div>
+	</section>
+
+	<!-- ===================== SECTION SUN: PTOLEMY'S SOURCES ===================== -->
+	<section id="sun">
+
+		<div class="card">
+			<h2>What Ptolemy inherited, and what he added</h2>
+			<p>
+				The Almagest (c. 150 CE) is a synthesis.
+				The Sun comes from Hipparchus, the epicycle from Apollonius and Hipparchus,
+				and the equant, as far as we can tell, from Ptolemy himself.
+				Each card below states what the idea explains, how Ptolemy justified it,
+				which loose ends it leaves, and where to read more.
+			</p>
+			<p class="note">
+				Roman numerals are Almagest books.
+				Ptolemy often gives results without showing how he found them,
+				so "how he justified it" is partly the reconstruction of historians.
+			</p>
+		</div>
+
+		<div id="topics"></div>
+	</section>
+
+	<!-- ===================== SECTION FRAMES: MODEL COMPARISON ===================== -->
+	<section id="frames">
+
+		<div class="card">
+			<h2>Model comparison: the same motion seen from the Sun and from the Earth</h2>
+			<p>
+				Based on <em>A Modern Almagest</em> (Richard Fitzpatrick), chapters 8-9.
+				The same planet seen from the Sun and from the Earth: a simple orbit in one frame, a loop in the other.
+			</p>
+			<p class="note">
+				Both diagrams are simplified versions of the two models: circular, coplanar orbits traversed at uniform speed,
+				without Copernicus's eccentrics or Ptolemy's eccentric deferent and equant.
+			</p>
+		</div>
+
+		<!-- ===================== CONTROLS ===================== -->
+		<div class="card">
+			<div class="toolbar">
+				<span class="lbl">Planet</span>
+				<span class="presets" id="planets">
+					<button data-planet="mercury">Mercury</button>
+					<button data-planet="venus">Venus</button>
+					<button data-planet="mars" class="active">Mars</button>
+					<button data-planet="jupiter">Jupiter</button>
+					<button data-planet="saturn">Saturn</button>
+				</span>
+				<span class="lbl">Type</span>
+				<span class="presets" id="types">
+					<button data-type="superior" class="active">Superior</button>
+					<button data-type="inferior">Inferior</button>
+				</span>
+			</div>
+
+			<div class="toolbar">
+				<span class="presets">
+					<button id="prev">⏮ Previous event</button>
+					<button id="play">▶ Play</button>
+					<button id="next">Next event ⏭</button>
+					<button id="reset">↺ Reset</button>
+				</span>
+				<span class="badge" id="clock"></span>
+			</div>
+
+			<div class="controls">
+				<div>
+					<div class="ctl">
+						<label>Deferent R</label>
+						<input type="range" id="R" min="0.5" max="10" step="0.01" value="1.52" data-dec="2">
+						<output></output>
+					</div>
+					<div class="ctl">
+						<label>Epicycle r</label>
+						<input type="range" id="r" min="0.05" max="9.5" step="0.01" value="1" data-dec="2">
+						<output></output>
+					</div>
+					<div class="ctl">
+						<label>Planet period</label>
+						<input type="range" id="T" min="0.1" max="40" step="0.01" value="1.88" data-dec="2" data-unit=" yr">
+						<output></output>
+					</div>
+					<label class="check">
+						<input type="checkbox" id="kepler" checked>
+						Link the period to the radii (Kepler's third law, T² ∝ a³)
+					</label>
+				</div>
+				<div>
+					<div class="ctl">
+						<label>Speed</label>
+						<input type="range" id="speed" min="5" max="400" step="5" value="60" data-dec="0" data-unit=" d/s">
+						<output></output>
+					</div>
+					<div class="ctl">
+						<label>Trail</label>
+						<input type="range" id="trail" min="0" max="4" step="0.05" value="1.2" data-dec="2" data-unit=" syn.">
+						<output></output>
+					</div>
+					<p class="note">
+						Trail length is measured in synodic periods (the time between two oppositions or two inferior conjunctions).
+						Only the ratio r/R matters for the geocentric directions; the radii are in units where Earth's orbit is the one marked.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ===================== THE TWO VIEWS ===================== -->
+		<div class="pair">
+			<div class="card">
+				<h2>Heliocentric view (simplified Copernicus)</h2>
+				<canvas id="cv-helio" width="640" height="640"></canvas>
+				<p class="note" id="note-helio"></p>
+			</div>
+			<div class="card">
+				<h2>Geocentric view (simplified Ptolemy)</h2>
+				<canvas id="cv-geo" width="640" height="640"></canvas>
+				<p class="note" id="note-geo"></p>
+			</div>
+		</div>
+
+		<!-- ===================== LONGITUDE CHART + LIVE READ-OUT ===================== -->
+		<div class="card top">
+			<div class="viz">
+				<h2 style="margin-top:0">Geocentric longitude λ against time</h2>
+				<canvas id="cv-lambda" width="900" height="380"></canvas>
+				<p class="note">
+					Shaded bands: retrograde motion (dλ/dt &lt; 0). Markers:
+					◆ station (dλ/dt = 0) &nbsp;
+					○ opposition / inferior conjunction &nbsp;
+					<span class="c-sun">●</span> conjunction / superior conjunction &nbsp;
+					<span class="c-sun">▲</span> greatest elongation.
+					The vertical line is the current time.
+				</p>
+				<p class="note">
+					λ is the planet's geocentric longitude and λ☉ (lambda with the Sun symbol ☉, a circle with a dot inside) is the Sun's longitude.
+					The theory behind this chart (dλ/dt, the stations and the retrograde condition) is explained below.
+				</p>
+			</div>
+			<div class="side">
+				<div id="o-live"></div>
+			</div>
+		</div>
+
+		<!-- ===================== EVENTS TABLE ===================== -->
+		<div class="card">
+			<h2 style="margin-top:0">Stations, oppositions and conjunctions</h2>
+			<p class="note" id="table-note"></p>
+			<div class="table-wrap">
+				<table id="events"></table>
+			</div>
+		</div>
+
+		<!-- ===================== THEORY ===================== -->
+		<div class="card theory">
+			<h2>One motion, two descriptions</h2>
+			<p>
+				Put the Sun S at the origin, the Earth at <b>E</b> and the planet at <b>P</b>.
+				What we see from the Earth is only the direction of the vector <b>P</b> − <b>E</b>, i.e. the planet's geocentric longitude λ.
+				Split this vector in two:
+			</p>
+			<span class="eq" data-tex="\mathbf P-\mathbf E=\underbrace{(\mathbf P-\mathbf S)}_{\text{Sun}\to\text{planet}}+\underbrace{(\mathbf S-\mathbf E)}_{\text{Earth}\to\text{Sun}}"></span>
+			<p>
+				Both pieces are vectors of fixed length turning at a uniform rate, so their sum is exactly a deferent-epicycle model.
+				Vector addition does not care about the order, so either piece can play the deferent:
+				by convention the deferent is the <em>longer</em> one.
+			</p>
+			<ul>
+				<li>
+					<b>Superior planet</b> (Mars, Jupiter, Saturn): the <b class="c-deferent">deferent</b> is the planet's heliocentric orbit
+					and the <b class="c-epicycle">epicycle</b> is the Earth's orbit.
+					The epicycle radius is the Earth→Sun vector, so it always points towards the Sun.
+				</li>
+				<li>
+					<b>Inferior planet</b> (Mercury, Venus): the <b class="c-deferent">deferent</b> is the Earth's orbit, so the guide point is the mean Sun,
+					and the <b class="c-epicycle">epicycle</b> is the planet's own heliocentric orbit.
+					The planet never strays more than sin⁻¹(r/R) from the Sun.
+				</li>
+			</ul>
+			<p>
+				Writing the guide point at angle θ<sub>d</sub> on the deferent and the planet at angle θ<sub>e</sub> on the epicycle,
+				both measured from the vernal equinox, with uniform rates ω<sub>d</sub> and ω<sub>e</sub>:
+			</p>
+			<span class="eq" data-tex="\mathbf z=R\,(\cos\theta_d,\ \sin\theta_d)+r\,(\cos\theta_e,\ \sin\theta_e),\qquad \lambda=\tan^{-1}\!\frac{z_y}{z_x}"></span>
+			<p>
+				The angle μ = θ<sub>e</sub> − θ<sub>d</sub> is the <em>anomaly</em>: the position of the planet on the epicycle measured from the apogee (the point furthest from the Earth).
+				Differentiating λ gives the apparent angular velocity:
+			</p>
+			<span class="eq" data-tex="\frac{d\lambda}{dt}=\frac{R^2\omega_d+r^2\omega_e+Rr\,(\omega_d+\omega_e)\cos\mu}{R^2+r^2+2Rr\cos\mu}"></span>
+
+			<h2>When does the planet go backwards?</h2>
+			<p>
+				At the perigee of the epicycle (μ = 180°), the planet moves on the epicycle in the opposite direction to the guide point, and the formula reduces to
+			</p>
+			<span class="eq" data-tex="\left.\frac{d\lambda}{dt}\right|_{\mu=180^\circ}=\frac{R\,\omega_d-r\,\omega_e}{R-r}"></span>
+			<p>
+				So the motion is retrograde when r ω<sub>e</sub> &gt; R ω<sub>d</sub>: the planet's speed on the epicycle beats the guide point's speed on the deferent.
+				For a superior planet this says the Earth moves faster on its orbit than the planet does, which Kepler's third law guarantees.
+				To watch the loops disappear, untick the Kepler box and move the <b>Planet period</b> slider (the Earth's period stays at one year).
+				A superior planet loses its loops when its period drops below R/r years, so that it moves faster along its orbit than the Earth;
+				an inferior planet loses them when its period rises above r/R years, so that it moves slower along its orbit than the Earth.
+			</p>
+			<p>
+				The <b>stations</b>, where λ stands still, are the roots of dλ/dt = 0:
+			</p>
+			<p>
+				There are two of them, placed symmetrically around the perigee, at μ = 180° ∓ μ<sub>s</sub>, where
+			</p>
+			<span class="eq" data-tex="\cos\mu_s=\frac{R^2\omega_d+r^2\omega_e}{Rr\,(\omega_d+\omega_e)}"></span>
+			<p>
+				(using cos(180° ∓ μ<sub>s</sub>) = −cos μ<sub>s</sub>).
+				The first station, at μ = 180° − μ<sub>s</sub>, starts the retrograde motion and the second, at μ = 180° + μ<sub>s</sub>, ends it.
+				The anomaly changes at the rate ω<sub>e</sub> − ω<sub>d</sub>, so the retrograde motion lasts 2μ<sub>s</sub>/(ω<sub>e</sub> − ω<sub>d</sub>).
+			</p>
+
+			<h2>Conjunction, opposition and the middle of the loop</h2>
+			<p>
+				Let λ☉ be the Sun's geocentric longitude. For a superior planet, opposition (λ = λ☉ + 180°) means Earth, Sun and planet in a line with the Earth in the middle.
+				On the epicycle this is the perigee: the planet is closest, brightest, and in the middle of its retrograde loop.
+				Conjunction (λ = λ☉) is the apogee: the planet is behind the Sun and moves fastest forwards.
+				For an inferior planet the perigee is the <em>inferior</em> conjunction and the apogee the <em>superior</em> conjunction;
+				the greatest elongations are where the line of sight is tangent to the epicycle.
+			</p>
+
+			<h2>Ptolemy's ratios are Copernicus's distances</h2>
+			<p>
+				Ptolemy could only fix the ratio r/R from the size of the retrograde loops.
+				His values (deferent radius 60 parts) match the heliocentric distances almost exactly:
+				for a superior planet r/R = 1/a, for an inferior one r/R = a, with a the planet's distance from the Sun in astronomical units.
+			</p>
+			<table id="ratios"></table>
+
+			<div class="box">
+				This is the simplest model: circular, coplanar orbits traversed uniformly.
+				The real orbits are slightly eccentric (Ptolemy needed the eccentric deferent and the equant for that),
+				so real retrograde arcs vary from one opposition to the next around the values computed here.
+			</div>
+		</div>
+	</section>
+
+	<!-- Add one <section> per new tab here -->
+</main>
+
+<script src="../shared/common.js"></script>
+<script src="copernican_revolution.js"></script>
+<script src="tab_ptolemy.js"></script>
+<script src="tab_epicycles.js"></script>
+</body>
+</html>

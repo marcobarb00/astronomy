@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     DEMO OF THE SHARED COMPONENTS
+     One 3D sphere, one 2D plot, one error curve and one exercise, all driven
+     by the shared code, to show that the pieces work together.
+     Not part of the course: it is not in the site map and not linked.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Demo of the shared components · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme -->
+	<link rel="stylesheet" href="../shared/theme.css">
+
+	<!-- Shared code, in dependency order, then the demo's own script -->
+	<script defer src="../shared/common.js"></script>
+	<script defer src="../shared/time.js"></script>
+	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/sphere3d.js"></script>
+	<script defer src="../shared/plot2d.js"></script>
+	<script defer src="../shared/errorcurve.js"></script>
+	<script defer src="../shared/components.js"></script>
+	<script defer src="demo.js"></script>
+</head>
+
+<body>
+<div class="page">
+
+	<nav class="toc" aria-label="Contents"></nav>
+
+	<article>
+		<header class="page-head">
+			<p class="page-number">Templates · demo</p>
+			<h1>The shared components at work</h1>
+			<p class="question">Do the sphere, the plots, the reference sky and the error curve fit together?</p>
+		</header>
+
+		<p>
+			Everything on this page comes from <code>shared/</code>: the Sun's
+			position from the reference ephemeris, clock and sidereal time from
+			<code>time.js</code>, a draggable sphere, a 2D plot and the error-curve
+			widget. One date drives the first two figures.
+		</p>
+
+		<!-- =============================== SPHERE =============================== -->
+		<h2 id="sphere">The sky on a date</h2>
+
+		<p>
+			The sky of an observer on the Greenwich meridian. The horizon is fixed
+			ground; as the date and the time change, the sky turns about the pole
+			and the Sun moves along the ecliptic.
+		</p>
+
+		<p>
+			Step one day at a time with <em>next day</em> (hold it to run through
+			the year): at the same clock time the sky has turned about 1° further,
+			because the stars come back to the same place about 4 minutes earlier
+			each day.
+		</p>
+
+		<p>
+			A star never sets when its declination is $\delta > 90^\circ - \varphi$:
+			try Vega at different latitudes.
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="fig-sphere"></canvas>
+				</div>
+				<div>
+					<div class="ctl stepper">
+						<label for="day">date</label>
+						<input id="day" type="range" min="1" max="365" step="1" value="80">
+						<output></output>
+						<span class="stepper-buttons">
+							<button type="button" class="stepper-btn" data-target="day" data-step="-1"
+								aria-label="previous day">‹ previous day</button>
+							<button type="button" class="stepper-btn" data-target="day" data-step="1"
+								aria-label="next day">next day ›</button>
+						</span>
+					</div>
+					<div class="ctl">
+						<label for="hour">time (UT)</label>
+						<input id="hour" type="range" min="0" max="24" step="0.25" value="12">
+						<output></output>
+					</div>
+					<div class="ctl">
+						<label for="latitude">latitude φ</label>
+						<input id="latitude" type="range" min="-90" max="90" step="1" value="45">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="day" data-value="80">equinox</button>
+						<button type="button" data-target="day" data-value="172">solstice</button>
+						<button type="button" data-target="latitude" data-value="90">pole</button>
+						<button type="button" data-target="latitude" data-value="0">equator</button>
+					</div>
+					<div class="readout" id="sphere-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's ground plane; N, E, S, W are its cardinal points</dd>
+						<dt class="c-deferent">Z</dt>
+						<dd>the zenith, straight overhead</dd>
+						<dt>P</dt>
+						<dd>the north celestial pole; the sky turns about this axis, at altitude $\varphi$</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the great circle 90° from P</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>the Sun's yearly path</dd>
+						<dt class="c-sun">γ</dt>
+						<dd>the vernal point, where the ecliptic crosses the equator: the origin of $\alpha$ and $\lambda$</dd>
+						<dt class="c-planet">Vega</dt>
+						<dd>a bright star ($\delta = +38.8^\circ$); the dashed circle is its daily path</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>LST</dt>
+						<dd>local sidereal time: the right ascension on the meridian</dd>
+						<dt>$\lambda_\odot$</dt>
+						<dd>the Sun's ecliptic longitude</dd>
+						<dt>$\alpha_\odot,\ \delta_\odot$</dt>
+						<dd>its right ascension and declination</dd>
+						<dt>$a_\odot$</dt>
+						<dd>its altitude above the horizon (negative: below it)</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Drag the sphere to turn the view; lines behind it are faded. The date
+				and time also move the dot on the next figure.
+			</figcaption>
+		</figure>
+
+		<!-- ================================ PLOT ================================ -->
+		<h2 id="plot">A 2D plot: the equation of time</h2>
+
+		<p>
+			The equation of time from the reference Sun (Meeus 28.1),
+			$E = \bar\lambda - \alpha$ expressed in minutes, over the same year.
+			Hover over the plot to read a value.
+		</p>
+
+		<figure class="fig">
+			<div>
+				<canvas id="fig-eot"></canvas>
+			</div>
+			<div id="eot-legend"></div>
+			<div class="readout" id="eot-readout">&nbsp;</div>
+			<figcaption>
+				Positive values: the sundial is ahead of the clock. The dot is the
+				date chosen above. Under the pointer, a dashed line marks the day
+				whose value is read below the plot.
+			</figcaption>
+		</figure>
+
+		<!-- ============================ ERROR CURVE ============================= -->
+		<h2 id="error-curve">An error curve: the Sun on a uniform circle</h2>
+
+		<p>
+			The simplest solar model moves the Sun uniformly along the ecliptic,
+			with $\bar\lambda_0 = 280.466^\circ$ at $t_0 = $ J2000 and a year of
+			$Y$ days:
+		</p>
+
+		$$\lambda_\text{model} = \bar\lambda_0 + \frac{360^\circ}{Y}\,(t - t_0)$$
+
+		<p>
+			The curve shows its error $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
+			against the reference Sun. The ghost uses Hipparchus' year,
+			$Y = 365\tfrac14 - \tfrac1{300}$ days.
+			<span class="badge" data-origin="hipparchus"></span>
+		</p>
+
+		<figure class="fig">
+			<div class="ctl">
+				<label for="year-length">year Y</label>
+				<input id="year-length" type="range" min="365.20" max="365.30" step="0.0005" value="365.2422">
+				<output></output>
+			</div>
+			<div id="fig-error"></div>
+			<figcaption>
+				Change the length of the year and press <em>Keep as ghost</em> to
+				compare. Each span has a fixed scale that holds every value of the
+				slider.
+			</figcaption>
+		</figure>
+
+		<aside class="detour" data-topic="aberration"></aside>
+
+		<!-- ============================== EXERCISE ============================== -->
+		<h2 id="exercise">Exercise</h2>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				The Earth's orbit has eccentricity $e = 0.0167$. Before looking at the
+				error curve over one year, predict the largest error of the uniform
+				circle in arcminutes, and roughly when in the year it occurs. Then
+				check your prediction on the curve (hover to read values).
+			</p>
+			<details class="hint">
+				<p>
+					To first order in $e$, Kepler's motion differs from uniform motion by
+					the equation of centre $q \approx 2e\sin M$, where $M$ is the mean
+					anomaly counted from perihelion (early January).
+				</p>
+			</details>
+			<details class="answer" id="exercise-answer">
+				<p>
+					The largest $|q|$ is $2e$ radians:
+					$2 \times 0.0167 \times 3437.7' = 114.8'$, reached when
+					$M = \pm 90^\circ$, about three months after and before perihelion.
+				</p>
+				<p>
+					The curve agrees. Computed with <code>ephemeris.js</code> for 2026
+					(script output, with $Y = 365.2422$ d): the most negative error is
+					<strong>−114.7′ on 2026 Apr 3</strong> and the largest
+					<strong>+115.2′ on 2026 Oct 5</strong>. The model is behind the Sun
+					in spring ($q > 0$) and ahead in autumn. The two extremes differ by
+					about 0.5′ mostly because the reference is the apparent Sun, which
+					aberration displaces by −20″ all year.
+				</p>
+			</details>
+		</div>
+
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 12, 25, 28.</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the Major Planets</em> (JPL).</li>
+			<li>Ptolemy, <em>Almagest</em> III 1, for Hipparchus' length of the year.</li>
+		</ul>
+	</article>
+</div>
+</body>
+</html>
