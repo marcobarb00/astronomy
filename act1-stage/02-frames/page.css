@@ -13,7 +13,7 @@
    1. CONTROLS
    ========================================================================== */
 
-/* Slider values here are short ("23.44°", "135 BC"). */
+/* Slider values here are short ("23.44°", "38.9°"). */
 figure.fig {
 	--ctl-output: 5.5em;
 }
@@ -44,6 +44,14 @@ table.prose-table {
 table.prose-table th:first-child,
 table.prose-table td:first-child {
 	text-align: left;
+}
+
+/* Difference columns (Ptolemy − real): in the colour of the errors in the
+   figures, on a faint band, so they stand apart from the values. */
+table.prose-table .diff {
+	color: var(--planet);
+	font-weight: 600;
+	background: color-mix(in srgb, var(--planet) 8%, var(--card));
 }
 
 /* In a two-row header the second row starts under a spanning cell, so its
