@@ -11,7 +11,7 @@
 	 4. Formatting helpers    (degrees, sexagesimal, hours, days, TeX)
 	 5. Colour helpers        (translucent versions of the palette)
 	 6. DOM and KaTeX helpers
-	 7. UI wiring helpers     (sliders, presets, play button)
+	 7. UI wiring helpers     (sliders, presets, choice buttons, play button)
    ========================================================================== */
 
 
@@ -502,6 +502,22 @@ function wirePresets(root = document) {
 		} else {
 			button.addEventListener('click', () => applyPreset(button));
 		}
+	});
+}
+
+/* A row of buttons, one per name (e.g. a star); the chosen one is marked
+   active. onChoose(name) runs when another one is picked. */
+function buildChoice(container, names, chosen, onChoose) {
+	names.forEach(name => {
+		const button = makeEl('button', name === chosen ? 'active' : '', name);
+
+		button.type = 'button';
+		button.addEventListener('click', () => {
+			container.querySelectorAll('button').forEach(other => other.classList.remove('active'));
+			button.classList.add('active');
+			onChoose(name);
+		});
+		container.appendChild(button);
 	});
 }
 
