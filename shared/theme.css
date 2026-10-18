@@ -1073,7 +1073,11 @@ a.tile:hover {
 	color: var(--planet);
 }
 
+/* A wide table scrolls inside its own box. The box is positioned so that it
+   also clips KaTeX's hidden, absolutely positioned MathML in the cells,
+   which would otherwise widen the page on a phone. */
 .table-scroll {
+	position: relative;
 	overflow-x: auto;
 }
 
