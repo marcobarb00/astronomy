@@ -587,25 +587,32 @@ const testFigure = {
 		const upModel = 2 * this.modelH0 / Diurnal.DEGREES_PER_HOUR;
 		const upReal = 2 * this.realH0 / Diurnal.DEGREES_PER_HOUR;
 		const lowest = Diurnal.lowerCulmination(this.dec, this.phi);
-		const lines = [`\\text{${this.star.name}},\\ \\delta = ${this.dec.toFixed(2)}^\\circ`];
+
+		// always four lines (data-lines): the star, the model, the real sky,
+		// and the difference, so the figure keeps its size
+		const upText = (kind, hours) => {
+			if (kind === 'circumpolar') {
+				return '\\text{never sets}';
+			}
+
+			return kind === 'never' ? '\\text{never rises}' : hmTex(hours);
+		};
+		let difference = '';
 
 		if (model === 'rises' && real === 'rises') {
-			const minutes = (upReal - upModel) / 2 * 60;
-
-			lines.push(`\\Delta t = ${minutes.toFixed(1)}\\ \\text{min}`);
-			lines.push(`\\text{up, model: } ${hmTex(upModel)}`);
-			lines.push(`\\text{up, real: } ${hmTex(upReal)}`);
-		} else if (model === 'never' && real === 'rises') {
-			lines.push('\\text{model: never rises}');
-			lines.push(`\\text{real: up for } ${hmTex(upReal)}`);
-		} else if (model === 'rises' && real === 'circumpolar') {
-			lines.push(`\\text{model: up for } ${hmTex(upModel)}`);
-			lines.push('\\text{real: never sets}');
+			difference = `\\Delta t = ${((upReal - upModel) / 2 * 60).toFixed(1)}\\ \\text{min}`;
 		} else if (model === 'circumpolar') {
-			lines.push('\\text{never sets}');
-			lines.push(`\\text{lowest point lifted by } ${(Ephem.refraction(lowest) * 60).toFixed(1)}'`);
-		} else {
-			lines.push('\\text{never rises, even with the air}');
+			difference = `\\text{lowest point lifted by } ${(Ephem.refraction(lowest) * 60).toFixed(1)}'`;
+		}
+
+		const lines = [
+			`\\text{${this.star.name}},\\ \\delta = ${this.dec.toFixed(2)}^\\circ`,
+			`\\text{up, model: } ${upText(model, upModel)}`,
+			`\\text{up, real: } ${upText(real, upReal)}`
+		];
+
+		if (difference) {
+			lines.push(difference);
 		}
 
 		showLines('test-readout', lines);

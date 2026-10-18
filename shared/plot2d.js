@@ -460,9 +460,12 @@ class Plot2D {
 	/* ======================================================================
 	   6. LEGEND (HTML)
 	   Built in HTML, not on the canvas, so labels can carry KaTeX ($...$).
-	   items: [{ label, color, mark, ghost }]. The sample must look like
-	   the mark it describes (CLAUDE.md): mark 'line' (default), 'dot' for
-	   a point, 'band' for a filled region; ghost makes it faint and dashed.
+	   items: [{ label, color, mark, ghost, hidden }]. The sample must look
+	   like the mark it describes (CLAUDE.md): mark 'line' (default), 'dot'
+	   for a point, 'band' for a filled region; ghost makes it faint and
+	   dashed. A hidden item keeps its room but is not shown: a legend that
+	   gains an entry in some states holds its place, so the figure keeps
+	   its size.
 	   ====================================================================== */
 
 	static legend(container, items) {
@@ -477,6 +480,12 @@ class Plot2D {
 
 			swatch.style.color = item.color;
 			entry.append(swatch, label);
+
+			if (item.hidden) {
+				entry.style.visibility = 'hidden';
+				entry.setAttribute('aria-hidden', 'true');
+			}
+
 			container.appendChild(entry);
 		});
 

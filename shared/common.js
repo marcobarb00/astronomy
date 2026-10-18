@@ -365,9 +365,21 @@ function renderMath(root = document.body) {
 	renderStaticMath(root);
 }
 
-/* Replace the content of a container by one typeset line per TeX string. */
+/* Replace the content of a read-out by one typeset line per TeX string.
+   A figure keeps one size whatever its controls show (CLAUDE.md), so the
+   container declares its number of lines, <div class="readout"
+   data-lines="4">, and the missing lines are filled with empty ones. A
+   console warning flags a read-out without data-lines, or with more lines
+   than it declares: a page must not trigger it. */
 function showLines(containerId, lines) {
 	const container = byId(containerId);
+	const rows = Number(container.dataset.lines);
+
+	if (!rows) {
+		console.warn(`showLines: #${containerId} has no data-lines`);
+	} else if (lines.length > rows) {
+		console.warn(`showLines: #${containerId} shows ${lines.length} lines, more than its data-lines = ${rows}`);
+	}
 
 	container.innerHTML = '';
 
@@ -377,6 +389,10 @@ function showLines(containerId, lines) {
 		container.appendChild(line);
 		renderTex(line, source);
 	});
+
+	for (let i = lines.length; i < rows; i++) {
+		container.appendChild(makeEl('span', 'eq', '&nbsp;'));
+	}
 }
 
 
