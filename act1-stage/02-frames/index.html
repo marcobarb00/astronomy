@@ -50,20 +50,20 @@
 		<header class="page-head"></header>
 
 		<p>
-			Page 1.1 gave a star one fixed number, its declination, and an angle
-			that grows as the sky turns. To follow the Sun, the Moon and the planets
-			we need coordinates for every point in the celestial sphere, and a way to translate between
-			coordinate systems. By the end of this page you can convert between the
-			three frames astronomers use.
+			Page 1.1 described a star by its declination $\delta$ and its hour angle
+			$H$, which grows as the sky turns. To follow the Sun, the Moon and the
+			planets we need two coordinates for every point of the celestial sphere,
+			and formulas to convert between coordinate systems. This page defines the
+			three systems used in positional astronomy and derives the conversions.
 		</p>
 
 		<!-- ============================ 1. OBSERVATION ============================ -->
 		<h2 id="observation"><span class="step">1 · Observation</span>One star, three descriptions</h2>
 
 		<p>
-			Look at Aldebaran, the red eye of the Bull, from Rome on 1 January 2026
-			at 20:00 local time (19:00 UT). Three people could each describe where it is, and each
-			would give two different numbers.
+			Take Aldebaran, the red eye of the Bull, seen from Rome on 1 January 2026
+			at 20:00 local time (19:00 UT). Its position can be given in three
+			coordinate systems, depending on what it is measured against:
 		</p>
 
 		<div class="table-scroll">
@@ -71,28 +71,28 @@
 			<thead>
 				<tr>
 					<th>Measured against</th>
-					<th>Name of the pair</th>
+					<th>Coordinates</th>
 					<th>Aldebaran</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>the ground: a compass and a quadrant</td>
+					<td>the local horizon (compass and quadrant)</td>
 					<td>azimuth $A$, altitude $a$</td>
 					<td>$125.01^\circ$, $53.67^\circ$</td>
 				</tr>
 				<tr>
-					<td>the turning sky: a modern catalogue (2026)</td>
+					<td>the celestial equator: a modern catalogue (2026)</td>
 					<td>right ascension $\alpha$, declination $\delta$</td>
 					<td>$69.354^\circ$ ($4^\text{h}37^\text{m}$), $16.559^\circ$</td>
 				</tr>
 				<tr>
-					<td>the Sun's path (2026)</td>
+					<td>the ecliptic, the Sun's yearly path (2026)</td>
 					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
 					<td>$70.153^\circ$, $-5.465^\circ$</td>
 				</tr>
 				<tr>
-					<td>the Sun's path: Ptolemy's catalogue (AD 137)</td>
+					<td>the ecliptic: Ptolemy's catalogue (AD 137)</td>
 					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
 					<td>$42^\circ 40'$ ($42.667^\circ$), $-5^\circ 10'$ ($-5.167^\circ$)</td>
 				</tr>
@@ -101,27 +101,29 @@
 		</div>
 
 		<p>
-			The first pair changes by the minute: an hour later the star is higher and
-			further south. The second pair stays the same all night, and for years.
-			Over centuries, though, both it and the third pair drift.
+			The horizontal coordinates change continuously: an hour later the star is
+			higher and further south. The equatorial coordinates stay the same through
+			the night and for years. Over centuries, both the equatorial and the
+			ecliptic coordinates change.
 		</p>
 
 		<p>
 			Since Ptolemy, Aldebaran's longitude has grown by 26.30° and its
 			declination has changed by 5.75°, but its latitude has moved by only
-			7.9′. Ptolemy expected exactly this. He gave his catalogue in ecliptic
-			coordinates because "their positions in latitude with respect to the
-			ecliptic must necessarily remain the same" (<em>Almagest</em> VII 4).
+			7.9′. This is why Ptolemy gave his catalogue in ecliptic coordinates: he
+			had found that the stars shift parallel to the ecliptic, so that "their
+			positions in latitude with respect to the ecliptic must necessarily
+			remain the same" (<em>Almagest</em> VII 4).
 			<span class="badge" data-origin="ptolemy"></span>
 		</p>
 
 		<p>
-			Three coordinate systems for one position. This page asks what each one means,
-			and how to turn one into another.
+			The rest of the page defines each system and derives the formulas that
+			convert one into another.
 		</p>
 
 		<!-- =============================== 2. MODEL =============================== -->
-		<h2 id="model"><span class="step">2 · Model</span>A circle, a pole and an origin</h2>
+		<h2 id="model"><span class="step">2 · Model</span>Coordinate systems and rotations</h2>
 
 		<h3>What a frame is</h3>
 
@@ -197,8 +199,8 @@
 				alt="A gilded brass armillary sphere: a cage of rings and a band of cut-out zodiac figures inside a broad flat ring, with an upright ring crossing it.">
 			<figcaption>
 				<span class="fig-label">Photo.</span>
-				Frames in brass: an armillary sphere clock by Jost Bürgi and Antonius
-				Eisenhoit (Kassel, 1585). The broad flat ring, fixed to the stand, is the
+				An armillary sphere clock by Jost Bürgi and Antonius Eisenhoit (Kassel,
+				1585). Its rings are the fundamental circles of this page. The broad flat ring, fixed to the stand, is the
 				horizon: OCCIDENS, "west", is engraved on its right. The zodiac signs and
 				month names beside it are a calendar, giving the Sun's place on the
 				ecliptic for each date, as on the horizon ring of a globe. The upright
@@ -215,11 +217,12 @@
 		<p>
 			Right ascension is often given in hours, $24^\text{h} = 360^\circ$, so
 			$1^\text{h} = 15^\circ$: Aldebaran's $69.354^\circ$ is $4^\text{h}37^\text{m}$.
-			The sky turns about $15^\circ$ an hour, so this is the time a star takes
-			to follow γ across the meridian (page 1.3).
+			The unit is chosen because the sky turns about $15^\circ$ an hour: the
+			right ascension in hours is roughly the time between the meridian crossing
+			of γ and that of the star (page 1.3).
 		</p>
 
-		<h3>The azimuth runs the other way</h3>
+		<h3>Azimuth</h3>
 
 		<p>
 			The azimuth $A$ is a compass bearing: $0^\circ$ north, $90^\circ$ east,
@@ -252,15 +255,15 @@
 		$$\mathbf s_G = M \, \mathbf s_F, \qquad M = \begin{pmatrix} \mathbf g_1^T \\ \mathbf g_2^T \\ \mathbf g_3^T \end{pmatrix}.$$
 
 		<p>
-			The rows of $M$ are orthonormal, so $M^T M = I$: the way back is the
-			transpose, $\mathbf s_F = M^T \mathbf s_G$. Both frames are right-handed,
+			The rows of $M$ are orthonormal, so $M^T M = I$: the inverse
+			transformation is the transpose, $\mathbf s_F = M^T \mathbf s_G$. Both frames are right-handed,
 			so $\det M = 1$ and $M$ is a rotation.
 			<span class="badge" data-origin="modern"></span>
 		</p>
 
 		<p>
-			A rotation keeps dot products, hence angles: two stars are as far apart
-			in one frame as in another. Changing frame moves the axes, not the stars.
+			A rotation preserves dot products, and therefore angles: the angular
+			distance between two stars is the same in every frame.
 		</p>
 
 		<h3>Ecliptic and equator</h3>
@@ -278,7 +281,7 @@
 		<p>
 			The pole K is at $\alpha = 270^\circ$, $\delta = 90^\circ - \varepsilon$.
 			The matrix whose columns are these three axes takes ecliptic components to
-			equatorial ones. It is a turn by $\varepsilon$ about $x$:
+			equatorial ones. It is a rotation by $\varepsilon$ about the $x$ axis:
 		</p>
 
 		$$\mathbf s_\text{eq} = R_x(\varepsilon)\, \mathbf s_\text{ecl}, \qquad R_x(\varepsilon) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\varepsilon & -\sin\varepsilon \\ 0 & \sin\varepsilon & \cos\varepsilon \end{pmatrix}.$$
@@ -361,7 +364,7 @@
 				</div>
 			</div>
 			<figcaption>
-				One star, two frames. Move the obliquity: the ecliptic and its axes turn
+				Move the obliquity: the ecliptic and its axes turn
 				about γ, while the star, α and δ stay put and only λ and β change. At 0°
 				the two frames coincide. The first component of the two vectors never
 				changes: it is the shared $x$ axis. Drag the sphere to turn the view.
@@ -372,8 +375,8 @@
 
 		<p>
 			Page 1.1 used a sky frame whose $x$ axis points to the meridian. The
-			equatorial frame differs only in where $x$ points: at γ, which the sky
-			carries round with everything else.
+			equatorial frame differs only in where $x$ points: at γ, a point of the
+			equator that turns with the sky.
 		</p>
 
 		<p>
@@ -387,12 +390,12 @@
 		<p>
 			Check: the sky-frame longitude of the star is $\alpha - \theta = -H$, as
 			on page 1.1. Page 1.3 names $\theta$ the <em>local sidereal time</em> and
-			reads it off a clock. Here it is just an angle.
+			obtains it from the clock. On this page it is a free parameter.
 		</p>
 
 		<p>
 			Page 1.1 then tilted the sky frame onto the horizon frame with
-			$R_y(\varphi - 90^\circ)$. The two turns in a row are
+			$R_y(\varphi - 90^\circ)$. The two rotations combined give
 		</p>
 
 		$$\mathbf s_\text{hor} = R_y(\varphi - 90^\circ)\, R_z(-\theta)\, \mathbf s_\text{eq}.$$
@@ -414,7 +417,8 @@
 		<p>
 			The first line is the altitude of page 1.1. The second checks the sign: a
 			star east of the meridian ($H &lt; 0$) has $\sin A &gt; 0$, an eastern
-			azimuth. The way back, horizon to equatorial, is the transpose.
+			azimuth. The inverse transformation, horizon to equatorial, is the
+			transpose.
 		</p>
 
 		<!-- Figure 2: equator and horizon -->
@@ -437,7 +441,7 @@
 						<button type="button" data-target="hor-lat" data-value="0">equator</button>
 					</div>
 					<div class="ctl">
-						<label for="hor-theta">turn θ</label>
+						<label for="hor-theta">angle θ</label>
 						<input id="hor-theta" type="range" min="0" max="360" step="0.01" value="38.94">
 						<output></output>
 					</div>
@@ -521,22 +525,22 @@
 		<p>
 			At a pole of a frame the longitude is undefined: P has no right ascension,
 			Z has no azimuth, and $\operatorname{atan2}(0, 0)$ has no value. Near a
-			pole a tiny move of the star swings the longitude wildly. The vector has
-			no such trouble, which is why the code works with vectors and turns them
-			into angles only at the end.
+			pole a small change in the star's position produces a large change in its
+			longitude. The unit vector has no such singularity, which is why the code
+			works with vectors and converts them to angles only at the end.
 		</p>
 
 		<!-- =============================== 3. FIT ================================ -->
 		<h2 id="fit"><span class="step">3 · Fit</span>The obliquity and the origin</h2>
 
 		<p>
-			The horizon frame needs the latitude $\varphi$ (page 1.1) and the turn
+			The horizon frame needs the latitude $\varphi$ (page 1.1) and the angle
 			$\theta$ (page 1.3). The equatorial and ecliptic frames need two things
 			from the sky: the angle between them, $\varepsilon$, and their shared
 			origin γ.
 		</p>
 
-		<h3>The obliquity from two noon shadows</h3>
+		<h3>The obliquity from the noon Sun at the solstices</h3>
 
 		<p>
 			At noon the Sun is on the meridian, at altitude $90^\circ - \varphi +
@@ -566,31 +570,33 @@
 
 		<p>
 			He says this agrees with Eratosthenes and Hipparchus. Whether the ratio
-			11 : 83 was theirs, or Ptolemy's rounding of an older 24°, is read both
-			ways (Toomer's note to I 12).
+			11 : 83 was theirs, or Ptolemy's rounding of an older 24°, is uncertain
+			(Toomer's note to I 12).
 			<span class="badge" data-origin="debated"></span>
 		</p>
 
 		<p>
 			The true obliquity in AD 137 was $23^\circ 40' 40''$ (23.678°). Ptolemy's
 			value is 10.7′ too large, and the true value lies outside even his
-			bounds (23.833° to 23.875°).
+			bounds (23.833° to 23.875°). Section 4 measures the effect of this error
+			on the Sun's position.
 		</p>
 
 		<h3>The origin</h3>
 
 		<p>
 			No star marks γ. It is defined by the Sun: the point where it crosses the
-			equator going north. In 2026 that happens on the afternoon of 20 March
-			(UT). Hipparchus collected equinox times for exactly this reason, some
-			read off a bronze ring set in the plane of the equator at Alexandria
-			(<em>Almagest</em> III 1).
+			equator going north. Locating γ therefore means timing the March equinox;
+			in 2026 it falls on the afternoon of 20 March (UT). Hipparchus collected
+			equinox times, some read off a bronze ring set in the plane of the
+			equator at Alexandria (<em>Almagest</em> III 1).
 			<span class="badge" data-origin="hipparchus"></span>
 		</p>
 
 		<p>
-			Because the origin is tied to the Sun and not to a star, a catalogue
-			only fixes positions for its own date. Section 5 shows what that costs.
+			Because γ is defined by the Sun and not by the stars, it can move relative
+			to the stars, and then the coordinates of every star change with it
+			(section 5). A catalogue therefore gives positions for its own date.
 		</p>
 
 		<aside class="detour" data-topic="instruments"></aside>
@@ -599,9 +605,9 @@
 		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
 
 		<p>
-			A frame change is exact mathematics, so the test is of two things: the
-			formulas, against an independent computation, and the fitted frames,
-			against the real Sun.
+			The conversion formulas involve no approximation, so two things are
+			tested: the formulas themselves, against Ptolemy's independent
+			computation, and the fitted obliquity, against the real Sun.
 		</p>
 
 		<h3>Ptolemy's tables</h3>
@@ -722,25 +728,27 @@
 		</figure>
 
 		<p>
-			Panel (b) matters later. The Sun moves along the ecliptic, but clocks
-			count turns of the equator. Even a Sun moving uniformly in $\lambda$
-			would run unevenly in $\alpha$: one of the two reasons sundials and clocks
-			disagree (page 2.2).
+			Panel (b) is used again on page 2.2. The Sun moves along the ecliptic,
+			but time is measured by the rotation of the equator. Even if the Sun moved
+			uniformly in $\lambda$, its $\alpha$ would not grow uniformly. This is one
+			of the two reasons why sundials and clocks disagree.
 		</p>
 
 		<h3>Fixed frames against the real Sun</h3>
 
 		<p>
-			Now the real sky. Take the reference Sun's longitude on each day of a year,
+			The second test uses the real sky. Take the reference Sun's longitude on
+			each day of a year,
 			turn it into $(\alpha, \delta)$ with a fixed $\varepsilon$, and compare
 			with the reference Sun's own $(\alpha, \delta)$.
 		</p>
 
 		<p>
-			With $\varepsilon$ fitted to the year, the misses stay under 0.11′ in
-			$\delta$ and 0.03′ in $\alpha$. They are the nodding of the axis
-			(nutation) and the Sun's latitude of a few arcseconds. The frames
-			themselves are right.
+			With $\varepsilon$ fitted to the year, the differences stay under 0.11′
+			in $\delta$ and 0.03′ in $\alpha$. They come from nutation, a small
+			periodic oscillation of the Earth's axis, and from the Sun's latitude of a
+			few arcseconds. With the right obliquity, then, the conversion reproduces
+			the real Sun; what matters is the value of $\varepsilon$.
 		</p>
 
 		<!-- Figure 4: fixed frames against the real Sun -->
@@ -798,7 +806,7 @@
 				</div>
 			</div>
 			<figcaption>
-				Ptolemy's frames in Ptolemy's own year. Then press "fitted to the year":
+				The figure opens with Ptolemy's obliquity in AD 137. Press "fitted to the year":
 				both curves flatten onto the line. Then move the year with the
 				obliquity left alone, and watch the error grow.
 			</figcaption>
@@ -818,7 +826,7 @@
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
-		<h2 id="residual"><span class="step">5 · Residual</span>Frames that move</h2>
+		<h2 id="residual"><span class="step">5 · Residual</span>What the fixed frames leave out</h2>
 
 		<p>
 			<strong>The angle between the frames changes.</strong> The obliquity was
@@ -837,17 +845,18 @@
 		<aside class="detour" data-topic="nutation"></aside>
 
 		<p>
-			<strong>The origin slides.</strong> Aldebaran's longitude grew by 26.30°
+			<strong>The origin moves.</strong> Aldebaran's longitude grew by 26.30°
 			since Ptolemy while its latitude stayed within 8′: the vernal point itself
 			moves backwards along the ecliptic. Ptolemy's own longitude for the star is
 			also 71′ short of the real one in his time. Page 2.3 takes up both.
 		</p>
 
 		<p>
-			<strong>The angle θ is still unknown.</strong> In Figure 2, $\theta$ was a slider. In
-			the sky it is set by the clock: the angle the sky has turned since γ last
-			crossed the meridian. To put a star in the observer's sky at a given
-			moment we need that angle, and page 1.3 finds it.
+			<strong>The angle θ is still unknown.</strong> In Figure 2, $\theta$ was
+			set with a slider. In the sky it depends on the time: it is the angle the
+			sky has turned since γ last crossed the meridian. To place a star in the
+			observer's sky at a given moment we need $\theta$ at that moment, and
+			page 1.3 shows how to compute it.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -855,7 +864,7 @@
 
 		<div class="exercise" data-kind="derive">
 			<p>
-				Show that the way from the equatorial frame to the ecliptic one is
+				Show that the transformation from the equatorial frame to the ecliptic one is
 				$R_x(-\varepsilon)$, and write out $\lambda$ and $\beta$ in terms of
 				$\alpha$ and $\delta$. Then find Aldebaran's $\lambda$ and $\beta$ from
 				$\alpha = 69.3539^\circ$, $\delta = 16.5594^\circ$ (2026.0), with
