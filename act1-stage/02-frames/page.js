@@ -1,13 +1,13 @@
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
-   Four figures, each with its own init / update / draw:
+   Three figures, each with its own init / update / draw:
 	 1. ecliptic and equator      (3D, equatorial frame: the stars never move;
 								   the obliquity turns the ecliptic frame)
 	 2. equator and horizon       (3D, equatorial frame: latitude and the turn
 								   of the sky move the horizon frame)
-	 3. the Sun on the equator    (2D: declination and alpha - lambda against
-								   lambda, with Ptolemy's tables)
-	 4. fixed frames, real Sun    (2D: errors of a fixed obliquity over a year)
+	 3. fixed frames, real Sun    (2D: errors of a fixed obliquity over a year)
+   The comparison of Ptolemy's tables with the real Sun is a static table in
+   index.html (numbers from tools/numbers/1.2-frames.js).
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
    models/frames.js, sphere3d.js, plot2d.js, components.js.
    Every number quoted in the prose comes from tools/numbers/1.2-frames.js.
@@ -16,9 +16,8 @@
 	 0. Helpers shared by the figures
 	 1. Figure 1: ecliptic and equator
 	 2. Figure 2: equator and horizon
-	 3. Figure 3: the Sun on the equator's grid
-	 4. Figure 4: fixed frames against the real Sun
-	 5. Page start
+	 3. Figure 3: fixed frames against the real Sun
+	 4. Page start
    ========================================================================== */
 
 
@@ -348,138 +347,7 @@ const horizonFigure = {
 
 
 /* ==========================================================================
-   3. FIGURE 3: THE SUN ON THE EQUATOR'S GRID
-   (a) the declination of the ecliptic point at longitude lambda;
-   (b) alpha - lambda, the reduction to the equator.
-   Dots: Ptolemy's tables (Almagest I 15, I 16), carried to the four
-   quadrants by the symmetries of the ecliptic.
-   Fixed scales: |delta| <= eps <= 30° (the slider's top) and
-   |alpha - lambda| <= asin(tan^2 15°) = 4.12° (tools/numbers/1.2-frames.js).
-   ========================================================================== */
-
-const SUN_DEC_RANGE = [-35, 35];
-const SUN_REDUCTION_RANGE = [-5, 5];
-
-/* x ticks every 90° of longitude. */
-const longitudeTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: String(value) }));
-
-/* Ptolemy's declinations every 10° of longitude, all four quadrants. */
-function ptolemyDeclinationDots() {
-	const dots = [];
-
-	for (let lon = 0; lon <= 360; lon += 10) {
-		dots.push([lon, Frames.ptolemyDeclination(lon)]);
-	}
-
-	return dots;
-}
-
-/* Ptolemy's alpha - lambda every 10°: from I 16 in the first quadrant,
-   then r(180 - l) = -r(l), r(180 + l) = r(l), r(360 - l) = -r(l). */
-function ptolemyReductionDots() {
-	const first = Frames.ptolemyRightAscensions().map((ra, i) => ra - 10 * i);
-	const dots = [];
-
-	for (let i = 0; i <= 36; i++) {
-		const quadrant = Math.floor(i / 9) % 4;
-		const k = i % 9;
-		const value = [first[k], -first[9 - k], first[k], -first[9 - k]][quadrant];
-
-		dots.push([10 * i, i === 36 ? 0 : value]);
-	}
-
-	return dots;
-}
-
-const sunFigure = {
-	decPlot: null,
-	reductionPlot: null,
-	decDots: ptolemyDeclinationDots(),
-	reductionDots: ptolemyReductionDots(),
-
-	init() {
-		const figure = byId('sun-dec').closest('figure');
-
-		this.decPlot = new Plot2D(byId('sun-dec'), {
-			x: [0, 360],
-			y: SUN_DEC_RANGE,
-			xLabel: 'ecliptic longitude λ (°)',
-			yLabel: 'declination δ (°)',
-			aspect: 0.75,
-			xTicks: longitudeTicks,
-			onDraw: () => this.drawDeclination()
-		});
-
-		this.reductionPlot = new Plot2D(byId('sun-red'), {
-			x: [0, 360],
-			y: SUN_REDUCTION_RANGE,
-			xLabel: 'ecliptic longitude λ (°)',
-			yLabel: 'α − λ (°)',
-			aspect: 0.75,
-			xTicks: longitudeTicks,
-			onDraw: () => this.drawReduction()
-		});
-
-		byId('sun-eps').value = EPS_TODAY.toFixed(4);
-		byId('sun-today').dataset.value = EPS_TODAY.toFixed(4);
-		wireSlider(byId('sun-eps'), () => this.update(), formatDegrees);
-		wireSlider(byId('sun-lon'), () => this.update(), value => `${value}°`);
-		wirePresets(figure);
-		this.update();
-	},
-
-	update() {
-		this.eps = readNumber('sun-eps');
-		this.lon = readNumber('sun-lon');
-		this.point = Frames.eclipticPoint(this.lon, this.eps);
-		this.reduction = Frames.reduction(this.lon, this.eps);
-		this.showReadout();
-		this.decPlot.redraw();
-		this.reductionPlot.redraw();
-	},
-
-	showReadout() {
-		const { lon, point, reduction } = this;
-		const lines = [
-			`\\lambda = ${lon}^\\circ\\text{:}\\quad \\delta = ${texDegrees(point.dec, 3)},\\quad \\alpha = ${texDegrees(point.ra, 3)}\\ (${texHours(point.ra)})`,
-			`\\alpha - \\lambda = ${texDegrees(reduction, 3)}`,
-			`\\text{Ptolemy, I 15: } \\delta = ${texDms(Frames.ptolemyDeclination(lon))}`
-		];
-
-		if (lon % 10 === 0 && lon <= 90) {
-			const ra = Frames.ptolemyRightAscensions()[lon / 10];
-
-			lines.push(`\\text{Ptolemy, I 16: } \\alpha = ${texDms(ra).replace(/ 00''$/, '')}`);
-		}
-
-		showLines('sun-readout', lines);
-	},
-
-	/* Panel (a): delta against lambda. */
-	drawDeclination() {
-		const p = this.decPlot;
-
-		p.frame();
-		p.hline(0, { color: COL.earth, width: 2 });
-		p.fn(lon => Frames.eclipticPoint(lon, this.eps).dec, { color: COL.sun, width: 2.5 });
-		this.decDots.forEach(([lon, dec]) => p.marker(lon, dec, { color: COL.ink, radius: 3 }));
-		p.marker(this.lon, this.point.dec, { color: COL.planet, radius: 6 });
-	},
-
-	/* Panel (b): alpha - lambda against lambda. */
-	drawReduction() {
-		const p = this.reductionPlot;
-
-		p.frame();
-		p.fn(lon => Frames.reduction(lon, this.eps), { color: COL.sun, width: 2.5 });
-		this.reductionDots.forEach(([lon, r]) => p.marker(lon, r, { color: COL.ink, radius: 3 }));
-		p.marker(this.lon, this.reduction, { color: COL.planet, radius: 6 });
-	}
-};
-
-
-/* ==========================================================================
-   4. FIGURE 4: FIXED FRAMES AGAINST THE REAL SUN
+   3. FIGURE 3: FIXED FRAMES AGAINST THE REAL SUN
    Over one year, the Sun's real longitude is turned into (alpha, delta)
    with a fixed obliquity and compared with the real (alpha, delta).
    Fixed scale: over every year and obliquity the sliders allow, the
@@ -488,6 +356,9 @@ const sunFigure = {
 
 const TEST_Y_RANGE = [-50, 50];      // arcminutes
 const TEST_STEP_DAYS = 2;
+
+/* x ticks every 90° of longitude. */
+const longitudeTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: String(value) }));
 
 /* The real Sun over the year starting 1 January of 'year', sorted by
    longitude: [{ lon, ra, dec }]. */
@@ -590,7 +461,7 @@ const testFigure = {
 
 
 /* ==========================================================================
-   5. PAGE START
+   4. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
@@ -598,6 +469,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
 	eclipticFigure.init();
 	horizonFigure.init();
-	sunFigure.init();
 	testFigure.init();
 });
