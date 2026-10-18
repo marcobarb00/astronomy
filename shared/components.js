@@ -105,7 +105,7 @@ const Site = (function () {
 			path: 'act1-stage/02-frames/index.html'
 		},
 		{
-			number: '1.3', act: 1, ready: false,
+			number: '1.3', act: 1, ready: true,
 			title: 'Clocks',
 			question: 'What time is it according to the sky?',
 			path: 'act1-stage/03-clocks/index.html'
@@ -229,6 +229,11 @@ const Site = (function () {
 		instruments: {
 			title: 'instruments',
 			sentence: 'armillary spheres, quadrants and how the old numbers were measured',
+			path: null, ready: false
+		},
+		deltaT: {
+			title: 'the slowing Earth (ΔT)',
+			sentence: 'tides lengthen the day, so clocks and the Earth\'s rotation drift apart by hours over millennia',
 			path: null, ready: false
 		}
 	};

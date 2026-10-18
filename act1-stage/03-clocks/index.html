@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.3 · CLOCKS
+     Act I, the stage. The sidereal day and the solar day; sidereal time and
+     the hour angle; mean solar time and Universal Time; the Julian Date;
+     transit times of stars and the length of the day.
+     Numbers: tools/numbers/1.3-clocks.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.3 · Clocks · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/clock.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.3">
+<div class="page">
+
+	<!-- Sticky table of contents, built from the article's <h2> -->
+	<nav class="toc" aria-label="Contents"></nav>
+
+	<article>
+
+		<!-- Page header, filled from the site map -->
+		<header class="page-head"></header>
+
+		<p>
+			Page 1.2 placed a star in the observer's sky with $H = \theta - \alpha$,
+			where $\theta$ is the angle the sky has turned since the vernal point γ
+			crossed the meridian. There $\theta$ was set by hand. This page computes
+			it from a clock and a date.
+		</p>
+
+		<p>
+			With $\theta$ known, two predictions follow: when any star crosses the
+			meridian at any place, and how long the Sun stays above the horizon on
+			any date and at any latitude. Section 4 tests both against the real sky.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The day of the stars and the day of the Sun</h2>
+
+		<p>
+			Time a star crossing the meridian on two nights with a clock that keeps
+			ordinary time. It comes back after 23 h 56 min 04.09 s, not 24 hours, so
+			each night it crosses 3 min 55.91 s earlier than the night before. Over a
+			month that adds up to almost two hours.
+		</p>
+
+		<p>
+			That is why the stars seen at a given hour change with the seasons. From
+			Rome, Betelgeuse in Orion crosses the meridian at midnight (local mean
+			time, defined in section 2) around 20 December, at 22:00 around
+			19 January, and at 20:00 around 18 February.
+		</p>
+
+		<p>
+			The Sun keeps the clock's 24 hours, but only on average. The interval
+			from one noon to the next, the <em>true solar day</em>, varied in 2026
+			from 23 h 59 min 38.6 s (the day ending 18 September) to 24 h 00 min
+			29.8 s (ending 23 December). Its average over the year was 24 h to within
+			0.06 s, because the clock is defined that way (section 2).
+		</p>
+
+		<p>
+			Ptolemy states both facts in one definition. The sky's turn, "the return
+			of a given point on the equator" to the meridian, takes 360
+			<em>time-degrees</em>; a mean solar day takes "360 time-degrees of one
+			revolution of the equator plus approximately $0^\circ 59'$ time-degrees,
+			which is the amount of the mean motion of the sun during that period"
+			(<em>Almagest</em> III 9). <span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			A time-degree is the time the equator takes to turn $1^\circ$ across the
+			meridian, $\tfrac{1}{15}$ of an hour or 4 minutes (Toomer's introduction).
+			So Ptolemy's $0^\circ 59'$ ($0.983^\circ$) is 3.93 minutes, the
+			difference between the two days observed above.
+		</p>
+
+		<p>
+			Copernicus counts the same difference over a year: "in the course of an
+			entire year 365 rotations take place. These are increased by approximately
+			a whole additional rotation as the result of a daily prolongation due to
+			the apparent advance of the sun" (<em>De Revolutionibus</em> III 26
+			[f. 96v]). <span class="badge" data-origin="copernicus"></span>
+		</p>
+
+		<!-- Figure 1: the sky from above the north pole through the year -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="wheel-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl stepper">
+						<label for="wheel-day">date</label>
+						<input id="wheel-day" type="range" min="0" max="365" step="1" value="0">
+						<output></output>
+						<span class="stepper-buttons">
+							<button type="button" class="stepper-btn" data-target="wheel-day" data-step="-1"
+								aria-label="previous day">‹ previous day</button>
+							<button type="button" class="stepper-btn" data-target="wheel-day" data-step="1"
+								aria-label="next day">next day ›</button>
+						</span>
+					</div>
+					<div class="ctl">
+						<label for="wheel-time">time (UT)</label>
+						<input id="wheel-time" type="range" min="0" max="24" step="0.01" value="12">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" class="play" id="wheel-play">▶ play</button>
+					</div>
+					<div class="readout" id="wheel-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole, at the centre; the view is from outside the sphere, above P, down to declination $-60^\circ$ at the rim</dd>
+						<dt class="c-deferent">meridian</dt>
+						<dd>the observer's meridian (at Greenwich), from P towards the south; it is fixed, and the sky turns clockwise under it</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the celestial equator</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>the Sun's yearly path (dashed)</dd>
+						<dt>γ</dt>
+						<dd>the vernal point, where the Sun crosses the equator going north</dd>
+						<dt class="c-muted">dots</dt>
+						<dd>twenty bright stars at their positions of 2026; four are named</dd>
+						<dt class="c-sun">Sun</dt>
+						<dd>the real Sun at the chosen moment</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>elapsed</dt>
+						<dd>clock time since 1 January 2026, 0 h UT</dd>
+						<dt>sky</dt>
+						<dd>the turns the stars have made about P in that time</dd>
+						<dt>Sun</dt>
+						<dd>the turns the Sun has made about P (its meridian crossings)</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Step through the days with the time fixed: the Sun stays near the
+				meridian, while the stars and γ move about $1^\circ$ further each day
+				in the direction of the turn. On 1 January 2027, the last step, the sky
+				has made one turn more than the Sun. Press play to follow a single day.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Sidereal time and mean solar time</h2>
+
+		<h3>The sidereal day and the solar day</h3>
+
+		<p>
+			The model keeps the turning sky of page 1.1: the stars turn about P at a
+			constant rate. Their turn takes one <em>sidereal day</em>. Against the
+			stars, the Sun moves east along the ecliptic by about $1^\circ$ a day, so
+			it returns to the meridian a little later than they do.
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		<p>
+			To make this precise, let the Sun's right ascension grow uniformly, by
+			$n$ degrees a day. With $H = \theta - \alpha$ from page 1.2, its hour
+			angle is $H_\odot = \theta - \alpha_\odot$, and the two angles grow at
+			the rates
+		</p>
+
+		$$\frac{d\theta}{dt} = \omega, \qquad \frac{dH_\odot}{dt} = \omega - n.$$
+
+		<p>
+			The Sun's day, from one meridian crossing to the next, is the time in
+			which $H_\odot$ grows by $360^\circ$; the sidereal day is the time in
+			which $\theta$ does. During one year of $Y$ solar days the Sun goes once
+			round the sky, $nY = 360^\circ$, so in that time $H_\odot$ grows by
+			$360^\circ\,Y$ and $\theta$ by $360^\circ\,(Y + 1)$:
+		</p>
+
+		<div class="box">
+			$$Y \text{ solar days} = Y + 1 \text{ sidereal days}, \qquad P_\text{sid} = \frac{Y}{Y + 1} \times 24\ \text{h}.$$
+		</div>
+
+		<p>
+			With the tropical year $Y = 365.24219$ days (section 3), a year holds
+			366.24219 sidereal days, and one sidereal day lasts 23 h 56 min
+			04.091 s, the turn observed in section 1.
+		</p>
+
+		<h3>Sidereal time and the hour angle</h3>
+
+		<p>
+			A clock that follows the stars reads the angle $\theta$ directly. Its
+			reading is the <em>local sidereal time</em>, $\theta$, usually expressed
+			in hours ($15^\circ$ to the hour): it is $0^\text{h}$ when γ crosses the
+			meridian and runs through $24^\text{h}$ in one sidereal day.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			A star of right ascension $\alpha$ crosses the meridian when $H =
+			\theta - \alpha = 0$, that is, when the sidereal time equals its right
+			ascension. The meridian always shows the stars whose right ascension is
+			the current sidereal time. This is the reason right ascension is
+			counted in hours (page 1.2).
+		</p>
+
+		<p>
+			The sidereal time depends on the place. Seen against the stars, the
+			meridian of an observer at geographic longitude $\ell$ east of Greenwich
+			lies $\ell$ further east than the meridian of Greenwich. A meridian sits
+			at right ascension $\alpha = \theta$ (page 1.2), so, with $\theta_G$ the
+			sidereal time at Greenwich,
+		</p>
+
+		$$\theta = \theta_G + \ell, \qquad H = \theta_G + \ell - \alpha.$$
+
+		<p>
+			Longitudes are counted positive east on this site. Meeus counts them
+			positive west, and Fitzpatrick writes $\varphi$ for the longitude (and
+			$L$ for the latitude): their formulas have $-\ell$ where these have
+			$+\ell$.
+		</p>
+
+		<h3>Mean solar time and Universal Time</h3>
+
+		<p>
+			Our clocks do not keep sidereal time; they keep mean solar time. The real
+			Sun is a poor timekeeper, as the uneven solar days of section 1 show, so
+			astronomers defined a fictitious <em>mean Sun</em> that moves along the
+			equator at a constant rate, with right ascension equal to the Sun's
+			mean longitude $\bar\lambda$, which grows by $n$ every day:
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		$$\alpha_m = \bar\lambda = L_0 + n\,d, \qquad d = \text{days since the epoch}.$$
+
+		<p>
+			The <em>mean solar time</em> at a place is the hour angle of the mean
+			Sun plus 12 hours, so that the day starts at midnight. At Greenwich it is
+			<em>Universal Time</em>, UT. Elsewhere the <em>local mean time</em> is
+			$\text{UT} + \ell / 15^\circ$ hours: at Rome ($\ell = 12.50^\circ$) it is
+			UT + 49 min 59 s.
+		</p>
+
+		<p>
+			Civil clocks keep the mean time of a reference meridian instead (Central
+			European Time is UT + 1 h), so at Rome local mean noon falls at
+			12:10:01 CET.
+		</p>
+
+		<p>
+			The definitions give the sidereal time from the clock. At Greenwich
+			$H_m = 15^\circ(\text{UT} - 12\,\text{h})$, so $\theta_G = H_m + \alpha_m$.
+			Count $d$ in days of UT from the epoch J2000.0, 2000 January 1 at
+			12 h UT, so that $15^\circ(\text{UT} - 12\,\text{h})$ is $360^\circ\,d$
+			up to whole turns. Then
+		</p>
+
+		$$\theta_G = 360^\circ\,d + L_0 + n\,d = L_0 + (360^\circ + n)\,d.$$
+
+		<p>
+			The sidereal clock gains $n$ on the solar clock every day: this is the
+			$\omega = 360^\circ + n$ per solar day found above. With the numbers in
+			use since 1984 (Meeus, ch. 12),
+		</p>
+
+		<div class="box">
+			$$\theta_G = 280.46061837^\circ + 360.98564736629^\circ\, d, \qquad d = \text{JD(UT)} - 2451545.0.$$
+		</div>
+
+		<p>
+			The rate is $360^\circ + 0.98564736629^\circ$, and $360^\circ / n$ is
+			365.24219 days, the tropical year. The constant is the mean Sun's
+			longitude at J2000.0, $L_0 = 280.46646^\circ$, to within 21″ (1.4 s of
+			time). Meeus adds two terms in $T^2$ and $T^3$, worth 6.3 ms in 2026,
+			which the site leaves out.
+		</p>
+
+		<p>
+			Page 1.2 placed Aldebaran in the sky of Rome on 1 January 2026 at
+			19:00 UT with $\theta = 38.94^\circ$, set by hand. The formula gives
+			$\theta_G = 26.44^\circ$ at that moment, and with $\ell = 12.50^\circ$,
+			$\theta = 38.94^\circ$ ($2^\text{h}35^\text{m}45^\text{s}$). Figure 2 starts
+			from that moment.
+		</p>
+
+		<!-- Figure 2: sidereal time and the hour angle in the observer's sky -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="sid-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="sid-time">time (UT)</label>
+						<input id="sid-time" type="range" min="0" max="24" step="0.01" value="19">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" class="play" id="sid-play">▶ play</button>
+					</div>
+					<div class="ctl">
+						<label for="sid-lon">longitude ℓ</label>
+						<input id="sid-lon" type="range" min="-180" max="180" step="0.01" value="12.4964">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="sid-lon" data-value="0">Greenwich</button>
+						<button type="button" data-target="sid-lon" data-value="12.4964">Rome</button>
+						<button type="button" data-target="sid-lon" data-value="29.92">Alexandria</button>
+						<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
+					</div>
+					<div class="presets star-choice" id="sid-stars"></div>
+					<div class="readout" id="sid-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's horizon, at latitude $41.9^\circ$, with N, E, S, W and the zenith Z</dd>
+						<dt class="c-muted">meridian</dt>
+						<dd>the dotted circle through N, Z and S</dd>
+						<dt>P</dt>
+						<dd>the north celestial pole</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the celestial equator; M is the point where it crosses the meridian</dd>
+						<dt>γ</dt>
+						<dd>the vernal point</dd>
+						<dt class="c-planet">star</dt>
+						<dd>the chosen star (position of 2026.0), with the great circle from P through it to the equator (dashed)</dd>
+						<dt class="c-epicycle">θ</dt>
+						<dd>arc along the equator from M westward to γ: the local sidereal time</dd>
+						<dt class="c-earth">α</dt>
+						<dd>arc from γ eastward to the star's circle: its right ascension</dd>
+						<dt class="c-planet">H</dt>
+						<dd>arc from M westward to the star's circle: its hour angle, negative (eastward) before it crosses</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$d$</dt>
+						<dd>days since J2000.0, $\text{JD(UT)} - 2451545.0$</dd>
+						<dt>$\theta_G$</dt>
+						<dd>the sidereal time at Greenwich, from the boxed formula</dd>
+						<dt>$\theta$</dt>
+						<dd>the local sidereal time, $\theta_G + \ell$</dd>
+						<dt>$\alpha,\ H$</dt>
+						<dd>the star's right ascension and hour angle $\theta - \alpha$</dd>
+						<dt>$a$</dt>
+						<dd>its altitude (page 1.1)</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				The sky of 1 January 2026. Press play: the arcs θ and H grow together,
+				and α stays fixed. Then move the longitude with the time fixed: going
+				east increases θ by the same angle, and the star stands further west.
+				Drag the sphere to turn the view.
+			</figcaption>
+		</figure>
+
+		<h3>The Julian Date</h3>
+
+		<p>
+			The formula needs the number of days $d$ between two dates. Calendars
+			make that awkward: months of unequal length, leap years, and the
+			Gregorian reform, after which 4 October 1582 was followed by 15 October.
+			Astronomers therefore count days continuously.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			The <em>Julian Date</em> JD is the number of days since noon UT on
+			1 January 4713 BC in the Julian calendar (a Monday), with the time of day
+			as a fraction. J2000.0 is JD 2451545.0, and 1 January 2026 at 0 h UT is
+			JD 2461041.5. In this count 4 and 15 October 1582 are consecutive days,
+			JD 2299159.5 and 2299160.5.
+		</p>
+
+		<p>
+			A Julian Date starts at noon, as the astronomical day of Ptolemy did. He
+			counts from the meridian crossing of the Sun, "not from its rising or
+			setting", because the time of sunrise "varies according to the
+			difference in longest or shortest day at the different latitudes", while
+			the meridian behaves "the same at every place on earth" (<em>Almagest</em>
+			III 9). "We establish all epochs at noon" (III 7).
+			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			Copernicus lists the other customs: the day began at sunrise for the
+			Babylonians, at sunset for the Athenians, at midnight for the Romans
+			and at noon for the Egyptians (<em>De Revolutionibus</em> III 26).
+		</p>
+
+		<p>
+			For a date in the calendar (year $Y$, month $M$, day $D$ with its
+			fraction), Meeus (ch. 7) gives
+		</p>
+
+		$$\text{JD} = \lfloor 365.25\,(Y + 4716) \rfloor + \lfloor 30.6001\,(M + 1) \rfloor + D + B - 1524.5,$$
+
+		<p>
+			with January and February counted as months 13 and 14 of the previous
+			year, and $B = 2 - \lfloor Y/100 \rfloor + \lfloor Y/400 \rfloor$
+			(Gregorian calendar) or $B = 0$ (Julian calendar).
+		</p>
+
+		<details class="fold">
+			<summary>Where the terms come from</summary>
+			<p>
+				Starting the year in March puts the leap day at the end of the year,
+				so the days before a month do not depend on whether the year is a leap
+				year. From March on, the months have 31, 30, 31, 30, 31 days, a
+				pattern that repeats, averaging 30.6 days; $\lfloor 30.6001\,(M + 1)
+				\rfloor$ counts them (the extra 0.0001 protects against rounding).
+			</p>
+			<p>
+				$\lfloor 365.25\,(Y + 4716) \rfloor$ counts the days of the past
+				years with one leap day every four years, as in the Julian calendar;
+				the shift by 4716 years keeps the argument positive for every date
+				after 4713 BC. $B$ removes the three Gregorian leap days skipped every
+				four centuries, and $-1524.5$ sets the origin.
+			</p>
+		</details>
+
+		<p>
+			Ptolemy had a continuous count too. He dated events in Egyptian years of
+			exactly 365 days, counted from the first year of King Nabonassar, whose
+			reign began the Babylonian records he used (<em>Almagest</em> III 7;
+			Toomer's introduction).
+			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			From Nabonassar 1, Thoth 1, noon, to an autumn equinox he observed (in the
+			17th year of Hadrian, Athyr 7, two hours after noon) he counts "879
+			Egyptian years 66 days and 2 equinoctial hours" (III 7). These are
+			26 February 747 BC and 25 September AD 132. The Julian Dates of the two
+			moments, JD 1448638.0 and 1769539.0833, differ by 320901.0833 days, and
+			$879 \times 365 + 66 + \tfrac{2}{24}$ is the same number.
+		</p>
+
+		<h3>When a star crosses the meridian</h3>
+
+		<p>
+			A star crosses the meridian when $\theta = \alpha$. Starting from
+			$\theta_{G,0}$, the Greenwich sidereal time at 0 h UT of the date, the
+			sky still has to turn by $(\alpha - \ell - \theta_{G,0})$, reduced to
+			$[0^\circ, 360^\circ)$, at $360.98564736629^\circ$ a day:
+		</p>
+
+		$$\text{UT of transit} = \frac{(\alpha - \ell - \theta_{G,0}) \bmod 360^\circ}{360.98564736629^\circ} \times 24\ \text{h}.$$
+
+		<p>
+			Adding one sidereal day gives the next transit, which usually falls on
+			the next date. Once a year it still falls within the same date, because
+			the sidereal day is shorter than 24 hours: on that date the star crosses
+			the meridian twice.
+		</p>
+
+		<p>
+			Figure 3 plots the transits through a whole year as a star calendar, with
+			the hours of night from the Sun's model of the next subsection. Each
+			night the transit comes 3 min 56 s earlier, and the star returns to the
+			same hour after a year.
+		</p>
+
+		<!-- Figure 3: the star calendar -->
+		<figure class="fig">
+			<canvas id="transit-plot"></canvas>
+			<div class="panel-controls">
+				<div>
+					<div class="presets star-choice" id="transit-stars"></div>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="transit-lat">latitude φ</label>
+						<input id="transit-lat" type="range" min="-60" max="60" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="transit-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="transit-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="transit-lat" data-value="51.5">London</button>
+						<button type="button" data-target="transit-lat" data-value="-33.9">Sydney</button>
+					</div>
+				</div>
+			</div>
+			<div class="readout" id="transit-readout"></div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-muted">band</dt>
+						<dd>night: the model Sun's centre more than 50′ below the horizon</dd>
+						<dt class="c-planet">band</dt>
+						<dd>the hours when the star is above the horizon</dd>
+						<dt class="c-planet">line</dt>
+						<dd>the time of the star's transit, each night of 2026</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the date under the pointer, read out below the plot</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>transit</dt>
+						<dd>the local mean time of the transit on the night that starts on that date (UT = local mean time $-\ \ell/15^\circ$)</dd>
+						<dt>$a$</dt>
+						<dd>the star's altitude at transit, $90^\circ - |\varphi - \delta|$</dd>
+						<dt>sky</dt>
+						<dd>whether the Sun is down at the transit</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Times are local mean time, from one noon to the next, so a night is one
+				vertical strip. Choose a star, then point at the plot to read a night.
+				A star is best seen in the months when its line crosses the middle of
+				the night band; there the Sun is opposite it in the sky.
+			</figcaption>
+		</figure>
+
+		<h3>The length of the day</h3>
+
+		<p>
+			The same clock gives the times of sunrise and sunset, once the Sun's
+			declination is known. The model makes the simplest assumption: the Sun
+			moves uniformly along the ecliptic, at the mean longitude, $\lambda =
+			\bar\lambda$. Page 1.2 then gives its declination:
+		</p>
+
+		$$\sin\delta_\odot = \sin\varepsilon \sin\bar\lambda.$$
+
+		<p>
+			The model Sun crosses the meridian at mean noon, 12:00 local mean time,
+			and its hour angle grows by $360^\circ$ in 24 hours, $15^\circ$ an hour.
+			It sets at the hour angle $H_0$ of page 1.1, generalised to a horizon at
+			altitude $h_0$:
+		</p>
+
+		$$\cos H_0 = \frac{\sin h_0 - \sin\varphi \sin\delta_\odot}{\cos\varphi \cos\delta_\odot}, \qquad \text{day} = \frac{2H_0}{15^\circ}\ \text{h}, \qquad \text{sunrise, sunset} = 12\,\text{h} \mp \frac{H_0}{15^\circ}.$$
+
+		<p>
+			Sunrise and sunset are counted when the top edge of the Sun touches the
+			horizon. Its centre is then $h_0 = -50'$ below the true horizon: 34′ of
+			refraction and the Sun's radius of 16′, as found in page 1.1's third
+			exercise.
+		</p>
+
+		<p>
+			At the equator the day lasts 12 h 07 min all year: the extra 7 minutes
+			are the 50′. The table gives the model's day at three latitudes.
+			Ptolemy's longest day at Rhodes, $14\tfrac12$ hours with the geometric
+			horizon (page 1.1), becomes 14 h 39 min with $h_0 = -50'$.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Place</th>
+					<th>March equinox</th>
+					<th>June solstice</th>
+					<th>December solstice</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Alexandria ($31.2^\circ$)</td>
+					<td>12 h 04 min</td>
+					<td>14 h 11 min</td>
+					<td>10 h 07 min</td>
+				</tr>
+				<tr>
+					<td>Rome ($41.9^\circ$)</td>
+					<td>12 h 03 min</td>
+					<td>15 h 14 min</td>
+					<td>9 h 07 min</td>
+				</tr>
+				<tr>
+					<td>London ($51.5^\circ$)</td>
+					<td>12 h 03 min</td>
+					<td>16 h 38 min</td>
+					<td>7 h 50 min</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Near the poles the Sun stops setting. Its lowest point stays above $h_0$
+			when $\varphi > 90^\circ - \delta_\odot + h_0$, so with $\delta_\odot$ up
+			to $\varepsilon = 23.44^\circ$ there is a midnight Sun somewhere in the
+			year north of $65.73^\circ$, and a polar night north of $67.40^\circ$.
+			At Tromsø ($69.65^\circ$) the model gives 66 days without sunset and 50
+			without sunrise in 2026.
+		</p>
+
+		<!-- Figure 4: the length of the day -->
+		<figure class="fig">
+			<div class="panels">
+				<div>
+					<p class="panel-title">(a) the day through 2026 at latitude φ</p>
+					<canvas id="day-curve"></canvas>
+				</div>
+				<div>
+					<p class="panel-title">(b) every latitude</p>
+					<canvas id="day-map"></canvas>
+				</div>
+			</div>
+			<div class="panel-controls">
+				<div>
+					<div class="ctl">
+						<label for="day-lat">latitude φ</label>
+						<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+				</div>
+				<div>
+					<div class="presets">
+						<button type="button" data-target="day-lat" data-value="0">equator</button>
+						<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="day-lat" data-value="51.5">London</button>
+						<button type="button" data-target="day-lat" data-value="69.65">Tromsø</button>
+					</div>
+				</div>
+			</div>
+			<div class="readout" id="day-readout"></div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-sun">curve</dt>
+						<dd>the length of the day: the model Sun above $h_0 = -50'$</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the date under the pointer, read out below</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-sun">band</dt>
+						<dd>polar day: the Sun does not set</dd>
+						<dt class="c-muted">band</dt>
+						<dd>polar night: the Sun does not rise</dd>
+						<dt class="c-earth">lines</dt>
+						<dd>days of 6, 9, 15 and 18 hours</dd>
+						<dt class="c-planet">line</dt>
+						<dd>the chosen latitude, the cut drawn in panel (a)</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\delta_\odot$</dt>
+						<dd>the model Sun's declination at noon</dd>
+						<dt>$H_0$</dt>
+						<dd>its hour angle at sunset</dd>
+						<dt>day</dt>
+						<dd>the length of the day; sunrise and sunset in local mean time</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Move the latitude: the curve in (a) flattens towards the equator, and
+				beyond the polar circles it reaches 0 h and 24 h. Point at (a) to read
+				a date. Panel (b) is the same function for every latitude: the
+				southern half repeats the northern half six months later.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The year, the epoch and the longitude</h2>
+
+		<p>
+			The clock has three parameters: the daily motion $n$ of the mean Sun,
+			which sets the rate $360^\circ + n$; the constant $L_0$, which ties the
+			sidereal clock to the solar clock at one moment; and the observer's
+			longitude $\ell$.
+		</p>
+
+		<h3>The rate, from the length of the year</h3>
+
+		<p>
+			The daily motion is $n = 360^\circ / Y$, so the rate follows from the
+			length of the year, measured between equinoxes. Hipparchus and Ptolemy
+			found $Y = 365;14,48$ days (365.24667 days, <em>Almagest</em> III 1),
+			6.4 minutes longer than the modern 365.24219 days.
+			<span class="badge" data-origin="hipparchus"></span>
+		</p>
+
+		<p>
+			From it Ptolemy derives the Sun's mean motion, $0^\circ 59' 08.29''$
+			(0.985635°) a day, the "$0^\circ 59'$" of section 1. With his year the
+			sidereal day comes out as 23 h 56 min 04.093 s, only 2.9 ms longer
+			than the modern value. The rate is insensitive to the year: from
+			$P_\text{sid} = 24\,\text{h} \times Y/(Y+1)$, an error $\Delta Y$
+			changes the sidereal day by $\Delta Y \times 24\,\text{h}/(Y+1)^2$.
+		</p>
+
+		<p>
+			The same error matters for the Sun's position. Ptolemy's mean Sun falls
+			behind the modern one by $0.44^\circ$ a century. Pages 2.1 and 2.3
+			return to this.
+		</p>
+
+		<h3>The constant, from the Sun</h3>
+
+		<p>
+			$L_0$ is the mean Sun's longitude at the epoch. It is found from timed
+			equinoxes, as page 1.2 found the vernal point, and page 2.1 shows how.
+			The modern value is $L_0 = 280.46646^\circ$ (Meeus 25.2); the clock's
+			constant, $280.46061837^\circ$, differs from it by 21″.
+		</p>
+
+		<h3>The longitude, from a timed transit</h3>
+
+		<p>
+			With the clock fitted, one timed transit gives the observer's longitude:
+			at the transit $\theta = \alpha$, so $\ell = \alpha - \theta_G$. Vega
+			(right ascension $279.4601^\circ$ in 2026) crossed the meridian of Rome on
+			15 August 2026 at 20:10:52 UT, timed to the second.
+		</p>
+
+		<p>
+			The formula gives $\theta_G = 266.9626^\circ$ at that moment, so $\ell =
+			12.4975^\circ$, against the true 12.4964°. One second of time is 15″ of
+			longitude, 345 m on the parallel of Rome, so the error of the timing
+			sets the error of the result.
+		</p>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The clock against the sky</h2>
+
+		<h3>The stars</h3>
+
+		<p>
+			The reference sky computes the sidereal time with the full Meeus formula
+			and adds nutation (page 1.2), which shifts the equinox back and forth.
+			Through 2026 the two sidereal times differ by at most 0.66 s, so the
+			model's transits of the stars are right to within a second.
+		</p>
+
+		<aside class="detour" data-topic="nutation"></aside>
+
+		<h3>The Sun</h3>
+
+		<p>
+			Figure 5 compares the model Sun with the reference Sun through 2026. The
+			reference Sun's noon is its real meridian crossing; its sunrise and
+			sunset use the same $h_0 = -50'$ as the model, so the comparison measures
+			only the motion of the Sun.
+		</p>
+
+		<!-- Figure 5: the model Sun against the real Sun -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="test-plot"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="test-lat">latitude φ</label>
+						<input id="test-lat" type="range" min="-65" max="65" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="test-lat" data-value="0">equator</button>
+						<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="test-lat" data-value="51.5">London</button>
+						<button type="button" data-target="test-lat" data-value="65">65° N</button>
+						<button type="button" data-target="test-lat" data-value="-33.9">Sydney</button>
+					</div>
+					<div class="readout" id="test-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-sun">noon</dt>
+						<dd>model minus real time of noon, in minutes</dd>
+						<dt class="c-earth">sunrise</dt>
+						<dd>model minus real time of sunrise</dd>
+						<dt class="c-epicycle">sunset</dt>
+						<dd>model minus real time of sunset</dd>
+						<dt>line</dt>
+						<dd>no error</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the date under the pointer</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>noon, rise, set</dt>
+						<dd>the three errors (positive: the model is late), on the date under the pointer, or their smallest and largest values over the year</dd>
+						<dt>day</dt>
+						<dd>model minus real length of the day, in the same way</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				The noon curve is the same at every latitude: move the latitude and
+				only sunrise and sunset change, spreading apart as the latitude grows.
+				Point at the plot to read a date.
+			</figcaption>
+		</figure>
+
+		<p>
+			The model's noon is wrong by up to a quarter of an hour: the real Sun
+			crosses the meridian 14.2 minutes after mean noon on 11 February, and
+			16.5 minutes before it on 3 November. This difference does not depend on
+			the latitude.
+		</p>
+
+		<p>
+			The length of the day is closer. At Rome the model's day is too short by
+			up to 5.3 minutes, at London by 7.5, at $65^\circ$ by 13.1. In the
+			northern hemisphere it is almost never too long (by 0.6 minutes at
+			most, at $65^\circ$); in the southern hemisphere the sign is
+			reversed.
+		</p>
+
+		<p>
+			The reason is the uniform Sun. On 5 April 2026 the real Sun is at
+			longitude $15.72^\circ$, $1.91^\circ$ ahead of the mean Sun. Its
+			declination is $6.19^\circ$ instead of the model's $5.45^\circ$, and in
+			London its day lasts 13 h 13 min 24 s instead of 13 h 05 min 57 s.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What the clock leaves out</h2>
+
+		<p>
+			<strong>The Sun does not move uniformly.</strong> Both errors of
+			Figure 5 come from the model Sun. Its longitude grows by the same angle
+			every day, while the real Sun runs up to about $2^\circ$ ahead of it in
+			spring and behind it in autumn. Page 2.1 measures this inequality and
+			builds the first model of it.
+		</p>
+
+		<p>
+			Noon has a second cause. Even a Sun moving uniformly along the ecliptic
+			would not move uniformly in right ascension, because the ecliptic is
+			tilted to the equator (page 1.2's table showed $\alpha$ lagging behind
+			$\lambda$). Page 2.2 adds the two effects into the equation of time.
+		</p>
+
+		<p>
+			<strong>The Earth's rotation is not a perfect clock.</strong> UT follows
+			the Earth's rotation; the uniform time of the ephemeris (Terrestrial
+			Time, TT) is kept by atomic clocks. The two differ by $\Delta T =
+			\text{TT} - \text{UT}$, about 69 s today, because tides slowly lengthen
+			the day.
+		</p>
+
+		<p>
+			Over centuries the difference grows. In Ptolemy's time $\Delta T$ was
+			about 2 h 35 min, 38.8° of the sky's turn, so a historical time stamp
+			must be corrected before it can be compared with the reference sky.
+			Page 3.3 needs this for ancient eclipses.
+		</p>
+
+		<aside class="detour" data-topic="deltaT"></aside>
+
+		<p>
+			<strong>The stars' right ascensions change.</strong> Since 2000, Vega's
+			right ascension has grown by 52.8 s of time and Sirius's by 68.7 s, so
+			transit times computed from an old catalogue drift by two to three
+			seconds a year. Page 2.3 explains why.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Show that a year of $Y$ solar days contains $Y + 1$ sidereal days, and
+				find the sidereal day for $Y = 365.24219$ days. Repeat with Ptolemy's
+				daily motion of the Sun, $0^\circ 59' 08.29''$ (0.985635°). Then
+				apply the same argument to the Moon, which goes round the sky
+				relative to the Sun in a synodic month of 29.530589 days: how much
+				later does it cross the meridian each day?
+			</p>
+			<details class="hint">
+				<p>
+					Write the hour angle of the body as $\theta - \alpha$ and compare the
+					rates. For the Moon, compare its day with the Sun's: relative to the
+					Sun it goes once round in a synodic month.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With $H_\odot = \theta - \alpha_\odot$, the Sun's hour angle grows at
+					$\omega - n$. In a year the Sun goes once round the sky, so $H_\odot$
+					grows by $360^\circ$ fewer than $\theta$: $Y$ solar days are $Y + 1$
+					turns of the sky, 366.24219 sidereal days. One sidereal day is
+					$24\ \text{h} \times Y/(Y+1)$ = 23 h 56 min 04.091 s.
+				</p>
+				<p>
+					In Ptolemy's terms a mean solar day is $360^\circ + 0.985635^\circ$
+					of the sky's turn, so one turn takes $360 / 360.985635$ of a day:
+					23 h 56 min 04.093 s.
+				</p>
+				<p>
+					The Moon moves east relative to the Sun by one turn in 29.530589
+					days, so its hour angle falls behind the Sun's by $360^\circ /
+					29.530589$ a day. Its day lasts $1/(1 - 1/29.530589) = 1.035050$
+					days, 24 h 50 min 28 s: it crosses the meridian about 50.5 minutes
+					later each day.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				At what time does Sirius cross the meridian of Rome ($\ell =
+				12.4964^\circ$, $\varphi = 41.9^\circ$) on New Year's Eve, 31 December
+				2026? Its position of date is $\alpha = 101.5845^\circ$, $\delta =
+				-16.755^\circ$. Give the answer in UT and in Central European Time
+				(UT + 1 h), and the star's altitude. Check in Figure 3, then repeat
+				for your own longitude.
+			</p>
+			<details class="hint">
+				<p>
+					First $\theta_{G,0}$ at 0 h UT, from $d$ = JD − 2451545.0; then the
+					transit formula of section 2.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					On 31 December 2026 at 0 h UT, JD = 2461405.5 and $d = 9860.5$, so
+					$\theta_{G,0} = 99.4365^\circ$ ($6^\text{h}37^\text{m}44.75^\text{s}$).
+				</p>
+				<p>
+					The sky still has to turn $(101.5845^\circ - 12.4964^\circ -
+					99.4365^\circ) \bmod 360^\circ = 349.6516^\circ$. At
+					$360.9856^\circ$ a day that takes 23.24646 h: the transit is at
+					23:14:47 UT, which is 00:14:47 CET on 1 January, a quarter of an hour
+					into the new year, and 00:04:46 local mean time.
+				</p>
+				<p>
+					The altitude is $90^\circ - |41.9^\circ + 16.755^\circ| = 31.3^\circ$.
+					Sirius crosses at local mean midnight on the night of 1 January. On
+					20 December it crosses Rome's meridian twice within the same UT date.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				The model puts the earliest sunset and the latest sunrise of the
+				winter on the shortest day, the solstice: at Rome, 07:36:18 and
+				16:43:44 CET on 21 December 2026. In the real sky the earliest sunset
+				is on 8 December (16:38:44 CET) and the latest sunrise on 4 January
+				2027 (07:37:53 CET). Explain the difference with Figure 5.
+			</p>
+			<details class="hint">
+				<p>
+					Near the solstice the length of the day hardly changes. Compare it
+					with the motion of noon in Figure 5.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Sunrise and sunset sit symmetrically about noon. Near the solstice
+					the length of the day changes by only a few seconds a day (9 h 13 min
+					54 s on 8 December, 9 h 07 min 37 s on 21 December, 9 h 14 min 06 s on
+					4 January), but the real noon moves later by 29.8 s a day.
+				</p>
+				<p>
+					Real noon at Rome is at 12:01:53 CET on 8 December, 12:08:04 on
+					21 December and 12:14:51 on 4 January. Sunset is noon plus half the
+					day. From 8 December the later noon outweighs the shortening of the
+					day, so sunset moves later two weeks before the shortest day.
+					Sunrise is noon minus half the day, and for the same reason it keeps
+					moving later until two weeks after it.
+				</p>
+				<p>
+					The model keeps noon at 12:00 local mean time (12:10:01 CET), so its
+					sunrise and sunset are both extreme on the solstice. The moving noon
+					is the equation of time of page 2.2.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): III 1
+				(the length of the year, 365;14,48 days, and the mean daily motion);
+				III 7 (the era Nabonassar, epochs at noon, the 879 years to the
+				equinox of AD 132); III 9 (the inequality of solar days, the day
+				counted from the meridian). Toomer's introduction, § 5 (chronology
+				and the Egyptian calendar; time-degrees and equinoctial hours).</li>
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), III 26
+				[ff. 96r–97r] (the nuchthemeron, the variable natural day).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, ch. 3 (Julian day
+				numbers), § 2.10 (meridian transits), § 2.14 (the length of the day
+				and what it leaves out), § 5.4 (the mean sun, UT and local time). He
+				writes $\varphi$ for the longitude, here $\ell$.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 7
+				(Julian Day), 10 (ΔT), 12 (sidereal time), 15 (rising, transit and
+				setting, $h_0 = -0.8333^\circ$), 25 (the Sun's mean longitude).</li>
+			<li>ΔT: F. Espenak and J. Meeus, <em>Five Millennium Canon of Solar
+				Eclipses</em> (NASA, 2006), polynomials; today's value from the leap
+				seconds of the IERS (TT − UTC = 69.184 s since 2017).</li>
+			<li>Star positions: SIMBAD (CDS, Strasbourg), ICRS J2000, retrieved
+				2026-10-17. Precession: J. Vondrák, N. Capitaine, P. Wallace (2011).</li>
+			<li>Every number on this page: <code>tools/numbers/1.3-clocks.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>
