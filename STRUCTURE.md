@@ -101,8 +101,9 @@ The language needed to state any prediction.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
   $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
 - **Test:** the formulas against Ptolemy's tables of declination and right
-  ascension (*Almagest* I 15–16); the frames with a fixed obliquity against
-  the real Sun's $(\alpha, \delta)$.
+  ascension (*Almagest* I 15–16), and his values against the real Sun of
+  AD 137 (a table); the model with the mean obliquity against the real Sun of
+  2026, where only nutation remains (a static figure).
 - **Exercises:** the inverse, equatorial → ecliptic, by transposing (the
   forward transformation is derived in the text, which needs it); the right
   ascension and declination of the Sun at $\lambda = 60^\circ$; the angle

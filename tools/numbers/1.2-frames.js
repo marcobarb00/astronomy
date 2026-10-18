@@ -12,7 +12,7 @@
 	 3. Observation: one star, three addresses
 	 4. Model: the matrices, checked
 	 5. Fit: the obliquity from the solstices; the equinox
-	 6. Test: Ptolemy's tables; the real Sun; figure scales
+	 6. Test: Ptolemy's tables; the nutation error (Figure 3)
 	 7. Exercises
 	 8. Residual: the angle between the frames drifts
    ========================================================================== */
@@ -319,75 +319,64 @@ for (let lon = 10; lon <= 90; lon += 10) {
 		` ${f(real.ra, 3).padStart(10)} | ${((ptRA - real.ra) * 60).toFixed(1).padStart(6)}'  [${dateText(jd)}]`);
 }
 
-title('Test 2: frames with a fixed obliquity against the real Sun');
+title('Test 2 (Figure 3): the nutation error over 2026');
 
-/* Largest |d delta| and |d alpha| (deg) over one year starting 1 January
-   of 'year', for a model obliquity eps; the Sun's longitude is the real one. */
-function sunErrors(eps, year, step = 1) {
-	const start = Time.julianDay(year, 1, 1);
-	let dDec = 0;
-	let dRA = 0;
-	let atDec = 0;
-	let atRA = 0;
+/* Each day of 2026 at 0h TT: the reference Sun's apparent (lambda, beta)
+   turned into (alpha, delta) with the MEAN obliquity of date (the model:
+   fixed frames), against the reference Sun's own (alpha, delta), computed
+   with the TRUE obliquity (mean + nutation in obliquity d eps). The same
+   (lambda, beta) on both sides, so the difference is the nutation alone. */
+const NUTATION_YEAR = 2026;
+const nutationDays = [];
 
-	for (let day = 0; day < 366; day += step) {
-		const real = realSun(start + day);
-		const model = Frames.eclipticPoint(real.lon, eps);
-		const e1 = model.dec - real.dec;
-		const e2 = norm180(model.ra - real.ra);
+for (let day = 0; day <= 365; day++) {
+	const jd = Time.julianDay(NUTATION_YEAR, 1, 1) + day;
+	const position = Ephem.sun(jd);
+	const real = Ephem.equatorial(position, jd);
+	const model = Frames.eclipticToEquatorial(position.lon, position.lat, Ephem.meanObliquity(jd));
 
-		if (Math.abs(e1) > Math.abs(dDec)) {
-			dDec = e1;
-			atDec = real.lon;
-		}
-
-		if (Math.abs(e2) > Math.abs(dRA)) {
-			dRA = e2;
-			atRA = real.lon;
-		}
-	}
-
-	return { dDec, dRA, atDec, atRA };
-}
-
-[[epsOfYear(2026), 2026, 'fitted eps, 2026'], [epsOfYear(137), 137, 'fitted eps, AD 137'],
-	[Frames.PTOLEMY_OBLIQUITY, 137, 'Ptolemy eps, AD 137'], [Frames.PTOLEMY_OBLIQUITY, 2026, 'Ptolemy eps, 2026'],
-	[epsOfYear(137), 2026, 'eps of AD 137, used in 2026']].forEach(([eps, year, label]) => {
-	const e = sunErrors(eps, year);
-
-	console.log(`${label.padEnd(28)} max |d delta| = ${arcmin(Math.abs(e.dDec), 2)} (at lambda ${f(e.atDec, 0)}),` +
-		` max |d alpha| = ${arcmin(Math.abs(e.dRA), 2)} (at lambda ${f(e.atRA, 0)})`);
-});
-
-// the small-angle forms: d delta = cos e sin l / cos d * d eps; d alpha = -sin(2 l) sin e / (2 (cos^2 l + cos^2 e sin^2 l)) * d eps
-const dEps = Frames.PTOLEMY_OBLIQUITY - epsOfYear(137);
-console.log(`first order, d eps = ${arcmin(dEps, 2)}: d delta at lambda 90 = ${arcmin(dEps, 2)};` +
-	` largest d alpha ~ ${arcmin(dEps * Math.tan(epsOfYear(137) * Math.PI / 360), 2)} (= tan(e/2) d eps)`);
-
-title('Figure scales');
-const EPS_SLIDER_TEST = [23.0, 24.2];
-const YEAR_SLIDER_TEST = [-300, 2100];
-let scaleDec = 0;
-let scaleRA = 0;
-
-for (let year = YEAR_SLIDER_TEST[0]; year <= YEAR_SLIDER_TEST[1]; year += 100) {
-	EPS_SLIDER_TEST.forEach(eps => {
-		const e = sunErrors(eps, year, 2);
-
-		scaleDec = Math.max(scaleDec, Math.abs(e.dDec));
-		scaleRA = Math.max(scaleRA, Math.abs(e.dRA));
+	nutationDays.push({
+		day: day,
+		lon: position.lon,
+		deps: Ephem.nutation(jd).deps * 3600,
+		dDec: (model.dec - real.dec) * 3600,
+		dRA: norm180(model.ra - real.ra) * 3600
 	});
 }
 
-console.log(`Figure 3 (eps ${EPS_SLIDER_TEST.join('..')}, years ${YEAR_SLIDER_TEST.join('..')}): ` +
-	`max |d delta| = ${arcmin(scaleDec, 1)}, max |d alpha| = ${arcmin(scaleRA, 1)}`);
-console.log(`  eps range of the real sky over those years: ${f(epsOfYear(YEAR_SLIDER_TEST[1]), 4)} .. ${f(epsOfYear(YEAR_SLIDER_TEST[0]), 4)}`);
+const extreme = (key, pick) => nutationDays.reduce((best, d) => (pick(d[key], best[key]) ? d : best));
+const depsMin = extreme('deps', (x, y) => x < y);
+const depsMax = extreme('deps', (x, y) => x > y);
+const decMax = extreme('dDec', (x, y) => Math.abs(x) > Math.abs(y));
+const raMax = extreme('dRA', (x, y) => Math.abs(x) > Math.abs(y));
+const june = nutationDays.reduce((best, d) => (Math.abs(norm180(d.lon - 90)) < Math.abs(norm180(best.lon - 90)) ? d : best));
+const december = nutationDays.reduce((best, d) => (Math.abs(norm180(d.lon - 270)) < Math.abs(norm180(best.lon - 270)) ? d : best));
 
+console.log(`nutation in obliquity d eps over ${NUTATION_YEAR}: ${f(depsMin.deps, 2)}" (day ${depsMin.day}) to ${f(depsMax.deps, 2)}" (day ${depsMax.day})`);
+console.log(`largest |d delta| = ${f(Math.abs(decMax.dDec), 2)}" (day ${decMax.day}, lambda ${f(decMax.lon, 0)}),` +
+	` largest |d alpha| = ${f(Math.abs(raMax.dRA), 2)}" (day ${raMax.day}, lambda ${f(raMax.lon, 0)})`);
+console.log(`June solstice (day ${june.day}): d delta = ${f(june.dDec, 2)}", -d eps = ${f(-june.deps, 2)}"`);
+console.log(`December solstice (day ${december.day}): d delta = ${f(december.dDec, 2)}", +d eps = ${f(december.deps, 2)}"`);
+console.log(`Figure 3 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`);
 
+title('Residual: an old obliquity used today');
 
-/* ==========================================================================
-   7. EXERCISES
-   ========================================================================== */
+/* Largest |d delta| (deg) over one year starting 1 January of 'year' when
+   the Sun's real longitude is turned into delta with the obliquity eps. */
+function largestDecError(eps, year) {
+	const start = Time.julianDay(year, 1, 1);
+	let largest = 0;
+
+	for (let day = 0; day < 366; day++) {
+		const real = realSun(start + day);
+
+		largest = Math.max(largest, Math.abs(Frames.eclipticPoint(real.lon, eps).dec - real.dec));
+	}
+
+	return largest;
+}
+
+console.log(`the mean obliquity of AD 137 used in 2026: max |d delta| = ${arcmin(largestDecError(epsOfYear(137), 2026), 2)}`);
 
 title('Exercise 1: equatorial -> ecliptic, Aldebaran of 2026.0');
 const jd2026 = Time.julianDay(2026, 1, 1);

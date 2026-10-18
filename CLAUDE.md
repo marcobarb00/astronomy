@@ -49,6 +49,10 @@ same style:
   ("In the figure", "Read-out"), styled by `shared/theme.css` (see
   `templates/page.html`). The caption only says what to do with the figure
   and what to notice.
+- Not every figure needs controls. A figure that makes one point is drawn
+  once, with no sliders. Add a control only when moving it shows what the
+  section is about, and never one that mixes in a second effect: a figure
+  about the nutation error does not let the obliquity or the date change.
 - Choose the frame of a figure so that a control moves only what it is
   about. An observer's sky is drawn in the horizon frame: changing the date,
   the time or the latitude turns the sky, never the ground.

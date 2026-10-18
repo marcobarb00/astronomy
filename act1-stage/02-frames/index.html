@@ -605,9 +605,10 @@
 		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
 
 		<p>
-			The conversion formulas involve no approximation, so two things are
-			tested: the formulas themselves, against Ptolemy's independent
-			computation, and the fitted obliquity, against the real Sun.
+			The conversion formulas involve no approximation, so what is tested is
+			the obliquity put into them. The table below compares Ptolemy's values,
+			computed with his obliquity, with the real Sun of his time; Figure 3
+			compares the model, with today's obliquity, with the real Sun of 2026.
 		</p>
 
 		<h3>Ptolemy's tables</h3>
@@ -656,10 +657,10 @@
 				<tr>
 					<th>Ptolemy (I 15)</th>
 					<th>real, AD 137</th>
-					<th>Ptolemy − real</th>
+					<th class="diff">Ptolemy − real</th>
 					<th>Ptolemy (I 16)</th>
 					<th>real, AD 137</th>
-					<th>Ptolemy − real</th>
+					<th class="diff">Ptolemy − real</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -667,82 +668,82 @@
 					<td>$10^\circ$</td>
 					<td>$4^\circ 01' 38''$ (4.027°)</td>
 					<td>4.000°</td>
-					<td>+1.6′</td>
+					<td class="diff">+1.6′</td>
 					<td>$9^\circ 10'$ (9.167°)</td>
 					<td>9.173°</td>
-					<td>−0.4′</td>
+					<td class="diff">−0.4′</td>
 				</tr>
 				<tr>
 					<td>$20^\circ$</td>
 					<td>$7^\circ 57' 03''$ (7.951°)</td>
 					<td>7.895°</td>
-					<td>+3.3′</td>
+					<td class="diff">+3.3′</td>
 					<td>$18^\circ 25'$ (18.417°)</td>
 					<td>18.434°</td>
-					<td>−1.1′</td>
+					<td class="diff">−1.1′</td>
 				</tr>
 				<tr>
 					<td>$30^\circ$</td>
 					<td>$11^\circ 39' 59''$ (11.666°)</td>
 					<td>11.584°</td>
-					<td>+4.9′</td>
+					<td class="diff">+4.9′</td>
 					<td>$27^\circ 50'$ (27.833°)</td>
 					<td>27.867°</td>
-					<td>−2.0′</td>
+					<td class="diff">−2.0′</td>
 				</tr>
 				<tr>
 					<td>$40^\circ$</td>
 					<td>$15^\circ 04' 04''$ (15.068°)</td>
 					<td>14.960°</td>
-					<td>+6.4′</td>
+					<td class="diff">+6.4′</td>
 					<td>$37^\circ 30'$ (37.500°)</td>
 					<td>37.541°</td>
-					<td>−2.4′</td>
+					<td class="diff">−2.4′</td>
 				</tr>
 				<tr>
 					<td>$50^\circ$</td>
 					<td>$18^\circ 02' 53''$ (18.048°)</td>
 					<td>17.917°</td>
-					<td>+7.8′</td>
+					<td class="diff">+7.8′</td>
 					<td>$47^\circ 28'$ (47.467°)</td>
 					<td>47.503°</td>
-					<td>−2.2′</td>
+					<td class="diff">−2.2′</td>
 				</tr>
 				<tr>
 					<td>$60^\circ$</td>
 					<td>$20^\circ 30' 09''$ (20.503°)</td>
 					<td>20.353°</td>
-					<td>+9.0′</td>
+					<td class="diff">+9.0′</td>
 					<td>$57^\circ 44'$ (57.733°)</td>
 					<td>57.772°</td>
-					<td>−2.3′</td>
+					<td class="diff">−2.3′</td>
 				</tr>
 				<tr>
 					<td>$70^\circ$</td>
 					<td>$22^\circ 20' 11''$ (22.336°)</td>
 					<td>22.171°</td>
-					<td>+9.9′</td>
+					<td class="diff">+9.9′</td>
 					<td>$68^\circ 18'$ (68.300°)</td>
 					<td>68.326°</td>
-					<td>−1.5′</td>
+					<td class="diff">−1.5′</td>
 				</tr>
 				<tr>
 					<td>$80^\circ$</td>
 					<td>$23^\circ 28' 16''$ (23.471°)</td>
 					<td>23.297°</td>
-					<td>+10.5′</td>
+					<td class="diff">+10.5′</td>
 					<td>$79^\circ 05'$ (79.083°)</td>
 					<td>79.102°</td>
-					<td>−1.1′</td>
+					<td class="diff">−1.1′</td>
 				</tr>
 				<tr>
 					<td>$90^\circ$</td>
 					<td>$23^\circ 51' 20''$ (23.856°)</td>
 					<td>23.678°</td>
-					<td>+10.7′</td>
+					<td class="diff">+10.7′</td>
 					<td>$90^\circ 00'$ (90.000°)</td>
 					<td>90.000°</td>
-					<td>0.0′</td>
+					<td class="diff">0.0′</td>
 				</tr>
 			</tbody>
 		</table>
@@ -765,97 +766,67 @@
 			is one of the two causes of the equation of time.
 		</p>
 
-		<h3>Fixed frames against the real Sun</h3>
+		<h3>The right obliquity and nutation</h3>
 
 		<p>
-			The table checks one obliquity in one year, at nine longitudes. Figure 3
-			makes the same comparison for every day of a year, for any year from
-			300 BC to AD 2100 and any obliquity: it takes the reference Sun's
-			longitude, turns it into $(\alpha, \delta)$ with a fixed $\varepsilon$,
-			and compares the result with the reference Sun's own $(\alpha, \delta)$.
+			The table shows the effect of a wrong obliquity. With the right one, the
+			fixed frames should reproduce the real Sun, apart from one effect left
+			out of the model: <em>nutation</em>, a small oscillation of the Earth's
+			axis, caused mainly by the Moon, with a period of 18.6 years. It changes
+			the obliquity by a few arcseconds, $\varepsilon_\text{true} =
+			\varepsilon_\text{mean} + \Delta\varepsilon$.
+			<span class="badge" data-origin="modern"></span>
 		</p>
 
 		<p>
-			With $\varepsilon$ fitted to the year, the differences stay under 0.11′
-			in $\delta$ and 0.03′ in $\alpha$. They come from nutation, a small
-			periodic oscillation of the Earth's axis, and from the Sun's latitude of a
-			few arcseconds. With the right obliquity, then, the conversion reproduces
-			the real Sun; what matters is the value of $\varepsilon$.
+			Figure 3 isolates it. For each day of 2026 it takes the reference Sun's
+			ecliptic coordinates and converts them with the mean obliquity of date,
+			as the model does. It compares the result with the reference Sun's own
+			$(\alpha, \delta)$, computed with the true obliquity. Both sides use the
+			same $\lambda$ and $\beta$, so the difference is the nutation alone.
 		</p>
 
-		<!-- Figure 3: fixed frames against the real Sun -->
+		<!-- Figure 3: the nutation error (static, no controls) -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="test-plot"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="test-year">year</label>
-						<input id="test-year" type="range" min="-300" max="2100" step="1" value="137">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" data-target="test-year" data-value="-134">Hipparchus</button>
-						<button type="button" data-target="test-year" data-value="137">Ptolemy</button>
-						<button type="button" data-target="test-year" data-value="1525">Copernicus</button>
-						<button type="button" data-target="test-year" data-value="2026">today</button>
-					</div>
-					<div class="ctl">
-						<label for="test-eps">obliquity ε</label>
-						<input id="test-eps" type="range" min="23" max="24.2" step="0.0001" value="23.8556">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" id="test-ptolemy" data-target="test-eps" data-value="23.8556">Ptolemy's ε</button>
-						<button type="button" id="test-fit">fitted to the year</button>
-					</div>
-					<div class="readout" id="test-readout"></div>
-				</div>
-			</div>
+			<canvas id="nutation-plot"></canvas>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
 						<dt class="c-planet">curve</dt>
-						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$ in arcminutes, over one year, against the Sun's longitude</dd>
+						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$, in arcseconds, through 2026</dd>
 						<dt class="c-epicycle">curve</dt>
 						<dd>$\Delta\alpha = \alpha_\text{model} - \alpha_\text{real}$, the same for the right ascension</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>$\pm\Delta\varepsilon$, the nutation in obliquity on each day</dd>
 						<dt>line</dt>
 						<dd>no error</dd>
 					</dl>
 				</div>
-				<div>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>$\varepsilon_\text{real}$</dt>
-						<dd>the real mean obliquity in the middle of that year</dd>
-						<dt>$\varepsilon_\text{model} - \varepsilon_\text{real}$</dt>
-						<dd>how far off the model's obliquity is</dd>
-						<dt>$\max|\Delta\delta|, \max|\Delta\alpha|$</dt>
-						<dd>the largest errors over the year</dd>
-					</dl>
-				</div>
 			</div>
 			<figcaption>
-				The figure opens with Ptolemy's obliquity in AD 137. Press "fitted to the year":
-				both curves flatten onto the line. Then move the year with the
-				obliquity left alone, and watch the error grow.
+				Follow $\Delta\delta$ through the year: it crosses zero at the equinoxes
+				and touches the dashed lines at the solstices, $-\Delta\varepsilon$ in
+				June and $+\Delta\varepsilon$ in December.
 			</figcaption>
 		</figure>
 
 		<p>
-			With Ptolemy's $\varepsilon$ in AD 137, $\Delta\delta$ reaches 10.7′ at
-			the solstices and vanishes at the equinoxes, where the two circles cross.
-			To first order $\Delta\delta = (\cos\varepsilon\sin\lambda / \cos\delta)\,
-			\Delta\varepsilon$, which is $\Delta\varepsilon$ at the solstices.
+			The shape follows from section 2. A change $\Delta\varepsilon$ changes
+			the declination by $(\cos\varepsilon\sin\lambda / \cos\delta)\,
+			\Delta\varepsilon$; the model leaves out $\Delta\varepsilon$, so
+			$\Delta\delta = -(\cos\varepsilon\sin\lambda / \cos\delta)\,
+			\Delta\varepsilon$. At the June solstice both equal $-7.66''$.
 		</p>
 
 		<p>
-			$\Delta\alpha$ is smaller, 2.4′, and vanishes at both the equinoxes and the
-			solstices. Used today, Ptolemy's obliquity misses the Sun's declination by
-			25.1′, most of the Sun's diameter.
+			In 2026 $\Delta\varepsilon$ lies between 6.68″ and 9.14″, so the
+			declination is off by at most 7.92″ and the right ascension by at most
+			1.87″. The models on the following pages err by arcminutes or more, so the
+			site neglects nutation and uses the mean obliquity.
 		</p>
+
+		<aside class="detour" data-topic="nutation"></aside>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What the fixed frames leave out</h2>
@@ -873,8 +844,6 @@
 			II 2 [f. 29r]).
 			<span class="badge" data-origin="copernicus"></span>
 		</p>
-
-		<aside class="detour" data-topic="nutation"></aside>
 
 		<p>
 			<strong>The origin moves.</strong> Aldebaran's longitude grew by 26.30°

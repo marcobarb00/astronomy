@@ -1,11 +1,13 @@
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
-   Three figures, each with its own init / update / draw:
+   Three figures, each with its own init and draw (and update when it has
+   controls):
 	 1. ecliptic and equator      (3D, equatorial frame: the stars never move;
 								   the obliquity turns the ecliptic frame)
 	 2. equator and horizon       (3D, equatorial frame: latitude and the turn
 								   of the sky move the horizon frame)
-	 3. fixed frames, real Sun    (2D: errors of a fixed obliquity over a year)
+	 3. the nutation error        (2D, static: mean against true obliquity
+								   over 2026)
    The comparison of Ptolemy's tables with the real Sun is a static table in
    index.html (numbers from tools/numbers/1.2-frames.js).
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
@@ -16,7 +18,7 @@
 	 0. Helpers shared by the figures
 	 1. Figure 1: ecliptic and equator
 	 2. Figure 2: equator and horizon
-	 3. Figure 3: fixed frames against the real Sun
+	 3. Figure 3: the nutation error
 	 4. Page start
    ========================================================================== */
 
@@ -347,115 +349,75 @@ const horizonFigure = {
 
 
 /* ==========================================================================
-   3. FIGURE 3: FIXED FRAMES AGAINST THE REAL SUN
-   Over one year, the Sun's real longitude is turned into (alpha, delta)
-   with a fixed obliquity and compared with the real (alpha, delta).
-   Fixed scale: over every year and obliquity the sliders allow, the
-   largest error is 46.4' (tools/numbers/1.2-frames.js).
+   3. FIGURE 3: THE NUTATION ERROR
+   A static figure: no controls. Each day of 2026, the reference Sun's
+   apparent (lambda, beta) is turned into (alpha, delta) with the MEAN
+   obliquity of date, and compared with the reference Sun's own
+   (alpha, delta), computed with the TRUE obliquity (mean + nutation).
+   The same (lambda, beta) on both sides, so the difference is the
+   nutation in obliquity alone. Fixed scale: every value lies within
+   9.14" (tools/numbers/1.2-frames.js).
    ========================================================================== */
 
-const TEST_Y_RANGE = [-50, 50];      // arcminutes
-const TEST_STEP_DAYS = 2;
+const NUTATION_YEAR = 2026;
+const NUTATION_Y_RANGE = [-12, 12];     // arcseconds
 
-/* x ticks every 90° of longitude. */
-const longitudeTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: String(value) }));
+/* x ticks at the first of every other month (day of the year 2026). */
+const MONTH_TICKS = [
+	[0, 'Jan'], [59, 'Mar'], [120, 'May'], [181, 'Jul'], [243, 'Sep'], [304, 'Nov'], [365, '']
+];
 
-/* The real Sun over the year starting 1 January of 'year', sorted by
-   longitude: [{ lon, ra, dec }]. */
-function realSunYear(year) {
+/* The errors of each day of the year (arcseconds). */
+function nutationErrors(year) {
 	const start = Time.julianDay(year, 1, 1);
 	const days = [];
 
-	for (let day = 0; day <= 366; day += TEST_STEP_DAYS) {
+	for (let day = 0; day <= 365; day++) {
 		const jd = start + day;
 		const position = Ephem.sun(jd);
-		const eq = Ephem.equatorial(position, jd);
+		const real = Ephem.equatorial(position, jd);
+		const model = Frames.eclipticToEquatorial(position.lon, position.lat, Ephem.meanObliquity(jd));
 
-		days.push({ lon: position.lon, ra: eq.ra, dec: eq.dec });
+		days.push({
+			day: day,
+			deps: Ephem.nutation(jd).deps * 3600,
+			dDec: (model.dec - real.dec) * 3600,
+			dRA: norm180(model.ra - real.ra) * 3600
+		});
 	}
 
-	return days.sort((a, b) => a.lon - b.lon);
+	return days;
 }
 
-/* Mean obliquity of the middle of a year. */
-const obliquityOfYear = year => Ephem.meanObliquity(Time.julianDay(year, 7, 1));
-
-const testFigure = {
+const nutationFigure = {
 	plot: null,
-	year: null,
 	days: null,
 
 	init() {
-		const figure = byId('test-plot').closest('figure');
-
-		this.plot = new Plot2D(byId('test-plot'), {
-			x: [0, 360],
-			y: TEST_Y_RANGE,
-			xLabel: 'the Sun\'s longitude λ (°)',
-			yLabel: 'model − real (arcmin)',
-			aspect: 0.55,
-			xTicks: longitudeTicks,
+		this.days = nutationErrors(NUTATION_YEAR);
+		this.plot = new Plot2D(byId('nutation-plot'), {
+			x: [0, 365],
+			y: NUTATION_Y_RANGE,
+			xLabel: `date (${NUTATION_YEAR})`,
+			yLabel: 'model − real (arcsec)',
+			aspect: 0.45,
+			xTicks: () => MONTH_TICKS.map(([value, label]) => ({ value, label })),
 			onDraw: () => this.draw()
 		});
-
-		byId('test-ptolemy').dataset.value = Frames.PTOLEMY_OBLIQUITY.toFixed(4);
-		wireSlider(byId('test-year'), () => this.update(), year => Time.formatYear(year));
-		wireSlider(byId('test-eps'), () => this.update(), formatDegrees);
-		wirePresets(figure);
-		byId('test-fit').addEventListener('click', () => this.fitToYear());
-		this.update();
-	},
-
-	/* Set the obliquity to the real mean value of the chosen year. */
-	fitToYear() {
-		byId('test-eps').value = obliquityOfYear(readNumber('test-year')).toFixed(4);
-		byId('test-eps').dispatchEvent(new Event('input'));
-	},
-
-	update() {
-		const year = readNumber('test-year');
-
-		// the real Sun is recomputed only when the year changes
-		if (year !== this.year) {
-			this.year = year;
-			this.days = realSunYear(year);
-		}
-
-		this.eps = readNumber('test-eps');
-		this.errors = this.days.map(day => {
-			const model = Frames.eclipticPoint(day.lon, this.eps);
-
-			return {
-				lon: day.lon,
-				dDec: (model.dec - day.dec) * 60,
-				dRA: norm180(model.ra - day.ra) * 60
-			};
-		});
-
-		this.showReadout();
 		this.plot.redraw();
-	},
-
-	showReadout() {
-		const realEps = obliquityOfYear(this.year);
-		const largest = key => Math.max(...this.errors.map(e => Math.abs(e[key])));
-
-		showLines('test-readout', [
-			`\\text{${Time.formatYear(this.year)}:}\\ \\varepsilon_\\text{real} = ${texDegrees(realEps, 3)}`,
-			`\\varepsilon_\\text{model} - \\varepsilon_\\text{real} = ${((this.eps - realEps) * 60).toFixed(1)}'`,
-			`\\max |\\Delta\\delta| = ${largest('dDec').toFixed(1)}'`,
-			`\\max |\\Delta\\alpha| = ${largest('dRA').toFixed(1)}'`
-		]);
 	},
 
 	draw() {
 		const p = this.plot;
-		const xs = this.errors.map(e => e.lon);
+		const xs = this.days.map(d => d.day);
+		const envelope = { color: COL.muted, width: 1.5, dash: [5, 4] };
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
-		p.curve(xs, this.errors.map(e => e.dDec), { color: COL.planet, width: 2.5 });
-		p.curve(xs, this.errors.map(e => e.dRA), { color: COL.epicycle, width: 2.5 });
+		p.curve(xs, this.days.map(d => d.deps), envelope);
+		p.curve(xs, this.days.map(d => -d.deps), envelope);
+		p.curve(xs, this.days.map(d => d.dDec), { color: COL.planet, width: 2.5 });
+		p.curve(xs, this.days.map(d => d.dRA), { color: COL.epicycle, width: 2.5 });
 	}
 };
 
@@ -469,5 +431,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
 	eclipticFigure.init();
 	horizonFigure.init();
-	testFigure.init();
+	nutationFigure.init();
 });
