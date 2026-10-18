@@ -83,11 +83,12 @@
 		</figure>
 
 		<p>
-			Ptolemy says what gave the idea away: "the revolution of the
+			Ptolemy names the observation behind this picture: "the revolution of the
 			ever-visible stars, which was observed to be circular, and always
 			taking place about one centre, the same [for all]" (<em>Almagest</em>
 			I 3). That centre is the celestial pole. Today the star Polaris lies
-			0.63° from it.
+			0.63° from it, close enough to mark the pole for the naked eye: this is
+			why it is called the pole star.
 		</p>
 
 		<p>
@@ -100,7 +101,8 @@
 		</p>
 
 		<p>
-			So the sky depends on where you stand. Travelling north, "the more of
+			The part of the sky that can be seen therefore depends on the latitude.
+			Travelling north, "the more of
 			the southern stars disappear and the more of the northern stars appear"
 			(<em>Almagest</em> I 4). Canopus, the second brightest star, can be seen
 			from Rhodes but never from Rome.
@@ -252,7 +254,8 @@
 		</p>
 
 		<p>
-			Why south and not north? For a northern observer the equator crosses
+			The $x$ axis points south, not north, for a reason. For a northern
+			observer the equator crosses
 			the meridian south of the zenith, so the sky frame's $x$ axis points
 			south too. With both $x$ axes on the same side and the east axis shared,
 			the two frames differ by one tilt. An $x$ axis pointing north would force
@@ -269,7 +272,8 @@
 		$$R_y(\theta) = \begin{pmatrix} \cos\theta & 0 & \sin\theta \\ 0 & 1 & 0 \\ -\sin\theta & 0 & \cos\theta \end{pmatrix}, \qquad R_y(\theta) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} \sin\theta \\ 0 \\ \cos\theta \end{pmatrix}.$$
 
 		<p>
-			Which angle? The tilt must carry the zenith direction onto the pole P.
+			The angle of the tilt follows from the pole. The tilt must carry the
+			zenith direction onto the pole P.
 			P stands on the meridian at altitude $\varphi$ in the north, so it lies
 			$90^\circ - \varphi$ from the zenith, on the north side ($-x$). With
 			$\theta > 0$, $R_y(\theta)$ tips $z$ towards $+x$, the south. We need a
@@ -321,11 +325,11 @@
 		</div>
 
 		<p>
-			This one line is the whole model. Everything below, and the altitude
-			read-out of Figure 1, comes from it.
+			Every result on this page, and the altitude read-out of Figure 1,
+			follows from this formula.
 		</p>
 
-		<h3>Who turns?</h3>
+		<h3>A turning Earth gives the same altitudes</h3>
 
 		<p>
 			Suppose instead that the stars stand still and the Earth turns eastward
@@ -345,7 +349,8 @@
 		</p>
 
 		<p>
-			Copernicus turns the argument around: "if any motion is ascribed to the
+			Copernicus states the same equivalence from the other side: "if any
+			motion is ascribed to the
 			earth, in all things outside it the same motion will appear, but in the
 			opposite direction" (<em>De Revolutionibus</em> I 5). He credits the
 			idea to Heraclides, Ecphantus and Hicetas.
@@ -413,7 +418,7 @@
 			</figcaption>
 		</figure>
 
-		<h3>Highest, lowest, and how long up</h3>
+		<h3>Culminations, rising and setting</h3>
 
 		<p>
 			A star is highest at $H = 0$, where $\sin a = \cos(\varphi - \delta)$,
@@ -604,15 +609,16 @@
 		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
 
 		<p>
-			The real sky for one night: each star's catalogue position, carried to
-			2026 for its proper motion and precession, turned by the Earth's
-			rotation. The model's star is fitted on that same night, so its
-			$\delta$ is right. One thing is still missing from the model: the air.
+			The model is compared with the reference sky for one night: each star's
+			catalogue position, carried to 2026 for its proper motion and
+			precession, turned by the Earth's rotation. The model's star is fitted on
+			that same night, so its $\delta$ is right. What the model leaves out is
+			the atmosphere.
 		</p>
 
 		<p>
-			Starlight bends as it enters the atmosphere, more the lower it comes in.
-			For standard air the lift is <span class="badge" data-origin="modern"></span>
+			Starlight bends as it enters the atmosphere, more the lower it comes in,
+			so a star appears higher than it is. For standard air this refraction is <span class="badge" data-origin="modern"></span>
 		</p>
 
 		$$R = \frac{1.02'}{\tan\!\left(a + \dfrac{10.3^\circ}{a + 5.11^\circ}\right)} \qquad (a \text{ in degrees}),$$
@@ -684,17 +690,17 @@
 		</figure>
 
 		<p>
-			High up the model barely misses: 1.0′ at an altitude of 45°, 2.7′ at
-			20°. Near the horizon it puts the star up to 34′ too low. So real stars
+			For a high star the error is small: 1.0′ at an altitude of 45°, 2.7′ at
+			20°. Near the horizon the model puts the star up to 34′ too low. So real stars
 			rise earlier and set later than the model says: Sirius seen from Rome by
 			3.3 minutes at each end, so it is up for 10 h 00 min instead of
 			9 h 53 min.
 		</p>
 
 		<p>
-			The miss grows for stars that skim the horizon. Canopus, seen from
-			Rhodes, climbs only 1.3° and crosses the horizon at a shallow angle. The
-			same 34′ then buys 14.2 minutes at each end.
+			The effect on rising times is larger for a star that crosses the horizon
+			at a shallow angle. Canopus, seen from Rhodes, climbs only 1.3°; the same
+			34′ makes it rise 14.2 minutes earlier and set 14.2 minutes later.
 		</p>
 
 		<!-- TODO(2.1): rewrite this paragraph when page 2.1 exists: say that the
@@ -722,17 +728,18 @@
 		</p>
 
 		<p>
-			<strong>Some lights wander.</strong> The Sun, the Moon and the planets
-			turn with the sphere but do not keep their places on it. Ptolemy calls
+			<strong>The Sun, the Moon and the planets move among the stars.</strong>
+			They turn with the sphere but do not keep their places on it. Ptolemy calls
 			this the second motion, "towards the east and opposite to [the motion
 			of] those stars which preserve their mutual distances" (<em>Almagest</em>
 			I 8). The rest of this site is about that motion.
 		</p>
 
 		<p>
-			To follow a body that moves on the sphere, "turning about the pole" is
-			not enough: we need a name for every direction, and a way to change
-			names. That is page 1.2.
+			To follow a body that moves on the sphere, the declination and the hour
+			angle are not enough: we need two coordinates for every direction, and
+			formulas to convert between coordinate systems. Page 1.2 introduces
+			them.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -875,8 +882,9 @@
 						the equator at noon, and its day is not a turn of the stars.</li>
 				</ul>
 				<p>
-					The model is not wrong about the sky; it has no air and treats the Sun
-					as a point.
+					The extra minutes do not come from the turning sky, which the model
+					describes correctly: the model has no atmosphere and treats the Sun as
+					a point.
 				</p>
 			</details>
 		</div>

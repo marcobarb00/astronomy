@@ -90,6 +90,25 @@ same style:
 - No walls of text: short paragraphs of one idea each, about four lines at
   most. Split a longer explanation, or move what belongs to a figure into
   its key.
+- Write plain expository prose, as in a good textbook: complete sentences,
+  each saying something definite, with the reasoning in between. Avoid the
+  habits below, which read as written by a machine:
+  - A fact or number without its purpose. Say why it is there: what it
+    shows, what it tests, or where it is used later.
+  - A slogan or punchline closing a paragraph, restating it in a catchy
+    form ("The same geometry, by a different road.", "The axes turn; the
+    point does not.", "This one line is the whole model."). End on the
+    last real point instead.
+  - Verbless fragments as transitions ("Now the real sky.", "Three
+    addresses for one direction.").
+  - Rhetorical questions as transitions ("Why south and not north?",
+    "Which angle?"). State the reason directly.
+  - Teaser headings ("Who turns?", "Frames that move"). A heading says what
+    the section contains.
+  - Metaphors, idioms and coined words where a standard term exists:
+    "coordinates", not "address" or "name"; "refraction", not "the lift";
+    "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
+    away". Use the term the sources use, and define it once.
 
 ## Sources
 
