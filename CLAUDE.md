@@ -49,6 +49,10 @@ same style:
   ("In the figure", "Read-out"), styled by `shared/theme.css` (see
   `templates/page.html`). The caption only says what to do with the figure
   and what to notice.
+- Not every figure needs controls. A figure that makes one point is drawn
+  once, with no sliders. Add a control only when moving it shows what the
+  section is about, and never one that mixes in a second effect: a figure
+  about the nutation error does not let the obliquity or the date change.
 - Choose the frame of a figure so that a control moves only what it is
   about. An observer's sky is drawn in the horizon frame: changing the date,
   the time or the latitude turns the sky, never the ground.
@@ -79,17 +83,36 @@ same style:
   licence on the source page, never assume it.
 - Save it, at web size, in the page's `images/` folder, and record the
   author, date, source URL and licence in `images/CREDITS.md`.
-- Show it as `<figure class="photo">` (styled by `shared/theme.css`). The
-  caption says what to notice, as for a figure, and ends with a credit line
-  (author, year, source, licence). Everything visible in the photo that the
-  caption relies on is explained (e.g. the satellite streaks across star
-  trails).
+- Show it as `<figure class="photo">` (styled by `shared/theme.css`, which
+  makes it as wide as the paragraphs, never wider). The caption says what to
+  notice, as for a figure, and ends with a credit line (author, year, source,
+  licence). Everything visible in the photo that the caption relies on is
+  explained (e.g. the satellite streaks across star trails).
 
 ### Writing
 
 - No walls of text: short paragraphs of one idea each, about four lines at
   most. Split a longer explanation, or move what belongs to a figure into
   its key.
+- Write plain expository prose, as in a good textbook: complete sentences,
+  each saying something definite, with the reasoning in between. Avoid the
+  habits below, which read as written by a machine:
+  - A fact or number without its purpose. Say why it is there: what it
+    shows, what it tests, or where it is used later.
+  - A slogan or punchline closing a paragraph, restating it in a catchy
+    form ("The same geometry, by a different road.", "The axes turn; the
+    point does not.", "This one line is the whole model."). End on the
+    last real point instead.
+  - Verbless fragments as transitions ("Now the real sky.", "Three
+    addresses for one direction.").
+  - Rhetorical questions as transitions ("Why south and not north?",
+    "Which angle?"). State the reason directly.
+  - Teaser headings ("Who turns?", "Frames that move"). A heading says what
+    the section contains.
+  - Metaphors, idioms and coined words where a standard term exists:
+    "coordinates", not "address" or "name"; "refraction", not "the lift";
+    "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
+    away". Use the term the sources use, and define it once.
 
 ## Sources
 

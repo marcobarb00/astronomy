@@ -1,6 +1,6 @@
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE TURNING SKY (models/diurnal.js)
-   The model of page 1.1: the sky is a rigid sphere of directions turning
+   The model of page 1.1: the sky is a rigid celestial sphere turning
    uniformly about the polar axis, seen by an observer at latitude phi.
    Needs common.js. Touches no DOM, so it can be loaded in Node.
 

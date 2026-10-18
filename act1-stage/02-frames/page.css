@@ -1,0 +1,73 @@
+/* ==========================================================================
+   PAGE 1.2 · FRAMES - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The tables of the prose
+	 3. Phone width
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here are short ("23.44°", "38.9°"). */
+figure.fig {
+	--ctl-output: 5.5em;
+}
+
+/* The star buttons keep one width, so the row does not reflow when the
+   active one changes. */
+.star-choice button {
+	min-width: 5.6em;
+}
+
+/* The play button keeps its width between "play" and "pause". */
+button.play {
+	min-width: 6.5em;
+}
+
+
+/* ==========================================================================
+   2. THE TABLES OF THE PROSE
+   The observation, the three frames and Ptolemy's tables against the real
+   Sun: narrow tables, first column left.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 90ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* Difference columns (Ptolemy − real): in the colour of the errors in the
+   figures, on a faint band, so they stand apart from the values. */
+table.prose-table .diff {
+	color: var(--planet);
+	font-weight: 600;
+	background: color-mix(in srgb, var(--planet) 8%, var(--card));
+}
+
+/* In a two-row header the second row starts under a spanning cell, so its
+   first cell stays centred over its column. */
+table.prose-table thead tr + tr th:first-child {
+	text-align: center;
+}
+
+
+/* ==========================================================================
+   3. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 860px) {
+	/* "obliquity ε" needs a little more than the shared 74px label column */
+	.ctl {
+		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+	}
+}

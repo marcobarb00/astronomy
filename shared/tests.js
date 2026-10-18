@@ -19,7 +19,7 @@
 	 9. Ephemeris: long-term precession (SOFA / ERFA)
 	10. Ephemeris: JPL Horizons spot checks (DE441)
 	11. Internal consistency
-	12. Refraction, stars and the turning sky (Meeus ch. 16, 21; page 1.1)
+	12. Refraction, stars, the turning sky, frames (Meeus ch. 13, 16, 21; pages 1.1, 1.2)
 	13. Run
    ========================================================================== */
 
@@ -775,7 +775,7 @@ function testConsistency() {
 
 
 /* ==========================================================================
-   12. REFRACTION, STARS AND THE TURNING SKY
+   12. REFRACTION, STARS, THE TURNING SKY, FRAMES
    ========================================================================== */
 
 function testRefraction() {
@@ -933,6 +933,149 @@ function testDiurnal() {
 }
 
 
+function testFrames() {
+	group('Frames · models/frames.js (page 1.2)');
+
+	// Meeus example 13.a: Pollux, equatorial -> ecliptic (eps = 23.4392911°).
+	const pollux = Frames.equatorialToEcliptic(116.328942, 28.026183, 23.4392911);
+
+	check({
+		name: 'Pollux: λ', source: 'Meeus ex. 13.a',
+		expected: 113.215630, computed: pollux.lon,
+		tol: 0.1, unit: '″', scale: ARCSEC_PER_DEG, show: showDeg, angle: true
+	});
+
+	check({
+		name: 'Pollux: β', source: 'Meeus ex. 13.a',
+		expected: 6.684170, computed: pollux.lat,
+		tol: 0.1, unit: '″', scale: ARCSEC_PER_DEG, show: showDeg
+	});
+
+	// Meeus example 13.b: Venus from Washington, H = 64.352133°,
+	// delta = -6°43'11.61", phi = 38°55'17". Meeus counts the azimuth from
+	// the south (68.0337°): from the north it is 248.0337°.
+	const phi = 38 + 55 / 60 + 17 / 3600;
+	const venusDec = -(6 + 43 / 60 + 11.61 / 3600);
+	const venus = Frames.equatorialToHorizontal(0, venusDec, phi, 64.352133);
+
+	check({
+		name: 'Venus: azimuth from the north', source: 'Meeus ex. 13.b',
+		expected: 68.0337 + 180, computed: venus.A,
+		tol: 1, unit: '″', scale: ARCSEC_PER_DEG, show: x => x.toFixed(4) + '°', angle: true
+	});
+
+	check({
+		name: 'Venus: altitude', source: 'Meeus ex. 13.b',
+		expected: 15.1249, computed: venus.a,
+		tol: 1, unit: '″', scale: ARCSEC_PER_DEG, show: x => x.toFixed(4) + '°'
+	});
+
+	// Almagest I 14: the two worked declinations, lambda = 30° and 60°.
+	[[30, 11 + 40 / 60], [60, 20 + 30 / 60 + 9 / 3600]].forEach(([lon, expected]) => {
+		check({
+			name: `Ptolemy's declination at λ = ${lon}°`, source: 'Almagest I 14',
+			expected: expected,
+			computed: Frames.eclipticPoint(lon, Frames.PTOLEMY_OBLIQUITY).dec,
+			tol: 2, unit: '″', scale: ARCSEC_PER_DEG, show: showDms
+		});
+	});
+
+	// Matrices against the multiplied-out formulas, Ephem's own formulas and
+	// the inverses, over a grid of directions, latitudes and turns.
+	let worst = 0;
+
+	for (let lon = 5; lon < 360; lon += 37) {
+		for (let lat = -80; lat <= 80; lat += 20) {
+			const eq = Frames.eclipticToEquatorial(lon, lat, EPS);
+			const viaMatrix = toLonLat(matApply(Frames.eclipticToEquatorialMatrix(EPS), fromLonLat(lon, lat)));
+			const viaEphem = Ephem.eclipticToEquatorial(lon, lat, EPS);
+			const back = Frames.equatorialToEcliptic(eq.ra, eq.dec, EPS);
+			const differences = [
+				norm180(viaMatrix.lon - eq.ra) * cos(eq.dec), viaMatrix.lat - eq.dec,
+				norm180(viaEphem.ra - eq.ra) * cos(eq.dec), viaEphem.dec - eq.dec,
+				norm180(back.lon - lon) * cos(lat), back.lat - lat
+			];
+
+			for (let phi = -70; phi <= 70; phi += 35) {
+				const theta = lon * 1.7 + 11;
+				const hor = Frames.equatorialToHorizontal(eq.ra, eq.dec, phi, theta);
+				const horMatrix = Frames.toHorizontal(matApply(Frames.equatorialToHorizonMatrix(phi, theta), fromLonLat(eq.ra, eq.dec)));
+				const eqBack = Frames.horizontalToEquatorial(hor.A, hor.a, phi, theta);
+
+				differences.push(
+					norm180(horMatrix.A - hor.A) * cos(hor.a), horMatrix.a - hor.a,
+					norm180(eqBack.ra - eq.ra) * cos(eq.dec), eqBack.dec - eq.dec
+				);
+			}
+
+			differences.forEach(d => {
+				worst = Math.max(worst, Math.abs(d));
+			});
+		}
+	}
+
+	check({
+		name: 'Matrices vs formulas, Ephem, inverses',
+		source: 'page 1.2',
+		expected: 0,
+		computed: worst,
+		tol: 0.001,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: x => x.toExponential(1) + '°'
+	});
+
+	// Almagest I 15 and I 16 against the formulas with eps = 23°51'20".
+	let worstTable = 0;
+
+	Frames.PTOLEMY_DECLINATIONS.forEach((dec, i) => {
+		worstTable = Math.max(worstTable, Math.abs(dec - Frames.eclipticPoint(i + 1, Frames.PTOLEMY_OBLIQUITY).dec));
+	});
+
+	check({
+		name: 'Ptolemy\'s table of inclination, 90 entries',
+		source: 'Almagest I 15',
+		expected: 0,
+		computed: worstTable,
+		tol: 10,           // the largest is a scribal error Toomer flags (27°)
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDms
+	});
+
+	let worstRA = 0;
+
+	Frames.ptolemyRightAscensions().forEach((ra, i) => {
+		worstRA = Math.max(worstRA, Math.abs(ra - Frames.eclipticPoint(10 * i, Frames.PTOLEMY_OBLIQUITY).ra));
+	});
+
+	check({
+		name: 'Ptolemy\'s right ascensions, every 10°',
+		source: 'Almagest I 16',
+		expected: 0,
+		computed: worstRA,
+		tol: 0.5,          // Ptolemy rounds to the minute
+		unit: '′',
+		scale: 60,
+		show: showDms
+	});
+
+	// The ecliptic pole is at alpha = 270°, delta = 90° - eps.
+	const pole = toLonLat(Frames.eclipticPole(EPS));
+
+	check({
+		name: 'Ecliptic pole: δ = 90° − ε',
+		source: 'page 1.2',
+		expected: 90 - EPS,
+		computed: pole.lat,
+		tol: 0.001,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDeg
+	});
+}
+
+
 /* ==========================================================================
    13. RUN
    ========================================================================== */
@@ -950,5 +1093,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testRefraction();
 	testStarPrecession();
 	testDiurnal();
+	testFrames();
 	render();
 });

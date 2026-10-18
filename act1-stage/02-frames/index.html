@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.2 · FRAMES
+     Act I, the stage. Three ways to name a direction (equatorial, ecliptic,
+     horizontal), each a great circle, its pole and an origin; changing names
+     is a rotation, and multiplying out the matrices gives the spherical
+     trigonometry. Numbers: tools/numbers/1.2-frames.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.2 · Frames · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.2">
+<div class="page">
+
+	<!-- Sticky table of contents, built from the article's <h2> -->
+	<nav class="toc" aria-label="Contents"></nav>
+
+	<article>
+
+		<!-- Page header, filled from the site map -->
+		<header class="page-head"></header>
+
+		<p>
+			Page 1.1 described a star by its declination $\delta$ and its hour angle
+			$H$, which grows as the sky turns. To follow the Sun, the Moon and the
+			planets we need two coordinates for every point of the celestial sphere,
+			and formulas to convert between coordinate systems. This page defines the
+			three systems used in positional astronomy and derives the conversions.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>One star, three descriptions</h2>
+
+		<p>
+			Take Aldebaran, the red eye of the Bull, seen from Rome on 1 January 2026
+			at 20:00 local time (19:00 UT). Its position can be given in three
+			coordinate systems, depending on what it is measured against:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Measured against</th>
+					<th>Coordinates</th>
+					<th>Aldebaran</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>the local horizon (compass and quadrant)</td>
+					<td>azimuth $A$, altitude $a$</td>
+					<td>$125.01^\circ$, $53.67^\circ$</td>
+				</tr>
+				<tr>
+					<td>the celestial equator: a modern catalogue (2026)</td>
+					<td>right ascension $\alpha$, declination $\delta$</td>
+					<td>$69.354^\circ$ ($4^\text{h}37^\text{m}$), $16.559^\circ$</td>
+				</tr>
+				<tr>
+					<td>the ecliptic, the Sun's yearly path (2026)</td>
+					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
+					<td>$70.153^\circ$, $-5.465^\circ$</td>
+				</tr>
+				<tr>
+					<td>the ecliptic: Ptolemy's catalogue (AD 137)</td>
+					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
+					<td>$42^\circ 40'$ ($42.667^\circ$), $-5^\circ 10'$ ($-5.167^\circ$)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The horizontal coordinates change continuously: an hour later the star is
+			higher and further south. The equatorial coordinates stay the same through
+			the night and for years. Over centuries, both the equatorial and the
+			ecliptic coordinates change.
+		</p>
+
+		<p>
+			Since Ptolemy, Aldebaran's longitude has grown by 26.30° and its
+			declination has changed by 5.75°, but its latitude has moved by only
+			7.9′. This is why Ptolemy gave his catalogue in ecliptic coordinates: he
+			had found that the stars shift parallel to the ecliptic, so that "their
+			positions in latitude with respect to the ecliptic must necessarily
+			remain the same" (<em>Almagest</em> VII 4).
+			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			The rest of the page defines each system and derives the formulas that
+			convert one into another.
+		</p>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Coordinate systems and rotations</h2>
+
+		<h3>What a frame is</h3>
+
+		<p>
+			On the celestial sphere, a frame is three choices: a great circle
+			(the <em>fundamental circle</em>), one of its two poles, and an origin on
+			the circle. The longitude runs along the circle from the origin; the
+			latitude runs from the circle towards the pole.
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		<p>
+			In vectors: put $x$ towards the origin, $z$ towards the pole and $y$ at
+			longitude $90^\circ$, so that the frame is right-handed. A direction at
+			longitude $l$ and latitude $b$ is
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		$$\mathbf s = \begin{pmatrix} \cos b \cos l \\ \cos b \sin l \\ \sin b \end{pmatrix},$$
+
+		<p>
+			exactly as for the sky frame of page 1.1. The three frames of the
+			observation differ only in their choices:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Frame</th>
+					<th>Fundamental circle</th>
+					<th>Pole</th>
+					<th>Origin</th>
+					<th>Coordinates</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>equatorial</td>
+					<td>the celestial equator</td>
+					<td>P, north celestial pole</td>
+					<td>γ, the vernal point</td>
+					<td>$\alpha$, $\delta$</td>
+				</tr>
+				<tr>
+					<td>ecliptic</td>
+					<td>the ecliptic, the Sun's yearly path</td>
+					<td>K, north ecliptic pole</td>
+					<td>γ, the vernal point</td>
+					<td>$\lambda$, $\beta$</td>
+				</tr>
+				<tr>
+					<td>horizon</td>
+					<td>the horizon</td>
+					<td>Z, the zenith</td>
+					<td>the north point</td>
+					<td>$A$, $a$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The vernal point γ (also written ♈&#xFE0E;, the sign of Aries) is where the Sun
+			crosses the equator going north, at the March equinox. The equator and the ecliptic
+			cross there and at the opposite point, so both frames can share it as
+			their origin.
+		</p>
+
+		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/burgi-armillary-sphere.jpg" width="1000" height="1018" loading="lazy"
+				alt="A gilded brass armillary sphere: a cage of rings and a band of cut-out zodiac figures inside a broad flat ring, with an upright ring crossing it.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				An armillary sphere clock by Jost Bürgi and Antonius Eisenhoit (Kassel,
+				1585). Its rings are the fundamental circles of this page. The broad flat ring, fixed to the stand, is the
+				horizon: OCCIDENS, "west", is engraved on its right. The zodiac signs and
+				month names beside it are a calendar, giving the Sun's place on the
+				ecliptic for each date, as on the horizon ring of a globe. The upright
+				ring at right angles to it is the meridian.
+				Inside, the band carrying the zodiac figures, cut out of brass plate, is
+				the ecliptic; it turns with the other inner rings, as the sky does.
+				The museum's label says Kepler used it.
+				<span class="credit">Chris Bainbridge, 2009,
+					<a href="https://commons.wikimedia.org/wiki/File:Armillary_sphere_with_astronomical_clock.jpg">Wikimedia Commons</a>,
+					public domain (object: Nordiska museet, Stockholm).</span>
+			</figcaption>
+		</figure>
+
+		<p>
+			Right ascension is often given in hours, $24^\text{h} = 360^\circ$, so
+			$1^\text{h} = 15^\circ$: Aldebaran's $69.354^\circ$ is $4^\text{h}37^\text{m}$.
+			The unit is chosen because the sky turns about $15^\circ$ an hour: the
+			right ascension in hours is roughly the time between the meridian crossing
+			of γ and that of the star (page 1.3).
+		</p>
+
+		<h3>Azimuth</h3>
+
+		<p>
+			The azimuth $A$ is a compass bearing: $0^\circ$ north, $90^\circ$ east,
+			$180^\circ$ south. Seen from the zenith that is clockwise, the opposite
+			sense to $\alpha$ and $\lambda$, which turn anticlockwise seen from their
+			poles.
+		</p>
+
+		<p>
+			So the azimuth is not the longitude of the horizon frame of page 1.1
+			($x$ south, $y$ east, $z$ zenith). North is $-x$ and east is $+y$, and
+		</p>
+
+		$$\mathbf s_\text{hor} = \begin{pmatrix} -\cos a \cos A \\ \cos a \sin A \\ \sin a \end{pmatrix}.$$
+
+		<p>
+			Check: $A = 0$ gives $(-\cos a, 0, \sin a)$, north; $A = 90^\circ$ gives
+			$(0, \cos a, \sin a)$, east. Meeus (ch. 13) counts the azimuth from the
+			south instead; his value is $A - 180^\circ$.
+		</p>
+
+		<h3>Changing frames is a rotation</h3>
+
+		<p>
+			Take two frames, $F$ and $G$, and one direction. Its components in $G$
+			are its dot products with $G$'s axes, $s_G^i = \mathbf g_i \cdot \mathbf
+			s$. Writing $G$'s axes in $F$'s components, as the rows of a matrix $M$,
+		</p>
+
+		$$\mathbf s_G = M \, \mathbf s_F, \qquad M = \begin{pmatrix} \mathbf g_1^T \\ \mathbf g_2^T \\ \mathbf g_3^T \end{pmatrix}.$$
+
+		<p>
+			The rows of $M$ are orthonormal, so $M^T M = I$: the inverse
+			transformation is the transpose, $\mathbf s_F = M^T \mathbf s_G$. Both frames are right-handed,
+			so $\det M = 1$ and $M$ is a rotation.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			A rotation preserves dot products, and therefore angles: the angular
+			distance between two stars is the same in every frame.
+		</p>
+
+		<h3>Ecliptic and equator</h3>
+
+		<p>
+			The two circles cross at γ, so the two frames share their $x$ axis. The
+			ecliptic's $y$ axis points to $\lambda = 90^\circ$, the summer solstice,
+			which lies $\varepsilon$ north of the equator at $\alpha = 90^\circ$.
+			The angle $\varepsilon$ is the <em>obliquity</em>. In equatorial
+			components,
+		</p>
+
+		$$\mathbf x = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad \mathbf y_\text{ecl} = \begin{pmatrix} 0 \\ \cos\varepsilon \\ \sin\varepsilon \end{pmatrix}, \quad \mathbf K = \mathbf x \times \mathbf y_\text{ecl} = \begin{pmatrix} 0 \\ -\sin\varepsilon \\ \cos\varepsilon \end{pmatrix}.$$
+
+		<p>
+			The pole K is at $\alpha = 270^\circ$, $\delta = 90^\circ - \varepsilon$.
+			The matrix whose columns are these three axes takes ecliptic components to
+			equatorial ones. It is a rotation by $\varepsilon$ about the $x$ axis:
+		</p>
+
+		$$\mathbf s_\text{eq} = R_x(\varepsilon)\, \mathbf s_\text{ecl}, \qquad R_x(\varepsilon) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\varepsilon & -\sin\varepsilon \\ 0 & \sin\varepsilon & \cos\varepsilon \end{pmatrix}.$$
+
+		<p>
+			Multiplying out, with $\mathbf s_\text{eq}$ written in $(\alpha, \delta)$ and
+			$\mathbf s_\text{ecl}$ in $(\lambda, \beta)$:
+		</p>
+
+		<div class="box">
+			$$\begin{aligned}
+				\cos\delta \cos\alpha &= \cos\beta \cos\lambda, \\
+				\cos\delta \sin\alpha &= \cos\varepsilon \cos\beta \sin\lambda - \sin\varepsilon \sin\beta, \\
+				\sin\delta &= \sin\varepsilon \cos\beta \sin\lambda + \cos\varepsilon \sin\beta.
+			\end{aligned}$$
+		</div>
+
+		<p>
+			The last line gives $\delta$ directly. The first two give $\cos\delta$
+			times the cosine and the sine of $\alpha$, so $\alpha$ comes out with its
+			quadrant from $\operatorname{atan2}$. Dividing them into $\tan\alpha$ would
+			lose the quadrant.
+		</p>
+
+		<p>
+			For the Sun, $\beta = 0$:
+		</p>
+
+		$$\sin\delta = \sin\varepsilon \sin\lambda, \qquad \tan\alpha = \cos\varepsilon \tan\lambda.$$
+
+		<!-- Figure 1: ecliptic and equator -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="ecl-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="ecl-eps">obliquity ε</label>
+						<input id="ecl-eps" type="range" min="0" max="90" step="0.0001" value="23.4359">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" id="ecl-today" data-target="ecl-eps" data-value="23.4359">today</button>
+						<button type="button" data-target="ecl-eps" data-value="23.8556">Ptolemy</button>
+						<button type="button" data-target="ecl-eps" data-value="0">0°</button>
+					</div>
+					<div class="presets star-choice" id="ecl-stars"></div>
+					<div class="readout" id="ecl-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-earth">equator</dt>
+						<dd>the celestial equator, with its pole P; blue arrows are the equatorial frame's $y$ and $z$ axes</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>the Sun's yearly path, with its pole K; yellow arrows are the ecliptic frame's $y$ and $z$ axes</dd>
+						<dt>γ</dt>
+						<dd>the vernal point, where the two circles cross; the black arrow is the $x$ axis both frames share</dd>
+						<dt class="c-planet">star</dt>
+						<dd>the chosen star, at its position of 2026.0</dd>
+						<dt class="c-earth">α, δ</dt>
+						<dd>its equatorial path: along the equator from γ (solid), then up to the star (dashed); the small dot is the foot of the star on the equator</dd>
+						<dt class="c-sun">λ, β</dt>
+						<dd>the same in the ecliptic frame</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\alpha, \delta$</dt>
+						<dd>right ascension (also in hours) and declination</dd>
+						<dt>$\lambda, \beta$</dt>
+						<dd>ecliptic longitude and latitude</dd>
+						<dt>$\mathbf s_\text{eq}, \mathbf s_\text{ecl}$</dt>
+						<dd>the star's unit vector in each frame: $\mathbf s_\text{eq} = R_x(\varepsilon)\,\mathbf s_\text{ecl}$</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Move the obliquity: the ecliptic and its axes turn
+				about γ, while the star, α and δ stay put and only λ and β change. At 0°
+				the two frames coincide. The first component of the two vectors never
+				changes: it is the shared $x$ axis. Drag the sphere to turn the view.
+			</figcaption>
+		</figure>
+
+		<h3>Equator and horizon</h3>
+
+		<p>
+			Page 1.1 used a sky frame whose $x$ axis points to the meridian. The
+			equatorial frame differs only in where $x$ points: at γ, a point of the
+			equator that turns with the sky.
+		</p>
+
+		<p>
+			Let $\theta$ be the angle the sky has turned since γ crossed the
+			meridian. The meridian is then at $\alpha = \theta$, and a star of right
+			ascension $\alpha$ crossed it $\theta - \alpha$ ago:
+		</p>
+
+		$$H = \theta - \alpha, \qquad \mathbf s_\text{sky} = R_z(-\theta)\, \mathbf s_\text{eq}.$$
+
+		<p>
+			Check: the sky-frame longitude of the star is $\alpha - \theta = -H$, as
+			on page 1.1. Page 1.3 names $\theta$ the <em>local sidereal time</em> and
+			obtains it from the clock. On this page it is a free parameter.
+		</p>
+
+		<p>
+			Page 1.1 then tilted the sky frame onto the horizon frame with
+			$R_y(\varphi - 90^\circ)$. The two rotations combined give
+		</p>
+
+		$$\mathbf s_\text{hor} = R_y(\varphi - 90^\circ)\, R_z(-\theta)\, \mathbf s_\text{eq}.$$
+
+		<p>
+			With $R_y(\varphi - 90^\circ)$ written out (its entries are $\pm\sin\varphi$,
+			$\pm\cos\varphi$) and $\mathbf s_\text{sky} = (\cos\delta\cos H,
+			-\cos\delta\sin H, \sin\delta)$, the three rows give
+		</p>
+
+		<div class="box">
+			$$\begin{aligned}
+				\sin a &= \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H, \\
+				\cos a \sin A &= -\cos\delta \sin H, \\
+				\cos a \cos A &= \cos\varphi \sin\delta - \sin\varphi \cos\delta \cos H.
+			\end{aligned}$$
+		</div>
+
+		<p>
+			The first line is the altitude of page 1.1. The second checks the sign: a
+			star east of the meridian ($H &lt; 0$) has $\sin A &gt; 0$, an eastern
+			azimuth. The inverse transformation, horizon to equatorial, is the
+			transpose.
+		</p>
+
+		<!-- Figure 2: equator and horizon -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="hor-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="hor-lat">latitude φ</label>
+						<input id="hor-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="hor-lat" data-value="90">north pole</button>
+						<button type="button" data-target="hor-lat" data-value="51.5">London</button>
+						<button type="button" data-target="hor-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="hor-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="hor-lat" data-value="0">equator</button>
+					</div>
+					<div class="ctl">
+						<label for="hor-theta">angle θ</label>
+						<input id="hor-theta" type="range" min="0" max="360" step="0.01" value="38.94">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" class="play" id="hor-play">▶ play</button>
+						<button type="button" id="hor-observation">the observation</button>
+					</div>
+					<div class="presets star-choice" id="hor-stars"></div>
+					<div class="readout" id="hor-readout"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-earth">equator</dt>
+						<dd>the celestial equator and its pole P, fixed with the stars</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>the ecliptic (dashed), fixed too; it crosses the equator at γ</dd>
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's horizon, with N, E, S, W and the zenith Z; it moves with $\varphi$ and $\theta$</dd>
+						<dt class="c-muted">meridian</dt>
+						<dd>the dotted circle through N, Z and S (and P)</dd>
+						<dt class="c-earth">dot</dt>
+						<dd>the point where the equator crosses the meridian, at $\alpha = \theta$</dd>
+						<dt class="c-earth">H, δ</dt>
+						<dd>the star's equatorial path: along the equator from the meridian, westward (solid), then up to the star (dashed); the small dots are the feet of the two paths</dd>
+						<dt class="c-deferent">A, a</dt>
+						<dd>its horizon path: along the horizon from N through E (solid), then up to the star (dashed)</dd>
+						<dt class="c-planet">star</dt>
+						<dd>the chosen star, at its position of 2026.0</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\alpha, \delta$</dt>
+						<dd>the star's equatorial coordinates, which never change here</dd>
+						<dt>$H$</dt>
+						<dd>its hour angle, $\theta - \alpha$ (between $-180^\circ$ and $180^\circ$)</dd>
+						<dt>$A, a$</dt>
+						<dd>its azimuth, from north through east, and its altitude</dd>
+						<dt>$I$</dt>
+						<dd>the angle between the ecliptic and the horizon (exercise 3)</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				The same sky as Figure 1, now with an observer. Press "the observation":
+				the read-out gives Aldebaran's azimuth and altitude from the table of
+				section 1. Then press play: the horizon turns, $H$, $A$ and $a$ change,
+				$\alpha$ and $\delta$ do not.
+			</figcaption>
+		</figure>
+
+		<h3>Spherical trigonometry from the matrices</h3>
+
+		<p>
+			The pole P, the zenith Z and the star S make a spherical triangle. Its
+			sides are $90^\circ - \varphi$ (from P to Z), $90^\circ - \delta$ and
+			$90^\circ - a$; its angle at P is the hour angle $H$.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			The three rows above are the three classical rules for that triangle. The
+			first is the cosine rule for the side ZS; the second is the sine rule; the
+			third is the "five-part" rule. Every formula of spherical trigonometry
+			used on this site comes from multiplying out a rotation.
+		</p>
+
+		<p>
+			Ptolemy had neither vectors nor sines. He got the same numbers from
+			Menelaus' theorem on great-circle arcs and a table of chords
+			(<em>Almagest</em> I 13–14), and turned them into tables (I 15–16), tested
+			in section 4. <span class="badge" data-origin="greek"></span>
+		</p>
+
+		<h3>Where the coordinates break</h3>
+
+		<p>
+			At a pole of a frame the longitude is undefined: P has no right ascension,
+			Z has no azimuth, and $\operatorname{atan2}(0, 0)$ has no value. Near a
+			pole a small change in the star's position produces a large change in its
+			longitude. The unit vector has no such singularity, which is why the code
+			works with vectors and converts them to angles only at the end.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The obliquity and the origin</h2>
+
+		<p>
+			The horizon frame needs the latitude $\varphi$ (page 1.1) and the angle
+			$\theta$ (page 1.3). The equatorial and ecliptic frames need two things
+			from the sky: the angle between them, $\varepsilon$, and their shared
+			origin γ.
+		</p>
+
+		<h3>The obliquity from the noon Sun at the solstices</h3>
+
+		<p>
+			At noon the Sun is on the meridian, at altitude $90^\circ - \varphi +
+			\delta$. Over the year $\delta$ swings between $+\varepsilon$ and
+			$-\varepsilon$, so the noon altitudes at the two solstices give both
+			parameters, as Kochab's two crossings did on page 1.1:
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		$$\varepsilon = \frac{h_\text{summer} - h_\text{winter}}{2}, \qquad \varphi = 90^\circ - \frac{h_\text{summer} + h_\text{winter}}{2}.$$
+
+		<p>
+			At Alexandria in 2026 the real noon Sun stands 82.240° high on 21 June
+			and 35.388° on 21 December. So $\varepsilon = 23.426^\circ$, 0.59′ below
+			the true 23.436°, and $\varphi = 31.186^\circ$. The air lifts the low
+			winter Sun by 1.42′ and the summer Sun by only 0.14′.
+		</p>
+
+		<p>
+			Ptolemy measured the same altitudes with his bronze ring and stone
+			quadrant (page 1.1). He found the arc between the solstices "always greater
+			than 47⅔° and less than 47¾°" (<em>Almagest</em> I 12), and adopted
+			$2\varepsilon = 47^\circ 42' 40''$, eleven parts of a circle of 83. So
+			$\varepsilon = 23^\circ 51' 20''$ (23.856°).
+			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			He says this agrees with Eratosthenes and Hipparchus. Whether the ratio
+			11 : 83 was theirs, or Ptolemy's rounding of an older 24°, is uncertain
+			(Toomer's note to I 12).
+			<span class="badge" data-origin="debated"></span>
+		</p>
+
+		<p>
+			The true obliquity in AD 137 was $23^\circ 40' 40''$ (23.678°). Ptolemy's
+			value is 10.7′ too large, and the true value lies outside even his
+			bounds (23.833° to 23.875°). Section 4 measures the effect of this error
+			on the Sun's position.
+		</p>
+
+		<h3>The origin</h3>
+
+		<p>
+			No star marks γ. It is defined by the Sun: the point where it crosses the
+			equator going north. Locating γ therefore means timing the March equinox;
+			in 2026 it falls on the afternoon of 20 March (UT). Hipparchus collected
+			equinox times, some read off a bronze ring set in the plane of the
+			equator at Alexandria (<em>Almagest</em> III 1).
+			<span class="badge" data-origin="hipparchus"></span>
+		</p>
+
+		<p>
+			Because γ is defined by the Sun and not by the stars, it can move relative
+			to the stars, and then the coordinates of every star change with it
+			(section 5). A catalogue therefore gives positions for its own date.
+		</p>
+
+		<aside class="detour" data-topic="instruments"></aside>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
+
+		<p>
+			The conversion formulas involve no approximation, so what is tested is
+			the obliquity put into them. The table below compares Ptolemy's values,
+			computed with his obliquity, with the real Sun of his time; Figure 3
+			compares the model, with today's obliquity, with the real Sun of 2026.
+		</p>
+
+		<h3>Ptolemy's tables</h3>
+
+		<p>
+			Ptolemy needed the Sun's declination for every point of the ecliptic: it
+			gives the noon altitude of the Sun, the length of the day and the
+			shadow of a gnomon on any date (<em>Almagest</em> II). He computed it once
+			and printed it as a table, the <em>table of inclination</em> (I 15): the
+			declination of each degree of longitude from 1° to 90°. A second table
+			(I 16) gives the right ascension every 10°.
+			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			He had no sines and no vectors. He worked with chords and with
+			Menelaus' theorem, a relation between the arcs of great circles that
+			cross each other (I 13–14). His tables are therefore an independent
+			computation of the formulas derived above, made with his obliquity
+			$\varepsilon = 23^\circ 51' 20''$.
+		</p>
+
+		<p>
+			The formulas, computed with the same $\varepsilon$, reproduce his 90
+			declinations: half of them within 1″, nine in ten within 3″. The largest
+			difference, 9″ at 27°, is an entry that Toomer suspects was miscopied
+			(57″ written for 47″). His right ascensions agree within 0.35′, because he
+			rounds them to the minute. Any error in his tables therefore comes from
+			the obliquity he put into them, not from the computation.
+		</p>
+
+		<p>
+			The table below compares his values with the real Sun of his own time:
+			the declination and right ascension of the reference Sun on the day of
+			AD 137 when it stood at each longitude.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th rowspan="2">$\lambda$</th>
+					<th colspan="3">declination $\delta$</th>
+					<th colspan="3">right ascension $\alpha$</th>
+				</tr>
+				<tr>
+					<th>Ptolemy (I 15)</th>
+					<th>real, AD 137</th>
+					<th class="diff">Ptolemy − real</th>
+					<th>Ptolemy (I 16)</th>
+					<th>real, AD 137</th>
+					<th class="diff">Ptolemy − real</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$10^\circ$</td>
+					<td>$4.027^\circ$</td>
+					<td>$4.000^\circ$</td>
+					<td class="diff">+1.6′</td>
+					<td>$9.167^\circ$</td>
+					<td>$9.173^\circ$</td>
+					<td class="diff">−0.4′</td>
+				</tr>
+				<tr>
+					<td>$20^\circ$</td>
+					<td>$7.951^\circ$</td>
+					<td>$7.895^\circ$</td>
+					<td class="diff">+3.3′</td>
+					<td>$18.417^\circ$</td>
+					<td>$18.434^\circ$</td>
+					<td class="diff">−1.1′</td>
+				</tr>
+				<tr>
+					<td>$30^\circ$</td>
+					<td>$11.666^\circ$</td>
+					<td>$11.584^\circ$</td>
+					<td class="diff">+4.9′</td>
+					<td>$27.833^\circ$</td>
+					<td>$27.867^\circ$</td>
+					<td class="diff">−2.0′</td>
+				</tr>
+				<tr>
+					<td>$40^\circ$</td>
+					<td>$15.068^\circ$</td>
+					<td>$14.960^\circ$</td>
+					<td class="diff">+6.4′</td>
+					<td>$37.500^\circ$</td>
+					<td>$37.541^\circ$</td>
+					<td class="diff">−2.4′</td>
+				</tr>
+				<tr>
+					<td>$50^\circ$</td>
+					<td>$18.048^\circ$</td>
+					<td>$17.917^\circ$</td>
+					<td class="diff">+7.8′</td>
+					<td>$47.467^\circ$</td>
+					<td>$47.503^\circ$</td>
+					<td class="diff">−2.2′</td>
+				</tr>
+				<tr>
+					<td>$60^\circ$</td>
+					<td>$20.503^\circ$</td>
+					<td>$20.353^\circ$</td>
+					<td class="diff">+9.0′</td>
+					<td>$57.733^\circ$</td>
+					<td>$57.772^\circ$</td>
+					<td class="diff">−2.3′</td>
+				</tr>
+				<tr>
+					<td>$70^\circ$</td>
+					<td>$22.336^\circ$</td>
+					<td>$22.171^\circ$</td>
+					<td class="diff">+9.9′</td>
+					<td>$68.300^\circ$</td>
+					<td>$68.326^\circ$</td>
+					<td class="diff">−1.5′</td>
+				</tr>
+				<tr>
+					<td>$80^\circ$</td>
+					<td>$23.471^\circ$</td>
+					<td>$23.297^\circ$</td>
+					<td class="diff">+10.5′</td>
+					<td>$79.083^\circ$</td>
+					<td>$79.102^\circ$</td>
+					<td class="diff">−1.1′</td>
+				</tr>
+				<tr>
+					<td>$90^\circ$</td>
+					<td>$23.856^\circ$</td>
+					<td>$23.678^\circ$</td>
+					<td class="diff">+10.7′</td>
+					<td>$90.000^\circ$</td>
+					<td>$90.000^\circ$</td>
+					<td class="diff">0.0′</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			His declinations are too large, by an amount that grows from 1.6′ at
+			$\lambda = 10^\circ$ to 10.7′ at the solstice. That is the error of his
+			obliquity: from $\sin\delta = \sin\varepsilon\sin\lambda$, an error
+			$\Delta\varepsilon$ changes $\delta$ by $(\cos\varepsilon\sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$, which is the whole $\Delta\varepsilon$
+			= 10.7′ at $\lambda = 90^\circ$.
+		</p>
+
+		<p>
+			His right ascensions are off by at most 2.4′, because $\alpha$ depends on
+			$\varepsilon$ only weakly. The table also shows that $\alpha$ lags behind
+			$\lambda$ in this quadrant, by about 2.5° at $\lambda = 40^\circ$ to
+			$50^\circ$. Page 2.2 shows that this lag
+			is one of the two causes of the equation of time.
+		</p>
+
+		<h3>The right obliquity and nutation</h3>
+
+		<p>
+			The table shows the effect of a wrong obliquity. With the right one, the
+			fixed frames should reproduce the real Sun, apart from one effect left
+			out of the model: <em>nutation</em>, a small oscillation of the Earth's
+			axis, caused mainly by the Moon, with a period of 18.6 years. It changes
+			the obliquity by a few arcseconds, $\varepsilon_\text{true} =
+			\varepsilon_\text{mean} + \Delta\varepsilon$.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			Figure 3 isolates it. For each day of 2026 it takes the reference Sun's
+			ecliptic coordinates and converts them with the mean obliquity of date,
+			as the model does. It compares the result with the reference Sun's own
+			$(\alpha, \delta)$, computed with the true obliquity. Both sides use the
+			same $\lambda$ and $\beta$, so the difference is the nutation alone.
+		</p>
+
+		<!-- Figure 3: the nutation error (static, no controls) -->
+		<figure class="fig">
+			<canvas id="nutation-plot"></canvas>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$, in arcseconds, through 2026</dd>
+						<dt class="c-epicycle">curve</dt>
+						<dd>$\Delta\alpha = \alpha_\text{model} - \alpha_\text{real}$, the same for the right ascension</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>$\pm\Delta\varepsilon$, the nutation in obliquity on each day</dd>
+						<dt>line</dt>
+						<dd>no error</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Follow $\Delta\delta$ through the year: it crosses zero at the equinoxes
+				and touches the dashed lines at the solstices, $-\Delta\varepsilon$ in
+				June and $+\Delta\varepsilon$ in December.
+			</figcaption>
+		</figure>
+
+		<p>
+			The shape follows from section 2. A change $\Delta\varepsilon$ changes
+			the declination by $(\cos\varepsilon\sin\lambda / \cos\delta)\,
+			\Delta\varepsilon$; the model leaves out $\Delta\varepsilon$, so
+			$\Delta\delta = -(\cos\varepsilon\sin\lambda / \cos\delta)\,
+			\Delta\varepsilon$. At the June solstice both equal $-7.66''$.
+		</p>
+
+		<p>
+			In 2026 $\Delta\varepsilon$ lies between 6.68″ and 9.14″, so the
+			declination is off by at most 7.92″ and the right ascension by at most
+			1.87″. The models on the following pages err by arcminutes or more, so the
+			site neglects nutation and uses the mean obliquity.
+		</p>
+
+		<aside class="detour" data-topic="nutation"></aside>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What the fixed frames leave out</h2>
+
+		<p>
+			<strong>The angle between the frames changes.</strong> The obliquity was
+			23.678° in Ptolemy's time and is 23.436° now: 14.5′ less, falling
+			46.8″ a century. Even the obliquity of AD 137, used today, misses the
+			Sun's declination by 14.5′ at the solstices.
+		</p>
+
+		<p>
+			Copernicus, comparing his measurements with Ptolemy's, concluded "that the
+			obliquity of the ecliptic also is variable" (<em>De Revolutionibus</em>
+			II 2 [f. 29r]).
+			<span class="badge" data-origin="copernicus"></span>
+		</p>
+
+		<p>
+			<strong>The origin moves.</strong> Aldebaran's longitude grew by 26.30°
+			since Ptolemy while its latitude stayed within 8′: the vernal point itself
+			moves backwards along the ecliptic. Ptolemy's own longitude for the star is
+			also 71′ short of the real one in his time. Page 2.3 takes up both.
+		</p>
+
+		<p>
+			<strong>The angle θ is still unknown.</strong> In Figure 2, $\theta$ was
+			set with a slider. In the sky it depends on the time: it is the angle the
+			sky has turned since γ last crossed the meridian. To place a star in the
+			observer's sky at a given moment we need $\theta$ at that moment, and
+			page 1.3 shows how to compute it.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Show that the transformation from the equatorial frame to the ecliptic one is
+				$R_x(-\varepsilon)$, and write out $\lambda$ and $\beta$ in terms of
+				$\alpha$ and $\delta$. Then find Aldebaran's $\lambda$ and $\beta$ from
+				$\alpha = 69.3539^\circ$, $\delta = 16.5594^\circ$ (2026.0), with
+				$\varepsilon = 23.4359^\circ$. Check in Figure 1.
+			</p>
+			<details class="hint">
+				<p>
+					A rotation's inverse is its transpose. What is the transpose of
+					$R_x(\varepsilon)$?
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$R_x(\varepsilon)^T = R_x(-\varepsilon)$: transposing swaps the two
+					$\sin\varepsilon$ entries, which is the same as changing the sign of
+					$\varepsilon$. So $\mathbf s_\text{ecl} = R_x(-\varepsilon)\,\mathbf
+					s_\text{eq}$, and multiplying out:
+				</p>
+				$$\begin{aligned}
+					\cos\beta \cos\lambda &= \cos\delta \cos\alpha, \\
+					\cos\beta \sin\lambda &= \cos\varepsilon \cos\delta \sin\alpha + \sin\varepsilon \sin\delta, \\
+					\sin\beta &= \cos\varepsilon \sin\delta - \sin\varepsilon \cos\delta \sin\alpha.
+				\end{aligned}$$
+				<p>
+					These are the formulas of section 2 with $\varepsilon \to
+					-\varepsilon$ and the roles of the two frames swapped.
+				</p>
+				<p>
+					For Aldebaran, $\mathbf s_\text{eq} = (0.3380, 0.8970, 0.2850)$ and
+					$\mathbf s_\text{ecl} = (0.3380, 0.9363, -0.0952)$. So $\sin\beta =
+					-0.09525$, $\beta = -5.465^\circ$, and $\lambda =
+					\operatorname{atan2}(0.93632, 0.33797) = 70.153^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				On 21 May 2026 the Sun reaches $\lambda = 60^\circ$ ($\beta = 0$). Find
+				its declination and right ascension with $\varepsilon = 23.4359^\circ$.
+				Then repeat with Ptolemy's $23^\circ 51' 20''$ and check the result
+				against his values in the table of section 4 (row $60^\circ$).
+			</p>
+			<details class="hint">
+				<p>
+					With $\beta = 0$: $\sin\delta = \sin\varepsilon\sin\lambda$ and $\tan\alpha
+					= \cos\varepsilon\tan\lambda$, with $\alpha$ in the same quadrant as
+					$\lambda$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$\sin\delta = \sin 23.4359^\circ \sin 60^\circ = 0.34444$, so
+					$\delta = 20.147^\circ$. And $\tan\alpha = \cos 23.4359^\circ \tan
+					60^\circ = 1.58917$, so $\alpha = 57.819^\circ$, or $3^\text{h}
+					51^\text{m}$. The right ascension lags the longitude by 2.181°.
+				</p>
+				<p>
+					The reference Sun on that day differs by 5.0″ in $\delta$ and 1.2″
+					in $\alpha$: its latitude is $-1.7''$, and nutation shifts it slightly.
+				</p>
+				<p>
+					With Ptolemy's obliquity, $\delta = 20^\circ 30' 09''$ (20.503°),
+					exactly his table I 15. And $\alpha = 57^\circ 44' 11''$ (57.736°),
+					against his $57^\circ 44'$ in I 16.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				As the sky turns, the ecliptic meets the horizon at an angle $I$ that
+				changes. At Rome ($\varphi = 41.9^\circ$), predict the smallest and the
+				largest $I$, and which point of the ecliptic is rising at each. Check
+				with Figure 2 and its read-out. Then explain why a thin crescent Moon
+				after sunset is easier to see in March than in September.
+			</p>
+			<details class="hint">
+				<p>
+					The angle between two planes is the angle between their poles, so
+					$I = 90^\circ - a_\text{K}$, where $a_\text{K}$ is the altitude of the
+					ecliptic pole. K is a star of declination $90^\circ - \varepsilon$:
+					use page 1.1's highest and lowest altitudes.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					K has $\delta = 90^\circ - \varepsilon$ and $\alpha = 270^\circ$.
+					Its altitude swings between $a_\text{max} = 90^\circ - |\varphi -
+					\delta|$ and $a_\text{min} = |\varphi + \delta| - 90^\circ$, so $I$
+					swings between
+				</p>
+				$$I_\text{min} = 90^\circ - \varphi - \varepsilon = 24.66^\circ, \qquad I_\text{max} = 90^\circ - \varphi + \varepsilon = 71.54^\circ.$$
+				<p>
+					The smallest comes when K is on the upper meridian, $\theta =
+					270^\circ$. The equator's rising point is then at $\alpha = \theta +
+					90^\circ = 0^\circ$: γ is rising. The largest comes at $\theta =
+					90^\circ$, with the autumnal point rising.
+				</p>
+				<p>
+					At sunset at the March equinox (17:22 UT at Rome) the Sun sets at γ,
+					so the opposite point rises: $\theta = 91.3^\circ$ and $I =
+					71.5^\circ$. At the September equinox (sunset 17:06 UT) it is the
+					other way round: $\theta = 271.5^\circ$, $I = 24.7^\circ$.
+				</p>
+				<p>
+					The young Moon is never far from the ecliptic, a few tens of degrees
+					east of the Sun. On a March evening the ecliptic stands steeply over
+					the western horizon, so the crescent is high in a dark sky. In
+					September the ecliptic lies low, and the crescent sets in the
+					twilight.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): I 12 (the
+				arc between the solstices, the ratio 11 : 83, with Toomer's note);
+				I 13–14 (Menelaus' theorem, declinations); I 15 (table of inclination);
+				I 16 (right ascensions); II 10–13 (angles between the ecliptic and the
+				horizon); III 1 (equinox observations); VII 4 and the catalogue
+				(ecliptic coordinates, Aldebaran).</li>
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), II 2
+				[ff. 28v–29r] (the obliquity, measured and variable); II 3–4
+				(declination and right ascension).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.3–2.5, 2.7, 2.9 and
+				2.16. He writes Q for the ecliptic pole (here K) and L for the latitude
+				(here $\varphi$).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 13
+				(transformation of coordinates; azimuth from the south) and 22
+				(obliquity).</li>
+			<li>Star positions: SIMBAD (CDS, Strasbourg), ICRS J2000, retrieved
+				2026-10-17. Precession: J. Vondrák, N. Capitaine, P. Wallace (2011).</li>
+			<li>Every number on this page: <code>tools/numbers/1.2-frames.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>
