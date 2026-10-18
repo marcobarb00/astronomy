@@ -640,18 +640,26 @@ const calendarFigure = {
 			return;
 		}
 
+		// always four lines (data-lines): the night, two places for transits
+		// (the second is empty on all nights but one a year), the altitude
 		const night = this.nights[this.hoverDay];
 		const a = Diurnal.upperCulmination(night.dec, this.phi);
-		const lines = [`\\text{night of ${dayText(night.day)}}`];
+		const transitLine = hours => {
+			if (hours === undefined) {
+				return '';
+			}
 
-		night.inside.forEach(hours => {
 			const dark = hours > night.dusk && hours < night.dawn;
 
-			lines.push(`\\text{transit } ${texClock(hours)},\\quad \\text{sky: ${dark ? 'dark' : 'daylight'}}`);
-		});
+			return `\\text{transit } ${texClock(hours)},\\quad \\text{sky: ${dark ? 'dark' : 'daylight'}}`;
+		};
 
-		lines.push(a > 0 ? `a = ${a.toFixed(1)}^\\circ` : `a = ${a.toFixed(1)}^\\circ\\ \\text{(below the horizon)}`);
-		showLines('transit-readout', lines);
+		showLines('transit-readout', [
+			`\\text{${this.starName}, night of ${dayText(night.day)}}`,
+			transitLine(night.inside[0]),
+			transitLine(night.inside[1]),
+			a > 0 ? `a = ${a.toFixed(1)}^\\circ` : `a = ${a.toFixed(1)}^\\circ\\ \\text{(below the horizon)}`
+		]);
 	},
 
 	draw() {
@@ -783,18 +791,17 @@ const dayLengthFigure = {
 	showReadout() {
 		const day = this.hoverDay ?? JUNE_SOLSTICE_DAY;
 		const sunDay = this.days[day];
-		const lines = [
-			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${sunDay.dec.toFixed(2)}^\\circ,\\quad H_0 = ${sunDay.H0.toFixed(1)}^\\circ`
-		];
+		const rises = sunDay.kind === 'rises';
 
-		if (sunDay.kind === 'rises') {
-			lines.push(`\\text{day } ${texDuration(sunDay.hours)}`);
-			lines.push(`\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}`);
-		} else {
-			lines.push(`\\text{${sunDay.kind}}`);
-		}
-
-		showLines('day-readout', lines);
+		// always three lines (data-lines); polar day and night rewrite the
+		// last two instead of removing one
+		showLines('day-readout', [
+			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${sunDay.dec.toFixed(2)}^\\circ,\\quad H_0 = ${sunDay.H0.toFixed(1)}^\\circ`,
+			`\\text{day } ${texDuration(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
+			rises ?
+				`\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}` :
+				'\\text{no sunrise or sunset}'
+		]);
 	},
 
 	/* The latitude (deg) where the day lasts 'hours' on each date: the day

@@ -139,7 +139,7 @@
 					<div class="presets">
 						<button type="button" class="play" id="wheel-play">▶ play</button>
 					</div>
-					<div class="readout" id="wheel-readout"></div>
+					<div class="readout" id="wheel-readout" data-lines="3"></div>
 				</div>
 			</div>
 			<div class="keys">
@@ -284,6 +284,25 @@
 			12:10:01 CET.
 		</p>
 
+		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/shepherd-gate-clock.jpg" width="800" height="853" loading="lazy"
+				alt="A large round clock face set in a brick wall, numbered in Roman numerals for 24 hours, with 0 at the top and XII at the bottom.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				The Shepherd Gate Clock at the Royal Observatory, Greenwich, installed in
+				1852 and one of the first public clocks driven electrically
+				("galvano-magnetic" on the dial). It shows Greenwich Mean Time, the mean
+				solar time of the meridian of Greenwich, all year, without summer time.
+				Its dial has 24 hours, with 0 (midnight) at the top and XII at the
+				bottom: the hour hand goes round once a day and points straight down at
+				mean noon, when the mean Sun crosses the meridian of Greenwich.
+				<span class="credit">Daderot, 2024,
+					<a href="https://commons.wikimedia.org/wiki/File:Shepherd_Gate_clock_-_Greenwich_Observatory_-_London,_England_-_DSC00991.jpg">Wikimedia Commons</a>,
+					CC0 (public domain).</span>
+			</figcaption>
+		</figure>
+
 		<p>
 			The definitions give the sidereal time from the clock. At Greenwich
 			$H_m = 15^\circ(\text{UT} - 12\,\text{h})$, so $\theta_G = H_m + \alpha_m$.
@@ -347,7 +366,7 @@
 						<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
 					</div>
 					<div class="presets star-choice" id="sid-stars"></div>
-					<div class="readout" id="sid-readout"></div>
+					<div class="readout" id="sid-readout" data-lines="5"></div>
 				</div>
 			</div>
 			<div class="keys">
@@ -526,7 +545,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="readout" id="transit-readout"></div>
+			<div class="readout" id="transit-readout" data-lines="4"></div>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -667,7 +686,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="readout" id="day-readout"></div>
+			<div class="readout" id="day-readout" data-lines="3"></div>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (a)</p>
@@ -813,7 +832,7 @@
 						<button type="button" data-target="test-lat" data-value="65">65° N</button>
 						<button type="button" data-target="test-lat" data-value="-33.9">Sydney</button>
 					</div>
-					<div class="readout" id="test-readout"></div>
+					<div class="readout" id="test-readout" data-lines="5"></div>
 				</div>
 			</div>
 			<div class="keys">

@@ -589,6 +589,21 @@ button.small:hover {
 	margin-top: 8px;
 }
 
+/* Every line of a read-out has the same height, whatever its sub- and
+   superscripts, and empty lines keep theirs: with the fixed number of lines
+   of showLines (data-lines), the read-out never changes size. */
+.readout .eq {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 2.6rem;
+	margin: 0;
+}
+
+.readout .eq .katex-display {
+	margin: 0;
+}
+
 
 /* Figure key: one line per element of a figure, instead of a paragraph
    of explanations (CLAUDE.md). A figure may have several keys ("In the
@@ -877,12 +892,13 @@ a.detour:hover {
 	margin-top: 6px;
 }
 
-.errorcurve-note:empty {
-	display: none;
-}
-
+/* The read-out under the pointer has a fixed height of three lines,
+   whatever it shows, so the widget keeps its size (CLAUDE.md); the legend
+   holds a hidden place for each kept ghost (errorcurve.js). */
 .errorcurve-readout {
-	min-height: 1.6em;
+	height: 4.8em;
+	line-height: 1.6;
+	overflow-y: auto;
 	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 6px;
