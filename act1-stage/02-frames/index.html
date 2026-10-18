@@ -260,7 +260,7 @@
 
 		<p>
 			A rotation keeps dot products, hence angles: two stars are as far apart
-			in one frame as in another. The axes turn; the point does not.
+			in one frame as in another. Changing frame moves the axes, not the stars.
 		</p>
 
 		<h3>Ecliptic and equator</h3>
@@ -493,7 +493,7 @@
 			</figcaption>
 		</figure>
 
-		<h3>Spherical trigonometry for free</h3>
+		<h3>Spherical trigonometry from the matrices</h3>
 
 		<p>
 			The pole P, the zenith Z and the star S make a spherical triangle. Its
@@ -607,24 +607,43 @@
 		<h3>Ptolemy's tables</h3>
 
 		<p>
-			Ptolemy's <em>table of inclination</em> (<em>Almagest</em> I 15) gives the
-			declination of every degree of the ecliptic, computed with his
-			$\varepsilon = 23^\circ 51' 20''$ by Menelaus' theorem. The formula
-			$\sin\delta = \sin\varepsilon\sin\lambda$ reproduces all 90 entries: half
-			of them within 1″, nine in ten within 3″.
-		</p>
-
-		<p>
-			The largest gap, 9″ at 27°, is an entry Toomer suspects was miscopied
-			(57″ for 47″).
-			For $\lambda = 60^\circ$ both give $20^\circ 30' 09''$ (20.503°).
-		</p>
-
-		<p>
-			His right ascensions in steps of 10° (I 16) agree with
-			$\tan\alpha = \cos\varepsilon\tan\lambda$ within 0.35′; he rounds to the
-			minute. The same geometry, by a different road.
+			Ptolemy needed the Sun's declination for every point of the ecliptic: it
+			gives the noon altitude of the Sun, the length of the day and the
+			shadow of a gnomon on any date (<em>Almagest</em> II). He computed it once
+			and for all and printed it as a table, the <em>table of inclination</em>
+			(I 15): the declination of each degree of longitude from 1° to 90°.
 			<span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			He had no sines and no vectors. He worked with chords and with
+			Menelaus' theorem, a relation between the arcs of great circles that
+			cross each other (I 13–14). It is a different method from ours, so his
+			table is an independent check of the formula $\sin\delta =
+			\sin\varepsilon\sin\lambda$ derived above.
+		</p>
+
+		<p>
+			Computed with his own obliquity, $\varepsilon = 23^\circ 51' 20''$, the
+			formula reproduces his 90 entries: half of them within 1″, nine in ten
+			within 3″. For $\lambda = 60^\circ$ both give $20^\circ 30' 09''$
+			(20.503°). The largest difference, 9″ at 27°, is an entry that Toomer
+			suspects was miscopied (57″ written for 47″).
+		</p>
+
+		<p>
+			He did the same for the right ascension (I 16), in steps of 10°. There it
+			is the arc of the equator that crosses the meridian together with each
+			10° of the ecliptic. His values agree with $\tan\alpha =
+			\cos\varepsilon\tan\lambda$ within 0.35′, because he rounds them to
+			the minute.
+		</p>
+
+		<p>
+			So Ptolemy's computation was accurate to a few seconds of arc. If his
+			table misplaces the real Sun, the fault is not in the geometry but in
+			the one number he fed into it, the obliquity, which section 3 found
+			10.7′ too large. The second test measures what that costs.
 		</p>
 
 		<!-- Figure 3: the Sun on the equator's grid -->
@@ -825,7 +844,7 @@
 		</p>
 
 		<p>
-			<strong>The turn is free.</strong> In Figure 2, $\theta$ was a slider. In
+			<strong>The angle θ is still unknown.</strong> In Figure 2, $\theta$ was a slider. In
 			the sky it is set by the clock: the angle the sky has turned since γ last
 			crossed the meridian. To put a star in the observer's sky at a given
 			moment we need that angle, and page 1.3 finds it.
