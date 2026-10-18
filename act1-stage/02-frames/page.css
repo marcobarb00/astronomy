@@ -5,8 +5,7 @@
    TABLE OF CONTENTS
 	 1. Controls
 	 2. The tables of the prose
-	 3. Figure 3: two panels with their controls underneath
-	 4. Phone width
+	 3. Phone width
    ========================================================================== */
 
 
@@ -33,7 +32,8 @@ button.play {
 
 /* ==========================================================================
    2. THE TABLES OF THE PROSE
-   The observation and the three frames: narrow tables, first column left.
+   The observation, the three frames and Ptolemy's tables against the real
+   Sun: narrow tables, first column left.
    ========================================================================== */
 
 table.prose-table {
@@ -46,42 +46,18 @@ table.prose-table td:first-child {
 	text-align: left;
 }
 
-
-/* ==========================================================================
-   3. FIGURE 3: TWO PANELS WITH THEIR CONTROLS UNDERNEATH
-   ========================================================================== */
-
-.panels,
-.panel-controls {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-	gap: 20px;
-	align-items: start;
-}
-
-.panel-controls {
-	margin-top: 10px;
-}
-
-/* "(a) declination" above each panel. */
-.panel-title {
-	margin: 0 0 4px;
-	color: var(--muted);
-	font-size: .9rem;
-	font-weight: 600;
+/* In a two-row header the second row starts under a spanning cell, so its
+   first cell stays centred over its column. */
+table.prose-table thead tr + tr th:first-child {
+	text-align: center;
 }
 
 
 /* ==========================================================================
-   4. PHONE WIDTH
+   3. PHONE WIDTH
    ========================================================================== */
 
 @media (max-width: 860px) {
-	.panels,
-	.panel-controls {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
 	/* "obliquity ε" needs a little more than the shared 74px label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);

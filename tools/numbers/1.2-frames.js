@@ -297,6 +297,28 @@ Frames.ptolemyRightAscensions().slice(1).forEach((cumulative, i) => {
 });
 console.log(`largest difference ${f(worstRA * 60, 2)}' (Ptolemy rounds to minutes)`);
 
+title('Test 1c: the table on the page, Ptolemy against the real Sun of AD 137');
+
+/* Every 10° of longitude: Ptolemy's declination (I 15) and right ascension
+   (I 16), and the real Sun's when it stood at that longitude in AD 137
+   (apparent, of date). Differences Ptolemy - real in arcminutes. */
+const ptolemyRA = Frames.ptolemyRightAscensions();
+let jdGuess137 = Time.julianDay(137, 3, 21);
+
+console.log('lambda | Ptolemy delta        | real delta | d delta | Ptolemy alpha     | real alpha | d alpha');
+
+for (let lon = 10; lon <= 90; lon += 10) {
+	const jd = sunAtLongitude(lon, jdGuess137);
+	const real = realSun(jd);
+	const ptDec = Frames.PTOLEMY_DECLINATIONS[lon - 1];
+	const ptRA = ptolemyRA[lon / 10];
+
+	jdGuess137 = jd + 10;
+	console.log(`${String(lon).padStart(6)} | ${toDms(ptDec)} (${f(ptDec, 3)}) | ${f(real.dec, 3).padStart(10)} |` +
+		` ${((ptDec - real.dec) * 60).toFixed(1).padStart(7)}' | ${toDms(ptRA).slice(0, -3)} (${f(ptRA, 3)}) |` +
+		` ${f(real.ra, 3).padStart(10)} | ${((ptRA - real.ra) * 60).toFixed(1).padStart(6)}'  [${dateText(jd)}]`);
+}
+
 title('Test 2: frames with a fixed obliquity against the real Sun');
 
 /* Largest |d delta| and |d alpha| (deg) over one year starting 1 January
@@ -357,26 +379,10 @@ for (let year = YEAR_SLIDER_TEST[0]; year <= YEAR_SLIDER_TEST[1]; year += 100) {
 	});
 }
 
-console.log(`Figure 4 (eps ${EPS_SLIDER_TEST.join('..')}, years ${YEAR_SLIDER_TEST.join('..')}): ` +
+console.log(`Figure 3 (eps ${EPS_SLIDER_TEST.join('..')}, years ${YEAR_SLIDER_TEST.join('..')}): ` +
 	`max |d delta| = ${arcmin(scaleDec, 1)}, max |d alpha| = ${arcmin(scaleRA, 1)}`);
 console.log(`  eps range of the real sky over those years: ${f(epsOfYear(YEAR_SLIDER_TEST[1]), 4)} .. ${f(epsOfYear(YEAR_SLIDER_TEST[0]), 4)}`);
 
-[23.44, 30, 40, 90].forEach(eps => {
-	let worstReduction = 0;
-	let at = 0;
-
-	for (let lon = 0; lon <= 90; lon += 0.01) {
-		const r = Math.abs(Frames.reduction(lon, eps));
-
-		if (r > worstReduction) {
-			worstReduction = r;
-			at = lon;
-		}
-	}
-
-	console.log(`Figure 3: eps = ${eps}: largest |alpha - lambda| = ${f(worstReduction, 3)} at lambda = ${f(at, 1)}` +
-		` (closed form asin(tan^2(e/2)) = ${f(asin(Math.tan(eps * Math.PI / 360) ** 2), 3)})`);
-});
 
 
 /* ==========================================================================

@@ -83,16 +83,6 @@ const Frames = (function () {
 		[9, 10], [9, 15], [9, 25], [9, 40], [9, 58], [10, 16], [10, 34], [10, 47], [10, 55]
 	].map(([d, m]) => fromDms(d, m));
 
-	/* Ptolemy's declination of an integer longitude 0..360 (deg), using the
-	   symmetries of the ecliptic: delta(180 - l) = delta(l), delta(-l) = -delta(l). */
-	function ptolemyDeclination(lon) {
-		const l = norm360(Math.round(lon));
-		const folded = l <= 90 ? l : (l <= 270 ? 180 - l : l - 360);
-		const magnitude = folded === 0 ? 0 : PTOLEMY_DECLINATIONS[Math.abs(folded) - 1];
-
-		return Math.sign(folded) * magnitude;
-	}
-
 	/* Ptolemy's right ascensions of lambda = 0°, 10°, ..., 90° (deg). */
 	function ptolemyRightAscensions() {
 		let sum = 0;
@@ -238,7 +228,6 @@ const Frames = (function () {
 		RATIO_11_83_OBLIQUITY,
 		PTOLEMY_DECLINATIONS,
 		PTOLEMY_RIGHT_ASCENSION_STEPS,
-		ptolemyDeclination,
 		ptolemyRightAscensions,
 		eclipticToEquatorialMatrix,
 		equatorialToEclipticMatrix,

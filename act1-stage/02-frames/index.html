@@ -616,131 +616,163 @@
 			Ptolemy needed the Sun's declination for every point of the ecliptic: it
 			gives the noon altitude of the Sun, the length of the day and the
 			shadow of a gnomon on any date (<em>Almagest</em> II). He computed it once
-			and for all and printed it as a table, the <em>table of inclination</em>
-			(I 15): the declination of each degree of longitude from 1° to 90°.
+			and printed it as a table, the <em>table of inclination</em> (I 15): the
+			declination of each degree of longitude from 1° to 90°. A second table
+			(I 16) gives the right ascension every 10°.
 			<span class="badge" data-origin="ptolemy"></span>
 		</p>
 
 		<p>
 			He had no sines and no vectors. He worked with chords and with
 			Menelaus' theorem, a relation between the arcs of great circles that
-			cross each other (I 13–14). It is a different method from ours, so his
-			table is an independent check of the formula $\sin\delta =
-			\sin\varepsilon\sin\lambda$ derived above.
+			cross each other (I 13–14). His tables are therefore an independent
+			computation of the formulas derived above, made with his obliquity
+			$\varepsilon = 23^\circ 51' 20''$.
 		</p>
 
 		<p>
-			Computed with his own obliquity, $\varepsilon = 23^\circ 51' 20''$, the
-			formula reproduces his 90 entries: half of them within 1″, nine in ten
-			within 3″. For $\lambda = 60^\circ$ both give $20^\circ 30' 09''$
-			(20.503°). The largest difference, 9″ at 27°, is an entry that Toomer
-			suspects was miscopied (57″ written for 47″).
+			The formulas, computed with the same $\varepsilon$, reproduce his 90
+			declinations: half of them within 1″, nine in ten within 3″. The largest
+			difference, 9″ at 27°, is an entry that Toomer suspects was miscopied
+			(57″ written for 47″). His right ascensions agree within 0.35′, because he
+			rounds them to the minute. Any error in his tables therefore comes from
+			the obliquity he put into them, not from the computation.
 		</p>
 
 		<p>
-			He did the same for the right ascension (I 16), in steps of 10°. There it
-			is the arc of the equator that crosses the meridian together with each
-			10° of the ecliptic. His values agree with $\tan\alpha =
-			\cos\varepsilon\tan\lambda$ within 0.35′, because he rounds them to
-			the minute.
+			The table below compares his values with the real Sun of his own time:
+			the declination and right ascension of the reference Sun on the day of
+			AD 137 when it stood at each longitude.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th rowspan="2">$\lambda$</th>
+					<th colspan="3">declination $\delta$</th>
+					<th colspan="3">right ascension $\alpha$</th>
+				</tr>
+				<tr>
+					<th>Ptolemy (I 15)</th>
+					<th>real, AD 137</th>
+					<th>Ptolemy − real</th>
+					<th>Ptolemy (I 16)</th>
+					<th>real, AD 137</th>
+					<th>Ptolemy − real</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$10^\circ$</td>
+					<td>$4^\circ 01' 38''$ (4.027°)</td>
+					<td>4.000°</td>
+					<td>+1.6′</td>
+					<td>$9^\circ 10'$ (9.167°)</td>
+					<td>9.173°</td>
+					<td>−0.4′</td>
+				</tr>
+				<tr>
+					<td>$20^\circ$</td>
+					<td>$7^\circ 57' 03''$ (7.951°)</td>
+					<td>7.895°</td>
+					<td>+3.3′</td>
+					<td>$18^\circ 25'$ (18.417°)</td>
+					<td>18.434°</td>
+					<td>−1.1′</td>
+				</tr>
+				<tr>
+					<td>$30^\circ$</td>
+					<td>$11^\circ 39' 59''$ (11.666°)</td>
+					<td>11.584°</td>
+					<td>+4.9′</td>
+					<td>$27^\circ 50'$ (27.833°)</td>
+					<td>27.867°</td>
+					<td>−2.0′</td>
+				</tr>
+				<tr>
+					<td>$40^\circ$</td>
+					<td>$15^\circ 04' 04''$ (15.068°)</td>
+					<td>14.960°</td>
+					<td>+6.4′</td>
+					<td>$37^\circ 30'$ (37.500°)</td>
+					<td>37.541°</td>
+					<td>−2.4′</td>
+				</tr>
+				<tr>
+					<td>$50^\circ$</td>
+					<td>$18^\circ 02' 53''$ (18.048°)</td>
+					<td>17.917°</td>
+					<td>+7.8′</td>
+					<td>$47^\circ 28'$ (47.467°)</td>
+					<td>47.503°</td>
+					<td>−2.2′</td>
+				</tr>
+				<tr>
+					<td>$60^\circ$</td>
+					<td>$20^\circ 30' 09''$ (20.503°)</td>
+					<td>20.353°</td>
+					<td>+9.0′</td>
+					<td>$57^\circ 44'$ (57.733°)</td>
+					<td>57.772°</td>
+					<td>−2.3′</td>
+				</tr>
+				<tr>
+					<td>$70^\circ$</td>
+					<td>$22^\circ 20' 11''$ (22.336°)</td>
+					<td>22.171°</td>
+					<td>+9.9′</td>
+					<td>$68^\circ 18'$ (68.300°)</td>
+					<td>68.326°</td>
+					<td>−1.5′</td>
+				</tr>
+				<tr>
+					<td>$80^\circ$</td>
+					<td>$23^\circ 28' 16''$ (23.471°)</td>
+					<td>23.297°</td>
+					<td>+10.5′</td>
+					<td>$79^\circ 05'$ (79.083°)</td>
+					<td>79.102°</td>
+					<td>−1.1′</td>
+				</tr>
+				<tr>
+					<td>$90^\circ$</td>
+					<td>$23^\circ 51' 20''$ (23.856°)</td>
+					<td>23.678°</td>
+					<td>+10.7′</td>
+					<td>$90^\circ 00'$ (90.000°)</td>
+					<td>90.000°</td>
+					<td>0.0′</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			His declinations are too large, by an amount that grows from 1.6′ at
+			$\lambda = 10^\circ$ to 10.7′ at the solstice. That is the error of his
+			obliquity: from $\sin\delta = \sin\varepsilon\sin\lambda$, an error
+			$\Delta\varepsilon$ changes $\delta$ by $(\cos\varepsilon\sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$, which is the whole $\Delta\varepsilon$
+			= 10.7′ at $\lambda = 90^\circ$.
 		</p>
 
 		<p>
-			So Ptolemy's computation was accurate to a few seconds of arc. If his
-			table misplaces the real Sun, the fault is not in the geometry but in
-			the one number he fed into it, the obliquity, which section 3 found
-			10.7′ too large. The second test measures what that costs.
-		</p>
-
-		<!-- Figure 3: the Sun on the equator's grid -->
-		<figure class="fig">
-			<div class="panels">
-				<div>
-					<p class="panel-title">(a) declination of the ecliptic</p>
-					<canvas id="sun-dec"></canvas>
-				</div>
-				<div>
-					<p class="panel-title">(b) right ascension minus longitude</p>
-					<canvas id="sun-red"></canvas>
-				</div>
-			</div>
-			<div class="panel-controls">
-				<div>
-					<div class="ctl">
-						<label for="sun-eps">obliquity ε</label>
-						<input id="sun-eps" type="range" min="0" max="30" step="0.0001" value="23.4359">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" id="sun-today" data-target="sun-eps" data-value="23.4359">today</button>
-						<button type="button" data-target="sun-eps" data-value="23.8556">Ptolemy</button>
-					</div>
-				</div>
-				<div>
-					<div class="ctl stepper">
-						<label for="sun-lon">longitude λ</label>
-						<input id="sun-lon" type="range" min="0" max="360" step="1" value="60">
-						<output></output>
-						<span class="stepper-buttons">
-							<button type="button" class="stepper-btn" data-target="sun-lon" data-step="-1"
-								aria-label="previous degree">‹ −1°</button>
-							<button type="button" class="stepper-btn" data-target="sun-lon" data-step="1"
-								aria-label="next degree">+1° ›</button>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div class="readout" id="sun-readout"></div>
-			<div class="keys">
-				<div>
-					<p class="key-title">In both panels</p>
-					<dl class="key">
-						<dt class="c-sun">curve</dt>
-						<dd>(a) $\delta$ and (b) $\alpha - \lambda$ of the point of the ecliptic at longitude $\lambda$, for the chosen $\varepsilon$</dd>
-						<dt>dots</dt>
-						<dd>Ptolemy's tables: (a) I 15, (b) I 16, every 10°, carried to the other quadrants by the ecliptic's symmetry</dd>
-						<dt class="c-planet">dot</dt>
-						<dd>the chosen longitude</dd>
-						<dt class="c-earth">line</dt>
-						<dd>in (a), the equator, $\delta = 0$</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>$\delta, \alpha$</dt>
-						<dd>declination and right ascension of that point</dd>
-						<dt>$\alpha - \lambda$</dt>
-						<dd>how far the right ascension runs ahead of (+) or behind (−) the longitude</dd>
-						<dt>Ptolemy</dt>
-						<dd>his table's value at that longitude (I 16 only every 10° of the first quadrant)</dd>
-					</dl>
-				</div>
-			</div>
-			<figcaption>
-				Where the Sun stands on the equator's grid as it moves along the
-				ecliptic. Ptolemy's dots sit on the curves: his Menelaus computation and
-				the matrix are the same geometry. His larger obliquity shifts them by
-				at most 25′, too little to see here (Figure 4 magnifies it). Notice in
-				(b) that $\alpha$ lags behind $\lambda$ in the first quadrant and runs
-				ahead in the second, by up to 2.47° today.
-			</figcaption>
-		</figure>
-
-		<p>
-			Panel (b) is used again on page 2.2. The Sun moves along the ecliptic,
-			but time is measured by the rotation of the equator. Even if the Sun moved
-			uniformly in $\lambda$, its $\alpha$ would not grow uniformly. This is one
-			of the two reasons why sundials and clocks disagree.
+			His right ascensions are off by at most 2.4′, because $\alpha$ depends on
+			$\varepsilon$ only weakly. The table also shows that $\alpha$ lags behind
+			$\lambda$ in this quadrant, by about 2.5° at $\lambda = 40^\circ$ to
+			$50^\circ$. Page 2.2 shows that this lag
+			is one of the two causes of the equation of time.
 		</p>
 
 		<h3>Fixed frames against the real Sun</h3>
 
 		<p>
-			The second test uses the real sky. Take the reference Sun's longitude on
-			each day of a year,
-			turn it into $(\alpha, \delta)$ with a fixed $\varepsilon$, and compare
-			with the reference Sun's own $(\alpha, \delta)$.
+			The table checks one obliquity in one year, at nine longitudes. Figure 3
+			makes the same comparison for every day of a year, for any year from
+			300 BC to AD 2100 and any obliquity: it takes the reference Sun's
+			longitude, turns it into $(\alpha, \delta)$ with a fixed $\varepsilon$,
+			and compares the result with the reference Sun's own $(\alpha, \delta)$.
 		</p>
 
 		<p>
@@ -751,7 +783,7 @@
 			the real Sun; what matters is the value of $\varepsilon$.
 		</p>
 
-		<!-- Figure 4: fixed frames against the real Sun -->
+		<!-- Figure 3: fixed frames against the real Sun -->
 		<figure class="fig">
 			<div class="fig-row">
 				<div>
@@ -905,8 +937,8 @@
 			<p>
 				On 21 May 2026 the Sun reaches $\lambda = 60^\circ$ ($\beta = 0$). Find
 				its declination and right ascension with $\varepsilon = 23.4359^\circ$.
-				Then repeat with Ptolemy's $23^\circ 51' 20''$ and compare with his tables.
-				Check both in Figure 3.
+				Then repeat with Ptolemy's $23^\circ 51' 20''$ and check the result
+				against his values in the table of section 4 (row $60^\circ$).
 			</p>
 			<details class="hint">
 				<p>

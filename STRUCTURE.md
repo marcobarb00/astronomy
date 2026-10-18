@@ -96,8 +96,8 @@ The language needed to state any prediction.
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** one fixed direction shown in two frames at once; the axes
   rotate, the point does not (ecliptic and equator; equator and horizon, both
-  drawn in the equatorial frame). The Sun's $\delta$ and $\alpha - \lambda$
-  against $\lambda$, with Ptolemy's tables.
+  drawn in the equatorial frame). A table of Ptolemy's declinations and right
+  ascensions against the real Sun of AD 137.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
   $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
 - **Test:** the formulas against Ptolemy's tables of declination and right
@@ -167,8 +167,9 @@ The first anomaly and the simplest complete model.
 - **Figures:** the two components and their sum over a year; the analemma
   drawn as the Sun's position at mean noon.
 - **When building:** the obliquity part is the reduction to the equator,
-  $\alpha - \lambda$, already plotted in Figure 3(b) of page 1.2
-  (`Frames.reduction` in `shared/models/frames.js`).
+  $\alpha - \lambda$, computed by `Frames.reduction` in
+  `shared/models/frames.js` (page 1.2 notes the lag in its table of Ptolemy's
+  values).
 - **Exercises:** compute the equation of time on a given date and split it
   into its two parts; find the dates when it vanishes.
 - **Hands over:** the orientation of the whole picture is not fixed either.
