@@ -8,6 +8,7 @@ shared code in Node, and prints the numbers quoted on the page.
 |---|---|
 | `1.1-turning-sky.js` | 1.1 · The turning sky |
 | `1.2-frames.js` | 1.2 · Frames |
+| `1.3-clocks.js` | 1.3 · Clocks |
 
 Run from the repository root, e.g.
 

@@ -44,7 +44,7 @@ const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 class Plot2D {
 
 	/* options: x, y ([min, max]), xLabel, yLabel, xFormat, yFormat,
-	   xTicks (function (min, max, width) -> [{ value, label }]),
+	   xTicks, yTicks (function (min, max, count) -> [{ value, label }]),
 	   aspect (height / width), minHeight, maxHeight, onDraw(plot),
 	   onHover(xValue or null) to enable the hover cursor. */
 	constructor(canvas, options = {}) {
@@ -57,6 +57,7 @@ class Plot2D {
 		this.xFormat = options.xFormat ?? formatTick;
 		this.yFormat = options.yFormat ?? formatTick;
 		this.xTicks = options.xTicks ?? null;
+		this.yTicks = options.yTicks ?? null;
 		this.aspect = options.aspect ?? 0.5;
 		this.minHeight = options.minHeight ?? 220;
 		this.maxHeight = options.maxHeight ?? 420;
@@ -189,6 +190,10 @@ class Plot2D {
 
 	ticksY() {
 		const count = Math.max(4, Math.floor((this.box.bottom - this.box.top) / 45));
+
+		if (this.yTicks) {
+			return this.yTicks(this.y[0], this.y[1], count);
+		}
 
 		return niceTicks(this.y[0], this.y[1], count).map(value => {
 			return { value, label: this.yFormat(value) };

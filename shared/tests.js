@@ -4,8 +4,8 @@
    examples of J. Meeus, Astronomical Algorithms (2nd ed., 1998), the SOFA /
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
-   pass / fail with the error. Also checks stars.js and the model of the
-   turning sky (models/diurnal.js).
+   pass / fail with the error. Also checks stars.js and the models of
+   pages 1.1 to 1.3 (models/diurnal.js, frames.js, mean-sun.js, clock.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -20,7 +20,8 @@
 	10. Ephemeris: JPL Horizons spot checks (DE441)
 	11. Internal consistency
 	12. Refraction, stars, the turning sky, frames (Meeus ch. 13, 16, 21; pages 1.1, 1.2)
-	13. Run
+	13. The clocks and the mean Sun (Meeus ch. 12, 25; Almagest III 7; page 1.3)
+	14. Run
    ========================================================================== */
 
 
@@ -1077,7 +1078,113 @@ function testFrames() {
 
 
 /* ==========================================================================
-   13. RUN
+   13. THE CLOCKS AND THE MEAN SUN (page 1.3)
+   ========================================================================== */
+
+function testClock() {
+	group('The clocks · models/mean-sun.js, models/clock.js (page 1.3)');
+
+	// The linear sidereal clock against Meeus' worked example (the T^2 and
+	// T^3 terms he includes are a few milliseconds in 1987).
+	check({
+		name: 'Linear mean sidereal time, 1987 Apr 10, 0h UT',
+		source: 'Ex. 12.a',
+		expected: 13 + 10 / 60 + 46.3668 / 3600,
+		computed: Clock.gmst(Time.julianDay(1987, 4, 10)) / 15,
+		tol: 0.01,
+		unit: 's',
+		scale: 3600,
+		show: showHours
+	});
+
+	// The clock's rate is 360° plus the mean Sun's daily motion; the two
+	// published values differ by 2e-5" a day.
+	check({
+		name: 'Sidereal rate − 360° = mean Sun\'s n',
+		source: 'Meeus 12.4, 25.2',
+		expected: MeanSun.MODERN.n,
+		computed: Clock.RATE - 360,
+		tol: 1e-4,          // 0.8" a century: UT and TT days, rounding
+		unit: '″/day',
+		scale: ARCSEC_PER_DEG,
+		show: x => x.toFixed(10) + '°'
+	});
+
+	check({
+		name: 'Tropical year 360° / n',
+		source: 'Laskar (1986), J2000',
+		expected: 365.2421897,
+		computed: MeanSun.yearLength(),
+		tol: 1,
+		unit: 's',
+		scale: SECONDS_PER_DAY,
+		show: x => x.toFixed(6) + ' d'
+	});
+
+	// Every transit returned has H = 0, at several longitudes and dates.
+	let worstTransit = 0;
+	let count = 0;
+
+	for (let day = 0; day < 365; day += 7) {
+		for (let lon = -180; lon < 180; lon += 37) {
+			[0, 101.3, 279.5].forEach(ra => {
+				Clock.transits(ra, Time.julianDay(2026, 1, 1) + day, lon).forEach(jd => {
+					worstTransit = Math.max(worstTransit, Math.abs(Clock.hourAngle(jd, lon, ra)));
+					count++;
+				});
+			});
+		}
+	}
+
+	check({
+		name: `H = 0 at ${count} transits`,
+		source: 'page 1.3',
+		expected: 0,
+		computed: worstTransit,
+		tol: 0.001,
+		unit: 's',
+		scale: 240,
+		show: x => x.toExponential(1) + '°'
+	});
+
+	// With the geometric horizon, the equator has 12 h days all year.
+	let worstEquator = 0;
+
+	for (let day = 0; day < 365; day += 5) {
+		const sunDay = Clock.sunDay(Time.julianDay(2026, 1, 1) + day, 0, 0, 0);
+
+		worstEquator = Math.max(worstEquator, Math.abs(sunDay.hours - 12));
+	}
+
+	check({
+		name: 'Day at the equator, h₀ = 0',
+		source: 'page 1.1',
+		expected: 0,
+		computed: worstEquator,
+		tol: 1e-6,
+		unit: 's',
+		scale: 3600,
+		show: x => x.toExponential(1) + ' h'
+	});
+
+	// Almagest III 7: from Nabonassar 1, Thoth 1, noon (-746 Feb 26) to the
+	// autumn equinox of Hadrian 17, Athyr 7, 2 h after noon (132 Sep 25),
+	// 879 Egyptian years of 365 days, 66 days and 2 hours.
+	check({
+		name: 'Nabonassar to the equinox of AD 132',
+		source: 'Almagest III 7',
+		expected: 879 * 365 + 66 + 2 / 24,
+		computed: Time.julianDay(132, 9, 25.5 + 2 / 24) - Time.julianDay(-746, 2, 26.5),
+		tol: 1,
+		unit: 's',
+		scale: SECONDS_PER_DAY,
+		show: x => x.toFixed(4) + ' d'
+	});
+}
+
+
+/* ==========================================================================
+   14. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1094,5 +1201,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testStarPrecession();
 	testDiurnal();
 	testFrames();
+	testClock();
 	render();
 });
