@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PLATE PREVIEWS
+     Three blue plates (STYLE.md §7) proposed for Act I, each shown where it
+     would go, to decide whether it earns its place. Not part of the course:
+     not in the site map, not linked. Drawn by plates.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Plate previews · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme, then the plates -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="plates.css">
+
+	<!-- Shared code, the plate stars, the plates -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/clock.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="plate-stars.js"></script>
+	<script defer src="plates.js"></script>
+</head>
+
+<body>
+<div class="page">
+
+	<!-- Page header written by hand (the preview is not in the site map) -->
+	<header class="page-head">
+		<p class="act-line">Design · preview</p>
+		<h1>Three blue plates for Act I</h1>
+		<p class="subtitle">Each one where it would go, before deciding</p>
+	</header>
+
+	<article>
+
+		<p class="lead">
+			A blue plate is a static chart of the sky in the style of a cyanotype
+			star atlas (STYLE.md §7). Below, each proposed plate is shown after the
+			paragraph of its page that it would follow, quoted in grey. The pages
+			themselves are unchanged.
+		</p>
+
+		<!-- ======================== A. PAGE 1.1 ======================== -->
+		<h2 id="polar"><span class="step">Page 1.1 · Observation</span>The sky around the pole</h2>
+
+		<p class="preview-note">
+			<strong>Where:</strong> after the paragraph on latitude, before the
+			present Figure 1 (the observer's sky). <strong>What it adds:</strong>
+			the real stars around the pole, with Ptolemy's circle of stars that
+			never set at Rome. <strong>Cost:</strong> Figures 1 to 4 become 2 to 5,
+			so the page's own references to them change number.
+		</p>
+
+		<p class="context">
+			The part of the sky that can be seen therefore depends on the latitude.
+			Travelling north, "the more of the southern stars disappear and the more
+			of the northern stars appear" (<em>Almagest</em> I 4). Canopus, the
+			second brightest star, can be seen from Rhodes but never from Rome.
+		</p>
+
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-polar"></div>
+				<div class="side">
+					<div class="plate-label">Figure 1</div>
+					<div class="plate-title">The sky around the pole</div>
+					<p>
+						The northern sky of 2026 around the celestial pole, as seen from
+						the ground looking up. In one sidereal day every star turns once
+						about the centre, anticlockwise in this view.
+					</p>
+					<p>
+						<span class="hl">Dashed circle:</span> declination 48.1°, that is
+						$90^\circ - \varphi$ for Rome. The stars inside it never set at
+						Rome; Capella, just outside, dips below the horizon.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole, at the centre; Polaris is 0.63° from it</dd>
+						<dt>ring</dt>
+						<dd>right ascension in hours, increasing clockwise as seen from the ground</dd>
+						<dt>circles</dt>
+						<dd>declination every 10°, from +30° to +80° (labelled +40°, +60°, +80°); the chart ends at +25°</dd>
+						<dt>radial lines</dt>
+						<dd>right ascension every 2 hours</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
+						<dt>star lines</dt>
+						<dd>the usual figures of five constellations, named in capitals</dd>
+						<dt>stipple</dt>
+						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
+						<dt>dashed circle</dt>
+						<dd>declination 48.1° (highlighted): inside it, the stars that never set at Rome</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- ======================== B. PAGE 1.2 ======================== -->
+		<h2 id="zodiac"><span class="step">Page 1.2 · Observation</span>The zodiac around Taurus</h2>
+
+		<p class="preview-note">
+			<strong>Where:</strong> after the table of Aldebaran's three sets of
+			coordinates. <strong>What it adds:</strong> Aldebaran on the real sky,
+			with the equator's grid and the ecliptic, the two circles of the table.
+			<strong>Cost:</strong> Figures 1 to 3 become 2 to 4.
+		</p>
+
+		<p class="context">
+			Take Aldebaran, the red eye of the Bull, seen from Rome on 1 January 2026
+			at 20:00 local time (19:00 UT). Its position can be given in three
+			coordinate systems, depending on what it is measured against: [the table
+			follows]
+		</p>
+
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-zodiac"></div>
+				<div class="side">
+					<div class="plate-label">Figure 1</div>
+					<div class="plate-title">The zodiac around Taurus</div>
+					<p>
+						The sky of 2026 around Aldebaran, as seen looking south: north up,
+						east to the left. The grid is the equatorial one.
+					</p>
+					<p>
+						<span class="hl">Ecliptic:</span> the Sun's yearly path. Aldebaran
+						is 16.6° north of the equator ($\delta = 16.559^\circ$) but 5.5°
+						south of the ecliptic ($\beta = -5.465^\circ$), the values of the
+						table.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>grid</dt>
+						<dd>right ascension every hour, declination every 10°</dd>
+						<dt>border</dt>
+						<dd>right ascension every 30 minutes (top and bottom), declination every 5° (sides)</dd>
+						<dt>equator</dt>
+						<dd>the celestial equator, declination 0°</dd>
+						<dt>ecliptic</dt>
+						<dd>the Sun's yearly path in 2026 (highlighted)</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
+						<dt>star lines</dt>
+						<dd>the usual figures of Taurus, Aries and Orion, named in capitals</dd>
+						<dt>Pleiades</dt>
+						<dd>the star cluster in Taurus</dd>
+						<dt>stipple</dt>
+						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- ======================== C. PAGE 1.3 ======================== -->
+		<h2 id="wheel"><span class="step">Page 1.3 · Observation</span>The polar wheel as a plate</h2>
+
+		<p class="preview-note">
+			<strong>Where:</strong> in place of the present Figure 1, with the same
+			controls, read-out and caption. <strong>What changes:</strong> only the
+			look; the right-ascension ring is new. <strong>Note:</strong> STYLE.md §7
+			keeps plates for static charts; this one moves, so §7 would need to allow
+			an interactive chart of the sky.
+		</p>
+
+		<figure class="plate-figure">
+			<div class="plate with-controls">
+				<div class="chart" id="plate-wheel"></div>
+				<div class="side">
+					<div class="plate-label">Figure 1</div>
+					<div class="plate-title">The sky from above the pole</div>
+					<div class="fig-controls">
+						<div class="ctl stepper">
+							<label for="plate-day">date</label>
+							<input id="plate-day" type="range" min="0" max="365" step="1" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="plate-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="plate-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="ctl">
+							<label for="plate-time">time (UT)</label>
+							<input id="plate-time" type="range" min="0" max="24" step="0.01" value="12">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="plate-play-day">Play a day</button>
+							<button type="button" class="play" id="plate-play-year">Play a year</button>
+						</div>
+						<div class="readout" id="plate-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play a day: everything turns once about P, the ecliptic too, rocking
+				about the centre as K goes round. Then play a year, or step through the
+				days, with the time fixed: the Sun stays near the meridian, while the
+				stars, γ and K move about $1^\circ$ further each day in the direction of
+				the turn. On 1 January 2027, the last day, the sky has made one turn
+				more than the Sun.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole, at the centre; the view is from outside the sphere, above P, down to declination $-60^\circ$ at the rim</dd>
+						<dt>meridian</dt>
+						<dd>the observer's meridian (at Greenwich), from P towards the south; it is fixed, and the sky turns clockwise under it</dd>
+						<dt>ring</dt>
+						<dd>right ascension in hours, turning with the stars</dd>
+						<dt>solid circle</dt>
+						<dd>the celestial equator</dd>
+						<dt>dashed circle</dt>
+						<dd>the ecliptic, the Sun's yearly path: tilted by $\varepsilon = 23.4^\circ$ to the equator, so it is centred on its own pole K, not on P</dd>
+						<dt>K</dt>
+						<dd>the pole of the ecliptic, $23.4^\circ$ from P; it turns about P with the sky</dd>
+						<dt>γ</dt>
+						<dd>the vernal point, where the Sun crosses the equator going north</dd>
+						<dt>stars</dt>
+						<dd>twenty bright stars at their positions of 2026; four are named</dd>
+						<dt>Sun</dt>
+						<dd>the real Sun at the chosen moment (highlighted)</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>elapsed</dt>
+						<dd>clock time since 1 January 2026, 0 h UT</dd>
+						<dt>sky</dt>
+						<dd>the turns the stars have made about P in that time</dd>
+						<dt>Sun</dt>
+						<dd>the turns the Sun has made about P (its meridian crossings)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+	</article>
+</div>
+</body>
+</html>
