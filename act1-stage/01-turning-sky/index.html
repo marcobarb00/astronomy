@@ -138,7 +138,7 @@
 						<button type="button" class="play" id="sky-play">▶ play</button>
 					</div>
 					<div class="presets star-choice" id="sky-stars"></div>
-					<div class="readout" id="sky-readout"></div>
+					<div class="readout" id="sky-readout" data-lines="4"></div>
 				</div>
 			</div>
 			<div class="keys">
@@ -378,7 +378,7 @@
 						<button type="button" class="play" id="out-play">▶ play</button>
 					</div>
 					<div class="presets star-choice" id="out-stars"></div>
-					<div class="readout" id="out-readout"></div>
+					<div class="readout" id="out-readout" data-lines="3"></div>
 				</div>
 			</div>
 			<div class="keys">
@@ -515,7 +515,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="readout" id="day-readout"></div>
+			<div class="readout" id="day-readout" data-lines="4"></div>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (a)</p>
@@ -657,7 +657,7 @@
 						<button type="button" data-target="test-lat" data-value="51.5">London</button>
 					</div>
 					<div class="presets star-choice" id="test-stars"></div>
-					<div class="readout" id="test-readout"></div>
+					<div class="readout" id="test-readout" data-lines="4"></div>
 				</div>
 			</div>
 			<div class="keys">
@@ -675,10 +675,12 @@
 				<div>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
+						<dt>up</dt>
+						<dd>time above the horizon, model and real (or "never sets", "never rises")</dd>
 						<dt>$\Delta t$</dt>
 						<dd>how much earlier the real star rises, and later it sets</dd>
-						<dt>up</dt>
-						<dd>time above the horizon, model and real</dd>
+						<dt>lifted</dt>
+						<dd>for a star that never sets, how much refraction raises its lowest point</dd>
 					</dl>
 				</div>
 			</div>

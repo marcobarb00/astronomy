@@ -9,7 +9,7 @@
    TABLE OF CONTENTS
 	 1. Loading the shared code
 	 2. Formatting
-	 3. Observation: one star, three addresses
+	 3. Observation: The three coordinate systems
 	 4. Model: the matrices, checked
 	 5. Fit: the obliquity from the solstices; the equinox
 	 6. Test: Ptolemy's tables; the nutation error (Figure 3)
@@ -111,13 +111,13 @@ function sunAtLongitude(lon, jdGuess) {
 
 
 /* ==========================================================================
-   3. OBSERVATION: ONE STAR, THREE ADDRESSES
+   3. OBSERVATION: THE THREE COORDINATE SYSTEMS
    Aldebaran from Rome on the evening of 1 January 2026 (CET = UT + 1).
    Positions of date (mean equator and equinox, no nutation or aberration),
    geometric altitude (no air): the conventions of page 1.1.
    ========================================================================== */
 
-title('Observation: Aldebaran, three addresses');
+title('Observation: Aldebaran');
 const OBS_JD_UT = Time.julianDay(2026, 1, 1) + 19 / 24;    // 20:00 CET
 const OBS_JD_TT = Time.ttFromUt(OBS_JD_UT);
 const aldebaranEq = Stars.ofDate(Stars.find('Aldebaran'), OBS_JD_TT);

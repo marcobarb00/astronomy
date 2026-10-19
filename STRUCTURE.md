@@ -38,7 +38,8 @@ Kepler, eclipses.
 **Out of scope for now** (signposted with detour cards and the *Beyond Kepler*
 page, see §7.4): planetary latitudes in detail, nutation, aberration,
 parallax of stars, Tycho, Islamic astronomy (Tusi couple, Ibn al-Shatir),
-Newtonian dynamics and perturbations, calendars, instruments.
+Newtonian dynamics and perturbations, calendars, instruments, the slowing of
+the Earth's rotation ($\Delta T$).
 
 ---
 
@@ -126,10 +127,34 @@ The language needed to state any prediction.
 - **Payoff:** day length as a function of latitude and date; transit times
   of stars. Day length counts the Sun's upper limb with refraction
   ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
-- **Exercises:** how many sidereal days in a year and why; when a given star
-  transits at the reader's longitude on a given night.
+- **Figures:** the sky from above the pole through 2026 (date and time:
+  366 turns of the sky in 365 days; play a day or a year); the three angles of
+  $\theta_G = H_m + \alpha_m$ on the equator (static, one worked moment);
+  $\theta$, $\alpha$ and $H$ as arcs of the
+  equator in the observer's sky (3D, time and longitude); a star calendar of
+  transits and nights; the length of the day at one latitude and at every
+  latitude; the model Sun against the real one.
+- **Model:** $Y$ solar days are $Y + 1$ sidereal days; $\theta = \theta_G +
+  \ell$; mean solar time from the mean Sun ($\alpha_m = \bar\lambda$), which
+  gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
+  The payoffs (transits, day length) are the model's predictions, derived
+  in the Model section and checked in Test.
+- **Fit:** the rate from the year (Ptolemy's 365;14,48 days, *Almagest*
+  III 1), the constant from the mean Sun at J2000, the longitude from one
+  timed transit.
+- **Test:** the stars, against apparent sidereal time (within 0.7 s, the
+  nutation); the Sun, model minus real noon, sunrise and sunset through 2026
+  (a figure): noon from −14 to +16 min at every latitude, the day up to
+  13 min too short at 65°.
+- **Exercises:** how many sidereal days in a year and why (with Ptolemy's
+  daily motion, and the Moon's 24 h 50 min day); when Sirius transits at Rome
+  on New Year's Eve, then at the reader's longitude; the earliest sunset and
+  the latest sunrise are not on the solstice (break the model).
+- **Code:** `models/mean-sun.js` (the uniform Sun, `make()`) and
+  `models/clock.js` (sidereal time, transits, the model Sun's day).
 - **Hands over:** we assumed the Sun moves uniformly along the ecliptic. It
-  does not.
+  does not. (Noon's second cause, the tilt, goes to page 2.2; $\Delta T$,
+  the drift of the Earth's rotation, to page 3.3 and a detour card.)
 
 ### Act II: The Sun
 
@@ -149,6 +174,10 @@ The first anomaly and the simplest complete model.
 - **Figures:** the eccentric with the four seasons; $q(t)$ over a year.
   **First appearance of the error curve:** uniform circle versus eccentric
   versus the reference Sun.
+- **When building:** start from `MeanSun` (`shared/models/mean-sun.js`,
+  page 1.3): the uniform circle is `MeanSun.make()`, and Ptolemy's mean Sun
+  (epoch Nabonassar, *Almagest* III 7) is a second parameter set for it.
+  Page 1.3 found the model Sun's day up to 13 min too short at 65°: link back.
 - **When building:** rewrite the last paragraph of page 1.1's Test ("The site
   has no longitude to test yet…", marked `TODO(2.1)` in
   `act1-stage/01-turning-sky/index.html`): say that the error curve starts
@@ -347,6 +376,10 @@ once on the page.
 | $\varepsilon$ | obliquity of the ecliptic |
 | $H$ | hour angle, $H = \theta - \alpha$ |
 | $\theta$ | the angle the sky has turned since γ crossed the meridian (local sidereal time, page 1.3) |
+| $\theta_G$ | the sidereal time at Greenwich, $\theta = \theta_G + \ell$ |
+| $\ell$ | geographic longitude, positive east (Meeus counts it positive west; Fitzpatrick writes $\varphi$) |
+| $d$ | days since J2000.0, $\text{JD} - 2451545.0$ |
+| $n$ | the mean Sun's daily motion, $360^\circ / Y$ |
 | γ | the vernal point, origin of $\alpha$ and $\lambda$ (♈ in older books) |
 | P, K, Z | north celestial pole, north ecliptic pole, zenith |
 | $\bar\lambda$ | mean longitude |
@@ -431,7 +464,9 @@ Models built on one page and reused later (the turning sky, the frames, the
 solar eccentric, the lunar epicycle, the planetary equant) live in
 `shared/models/` so later pages and the error-curve ghosts can call them. A
 model that does not predict a longitude (the turning sky, `models/diurnal.js`;
-the frames, `models/frames.js`) exports plain functions instead of `make()`.
+the frames, `models/frames.js`; the clocks, `models/clock.js`) exports plain
+functions instead of `make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
+is the first model with `make()`.
 
 ## 9. Repository layout
 

@@ -70,6 +70,16 @@ same style:
   day), add previous / next buttons centred under the slider
   (`.ctl.stepper` with `button[data-target][data-step]`, see
   `templates/demo.html`); held down, they repeat and speed up.
+- A figure keeps one size whatever its controls and the pointer show:
+  nothing in it appears, disappears or changes its number of lines. A
+  read-out has a fixed number of lines, declared on its container
+  (`<div class="readout" data-lines="4">`); `showLines` pads it with empty
+  lines and warns in the console when a read-out has no `data-lines` or
+  more lines than it declares, and a page must not trigger that warning. A
+  state that needs other words (polar day, a star that never rises) rewrites
+  a line instead of adding or removing one. A note or legend entry that
+  applies only to some states is shown always, or its room is reserved, as
+  the error curve does for its band note and legend.
 - Scales never jump while a control moves. When a slider changes what is
   plotted, fix the axis range to cover every value the slider allows, with
   the bound computed by a script. A scale may change only when the reader
