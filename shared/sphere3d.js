@@ -9,6 +9,7 @@
 			 s.outline();
 			 s.circle([1, 0, 0], [0, 1, 0], { color: COL.earth });
 			 s.point(fromLonLat(30, 10), { color: COL.sun });
+			 s.star(fromLonLat(279, 39), { color: COL.planet, size: STAR_SIZE_CHOSEN });
 		 }
 	 });
 	 sphere.redraw();      // after a slider moves
@@ -23,6 +24,10 @@
 
 	 Sizes (line widths, fonts, point radii) are in CSS pixels; the canvas is
 	 scaled for the device pixel ratio and follows the width of its parent.
+
+	 Style (STYLE.md): the outline is ink; stars are four-pointed (star(),
+	 never point()); labels take the text colour of their line colour
+	 (textColor) and the atlas fonts (labelFont in common.js).
 
    TABLE OF CONTENTS
 	 1. Constants
@@ -42,7 +47,7 @@ const FAR_SIDE_ALPHA = 0.25;       // opacity of path segments behind the sphere
 const FAR_ARROW_ALPHA = 0.35;      // opacity of arrows pointing away from the viewer
 const ARROW_HEAD_SIZE = 9;         // px
 const DRAG_DEGREES_PER_PX = 0.5;
-const LABEL_FONT = '600 15px system-ui, sans-serif';
+const LABEL_FONT = FONT_NAME;      // for pages that write on a canvas themselves
 
 
 /* ==========================================================================
@@ -77,6 +82,9 @@ class Sphere3D {
 			this.redraw();
 		});
 		this.observer.observe(canvas.parentElement);
+
+		// labels are drawn in web fonts: draw again once they have loaded
+		whenCanvasFontsReady().then(() => this.redraw());
 	}
 
 	/* Match the canvas resolution to its displayed size. */
@@ -170,8 +178,8 @@ class Sphere3D {
 	outline(style = {}) {
 		const { ctx } = this;
 
-		ctx.strokeStyle = style.color ?? COL.line;
-		ctx.lineWidth = style.width ?? 1.5;
+		ctx.strokeStyle = style.color ?? COL.ink;
+		ctx.lineWidth = style.width ?? 1.4;
 		ctx.beginPath();
 		ctx.arc(this.cx, this.cy, this.R, 0, TAU);
 		ctx.stroke();
@@ -281,6 +289,21 @@ class Sphere3D {
 		ctx.globalAlpha = 1;
 	}
 
+	/* Four-pointed star at a 3D point (STYLE.md §5); faded behind the
+	   sphere unless style.always. style: color, size (half-size in px,
+	   e.g. starSize(star.mag)), alpha, ring (true: a halo in the card
+	   colour, to stand out from a line under it). */
+	star(p, style = {}) {
+		const { ctx } = this;
+		const q = this.project(p);
+		const isFar = q.d > 0 && !style.always;
+
+		ctx.globalAlpha = (style.alpha ?? 1) * (isFar ? FAR_ARROW_ALPHA : 1);
+		ctx.fillStyle = style.color ?? COL.ink;
+		drawStar(ctx, q.x, q.y, style.size ?? STAR_SIZE_CHOSEN, style.ring ? COL.card : null);
+		ctx.globalAlpha = 1;
+	}
+
 	/* Arrow between two 3D points (shaft + head); faded when pointing away. */
 	arrow(from, to, style = {}) {
 		const { ctx } = this;
@@ -321,14 +344,17 @@ class Sphere3D {
 		this.label(text, tip, { color: style.labelColor ?? COL.ink, dx: 6, dy: -4 });
 	}
 
-	/* Text next to a 3D point. style: color, dx, dy, font. */
+	/* Text next to a 3D point. style: color (a line colour is drawn in its
+	   text colour), dx, dy, font, kind ('name' or 'symbol', see labelFont). */
 	label(text, p, style = {}) {
 		const { ctx } = this;
 		const q = this.project(p);
 
 		ctx.globalAlpha = (q.d > 0 && !style.always) ? 0.5 : 1;
-		ctx.fillStyle = style.color ?? COL.ink;
-		ctx.font = style.font ?? LABEL_FONT;
+		ctx.fillStyle = textColor(style.color ?? COL.ink);
+		ctx.font = style.font ?? labelFont(text, style.kind);
+		ctx.textAlign = 'left';
+		ctx.textBaseline = 'alphabetic';
 		ctx.fillText(text, q.x + (style.dx ?? 6), q.y + (style.dy ?? -6));
 		ctx.globalAlpha = 1;
 	}
@@ -349,7 +375,7 @@ class Sphere3D {
 		const ux = (q.x - r.x) / length;
 		const uy = (q.y - r.y) / length;
 
-		this.ctx.font = LABEL_FONT;
+		this.ctx.font = labelFont(text);
 
 		const width = this.ctx.measureText(text).width;
 

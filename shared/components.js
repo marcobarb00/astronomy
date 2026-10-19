@@ -1,19 +1,31 @@
 /* ==========================================================================
    PREDICTING THE SKY - PAGE COMPONENTS (components.js)
-   The site map and the parts every article shares: site bar, page header,
-   sticky table of contents, origin badges, exercises, figure numbers,
-   detour cards, previous / next navigation, and the hub's map.
+   The site map and the parts every article shares, in the star-atlas
+   style of STYLE.md: the link to the hub, the page header with the table
+   of contents in its margin, margin notes (origins, detours), exercises,
+   figure numbers, the graduated frame of figures, previous / next
+   navigation, and the hub's map and key of origins.
    Needs common.js (and KaTeX with its auto-render extension).
 
    Authoring (see templates/page.html)
 	 <body data-page="2.1">                      the page's number in SITE.pages
-	 <header class="page-head"></header>          filled from the site map
-	 <nav class="toc"></nav>                      built from the article's <h2>
-	 <span class="badge" data-origin="ptolemy"></span>
+	 <header class="page-head"></header>          title, subtitle and contents,
+												  filled from the site map
+	 <p class="lead">                             the first paragraph (drop cap)
+	 <div class="row">                            a paragraph with margin notes
+		 <p> ... </p>
+		 <aside>
+			 <div class="note" data-origin="ptolemy"></div>
+			 <div class="note detour" data-topic="nutation"></div>
+		 </aside>
+	 </div>
 	 <div class="exercise" data-kind="derive"> ... <details class="hint">
 		 ... <details class="answer"> ... </div>
-	 <figure class="fig"> ... <figcaption>       numbered "Figure n."
-	 <aside class="detour" data-topic="nutation"></aside>
+	 <figure class="fig">                         numbered "Figure n."
+		 <div class="frame"> canvas and controls </div>
+		 <figcaption> ... </figcaption>
+		 <div class="keys"> ... </div>
+	 </figure>
 	 <nav class="pager"></nav>
 	 Site.initPage() then builds everything and typesets the $...$ math.
 
@@ -23,12 +35,13 @@
    TABLE OF CONTENTS
 	 1. Site map (acts, pages, detour topics, origins, exercise kinds)
 	 2. Paths
-	 3. Page header and site bar
+	 3. Page header and link to the hub
 	 4. Table of contents with scroll-spy
-	 5. Badges, exercises, figures, detours
+	 5. Margin notes (origins, detours), exercises, figure numbers
 	 6. Previous / next navigation
 	 7. Hub
 	 8. Entry point
+	 GraduatedFrame (after Site): the border of every figure
    ========================================================================== */
 
 const Site = (function () {
@@ -37,49 +50,43 @@ const Site = (function () {
 	   1. SITE MAP
 	   ====================================================================== */
 
-	/* The acts, in reading order. 'color' is a palette variable. */
+	/* The acts, in reading order. */
 	const ACTS = [
 		{
 			id: 0,
 			name: 'Act 0',
 			title: 'The hook',
-			blurb: 'Ptolemy\'s Mars against tonight\'s sky: how can circles do this well, and why are they still wrong?',
-			color: 'var(--planet)'
+			blurb: 'Ptolemy\'s Mars against tonight\'s sky: how can circles do this well, and why are they still wrong?'
 		},
 		{
 			id: 1,
 			name: 'Act I',
 			title: 'The stage',
-			blurb: 'The language needed to state any prediction: the sphere, its frames and its clocks.',
-			color: 'var(--earth)'
+			blurb: 'The language needed to state any prediction: the sphere, its frames and its clocks.'
 		},
 		{
 			id: 2,
 			name: 'Act II',
 			title: 'The Sun',
-			blurb: 'The first anomaly and the simplest complete model.',
-			color: 'var(--sun)'
+			blurb: 'The first anomaly and the simplest complete model.'
 		},
 		{
 			id: 3,
 			name: 'Act III',
 			title: 'The Moon',
-			blurb: 'Four kinds of month, two anomalies, and the eclipses that test them.',
-			color: 'var(--epicycle)'
+			blurb: 'Four kinds of month, two anomalies, and the eclipses that test them.'
 		},
 		{
 			id: 4,
 			name: 'Act IV',
 			title: 'The planets',
-			blurb: 'Loops, the equant, a new centre, and the ellipse that removes the last error.',
-			color: 'var(--deferent)'
+			blurb: 'Loops, the equant, a new centre, and the ellipse that removes the last error.'
 		},
 		{
 			id: 5,
 			name: 'Epilogue',
 			title: 'Beyond Kepler',
-			blurb: 'Where the story goes next.',
-			color: 'var(--muted)'
+			blurb: 'Where the story goes next.'
 		}
 	];
 
@@ -239,17 +246,49 @@ const Site = (function () {
 		}
 	};
 
-	/* Origin badges (STRUCTURE.md §7.1): label and tooltip. */
+	/* Origins (STRUCTURE.md §7.1): the label of each margin note
+	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5): the
+	   hub explains the origins once, with ORIGIN_KEY. */
 	const ORIGINS = {
-		babylonian: ['Babylonian', 'Inherited from Mesopotamian astronomy'],
-		greek: ['Greek', 'From earlier Greek astronomers and mathematicians'],
-		hipparchus: ['Hipparchus', 'Hipparchus\' contribution, as far as the sources allow'],
-		ptolemy: ['Ptolemy', 'Ptolemy\'s contribution, as far as the sources allow'],
-		copernicus: ['Copernicus', 'Copernicus\' contribution, as far as the sources allow'],
-		kepler: ['Kepler', 'Kepler\'s contribution'],
-		debated: ['Debated', 'Attribution or details still discussed by historians'],
-		modern: ['Modern', 'The modern understanding or notation']
+		babylonian: 'Babylonian',
+		greek: 'Greek',
+		hipparchus: 'Hipparchus',
+		ptolemy: 'Ptolemy',
+		copernicus: 'Copernicus',
+		kepler: 'Kepler',
+		debated: 'Debated',
+		modern: 'Modern'
 	};
+
+	/* The hub's key of origins: one line per kind of origin. 'origin' picks
+	   the colour of the label; the four authors share one line. */
+	const ORIGIN_KEY = [
+		{
+			origin: 'babylonian',
+			label: 'Babylonian',
+			text: 'inherited from Mesopotamian astronomy'
+		},
+		{
+			origin: 'greek',
+			label: 'Greek',
+			text: 'from earlier Greek astronomers and mathematicians'
+		},
+		{
+			origin: 'ptolemy',
+			label: 'Hipparchus, Ptolemy, Copernicus, Kepler',
+			text: 'the author\'s own contribution, as far as the sources allow'
+		},
+		{
+			origin: 'debated',
+			label: 'Debated',
+			text: 'attribution or details still discussed by historians'
+		},
+		{
+			origin: 'modern',
+			label: 'Modern',
+			text: 'the modern understanding or notation'
+		}
+	];
 
 	/* Exercise kinds (STRUCTURE.md §7.2). */
 	const EXERCISE_KINDS = {
@@ -290,43 +329,65 @@ const Site = (function () {
 
 
 	/* ======================================================================
-	   3. PAGE HEADER AND SITE BAR
+	   3. PAGE HEADER AND LINK TO THE HUB
+	   STYLE.md §4.2: "Predicting the Sky" in small caps, then the header:
+	   act line, title and subtitle on the left, the table of contents in
+	   the margin on the right, and a double rule under it (theme.css).
 	   ====================================================================== */
 
-	/* The thin bar with the way back to the hub. */
-	function buildSiteBar() {
-		if (document.querySelector('.site-bar')) {
+	/* The way back to the hub, above the header. */
+	function buildSiteLink() {
+		if (document.querySelector('.site-link')) {
 			return;
 		}
 
-		const bar = makeEl('div', 'site-bar', `<a href="${href('index.html')}">← Predicting the Sky</a>`);
+		const link = makeEl('a', 'site-link', 'Predicting the Sky');
+		const container = document.querySelector('.page') ?? document.body;
 
-		document.body.prepend(bar);
+		link.href = href('index.html');
+		container.prepend(link);
 	}
 
-	/* Fill an empty <header class="page-head"> from the site map. */
+	/* The left block of the header (.titles): filled from the site map when
+	   the header is empty. A header written by hand (the template, the test
+	   page) is gathered into the same block. Returns the header, or null. */
 	function buildPageHeader(page) {
 		const head = document.querySelector('.page-head');
 
-		if (!head || !page || head.children.length > 0) {
-			return;
+		if (!head) {
+			return null;
 		}
 
-		head.append(
-			makeEl('p', 'page-number', pageKicker(page)),
-			makeEl('h1', '', page.title),
-			makeEl('p', 'question', page.question)
-		);
+		let titles = head.querySelector(':scope > .titles');
 
-		document.title = `${page.number === 'beyond' ? '' : page.number + ' · '}${page.title} · Predicting the Sky`;
+		if (!titles) {
+			titles = makeEl('div', 'titles');
+			titles.append(...head.childNodes);
+			head.appendChild(titles);
+		}
+
+		if (page && titles.children.length === 0) {
+			titles.append(
+				makeEl('p', 'act-line', pageKicker(page)),
+				makeEl('h1', '', page.title),
+				makeEl('p', 'subtitle', page.question)
+			);
+
+			document.title = `${page.number === 'beyond' ? '' : page.number + ' · '}${page.title} · Predicting the Sky`;
+		}
+
+		return head;
 	}
 
 
 	/* ======================================================================
 	   4. TABLE OF CONTENTS WITH SCROLL-SPY
+	   In the header's margin column (STYLE.md §4.2): one entry per <h2>,
+	   "1 Circles about one point", the section number taken from the step
+	   label above the heading; the section in view in the accent colour.
 	   ====================================================================== */
 
-	/* Text of a heading without its "1 · Observation" kicker. */
+	/* Text of a heading without its "1 · Observation" step label. */
 	function headingText(heading) {
 		if (heading.dataset.toc) {
 			return heading.dataset.toc;
@@ -339,6 +400,15 @@ const Site = (function () {
 		return copy.textContent.trim();
 	}
 
+	/* Section number of a heading, from its step label "1 · Observation";
+	   '' for a heading without one (Exercises, Sources). */
+	function sectionNumber(heading) {
+		const step = heading.querySelector('.step');
+		const match = step ? step.textContent.match(/^\s*(\d+)/) : null;
+
+		return match ? match[1] : '';
+	}
+
 	/* "The uneven year" -> "the-uneven-year". */
 	function slugify(text) {
 		return text.toLowerCase()
@@ -348,24 +418,30 @@ const Site = (function () {
 			.replace(/^-|-$/g, '');
 	}
 
-	function buildToc() {
-		const toc = document.querySelector('nav.toc');
+	/* Build the contents into the header (an existing <nav class="toc">
+	   anywhere on the page is moved there). */
+	function buildToc(head) {
 		const headings = [...document.querySelectorAll('article h2')];
 
-		if (!toc || headings.length === 0) {
+		if (!head || headings.length === 0) {
 			return;
 		}
 
-		const details = makeEl('details');
-		const list = makeEl('ol');
+		let toc = document.querySelector('nav.toc');
 
-		details.appendChild(makeEl('summary', '', 'Contents'));
-		details.appendChild(list);
-		details.open = window.matchMedia('(min-width: 861px)').matches;
+		if (!toc) {
+			toc = makeEl('nav', 'toc');
+			toc.setAttribute('aria-label', 'Contents');
+		}
+
+		head.appendChild(toc);
+
+		const list = makeEl('ol');
 
 		headings.forEach(heading => {
 			const item = makeEl('li');
 			const link = makeEl('a');
+			const number = sectionNumber(heading);
 
 			if (!heading.id) {
 				heading.id = slugify(headingText(heading));
@@ -373,16 +449,20 @@ const Site = (function () {
 
 			link.href = `#${heading.id}`;
 			link.textContent = headingText(heading);
+
+			if (number) {
+				link.prepend(makeEl('span', 'toc-number', number));
+			}
+
 			item.appendChild(link);
 			list.appendChild(item);
 		});
 
-		toc.innerHTML = '';
-		toc.appendChild(details);
+		toc.replaceChildren(list);
 		wireScrollSpy(headings, [...list.querySelectorAll('a')]);
 	}
 
-	/* Highlight the last heading that has scrolled past the top third. */
+	/* Mark the last heading that has scrolled past the top third. */
 	function wireScrollSpy(headings, links) {
 		let pending = false;
 
@@ -397,7 +477,7 @@ const Site = (function () {
 			});
 
 			links.forEach((link, i) => {
-				link.classList.toggle('active', i === current);
+				link.classList.toggle('current', i === current);
 			});
 
 			pending = false;
@@ -415,24 +495,61 @@ const Site = (function () {
 
 
 	/* ======================================================================
-	   5. BADGES, EXERCISES, FIGURES, DETOURS
+	   5. MARGIN NOTES (ORIGINS, DETOURS), EXERCISES, FIGURE NUMBERS
 	   ====================================================================== */
 
-	/* Origin badges: default label and an explanatory tooltip. */
-	function buildBadges(root) {
-		root.querySelectorAll('.badge[data-origin]').forEach(badge => {
-			const origin = ORIGINS[badge.dataset.origin];
+	/* Origin notes: the small-caps heading "Origin · Greek", coloured by
+	   origin in theme.css. Any text the author wrote stays under it. */
+	function buildOriginNotes(root) {
+		root.querySelectorAll('.note[data-origin]').forEach(note => {
+			const label = ORIGINS[note.dataset.origin];
 
-			if (!origin) {
-				console.warn(`Unknown badge origin "${badge.dataset.origin}"`);
+			if (!label) {
+				console.warn(`Unknown origin "${note.dataset.origin}"`);
 				return;
 			}
 
-			if (badge.textContent.trim() === '') {
-				badge.textContent = origin[0];
+			note.classList.add('origin');
+			note.prepend(makeEl('div', 'note-head', `Origin · ${label}`));
+		});
+	}
+
+	/* TRANSITION, removed once every page uses margin notes (style revamp,
+	   stage 3): an inline badge shows its label, and a detour card becomes
+	   a detour note in the text column. */
+	function upgradeOldMarkup(root) {
+		root.querySelectorAll('.badge[data-origin]').forEach(badge => {
+			badge.textContent = ORIGINS[badge.dataset.origin] ?? '';
+		});
+
+		root.querySelectorAll('aside.detour[data-topic]').forEach(card => {
+			card.classList.add('note');
+		});
+	}
+
+	/* "nutation" -> "Nutation". */
+	const capitalise = text => text.charAt(0).toUpperCase() + text.slice(1);
+
+	/* Detour notes: "Detour · coming later", then the topic and why it
+	   matters. When the topic has a ready page, the topic is a link. */
+	function buildDetours(root) {
+		root.querySelectorAll('.note.detour[data-topic]').forEach(note => {
+			const topic = TOPICS[note.dataset.topic];
+
+			if (!topic) {
+				console.warn(`Unknown detour topic "${note.dataset.topic}"`);
+				return;
 			}
 
-			badge.title = origin[1];
+			const text = note.innerHTML.trim() || topic.sentence;
+			const title = capitalise(topic.title);
+
+			if (topic.ready && topic.path) {
+				note.innerHTML = `<div class="note-head">Detour</div>` +
+					`<a href="${href(topic.path)}">${title}</a>: ${text}.`;
+			} else {
+				note.innerHTML = `<div class="note-head">Detour · coming later</div>${title}: ${text}.`;
+			}
 		});
 	}
 
@@ -443,7 +560,7 @@ const Site = (function () {
 			const head = makeEl('div', 'exercise-head');
 
 			head.append(
-				makeEl('span', '', `Exercise ${i + 1}`),
+				makeEl('span', 'exercise-number', `Exercise ${i + 1}`),
 				makeEl('span', 'exercise-kind', kind)
 			);
 			exercise.prepend(head);
@@ -477,29 +594,6 @@ const Site = (function () {
 
 			if (caption) {
 				caption.prepend(makeEl('span', 'fig-label', `Figure ${i + 1}.`));
-			}
-		});
-	}
-
-	/* Detour cards: "Detour: topic, sentence. Coming later." or a link. */
-	function buildDetours(root) {
-		root.querySelectorAll('aside.detour[data-topic]').forEach(card => {
-			const topic = TOPICS[card.dataset.topic];
-
-			if (!topic) {
-				console.warn(`Unknown detour topic "${card.dataset.topic}"`);
-				return;
-			}
-
-			const text = card.innerHTML.trim() || topic.sentence;
-
-			if (topic.ready && topic.path) {
-				const link = makeEl('a', 'detour', `<strong>Detour: ${topic.title}</strong>, ${text}. Read more →`);
-
-				link.href = href(topic.path);
-				card.replaceWith(link);
-			} else {
-				card.innerHTML = `<strong>Detour: ${topic.title}</strong>, ${text}. <em>Coming later.</em>`;
 			}
 		});
 	}
@@ -548,7 +642,8 @@ const Site = (function () {
 
 	/* ======================================================================
 	   7. HUB
-	   The five acts as a path; each page is a tile, greyed until ready.
+	   The acts in order, each a small-caps label, a title and a blurb; each
+	   page is a tile, greyed until ready. Then the key of origins.
 	   ====================================================================== */
 
 	function pageTile(page) {
@@ -579,11 +674,10 @@ const Site = (function () {
 		ACTS.forEach(act => {
 			const section = makeEl('section', 'act');
 			const tiles = makeEl('div', 'tiles');
-			const title = act.id === 5 ? act.title : `${act.title}<small>${act.name}</small>`;
 
-			section.style.setProperty('--act', act.color);
 			section.append(
-				makeEl('h2', 'act-title', title),
+				makeEl('p', 'act-label', act.name),
+				makeEl('h2', 'act-title', act.title),
 				makeEl('p', 'act-blurb', act.blurb),
 				tiles
 			);
@@ -596,24 +690,45 @@ const Site = (function () {
 		});
 	}
 
+	/* The key of origins, once for the whole site (STYLE.md §4.5): each
+	   line is the heading of a margin note, in its colour, and what it means. */
+	function renderOriginKey(container) {
+		const list = makeEl('dl', 'origin-key');
+
+		ORIGIN_KEY.forEach(entry => {
+			const term = makeEl('dt', 'note-head', `Origin · ${entry.label}`);
+
+			term.dataset.origin = entry.origin;
+			list.append(term, makeEl('dd', '', entry.text));
+		});
+
+		container.appendChild(list);
+	}
+
 
 	/* ======================================================================
 	   8. ENTRY POINT
 	   ====================================================================== */
 
-	/* Build every shared component of an article page, then typeset. */
+	/* Build every shared component of an article page, then typeset. The
+	   frames are built before the page's figures start: their canvases
+	   take the width of the frame. */
 	function initPage() {
 		const page = findPage(document.body.dataset.page);
 		const article = document.querySelector('article') ?? document.body;
 
-		buildSiteBar();
-		buildPageHeader(page);
-		buildBadges(article);
+		buildSiteLink();
+
+		const head = buildPageHeader(page);
+
+		upgradeOldMarkup(article);
+		buildOriginNotes(article);
+		buildDetours(article);
 		buildExercises(article);
 		numberFigures(article);
-		buildDetours(article);
+		GraduatedFrame.attachAll(article);
 		buildPager(page);
-		buildToc();
+		buildToc(head);
 		renderMath(document.body);
 	}
 
@@ -622,11 +737,120 @@ const Site = (function () {
 		PAGES,
 		TOPICS,
 		ORIGINS,
+		ORIGIN_KEY,
 		EXERCISE_KINDS,
 		ROOT,
 		href,
 		findPage,
 		initPage,
-		renderHub
+		renderHub,
+		renderOriginKey
+	};
+})();
+
+
+/* ==========================================================================
+   GRADUATED FRAME (STYLE.md §6)
+   The border of every figure, like the border of an atlas page: solid ink
+   corners, and each edge split into bands light, dark, ..., light. An edge
+   of length L has the odd number of bands closest to L / BAND_TARGET (at
+   least 3), so the bands stretch or squish to fit it exactly; horizontal
+   and vertical edges are counted apart. The bands are recounted whenever
+   the frame changes size, so the corners stay aligned at any width.
+
+   Authoring: <div class="frame"> canvas and controls </div> inside the
+   figure, before its caption. attach() moves the content into a
+   .frame-body and adds the corners and edges around it; the grid that
+   places them is in theme.css (section 7).
+   ========================================================================== */
+
+const GraduatedFrame = (function () {
+
+	const BAND_TARGET = 28;     // preferred band length, px
+
+	/* The eight parts around the body: [class, grid area]. */
+	const PARTS = [
+		['frame-corner', 'tl'], ['frame-edge top', 'top'], ['frame-corner', 'tr'],
+		['frame-edge left', 'left'], ['frame-edge right', 'right'],
+		['frame-corner', 'bl'], ['frame-edge bottom', 'bottom'], ['frame-corner', 'br']
+	];
+
+	/* Odd number of bands closest to length / BAND_TARGET, at least 3. */
+	function bandCount(length) {
+		const k = Math.round((length / BAND_TARGET - 1) / 2);
+
+		return Math.max(3, 2 * k + 1);
+	}
+
+	/* Fill one edge with n bands: light, dark, light, ..., light. The bands
+	   share the edge equally (flex), so only their number is set here. */
+	function fillEdge(edge, length) {
+		const n = bandCount(length);
+
+		if (edge.childElementCount === n) {
+			return;
+		}
+
+		edge.replaceChildren();
+
+		for (let i = 0; i < n; i++) {
+			edge.appendChild(makeEl('div', (i % 2 === 1) ? 'band dark' : 'band'));
+		}
+	}
+
+	/* Recount the bands of the four edges from their current lengths. */
+	function layout(frame) {
+		const edge = side => frame.querySelector(`:scope > .frame-edge.${side}`);
+
+		fillEdge(edge('top'), edge('top').clientWidth);
+		fillEdge(edge('bottom'), edge('bottom').clientWidth);
+		fillEdge(edge('left'), edge('left').clientHeight);
+		fillEdge(edge('right'), edge('right').clientHeight);
+	}
+
+	/* Build one frame and keep it aligned when it resizes. */
+	function attach(frame) {
+		if (frame.querySelector(':scope > .frame-body')) {
+			return;    // already built
+		}
+
+		const body = makeEl('div', 'frame-body');
+
+		body.append(...frame.childNodes);
+		frame.appendChild(body);
+
+		PARTS.forEach(([className, area]) => {
+			const part = makeEl('div', className);
+
+			part.style.gridArea = area;
+			frame.appendChild(part);
+		});
+
+		// recount on the next frame: a canvas inside may resize itself in the
+		// same round of resize callbacks, which changes the frame's height
+		let pending = false;
+
+		new ResizeObserver(() => {
+			if (!pending) {
+				pending = true;
+				requestAnimationFrame(() => {
+					pending = false;
+					layout(frame);
+				});
+			}
+		}).observe(frame);
+
+		layout(frame);
+	}
+
+	/* Build every frame inside root. */
+	function attachAll(root = document) {
+		root.querySelectorAll('.frame').forEach(attach);
+	}
+
+	return {
+		bandCount,
+		attach,
+		attachAll
 	};
 })();
