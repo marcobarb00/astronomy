@@ -32,7 +32,7 @@
    for <strong> only.
    ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Cormorant+SC:wght@500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Cormorant+SC:wght@500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 
 /* ==========================================================
    SHARED THEME - STYLE.md §2, keep identical to COL in common.js
@@ -72,7 +72,9 @@
 	--font-label:     "Cormorant SC", Georgia, serif;
 
 	/* Layout */
-	--page-width:     1060px;    /* container, with 24 px padding       */
+	--page-width:     1320px;    /* container, with 24 px padding       */
+	--toc-width:      220px;     /* the contents column on the left     */
+	--toc-gap:        48px;      /* between the contents and the page   */
 	--text-width:     700px;     /* the text column                     */
 	--margin-gap:     40px;      /* between text and margin columns     */
 	--frame-band:     14px;      /* graduated frame: band thickness     */
@@ -107,10 +109,8 @@ strong {
 	font-weight: 600;
 }
 
-/* A small-caps label: act line, step labels, figure labels, note heads. */
-.label,
-.act-line,
-.page-number {
+/* A small-caps label: the act line above a title. */
+.act-line {
 	font-family: var(--font-label);
 	font-size: 16px;
 	font-weight: 500;
@@ -118,17 +118,16 @@ strong {
 	color: var(--accent);
 }
 
-.sub {
-	color: var(--muted);
-	margin: 0 0 18px;
-}
-
 
 /* ==========================================================================
    3. PAGE LAYOUT: CONTAINER, LINK TO THE HUB, HEADER, CONTENTS
-   One column, about 1060 px wide (STYLE.md §4.1): the text keeps to 700 px,
-   the margin notes and the contents sit in the margin to its right, and
-   figures use the whole width.
+   STYLE.md §4.1: the contents in a column on the left, which follows the
+   reader down the page (sticky); to their right the header and the
+   article, about 1012 px wide: the text keeps to 700 px, the margin notes
+   sit to its right, and figures use the whole width. Below 1100 px there
+   is no room for the contents column: they move under the header and
+   stay there.
+	 <div class="page"> a.site-link, nav.toc, header.page-head, article
    ========================================================================== */
 
 .page,
@@ -138,14 +137,55 @@ strong {
 	padding: 48px 24px 96px;
 }
 
+.page {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		"link"
+		"head"
+		"toc"
+		"main";
+}
+
+.page > .site-link { grid-area: link; justify-self: start; }
+.page > .page-head { grid-area: head; }
+.page > .toc       { grid-area: toc; }
+.page > article    { grid-area: main; }
+
+/* The hub has no contents and no article: one plain column. */
+.page.hub {
+	display: block;
+	max-width: calc(var(--page-width) - var(--toc-width) - var(--toc-gap));
+}
+
+@media (min-width: 1100px) {
+	.page {
+		grid-template-columns: var(--toc-width) minmax(0, 1fr);
+		column-gap: var(--toc-gap);
+		grid-template-areas:
+			"link link"
+			"toc  head"
+			"toc  main";
+	}
+
+	/* The contents follow the reader: sticky in their column, which runs
+	   down the whole page; a long list scrolls inside the window. */
+	.page > .toc {
+		position: sticky;
+		top: 32px;
+		align-self: start;
+		max-height: calc(100vh - 64px);
+		overflow-y: auto;
+		margin-top: 44px;
+	}
+}
+
 article {
 	min-width: 0;
 }
 
-/* "Predicting the Sky" above the header: the way back to the hub. The
-   test page still writes a .site-bar by hand. */
-.site-link,
-.site-bar a {
+/* "Predicting the Sky" above the header: the way back to the hub. */
+.site-link {
 	font-family: var(--font-label);
 	font-size: 17px;
 	letter-spacing: 0.1em;
@@ -153,19 +193,12 @@ article {
 	text-decoration: none;
 }
 
-.site-link:hover,
-.site-bar a:hover {
+.site-link:hover {
 	color: var(--accent);
 }
 
-.site-bar {
-	max-width: var(--page-width);
-	margin: 0 auto;
-	padding: 48px 24px 0;
-}
-
-/* The header: titles on the left, contents in the margin, then a double
-   rule (two 1 px ink lines 3 px apart, drawn as two background lines). */
+/* The header: the titles, then a double rule (two 1 px ink lines 3 px
+   apart, drawn as two background lines). */
 .page-head {
 	display: flex;
 	flex-wrap: wrap;
@@ -183,8 +216,7 @@ article {
 	max-width: var(--text-width);
 }
 
-.page-head .act-line,
-.page-head .page-number {
+.page-head .act-line {
 	margin: 0;
 }
 
@@ -193,8 +225,7 @@ h1 {
 	font: 600 clamp(42px, 10vw, 68px)/1.02 var(--font-title);
 }
 
-.subtitle,
-.question {
+.subtitle {
 	margin: 8px 0 0;
 	font: italic 500 24px/1.4 var(--font-title);
 	color: var(--muted);
@@ -202,14 +233,14 @@ h1 {
 
 /* The table of contents, in small caps, with an ink rule on its left. */
 .toc {
-	flex: 1 1 200px;
+	margin-bottom: 36px;
 	padding-left: 14px;
 	border-left: 1px solid var(--ink);
 	font-family: var(--font-label);
 	font-size: 16px;
 	font-weight: 500;
-	letter-spacing: 0.05em;
-	line-height: 1.5;
+	letter-spacing: 0.04em;
+	line-height: 1.35;
 }
 
 .toc ol {
@@ -219,10 +250,12 @@ h1 {
 }
 
 .toc li + li {
-	margin-top: 3px;
+	margin-top: 6px;
 }
 
+/* Number and title side by side: a long title wraps under itself. */
 .toc a {
+	display: flex;
 	color: var(--ink);
 	text-decoration: none;
 }
@@ -232,8 +265,8 @@ h1 {
 }
 
 .toc .toc-number {
-	display: inline-block;
-	min-width: 1.1em;
+	flex: none;
+	width: 1.2em;
 }
 
 /* The section in view (set by the scroll-spy in components.js). */
@@ -309,7 +342,7 @@ h2 {
 
 h3 {
 	margin: 32px 0 8px;
-	font: italic 500 25px/1.3 var(--font-title);
+	font: italic 600 26px/1.3 var(--font-title);
 	scroll-margin-top: 16px;
 }
 
@@ -422,13 +455,6 @@ code {
 
 .box.warn {
 	border-color: var(--planet);
-}
-
-.card {
-	background: var(--card);
-	border: 1px solid var(--ink);
-	padding: 16px;
-	margin-bottom: 16px;
 }
 
 /* Colour keys: coloured words in the text that match the figures, in
@@ -810,8 +836,8 @@ button.play .icon {
 }
 
 /* The colour of each origin, from the figure text colours: set on the
-   element that carries data-origin, used by its heading (or by itself, for
-   the hub's key and the transitional inline badges). */
+   element that carries data-origin, used by its heading (or by itself, in
+   the hub's key). */
 [data-origin="babylonian"] { --origin: var(--sun-text); }
 [data-origin="greek"]      { --origin: var(--deferent-text); }
 [data-origin="hipparchus"],
@@ -821,8 +847,7 @@ button.play .icon {
 [data-origin="debated"]    { --origin: var(--planet-text); }
 [data-origin="modern"]     { --origin: var(--earth-text); }
 
-.note-head,
-.badge {
+.note-head {
 	color: var(--origin, inherit);
 }
 
@@ -833,22 +858,6 @@ button.play .icon {
 .note.detour .note-head {
 	color: var(--accent);
 }
-
-/* TRANSITION (style revamp, stage 3 removes it): pages not yet moved to
-   margin notes keep inline badges and detour cards in the text column. */
-.badge {
-	font-family: var(--font-label);
-	font-size: 15px;
-	font-weight: 600;
-	letter-spacing: 0.1em;
-	white-space: nowrap;
-}
-
-aside.note.detour {
-	max-width: 240px;
-	margin: 16px 0;
-}
-
 
 /* ==========================================================================
    10. EXERCISES (STRUCTURE.md §7.2)
@@ -1071,8 +1080,10 @@ aside.note.detour {
 	max-width: none;
 }
 
-/* The hub has no article: its paragraphs keep to the text column too. */
-.page > p {
+/* The hub and the test page have no article: their paragraphs keep to
+   the text column too. */
+.page > p,
+.single > p {
 	max-width: var(--text-width);
 }
 
@@ -1275,10 +1286,6 @@ dl.origin-key dd {
 	.page,
 	.single {
 		padding: 28px 16px 64px;
-	}
-
-	.site-bar {
-		padding: 28px 16px 0;
 	}
 
 	.page-head {

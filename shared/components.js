@@ -1,16 +1,17 @@
 /* ==========================================================================
    PREDICTING THE SKY - PAGE COMPONENTS (components.js)
    The site map and the parts every article shares, in the star-atlas
-   style of STYLE.md: the link to the hub, the page header with the table
-   of contents in its margin, margin notes (origins, detours), exercises,
+   style of STYLE.md: the link to the hub, the sticky table of contents on
+   the left, the page header, margin notes (origins, detours), exercises,
    figure numbers, the graduated frame of figures, previous / next
    navigation, and the hub's map and key of origins.
    Needs common.js (and KaTeX with its auto-render extension).
 
    Authoring (see templates/page.html)
 	 <body data-page="2.1">                      the page's number in SITE.pages
-	 <header class="page-head"></header>          title, subtitle and contents,
-												  filled from the site map
+	 <header class="page-head"></header>          title and subtitle, filled
+												  from the site map; the
+												  contents go before it
 	 <p class="lead">                             the first paragraph (drop cap)
 	 <div class="row">                            a paragraph with margin notes
 		 <p> ... </p>
@@ -382,7 +383,7 @@ const Site = (function () {
 
 	/* ======================================================================
 	   4. TABLE OF CONTENTS WITH SCROLL-SPY
-	   In the header's margin column (STYLE.md §4.2): one entry per <h2>,
+	   In the left column, following the reader (STYLE.md §4.2): one entry per <h2>,
 	   "1 Circles about one point", the section number taken from the step
 	   label above the heading; the section in view in the accent colour.
 	   ====================================================================== */
@@ -418,8 +419,9 @@ const Site = (function () {
 			.replace(/^-|-$/g, '');
 	}
 
-	/* Build the contents into the header (an existing <nav class="toc">
-	   anywhere on the page is moved there). */
+	/* Build the contents in the page's left column, just before the header
+	   (an existing <nav class="toc"> anywhere on the page is moved there);
+	   theme.css makes them sticky. */
 	function buildToc(head) {
 		const headings = [...document.querySelectorAll('article h2')];
 
@@ -434,7 +436,7 @@ const Site = (function () {
 			toc.setAttribute('aria-label', 'Contents');
 		}
 
-		head.appendChild(toc);
+		head.before(toc);
 
 		const list = makeEl('ol');
 
@@ -447,12 +449,11 @@ const Site = (function () {
 				heading.id = slugify(headingText(heading));
 			}
 
+			// the number in its own column (empty for Exercises, Sources),
+			// so every title starts at the same place
 			link.href = `#${heading.id}`;
-			link.textContent = headingText(heading);
-
-			if (number) {
-				link.prepend(makeEl('span', 'toc-number', number));
-			}
+			link.append(makeEl('span', 'toc-number', number), makeEl('span', '', ''));
+			link.lastChild.textContent = headingText(heading);
 
 			item.appendChild(link);
 			list.appendChild(item);
@@ -511,19 +512,6 @@ const Site = (function () {
 
 			note.classList.add('origin');
 			note.prepend(makeEl('div', 'note-head', `Origin · ${label}`));
-		});
-	}
-
-	/* TRANSITION, removed once every page uses margin notes (style revamp,
-	   stage 3): an inline badge shows its label, and a detour card becomes
-	   a detour note in the text column. */
-	function upgradeOldMarkup(root) {
-		root.querySelectorAll('.badge[data-origin]').forEach(badge => {
-			badge.textContent = ORIGINS[badge.dataset.origin] ?? '';
-		});
-
-		root.querySelectorAll('aside.detour[data-topic]').forEach(card => {
-			card.classList.add('note');
 		});
 	}
 
@@ -721,7 +709,6 @@ const Site = (function () {
 
 		const head = buildPageHeader(page);
 
-		upgradeOldMarkup(article);
 		buildOriginNotes(article);
 		buildDetours(article);
 		buildExercises(article);
