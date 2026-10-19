@@ -339,7 +339,9 @@ map, and a link to *Beyond Kepler*. Optional: a notation page (§6).
 ## 5. Page anatomy
 
 Every content page is **one scrolling article** (no tabs), so the argument
-reads in order. A sticky table of contents lists the sections.
+reads in order. A table of contents on the left lists the sections and
+follows the reader down the page (sticky). The look of every page is set by
+`STYLE.md`.
 
 Every page follows the same rhythm:
 
@@ -402,9 +404,13 @@ everywhere afterwards.
 
 ## 7. Conventions
 
-### 7.1 Origin badges
+### 7.1 Origin notes
 
-Each idea is tagged with where it came from:
+Each idea is tagged with where it came from, by a note in the margin next
+to its paragraph (`STYLE.md` §4.5): a small-caps heading "Origin · Greek",
+coloured by origin. For now the note is the heading only; a one-sentence
+explanation comes later, with the content work. The hub explains the
+origins once, in a key:
 
 - **Babylonian:** inherited from Mesopotamian astronomy.
 - **Greek:** from earlier Greek astronomers and mathematicians.
@@ -434,11 +440,13 @@ $\Delta\lambda = \lambda_\text{model} - \lambda_\text{reference}$ in
 arcminutes against time. It can overlay the curves of earlier models as
 faint "ghosts", so the reader sees the error shrink page by page.
 
-### 7.4 Detour cards
+### 7.4 Detour notes
 
-A small, muted card where a topic outside the scope naturally comes up:
-"*Detour: nutation, the wobble on top of precession. Coming later.*"
-When the topic gets its own page, the card becomes a link.
+A margin note next to the paragraph where a topic outside the scope
+naturally comes up (`STYLE.md` §4.5): the heading "Detour · coming later",
+then the topic and why it matters, "*Nutation: the small wobble of the pole
+on top of precession.*" When the topic gets its own page, the topic becomes
+a link.
 
 ---
 
@@ -449,15 +457,15 @@ from a local static server.
 
 | File | Contents |
 |---|---|
-| `shared/theme.css` | The shared theme. The `:root` variables (background, card, ink, earth, planet, sun, deferent, epicycle colours) are fixed. Layout for articles, figures, badges, exercises, detours, navigation. |
-| `shared/common.js` | The `COL` palette (mirrors the `:root` variables), angle and vector helpers, formatting (degrees, sexagesimal, times), KaTeX rendering helpers. |
-| `shared/sphere3d.js` | Drawing a draggable 3D sphere on a canvas: projection, great circles, arcs, labels, front/back styling. |
-| `shared/plot2d.js` | Simple 2D plots: axes, curves, markers, legends. Used by the error curve and other graphs. |
+| `shared/theme.css` | The shared theme, in the style of `STYLE.md`. The `:root` variables hold the palette of `STYLE.md` §2 and are fixed. Fonts, page layout (contents on the left, text and margin columns), the graduated frame, margin notes, controls, exercises, navigation. |
+| `shared/common.js` | The `COL` palette (mirrors the `:root` variables) and `textColor`; the four-pointed star (`drawStar`, `starPath`, `starSize`: every star in every figure, never a dot, `STYLE.md` §5) and the canvas fonts; angle and vector helpers, formatting (degrees, sexagesimal, times), KaTeX rendering helpers. |
+| `shared/sphere3d.js` | Drawing a draggable 3D sphere on a canvas: projection, great circles, arcs, stars (`star`), labels, front/back styling. |
+| `shared/plot2d.js` | Simple 2D plots: axes, curves, markers, stars (`star`), legends. Used by the error curve and other graphs. |
 | `shared/time.js` | Julian Date, calendar conversions, sidereal time. |
 | `shared/ephemeris.js` | The reference sky: geocentric ecliptic longitudes of the Sun, the Moon and the planets from modern analytical theories (see §11), precession, and atmospheric refraction. Documents its accuracy and range. |
-| `shared/stars.js` | Bright stars (J2000 positions and proper motions from SIMBAD) and their positions of date. |
+| `shared/stars.js` | Bright stars (J2000 positions, proper motions and V magnitudes from SIMBAD) and their positions of date. |
 | `shared/errorcurve.js` | The error-curve widget (§7.3). |
-| `shared/components.js` | Badges, exercises with hint and answer, detour cards, sticky table of contents, previous/next navigation. |
+| `shared/components.js` | The site map; the page header, the sticky table of contents, origin and detour margin notes, exercises with hint and answer, figure numbers, previous/next navigation, the hub; and the graduated frame around every figure (`GraduatedFrame`, `STYLE.md` §6). |
 | `shared/tests.html` | A test page that checks the ephemeris and time functions against published worked examples and prints pass/fail. |
 
 Models built on one page and reused later (the turning sky, the frames, the
