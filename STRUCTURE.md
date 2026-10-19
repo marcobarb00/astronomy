@@ -38,7 +38,8 @@ Kepler, eclipses.
 **Out of scope for now** (signposted with detour cards and the *Beyond Kepler*
 page, see §7.4): planetary latitudes in detail, nutation, aberration,
 parallax of stars, Tycho, Islamic astronomy (Tusi couple, Ibn al-Shatir),
-Newtonian dynamics and perturbations, calendars, instruments.
+Newtonian dynamics and perturbations, calendars, instruments, the slowing of
+the Earth's rotation ($\Delta T$).
 
 ---
 
@@ -72,42 +73,88 @@ The language needed to state any prediction.
 - **Learn:** the celestial sphere as a model of directions; diurnal rotation
   as a rotation about the polar axis; the role of the observer's latitude
   $\varphi$; circumpolar, rising and never-rising stars; the horizon.
-- **Math:** unit vectors, rotation matrices $R_x(\theta)$, $R_z(\theta)$,
-  the altitude of a star as a dot product.
+- **Math:** unit vectors, rotation matrices $R_y(\theta)$ (the tilt about the
+  east–west axis) and $R_z(\theta)$ (the turn), the altitude of a star as a dot
+  product; the turning Earth and the turning sky give the same altitudes.
 - **Figures:** 3D sphere with horizon, pole and a star's daily circle;
   latitude and time sliders.
 - **Exercises:** the condition $\delta > 90^\circ - \varphi$ for a circumpolar
   star; the fraction of the day a star of declination $\delta$ is above the
-  horizon.
+  horizon (and Ptolemy's longest day at Rhodes); the equinox day, 10 minutes
+  longer than the model's 12 hours (refraction and the Sun's radius).
+- **Test:** the model's altitude against the real sky; the residual is
+  refraction near the horizon (`Ephem.refraction`).
 - **Hands over:** "rotation about the pole" needs coordinates to be stated
   precisely.
 
 #### 1.2 · Frames
 
 - **Question:** how do we name a direction, and how do we change names?
-- **Learn:** equatorial $(\alpha, \delta)$, ecliptic $(\lambda, \beta)$ and
+- **Learn:** equatorial $(\alpha, \delta)$ ($\delta$ was met on page 1.1 as the
+  distance from the equator; $\alpha$ completes it), ecliptic $(\lambda, \beta)$ and
   horizontal $(A, a)$ frames, each defined by a fundamental plane and an
   origin; transformations as compositions of rotations; the spherical
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** one fixed direction shown in two frames at once; the axes
-  rotate, the point does not.
-- **Exercises:** derive ecliptic → equatorial; the right ascension and
-  declination of the Sun at $\lambda = 60^\circ$; the altitude of a star at
-  transit.
-- **Hands over:** frames are fixed, but the sky turns: we need time.
+  rotate, the point does not (ecliptic and equator; equator and horizon, both
+  drawn in the equatorial frame). A table of Ptolemy's declinations and right
+  ascensions against the real Sun of AD 137.
+- **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
+  $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
+- **Test:** the formulas against Ptolemy's tables of declination and right
+  ascension (*Almagest* I 15–16), and his values against the real Sun of
+  AD 137 (a table); the model with the mean obliquity against the real Sun of
+  2026, where only nutation remains (a static figure).
+- **Exercises:** the inverse, equatorial → ecliptic, by transposing (the
+  forward transformation is derived in the text, which needs it); the right
+  ascension and declination of the Sun at $\lambda = 60^\circ$; the angle
+  between the ecliptic and the horizon (the altitude at transit was already
+  page 1.1's).
+- **Introduces:** $\theta$, the angle the sky has turned since γ crossed the
+  meridian, and $H = \theta - \alpha$; page 1.3 names $\theta$ the local
+  sidereal time and reads it off a clock.
+- **Hands over:** the obliquity and the origin drift (page 2.3); first, the
+  turn $\theta$ is still a free slider: we need time.
 
 #### 1.3 · Clocks
 
 - **Question:** what time is it according to the sky?
 - **Learn:** sidereal day versus solar day (one extra turn per year);
-  sidereal time; hour angle $H = \text{LST} - \alpha$; mean solar time;
-  Julian Date as a continuous time scale.
+  sidereal time; hour angle $H = \text{LST} - \alpha$ (page 1.2 already wrote
+  $H = \theta - \alpha$, with $\theta$ the turn of the sky: here
+  $\theta = \text{LST}$); mean solar time; Julian Date as a continuous time
+  scale.
 - **Payoff:** day length as a function of latitude and date; transit times
-  of stars.
-- **Exercises:** how many sidereal days in a year and why; when a given star
-  transits at the reader's longitude on a given night.
+  of stars. Day length counts the Sun's upper limb with refraction
+  ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
+- **Figures:** the sky from above the pole through 2026 (date and time:
+  366 turns of the sky in 365 days; play a day or a year); the three angles of
+  $\theta_G = H_m + \alpha_m$ on the equator (static, one worked moment);
+  $\theta$, $\alpha$ and $H$ as arcs of the
+  equator in the observer's sky (3D, time and longitude); a star calendar of
+  transits and nights; the length of the day at one latitude and at every
+  latitude; the model Sun against the real one.
+- **Model:** $Y$ solar days are $Y + 1$ sidereal days; $\theta = \theta_G +
+  \ell$; mean solar time from the mean Sun ($\alpha_m = \bar\lambda$), which
+  gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
+  The payoffs (transits, day length) are the model's predictions, derived
+  in the Model section and checked in Test.
+- **Fit:** the rate from the year (Ptolemy's 365;14,48 days, *Almagest*
+  III 1), the constant from the mean Sun at J2000, the longitude from one
+  timed transit.
+- **Test:** the stars, against apparent sidereal time (within 0.7 s, the
+  nutation); the Sun, model minus real noon, sunrise and sunset through 2026
+  (a figure): noon from −14 to +16 min at every latitude, the day up to
+  13 min too short at 65°.
+- **Exercises:** how many sidereal days in a year and why (with Ptolemy's
+  daily motion, and the Moon's 24 h 50 min day); when Sirius transits at Rome
+  on New Year's Eve, then at the reader's longitude; the earliest sunset and
+  the latest sunrise are not on the solstice (break the model).
+- **Code:** `models/mean-sun.js` (the uniform Sun, `make()`) and
+  `models/clock.js` (sidereal time, transits, the model Sun's day).
 - **Hands over:** we assumed the Sun moves uniformly along the ecliptic. It
-  does not.
+  does not. (Noon's second cause, the tilt, goes to page 2.2; $\Delta T$,
+  the drift of the Earth's rotation, to page 3.3 and a detour card.)
 
 ### Act II: The Sun
 
@@ -127,6 +174,14 @@ The first anomaly and the simplest complete model.
 - **Figures:** the eccentric with the four seasons; $q(t)$ over a year.
   **First appearance of the error curve:** uniform circle versus eccentric
   versus the reference Sun.
+- **When building:** start from `MeanSun` (`shared/models/mean-sun.js`,
+  page 1.3): the uniform circle is `MeanSun.make()`, and Ptolemy's mean Sun
+  (epoch Nabonassar, *Almagest* III 7) is a second parameter set for it.
+  Page 1.3 found the model Sun's day up to 13 min too short at 65°: link back.
+- **When building:** rewrite the last paragraph of page 1.1's Test ("The site
+  has no longitude to test yet…", marked `TODO(2.1)` in
+  `act1-stage/01-turning-sky/index.html`): say that the error curve starts
+  here and link to this page.
 - **Exercises:** the worked exercise "Hipparchus' Sun from two numbers"
   (fit $e \approx 0.041$, $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and
   $92\tfrac12$ days; predict autumn and winter).
@@ -141,6 +196,10 @@ The first anomaly and the simplest complete model.
   onto the equator); their sum; the analemma.
 - **Figures:** the two components and their sum over a year; the analemma
   drawn as the Sun's position at mean noon.
+- **When building:** the obliquity part is the reduction to the equator,
+  $\alpha - \lambda$, computed by `Frames.reduction` in
+  `shared/models/frames.js` (page 1.2 notes the lag in its table of Ptolemy's
+  values).
 - **Exercises:** compute the equation of time on a given date and split it
   into its two parts; find the dates when it vanishes.
 - **Hands over:** the orientation of the whole picture is not fixed either.
@@ -287,7 +346,9 @@ Every page follows the same rhythm:
 1. **Observation.** What is seen in the sky, with numbers.
 2. **Model.** The geometric idea, derived.
 3. **Fit.** How the model's parameters are obtained from observations.
-4. **Test.** The model against the reference sky, with the error curve.
+4. **Test.** The model against the reference sky, with the error curve from
+   page 2.1 on. Act I has no longitude model: its pages test the quantity
+   they predict (an altitude, a rising time).
 5. **Residual.** What is still wrong, and the question for the next page.
 
 Followed by:
@@ -310,10 +371,17 @@ once on the page.
 |---|---|
 | $\alpha,\ \delta$ | right ascension, declination |
 | $\lambda,\ \beta$ | ecliptic longitude, latitude |
-| $A,\ a$ | azimuth, altitude |
+| $A,\ a$ | azimuth (from north through east), altitude |
 | $\varphi$ | observer's latitude |
 | $\varepsilon$ | obliquity of the ecliptic |
-| $H$ | hour angle |
+| $H$ | hour angle, $H = \theta - \alpha$ |
+| $\theta$ | the angle the sky has turned since γ crossed the meridian (local sidereal time, page 1.3) |
+| $\theta_G$ | the sidereal time at Greenwich, $\theta = \theta_G + \ell$ |
+| $\ell$ | geographic longitude, positive east (Meeus counts it positive west; Fitzpatrick writes $\varphi$) |
+| $d$ | days since J2000.0, $\text{JD} - 2451545.0$ |
+| $n$ | the mean Sun's daily motion, $360^\circ / Y$ |
+| γ | the vernal point, origin of $\alpha$ and $\lambda$ (♈ in older books) |
+| P, K, Z | north celestial pole, north ecliptic pole, zenith |
 | $\bar\lambda$ | mean longitude |
 | $M$ | mean anomaly, measured from the apogee |
 | $q$ | equation of centre ($\lambda = \bar\lambda + q$) |
@@ -322,8 +390,10 @@ once on the page.
 | $\Delta\lambda$ | model minus reference, in arcminutes |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
-helpers in `shared/common.js`. Sexagesimal values (e.g. $2;29$) are shown when
-quoting a historical source, always with their decimal value.
+helpers in `shared/common.js`. An angle quoted from a historical source is
+written in degrees, minutes and seconds ($23^\circ 51' 20''$), always with its
+decimal value; other sexagesimal quantities, such as ratios on a radius of 60,
+keep the source's notation ($2;30$), also with their decimal value.
 
 The sign convention for $q$ and the anomalies is fixed on page 2.1 and used
 everywhere afterwards.
@@ -353,7 +423,9 @@ Two or three per page, of four kinds:
 
 Each exercise has an optional hint and a full worked answer, both collapsed.
 **Every numerical answer is computed by a script, not by hand**, and the
-script's output is what goes in the answer.
+script's output is what goes in the answer. The script is kept in
+`tools/numbers/` (one per page, loading the shared code in Node), with any
+raw data it was built from.
 
 ### 7.3 The error curve
 
@@ -382,14 +454,19 @@ from a local static server.
 | `shared/sphere3d.js` | Drawing a draggable 3D sphere on a canvas: projection, great circles, arcs, labels, front/back styling. |
 | `shared/plot2d.js` | Simple 2D plots: axes, curves, markers, legends. Used by the error curve and other graphs. |
 | `shared/time.js` | Julian Date, calendar conversions, sidereal time. |
-| `shared/ephemeris.js` | The reference sky: geocentric ecliptic longitudes of the Sun, the Moon and the planets from modern analytical theories (see §11). Documents its accuracy and range. |
+| `shared/ephemeris.js` | The reference sky: geocentric ecliptic longitudes of the Sun, the Moon and the planets from modern analytical theories (see §11), precession, and atmospheric refraction. Documents its accuracy and range. |
+| `shared/stars.js` | Bright stars (J2000 positions and proper motions from SIMBAD) and their positions of date. |
 | `shared/errorcurve.js` | The error-curve widget (§7.3). |
 | `shared/components.js` | Badges, exercises with hint and answer, detour cards, sticky table of contents, previous/next navigation. |
 | `shared/tests.html` | A test page that checks the ephemeris and time functions against published worked examples and prints pass/fail. |
 
-Models built on one page and reused later (the solar eccentric, the lunar
-epicycle, the planetary equant) live in `shared/models/` so later pages and
-the error-curve ghosts can call them.
+Models built on one page and reused later (the turning sky, the frames, the
+solar eccentric, the lunar epicycle, the planetary equant) live in
+`shared/models/` so later pages and the error-curve ghosts can call them. A
+model that does not predict a longitude (the turning sky, `models/diurnal.js`;
+the frames, `models/frames.js`; the clocks, `models/clock.js`) exports plain
+functions instead of `make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
+is the first model with `make()`.
 
 ## 9. Repository layout
 
@@ -399,6 +476,7 @@ STRUCTURE.md               this file
 shared/                    see §8
   models/
 templates/                 page template and a demo of the shared components
+tools/numbers/             the script behind each page's numbers (§7.2)
 act0-hook/
   01-mars-tonight/         index.html, page.js, page.css (optional)
 act1-stage/
@@ -457,6 +535,8 @@ Modern references:
   used by the reference sky.
 - JPL Horizons (DE441): the yardstick for the reference sky's documented
   accuracy and for some of the tests.
+- SIMBAD (CDS, Strasbourg): star positions and proper motions (ICRS J2000)
+  for `shared/stars.js`.
 - J. Evans, *The History and Practice of Ancient Astronomy*.
 - O. Neugebauer, *A History of Ancient Mathematical Astronomy*.
 

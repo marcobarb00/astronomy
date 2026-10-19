@@ -11,7 +11,7 @@
 	 4. Article layout and sticky table of contents
 	 5. Prose, equations, tables
 	 6. Cards, boxes, colour keys
-	 7. Figures, controls and figure keys
+	 7. Figures, controls and figure keys (and photos)
 	 8. Origin badges
 	 9. Exercises
 	10. Detour cards
@@ -378,6 +378,39 @@ figcaption {
 	max-width: 80ch;
 }
 
+/* A photo (public domain or CC0 only, CLAUDE.md): an image with a
+   caption saying what to notice, and a credit line. It is as wide as the
+   paragraphs (70ch, border included), never wider.
+	 <figure class="photo"><img ...><figcaption> ...
+		 <span class="credit">author, year, source, licence</span>
+	 </figcaption></figure> */
+figure.photo {
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 12px;
+	margin: 22px 0;
+	max-width: 70ch;
+	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+figure.photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+figure.photo figcaption {
+	margin-top: 10px;
+}
+
+.credit {
+	display: block;
+	margin-top: 4px;
+	font-size: .8rem;
+}
+
 /* "Figure 3." label inserted by components.js. */
 .fig-label {
 	color: var(--ink);
@@ -554,6 +587,21 @@ button.small:hover {
 	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 8px;
+}
+
+/* Every line of a read-out has the same height, whatever its sub- and
+   superscripts, and empty lines keep theirs: with the fixed number of lines
+   of showLines (data-lines), the read-out never changes size. */
+.readout .eq {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 2.6rem;
+	margin: 0;
+}
+
+.readout .eq .katex-display {
+	margin: 0;
 }
 
 
@@ -844,12 +892,13 @@ a.detour:hover {
 	margin-top: 6px;
 }
 
-.errorcurve-note:empty {
-	display: none;
-}
-
+/* The read-out under the pointer has a fixed height of three lines,
+   whatever it shows, so the widget keeps its size (CLAUDE.md); the legend
+   holds a hidden place for each kept ghost (errorcurve.js). */
 .errorcurve-readout {
-	min-height: 1.6em;
+	height: 4.8em;
+	line-height: 1.6;
+	overflow-y: auto;
 	font-size: 1rem;
 	font-variant-numeric: tabular-nums;
 	margin-top: 6px;
@@ -1040,7 +1089,11 @@ a.tile:hover {
 	color: var(--planet);
 }
 
+/* A wide table scrolls inside its own box. The box is positioned so that it
+   also clips KaTeX's hidden, absolutely positioned MathML in the cells,
+   which would otherwise widen the page on a phone. */
 .table-scroll {
+	position: relative;
 	overflow-x: auto;
 }
 

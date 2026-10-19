@@ -49,6 +49,10 @@ same style:
   ("In the figure", "Read-out"), styled by `shared/theme.css` (see
   `templates/page.html`). The caption only says what to do with the figure
   and what to notice.
+- Not every figure needs controls. A figure that makes one point is drawn
+  once, with no sliders. Add a control only when moving it shows what the
+  section is about, and never one that mixes in a second effect: a figure
+  about the nutation error does not let the obliquity or the date change.
 - Choose the frame of a figure so that a control moves only what it is
   about. An observer's sky is drawn in the horizon frame: changing the date,
   the time or the latitude turns the sky, never the ground.
@@ -66,17 +70,59 @@ same style:
   day), add previous / next buttons centred under the slider
   (`.ctl.stepper` with `button[data-target][data-step]`, see
   `templates/demo.html`); held down, they repeat and speed up.
+- A figure keeps one size whatever its controls and the pointer show:
+  nothing in it appears, disappears or changes its number of lines. A
+  read-out has a fixed number of lines, declared on its container
+  (`<div class="readout" data-lines="4">`); `showLines` pads it with empty
+  lines and warns in the console when a read-out has no `data-lines` or
+  more lines than it declares, and a page must not trigger that warning. A
+  state that needs other words (polar day, a star that never rises) rewrites
+  a line instead of adding or removing one. A note or legend entry that
+  applies only to some states is shown always, or its room is reserved, as
+  the error curve does for its band note and legend.
 - Scales never jump while a control moves. When a slider changes what is
   plotted, fix the axis range to cover every value the slider allows, with
   the bound computed by a script. A scale may change only when the reader
   changes the view (e.g. a span preset). `Plot2D` and `ErrorCurve` print a
   console warning when data leaves the scale: a page must not trigger it.
 
+### Photos
+
+- When a photo helps (the sky itself, an instrument, a historical object),
+  add one. Use only images in the public domain or under CC0: check the
+  licence on the source page, never assume it.
+- Save it, at web size, in the page's `images/` folder, and record the
+  author, date, source URL and licence in `images/CREDITS.md`.
+- Show it as `<figure class="photo">` (styled by `shared/theme.css`, which
+  makes it as wide as the paragraphs, never wider). The caption says what to
+  notice, as for a figure, and ends with a credit line (author, year, source,
+  licence). Everything visible in the photo that the caption relies on is
+  explained (e.g. the satellite streaks across star trails).
+
 ### Writing
 
 - No walls of text: short paragraphs of one idea each, about four lines at
   most. Split a longer explanation, or move what belongs to a figure into
   its key.
+- Write plain expository prose, as in a good textbook: complete sentences,
+  each saying something definite, with the reasoning in between. Avoid the
+  habits below, which read as written by a machine:
+  - A fact or number without its purpose. Say why it is there: what it
+    shows, what it tests, or where it is used later.
+  - A slogan or punchline closing a paragraph, restating it in a catchy
+    form ("The same geometry, by a different road.", "The axes turn; the
+    point does not.", "This one line is the whole model."). End on the
+    last real point instead.
+  - Verbless fragments as transitions ("Now the real sky.", "Three
+    addresses for one direction.").
+  - Rhetorical questions as transitions ("Why south and not north?",
+    "Which angle?"). State the reason directly.
+  - Teaser headings ("Who turns?", "Frames that move"). A heading says what
+    the section contains.
+  - Metaphors, idioms and coined words where a standard term exists:
+    "coordinates", not "address" or "name"; "refraction", not "the lift";
+    "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
+    away". Use the term the sources use, and define it once.
 
 ## Sources
 
