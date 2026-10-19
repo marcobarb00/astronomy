@@ -269,6 +269,16 @@
 		<h3>Ecliptic and equator</h3>
 
 		<p>
+			The ecliptic is the path of the Sun among the stars over a year. Day
+			after day the Sun moves eastward along it, on average $360^\circ /
+			365.2422 = 0.9856^\circ$ a day, and returns to γ after a year. This
+			yearly motion is a different motion from the daily rotation of page 1.1,
+			which carries the Sun and the stars together and changes none of their
+			coordinates $\alpha, \delta, \lambda, \beta$. Figure 1 shows the yearly motion.
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		<p>
 			The two circles cross at γ, so the two frames share their $x$ axis. The
 			ecliptic's $y$ axis points to $\lambda = 90^\circ$, the summer solstice,
 			which lies $\varepsilon$ north of the equator at $\alpha = 90^\circ$.
@@ -319,17 +329,21 @@
 					<canvas id="ecl-canvas"></canvas>
 				</div>
 				<div>
-					<div class="ctl">
-						<label for="ecl-eps">obliquity ε</label>
-						<input id="ecl-eps" type="range" min="0" max="90" step="0.0001" value="23.4359">
+					<div class="ctl stepper">
+						<label for="ecl-day">date (2026)</label>
+						<input id="ecl-day" type="range" min="0" max="364" step="0.01" value="140">
 						<output></output>
+						<span class="stepper-buttons">
+							<button type="button" class="stepper-btn" data-target="ecl-day" data-step="-1"
+								aria-label="previous day">‹ previous day</button>
+							<button type="button" class="stepper-btn" data-target="ecl-day" data-step="1"
+								aria-label="next day">next day ›</button>
+						</span>
 					</div>
 					<div class="presets">
-						<button type="button" id="ecl-today" data-target="ecl-eps" data-value="23.4359">today</button>
-						<button type="button" data-target="ecl-eps" data-value="23.8556">Ptolemy</button>
-						<button type="button" data-target="ecl-eps" data-value="0">0°</button>
+						<button type="button" class="play" id="ecl-play">▶ play</button>
 					</div>
-					<div class="presets star-choice" id="ecl-stars"></div>
+					<div class="presets star-choice" id="ecl-objects"></div>
 					<div class="readout" id="ecl-readout" data-lines="5"></div>
 				</div>
 			</div>
@@ -343,12 +357,16 @@
 						<dd>the Sun's yearly path, with its pole K; yellow arrows are the ecliptic frame's $y$ and $z$ axes</dd>
 						<dt>γ</dt>
 						<dd>the vernal point, where the two circles cross; the black arrow is the $x$ axis both frames share</dd>
+						<dt class="c-sun">Sun</dt>
+						<dd>the Sun on the chosen date</dd>
+						<dt>arrow</dt>
+						<dd>the direction of the Sun's yearly motion, eastward along the ecliptic, about 1° a day</dd>
 						<dt class="c-planet">star</dt>
-						<dd>the chosen star, at its position of 2026.0</dd>
+						<dd>the chosen star, if any, at its position of 2026.0</dd>
 						<dt class="c-earth">α, δ</dt>
-						<dd>its equatorial path: along the equator from γ (solid), then up to the star (dashed); the small dot is the foot of the star on the equator</dd>
+						<dd>the chosen object's equatorial coordinates: along the equator from γ (solid), then up to the object (dashed); the small dot is its foot on the equator</dd>
 						<dt class="c-sun">λ, β</dt>
-						<dd>the same in the ecliptic frame</dd>
+						<dd>the same in the ecliptic frame; for the Sun $\beta$ is almost zero, so the path stays on the ecliptic</dd>
 					</dl>
 				</div>
 				<div>
@@ -359,15 +377,18 @@
 						<dt>$\lambda, \beta$</dt>
 						<dd>ecliptic longitude and latitude</dd>
 						<dt>$\mathbf s_\text{eq}, \mathbf s_\text{ecl}$</dt>
-						<dd>the star's unit vector in each frame: $\mathbf s_\text{eq} = R_x(\varepsilon)\,\mathbf s_\text{ecl}$</dd>
+						<dd>the object's unit vector in each frame: $\mathbf s_\text{eq} = R_x(\varepsilon)\,\mathbf s_\text{ecl}$, with $\varepsilon = 23.4359^\circ$</dd>
 					</dl>
 				</div>
 			</div>
 			<figcaption>
-				Move the obliquity: the ecliptic and its axes turn
-				about γ, while the star, α and δ stay put and only λ and β change. At 0°
-				the two frames coincide. The first component of the two vectors never
-				changes: it is the shared $x$ axis. Drag the sphere to turn the view.
+				Press play, or step through the days: the Sun goes round the ecliptic
+				once in a year, while the stars stay where they are. The figure turns
+				with the sky, so the daily rotation does not appear. Follow the Sun's
+				coordinates: $\lambda$ grows steadily, $\beta$ stays near zero, and
+				$\delta$ swings between $+\varepsilon$ and $-\varepsilon$. Choose a star
+				to compare: its coordinates do not change. Drag the sphere to turn the
+				view.
 			</figcaption>
 		</figure>
 
@@ -906,8 +927,9 @@
 			<p>
 				On 21 May 2026 the Sun reaches $\lambda = 60^\circ$ ($\beta = 0$). Find
 				its declination and right ascension with $\varepsilon = 23.4359^\circ$.
-				Then repeat with Ptolemy's $23^\circ 51' 20''$ and check the result
-				against his values in the table of section 4 (row $60^\circ$).
+				Check them in Figure 1 on 21 May. Then repeat with Ptolemy's
+				$23^\circ 51' 20''$ and check the result against his values in the table
+				of section 4 (row $60^\circ$).
 			</p>
 			<details class="hint">
 				<p>

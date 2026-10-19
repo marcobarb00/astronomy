@@ -206,6 +206,18 @@ console.log(`2000 random directions: matrices, formulas, inverses and Ephem agre
    (with refraction), at the two solstices.
    ========================================================================== */
 
+title('Model: the Sun along the ecliptic (Figure 1)');
+
+/* The Sun's mean motion along the ecliptic: 360° per tropical year
+   (reference Sun, over 2026), and its position on Figure 1's first date. */
+const sunStart = Ephem.sun(Time.julianDay(2026, 1, 1)).lon;
+const sunEnd = Ephem.sun(Time.julianDay(2027, 1, 1)).lon;
+const may21 = Ephem.sun(Time.julianDay(2026, 5, 21));
+
+console.log(`mean motion: 360 / 365.2422 = ${f(360 / 365.2422, 4)} deg/day;` +
+	` reference Sun over 2026: ${f(norm360(sunEnd - sunStart), 2)} deg in 365 days`);
+console.log(`21 May 2026, 0h TT: lambda = ${f(may21.lon, 2)}, beta = ${arcsec(may21.lat, 1)}`);
+
 title('Fit: the obliquity from two noon shadows (Alexandria, 2026)');
 
 /* Seen noon altitude (deg) of the Sun on day jd0 (0h UT) at a place. */
