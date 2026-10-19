@@ -3,7 +3,7 @@
    Three figures, each with its own init and draw (and update when it has
    controls):
 	 1. ecliptic and equator      (3D, equatorial frame: the stars never move;
-								   the obliquity turns the ecliptic frame)
+								   the date moves the Sun along the ecliptic)
 	 2. equator and horizon       (3D, equatorial frame: latitude and the turn
 								   of the sky move the horizon frame)
 	 3. the nutation error        (2D, static: mean against true obliquity
@@ -38,8 +38,16 @@ const AXIS_LENGTH = 1.25;
 /* Text of an angle with two decimals: "−5.47°". */
 const formatDegrees = value => `${value.toFixed(2).replace('-', '−')}°`;
 
+/* A number with 'digits' decimals, never "-0.00" for a value that rounds
+   to zero. */
+function fixedNoNegativeZero(value, digits) {
+	const text = value.toFixed(digits);
+
+	return Number(text) === 0 ? (0).toFixed(digits) : text;
+}
+
 /* The same in TeX: "-5.47^\circ". */
-const texDegrees = (value, digits = 2) => `${value.toFixed(digits)}^\\circ`;
+const texDegrees = (value, digits = 2) => `${fixedNoNegativeZero(value, digits)}^\\circ`;
 
 /* A right ascension in hours and minutes, for TeX: "4^\text{h}37^\text{m}". */
 function texHours(ra) {
@@ -61,7 +69,7 @@ function texDms(value) {
 
 /* A unit vector in TeX, with four decimals. */
 function texVector(name, v) {
-	return `${name} = (${v.map(x => x.toFixed(4)).join(',\\ ')})`;
+	return `${name} = (${v.map(x => fixedNoNegativeZero(x, 4)).join(',\\ ')})`;
 }
 
 /* The mean position of date of a star of shared/stars.js. */
@@ -91,14 +99,41 @@ function drawCoordinatePath(sphere, axes, lon, lat, names, color) {
 
 /* ==========================================================================
    1. FIGURE 1: ECLIPTIC AND EQUATOR
-   Drawn in the equatorial frame: the stars and the equator never move.
-   The obliquity turns the ecliptic frame about the shared x axis, the
-   direction of the vernal point.
+   Drawn in the equatorial frame with the obliquity of 2026.0: the stars,
+   the equator and the ecliptic never move. The date moves only the Sun,
+   along the ecliptic, about 1° a day: the yearly motion. The daily
+   rotation does not appear, since the frame turns with the sky.
    ========================================================================== */
+
+/* The year shown by the date slider (day 0 = 1 January, 0h TT). */
+const SUN_YEAR = 2026;
+const SUN_YEAR_START = Time.julianDay(SUN_YEAR, 1, 1);
+
+/* Days of the year per second when playing (a year in about 24 s). */
+const PLAY_DAYS_PER_SECOND = 15;
+
+/* The arrow of the Sun's yearly motion: how far ahead it reaches along the
+   ecliptic (deg), and its distance from the centre, just outside the
+   sphere so that it does not cover the lambda path. */
+const SUN_ARROW_DEGREES = 20;
+const SUN_ARROW_RADIUS = 1.1;
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/* Day of the year (slider value) -> "21 May". */
+function formatDay(day) {
+	const date = Time.calendarDate(SUN_YEAR_START + Math.floor(day));
+
+	return `${Math.floor(date.day)} ${MONTH_NAMES[date.month - 1]}`;
+}
+
+/* The objects the read-out can follow: the Sun first, then the stars. */
+const ECLIPTIC_CHOICES = ['Sun', 'Aldebaran', 'Spica', 'Antares', 'Vega', 'Polaris', 'Sirius', 'Canopus'];
 
 const eclipticFigure = {
 	sphere: null,
-	starName: 'Aldebaran',
+	chosen: 'Sun',
 	state: null,
 
 	init() {
@@ -110,39 +145,47 @@ const eclipticFigure = {
 			onDraw: () => this.draw()
 		});
 
-		byId('ecl-eps').value = EPS_TODAY.toFixed(4);
-		byId('ecl-today').dataset.value = EPS_TODAY.toFixed(4);
-		wireSlider(byId('ecl-eps'), () => this.update(), formatDegrees);
+		wireSlider(byId('ecl-day'), () => this.update(), formatDay);
 		wirePresets(figure);
+		wirePlayButton(byId('ecl-play'), byId('ecl-day'), PLAY_DAYS_PER_SECOND);
 
-		buildChoice(byId('ecl-stars'),
-			['Aldebaran', 'Spica', 'Antares', 'Vega', 'Polaris', 'Sirius', 'Canopus'],
-			this.starName, name => {
-				this.starName = name;
-				this.update();
-			});
+		buildChoice(byId('ecl-objects'), ECLIPTIC_CHOICES, this.chosen, name => {
+			this.chosen = name;
+			this.update();
+		});
 
 		this.update();
 	},
 
-	/* The star's two addresses, as vectors and as angles. */
+	/* The Sun on the chosen date, and the chosen object's two sets of
+	   coordinates, as vectors and as angles. */
 	update() {
-		const eps = readNumber('ecl-eps');
-		const eq = starOfDate(this.starName);
-		const sEq = fromLonLat(eq.ra, eq.dec);
-		const sEcl = matApply(Frames.equatorialToEclipticMatrix(eps), sEq);
+		const day = readNumber('ecl-day');
+		const sun = Ephem.sun(SUN_YEAR_START + day);
+		const toEquatorial = Frames.eclipticToEquatorialMatrix(EPS_TODAY);
+		const sunEcl = fromLonLat(sun.lon, sun.lat);
+		const sunEq = matApply(toEquatorial, sunEcl);
+		let sEq = sunEq;
+		let sEcl = sunEcl;
+
+		if (this.chosen !== 'Sun') {
+			const eq = starOfDate(this.chosen);
+
+			sEq = fromLonLat(eq.ra, eq.dec);
+			sEcl = matApply(Frames.equatorialToEclipticMatrix(EPS_TODAY), sEq);
+		}
 
 		this.state = {
-			eps: eps,
-			eq: eq,
-			ecl: toLonLat(sEcl),
+			day: day,
+			sunLon: sun.lon,
+			sunEq: sunEq,
 			sEq: sEq,
 			sEcl: sEcl,
+			eq: toLonLat(sEq),
+			ecl: toLonLat(sEcl),
 			// the ecliptic frame's axes in equatorial components: the columns
 			// of R_x(eps)
-			eclipticAxes: [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map(axis => {
-				return matApply(Frames.eclipticToEquatorialMatrix(eps), axis);
-			})
+			eclipticAxes: [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map(axis => matApply(toEquatorial, axis))
 		};
 
 		this.showReadout();
@@ -150,11 +193,14 @@ const eclipticFigure = {
 	},
 
 	showReadout() {
-		const { eq, ecl, sEq, sEcl } = this.state;
+		const { day, eq, ecl, sEq, sEcl } = this.state;
+		const title = this.chosen === 'Sun' ?
+			`\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` :
+			`\\text{${this.chosen}}`;
 
 		showLines('ecl-readout', [
-			`\\text{${this.starName}}`,
-			`\\alpha = ${texDegrees(eq.ra)}\\ (${texHours(eq.ra)}),\\quad \\delta = ${texDegrees(eq.dec)}`,
+			title,
+			`\\alpha = ${texDegrees(eq.lon)}\\ (${texHours(eq.lon)}),\\quad \\delta = ${texDegrees(eq.lat)}`,
 			`\\lambda = ${texDegrees(ecl.lon)},\\quad \\beta = ${texDegrees(ecl.lat)}`,
 			texVector('\\mathbf s_\\text{eq}', sEq),
 			texVector('\\mathbf s_\\text{ecl}', sEcl)
@@ -185,12 +231,36 @@ const eclipticFigure = {
 		s.arrow(ORIGIN, scale(yEcl, AXIS_LENGTH), { color: COL.sun });
 		s.axis(scale(K, AXIS_LENGTH), 'K', { color: COL.sun, labelColor: COL.sun });
 
-		// the star's two addresses
-		drawCoordinatePath(s, equatorAxes, eq.ra, eq.dec, ['α', 'δ'], COL.earth);
+		// the chosen object's two sets of coordinates
+		drawCoordinatePath(s, equatorAxes, eq.lon, eq.lat, ['α', 'δ'], COL.earth);
 		drawCoordinatePath(s, eclipticAxes, ecl.lon, ecl.lat, ['λ', 'β'], COL.sun);
 
-		s.point(sEq, { color: COL.planet, radius: 6, ring: true });
-		s.labelAway(this.starName, sEq, { x: s.cx, y: s.cy }, COL.planet);
+		if (this.chosen !== 'Sun') {
+			s.point(sEq, { color: COL.planet, radius: 6, ring: true });
+			s.labelAway(this.chosen, sEq, { x: s.cx, y: s.cy }, COL.planet);
+		}
+
+		this.drawSun();
+	},
+
+	/* The Sun on the ecliptic, with an arrow along its yearly motion
+	   (eastward, towards greater longitude). */
+	drawSun() {
+		const s = this.sphere;
+		const { sunLon, sunEq, eclipticAxes } = this.state;
+		const [xEcl, yEcl] = eclipticAxes;
+		const along = degrees => arcPoint(xEcl, yEcl, sunLon + degrees, SUN_ARROW_RADIUS);
+		const shaft = [];
+
+		for (let t = 0; t <= SUN_ARROW_DEGREES - 3; t += 1) {
+			shaft.push(along(t));
+		}
+
+		s.path(shaft, { color: COL.ink, width: 2 });
+		s.arrow(along(SUN_ARROW_DEGREES - 3), along(SUN_ARROW_DEGREES), { color: COL.ink, width: 2 });
+		s.point(sunEq, { color: COL.sun, radius: 8, ring: true });
+		// the label on the side away from the arrow, so the two never overlap
+		s.labelAway('Sun', sunEq, along(SUN_ARROW_DEGREES / 2), COL.ink);
 	}
 };
 
