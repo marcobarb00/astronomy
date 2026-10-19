@@ -67,7 +67,7 @@ From Google Fonts, loaded once in `shared/theme.css` (or each page's head):
 | Use | Font | Notes |
 |---|---|---|
 | Body text | **Spectral** 400, italic 400, 500 | 18 px, line height 1.7, measure ≤ 700 px |
-| Titles (h1, h2, figure titles) | **Cormorant Garamond** 600, italic 500 | h1 64–68 px, h2 34 px |
+| Titles (h1, h2, h3, figure titles) | **Cormorant Garamond** 600, italic 500, italic 600 | h1 64–68 px, h2 34 px, h3 26 px bold italic |
 | Labels in small caps | **Cormorant SC** 500, 600 | letter-spacing 0.1–0.3em |
 | Mathematics | KaTeX, unchanged | |
 
@@ -87,8 +87,11 @@ Rules:
 
 ### 4.1 Grid
 
-- Container max-width about 1060 px, 24 px side padding.
-- **Text column** ≤ 700 px. **Margin column** about 200–240 px to its right,
+- Container max-width about 1320 px, 24 px side padding.
+- **Contents column** on the left, 220 px, 48 px gap: the table of contents,
+  which follows the reader down the page (sticky). Below about 1100 px it
+  moves under the header and stays there.
+- **Text column** ≤ 700 px. **Margin column** about 200–280 px to its right,
   40 px gap. Below about 800 px the margin note drops under its paragraph.
 - Each paragraph that has a note is a flex row: paragraph + margin note,
   aligned to the top of the paragraph.
@@ -96,12 +99,13 @@ Rules:
 ### 4.2 Header
 
 1. "Predicting the Sky" link (small caps).
-2. Left: act line, h1 title, italic subtitle. Right, in the margin column:
-   the table of contents, small caps, with a 1 px `--ink` rule on its left;
-   the current section in `--accent`. Each entry is the section number and
-   the h2 title ("1 Circles about one point"); sections without a number
-   ("Exercises", "Sources") show the title alone. The step labels
-   ("1 · Observation") stay above each h2 (§4.4), not in the contents.
+2. The act line, h1 title, italic subtitle. In the contents column on the
+   left (§4.1): the table of contents, small caps, with a 1 px `--ink` rule
+   on its left; the current section in `--accent`. Each entry is the
+   section number and the h2 title ("1 Circles about one point"); sections
+   without a number ("Exercises", "Sources") show the title alone. The step
+   labels ("1 · Observation") stay above each h2 (§4.4), not in the
+   contents.
 3. Under the header, a **double rule** (§4.3), full width.
 
 ### 4.3 Rules
