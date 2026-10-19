@@ -73,7 +73,7 @@ const ERROR_PERIOD_TEXT = {
 
 /* Shown in the read-out line while the pointer is away from the plot, so
    the dashed pointer line never goes unexplained (CLAUDE.md). */
-const ERROR_READOUT_HINT = 'Point at the plot: a dashed line marks a date, and each curve\'s error there is read here.';
+const ERROR_READOUT_HINT = 'Point at the plot to read each curve\'s error on a date (dashed line).';
 
 
 /* ==========================================================================
@@ -201,11 +201,15 @@ class ErrorCurve {
 	/* Freeze the current models as ghosts ("Keep as ghost" button). A model
 	   whose parameters live in sliders should provide freeze(), returning a
 	   function with the current parameters fixed, and may provide
-	   ghostLabel() to describe them. */
+	   ghostLabel() to describe them. Each model keeps one ghost: keeping
+	   again replaces it, so the legend has a fixed number of entries and
+	   the widget keeps its size (CLAUDE.md). */
 	pinGhost() {
 		this.models.forEach(model => {
+			this.ghosts = this.ghosts.filter(ghost => ghost.keptFrom !== model.id);
 			this.ghosts.push({
-				id: `${model.id}-kept${this.ghosts.length}`,
+				id: `${model.id}-kept`,
+				keptFrom: model.id,
 				label: model.ghostLabel ? model.ghostLabel() : `${model.label} (kept)`,
 				short: model.ghostLabel ? model.ghostLabel() : `${model.short ?? stripTex(model.label)} (kept)`,
 				color: model.color,
@@ -442,7 +446,20 @@ class ErrorCurve {
 			};
 		});
 
-		if (this.showsOutOfRange()) {
+		// a hidden entry holds the place of each model's kept ghost until
+		// the reader keeps one
+		this.models.forEach(model => {
+			if (!this.ghosts.some(ghost => ghost.keptFrom === model.id)) {
+				items.push({
+					label: model.ghostLabel ? model.ghostLabel() : `${model.label} (kept)`,
+					color: model.color,
+					ghost: true,
+					hidden: true
+				});
+			}
+		});
+
+		if (this.canLeaveRange()) {
 			items.push({
 				label: 'outside the valid range of the reference sky',
 				color: COL.muted,
@@ -455,19 +472,26 @@ class ErrorCurve {
 		this.clearButton.disabled = !this.ghosts.some(ghost => ghost.pinned);
 	}
 
-	/* Does the range reach beyond the dates where the ephemeris is valid? */
-	showsOutOfRange() {
-		return this.start < Ephem.RANGE.start || this.end > Ephem.RANGE.end;
+	/* Can the plot reach beyond the dates where the ephemeris is valid, now
+	   or with one of the span presets (centred on the current range)? The
+	   legend entry for the shading is then always shown, so the widget does
+	   not change size when the reader changes the span (CLAUDE.md). */
+	canLeaveRange() {
+		const centre = (this.start + this.end) / 2;
+		const reaches = halfDays => centre - halfDays < Ephem.RANGE.start ||
+			centre + halfDays > Ephem.RANGE.end;
+
+		return reaches((this.end - this.start) / 2) ||
+			this.spans.some(span => reaches(span.years * 365.25 / 2));
 	}
 
-	/* Explain the bands whenever some curve is drawn as one. */
+	/* The note that explains the bands. It is always shown, whether or not
+	   the current span draws bands, so the widget keeps its size. */
 	updateBandNote() {
-		const hasBand = (this.curves ?? []).some(curve => curve.sample.isBand);
 		const window = ERROR_PERIOD_TEXT[this.body] ?? `${Math.round(this.period)} days`;
 
-		this.bandNote.textContent = hasBand ?
-			`Over this span each curve is a band, from its smallest to its largest error within ${window}.` :
-			'';
+		this.bandNote.textContent = 'Over long spans, where one pixel covers more than ' +
+			`${this.resolution} days, each curve is drawn as a band, from its smallest to its largest error within ${window}.`;
 	}
 
 

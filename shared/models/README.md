@@ -23,3 +23,5 @@ instead of `make()`, since the error curve cannot judge it.
 |---|---|---|
 | `diurnal.js` | 1.1 | `Diurnal`: the turning sky. Frames (sky, horizon), altitude, culminations, rising hour angle, fraction of a turn above the horizon. |
 | `frames.js` | 1.2 | `Frames`: the equatorial, ecliptic and horizon frames. Rotation matrices and the multiplied-out formulas between them, azimuth from the north, the reduction to the equator, the angle between the ecliptic and the horizon; Ptolemy's obliquity and his tables of declination and right ascension (*Almagest* I 15–16). |
+| `mean-sun.js` | 1.3 | `MeanSun`: the Sun moving uniformly along the ecliptic, `make({ L0, n, epoch })`; the modern parameters (Meeus 25.2). Page 2.1 starts from it. |
+| `clock.js` | 1.3 | `Clock`: the sidereal clock read off mean solar time. Sidereal time (linear Meeus 12.4), hour angle, local mean time, transits of a star, and the model Sun's noon, sunrise, sunset and day length ($h_0 = -50'$). |
