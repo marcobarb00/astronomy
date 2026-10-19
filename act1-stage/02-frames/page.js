@@ -236,7 +236,7 @@ const eclipticFigure = {
 		drawCoordinatePath(s, eclipticAxes, ecl.lon, ecl.lat, ['λ', 'β'], COL.sun);
 
 		if (this.chosen !== 'Sun') {
-			s.point(sEq, { color: COL.planet, radius: 6, ring: true });
+			s.star(sEq, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 			s.labelAway(this.chosen, sEq, { x: s.cx, y: s.cy }, COL.planet);
 		}
 
@@ -390,7 +390,7 @@ const horizonFigure = {
 		s.circle(south, zenith, { color: COL.muted, width: 1, dash: [2, 4] });
 
 		[['S', south], ['E', east], ['N', negate(south)], ['W', negate(east)]].forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point(zenith, { color: COL.deferent, radius: 5 });
@@ -412,7 +412,7 @@ const horizonFigure = {
 		drawCoordinatePath(s, hourAxes, hor.H, eq.dec, ['H', 'δ'], COL.earth);
 		drawCoordinatePath(s, horizonAxes, hor.A, hor.a, ['A', 'a'], COL.deferent);
 
-		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
+		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.starName, starPoint, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
