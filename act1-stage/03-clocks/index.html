@@ -137,7 +137,8 @@
 						<output></output>
 					</div>
 					<div class="presets">
-						<button type="button" class="play" id="wheel-play">▶ play</button>
+						<button type="button" class="play" id="wheel-play-day">▶ play a day</button>
+						<button type="button" class="play" id="wheel-play-year">▶ play a year</button>
 					</div>
 					<div class="readout" id="wheel-readout" data-lines="3"></div>
 				</div>
@@ -153,7 +154,9 @@
 						<dt class="c-earth">equator</dt>
 						<dd>the celestial equator</dd>
 						<dt class="c-sun">ecliptic</dt>
-						<dd>the Sun's yearly path (dashed)</dd>
+						<dd>the Sun's yearly path (dashed): a great circle tilted by $\varepsilon = 23.4^\circ$ to the equator, so it is centred on its own pole K, not on P, and appears off-centre</dd>
+						<dt class="c-sun">K</dt>
+						<dd>the pole of the ecliptic, $23.4^\circ$ from P; it turns about P with the sky, carrying the ecliptic with it</dd>
 						<dt>γ</dt>
 						<dd>the vernal point, where the Sun crosses the equator going north</dd>
 						<dt class="c-muted">dots</dt>
@@ -175,10 +178,12 @@
 				</div>
 			</div>
 			<figcaption>
-				Step through the days with the time fixed: the Sun stays near the
-				meridian, while the stars and γ move about $1^\circ$ further each day
-				in the direction of the turn. On 1 January 2027, the last step, the sky
-				has made one turn more than the Sun. Press play to follow a single day.
+				Play a day: everything turns once about P, the ecliptic too, rocking
+				about the centre as K goes round. Then play a year, or step through the
+				days, with the time fixed: the Sun stays near the meridian, while the
+				stars, γ and K move about $1^\circ$ further each day in the direction of
+				the turn. On 1 January 2027, the last day, the sky has made one turn
+				more than the Sun.
 			</figcaption>
 		</figure>
 
@@ -268,7 +273,13 @@
 			<span class="badge" data-origin="modern"></span>
 		</p>
 
-		$$\alpha_m = \bar\lambda = L_0 + n\,d, \qquad d = \text{days since the epoch}.$$
+		$$\alpha_m = \bar\lambda = L_0 + n\,d.$$
+
+		<p>
+			Here $d$ is the time in days of UT since the epoch J2000.0, 2000
+			January 1 at 12:00 UT, and $L_0$ is the mean Sun's right ascension at
+			that epoch.
+		</p>
 
 		<p>
 			The <em>mean solar time</em> at a place is the hour angle of the mean
@@ -303,20 +314,110 @@
 			</figcaption>
 		</figure>
 
+		<h3>The sidereal time from the clock</h3>
+
 		<p>
-			The definitions give the sidereal time from the clock. At Greenwich
-			$H_m = 15^\circ(\text{UT} - 12\,\text{h})$, so $\theta_G = H_m + \alpha_m$.
-			Count $d$ in days of UT from the epoch J2000.0, 2000 January 1 at
-			12 h UT, so that $15^\circ(\text{UT} - 12\,\text{h})$ is $360^\circ\,d$
-			up to whole turns. Then
+			A clock gives the hour angle of the mean Sun; the sidereal time is the
+			hour angle of γ. Four steps lead from one to the other. Each is checked on
+			one moment, 20 April 2026 at 20:00 UT, at Greenwich.
+		</p>
+
+		<p>
+			<strong>Step 1: the sidereal time is the hour angle of the mean Sun plus
+			its right ascension.</strong> Page 1.2's relation $H = \theta - \alpha$
+			holds for every point of the sky, the mean Sun included: $H_m = \theta_G -
+			\alpha_m$ at Greenwich, so
+		</p>
+
+		$$\theta_G = H_m + \alpha_m.$$
+
+		<p>
+			Figure 2 shows the three angles on the equator. Going westward from the
+			meridian, one meets the mean Sun after $H_m$, and γ after another
+			$\alpha_m$, because the right ascension is counted eastward from γ to the
+			mean Sun.
+		</p>
+
+		<!-- Figure 2: the three angles on the equator (static) -->
+		<figure class="fig">
+			<canvas id="angles-canvas"></canvas>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole; the view is from outside the sphere, above P, as in Figure 1</dd>
+						<dt class="c-earth">circle</dt>
+						<dd>the celestial equator</dd>
+						<dt class="c-deferent">meridian</dt>
+						<dd>the meridian of Greenwich</dd>
+						<dt class="c-sun">mean Sun</dt>
+						<dd>the mean Sun, on the equator</dd>
+						<dt>γ</dt>
+						<dd>the vernal point, the origin of right ascension</dd>
+						<dt class="c-sun">$H_m$</dt>
+						<dd>the hour angle of the mean Sun, from the meridian westward (clockwise in this view)</dd>
+						<dt class="c-earth">$\alpha_m$</dt>
+						<dd>its right ascension, from γ eastward (anticlockwise)</dd>
+						<dt class="c-epicycle">$\theta_G$</dt>
+						<dd>the sidereal time, the hour angle of γ, from the meridian westward</dd>
+						<dt>arrows</dt>
+						<dd>the direction in which each angle is counted</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the directions of the mean Sun and of γ, from P, where the arcs start and end</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Greenwich on 20 April 2026 at 20:00 UT: $H_m = 120^\circ$, $\alpha_m =
+				28.92^\circ$, $\theta_G = 148.92^\circ$. The outer arc, from the meridian
+				to γ, is the sum of the arc from the meridian to the mean Sun and the
+				arc between the mean Sun and γ.
+			</figcaption>
+		</figure>
+
+		<p>
+			<strong>Step 2: the clock gives $H_m$.</strong> By the definition of mean
+			solar time, the mean Sun crosses the meridian of Greenwich at 12:00 UT,
+			and its hour angle grows by $15^\circ$ for every hour of UT:
+		</p>
+
+		$$H_m = 15^\circ\,(\text{UT} - 12\,\text{h}).$$
+
+		<p>
+			At 20:00 UT, $H_m = 15^\circ \times 8 = 120^\circ$.
+		</p>
+
+		<p>
+			<strong>Step 3: the date gives $\alpha_m$.</strong> On 20 April 2026 at
+			20:00 UT, $d = 9606.3333$ days, and $\alpha_m = L_0 + n\,d =
+			28.92^\circ$ after the whole turns are removed. Then $\theta_G = 120^\circ
+			+ 28.92^\circ = 148.92^\circ$.
+		</p>
+
+		<p>
+			<strong>Step 4: $H_m$ in terms of $d$.</strong> To have a single formula
+			in $d$, write the time of day with $d$ too. Because $d$ is counted from a
+			noon, its whole part $N$ is the number of noons since the epoch, and its
+			fraction is the time since the last noon:
+		</p>
+
+		$$d = N + \frac{\text{UT} - 12\,\text{h}}{24\,\text{h}}, \qquad 360^\circ\,d = 360^\circ N + 15^\circ\,(\text{UT} - 12\,\text{h}) = 360^\circ N + H_m.$$
+
+		<p>
+			Whole turns do not change a direction, so $H_m$ can be replaced by
+			$360^\circ\,d$. On 20 April, $360^\circ \times 9606.3333$ is 9606 whole
+			turns plus $120^\circ$, which is $H_m$. Putting steps 1 to 4 together,
 		</p>
 
 		$$\theta_G = 360^\circ\,d + L_0 + n\,d = L_0 + (360^\circ + n)\,d.$$
 
 		<p>
-			The sidereal clock gains $n$ on the solar clock every day: this is the
-			$\omega = 360^\circ + n$ per solar day found above. With the numbers in
-			use since 1984 (Meeus, ch. 12),
+			The rate has a simple meaning. In one day of UT the sky turns $360^\circ$
+			with respect to the mean Sun, which is what a solar day is, and the mean
+			Sun moves $n$ further east from γ; so with respect to γ the sky turns
+			$360^\circ + n$, the rate $\omega$ found at the start of this section.
+			With the numbers in use since 1984 (Meeus, ch. 12),
 		</p>
 
 		<div class="box">
@@ -335,11 +436,11 @@
 			Page 1.2 placed Aldebaran in the sky of Rome on 1 January 2026 at
 			19:00 UT with $\theta = 38.94^\circ$, set by hand. The formula gives
 			$\theta_G = 26.44^\circ$ at that moment, and with $\ell = 12.50^\circ$,
-			$\theta = 38.94^\circ$ ($2^\text{h}35^\text{m}45^\text{s}$). Figure 2 starts
+			$\theta = 38.94^\circ$ ($2^\text{h}35^\text{m}45^\text{s}$). Figure 3 starts
 			from that moment.
 		</p>
 
-		<!-- Figure 2: sidereal time and the hour angle in the observer's sky -->
+		<!-- Figure 3: sidereal time and the hour angle in the observer's sky -->
 		<figure class="fig">
 			<div class="fig-row">
 				<div>
@@ -518,13 +619,13 @@
 		</p>
 
 		<p>
-			Figure 3 plots the transits through a whole year as a star calendar, with
+			Figure 4 plots the transits through a whole year as a star calendar, with
 			the hours of night from the Sun's model of the next subsection. Each
 			night the transit comes 3 min 56 s earlier, and the star returns to the
 			same hour after a year.
 		</p>
 
-		<!-- Figure 3: the star calendar -->
+		<!-- Figure 4: the star calendar -->
 		<figure class="fig">
 			<canvas id="transit-plot"></canvas>
 			<div class="panel-controls">
@@ -656,7 +757,7 @@
 			without sunrise in 2026.
 		</p>
 
-		<!-- Figure 4: the length of the day -->
+		<!-- Figure 5: the length of the day -->
 		<figure class="fig">
 			<div class="panels">
 				<div>
@@ -807,13 +908,13 @@
 		<h3>The Sun</h3>
 
 		<p>
-			Figure 5 compares the model Sun with the reference Sun through 2026. The
+			Figure 6 compares the model Sun with the reference Sun through 2026. The
 			reference Sun's noon is its real meridian crossing; its sunrise and
 			sunset use the same $h_0 = -50'$ as the model, so the comparison measures
 			only the motion of the Sun.
 		</p>
 
-		<!-- Figure 5: the model Sun against the real Sun -->
+		<!-- Figure 6: the model Sun against the real Sun -->
 		<figure class="fig">
 			<div class="fig-row">
 				<div>
@@ -895,7 +996,7 @@
 
 		<p>
 			<strong>The Sun does not move uniformly.</strong> Both errors of
-			Figure 5 come from the model Sun. Its longitude grows by the same angle
+			Figure 6 come from the model Sun. Its longitude grows by the same angle
 			every day, while the real Sun runs up to about $2^\circ$ ahead of it in
 			spring and behind it in autumn. Page 2.1 measures this inequality and
 			builds the first model of it.
@@ -980,7 +1081,7 @@
 				12.4964^\circ$, $\varphi = 41.9^\circ$) on New Year's Eve, 31 December
 				2026? Its position of date is $\alpha = 101.5845^\circ$, $\delta =
 				-16.755^\circ$. Give the answer in UT and in Central European Time
-				(UT + 1 h), and the star's altitude. Check in Figure 3, then repeat
+				(UT + 1 h), and the star's altitude. Check in Figure 4, then repeat
 				for your own longitude.
 			</p>
 			<details class="hint">
@@ -1015,12 +1116,12 @@
 				winter on the shortest day, the solstice: at Rome, 07:36:18 and
 				16:43:44 CET on 21 December 2026. In the real sky the earliest sunset
 				is on 8 December (16:38:44 CET) and the latest sunrise on 4 January
-				2027 (07:37:53 CET). Explain the difference with Figure 5.
+				2027 (07:37:53 CET). Explain the difference with Figure 6.
 			</p>
 			<details class="hint">
 				<p>
 					Near the solstice the length of the day hardly changes. Compare it
-					with the motion of noon in Figure 5.
+					with the motion of noon in Figure 6.
 				</p>
 			</details>
 			<details class="answer">

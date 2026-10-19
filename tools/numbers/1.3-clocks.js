@@ -15,7 +15,7 @@
 	 5. Model: the two days, sidereal time, mean time, Julian Date,
 	    transits, the length of the day
 	 6. Fit: the year, the constant, the longitude
-	 7. Test: the stars; the Sun (Figure 5 and its scale)
+	 7. Test: the stars; the Sun (Figure 6 and its scale)
 	 8. Exercises
 	 9. Residual: Delta T; the stars' right ascensions drift
    ========================================================================== */
@@ -266,6 +266,14 @@ title('Model: mean time and the sidereal clock');
 console.log(`rate ${Clock.RATE} = 360 + ${(Clock.RATE - 360).toFixed(11)}; n = ${n.toFixed(11)}`);
 console.log(`theta_G at J2000.0 = ${Clock.THETA0} deg = ${hms(Clock.THETA0 / 15)}; mean Sun L0 = ${MeanSun.MODERN.L0}:` +
 	` difference ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(1)}" = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 240).toFixed(2)} s of time`);
+const example = Time.julianDayTime(2026, 4, 20, 20, 0, 0);
+const dExample = example - Time.J2000;
+const hExample = 15 * (20 - 12);
+const alphaExample = norm360(MeanSun.MODERN.L0 + n * dExample);
+console.log(`worked example (Figure 2), 20 Apr 2026 20:00 UT: d = ${dExample.toFixed(4)} = ${Math.floor(dExample)} + ${(dExample - Math.floor(dExample)).toFixed(4)};` +
+	` H_m = 15 x 8 = ${hExample}; 360 d = ${Math.floor(dExample)} turns + ${norm360(360 * dExample).toFixed(4)} deg`);
+console.log(`  alpha_m = L0 + n d = ${alphaExample.toFixed(2)}; theta_G = H_m + alpha_m = ${norm360(hExample + alphaExample).toFixed(2)};` +
+	` the clock formula gives ${Clock.gmst(example).toFixed(2)}`);
 console.log(`linear clock minus full Meeus 12.4 in 2026: ${((Clock.gmst(Y2026) - Time.gmst(Y2026)) * 240 * 1000).toFixed(1)} ms`);
 console.log(`Rome: local mean time = UT + ${hms(PLACES.rome[1] / 15, 0)}; CET = UT + 1 h, so local mean noon at Rome is ${clock(Clock.fromLocalMeanTime(Y2026, 12, PLACES.rome[1]), CET)} CET`);
 
@@ -354,7 +362,7 @@ for (let d = 0; d < 366; d++) {
 
 console.log(`|apparent sidereal time - the linear clock| in 2026 <= ${(worstStar * 240).toFixed(2)} s`);
 
-title('Test: the Sun in 2026 (model - real, minutes); scale of Figure 5');
+title('Test: the Sun in 2026 (model - real, minutes); scale of Figure 6');
 const SCAN = [];
 
 for (let phi = -65; phi <= 65; phi += 2.5) {
@@ -429,7 +437,7 @@ SCAN.filter(phi => phi > 0).forEach(phi => {
 	}
 });
 console.log(`northern hemisphere: the model's day is at most ${northLong.value.toFixed(1)} min too long (at ${northLong.phi})`);
-console.log(`Figure 5 (|phi| <= 65, every 2.5 deg): every error within [${all[0].toFixed(1)}, ${all[1].toFixed(1)}] min -> fixed range [-25, 25]`);
+console.log(`Figure 6 (|phi| <= 65, every 2.5 deg): every error within [${all[0].toFixed(1)}, ${all[1].toFixed(1)}] min -> fixed range [-25, 25]`);
 
 title('Test: why the day length is wrong (5 April 2026, London)');
 const april = Time.julianDay(2026, 4, 5);

@@ -1,14 +1,17 @@
 /* ==========================================================================
    PAGE 1.3 · CLOCKS - SCRIPT (page.js)
-   Five figures, each with its own init, update and draw:
+   Six figures, each with its own init and draw (and update when it has
+   controls):
 	 1. the sky from above the pole   (2D: the stars' day and the Sun's day
 									   through 2026)
-	 2. sidereal time and hour angle  (3D, horizon frame: the time and the
+	 2. the three angles              (2D, static: theta_G = H_m + alpha_m on
+									   the equator at one moment)
+	 3. sidereal time and hour angle  (3D, horizon frame: the time and the
 									   longitude turn the sky, never the ground)
-	 3. the star calendar             (2D: transit times through 2026)
-	 4. the length of the day         (2D: one latitude through the year, and
+	 4. the star calendar             (2D: transit times through 2026)
+	 5. the length of the day         (2D: one latitude through the year, and
 									   the map of every latitude)
-	 5. the clock against the Sun     (2D: model minus real noon, sunrise,
+	 6. the clock against the Sun     (2D: model minus real noon, sunrise,
 									   sunset through 2026)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
    models/frames.js, models/mean-sun.js, models/clock.js, sphere3d.js,
@@ -18,11 +21,12 @@
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
 	 1. Figure 1: the sky from above the pole
-	 2. Figure 2: sidereal time and hour angle
-	 3. Figure 3: the star calendar
-	 4. Figure 4: the length of the day
-	 5. Figure 5: the clock against the Sun
-	 6. Page start
+	 2. Figure 2: the three angles on the equator
+	 3. Figure 3: sidereal time and hour angle
+	 4. Figure 4: the star calendar
+	 5. Figure 5: the length of the day
+	 6. Figure 6: the clock against the Sun
+	 7. Page start
    ========================================================================== */
 
 
@@ -35,8 +39,10 @@ const YEAR = 2026;
 const YEAR_START = Time.julianDay(YEAR, 1, 1);
 const DAYS_IN_YEAR = 365;
 
-/* The time sliders run at one hour per second when playing. */
+/* The time sliders run at one hour per second when playing; the date
+   slider of Figure 1 at thirty days per second (a year in 12 s). */
 const PLAY_HOURS_PER_SECOND = 1;
+const PLAY_DAYS_PER_SECOND = 30;
 
 /* Rome, the default place of the page (as on pages 1.1 and 1.2). */
 const ROME = { lat: 41.9, lon: 12.4964 };
@@ -101,6 +107,56 @@ function texHms(degrees) {
 	return `${h % 24}^\\text{h}${pad2(m)}^\\text{m}${pad2(s)}^\\text{s}`;
 }
 
+/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
+   the device pixel ratio; it follows the column when the page is resized
+   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
+   of the drawing, 'margin' px inside the edge). */
+function squareCanvas(owner, canvas, maxWidth, margin) {
+	// at least 240 px: a column measured before the layout is done can
+	// report a few pixels, which would give a negative radius
+	const targetWidth = () => clamp(canvas.parentElement.clientWidth || 400, 240, maxWidth);
+
+	const resize = () => {
+		const width = targetWidth();
+		const ratio = window.devicePixelRatio || 1;
+
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${width}px`;
+		canvas.width = Math.round(width * ratio);
+		canvas.height = Math.round(width * ratio);
+		owner.ctx = canvas.getContext('2d');
+		owner.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		owner.width = width;
+		owner.cx = width / 2;
+		owner.cy = width / 2;
+		owner.R = width / 2 - margin;
+	};
+
+	resize();
+	new ResizeObserver(() => {
+		if (targetWidth() !== owner.width) {
+			resize();
+			owner.draw();
+		}
+	}).observe(canvas.parentElement);
+}
+
+/* A point on a circle of radius r about (cx, cy), at an angle measured
+   clockwise from the top (the meridian), as the figures seen from above P
+   draw hour angles. */
+function clockwisePoint(owner, angle, r) {
+	return { x: owner.cx + r * sin(angle), y: owner.cy - r * cos(angle) };
+}
+
+/* A text label centred at a screen point. */
+function centredLabel(ctx, text, point, color) {
+	ctx.fillStyle = color;
+	ctx.font = LABEL_FONT;
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillText(text, point.x, point.y);
+}
+
 /* The mean position of date of a star of shared/stars.js. */
 const starOfDate = (name, jd) => Stars.ofDate(Stars.find(name), jd);
 
@@ -127,44 +183,31 @@ const wheelFigure = {
 	init() {
 		const figure = byId('wheel-canvas').closest('figure');
 
-		this.canvas = byId('wheel-canvas');
-		this.ctx = this.canvas.getContext('2d');
 		this.stars = Stars.LIST.map(star => ({
 			name: star.name,
 			position: Stars.ofDate(star, YEAR_START)
 		}));
 
-		this.resize();
-		new ResizeObserver(() => {
-			if (this.canvas.clientWidth !== this.width) {
-				this.resize();
-				this.draw();
-			}
-		}).observe(this.canvas.parentElement);
+		squareCanvas(this, byId('wheel-canvas'), 480, 34);
 
 		wireSlider(byId('wheel-day'), () => this.update(), dayText);
 		wireSlider(byId('wheel-time'), () => this.update(), clockText);
 		wirePresets(figure);
-		wirePlayButton(byId('wheel-play'), byId('wheel-time'), PLAY_HOURS_PER_SECOND);
+		// two players: the time (the turn of one day) and the date at a fixed
+		// time (the drift through the year); starting one pauses the other
+		const players = {};
+
+		players.day = wirePlayButton(byId('wheel-play-day'), byId('wheel-time'), PLAY_HOURS_PER_SECOND, {
+			playLabel: '▶ play a day',
+			onPlay: () => players.year.pause()
+		});
+		players.year = wirePlayButton(byId('wheel-play-year'), byId('wheel-day'), PLAY_DAYS_PER_SECOND, {
+			playLabel: '▶ play a year',
+			onPlay: () => players.day.pause()
+		});
 
 		this.sunAtStart = this.sunRightAscension(YEAR_START);
 		this.update();
-	},
-
-	/* A square canvas as wide as its column (at most 480 px). */
-	resize() {
-		const width = Math.min(this.canvas.parentElement.clientWidth || 400, 480);
-		const ratio = window.devicePixelRatio || 1;
-
-		this.canvas.style.width = `${width}px`;
-		this.canvas.style.height = `${width}px`;
-		this.canvas.width = Math.round(width * ratio);
-		this.canvas.height = Math.round(width * ratio);
-		this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-		this.width = width;
-		this.cx = width / 2;
-		this.cy = width / 2;
-		this.R = width / 2 - 34;
 	},
 
 	/* The real Sun's right ascension (deg) at JD(UT). */
@@ -213,9 +256,8 @@ const wheelFigure = {
 	/* Screen position of a direction (ra, dec), with theta the turn of the sky. */
 	toScreen(ra, dec) {
 		const r = this.R * (90 - dec) / (90 - WHEEL_RIM_DEC);
-		const H = this.state.theta - ra;
 
-		return { x: this.cx + r * sin(H), y: this.cy - r * cos(H) };
+		return clockwisePoint(this, this.state.theta - ra, r);
 	},
 
 	draw() {
@@ -233,6 +275,7 @@ const wheelFigure = {
 		this.drawStars();
 		this.drawPoint(0, 0, COL.ink, 4, 'γ');
 		this.drawPoint(0, 90, COL.ink, 3.5, 'P');
+		this.drawPoint(270, 90 - EPS_YEAR, COL.sun, 3.5, 'K');
 		this.drawPoint(this.state.sunRa, this.state.sunDec, COL.sun, 8, 'Sun');
 	},
 
@@ -249,7 +292,9 @@ const wheelFigure = {
 		ctx.setLineDash([]);
 	},
 
-	/* The ecliptic, dashed, from Frames.eclipticPoint. */
+	/* The ecliptic, dashed, from Frames.eclipticPoint. It is the great
+	   circle 90° from its pole K (alpha = 270°, delta = 90° - eps), so in
+	   this view centred on P it is centred near K, off the centre. */
 	drawEcliptic() {
 		const ctx = this.ctx;
 
@@ -329,7 +374,181 @@ const wheelFigure = {
 
 
 /* ==========================================================================
-   2. FIGURE 2: SIDEREAL TIME AND HOUR ANGLE
+   2. FIGURE 2: THE THREE ANGLES ON THE EQUATOR
+   Static. The equator seen from above P, as in Figure 1, at Greenwich on
+   20 April 2026, 20:00 UT (tools/numbers/1.3-clocks.js): the hour angle of
+   the mean Sun H_m, its right ascension alpha_m, and the sidereal time
+   theta_G = H_m + alpha_m. Hour angles are measured westward (clockwise in
+   this view), right ascension eastward (anticlockwise).
+   ========================================================================== */
+
+const ANGLES_MOMENT = { year: 2026, month: 4, day: 20, hour: 20 };
+
+/* Radii of the drawing, as fractions of R: the equator, and one ring per
+   angle so the three arcs do not hide one another. */
+const ANGLES_RING = { equator: 0.66, alpha: 0.54, H: 0.82, theta: 1.0 };
+
+/* Where each name is written: the angle (clockwise from the meridian) and
+   the radius (fraction of R), chosen in the gaps between the rings. */
+const ANGLES_LABELS = {
+	H: { at: 25, r: 0.91 },
+	theta: { at: 74, r: 1.1 },
+	alpha: { at: 134, r: 0.44 }
+};
+
+const anglesFigure = {
+	init() {
+		const { year, month, day, hour } = ANGLES_MOMENT;
+		const jd = Time.julianDayTime(year, month, day, hour, 0, 0);
+		const d = jd - Time.J2000;
+
+		// the derivation of section 2, step by step
+		this.H = 15 * (hour - 12);
+		this.alpha = norm360(MeanSun.MODERN.L0 + MeanSun.MODERN.n * d);
+		this.theta = norm360(this.H + this.alpha);
+
+		squareCanvas(this, byId('angles-canvas'), 420, 30);
+		this.draw();
+	},
+
+	draw() {
+		const ctx = this.ctx;
+		const R = this.R;
+		const sunPoint = clockwisePoint(this, this.H, ANGLES_RING.equator * R);
+		const gammaPoint = clockwisePoint(this, this.theta, ANGLES_RING.equator * R);
+
+		ctx.clearRect(0, 0, this.width, this.width);
+
+		// the equator and the fixed meridian
+		ctx.strokeStyle = COL.earth;
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.arc(this.cx, this.cy, ANGLES_RING.equator * R, 0, TAU);
+		ctx.stroke();
+		this.drawMeridian();
+
+		// dashed guides from P through the mean Sun and γ, to the outer ring
+		this.guide(this.H);
+		this.guide(this.theta);
+
+		// the three angles
+		this.drawAngle(0, this.H, ANGLES_RING.H * R, COL.sun, ['H', 'm'], ANGLES_LABELS.H, false);
+		this.drawAngle(this.theta, this.H, ANGLES_RING.alpha * R, COL.earth, ['α', 'm'], ANGLES_LABELS.alpha, true);
+		this.drawAngle(0, this.theta, ANGLES_RING.theta * R, COL.epicycle, ['θ', 'G'], ANGLES_LABELS.theta, false);
+
+		// the points
+		this.dot(sunPoint, COL.sun, 7);
+		this.dot(gammaPoint, COL.ink, 4.5);
+		this.dot({ x: this.cx, y: this.cy }, COL.ink, 3.5);
+		centredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink);
+		centredLabel(ctx, 'mean Sun', clockwisePoint(this, this.H - 24, ANGLES_RING.equator * R - 22), COL.ink);
+		centredLabel(ctx, 'γ', clockwisePoint(this, this.theta + 7, ANGLES_RING.equator * R + 14), COL.ink);
+	},
+
+	/* A dashed line from P outwards at an angle (clockwise from the top). */
+	guide(angle) {
+		const ctx = this.ctx;
+		const end = clockwisePoint(this, angle, this.R);
+
+		ctx.strokeStyle = COL.muted;
+		ctx.lineWidth = 1;
+		ctx.setLineDash([4, 4]);
+		ctx.beginPath();
+		ctx.moveTo(this.cx, this.cy);
+		ctx.lineTo(end.x, end.y);
+		ctx.stroke();
+		ctx.setLineDash([]);
+	},
+
+	/* The meridian of Greenwich, from P up past the rings. */
+	drawMeridian() {
+		const ctx = this.ctx;
+		const top = { x: this.cx, y: this.cy - this.R - 12 };
+
+		ctx.strokeStyle = COL.deferent;
+		ctx.lineWidth = 2.5;
+		ctx.beginPath();
+		ctx.moveTo(this.cx, this.cy);
+		ctx.lineTo(top.x, top.y);
+		ctx.stroke();
+		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent);
+	},
+
+	/* An arc from angle 'from' to angle 'to' (clockwise from the top, or
+	   anticlockwise when 'anticlockwise'), at radius r, with an arrowhead
+	   at its end and its name at the place given in 'label'. */
+	drawAngle(from, to, r, color, name, label, anticlockwise) {
+		const ctx = this.ctx;
+		const toCanvas = angle => (angle - 90) * D2R;
+
+		ctx.strokeStyle = color;
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.arc(this.cx, this.cy, r, toCanvas(from), toCanvas(to), anticlockwise);
+		ctx.stroke();
+
+		this.arrowHead(to, r, anticlockwise ? -1 : 1, color);
+		this.subscriptLabel(name, clockwisePoint(this, label.at, label.r * this.R), color);
+	},
+
+	/* A filled arrowhead at angle 'at' on the circle of radius r, pointing
+	   clockwise (sense = 1) or anticlockwise (sense = -1). */
+	arrowHead(at, r, sense, color) {
+		const ctx = this.ctx;
+		const tip = clockwisePoint(this, at, r);
+		const back = clockwisePoint(this, at - sense * 4, r);
+		const ux = tip.x - back.x;
+		const uy = tip.y - back.y;
+		const length = Math.hypot(ux, uy) || 1;
+		const size = 10;
+		const ax = ux / length;
+		const ay = uy / length;
+
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.moveTo(tip.x, tip.y);
+		ctx.lineTo(tip.x - size * ax - size * 0.5 * ay, tip.y - size * ay + size * 0.5 * ax);
+		ctx.lineTo(tip.x - size * ax + size * 0.5 * ay, tip.y - size * ay - size * 0.5 * ax);
+		ctx.closePath();
+		ctx.fill();
+	},
+
+	/* "θ_G" with a real subscript, centred at a point. */
+	subscriptLabel([base, sub], point, color) {
+		const ctx = this.ctx;
+		const smallFont = '600 13px system-ui, sans-serif';
+
+		ctx.font = LABEL_FONT;
+		const baseWidth = ctx.measureText(base).width;
+		ctx.font = smallFont;
+		const subWidth = ctx.measureText(sub).width;
+		const x = point.x - (baseWidth + subWidth) / 2;
+
+		ctx.fillStyle = color;
+		ctx.textAlign = 'left';
+		ctx.textBaseline = 'middle';
+		ctx.font = LABEL_FONT;
+		ctx.fillText(base, x, point.y);
+		ctx.font = smallFont;
+		ctx.fillText(sub, x + baseWidth, point.y + 5);
+	},
+
+	dot(point, color, radius) {
+		const ctx = this.ctx;
+
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.arc(point.x, point.y, radius, 0, TAU);
+		ctx.fill();
+		ctx.strokeStyle = COL.card;
+		ctx.lineWidth = 1.5;
+		ctx.stroke();
+	}
+};
+
+
+/* ==========================================================================
+   3. FIGURE 3: SIDEREAL TIME AND HOUR ANGLE
    Drawn in the horizon frame of an observer at Rome's latitude on
    1 January 2026: the clock and the longitude turn the sky, never the
    ground. Three arcs along the equator: theta (from the meridian point M
@@ -492,7 +711,7 @@ const siderealFigure = {
 
 
 /* ==========================================================================
-   3. FIGURE 3: THE STAR CALENDAR
+   4. FIGURE 4: THE STAR CALENDAR
    For each night of 2026 (from local mean noon on the date to the next
    noon): the night of the model Sun, the hours the star is above the
    horizon, and the time of its transit. Times are local mean time on the
@@ -714,7 +933,7 @@ const calendarFigure = {
 
 
 /* ==========================================================================
-   4. FIGURE 4: THE LENGTH OF THE DAY
+   5. FIGURE 5: THE LENGTH OF THE DAY
    (a) the model Sun's day through the year at the chosen latitude;
    (b) the plane of date and latitude: polar day and night, and lines of
 	   equal length of the day. Fixed scales: 0 to 24 h, and +-90°.
@@ -881,7 +1100,7 @@ const dayLengthFigure = {
 
 
 /* ==========================================================================
-   5. FIGURE 5: THE CLOCK AGAINST THE SUN
+   6. FIGURE 6: THE CLOCK AGAINST THE SUN
    Model minus real time of noon, sunrise and sunset through 2026, at the
    chosen latitude, on the meridian of Greenwich. The reference Sun is
    tabulated every 6 hours at the start and interpolated linearly (under
@@ -1066,13 +1285,14 @@ const testFigure = {
 
 
 /* ==========================================================================
-   6. PAGE START
+   7. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
 	wheelFigure.init();
+	anglesFigure.init();
 	siderealFigure.init();
 	calendarFigure.init();
 	dayLengthFigure.init();

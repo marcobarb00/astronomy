@@ -128,7 +128,9 @@ The language needed to state any prediction.
   of stars. Day length counts the Sun's upper limb with refraction
   ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
 - **Figures:** the sky from above the pole through 2026 (date and time:
-  366 turns of the sky in 365 days); $\theta$, $\alpha$ and $H$ as arcs of the
+  366 turns of the sky in 365 days; play a day or a year); the three angles of
+  $\theta_G = H_m + \alpha_m$ on the equator (static, one worked moment);
+  $\theta$, $\alpha$ and $H$ as arcs of the
   equator in the observer's sky (3D, time and longitude); a star calendar of
   transits and nights; the length of the day at one latitude and at every
   latitude; the model Sun against the real one.
