@@ -3,7 +3,7 @@
 The visual style of the whole site: a **star atlas**. Engraved-plate typography
 and ink on parchment, used with restraint, around modern, plain wording.
 
-`design/reference/index.html` shows every rule below on the top of page 1.1.
+`design/references/index.html` shows every rule below on the top of page 1.1.
 Open it next to this file. When the two disagree, this file wins.
 
 ---
@@ -98,7 +98,10 @@ Rules:
 1. "Predicting the Sky" link (small caps).
 2. Left: act line, h1 title, italic subtitle. Right, in the margin column:
    the table of contents, small caps, with a 1 px `--ink` rule on its left;
-   the current section in `--accent`.
+   the current section in `--accent`. Each entry is the section number and
+   the h2 title ("1 Circles about one point"); sections without a number
+   ("Exercises", "Sources") show the title alone. The step labels
+   ("1 · Observation") stay above each h2 (§4.4), not in the contents.
 3. Under the header, a **double rule** (§4.3), full width.
 
 ### 4.3 Rules
@@ -119,8 +122,11 @@ Left-aligned, Cormorant Garamond 600, 34 px.
 Everything that comments on a paragraph moves into the margin:
 
 - **Origin badges** become notes: a small-caps heading "Origin · Greek"
-  (colour per origin, from the figure "Text" colours), then one sentence.
-  A 1 px `--ink` rule on top.
+  (colour per origin, from the figure "Text" colours), with a 1 px `--ink`
+  rule on top. For now the note is the heading only, with no tooltip
+  (tooltips do not work on phones); a one-sentence explanation will be
+  added later, with the content work. The hub explains the origins once
+  (Babylonian, Greek, an author, Debated, Modern) in a short key.
 - **Citations** ("Almagest I 3, transl. Toomer"): plain, 15 px, no rule.
 - **Detours**: heading "Detour · coming later" in `--accent`, a 1 px dashed
   `--accent` rule on top. Becomes a link when the page exists.
@@ -129,8 +135,9 @@ Inline badges in the text are no longer used.
 
 ### 4.6 Equations
 
-Display equations centred in the text column, with the equation number
-`(1.1)` at the right, in `--muted`.
+Display equations centred in the text column. An equation is numbered only
+when the text, an exercise or another page refers to it; the number `(1.1)`
+then sits at the right, in `--muted`.
 
 ## 5. Stars
 
@@ -141,14 +148,17 @@ M x, y−s  L x+0.28s, y−0.28s  L x+s, y  L x+0.28s, y+0.28s
 L x, y+s  L x−0.28s, y+0.28s  L x−s, y  L x−0.28s, y−0.28s  Z
 ```
 
-- Size `s` grows with brightness (for example from 3 px for faint stars to
-  9 px for the brightest).
+- Size `s` grows with brightness, from the star's V magnitude (`mag` in
+  `shared/stars.js`, from SIMBAD): from 3 px for the faintest to 8 px for
+  the brightest, so the chosen star (9 px) still stands out. The mapping is
+  one helper, `starSize(mag)`, next to `drawStar` in `shared/common.js`.
 - Background stars: `--ink` at about 55% opacity.
 - The chosen star: `--planet`, `s` about 9 px, with its name in Cormorant SC.
 - On a plate (§7): `--plate-ink`, the highlighted one in `--plate-accent`.
 
-Put the drawing in a shared helper (`drawStar(ctx, x, y, s)` in
-`shared/sphere3d.js` or `shared/common.js`) and use it everywhere.
+The drawing is one shared helper, `drawStar(ctx, x, y, s)` in
+`shared/common.js` (and `starPath(x, y, s)` for SVG), used everywhere:
+`Sphere3D.star` and `Plot2D.star` call it.
 
 ## 6. The graduated frame
 
@@ -194,7 +204,7 @@ per page**, and only where the page is about the sky itself.
 epicycles, equants, error curves). Those are always ink on parchment, in a
 graduated frame.
 
-Anatomy (see the reference page and `design/reference/polar-sky.svg`):
+Anatomy (see the reference page and `design/references/polar-sky.svg`):
 
 - `--plate` ground, with a thin inner line in the parchment colour 6 px in
   from the edge.
