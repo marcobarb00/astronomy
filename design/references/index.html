@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     STYLE REFERENCE · top of page 1.1 in the star-atlas style
+     A static mock-up that shows every rule of STYLE.md in one place:
+     header, margin notes, the blue plate, the graduated frame, four-pointed
+     stars, controls and an equation. It is a reference, not a page of the
+     site: its text and figures are simplified, its controls do nothing.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Style reference · Predicting the Sky</title>
+
+	<!-- Fonts: Spectral (text), Cormorant Garamond (titles), Cormorant SC (labels) -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Cormorant+SC:wght@500;600&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+
+	<style>
+		/* ==================================================================
+		   1. PALETTE (STYLE.md §2)
+		   ================================================================== */
+		:root {
+			/* Page */
+			--bg:           #f3eee2;   /* parchment                      */
+			--card:         #f7f3ea;   /* inside figures and frames      */
+			--ink:          #1d2a44;   /* text, rules, frames            */
+			--muted:        #5b6475;   /* secondary text                 */
+			--line:         #c9bc9c;   /* light rules                    */
+			--accent:       #7a5718;   /* labels, Play, links            */
+
+			/* Figures: line colours, then text colours */
+			--earth:        #2f5687;   /* equator, Earth                 */
+			--planet:       #a23b2e;   /* object of interest             */
+			--sun:          #b8862b;   /* Sun, ecliptic                  */
+			--deferent:     #4d7a55;   /* horizon, deferent              */
+			--epicycle:     #6e5a9a;   /* epicycle                       */
+			--planet-text:  #8d2f24;
+			--deferent-text:#3e6346;
+			--epicycle-text:#5e4a87;
+
+			/* Plate (static sky charts only) */
+			--plate:        #1f3a6b;
+			--plate-ink:    #eef3fb;
+			--plate-soft:   #c9d5ea;
+			--plate-accent: #f2c96b;
+
+			/* Graduated frame */
+			--frame-band:   14px;
+		}
+
+		/* ==================================================================
+		   2. BASE TYPOGRAPHY (STYLE.md §3)
+		   ================================================================== */
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: var(--bg);
+			color: var(--ink);
+			font: 18px/1.7 "Spectral", Georgia, serif;
+		}
+
+		a {
+			color: var(--accent);
+		}
+
+		.sc {
+			font-family: "Cormorant SC", serif;
+			letter-spacing: 0.1em;
+		}
+
+		.label {
+			font-family: "Cormorant SC", serif;
+			font-size: 16px;
+			letter-spacing: 0.3em;
+			color: var(--accent);
+		}
+
+		/* ==================================================================
+		   3. PAGE LAYOUT (STYLE.md §4)
+		   ================================================================== */
+		.page {
+			max-width: 1060px;
+			margin: 0 auto;
+			padding: 48px 24px 96px;
+		}
+
+		/* A paragraph with its margin note; the note drops below on a phone */
+		.row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px 40px;
+			margin-top: 20px;
+		}
+
+		.row > p,
+		.row > .text {
+			flex: 999 1 520px;
+			max-width: 700px;
+			margin: 0;
+		}
+
+		.row > aside {
+			flex: 1 1 200px;
+			align-self: flex-start;
+			font-size: 15px;
+			line-height: 1.5;
+		}
+
+		/* ---------- Header ---------- */
+		.site-link {
+			font-family: "Cormorant SC", serif;
+			font-size: 17px;
+			letter-spacing: 0.1em;
+			text-decoration: none;
+			color: var(--ink);
+		}
+
+		.page-head {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 40px;
+			align-items: flex-end;
+			margin: 36px 0;
+		}
+
+		.page-head .titles {
+			flex: 999 1 520px;
+			max-width: 700px;
+		}
+
+		h1 {
+			margin: 6px 0 0;
+			font: 600 68px/1.02 "Cormorant Garamond", serif;
+		}
+
+		.subtitle {
+			margin: 8px 0 0;
+			font: italic 500 24px/1.4 "Cormorant Garamond", serif;
+			color: var(--muted);
+		}
+
+		.toc {
+			flex: 1 1 200px;
+			font-family: "Cormorant SC", serif;
+			font-size: 16px;
+			letter-spacing: 0.05em;
+			line-height: 1.5;
+			border-left: 1px solid var(--ink);
+			padding-left: 14px;
+		}
+
+		.toc .current {
+			color: var(--accent);
+			font-weight: 600;
+		}
+
+		.double-rule {
+			height: 5px;
+			border-top: 1px solid var(--ink);
+			border-bottom: 1px solid var(--ink);
+			margin-bottom: 36px;
+		}
+
+		/* ---------- Drop cap on the first paragraph ---------- */
+		.lead {
+			font-size: 20px;
+		}
+
+		.lead::first-letter {
+			float: left;
+			font: 600 74px/0.85 "Cormorant Garamond", serif;
+			padding: 6px 10px 0 0;
+			color: var(--accent);
+		}
+
+		/* ---------- Sections ---------- */
+		h2 {
+			margin: 52px 0 0;
+			font: 600 34px/1.2 "Cormorant Garamond", serif;
+		}
+
+		h2 .label {
+			display: block;
+			font-weight: 500;
+		}
+
+		/* ---------- Margin notes (STYLE.md §4.5) ---------- */
+		.note {
+			border-top: 1px solid var(--ink);
+			padding-top: 6px;
+		}
+
+		.note-head {
+			font-family: "Cormorant SC", serif;
+			font-size: 15px;
+			letter-spacing: 0.14em;
+		}
+
+		.note.detour {
+			border-top: 1px dashed var(--accent);
+		}
+
+		.origin-greek  { color: var(--deferent-text); }
+		.origin-modern { color: var(--epicycle-text); }
+		.detour .note-head { color: var(--accent); }
+
+		/* ---------- Equations (STYLE.md §4.6) ---------- */
+		.equation {
+			max-width: 700px;
+			display: flex;
+			align-items: center;
+			margin: 24px 0;
+			font-size: 20px;
+			font-style: italic;
+		}
+
+		.equation .body {
+			flex: 1;
+			text-align: center;
+		}
+
+		.equation .number {
+			font-style: normal;
+			font-size: 16px;
+			color: var(--muted);
+		}
+
+		/* ==================================================================
+		   4. FIGURES: GRADUATED FRAME (STYLE.md §6)
+		   ================================================================== */
+		figure {
+			margin: 44px 0;
+			padding: 0;
+		}
+
+		.frame {
+			display: grid;
+			grid-template-columns: var(--frame-band) minmax(0, 1fr) var(--frame-band);
+			grid-template-rows: var(--frame-band) auto var(--frame-band);
+			border: 1px solid var(--ink);
+			background: var(--card);
+		}
+
+		.frame .corner {
+			background: var(--ink);
+		}
+
+		/* An edge: a flex strip of bands built by graduatedFrame() */
+		.frame .edge {
+			display: flex;
+		}
+
+		.frame .edge.top    { border: 1px solid var(--ink); border-top: 0; }
+		.frame .edge.bottom { border: 1px solid var(--ink); border-bottom: 0; }
+		.frame .edge.left   { flex-direction: column; border: 1px solid var(--ink); border-left: 0; }
+		.frame .edge.right  { flex-direction: column; border: 1px solid var(--ink); border-right: 0; }
+
+		.frame .band {
+			flex: 1 1 0;
+			min-width: 0;
+			min-height: 0;
+		}
+
+		.frame .band.dark {
+			background: var(--ink);
+		}
+
+		.frame .content {
+			padding: 24px;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 28px;
+			align-items: center;
+		}
+
+		.frame svg.sphere {
+			flex: 1 1 280px;
+			max-width: 380px;
+			height: auto;
+			margin: 0 auto;
+		}
+
+		figcaption {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px 40px;
+			padding-top: 14px;
+			font-size: 16px;
+			line-height: 1.55;
+		}
+
+		figcaption .text {
+			flex: 999 1 520px;
+			max-width: 700px;
+		}
+
+		figcaption .key {
+			flex: 1 1 200px;
+			font-size: 15px;
+		}
+
+		.fig-label {
+			font-family: "Cormorant SC", serif;
+			letter-spacing: 0.2em;
+			color: var(--accent);
+		}
+
+		/* ==================================================================
+		   5. CONTROLS (STYLE.md §8)
+		   ================================================================== */
+		.controls {
+			flex: 1 1 220px;
+			display: flex;
+			flex-direction: column;
+			gap: 14px;
+			font-size: 16px;
+		}
+
+		.slider {
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
+		}
+
+		.slider .head {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.slider .value {
+			font-variant-numeric: tabular-nums;
+		}
+
+		input[type="range"] {
+			width: 100%;
+			accent-color: var(--ink);
+		}
+
+		.presets {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+
+		.presets button {
+			font: inherit;
+			font-size: 15px;
+			background: transparent;
+			color: var(--ink);
+			border: 1px solid var(--ink);
+			border-radius: 0;
+			padding: 6px 12px;
+			min-height: 40px;
+			cursor: pointer;
+		}
+
+		.presets button.active {
+			background: var(--ink);
+			color: var(--bg);
+		}
+
+		.play {
+			align-self: flex-start;
+			display: inline-flex;
+			gap: 8px;
+			align-items: center;
+			font: inherit;
+			background: var(--accent);
+			color: var(--card);
+			border: none;
+			padding: 10px 22px;
+			min-height: 44px;
+			cursor: pointer;
+		}
+
+		.readout {
+			border-collapse: collapse;
+			font-size: 16px;
+		}
+
+		.readout tr {
+			border-top: 1px solid var(--line);
+		}
+
+		.readout tr:first-child {
+			border-top: 1px solid var(--ink);
+		}
+
+		.readout tr:last-child {
+			border-bottom: 1px solid var(--ink);
+		}
+
+		.readout td {
+			padding: 4px 0;
+		}
+
+		.readout td.sym {
+			font-style: italic;
+		}
+
+		.readout td.num {
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+		}
+
+		/* ==================================================================
+		   6. THE BLUE PLATE (STYLE.md §7)
+		   ================================================================== */
+		.plate {
+			background: var(--plate);
+			color: var(--plate-ink);
+			padding: 28px;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 28px;
+			align-items: center;
+			justify-content: center;
+			/* thin parchment line 6 px inside the edge */
+			box-shadow: inset 0 0 0 6px var(--plate), inset 0 0 0 7px var(--bg);
+		}
+
+		.plate img {
+			flex: 1 1 320px;
+			max-width: 520px;
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+
+		.plate .side {
+			flex: 1 1 240px;
+			max-width: 300px;
+			font-size: 16px;
+			line-height: 1.6;
+		}
+
+		.plate .fig-label {
+			color: var(--plate-accent);
+			font-size: 18px;
+		}
+
+		.plate .title {
+			font: 500 28px/1.15 "Cormorant Garamond", serif;
+			margin: 6px 0 12px;
+		}
+
+		.plate .hl {
+			color: var(--plate-accent);
+		}
+	</style>
+</head>
+
+<body>
+<div class="page">
+
+	<a class="site-link" href="#">Predicting the Sky</a>
+
+	<!-- ============================ HEADER ============================ -->
+	<header class="page-head">
+		<div class="titles">
+			<div class="label">Act I · 1.1</div>
+			<h1>The turning sky</h1>
+			<p class="subtitle">You spin me right round, baby, right round</p>
+		</div>
+		<nav class="toc" aria-label="Contents">
+			<div class="current">1 Observation</div>
+			<div>2 Model</div>
+			<div>3 Fit</div>
+			<div>4 Test</div>
+			<div>5 Residual</div>
+			<div>Exercises · Sources</div>
+		</nav>
+	</header>
+	<div class="double-rule"></div>
+
+	<div class="row">
+		<p class="lead">Every prediction on this site starts from one picture: the sky as a sphere turning about an axis. By the end of this page you can say, for any star and any place on Earth, whether the star rises, how high it climbs, and how long it stays up.</p>
+		<aside></aside>
+	</div>
+
+	<!-- ========================= 1. OBSERVATION ========================= -->
+	<h2><span class="label">1 · Observation</span>Circles about one point</h2>
+
+	<div class="row">
+		<p>Watch the sky for a night. Every star rises in the east, climbs to its highest point due south (for a northern observer), and sets in the west. The paths are circles, all parallel to each other, and the stars keep their distances from one another as they turn.</p>
+		<aside class="note">
+			<div class="note-head origin-greek">Origin · Greek</div>
+			The observation is ancient; the sphere as a geometric model is Greek.
+		</aside>
+	</div>
+
+	<!-- The blue plate: a static 2D chart of the sky, once per page at most -->
+	<figure>
+		<div class="plate">
+			<img src="polar-sky.svg" alt="Chart of the northern sky around the celestial pole, with a dashed circle marking the stars that never set at Rome.">
+			<div class="side">
+				<div class="fig-label">Figure 1</div>
+				<div class="title">The sky around the pole</div>
+				<p style="margin: 0 0 12px;">The northern sky seen looking straight up at the celestial pole. Every star turns about the centre once in 23 h 56 min.</p>
+				<p style="margin: 0;"><span class="hl">Dashed circle:</span> declination 48.1°, that is 90° − φ for Rome. Stars inside it never set there.</p>
+			</div>
+		</div>
+	</figure>
+
+	<div class="row">
+		<p>Ptolemy names the observation behind this picture: <em>“the revolution of the ever-visible stars, which was observed to be circular, and always taking place about one centre, the same [for all].”</em> That centre is the celestial pole.</p>
+		<aside>
+			<em>Almagest</em> I 3, transl. Toomer.
+		</aside>
+	</div>
+
+	<div class="row">
+		<p>Two numbers describe the motion. A star comes back to the same place after 23 h 56 min 04 s of clock time, about four minutes short of a day. And the pole stands above the north point of the horizon at an altitude equal to the observer’s latitude <em>φ</em>: 31.2° at Alexandria, 41.9° at Rome, 51.5° in London.</p>
+		<aside class="note detour">
+			<div class="note-head">Detour · coming later</div>
+			Why four minutes? Page 1.3 ties the turning sky to the clock.
+		</aside>
+	</div>
+
+	<!-- An interactive figure in its graduated frame (bands built by script) -->
+	<figure>
+		<div class="frame" data-graduated>
+			<div class="corner"></div>
+			<div class="edge top"></div>
+			<div class="corner"></div>
+			<div class="edge left"></div>
+
+			<div class="content">
+				<svg class="sphere" viewBox="0 0 400 400" role="img" aria-label="Celestial sphere for Rome: horizon, equator, pole and the daily circle of Vega">
+					<circle cx="200" cy="200" r="170" fill="none" stroke="#1d2a44" stroke-width="1.4"></circle>
+					<g stroke="#1d2a44" stroke-width="0.5" fill="none" opacity="0.4">
+						<ellipse cx="200" cy="200" rx="60" ry="170" transform="rotate(42 200 200)"></ellipse>
+						<ellipse cx="200" cy="200" rx="120" ry="170" transform="rotate(42 200 200)"></ellipse>
+					</g>
+					<g id="background-stars" fill="#1d2a44" opacity="0.55"></g>
+					<ellipse cx="200" cy="200" rx="170" ry="40" fill="#4d7a55" fill-opacity="0.08" stroke="#4d7a55" stroke-width="1.4"></ellipse>
+					<ellipse cx="200" cy="200" rx="170" ry="45" fill="none" stroke="#2f5687" stroke-width="1.6" transform="rotate(42 200 200)"></ellipse>
+					<ellipse cx="271" cy="122" rx="132" ry="35" fill="none" stroke="#a23b2e" stroke-width="1.5" transform="rotate(42 271 122)"></ellipse>
+					<line x1="80" y1="333" x2="320" y2="67" stroke="#1d2a44" stroke-width="1.2"></line>
+					<g id="chosen-star" fill="#a23b2e"></g>
+					<text x="324" y="60" font-family="Cormorant Garamond" font-style="italic" font-size="22" fill="#1d2a44">P</text>
+					<text x="58" y="352" font-family="Cormorant Garamond" font-style="italic" font-size="22" fill="#1d2a44">P′</text>
+					<text x="340" y="146" font-family="Cormorant SC" font-size="17" fill="#8d2f24">Vega</text>
+					<text x="10" y="207" font-family="Cormorant SC" font-size="16" fill="#3e6346">S</text>
+					<text x="380" y="207" font-family="Cormorant SC" font-size="16" fill="#3e6346">N</text>
+				</svg>
+
+				<div class="controls">
+					<label class="slider">
+						<span class="head"><span>latitude <em>φ</em></span><span class="value">41.9°</span></span>
+						<input type="range" min="-90" max="90" step="0.1" value="41.9">
+					</label>
+					<div class="presets">
+						<button type="button">London</button>
+						<button type="button" class="active">Rome</button>
+						<button type="button">Rhodes</button>
+						<button type="button">Alexandria</button>
+					</div>
+					<label class="slider">
+						<span class="head"><span>time <em>t</em></span><span class="value">14 h 00 m</span></span>
+						<input type="range" min="0" max="24" step="0.1" value="14">
+					</label>
+					<button type="button" class="play">
+						<svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1 L11 6 L2 11 Z" fill="currentColor"></path></svg>
+						Play
+					</button>
+					<table class="readout">
+						<tr><td class="sym">δ</td><td class="num">38.8°</td></tr>
+						<tr><td class="sym">H</td><td class="num">−68.7°</td></tr>
+						<tr><td class="sym">a</td><td class="num">39.0°</td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="edge right"></div>
+			<div class="corner"></div>
+			<div class="edge bottom"></div>
+			<div class="corner"></div>
+		</div>
+		<figcaption>
+			<span class="text"><span class="fig-label">Figure 2.</span> The sky of an observer. Press play: the sky turns about <em>P</em> and the ground stays put. Move the latitude and watch <em>P</em> climb to an altitude equal to <em>φ</em>. Drag the sphere to turn the view.</span>
+			<span class="key"><span style="color: var(--deferent-text);">green</span> horizon · <span style="color: var(--earth);">blue</span> equator · <span style="color: var(--planet-text);">red</span> Vega’s daily circle</span>
+		</figcaption>
+	</figure>
+
+	<!-- =========================== 2. MODEL =========================== -->
+	<h2><span class="label">2 · Model</span>A turning celestial sphere</h2>
+
+	<div class="row">
+		<p>A star crosses the meridian at <em>(cos δ, 0, sin δ)</em>. Let <em>H</em> be the angle the sky has turned since then, the <em>hour angle</em>. Then</p>
+		<aside class="note">
+			<div class="note-head origin-modern">Origin · Modern</div>
+			Rotation matrices are modern notation; Ptolemy works with chords on the sphere.
+		</aside>
+	</div>
+	<div class="equation">
+		<span class="body">s(H) = R<sub>z</sub>(−H) (cos δ, 0, sin δ)<sup>T</sup> = (cos δ cos H, −cos δ sin H, sin δ)<sup>T</sup></span>
+		<span class="number">(1.1)</span>
+	</div>
+	<p style="max-width: 700px; margin: 0;">The <em>z</em> component never changes: every star moves on a circle parallel to the equator, as observed. (On the site this equation is typeset with KaTeX.)</p>
+
+</div>
+
+<script>
+	/* ======================================================================
+	   FOUR-POINTED STARS (STYLE.md §5)
+	   ====================================================================== */
+
+	/* SVG path of a four-pointed star centred on (x, y) with half-size s. */
+	function starPath(x, y, s) {
+		const q = 0.28 * s;
+		const points = [
+			[x, y - s], [x + q, y - q], [x + s, y], [x + q, y + q],
+			[x, y + s], [x - q, y + q], [x - s, y], [x - q, y - q]
+		];
+		const parts = points.map(function (p, i) {
+			const command = (i === 0) ? "M" : "L";
+			return command + p[0].toFixed(1) + " " + p[1].toFixed(1);
+		});
+		return parts.join(" ") + " Z";
+	}
+
+	/* Add one star to an SVG group. */
+	function addStar(group, x, y, s) {
+		const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		path.setAttribute("d", starPath(x, y, s));
+		group.appendChild(path);
+	}
+
+	/* The demo sphere: a few faint background stars and the chosen star. */
+	function drawDemoStars() {
+		const background = document.getElementById("background-stars");
+		const faint = [
+			[120, 110, 4], [150, 299, 3], [260, 280, 5], [96, 240, 3],
+			[180, 90, 4], [330, 260, 4], [232, 330, 3]
+		];
+		for (const star of faint) {
+			addStar(background, star[0], star[1], star[2]);
+		}
+		addStar(document.getElementById("chosen-star"), 328, 150, 9);
+	}
+
+	/* ======================================================================
+	   GRADUATED FRAME (STYLE.md §6)
+	   Corners are dark; each edge alternates light, dark, ..., light, with
+	   the odd number of bands closest to length / TARGET (at least 3), so the
+	   bands stretch or squish to fit the edge exactly.
+	   ====================================================================== */
+	const FRAME_TARGET = 28;   /* preferred band length, px */
+
+	/* Odd number of bands closest to length / target, at least 3. */
+	function bandCount(length, target) {
+		const k = Math.round((length / target - 1) / 2);
+		return Math.max(3, 2 * k + 1);
+	}
+
+	/* Fill one edge with n bands: light, dark, light, ..., light. */
+	function fillEdge(edge, length) {
+		const n = bandCount(length, FRAME_TARGET);
+		if (edge.childElementCount === n) {
+			return;
+		}
+		edge.replaceChildren();
+		for (let i = 0; i < n; i++) {
+			const band = document.createElement("div");
+			band.className = (i % 2 === 1) ? "band dark" : "band";
+			edge.appendChild(band);
+		}
+	}
+
+	/* Recompute all four edges of one frame from its current size. */
+	function layoutFrame(frame) {
+		const top = frame.querySelector(".edge.top");
+		const bottom = frame.querySelector(".edge.bottom");
+		const left = frame.querySelector(".edge.left");
+		const right = frame.querySelector(".edge.right");
+
+		fillEdge(top, top.clientWidth);
+		fillEdge(bottom, bottom.clientWidth);
+		fillEdge(left, left.clientHeight);
+		fillEdge(right, right.clientHeight);
+	}
+
+	/* Attach every frame on the page and keep it aligned when it resizes. */
+	function attachFrames() {
+		const frames = document.querySelectorAll("[data-graduated]");
+		for (const frame of frames) {
+			const observer = new ResizeObserver(function () {
+				layoutFrame(frame);
+			});
+			observer.observe(frame);
+			layoutFrame(frame);
+		}
+	}
+
+	drawDemoStars();
+	attachFrames();
+</script>
+</body>
+</html>
