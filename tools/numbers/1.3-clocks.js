@@ -539,6 +539,19 @@ title('Residual: Delta T');
 });
 console.log(`measured now: TT - UTC = 32.184 + 37 (leap seconds since 2017) = ${(32.184 + 37).toFixed(3)} s, and |UT1 - UTC| < 0.9 s`);
 
+// Why Delta T grows: the long-term parabola of time.js, Delta T = -20 + 32 u^2 s
+// with u = (year - 1820) / 100, means a day that lengthens at a constant
+// rate. Its excess over 86400 s is the slope, d(Delta T)/dt per day.
+const excessMs = year => 2 * 32 * ((year - 1820) / 100) / 36525 * 1000;
+const daysSince132 = (1820 - 132) * 365.25;
+const meanShortfall = -excessMs(132) / 2;
+
+console.log(`the day lengthens by ${(2 * 32 / 36525 * 1000).toFixed(2)} ms a century; in AD 132 it was ${(-excessMs(132)).toFixed(1)} ms shorter than 86400 s,` +
+	` in 2026 ${excessMs(2026).toFixed(1)} ms longer (parabola)`);
+console.log(`from 132 to 1820: ${daysSince132.toFixed(0)} days, mean shortfall ${meanShortfall.toFixed(1)} ms,` +
+	` accumulated ${(daysSince132 * meanShortfall / 1000).toFixed(0)} s = ${hms(daysSince132 * meanShortfall / 1000 / 3600, 0)}` +
+	` (parabola: ${(-20 + 32 * ((132 - 1820) / 100) ** 2).toFixed(0)} s)`);
+
 title('Residual: the right ascensions of stars drift');
 ['Vega', 'Sirius', 'Polaris'].forEach(name => {
 	const then = Stars.ofDate(star(name), Time.J2000).ra;
