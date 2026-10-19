@@ -278,7 +278,7 @@
 		<p>
 			Here $d$ is the time in days of UT since the epoch J2000.0, 2000
 			January 1 at 12:00 UT, and $L_0$ is the mean Sun's right ascension at
-			that epoch.
+			that epoch. Their values are given after the derivation.
 		</p>
 
 		<p>
@@ -391,7 +391,8 @@
 		<p>
 			<strong>Step 3: the date gives $\alpha_m$.</strong> On 20 April 2026 at
 			20:00 UT, $d = 9606.3333$ days, and $\alpha_m = L_0 + n\,d =
-			28.92^\circ$ after the whole turns are removed. Then $\theta_G = 120^\circ
+			28.92^\circ$ after the whole turns are removed (with the values of $L_0$
+			and $n$ given after step 4). Then $\theta_G = 120^\circ
 			+ 28.92^\circ = 148.92^\circ$.
 		</p>
 
@@ -417,7 +418,12 @@
 			with respect to the mean Sun, which is what a solar day is, and the mean
 			Sun moves $n$ further east from γ; so with respect to γ the sky turns
 			$360^\circ + n$, the rate $\omega$ found at the start of this section.
-			With the numbers in use since 1984 (Meeus, ch. 12),
+		</p>
+
+		<p>
+			The values of $L_0$ and $n$ that define Universal Time have been fixed by
+			convention since 1984 (Meeus, ch. 12): $L_0 = 280.46061837^\circ$ and $n =
+			0.98564736629^\circ$ a day. Put into the formula above, they give
 		</p>
 
 		<div class="box">
@@ -425,12 +431,28 @@
 		</div>
 
 		<p>
-			The rate is $360^\circ + 0.98564736629^\circ$, and $360^\circ / n$ is
-			365.24219 days, the tropical year. The constant is the mean Sun's
-			longitude at J2000.0, $L_0 = 280.46646^\circ$, to within 21″ (1.4 s of
-			time). Meeus adds two terms in $T^2$ and $T^3$, worth 6.3 ms in 2026,
-			which the site leaves out.
+			This is the formula the site uses. The rate gives $360^\circ / n =
+			365.24219$ days, the tropical year. Meeus adds two terms in $T^2$ and
+			$T^3$, worth 6.3 ms in 2026, which the site leaves out.
 		</p>
+
+		<p>
+			Tables of the Sun give a slightly larger mean longitude at J2000.0,
+			$280.46646^\circ$ (Meeus 25.2), 21″ more than $L_0$. That value is the
+			Sun's geometric position. The mean Sun of the clock follows the Sun as it
+			is seen, which appears 20.5″ further west, the arc the Sun moves in the
+			8.3 minutes its light takes to reach the Earth (the aberration of light).
+			The remaining 0.5″ is the difference between the two fits.
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			The 21″ is 1.4 s of time, too small to matter on this page. The clock
+			formula always uses $L_0 = 280.46061837^\circ$; the model Sun of the
+			length of the day (below) uses the Sun's mean longitude.
+		</p>
+
+		<aside class="detour" data-topic="aberration"></aside>
 
 		<p>
 			Page 1.2 placed Aldebaran in the sky of Rome on 1 January 2026 at
@@ -869,10 +891,10 @@
 		<h3>The constant, from the Sun</h3>
 
 		<p>
-			$L_0$ is the mean Sun's longitude at the epoch. It is found from timed
-			equinoxes, as page 1.2 found the vernal point, and page 2.1 shows how.
-			The modern value is $L_0 = 280.46646^\circ$ (Meeus 25.2); the clock's
-			constant, $280.46061837^\circ$, differs from it by 21″.
+			$L_0$ is the mean Sun's right ascension at the epoch, which is its mean
+			longitude. It is found from timed equinoxes, as page 1.2 found the
+			vernal point, and page 2.1 shows how. Section 2 gave the value fixed by
+			convention, $L_0 = 280.46061837^\circ$.
 		</p>
 
 		<h3>The longitude, from a timed transit</h3>

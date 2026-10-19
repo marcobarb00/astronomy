@@ -404,7 +404,7 @@ const anglesFigure = {
 
 		// the derivation of section 2, step by step
 		this.H = 15 * (hour - 12);
-		this.alpha = norm360(MeanSun.MODERN.L0 + MeanSun.MODERN.n * d);
+		this.alpha = norm360(Clock.THETA0 + (Clock.RATE - 360) * d);
 		this.theta = norm360(this.H + this.alpha);
 
 		squareCanvas(this, byId('angles-canvas'), 420, 30);
