@@ -39,15 +39,12 @@
 <body data-page="1.1">
 <div class="page">
 
-	<!-- Sticky table of contents, built from the article's <h2> -->
-	<nav class="toc" aria-label="Contents"></nav>
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
 
 	<article>
 
-		<!-- Page header, filled from the site map -->
-		<header class="page-head"></header>
-
-		<p>
+		<p class="lead">
 			Every prediction on this site starts from one picture: the sky as a
 			sphere turning about an axis. By the end of this page you can say, for
 			any star and any place on Earth, whether the star rises, how high it
@@ -57,13 +54,17 @@
 		<!-- ============================ 1. OBSERVATION ============================ -->
 		<h2 id="observation"><span class="step">1 · Observation</span>Circles about one point</h2>
 
-		<p>
-			Watch the sky for a night. Every star rises in the east, climbs to its
-			highest point due south (for a northern observer), and sets in the
-			west. The paths are circles, all parallel to each other, and the stars
-			keep their distances from one another as they turn.
-			<span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				Watch the sky for a night. Every star rises in the east, climbs to its
+				highest point due south (for a northern observer), and sets in the
+				west. The paths are circles, all parallel to each other, and the stars
+				keep their distances from one another as they turn.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
 		<!-- A photo: public domain / CC0 only, credited in its caption (CLAUDE.md) -->
 		<figure class="photo">
@@ -110,37 +111,45 @@
 
 		<!-- Figure 1: the observer's sky -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="sky-canvas"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="sky-lat">latitude φ</label>
-						<input id="sky-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="sky-canvas"></canvas>
 					</div>
-					<div class="presets">
-						<button type="button" data-target="sky-lat" data-value="90">north pole</button>
-						<button type="button" data-target="sky-lat" data-value="51.5">London</button>
-						<button type="button" data-target="sky-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="sky-lat" data-value="36">Rhodes</button>
-						<button type="button" data-target="sky-lat" data-value="31.2">Alexandria</button>
-						<button type="button" data-target="sky-lat" data-value="0">equator</button>
-						<button type="button" data-target="sky-lat" data-value="-33.9">Sydney</button>
+					<div>
+						<div class="ctl">
+							<label for="sky-lat">latitude φ</label>
+							<input id="sky-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="sky-lat" data-value="90">north pole</button>
+							<button type="button" data-target="sky-lat" data-value="51.5">London</button>
+							<button type="button" data-target="sky-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="sky-lat" data-value="36">Rhodes</button>
+							<button type="button" data-target="sky-lat" data-value="31.2">Alexandria</button>
+							<button type="button" data-target="sky-lat" data-value="0">equator</button>
+							<button type="button" data-target="sky-lat" data-value="-33.9">Sydney</button>
+						</div>
+						<div class="ctl">
+							<label for="sky-time">time t</label>
+							<input id="sky-time" type="range" min="0" max="23.93" step="0.01" value="14">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="sky-play">Play</button>
+						</div>
+						<div class="presets star-choice" id="sky-stars"></div>
+						<div class="readout" id="sky-readout" data-lines="4"></div>
 					</div>
-					<div class="ctl">
-						<label for="sky-time">time t</label>
-						<input id="sky-time" type="range" min="0" max="23.93" step="0.01" value="14">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" class="play" id="sky-play">▶ play</button>
-					</div>
-					<div class="presets star-choice" id="sky-stars"></div>
-					<div class="readout" id="sky-readout" data-lines="4"></div>
 				</div>
 			</div>
+			<figcaption>
+				The sky of an observer. Press play: the sky turns about P and the ground
+				stays put. Then move the latitude and watch P climb to an altitude
+				equal to φ, and Ptolemy's circle of stars that never set grow with it.
+				Drag the sphere to turn the view.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -155,7 +164,7 @@
 						<dd>the north and south celestial poles; the sky turns about the axis PP′</dd>
 						<dt class="c-earth">equator</dt>
 						<dd>the great circle 90° from P</dd>
-						<dt class="c-muted">dots</dt>
+						<dt class="c-muted">stars</dt>
 						<dd>twenty bright stars</dd>
 						<dt class="c-planet">star</dt>
 						<dd>the chosen star and its daily circle: solid above the horizon, dashed below</dd>
@@ -177,12 +186,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				The sky of an observer. Press play: the sky turns about P and the ground
-				stays put. Then move the latitude and watch P climb to an altitude
-				equal to φ, and Ptolemy's circle of stars that never set grow with it.
-				Drag the sphere to turn the view.
-			</figcaption>
 		</figure>
 
 		<!-- =============================== 2. MODEL =============================== -->
@@ -190,13 +193,18 @@
 
 		<h3>Directions, not distances</h3>
 
-		<p>
-			Seen from anywhere on Earth, the stars keep the same sizes and the same
-			distances from each other. For the sky, the Earth is a point: "the
-			planes drawn through the observer's lines of sight […] which we call
-			'horizons', always bisect the whole heavenly sphere" (<em>Almagest</em>
-			I 6). <span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				Seen from anywhere on Earth, the stars keep the same sizes and the same
+				distances from each other. For the sky, the Earth is a point: "the
+				planes drawn through the observer's lines of sight […] which we call
+				'horizons', always bisect the whole heavenly sphere" (<em>Almagest</em>
+				I 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
 		<p>
 			So a star is just a direction: a unit vector $\mathbf s$. The celestial
@@ -207,12 +215,16 @@
 
 		<h3>The turning sky</h3>
 
-		<p>
-			Pick a frame fixed to the sky: $z$ towards the pole P, $x$ towards the
-			point where the equator crosses the meridian above the horizon, $y$
-			towards the east. Turning by an angle $\theta$ about the $z$ axis is
-			<span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				Pick a frame fixed to the sky: $z$ towards the pole P, $x$ towards the
+				point where the equator crosses the meridian above the horizon, $y$
+				towards the east. Turning by an angle $\theta$ about the $z$ axis is
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
 		$$R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}.$$
 
@@ -340,47 +352,63 @@
 
 		$$\hat{\mathbf z}(H) \cdot \mathbf s_0 = \big(R_z(H)\, \hat{\mathbf z}_0\big) \cdot \mathbf s_0 = \hat{\mathbf z}_0 \cdot \big(R_z(-H)\, \mathbf s_0\big).$$
 
-		<p>
-			The altitude is the same at every instant. No observation of the sky
-			alone can tell the two apart. Ptolemy grants this, "there is perhaps
-			nothing in the celestial phenomena which would count against that
-			hypothesis", and rejects the turning Earth on physical grounds
-			(<em>Almagest</em> I 7). <span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				The altitude is the same at every instant. No observation of the sky
+				alone can tell the two apart. Ptolemy grants this, "there is perhaps
+				nothing in the celestial phenomena which would count against that
+				hypothesis", and rejects the turning Earth on physical grounds
+				(<em>Almagest</em> I 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
-		<p>
-			Copernicus states the same equivalence from the other side: "if any
-			motion is ascribed to the
-			earth, in all things outside it the same motion will appear, but in the
-			opposite direction" (<em>De Revolutionibus</em> I 5). He credits the
-			idea to Heraclides, Ecphantus and Hicetas.
-			<span class="badge" data-origin="copernicus"></span>
-		</p>
+		<div class="row">
+			<p>
+				Copernicus states the same equivalence from the other side: "if any
+				motion is ascribed to the
+				earth, in all things outside it the same motion will appear, but in the
+				opposite direction" (<em>De Revolutionibus</em> I 5). He credits the
+				idea to Heraclides, Ecphantus and Hicetas.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
 
 		<!-- Figure 2: the same sky seen from outside -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="outside-canvas"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="out-lat">latitude φ</label>
-						<input id="out-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="outside-canvas"></canvas>
 					</div>
-					<div class="ctl">
-						<label for="out-time">time t</label>
-						<input id="out-time" type="range" min="0" max="23.93" step="0.01" value="14">
-						<output></output>
+					<div>
+						<div class="ctl">
+							<label for="out-lat">latitude φ</label>
+							<input id="out-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="out-time">time t</label>
+							<input id="out-time" type="range" min="0" max="23.93" step="0.01" value="14">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="out-play">Play</button>
+						</div>
+						<div class="presets star-choice" id="out-stars"></div>
+						<div class="readout" id="out-readout" data-lines="3"></div>
 					</div>
-					<div class="presets">
-						<button type="button" class="play" id="out-play">▶ play</button>
-					</div>
-					<div class="presets star-choice" id="out-stars"></div>
-					<div class="readout" id="out-readout" data-lines="3"></div>
 				</div>
 			</div>
+			<figcaption>
+				The same sky seen from outside, with the stars held still and the Earth
+				turning instead. Give it the time and latitude of Figure 1: the altitude
+				comes out the same.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -389,7 +417,7 @@
 						<dd>the north celestial pole, now held still with all the stars</dd>
 						<dt class="c-earth">equator</dt>
 						<dd>the great circle 90° from P</dd>
-						<dt class="c-muted">dots</dt>
+						<dt class="c-muted">stars</dt>
 						<dd>the bright stars of Figure 1, fixed</dd>
 						<dt class="c-deferent">Z</dt>
 						<dd>the observer's zenith; the Earth's turn carries it eastward (arrow) along the dashed circle, $90^\circ - \varphi$ from P</dd>
@@ -411,11 +439,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				The same sky seen from outside, with the stars held still and the Earth
-				turning instead. Give it the time and latitude of Figure 1: the altitude
-				comes out the same.
-			</figcaption>
 		</figure>
 
 		<h3>Culminations, rising and setting</h3>
@@ -435,12 +458,17 @@
 
 		$$\text{never sets:}\ \ \delta > 90^\circ - \varphi, \qquad \text{never rises:}\ \ \delta < \varphi - 90^\circ.$$
 
-		<p>
-			This is Ptolemy's rule: the circle "which has the north pole of the
-			equator as its pole, and the elevation of the pole as its radius, is
-			always visible, and all stars within that circle are always visible"
-			(<em>Almagest</em> II 6). <span class="badge" data-origin="ptolemy"></span>
-		</p>
+		<div class="row">
+			<p>
+				This is Ptolemy's rule: the circle "which has the north pole of the
+				equator as its pole, and the elevation of the pole as its radius, is
+				always visible, and all stars within that circle are always visible"
+				(<em>Almagest</em> II 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
 
 		<p>
 			In modern terms: draw the small circle centred on the north celestial
@@ -480,42 +508,50 @@
 
 		<!-- Figure 3: the day of a star -->
 		<figure class="fig">
-			<div class="panels">
-				<div>
-					<p class="panel-title">(a) altitude through one turn</p>
-					<canvas id="day-curve"></canvas>
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) altitude through one turn</p>
+						<canvas id="day-curve"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the three classes of star</p>
+						<canvas id="day-map"></canvas>
+					</div>
 				</div>
-				<div>
-					<p class="panel-title">(b) the three classes of star</p>
-					<canvas id="day-map"></canvas>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="day-dec">declination δ</label>
+							<input id="day-dec" type="range" min="-90" max="90" step="0.01" value="-16.7">
+							<output></output>
+						</div>
+						<div class="presets" id="day-star-presets"></div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="day-lat">latitude φ</label>
+							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="day-lat" data-value="0">equator</button>
+							<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
+							<button type="button" data-target="day-lat" data-value="36">Rhodes</button>
+							<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="day-lat" data-value="51.5">London</button>
+							<button type="button" data-target="day-lat" data-value="90">north pole</button>
+						</div>
+					</div>
 				</div>
+				<div class="readout" id="day-readout" data-lines="4"></div>
 			</div>
-			<div class="panel-controls">
-				<div>
-					<div class="ctl">
-						<label for="day-dec">declination δ</label>
-						<input id="day-dec" type="range" min="-90" max="90" step="0.01" value="-16.7">
-						<output></output>
-					</div>
-					<div class="presets" id="day-star-presets"></div>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="day-lat">latitude φ</label>
-						<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" data-target="day-lat" data-value="0">equator</button>
-						<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
-						<button type="button" data-target="day-lat" data-value="36">Rhodes</button>
-						<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="day-lat" data-value="51.5">London</button>
-						<button type="button" data-target="day-lat" data-value="90">north pole</button>
-					</div>
-				</div>
-			</div>
-			<div class="readout" id="day-readout" data-lines="4"></div>
+			<figcaption>
+				Choose a declination and a latitude. Panel (a) shows the star's day;
+				panel (b) shows where that choice sits among all the others. Notice how
+				the band in (a) fills the whole turn as the dot in (b) enters the
+				never-set region.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (a)</p>
@@ -553,12 +589,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Choose a declination and a latitude. Panel (a) shows the star's day;
-				panel (b) shows where that choice sits among all the others. Notice how
-				the band in (a) fills the whole turn as the dot in (b) enters the
-				never-set region.
-			</figcaption>
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -571,19 +601,28 @@
 			meridian.
 		</p>
 
-		<p>
-			<strong>The rate.</strong> Time the same star crossing the meridian on
-			two nights. The modern value is 23 h 56 min 04.09 s of clock time, or
-			15.0411° per hour. <span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				<strong>The rate.</strong> Time the same star crossing the meridian on
+				two nights. The modern value is 23 h 56 min 04.09 s of clock time, or
+				15.0411° per hour.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
-		<p>
-			<strong>Latitude and declination together.</strong> Take a star that
-			never sets and measure its altitude at both meridian crossings, counted
-			from the north point (so the upper one may pass 90°). From the formulas
-			for $a_\text{max}$ and $a_\text{min}$,
-			<span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				<strong>Latitude and declination together.</strong> Take a star that
+				never sets and measure its altitude at both meridian crossings, counted
+				from the north point (so the upper one may pass 90°). From the formulas
+				for $a_\text{max}$ and $a_\text{min}$,
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
 		$$h_\uparrow = 90^\circ + \varphi - \delta, \quad h_\downarrow = \varphi + \delta - 90^\circ \quad\Longrightarrow\quad \varphi = \frac{h_\uparrow + h_\downarrow}{2}, \quad 90^\circ - \delta = \frac{h_\uparrow - h_\downarrow}{2}.$$
 
@@ -595,15 +634,19 @@
 			shows how.
 		</p>
 
-		<p>
-			Ptolemy measured the meridian altitudes of the noon Sun with a bronze
-			ring and a stone quadrant (<em>Almagest</em> I 12). He gives the
-			equator's distance from the zenith at Alexandria, which is the
-			latitude, as 30°58′ (30.97°, <em>Almagest</em> V 12), 14′ below the
-			modern 31°12′. <span class="badge" data-origin="ptolemy"></span>
-		</p>
-
-		<aside class="detour" data-topic="instruments"></aside>
+		<div class="row">
+			<p>
+				Ptolemy measured the meridian altitudes of the noon Sun with a bronze
+				ring and a stone quadrant (<em>Almagest</em> I 12). He gives the
+				equator's distance from the zenith at Alexandria, which is the
+				latitude, as 30°58′ (30.97°, <em>Almagest</em> V 12), 14′ below the
+				modern 31°12′.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+				<div class="note detour" data-topic="instruments"></div>
+			</aside>
+		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
@@ -616,10 +659,15 @@
 			the atmosphere.
 		</p>
 
-		<p>
-			Starlight bends as it enters the atmosphere, more the lower it comes in,
-			so a star appears higher than it is. For standard air this refraction is <span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				Starlight bends as it enters the atmosphere, more the lower it comes in,
+				so a star appears higher than it is. For standard air this refraction is
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
 		$$R = \frac{1.02'}{\tan\!\left(a + \dfrac{10.3^\circ}{a + 5.11^\circ}\right)} \qquad (a \text{ in degrees}),$$
 
@@ -640,26 +688,33 @@
 
 		<!-- Figure 4: the model against the sky -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="test-plot"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="test-lat">latitude φ</label>
-						<input id="test-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="test-plot"></canvas>
 					</div>
-					<div class="presets">
-						<button type="button" data-target="test-lat" data-value="31.2">Alexandria</button>
-						<button type="button" data-target="test-lat" data-value="36">Rhodes</button>
-						<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="test-lat" data-value="51.5">London</button>
+					<div>
+						<div class="ctl">
+							<label for="test-lat">latitude φ</label>
+							<input id="test-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="test-lat" data-value="31.2">Alexandria</button>
+							<button type="button" data-target="test-lat" data-value="36">Rhodes</button>
+							<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="test-lat" data-value="51.5">London</button>
+						</div>
+						<div class="presets star-choice" id="test-stars"></div>
+						<div class="readout" id="test-readout" data-lines="4"></div>
 					</div>
-					<div class="presets star-choice" id="test-stars"></div>
-					<div class="readout" id="test-readout" data-lines="4"></div>
 				</div>
 			</div>
+			<figcaption>
+				One turn of the sky, centred on the star's highest point. Choose a star
+				and a latitude: the curve stays within a few arcminutes of zero while the
+				star is high, and plunges only in its last few degrees above the horizon.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -684,11 +739,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				One turn of the sky, centred on the star's highest point. Choose a star
-				and a latitude: the curve stays within a few arcminutes of zero while the
-				star is high, and plunges only in its last few degrees above the horizon.
-			</figcaption>
 		</figure>
 
 		<p>
