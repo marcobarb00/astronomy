@@ -30,6 +30,10 @@ const PLAY_HOURS_PER_SECOND = 1;
 /* Epoch of the real sky in Figure 4 (stars carried to it). */
 const TEST_EPOCH = Time.julianDay(2026, 1, 1);
 
+/* The style of a background star (STYLE.md §5): ink at 55% opacity,
+   sized by its V magnitude. */
+const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(star.mag) });
+
 /* Text of a declination or latitude: "−16.7°" (one decimal). */
 const formatAngle = value => `${value.toFixed(1).replace('-', '−')}°`;
 
@@ -158,10 +162,10 @@ const skyFigure = {
 		s.circle(toSky([1, 0, 0]), toSky([0, 1, 0]), { color: COL.earth, width: 2 });
 		this.drawPtolemyCircles(pole);
 
-		// the other bright stars
+		// the other bright stars, sized by brightness
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(toSky(fromLonLat(star.ra, star.dec)), { color: COL.muted, radius: 2.5 });
+				s.star(toSky(fromLonLat(star.ra, star.dec)), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -181,7 +185,7 @@ const skyFigure = {
 		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
 
 		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
@@ -217,7 +221,7 @@ const skyFigure = {
 			});
 		});
 
-		s.point(point, { color: COL.planet, radius: 6, ring: true });
+		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
@@ -298,7 +302,7 @@ const outsideFigure = {
 
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(fromLonLat(star.ra, star.dec), { color: COL.muted, radius: 2.5 });
+				s.star(fromLonLat(star.ra, star.dec), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -330,7 +334,7 @@ const outsideFigure = {
 		const b = s.project(starPoint);
 
 		s.arc(zenith, toward, angle, { color: COL.planet, width: 2.5 });
-		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
+		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 
 		// the star's label beyond the star, Z's label beyond the zenith
 		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
