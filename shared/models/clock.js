@@ -24,9 +24,12 @@
 	 along the equator with right ascension equal to the mean longitude,
 	 alpha_m = L0 + n d, plus 12 h. With d = JD(UT) - 2451545.0,
 		 theta_G = H_m + alpha_m = 280.46061837° + 360.98564736629° d,
-	 the linear part of Meeus 12.4. Its rate is 360° + n; its constant
-	 differs from the mean Sun's L0 of models/mean-sun.js by 21" (1.4 s),
-	 which the site neglects: mean noon is 12:00 local mean time.
+	 the linear part of Meeus 12.4: L0 = 280.46061837° and n =
+	 0.98564736629° a day, the values fixed by convention for UT.
+	 The Sun's geometric mean longitude of models/mean-sun.js (Meeus 25.2)
+	 is 21" (1.4 s) larger at J2000.0: 20.5" is the aberration of light (the
+	 clock's mean Sun follows the Sun as seen), 0.5" the difference between
+	 the two fits. The site neglects it: mean noon is 12:00 local mean time.
 
    TABLE OF CONTENTS
 	 1. Constants

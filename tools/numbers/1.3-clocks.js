@@ -269,11 +269,16 @@ console.log(`theta_G at J2000.0 = ${Clock.THETA0} deg = ${hms(Clock.THETA0 / 15)
 const example = Time.julianDayTime(2026, 4, 20, 20, 0, 0);
 const dExample = example - Time.J2000;
 const hExample = 15 * (20 - 12);
-const alphaExample = norm360(MeanSun.MODERN.L0 + n * dExample);
+const alphaExample = norm360(Clock.THETA0 + (Clock.RATE - 360) * dExample);
 console.log(`worked example (Figure 2), 20 Apr 2026 20:00 UT: d = ${dExample.toFixed(4)} = ${Math.floor(dExample)} + ${(dExample - Math.floor(dExample)).toFixed(4)};` +
 	` H_m = 15 x 8 = ${hExample}; 360 d = ${Math.floor(dExample)} turns + ${norm360(360 * dExample).toFixed(4)} deg`);
-console.log(`  alpha_m = L0 + n d = ${alphaExample.toFixed(2)}; theta_G = H_m + alpha_m = ${norm360(hExample + alphaExample).toFixed(2)};` +
+console.log(`  alpha_m = L0 + n d (the clock's L0 and n) = ${alphaExample.toFixed(2)}; theta_G = H_m + alpha_m = ${norm360(hExample + alphaExample).toFixed(2)};` +
 	` the clock formula gives ${Clock.gmst(example).toFixed(2)}`);
+const aberration = 20.4898 / 3600;
+console.log(`Sun's geometric L0 minus the clock's L0 = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(2)}":` +
+	` aberration ${(aberration * 3600).toFixed(2)}" (the Sun's motion in the 499.0 s of light-time:` +
+	` ${(n * 499.005 / 86400 * 3600).toFixed(2)}"), remainder ${((MeanSun.MODERN.L0 - aberration - Clock.THETA0) * 3600).toFixed(2)}"`);
+console.log(`light-time 499.0 s = ${(499.005 / 60).toFixed(1)} min`);
 console.log(`linear clock minus full Meeus 12.4 in 2026: ${((Clock.gmst(Y2026) - Time.gmst(Y2026)) * 240 * 1000).toFixed(1)} ms`);
 console.log(`Rome: local mean time = UT + ${hms(PLACES.rome[1] / 15, 0)}; CET = UT + 1 h, so local mean noon at Rome is ${clock(Clock.fromLocalMeanTime(Y2026, 12, PLACES.rome[1]), CET)} CET`);
 
