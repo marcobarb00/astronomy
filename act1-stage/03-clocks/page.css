@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. Figure 1: the square sky wheel
+	 2. Figures 1 and 2: the square views from above the pole
 	 3. Figures 3 and 4: panels with their controls underneath
 	 4. The tables of the prose
 	 5. Phone width
@@ -27,18 +27,19 @@ figure.fig {
 	min-width: 5.6em;
 }
 
-/* The play button keeps its width between "play" and "pause". */
+/* A play button keeps its width between "play a year" and "pause". */
 button.play {
-	min-width: 6.5em;
+	min-width: 8.5em;
 }
 
 
 /* ==========================================================================
-   2. FIGURE 1: THE SQUARE SKY WHEEL
-   The canvas sets its own square size (page.js); centre it in its column.
+   2. FIGURES 1 AND 2: THE SQUARE VIEWS FROM ABOVE THE POLE
+   The canvases set their own square size (page.js); centre them.
    ========================================================================== */
 
-#wheel-canvas {
+#wheel-canvas,
+#angles-canvas {
 	display: block;
 	margin: 0 auto;
 }

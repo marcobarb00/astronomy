@@ -540,12 +540,17 @@ function buildChoice(container, names, chosen, onChoose) {
 /* Play / pause button that runs a slider forward at 'unitsPerSecond'
    (slider units, e.g. hours), wrapping from max back to min. Grabbing
    the slider or using its keys pauses it, so the thumb never moves
-   under the pointer (CLAUDE.md). Returns { pause }. */
-function wirePlayButton(button, slider, unitsPerSecond) {
-	const playLabel = '▶ play';
-	const pauseLabel = '❚❚ pause';
+   under the pointer (CLAUDE.md). The position is kept here, not read back
+   from the slider, so a slider with a coarse step (one day) still advances
+   by the small amount of each frame. options: playLabel, pauseLabel (the
+   two texts of the button), onPlay (called when it starts, e.g. to pause
+   another player of the same figure). Returns { pause }. */
+function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
+	const playLabel = options.playLabel ?? '▶ play';
+	const pauseLabel = options.pauseLabel ?? '❚❚ pause';
 	let playing = false;
 	let lastTime = null;
+	let position = 0;
 
 	const advance = now => {
 		if (!playing) {
@@ -555,13 +560,14 @@ function wirePlayButton(button, slider, unitsPerSecond) {
 		if (lastTime !== null) {
 			const min = Number(slider.min);
 			const max = Number(slider.max);
-			let value = Number(slider.value) + (now - lastTime) / 1000 * unitsPerSecond;
 
-			if (value > max) {
-				value = min + (value - max);
+			position += (now - lastTime) / 1000 * unitsPerSecond;
+
+			if (position > max) {
+				position = min + (position - max);
 			}
 
-			slider.value = value;
+			slider.value = position;
 			slider.dispatchEvent(new Event('input'));
 		}
 
@@ -572,10 +578,15 @@ function wirePlayButton(button, slider, unitsPerSecond) {
 	const setPlaying = on => {
 		playing = on;
 		lastTime = null;
+		position = Number(slider.value);
 		button.textContent = on ? pauseLabel : playLabel;
 		button.setAttribute('aria-pressed', on ? 'true' : 'false');
 
 		if (on) {
+			if (options.onPlay) {
+				options.onPlay();
+			}
+
 			requestAnimationFrame(advance);
 		}
 	};
