@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.1 · THE TURNING SKY
+     Act I, the stage. The sky as a rigid sphere of directions turning about
+     the polar axis; the observer's latitude; stars that never set, rise and
+     set, or never rise. Numbers: tools/numbers/1.1-turning-sky.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.1 · The turning sky · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.1">
+<div class="page">
+
+	<!-- Sticky table of contents, built from the article's <h2> -->
+	<nav class="toc" aria-label="Contents"></nav>
+
+	<article>
+
+		<!-- Page header, filled from the site map -->
+		<header class="page-head"></header>
+
+		<p>
+			Every prediction on this site starts from one picture: the sky as a
+			sphere turning about an axis. By the end of this page you can say, for
+			any star and any place on Earth, whether the star rises, how high it
+			climbs, and how long it stays up.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>Circles about one point</h2>
+
+		<p>
+			Watch the sky for a night. Every star rises in the east, climbs to its
+			highest point due south (for a northern observer), and sets in the
+			west. The paths are circles, all parallel to each other, and the stars
+			keep their distances from one another as they turn.
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		<!-- A photo: public domain / CC0 only, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/star-trails-polaris.jpg" width="1920" height="1442" loading="lazy"
+				alt="Long-exposure photo of the northern sky: star trails drawn as concentric arcs around Polaris, with trees in silhouette.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				The northern sky over North Bengal, Bangladesh, in 108 stacked exposures.
+				Every star draws an arc, and all the arcs share one centre, the
+				celestial pole; Polaris, the bright dot near it, barely moves. Arcs far
+				from the pole are long, those near it short, yet all span the same
+				angle. The faint straight streaks are satellites.
+				<span class="credit">Youniverse Multiverse, 2022,
+					<a href="https://commons.wikimedia.org/wiki/File:Star_stack_Star_trail.jpg">Wikimedia Commons</a>,
+					CC0 (public domain).</span>
+			</figcaption>
+		</figure>
+
+		<p>
+			Ptolemy names the observation behind this picture: "the revolution of the
+			ever-visible stars, which was observed to be circular, and always
+			taking place about one centre, the same [for all]" (<em>Almagest</em>
+			I 3). That centre is the celestial pole. Today the star Polaris lies
+			0.63° from it, close enough to mark the pole for the naked eye: this is
+			why it is called the pole star.
+		</p>
+
+		<p>
+			Two numbers describe the motion. A star comes back to the same place
+			after <strong>23 h 56 min 04 s</strong> of clock time, about 4 minutes
+			short of a day; page 1.3 explains the difference. And the pole stands
+			above the north point of the horizon at an altitude equal to the
+			observer's latitude $\varphi$: 31.2° at Alexandria, 41.9° at Rome,
+			51.5° in London.
+		</p>
+
+		<p>
+			The part of the sky that can be seen therefore depends on the latitude.
+			Travelling north, "the more of
+			the southern stars disappear and the more of the northern stars appear"
+			(<em>Almagest</em> I 4). Canopus, the second brightest star, can be seen
+			from Rhodes but never from Rome.
+		</p>
+
+		<!-- Figure 1: the observer's sky -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="sky-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="sky-lat">latitude φ</label>
+						<input id="sky-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="sky-lat" data-value="90">north pole</button>
+						<button type="button" data-target="sky-lat" data-value="51.5">London</button>
+						<button type="button" data-target="sky-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="sky-lat" data-value="36">Rhodes</button>
+						<button type="button" data-target="sky-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="sky-lat" data-value="0">equator</button>
+						<button type="button" data-target="sky-lat" data-value="-33.9">Sydney</button>
+					</div>
+					<div class="ctl">
+						<label for="sky-time">time t</label>
+						<input id="sky-time" type="range" min="0" max="23.93" step="0.01" value="14">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" class="play" id="sky-play">▶ play</button>
+					</div>
+					<div class="presets star-choice" id="sky-stars"></div>
+					<div class="readout" id="sky-readout" data-lines="4"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's ground plane; N, E, S, W are its cardinal points</dd>
+						<dt class="c-deferent">Z</dt>
+						<dd>the zenith, straight overhead</dd>
+						<dt class="c-muted">meridian</dt>
+						<dd>the dotted circle through N, Z and S; a star is highest when it crosses it</dd>
+						<dt>P, P′</dt>
+						<dd>the north and south celestial poles; the sky turns about the axis PP′</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the great circle 90° from P</dd>
+						<dt class="c-muted">dots</dt>
+						<dd>twenty bright stars</dd>
+						<dt class="c-planet">star</dt>
+						<dd>the chosen star and its daily circle: solid above the horizon, dashed below</dd>
+						<dt class="c-epicycle">circles</dt>
+						<dd>Ptolemy's two circles of radius $|\varphi|$ (<em>Almagest</em> II 6): stars inside the one around the raised pole never set; stars inside the other never rise</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\delta$</dt>
+						<dd>the star's angular distance from the equator, its declination</dd>
+						<dt>$H$</dt>
+						<dd>the angle the sky has turned since the star crossed the meridian</dd>
+						<dt>$a$</dt>
+						<dd>its altitude above the horizon (negative: below it)</dd>
+						<dt>$a_\text{max},\ a_\text{min}$</dt>
+						<dd>its highest and lowest altitude in a turn</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				The sky of an observer. Press play: the sky turns about P and the ground
+				stays put. Then move the latitude and watch P climb to an altitude
+				equal to φ, and Ptolemy's circle of stars that never set grow with it.
+				Drag the sphere to turn the view.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>A turning celestial sphere</h2>
+
+		<h3>Directions, not distances</h3>
+
+		<p>
+			Seen from anywhere on Earth, the stars keep the same sizes and the same
+			distances from each other. For the sky, the Earth is a point: "the
+			planes drawn through the observer's lines of sight […] which we call
+			'horizons', always bisect the whole heavenly sphere" (<em>Almagest</em>
+			I 6). <span class="badge" data-origin="greek"></span>
+		</p>
+
+		<p>
+			So a star is just a direction: a unit vector $\mathbf s$. The celestial
+			sphere is the set of all such directions, and nothing on it has a
+			distance. The model is that this whole set turns rigidly, at a constant
+			rate, about one axis.
+		</p>
+
+		<h3>The turning sky</h3>
+
+		<p>
+			Pick a frame fixed to the sky: $z$ towards the pole P, $x$ towards the
+			point where the equator crosses the meridian above the horizon, $y$
+			towards the east. Turning by an angle $\theta$ about the $z$ axis is
+			<span class="badge" data-origin="modern"></span>
+		</p>
+
+		$$R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}.$$
+
+		<p>
+			With $\theta > 0$, $R_z(\theta)$ carries the $x$ axis towards the $y$
+			axis: from the meridian towards the east. Seen from outside the sphere,
+			above P, that is an anticlockwise turn.
+		</p>
+
+		<p>
+			The sky turns the other way. A star crosses the meridian and then moves
+			west, so seen from above P the sky turns clockwise. (From the ground,
+			facing the pole, the same motion looks anticlockwise.) A turn by an
+			angle $H$ to the west is therefore a turn by $-H$ in the sense of
+			$R_z$.
+		</p>
+
+		<p>
+			A star at angular distance $\delta$ from the equator crosses the
+			meridian at $(\cos\delta, 0, \sin\delta)$. Let $H$ be the angle the sky
+			has turned since then, the <em>hour angle</em>: it grows with time, by
+			about 15° an hour (page 1.3 ties it to the clock). Then
+		</p>
+
+		$$\mathbf s(H) = R_z(-H) \begin{pmatrix} \cos\delta \\ 0 \\ \sin\delta \end{pmatrix} = \begin{pmatrix} \cos\delta\cos H \\ -\cos\delta\sin H \\ \sin\delta \end{pmatrix}.$$
+
+		<p>
+			The $z$ component never changes: every star moves on a circle parallel
+			to the equator, as observed. The angle $\delta$ is the star's
+			<em>declination</em>; page 1.2 adds the second coordinate that fixes
+			where on the circle it is.
+		</p>
+
+		<h3>The observer</h3>
+
+		<p>
+			The observer's own frame is the horizon frame: $x$ towards the south
+			point, $y$ east, $z$ towards the zenith.
+		</p>
+
+		<p>
+			The $x$ axis points south, not north, for a reason. For a northern
+			observer the equator crosses
+			the meridian south of the zenith, so the sky frame's $x$ axis points
+			south too. With both $x$ axes on the same side and the east axis shared,
+			the two frames differ by one tilt. An $x$ axis pointing north would force
+			$y$ to point west, to keep the frame right-handed, and minus signs would
+			appear everywhere. (Meeus, ch. 13, also counts the azimuth from the
+			south.)
+		</p>
+
+		<p>
+			So the sky frame is the horizon frame tilted about the east–west axis,
+			$y$, by a rotation
+		</p>
+
+		$$R_y(\theta) = \begin{pmatrix} \cos\theta & 0 & \sin\theta \\ 0 & 1 & 0 \\ -\sin\theta & 0 & \cos\theta \end{pmatrix}, \qquad R_y(\theta) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} \sin\theta \\ 0 \\ \cos\theta \end{pmatrix}.$$
+
+		<p>
+			The angle of the tilt follows from the pole. The tilt must carry the
+			zenith direction onto the pole P.
+			P stands on the meridian at altitude $\varphi$ in the north, so it lies
+			$90^\circ - \varphi$ from the zenith, on the north side ($-x$). With
+			$\theta > 0$, $R_y(\theta)$ tips $z$ towards $+x$, the south. We need a
+			tip of $90^\circ - \varphi$ towards the north, so $\theta = -(90^\circ -
+			\varphi) = \varphi - 90^\circ$:
+		</p>
+
+		$$\mathbf s_\text{hor} = R_y(\varphi - 90^\circ)\, \mathbf s.$$
+
+		<p>
+			Three checks:
+		</p>
+
+		<ul>
+			<li>The pole: $R_y(\varphi - 90^\circ)(0, 0, 1)^T = (-\cos\varphi, 0,
+				\sin\varphi)^T$, north at altitude $\varphi$.</li>
+			<li>The equator's meridian point: $R_y(\varphi - 90^\circ)(1, 0, 0)^T =
+				(\sin\varphi, 0, \cos\varphi)^T$, south at altitude $90^\circ -
+				\varphi$.</li>
+			<li>At the north pole, $\varphi = 90^\circ$: no tilt, and P is at the
+				zenith.</li>
+		</ul>
+
+		<h3>Altitude as a dot product</h3>
+
+		<p>
+			The altitude $a$ of a star is its angle above the horizon plane. The
+			zenith is perpendicular to that plane, so the angle between the star and
+			the zenith, the <em>zenith distance</em>, is $90^\circ - a$.
+		</p>
+
+		<p>
+			For two unit vectors, the dot product is the cosine of the angle between
+			them: $\hat{\mathbf z} \cdot \mathbf s = \cos(90^\circ - a) = \sin a$. In
+			the horizon frame $\hat{\mathbf z} = (0, 0, 1)$, and the dot product
+			just picks out the $z$ component of $\mathbf s_\text{hor}$.
+		</p>
+
+		<p>
+			The star is simpler in the sky frame, so move the zenith there instead.
+			A rotation keeps dot products: $(0,0,1)^T \cdot (R\,\mathbf s) =
+			(R^T (0,0,1)^T) \cdot \mathbf s$. The vector $R^T(0, 0, 1)^T$ is the
+			third row of $R_y(\varphi - 90^\circ)$, the zenith seen from the sky
+			frame: $\hat{\mathbf z} = (\cos\varphi, 0, \sin\varphi)$. So
+		</p>
+
+		<div class="box">
+			$$\sin a = \hat{\mathbf z} \cdot \mathbf s(H) = \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H.$$
+		</div>
+
+		<p>
+			Every result on this page, and the altitude read-out of Figure 1,
+			follows from this formula.
+		</p>
+
+		<h3>A turning Earth gives the same altitudes</h3>
+
+		<p>
+			Suppose instead that the stars stand still and the Earth turns eastward
+			about the same axis. Then the star $\mathbf s_0$ is fixed and the zenith
+			moves, $\hat{\mathbf z}(H) = R_z(H)\, \hat{\mathbf z}_0$. Because a
+			rotation keeps dot products and $R_z(H)^T = R_z(-H)$,
+		</p>
+
+		$$\hat{\mathbf z}(H) \cdot \mathbf s_0 = \big(R_z(H)\, \hat{\mathbf z}_0\big) \cdot \mathbf s_0 = \hat{\mathbf z}_0 \cdot \big(R_z(-H)\, \mathbf s_0\big).$$
+
+		<p>
+			The altitude is the same at every instant. No observation of the sky
+			alone can tell the two apart. Ptolemy grants this, "there is perhaps
+			nothing in the celestial phenomena which would count against that
+			hypothesis", and rejects the turning Earth on physical grounds
+			(<em>Almagest</em> I 7). <span class="badge" data-origin="greek"></span>
+		</p>
+
+		<p>
+			Copernicus states the same equivalence from the other side: "if any
+			motion is ascribed to the
+			earth, in all things outside it the same motion will appear, but in the
+			opposite direction" (<em>De Revolutionibus</em> I 5). He credits the
+			idea to Heraclides, Ecphantus and Hicetas.
+			<span class="badge" data-origin="copernicus"></span>
+		</p>
+
+		<!-- Figure 2: the same sky seen from outside -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="outside-canvas"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="out-lat">latitude φ</label>
+						<input id="out-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="ctl">
+						<label for="out-time">time t</label>
+						<input id="out-time" type="range" min="0" max="23.93" step="0.01" value="14">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" class="play" id="out-play">▶ play</button>
+					</div>
+					<div class="presets star-choice" id="out-stars"></div>
+					<div class="readout" id="out-readout" data-lines="3"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole, now held still with all the stars</dd>
+						<dt class="c-earth">equator</dt>
+						<dd>the great circle 90° from P</dd>
+						<dt class="c-muted">dots</dt>
+						<dd>the bright stars of Figure 1, fixed</dd>
+						<dt class="c-deferent">Z</dt>
+						<dd>the observer's zenith; the Earth's turn carries it eastward (arrow) along the dashed circle, $90^\circ - \varphi$ from P</dd>
+						<dt class="c-deferent">horizon</dt>
+						<dd>the observer's horizon, the great circle 90° from Z, turning with it</dd>
+						<dt class="c-planet">star</dt>
+						<dd>the chosen star</dd>
+						<dt class="c-planet">arc</dt>
+						<dd>the angle from Z to the star, $90^\circ - a$</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\angle(\hat{\mathbf z}, \mathbf s)$</dt>
+						<dd>the angle between the zenith and the star</dd>
+						<dt>$a$</dt>
+						<dd>the altitude, $90^\circ$ minus that angle</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				The same sky seen from outside, with the stars held still and the Earth
+				turning instead. Give it the time and latitude of Figure 1: the altitude
+				comes out the same.
+			</figcaption>
+		</figure>
+
+		<h3>Culminations, rising and setting</h3>
+
+		<p>
+			A star is highest at $H = 0$, where $\sin a = \cos(\varphi - \delta)$,
+			and lowest at $H = 180^\circ$, where $\sin a = -\cos(\varphi + \delta)$:
+		</p>
+
+		$$a_\text{max} = 90^\circ - |\varphi - \delta|, \qquad a_\text{min} = |\varphi + \delta| - 90^\circ.$$
+
+		<p>
+			These sort the stars into three classes. For a northern observer
+			($\varphi > 0$) a star never sets when $a_\text{min} > 0$, and never
+			rises when $a_\text{max} < 0$:
+		</p>
+
+		$$\text{never sets:}\ \ \delta > 90^\circ - \varphi, \qquad \text{never rises:}\ \ \delta < \varphi - 90^\circ.$$
+
+		<p>
+			This is Ptolemy's rule: the circle "which has the north pole of the
+			equator as its pole, and the elevation of the pole as its radius, is
+			always visible, and all stars within that circle are always visible"
+			(<em>Almagest</em> II 6). <span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<p>
+			In modern terms: draw the small circle centred on the north celestial
+			pole, with an angular radius equal to the pole's altitude $\varphi$. It
+			just touches the horizon at the north point. A star inside it is less
+			than $\varphi$ from the pole: $90^\circ - \delta < \varphi$, which is
+			again $\delta > 90^\circ - \varphi$.
+		</p>
+
+		<p>
+			As the sky turns, that star stays at the same distance from P, so it
+			never gets as far as the horizon. Its mirror image around the south pole
+			holds the stars that never rise. Both are the dashed purple circles of
+			Figure 1.
+		</p>
+
+		<p>
+			Every other star rises and sets. It sets when $a = 0$, at the hour
+			angle $H_0$ with
+		</p>
+
+		$$\cos H_0 = -\tan\varphi \tan\delta,$$
+
+		<p>
+			and it is up for $|H| < H_0$: a fraction $f = H_0 / 180^\circ$ of each
+			turn. Since $\arccos(-x) = 180^\circ - \arccos x$, a star and its
+			mirror image across the equator share the turn: $f(\delta) + f(-\delta)
+			= 1$.
+		</p>
+
+		<p>
+			On the equator itself $\delta = 0$, so $H_0 = 90^\circ$ and $f =
+			\tfrac12$ at every latitude. That is why Ptolemy calls the equator "the
+			only [such parallel circle] which is always bisected by the horizon"
+			(<em>Almagest</em> I 8), and why the Sun on it gives equal day and night.
+		</p>
+
+		<!-- Figure 3: the day of a star -->
+		<figure class="fig">
+			<div class="panels">
+				<div>
+					<p class="panel-title">(a) altitude through one turn</p>
+					<canvas id="day-curve"></canvas>
+				</div>
+				<div>
+					<p class="panel-title">(b) the three classes of star</p>
+					<canvas id="day-map"></canvas>
+				</div>
+			</div>
+			<div class="panel-controls">
+				<div>
+					<div class="ctl">
+						<label for="day-dec">declination δ</label>
+						<input id="day-dec" type="range" min="-90" max="90" step="0.01" value="-16.7">
+						<output></output>
+					</div>
+					<div class="presets" id="day-star-presets"></div>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="day-lat">latitude φ</label>
+						<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="day-lat" data-value="0">equator</button>
+						<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="day-lat" data-value="36">Rhodes</button>
+						<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="day-lat" data-value="51.5">London</button>
+						<button type="button" data-target="day-lat" data-value="90">north pole</button>
+					</div>
+				</div>
+			</div>
+			<div class="readout" id="day-readout" data-lines="4"></div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>the altitude $a$ against the hour angle $H$</dd>
+						<dt class="c-deferent">horizon</dt>
+						<dd>the line $a = 0$</dd>
+						<dt class="c-planet">band</dt>
+						<dd>the part of the turn spent above the horizon</dd>
+						<dt class="c-planet">dots</dt>
+						<dd>rising and setting, at $H = \mp H_0$</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-sun">band</dt>
+						<dd>stars that never set</dd>
+						<dt class="c-muted">band</dt>
+						<dd>stars that never rise</dd>
+						<dt class="c-earth">lines</dt>
+						<dd>stars up for 25%, 50% and 75% of the turn; the 50% line is the equator, $\delta = 0$</dd>
+						<dt class="c-planet">dot</dt>
+						<dd>the chosen $\varphi$ and $\delta$</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$H_0$</dt>
+						<dd>the hour angle of setting</dd>
+						<dt>$f$</dt>
+						<dd>the fraction of the turn above the horizon, and how long that is on a clock</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				Choose a declination and a latitude. Panel (a) shows the star's day;
+				panel (b) shows where that choice sits among all the others. Notice how
+				the band in (a) fills the whole turn as the dot in (b) enters the
+				never-set region.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>Measuring the axis and the stars</h2>
+
+		<p>
+			The model has three kinds of parameter: the rate of the turn, the tilt
+			of the axis, which is the latitude $\varphi$, and each star's
+			declination $\delta$. Each comes from timing or measuring a star on the
+			meridian.
+		</p>
+
+		<p>
+			<strong>The rate.</strong> Time the same star crossing the meridian on
+			two nights. The modern value is 23 h 56 min 04.09 s of clock time, or
+			15.0411° per hour. <span class="badge" data-origin="modern"></span>
+		</p>
+
+		<p>
+			<strong>Latitude and declination together.</strong> Take a star that
+			never sets and measure its altitude at both meridian crossings, counted
+			from the north point (so the upper one may pass 90°). From the formulas
+			for $a_\text{max}$ and $a_\text{min}$,
+			<span class="badge" data-origin="greek"></span>
+		</p>
+
+		$$h_\uparrow = 90^\circ + \varphi - \delta, \quad h_\downarrow = \varphi + \delta - 90^\circ \quad\Longrightarrow\quad \varphi = \frac{h_\uparrow + h_\downarrow}{2}, \quad 90^\circ - \delta = \frac{h_\uparrow - h_\downarrow}{2}.$$
+
+		<p>
+			Try it on Kochab from Alexandria. The real sky shows it 47.166° and
+			15.309° above the north point. The fit gives $\varphi = 31.238^\circ$
+			and $\delta = 74.071^\circ$: 2.3′ and 1.3′ too large. The air lifts
+			the low crossing (3.6′) more than the high one (0.9′), and section 4
+			shows how.
+		</p>
+
+		<p>
+			Ptolemy measured the meridian altitudes of the noon Sun with a bronze
+			ring and a stone quadrant (<em>Almagest</em> I 12). He gives the
+			equator's distance from the zenith at Alexandria, which is the
+			latitude, as 30°58′ (30.97°, <em>Almagest</em> V 12), 14′ below the
+			modern 31°12′. <span class="badge" data-origin="ptolemy"></span>
+		</p>
+
+		<aside class="detour" data-topic="instruments"></aside>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
+
+		<p>
+			The model is compared with the reference sky for one night: each star's
+			catalogue position, carried to 2026 for its proper motion and
+			precession, turned by the Earth's rotation. The model's star is fitted on
+			that same night, so its $\delta$ is right. What the model leaves out is
+			the atmosphere.
+		</p>
+
+		<p>
+			Starlight bends as it enters the atmosphere, more the lower it comes in,
+			so a star appears higher than it is. For standard air this refraction is <span class="badge" data-origin="modern"></span>
+		</p>
+
+		$$R = \frac{1.02'}{\tan\!\left(a + \dfrac{10.3^\circ}{a + 5.11^\circ}\right)} \qquad (a \text{ in degrees}),$$
+
+		<p>
+			Sæmundsson's formula (Meeus 16.4): 29′ at the horizon, 5.4′ at 10°,
+			1.0′ at 45°. A star seen exactly on the horizon is really 34.4′ below
+			it. Other effects (aberration, nutation) shift a star by under 1′, the
+			same all night, so the fit absorbs them.
+		</p>
+
+		<p>
+			The model's star is at its true altitude $a$; the sky shows it at $a +
+			R$. So the model's error is $\Delta a = a_\text{model} - a_\text{real} =
+			-R$: Figure 4 is the refraction itself, followed through one turn of the
+			sky. It is plotted as an error, model minus sky, as every error on this
+			site will be.
+		</p>
+
+		<!-- Figure 4: the model against the sky -->
+		<figure class="fig">
+			<div class="fig-row">
+				<div>
+					<canvas id="test-plot"></canvas>
+				</div>
+				<div>
+					<div class="ctl">
+						<label for="test-lat">latitude φ</label>
+						<input id="test-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+						<output></output>
+					</div>
+					<div class="presets">
+						<button type="button" data-target="test-lat" data-value="31.2">Alexandria</button>
+						<button type="button" data-target="test-lat" data-value="36">Rhodes</button>
+						<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
+						<button type="button" data-target="test-lat" data-value="51.5">London</button>
+					</div>
+					<div class="presets star-choice" id="test-stars"></div>
+					<div class="readout" id="test-readout" data-lines="4"></div>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>$\Delta a = a_\text{model} - a_\text{real} = -R$ in arcminutes, while the real star is above the horizon</dd>
+						<dt>dots</dt>
+						<dd>the model's rising and setting</dd>
+						<dt class="c-planet">dots</dt>
+						<dd>the real rising and setting</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>up</dt>
+						<dd>time above the horizon, model and real (or "never sets", "never rises")</dd>
+						<dt>$\Delta t$</dt>
+						<dd>how much earlier the real star rises, and later it sets</dd>
+						<dt>lifted</dt>
+						<dd>for a star that never sets, how much refraction raises its lowest point</dd>
+					</dl>
+				</div>
+			</div>
+			<figcaption>
+				One turn of the sky, centred on the star's highest point. Choose a star
+				and a latitude: the curve stays within a few arcminutes of zero while the
+				star is high, and plunges only in its last few degrees above the horizon.
+			</figcaption>
+		</figure>
+
+		<p>
+			For a high star the error is small: 1.0′ at an altitude of 45°, 2.7′ at
+			20°. Near the horizon the model puts the star up to 34′ too low. So real stars
+			rise earlier and set later than the model says: Sirius seen from Rome by
+			3.3 minutes at each end, so it is up for 10 h 00 min instead of
+			9 h 53 min.
+		</p>
+
+		<p>
+			The effect on rising times is larger for a star that crosses the horizon
+			at a shallow angle. Canopus, seen from Rhodes, climbs only 1.3°; the same
+			34′ makes it rise 14.2 minutes earlier and set 14.2 minutes later.
+		</p>
+
+		<!-- TODO(2.1): rewrite this paragraph when page 2.1 exists: say that the
+		     error curve starts there and link to it (STRUCTURE.md §4, page 2.1). -->
+		<p>
+			The site has no longitude to test yet, so no error curve on this page.
+			It appears on page 2.1, once the Sun has a model.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What the sphere leaves out</h2>
+
+		<p>
+			<strong>The air.</strong> Refraction belongs to the atmosphere, not to the
+			sky, and near the horizon it changes with the weather by several
+			arcminutes. The models on this site predict positions as if there were
+			no air; the pages that time risings and settings add $R$ back.
+		</p>
+
+		<p>
+			<strong>The "fixed" stars drift.</strong> The fitted declinations do not
+			stay fitted. Polaris is 0.63° from the pole now, will pass closest
+			(27.6′) around 2102, and was 12.5° away in Hipparchus' time. Page 2.3
+			finds the cause.
+		</p>
+
+		<p>
+			<strong>The Sun, the Moon and the planets move among the stars.</strong>
+			They turn with the sphere but do not keep their places on it. Ptolemy calls
+			this the second motion, "towards the east and opposite to [the motion
+			of] those stars which preserve their mutual distances" (<em>Almagest</em>
+			I 8). The rest of this site is about that motion.
+		</p>
+
+		<p>
+			To follow a body that moves on the sphere, the declination and the hour
+			angle are not enough: we need two coordinates for every direction, and
+			formulas to convert between coordinate systems. Page 1.2 introduces
+			them.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Show that, for $\varphi > 0$, a star never sets exactly when $\delta >
+				90^\circ - \varphi$, and never rises exactly when $\delta < \varphi -
+				90^\circ$. Then, with Figure 1, sort Dubhe, Capella, Deneb, Vega and
+				Canopus at Rhodes ($36^\circ$), Rome ($41.9^\circ$) and London
+				($51.5^\circ$).
+			</p>
+			<details class="hint">
+				<p>
+					A star never sets when even its lowest point is above the horizon:
+					use $a_\text{min} = |\varphi + \delta| - 90^\circ$, and say why
+					$\varphi + \delta > 0$ for such a star.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					If the star never sets, its lowest point is above the horizon, so
+					$a_\text{min} > 0$, i.e. $|\varphi + \delta| > 90^\circ$. With $\varphi >
+					0$ and $|\delta| \le 90^\circ$, the case $\varphi + \delta < -90^\circ$
+					is impossible, so $\varphi + \delta > 90^\circ$, i.e. $\delta >
+					90^\circ - \varphi$.
+				</p>
+				<p>
+					Likewise it never rises when $a_\text{max} < 0$: $|\varphi -
+					\delta| > 90^\circ$. Only $\varphi - \delta > 90^\circ$ is possible,
+					so $\delta < \varphi - 90^\circ$.
+				</p>
+				<p>
+					With the J2000 declinations (Dubhe $61.75^\circ$, Capella
+					$46.00^\circ$, Deneb $45.28^\circ$, Vega $38.78^\circ$, Canopus
+					$-52.70^\circ$):
+				</p>
+				<ul>
+					<li>Rhodes: only Dubhe never sets (lowest point $7.75^\circ$); Canopus
+						rises, but climbs only $1.30^\circ$.</li>
+					<li>Rome: only Dubhe never sets ($13.65^\circ$); Capella just dips
+						below ($-2.10^\circ$); Canopus never rises ($a_\text{max} =
+						-4.60^\circ$).</li>
+					<li>London: Dubhe, Capella, Deneb and Vega all never set, Vega only
+						just (its lowest point is $0.28^\circ$ up); Canopus never rises.</li>
+				</ul>
+				<p>
+					Capella never sets north of $44.00^\circ$, Vega north of
+					$51.22^\circ$. Canopus can be seen only south of $37.30^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				(a) For what fraction of the day is Sirius ($\delta = -16.72^\circ$)
+				above the horizon at Alexandria ($31.2^\circ$), Rome and London?
+				(b) Ptolemy takes Rhodes at $\varphi = 36^\circ$ with the obliquity
+				$\varepsilon = 23^\circ 51' 20''$ ($23.856^\circ$), the Sun's declination
+				at the summer solstice. Find the longest day (<em>Almagest</em> II 2–3).
+				Check both in Figure 3.
+			</p>
+			<details class="hint">
+				<p>
+					$f = H_0 / 180^\circ$ with $\cos H_0 = -\tan\varphi\tan\delta$. For
+					the Sun, the hour angle grows $15^\circ$ per hour of the clock.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					(a) $-\tan\varphi\tan\delta$ is $0.1819$ at Alexandria, $0.2695$ at
+					Rome and $0.3776$ in London. So $H_0 = 79.52^\circ$, $74.37^\circ$ and
+					$67.82^\circ$, and $f = 0.442$, $0.413$ and $0.377$. On a clock
+					(one turn takes 23 h 56 min) that is 10 h 34 min, 9 h 53 min and
+					9 h 01 min.
+				</p>
+				<p>
+					(b) $-\tan 36^\circ \tan 23^\circ 51' 20'' = -0.3213$, so $H_0 =
+					108.741^\circ$. The Sun is up for $2H_0 / 15^\circ = 14.4988$ hours:
+					Ptolemy's $14\tfrac12$ hours. The shortest day, at $\delta = -\varepsilon$,
+					is $24 - 14.4988 = 9.5012$ hours, as $f(\delta) + f(-\delta) = 1$
+					requires.
+				</p>
+				<p>
+					Ptolemy also runs it backwards (II 3): a longest day of
+					$14\tfrac12$ hours gives $\varphi = 36.01^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				At an equinox the Sun is on the equator, so the model gives 12 hours of
+				daylight everywhere. Yet on 20 March 2026 at Greenwich ($\varphi =
+				51.48^\circ$), the real Sun rises at 06:02:53 and sets at 18:13:03 (UT):
+				12 h 10 min. Where do the extra 10 minutes come from?
+			</p>
+			<details class="hint">
+				<p>
+					Sunrise is when the top edge of the Sun appears; the Sun's radius is
+					16′. How fast does the Sun climb at sunrise? Differentiate the
+					altitude formula with respect to $H$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Sunrise and sunset are counted when the Sun's top edge touches the
+					seen horizon. The centre is then $34' + 16' = 50'$ below the true
+					horizon: refraction plus the radius.
+				</p>
+				<p>
+					How fast does the Sun climb there? Differentiate $\sin a = \sin\varphi
+					\sin\delta + \cos\varphi\cos\delta\cos H$:
+				</p>
+				$$\cos a \, \frac{da}{dH} = -\cos\varphi \cos\delta \sin H.$$
+				<p>
+					At sunrise on the equinox $a \approx 0$, $\delta = 0$ and $H =
+					-90^\circ$ (a quarter turn before noon), so $da/dH = \cos\varphi$. The
+					Sun's hour angle grows $15^\circ$ per hour, so it climbs $15^\circ
+					\cos\varphi = 9.34^\circ$ per hour at Greenwich.
+				</p>
+				<p>
+					Geometrically: the Sun runs along the equator at $15^\circ$ an hour,
+					and the equator cuts the horizon at the east point at an angle
+					$90^\circ - \varphi$. Only the share $\sin(90^\circ - \varphi) =
+					\cos\varphi$ of that motion is upward.
+				</p>
+				<p>
+					Climbing 50′ ($0.833^\circ$) at $9.34^\circ$ per hour takes about 5.4
+					min, at each end of the day: about 10.7 min in all.
+				</p>
+				<p>
+					The script splits the reference Sun's 12 h 10 min 10 s exactly:
+				</p>
+				<ul>
+					<li>refraction: +7.3 min;</li>
+					<li>the Sun's radius: +3.4 min;</li>
+					<li>the Sun's own motion that day: −0.5 min. It sits just south of
+						the equator at noon, and its day is not a turn of the stars.</li>
+				</ul>
+				<p>
+					The extra minutes do not come from the turning sky, which the model
+					describes correctly: the model has no atmosphere and treats the Sun as
+					a point.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): I 3, I 4,
+				I 6, I 7, I 8 (the sphere, the Earth as a point, the two motions);
+				I 12 (the meridian instruments); II 1–3 and II 6 (latitude, the longest
+				day at Rhodes, the ever-visible circle); V 12 (Alexandria).</li>
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), I 5
+				[ff. 3r–3v].</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.1–2.2 and 2.8–2.10.
+				He writes $L$ for the latitude, here $\varphi$.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 12
+				(sidereal time), 13 (altitude), 15 (rising and setting), 16
+				(refraction).</li>
+			<li>Star positions: SIMBAD (CDS, Strasbourg), ICRS J2000, retrieved
+				2026-10-17. Precession: J. Vondrák, N. Capitaine, P. Wallace (2011).</li>
+			<li>Every number on this page: <code>tools/numbers/1.1-turning-sky.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

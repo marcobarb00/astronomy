@@ -337,6 +337,29 @@ class Sphere3D {
 	labelArc(text, a, b, angle, style = {}, r = 1) {
 		this.label(text, arcPoint(a, b, angle / 2, r), style);
 	}
+
+	/* Label a 3D point on the screen side that faces away from 'awayFrom'
+	   (a 3D point or a screen position { x, y }), so two nearby labels
+	   never overlap. */
+	labelAway(text, point, awayFrom, color) {
+		const gap = 12;
+		const q = this.project(point);
+		const r = Array.isArray(awayFrom) ? this.project(awayFrom) : awayFrom;
+		const length = Math.hypot(q.x - r.x, q.y - r.y) || 1;
+		const ux = (q.x - r.x) / length;
+		const uy = (q.y - r.y) / length;
+
+		this.ctx.font = LABEL_FONT;
+
+		const width = this.ctx.measureText(text).width;
+
+		// left-aligned text on its baseline: shift it so its box sits on the far side
+		this.label(text, point, {
+			color: color,
+			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - (1 - Math.abs(ux)) * width / 2,
+			dy: gap * uy + (uy > 0 ? 13 : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * 5
+		});
+	}
 }
 
 
