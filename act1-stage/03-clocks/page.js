@@ -139,6 +139,9 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 			owner.draw();
 		}
 	}).observe(canvas.parentElement);
+
+	// labels are drawn in web fonts: draw again once they have loaded
+	whenCanvasFontsReady().then(() => owner.draw());
 }
 
 /* A point on a circle of radius r about (cx, cy), at an angle measured
@@ -148,10 +151,11 @@ function clockwisePoint(owner, angle, r) {
 	return { x: owner.cx + r * sin(angle), y: owner.cy - r * cos(angle) };
 }
 
-/* A text label centred at a screen point. */
+/* A text label centred at a screen point, in the atlas fonts and the text
+   colour of 'color' (labelFont, textColor in common.js). */
 function centredLabel(ctx, text, point, color) {
-	ctx.fillStyle = color;
-	ctx.font = LABEL_FONT;
+	ctx.fillStyle = textColor(color);
+	ctx.font = labelFont(text);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 	ctx.fillText(text, point.x, point.y);
@@ -185,6 +189,7 @@ const wheelFigure = {
 
 		this.stars = Stars.LIST.map(star => ({
 			name: star.name,
+			mag: star.mag,
 			position: Stars.ofDate(star, YEAR_START)
 		}));
 
@@ -198,11 +203,11 @@ const wheelFigure = {
 		const players = {};
 
 		players.day = wirePlayButton(byId('wheel-play-day'), byId('wheel-time'), PLAY_HOURS_PER_SECOND, {
-			playLabel: '▶ play a day',
+			playLabel: 'Play a day',
 			onPlay: () => players.year.pause()
 		});
 		players.year = wirePlayButton(byId('wheel-play-year'), byId('wheel-day'), PLAY_DAYS_PER_SECOND, {
-			playLabel: '▶ play a year',
+			playLabel: 'Play a year',
 			onPlay: () => players.day.pause()
 		});
 
@@ -329,27 +334,43 @@ const wheelFigure = {
 		ctx.lineTo(this.cx, this.cy - this.R - 8);
 		ctx.stroke();
 
-		ctx.fillStyle = COL.deferent;
-		ctx.font = LABEL_FONT;
+		ctx.fillStyle = textColor(COL.deferent);
+		ctx.font = labelFont('meridian');
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
 		ctx.fillText('meridian', this.cx, this.cy - this.R - 12);
 	},
 
-	/* The bright stars; a few are named. */
+	/* The bright stars, as four-pointed stars sized by brightness (STYLE.md
+	   §5); a few are named. */
 	drawStars() {
-		this.stars.forEach(({ name, position }) => {
+		const ctx = this.ctx;
+
+		this.stars.forEach(({ name, mag, position }) => {
 			if (position.dec < WHEEL_RIM_DEC) {
 				return;
 			}
 
-			const label = WHEEL_NAMES.includes(name) ? name : null;
+			const q = this.toScreen(position.ra, position.dec);
+			const size = starSize(mag);
 
-			this.drawPoint(position.ra, position.dec, COL.muted, 3, label);
+			ctx.globalAlpha = 0.55;
+			ctx.fillStyle = COL.ink;
+			drawStar(ctx, q.x, q.y, size);
+			ctx.globalAlpha = 1;
+
+			if (WHEEL_NAMES.includes(name)) {
+				ctx.font = labelFont(name);
+				ctx.textAlign = 'left';
+				ctx.textBaseline = 'middle';
+				ctx.fillStyle = COL.muted;
+				ctx.fillText(name, q.x + size + 4, q.y);
+			}
 		});
 	},
 
-	/* A dot with an optional label beside it. */
+	/* A dot (a point that is not a star: γ, P, K, the Sun) with an
+	   optional label beside it. */
 	drawPoint(ra, dec, color, radius, label = null) {
 		const ctx = this.ctx;
 		const q = this.toScreen(ra, dec);
@@ -363,10 +384,10 @@ const wheelFigure = {
 		ctx.stroke();
 
 		if (label) {
-			ctx.font = LABEL_FONT;
+			ctx.font = labelFont(label);
 			ctx.textAlign = 'left';
 			ctx.textBaseline = 'middle';
-			ctx.fillStyle = color === COL.muted ? COL.muted : COL.ink;
+			ctx.fillStyle = COL.ink;
 			ctx.fillText(label, q.x + radius + 4, q.y);
 		}
 	}
@@ -516,18 +537,19 @@ const anglesFigure = {
 	/* "θ_G" with a real subscript, centred at a point. */
 	subscriptLabel([base, sub], point, color) {
 		const ctx = this.ctx;
-		const smallFont = '600 13px system-ui, sans-serif';
+		const baseFont = FONT_SYMBOL;
+		const smallFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
 
-		ctx.font = LABEL_FONT;
+		ctx.font = baseFont;
 		const baseWidth = ctx.measureText(base).width;
 		ctx.font = smallFont;
 		const subWidth = ctx.measureText(sub).width;
 		const x = point.x - (baseWidth + subWidth) / 2;
 
-		ctx.fillStyle = color;
+		ctx.fillStyle = textColor(color);
 		ctx.textAlign = 'left';
 		ctx.textBaseline = 'middle';
-		ctx.font = LABEL_FONT;
+		ctx.font = baseFont;
 		ctx.fillText(base, x, point.y);
 		ctx.font = smallFont;
 		ctx.fillText(sub, x + baseWidth, point.y + 5);
@@ -660,7 +682,7 @@ const siderealFigure = {
 		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
 
 		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
@@ -704,7 +726,7 @@ const siderealFigure = {
 
 		s.arc(pole, foot, 90, { color: COL.planet, width: 1.5, dash: [5, 4] });
 		s.point(foot, { color: COL.planet, radius: 3 });
-		s.point(point, { color: COL.planet, radius: 6, ring: true });
+		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.starName, point, pole, COL.planet);
 	}
 };

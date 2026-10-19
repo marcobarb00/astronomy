@@ -43,15 +43,12 @@
 <body data-page="1.3">
 <div class="page">
 
-	<!-- Sticky table of contents, built from the article's <h2> -->
-	<nav class="toc" aria-label="Contents"></nav>
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
 
 	<article>
 
-		<!-- Page header, filled from the site map -->
-		<header class="page-head"></header>
-
-		<p>
+		<p class="lead">
 			Page 1.2 placed a star in the observer's sky with $H = \theta - \alpha$,
 			where $\theta$ is the angle the sky has turned since the vernal point γ
 			crossed the meridian. There $\theta$ was set by hand. This page computes
@@ -89,14 +86,19 @@
 			0.06 s, because the clock is defined that way (section 2).
 		</p>
 
-		<p>
-			Ptolemy states both facts in one definition. The sky's turn, "the return
-			of a given point on the equator" to the meridian, takes 360
-			<em>time-degrees</em>; a mean solar day takes "360 time-degrees of one
-			revolution of the equator plus approximately $0^\circ 59'$ time-degrees,
-			which is the amount of the mean motion of the sun during that period"
-			(<em>Almagest</em> III 9). <span class="badge" data-origin="ptolemy"></span>
-		</p>
+		<div class="row">
+			<p>
+				Ptolemy states both facts in one definition. The sky's turn, "the return
+				of a given point on the equator" to the meridian, takes 360
+				<em>time-degrees</em>; a mean solar day takes "360 time-degrees of one
+				revolution of the equator plus approximately $0^\circ 59'$ time-degrees,
+				which is the amount of the mean motion of the sun during that period"
+				(<em>Almagest</em> III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
 
 		<p>
 			A time-degree is the time the equator takes to turn $1^\circ$ across the
@@ -105,44 +107,59 @@
 			difference between the two days observed above.
 		</p>
 
-		<p>
-			Copernicus counts the same difference over a year: "in the course of an
-			entire year 365 rotations take place. These are increased by approximately
-			a whole additional rotation as the result of a daily prolongation due to
-			the apparent advance of the sun" (<em>De Revolutionibus</em> III 26
-			[f. 96v]). <span class="badge" data-origin="copernicus"></span>
-		</p>
+		<div class="row">
+			<p>
+				Copernicus counts the same difference over a year: "in the course of an
+				entire year 365 rotations take place. These are increased by approximately
+				a whole additional rotation as the result of a daily prolongation due to
+				the apparent advance of the sun" (<em>De Revolutionibus</em> III 26
+				[f. 96v]).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
 
 		<!-- Figure 1: the sky from above the north pole through the year -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="wheel-canvas"></canvas>
-				</div>
-				<div>
-					<div class="ctl stepper">
-						<label for="wheel-day">date</label>
-						<input id="wheel-day" type="range" min="0" max="365" step="1" value="0">
-						<output></output>
-						<span class="stepper-buttons">
-							<button type="button" class="stepper-btn" data-target="wheel-day" data-step="-1"
-								aria-label="previous day">‹ previous day</button>
-							<button type="button" class="stepper-btn" data-target="wheel-day" data-step="1"
-								aria-label="next day">next day ›</button>
-						</span>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="wheel-canvas"></canvas>
 					</div>
-					<div class="ctl">
-						<label for="wheel-time">time (UT)</label>
-						<input id="wheel-time" type="range" min="0" max="24" step="0.01" value="12">
-						<output></output>
+					<div>
+						<div class="ctl stepper">
+							<label for="wheel-day">date</label>
+							<input id="wheel-day" type="range" min="0" max="365" step="1" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="wheel-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="wheel-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="ctl">
+							<label for="wheel-time">time (UT)</label>
+							<input id="wheel-time" type="range" min="0" max="24" step="0.01" value="12">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="wheel-play-day">Play a day</button>
+							<button type="button" class="play" id="wheel-play-year">Play a year</button>
+						</div>
+						<div class="readout" id="wheel-readout" data-lines="3"></div>
 					</div>
-					<div class="presets">
-						<button type="button" class="play" id="wheel-play-day">▶ play a day</button>
-						<button type="button" class="play" id="wheel-play-year">▶ play a year</button>
-					</div>
-					<div class="readout" id="wheel-readout" data-lines="3"></div>
 				</div>
 			</div>
+			<figcaption>
+				Play a day: everything turns once about P, the ecliptic too, rocking
+				about the centre as K goes round. Then play a year, or step through the
+				days, with the time fixed: the Sun stays near the meridian, while the
+				stars, γ and K move about $1^\circ$ further each day in the direction of
+				the turn. On 1 January 2027, the last day, the sky has made one turn
+				more than the Sun.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -159,7 +176,7 @@
 						<dd>the pole of the ecliptic, $23.4^\circ$ from P; it turns about P with the sky, carrying the ecliptic with it</dd>
 						<dt>γ</dt>
 						<dd>the vernal point, where the Sun crosses the equator going north</dd>
-						<dt class="c-muted">dots</dt>
+						<dt class="c-muted">stars</dt>
 						<dd>twenty bright stars at their positions of 2026; four are named</dd>
 						<dt class="c-sun">Sun</dt>
 						<dd>the real Sun at the chosen moment</dd>
@@ -177,14 +194,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Play a day: everything turns once about P, the ecliptic too, rocking
-				about the centre as K goes round. Then play a year, or step through the
-				days, with the time fixed: the Sun stays near the meridian, while the
-				stars, γ and K move about $1^\circ$ further each day in the direction of
-				the turn. On 1 January 2027, the last day, the sky has made one turn
-				more than the Sun.
-			</figcaption>
 		</figure>
 
 		<!-- =============================== 2. MODEL =============================== -->
@@ -192,13 +201,17 @@
 
 		<h3>The sidereal day and the solar day</h3>
 
-		<p>
-			The model keeps the turning sky of page 1.1: the stars turn about P at a
-			constant rate. Their turn takes one <em>sidereal day</em>. Against the
-			stars, the Sun moves east along the ecliptic by about $1^\circ$ a day, so
-			it returns to the meridian a little later than they do.
-			<span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				The model keeps the turning sky of page 1.1: the stars turn about P at a
+				constant rate. Their turn takes one <em>sidereal day</em>. Against the
+				stars, the Sun moves east along the ecliptic by about $1^\circ$ a day, so
+				it returns to the meridian a little later than they do.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
 		<p>
 			To make this precise, let the Sun's right ascension grow uniformly, by
@@ -229,13 +242,17 @@
 
 		<h3>Sidereal time and the hour angle</h3>
 
-		<p>
-			A clock that follows the stars reads the angle $\theta$ directly. Its
-			reading is the <em>local sidereal time</em>, $\theta$, usually expressed
-			in hours ($15^\circ$ to the hour): it is $0^\text{h}$ when γ crosses the
-			meridian and runs through $24^\text{h}$ in one sidereal day.
-			<span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				A clock that follows the stars reads the angle $\theta$ directly. Its
+				reading is the <em>local sidereal time</em>, $\theta$, usually expressed
+				in hours ($15^\circ$ to the hour): it is $0^\text{h}$ when γ crosses the
+				meridian and runs through $24^\text{h}$ in one sidereal day.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
 		<p>
 			A star of right ascension $\alpha$ crosses the meridian when $H =
@@ -264,14 +281,18 @@
 
 		<h3>Mean solar time and Universal Time</h3>
 
-		<p>
-			Our clocks do not keep sidereal time; they keep mean solar time. The real
-			Sun is a poor timekeeper, as the uneven solar days of section 1 show, so
-			astronomers defined a fictitious <em>mean Sun</em> that moves along the
-			equator at a constant rate, with right ascension equal to the Sun's
-			mean longitude $\bar\lambda$, which grows by $n$ every day:
-			<span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				Our clocks do not keep sidereal time; they keep mean solar time. The real
+				Sun is a poor timekeeper, as the uneven solar days of section 1 show, so
+				astronomers defined a fictitious <em>mean Sun</em> that moves along the
+				equator at a constant rate, with right ascension equal to the Sun's
+				mean longitude $\bar\lambda$, which grows by $n$ every day:
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
 		$$\alpha_m = \bar\lambda = L_0 + n\,d.$$
 
@@ -340,7 +361,15 @@
 
 		<!-- Figure 2: the three angles on the equator (static) -->
 		<figure class="fig">
-			<canvas id="angles-canvas"></canvas>
+			<div class="frame">
+				<canvas id="angles-canvas"></canvas>
+			</div>
+			<figcaption>
+				Greenwich on 20 April 2026 at 20:00 UT: $H_m = 120^\circ$, $\alpha_m =
+				28.92^\circ$, $\theta_G = 148.92^\circ$. The outer arc, from the meridian
+				to γ, is the sum of the arc from the meridian to the mean Sun and the
+				arc between the mean Sun and γ.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -368,12 +397,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Greenwich on 20 April 2026 at 20:00 UT: $H_m = 120^\circ$, $\alpha_m =
-				28.92^\circ$, $\theta_G = 148.92^\circ$. The outer arc, from the meridian
-				to γ, is the sum of the arc from the meridian to the mean Sun and the
-				arc between the mean Sun and γ.
-			</figcaption>
 		</figure>
 
 		<p>
@@ -436,23 +459,30 @@
 
 		</p>
 
-		<p>
-			Tables of the Sun give a slightly larger mean longitude at J2000.0,
-			$280.46646^\circ$ (Meeus 25.2), 21″ more than $L_0$. That value is the
-			Sun's geometric position. The mean Sun of the clock follows the Sun as it
-			is seen, which appears 20.5″ further west, the arc the Sun moves in the
-			8.3 minutes its light takes to reach the Earth (the aberration of light).
-			The remaining 0.5″ is the difference between the two fits.
-			<span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				Tables of the Sun give a slightly larger mean longitude at J2000.0,
+				$280.46646^\circ$ (Meeus 25.2), 21″ more than $L_0$. That value is the
+				Sun's geometric position. The mean Sun of the clock follows the Sun as it
+				is seen, which appears 20.5″ further west, the arc the Sun moves in the
+				8.3 minutes its light takes to reach the Earth (the aberration of light).
+				The remaining 0.5″ is the difference between the two fits.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
-		<p>
-			The 21″ is 1.4 s of time, too small to matter on this page. The clock
-			formula always uses $L_0 = 280.46061837^\circ$; the model Sun of the
-			length of the day (below) uses the Sun's mean longitude.
-		</p>
-
-		<aside class="detour" data-topic="aberration"></aside>
+		<div class="row">
+			<p>
+				The 21″ is 1.4 s of time, too small to matter on this page. The clock
+				formula always uses $L_0 = 280.46061837^\circ$; the model Sun of the
+				length of the day (below) uses the Sun's mean longitude.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="aberration"></div>
+			</aside>
+		</div>
 
 		<p>
 			Page 1.2 placed Aldebaran in the sky of Rome on 1 January 2026 at
@@ -464,34 +494,42 @@
 
 		<!-- Figure 3: sidereal time and the hour angle in the observer's sky -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="sid-canvas"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="sid-time">time (UT)</label>
-						<input id="sid-time" type="range" min="0" max="24" step="0.01" value="19">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="sid-canvas"></canvas>
 					</div>
-					<div class="presets">
-						<button type="button" class="play" id="sid-play">▶ play</button>
+					<div>
+						<div class="ctl">
+							<label for="sid-time">time (UT)</label>
+							<input id="sid-time" type="range" min="0" max="24" step="0.01" value="19">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="sid-play">Play</button>
+						</div>
+						<div class="ctl">
+							<label for="sid-lon">longitude ℓ</label>
+							<input id="sid-lon" type="range" min="-180" max="180" step="0.01" value="12.4964">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="sid-lon" data-value="0">Greenwich</button>
+							<button type="button" data-target="sid-lon" data-value="12.4964">Rome</button>
+							<button type="button" data-target="sid-lon" data-value="29.92">Alexandria</button>
+							<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
+						</div>
+						<div class="presets star-choice" id="sid-stars"></div>
+						<div class="readout" id="sid-readout" data-lines="5"></div>
 					</div>
-					<div class="ctl">
-						<label for="sid-lon">longitude ℓ</label>
-						<input id="sid-lon" type="range" min="-180" max="180" step="0.01" value="12.4964">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" data-target="sid-lon" data-value="0">Greenwich</button>
-						<button type="button" data-target="sid-lon" data-value="12.4964">Rome</button>
-						<button type="button" data-target="sid-lon" data-value="29.92">Alexandria</button>
-						<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
-					</div>
-					<div class="presets star-choice" id="sid-stars"></div>
-					<div class="readout" id="sid-readout" data-lines="5"></div>
 				</div>
 			</div>
+			<figcaption>
+				The sky of 1 January 2026. Press play: the arcs θ and H grow together,
+				and α stays fixed. Then move the longitude with the time fixed: going
+				east increases θ by the same angle, and the star stands further west.
+				Drag the sphere to turn the view.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -532,23 +570,21 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				The sky of 1 January 2026. Press play: the arcs θ and H grow together,
-				and α stays fixed. Then move the longitude with the time fixed: going
-				east increases θ by the same angle, and the star stands further west.
-				Drag the sphere to turn the view.
-			</figcaption>
 		</figure>
 
 		<h3>The Julian Date</h3>
 
-		<p>
-			The formula needs the number of days $d$ between two dates. Calendars
-			make that awkward: months of unequal length, leap years, and the
-			Gregorian reform, after which 4 October 1582 was followed by 15 October.
-			Astronomers therefore count days continuously.
-			<span class="badge" data-origin="modern"></span>
-		</p>
+		<div class="row">
+			<p>
+				The formula needs the number of days $d$ between two dates. Calendars
+				make that awkward: months of unequal length, leap years, and the
+				Gregorian reform, after which 4 October 1582 was followed by 15 October.
+				Astronomers therefore count days continuously.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
 
 		<p>
 			The <em>Julian Date</em> JD is the number of days since noon UT on
@@ -558,15 +594,19 @@
 			JD 2299159.5 and 2299160.5.
 		</p>
 
-		<p>
-			A Julian Date starts at noon, as the astronomical day of Ptolemy did. He
-			counts from the meridian crossing of the Sun, "not from its rising or
-			setting", because the time of sunrise "varies according to the
-			difference in longest or shortest day at the different latitudes", while
-			the meridian behaves "the same at every place on earth" (<em>Almagest</em>
-			III 9). "We establish all epochs at noon" (III 7).
-			<span class="badge" data-origin="ptolemy"></span>
-		</p>
+		<div class="row">
+			<p>
+				A Julian Date starts at noon, as the astronomical day of Ptolemy did. He
+				counts from the meridian crossing of the Sun, "not from its rising or
+				setting", because the time of sunrise "varies according to the
+				difference in longest or shortest day at the different latitudes", while
+				the meridian behaves "the same at every place on earth" (<em>Almagest</em>
+				III 9). "We establish all epochs at noon" (III 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
 
 		<p>
 			Copernicus lists the other customs: the day began at sunrise for the
@@ -605,13 +645,17 @@
 			</p>
 		</details>
 
-		<p>
-			Ptolemy had a continuous count too. He dated events in Egyptian years of
-			exactly 365 days, counted from the first year of King Nabonassar, whose
-			reign began the Babylonian records he used (<em>Almagest</em> III 7;
-			Toomer's introduction).
-			<span class="badge" data-origin="ptolemy"></span>
-		</p>
+		<div class="row">
+			<p>
+				Ptolemy had a continuous count too. He dated events in Egyptian years of
+				exactly 365 days, counted from the first year of King Nabonassar, whose
+				reign began the Babylonian records he used (<em>Almagest</em> III 7;
+				Toomer's introduction).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
 
 		<p>
 			From Nabonassar 1, Thoth 1, noon, to an autumn equinox he observed (in the
@@ -649,26 +693,34 @@
 
 		<!-- Figure 4: the star calendar -->
 		<figure class="fig">
-			<canvas id="transit-plot"></canvas>
-			<div class="panel-controls">
-				<div>
-					<div class="presets star-choice" id="transit-stars"></div>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="transit-lat">latitude φ</label>
-						<input id="transit-lat" type="range" min="-60" max="60" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<canvas id="transit-plot"></canvas>
+				<div class="panel-controls">
+					<div>
+						<div class="presets star-choice" id="transit-stars"></div>
 					</div>
-					<div class="presets">
-						<button type="button" data-target="transit-lat" data-value="31.2">Alexandria</button>
-						<button type="button" data-target="transit-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="transit-lat" data-value="51.5">London</button>
-						<button type="button" data-target="transit-lat" data-value="-33.9">Sydney</button>
+					<div>
+						<div class="ctl">
+							<label for="transit-lat">latitude φ</label>
+							<input id="transit-lat" type="range" min="-60" max="60" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="transit-lat" data-value="31.2">Alexandria</button>
+							<button type="button" data-target="transit-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="transit-lat" data-value="51.5">London</button>
+							<button type="button" data-target="transit-lat" data-value="-33.9">Sydney</button>
+						</div>
 					</div>
 				</div>
+				<div class="readout" id="transit-readout" data-lines="4"></div>
 			</div>
-			<div class="readout" id="transit-readout" data-lines="4"></div>
+			<figcaption>
+				Times are local mean time, from one noon to the next, so a night is one
+				vertical strip. Choose a star, then point at the plot to read a night.
+				A star is best seen in the months when its line crosses the middle of
+				the night band; there the Sun is opposite it in the sky.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -695,12 +747,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Times are local mean time, from one noon to the next, so a night is one
-				vertical strip. Choose a star, then point at the plot to read a night.
-				A star is best seen in the months when its line crosses the middle of
-				the night band; there the Sun is opposite it in the sky.
-			</figcaption>
 		</figure>
 
 		<h3>The length of the day</h3>
@@ -781,35 +827,43 @@
 
 		<!-- Figure 5: the length of the day -->
 		<figure class="fig">
-			<div class="panels">
-				<div>
-					<p class="panel-title">(a) the day through 2026 at latitude φ</p>
-					<canvas id="day-curve"></canvas>
-				</div>
-				<div>
-					<p class="panel-title">(b) every latitude</p>
-					<canvas id="day-map"></canvas>
-				</div>
-			</div>
-			<div class="panel-controls">
-				<div>
-					<div class="ctl">
-						<label for="day-lat">latitude φ</label>
-						<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the day through 2026 at latitude φ</p>
+						<canvas id="day-curve"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) every latitude</p>
+						<canvas id="day-map"></canvas>
 					</div>
 				</div>
-				<div>
-					<div class="presets">
-						<button type="button" data-target="day-lat" data-value="0">equator</button>
-						<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
-						<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="day-lat" data-value="51.5">London</button>
-						<button type="button" data-target="day-lat" data-value="69.65">Tromsø</button>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="day-lat">latitude φ</label>
+							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="presets">
+							<button type="button" data-target="day-lat" data-value="0">equator</button>
+							<button type="button" data-target="day-lat" data-value="31.2">Alexandria</button>
+							<button type="button" data-target="day-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="day-lat" data-value="51.5">London</button>
+							<button type="button" data-target="day-lat" data-value="69.65">Tromsø</button>
+						</div>
 					</div>
 				</div>
+				<div class="readout" id="day-readout" data-lines="3"></div>
 			</div>
-			<div class="readout" id="day-readout" data-lines="3"></div>
+			<figcaption>
+				Move the latitude: the curve in (a) flattens towards the equator, and
+				beyond the polar circles it reaches 0 h and 24 h. Point at (a) to read
+				a date. Panel (b) is the same function for every latitude: the
+				southern half repeats the northern half six months later.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (a)</p>
@@ -845,12 +899,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Move the latitude: the curve in (a) flattens towards the equator, and
-				beyond the polar circles it reaches 0 h and 24 h. Point at (a) to read
-				a date. Panel (b) is the same function for every latitude: the
-				southern half repeats the northern half six months later.
-			</figcaption>
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -865,13 +913,17 @@
 
 		<h3>The rate, from the length of the year</h3>
 
-		<p>
-			The daily motion is $n = 360^\circ / Y$, so the rate follows from the
-			length of the year, measured between equinoxes. Hipparchus and Ptolemy
-			found $Y = 365;14,48$ days (365.24667 days, <em>Almagest</em> III 1),
-			6.4 minutes longer than the modern 365.24219 days.
-			<span class="badge" data-origin="hipparchus"></span>
-		</p>
+		<div class="row">
+			<p>
+				The daily motion is $n = 360^\circ / Y$, so the rate follows from the
+				length of the year, measured between equinoxes. Hipparchus and Ptolemy
+				found $Y = 365;14,48$ days (365.24667 days, <em>Almagest</em> III 1),
+				6.4 minutes longer than the modern 365.24219 days.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
 
 		<p>
 			From it Ptolemy derives the Sun's mean motion, $0^\circ 59' 08.29''$
@@ -918,14 +970,17 @@
 
 		<h3>The stars</h3>
 
-		<p>
-			The reference sky computes the sidereal time with the full Meeus formula
-			and adds nutation (page 1.2), which shifts the equinox back and forth.
-			Through 2026 the two sidereal times differ by at most 0.66 s, so the
-			model's transits of the stars are right to within a second.
-		</p>
-
-		<aside class="detour" data-topic="nutation"></aside>
+		<div class="row">
+			<p>
+				The reference sky computes the sidereal time with the full Meeus formula
+				and adds nutation (page 1.2), which shifts the equinox back and forth.
+				Through 2026 the two sidereal times differ by at most 0.66 s, so the
+				model's transits of the stars are right to within a second.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
 
 		<h3>The Sun</h3>
 
@@ -938,26 +993,33 @@
 
 		<!-- Figure 6: the model Sun against the real Sun -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="test-plot"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="test-lat">latitude φ</label>
-						<input id="test-lat" type="range" min="-65" max="65" step="0.1" value="41.9">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="test-plot"></canvas>
 					</div>
-					<div class="presets">
-						<button type="button" data-target="test-lat" data-value="0">equator</button>
-						<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
-						<button type="button" data-target="test-lat" data-value="51.5">London</button>
-						<button type="button" data-target="test-lat" data-value="65">65° N</button>
-						<button type="button" data-target="test-lat" data-value="-33.9">Sydney</button>
+					<div>
+						<div class="ctl">
+							<label for="test-lat">latitude φ</label>
+							<input id="test-lat" type="range" min="-65" max="65" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="test-lat" data-value="0">equator</button>
+							<button type="button" data-target="test-lat" data-value="41.9">Rome</button>
+							<button type="button" data-target="test-lat" data-value="51.5">London</button>
+							<button type="button" data-target="test-lat" data-value="65">65° N</button>
+							<button type="button" data-target="test-lat" data-value="-33.9">Sydney</button>
+						</div>
+						<div class="readout" id="test-readout" data-lines="5"></div>
 					</div>
-					<div class="readout" id="test-readout" data-lines="5"></div>
 				</div>
 			</div>
+			<figcaption>
+				The noon curve is the same at every latitude: move the latitude and
+				only sunrise and sunset change, spreading apart as the latitude grows.
+				Point at the plot to read a date.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -984,11 +1046,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				The noon curve is the same at every latitude: move the latitude and
-				only sunrise and sunset change, spreading apart as the latitude grows.
-				Point at the plot to read a date.
-			</figcaption>
 		</figure>
 
 		<p>
@@ -1060,13 +1117,16 @@
 			gives 2 h 35 min for Ptolemy's time.
 		</p>
 
-		<p>
-			In 2 h 35 min the sky turns 38.8°, so a time stamp recorded by Ptolemy
-			must be corrected by $\Delta T$ before it can be compared with the
-			reference sky. Page 3.3 needs this for ancient eclipses.
-		</p>
-
-		<aside class="detour" data-topic="deltaT"></aside>
+		<div class="row">
+			<p>
+				In 2 h 35 min the sky turns 38.8°, so a time stamp recorded by Ptolemy
+				must be corrected by $\Delta T$ before it can be compared with the
+				reference sky. Page 3.3 needs this for ancient eclipses.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="deltaT"></div>
+			</aside>
+		</div>
 
 		<p>
 			<strong>The stars' right ascensions change.</strong> Since 2000, Vega's
