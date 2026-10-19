@@ -6,10 +6,14 @@
 	      levels deep, this template one level);
 	   2. set data-page on <body> to the page's number in the site map
 	      (shared/components.js), and set ready: true there when publishing;
-	   3. empty <header class="page-head"></header> to have the title and the
-	      guiding question filled from the site map;
+	   3. empty <header class="page-head"></header> to have the act line, the
+	      title and the subtitle filled from the site map; the contents are
+	      built from the <h2> on the left of the page;
 	   4. follow the rhythm of STRUCTURE.md §5: observation, model, fit,
-	      test, residual, then exercises, sources and previous / next.
+	      test, residual, then exercises, sources and previous / next;
+	   5. follow the style of STYLE.md: the first paragraph has the drop cap
+	      (class="lead"), origins and detours are margin notes, every figure
+	      sits in a graduated frame.
      Every shared component appears once below.
      ========================================================================== -->
 <html lang="en">
@@ -44,19 +48,18 @@
 <body data-page="2.1">
 <div class="page">
 
-	<!-- Sticky table of contents, built from the article's <h2> -->
-	<nav class="toc" aria-label="Contents"></nav>
+	<!-- Page header (title, subtitle). Leave it empty to fill it from the
+	     site map; the contents go on its left, built from the <h2>. -->
+	<header class="page-head">
+		<p class="act-line">Act N · N.N</p>
+		<h1>Page title</h1>
+		<p class="subtitle">The guiding question of the page?</p>
+	</header>
 
 	<article>
 
-		<!-- Page header. Leave it empty to fill it from the site map. -->
-		<header class="page-head">
-			<p class="page-number">Act N · N.N</p>
-			<h1>Page title</h1>
-			<p class="question">The guiding question of the page?</p>
-		</header>
-
-		<p>
+		<!-- The first paragraph opens with a drop cap -->
+		<p class="lead">
 			One or two sentences of introduction: what the reader will be able to
 			do at the end of the page, and how it connects to the previous one.
 		</p>
@@ -64,12 +67,18 @@
 		<!-- ============================ 1. OBSERVATION ============================ -->
 		<h2 id="observation"><span class="step">1 · Observation</span>What is seen</h2>
 
-		<p>
-			What is seen in the sky, with numbers. Inline mathematics is written
-			between dollar signs, as in $\lambda = \bar\lambda + q$. Each idea
-			carries its origin:
-			<span class="badge" data-origin="hipparchus"></span>
-		</p>
+		<!-- A paragraph with margin notes: the notes go in the <aside> and sit
+		     to the right of the paragraph (under it on a phone) -->
+		<div class="row">
+			<p>
+				What is seen in the sky, with numbers. Inline mathematics is written
+				between dollar signs, as in $\lambda = \bar\lambda + q$. Each idea
+				carries its origin, as a note in the margin.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
 
 		<!-- ============================== 2. MODEL =============================== -->
 		<h2 id="model"><span class="step">2 · Model</span>The geometric idea</h2>
@@ -78,26 +87,33 @@
 
 		$$\delta = \arcsin(\sin\varepsilon \, \sin\lambda)$$
 
-		<!-- A figure: visual on the left, controls and read-out on the right -->
+		<!-- A figure: its graduated frame (visual on the left, controls and
+		     read-out on the right), then the caption, then the keys -->
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="fig-declination"></canvas>
-				</div>
-				<div>
-					<div class="ctl">
-						<label for="eps">obliquity ε</label>
-						<input id="eps" type="range" min="0" max="40" step="0.1" value="23.4">
-						<output></output>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="fig-declination"></canvas>
 					</div>
-					<div class="presets">
-						<button type="button" data-target="eps" data-value="eps">today</button>
-						<button type="button" data-target="eps" data-value="0">no tilt</button>
+					<div>
+						<div class="ctl">
+							<label for="eps">obliquity ε</label>
+							<input id="eps" type="range" min="0" max="40" step="0.1" value="23.4">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="eps" data-value="eps">today</button>
+							<button type="button" data-target="eps" data-value="0">no tilt</button>
+						</div>
+						<!-- A read-out declares its number of lines, so the figure keeps its size -->
+						<div class="readout" id="declination-readout" data-lines="1"></div>
 					</div>
-					<!-- A read-out declares its number of lines, so the figure keeps its size -->
-					<div class="readout" id="declination-readout" data-lines="1"></div>
 				</div>
 			</div>
+			<figcaption>
+				What to do with the figure and what to notice: move the obliquity
+				and watch the curve's height.
+			</figcaption>
 			<!-- Figure key: every element of the figure, one line each (CLAUDE.md) -->
 			<div class="keys">
 				<div>
@@ -115,10 +131,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				What to do with the figure and what to notice: move the obliquity
-				and watch the curve's height.
-			</figcaption>
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -137,7 +149,9 @@
 		<p>The model against the reference sky, with the error curve.</p>
 
 		<figure class="fig">
-			<div id="fig-error"></div>
+			<div class="frame">
+				<div id="fig-error"></div>
+			</div>
 			<figcaption>
 				The error curve $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
 				in arcminutes, for the mean Sun $\bar\lambda$ (uniform motion).
@@ -148,11 +162,15 @@
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What is still wrong</h2>
 
-		<p>
-			What is still wrong, and the question that the next page answers.
-		</p>
-
-		<aside class="detour" data-topic="nutation"></aside>
+		<!-- A detour: a margin note too, a link once its topic has a page -->
+		<div class="row">
+			<p>
+				What is still wrong, and the question that the next page answers.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
 
 		<!-- ============================== EXERCISES ============================== -->
 		<h2 id="exercises">Exercises</h2>
