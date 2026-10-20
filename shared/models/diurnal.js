@@ -62,7 +62,7 @@ const Diurnal = (function () {
 		return [cos(phi), 0, sin(phi)];
 	}
 
-	/* Hour angle (deg, in (-180, 180]) of right ascension ra when the sky
+	/* Hour angle (deg, in [-180, 180)) of right ascension ra when the sky
 	   has turned by theta. */
 	function hourAngle(theta, ra) {
 		return norm180(theta - ra);

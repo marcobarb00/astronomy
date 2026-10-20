@@ -1151,6 +1151,14 @@ const dayLengthFigure = {
    ========================================================================== */
 
 const TEST_RANGE = [-25, 25];
+
+/* The searches for the real Sun's events: noon within NOON_SEARCH days of
+   12:00 UT (the equation of time stays under 17 min = 0.012 d), sunrise
+   and sunset within half a day of noon, each by 40 halvings (a window
+   of 1 day / 2^40, far below a second). */
+const NOON_SEARCH = 0.03;
+const RISE_SET_SEARCH = 0.5;
+const BISECTION_STEPS = 40;
 const SUN_TABLE_STEP = 0.25; // days
 
 const testFigure = {
@@ -1220,11 +1228,16 @@ const testFigure = {
 		return Diurnal.altitude(sun.dec, norm180(Ephem.apparentSiderealTime(jdUT) - sun.ra), phi);
 	},
 
-	/* Root of f in [a, b] by bisection. */
+	/* Root of f in [a, b] by bisection, NaN when f has the same sign at
+	   both ends (no root to find there). */
 	bisect(f, a, b) {
 		const signA = Math.sign(f(a));
 
-		for (let i = 0; i < 40; i++) {
+		if (signA !== 0 && signA === Math.sign(f(b))) {
+			return NaN;
+		}
+
+		for (let i = 0; i < BISECTION_STEPS; i++) {
 			const middle = (a + b) / 2;
 
 			if (Math.sign(f(middle)) === signA) {
@@ -1238,7 +1251,7 @@ const testFigure = {
 	},
 
 	realNoon(jd0) {
-		return this.bisect(jd => this.sunHourAngle(jd), jd0 + 0.47, jd0 + 0.53);
+		return this.bisect(jd => this.sunHourAngle(jd), jd0 + 0.5 - NOON_SEARCH, jd0 + 0.5 + NOON_SEARCH);
 	},
 
 	/* The real sunrise and sunset (JD(UT)), NaN if the Sun does not cross h0. */
@@ -1246,13 +1259,13 @@ const testFigure = {
 		const noon = this.noons[day];
 		const above = jd => this.sunAltitude(jd, phi) - Clock.SUN_HORIZON;
 
-		if (above(noon) < 0 || above(noon - 0.5) > 0) {
+		if (above(noon) < 0) {
 			return { rise: NaN, set: NaN };
 		}
 
 		return {
-			rise: this.bisect(above, noon - 0.5, noon),
-			set: this.bisect(above, noon, noon + 0.5)
+			rise: this.bisect(above, noon - RISE_SET_SEARCH, noon),
+			set: this.bisect(above, noon, noon + RISE_SET_SEARCH)
 		};
 	},
 
@@ -1287,6 +1300,10 @@ const testFigure = {
 		if (this.hoverDay === null) {
 			const range = values => {
 				const finite = values.filter(Number.isFinite);
+
+				if (finite.length === 0) {
+					return '\\text{none}';
+				}
 
 				return `${texMinutes(Math.min(...finite))}\\ \\text{to}\\ ${texMinutes(Math.max(...finite))}`;
 			};

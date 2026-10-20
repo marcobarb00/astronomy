@@ -83,7 +83,7 @@ const Clock = (function () {
 		return norm360(gmst(jdUT) + lon);
 	}
 
-	/* Hour angle H = theta - alpha (deg, in (-180, 180]). */
+	/* Hour angle H = theta - alpha (deg, in [-180, 180)). */
 	function hourAngle(jdUT, lon, ra) {
 		return norm180(lst(jdUT, lon) - ra);
 	}
