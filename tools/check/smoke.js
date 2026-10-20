@@ -784,7 +784,8 @@ function matchesOnly(page, only) {
 async function checkWithoutCdn(browser, site, pageFile, problems) {
 	const html = fs.readFileSync(path.join(site.root, pageFile), 'utf8');
 
-	if (!html.includes('cdnjs.cloudflare.com')) {
+	// the archived pages are kept as they were (archive/README.md)
+	if (!html.includes('cdnjs.cloudflare.com') || pageFile.startsWith('archive/')) {
 		return;
 	}
 
