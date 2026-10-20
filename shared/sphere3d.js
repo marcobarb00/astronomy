@@ -98,6 +98,12 @@ class Sphere3D {
 
 		// labels are drawn in web fonts: draw again once they have loaded
 		whenCanvasFontsReady().then(() => this.redraw());
+
+		// a new pixel ratio (zoom, another screen): a sharper canvas
+		onPixelRatioChange(() => {
+			this.resize();
+			this.redraw();
+		});
 	}
 
 	/* Match the canvas resolution to its displayed size. */

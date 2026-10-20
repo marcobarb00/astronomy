@@ -128,6 +128,12 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 
 	// labels are drawn in web fonts: draw again once they have loaded
 	whenCanvasFontsReady().then(() => owner.draw());
+
+	// a new pixel ratio (zoom, another screen): a sharper canvas
+	onPixelRatioChange(() => {
+		resize();
+		owner.draw();
+	});
 }
 
 /* A point on a circle of radius r about (cx, cy), at an angle measured
@@ -199,15 +205,21 @@ const wheelFigure = {
 
 	/* The real Sun's right ascension (deg) at JD(UT). */
 	sunRightAscension(jdUT) {
+		return this.sunEquatorial(jdUT).ra;
+	},
+
+	/* The real Sun's { ra, dec } (deg) at JD(UT). */
+	sunEquatorial(jdUT) {
 		const jdTT = Time.ttFromUt(jdUT);
 
-		return Ephem.equatorial(Ephem.sun(jdTT), jdTT).ra;
+		return Ephem.equatorial(Ephem.sun(jdTT), jdTT);
 	},
 
 	update() {
 		const elapsed = readNumber('wheel-day') + readNumber('wheel-time') / 24;
 		const jd = YEAR_START + elapsed;
-		const sunRa = this.sunRightAscension(jd);
+		const sun = this.sunEquatorial(jd);
+		const sunRa = sun.ra;
 		const n = MeanSun.MODERN.n;
 
 		// the Sun's right ascension, unwrapped: the mean motion plus the
@@ -219,7 +231,7 @@ const wheelFigure = {
 			elapsed: elapsed,
 			theta: Clock.gmst(jd),
 			sunRa: sunRa,
-			sunDec: Ephem.equatorial(Ephem.sun(Time.ttFromUt(jd)), Time.ttFromUt(jd)).dec,
+			sunDec: sun.dec,
 			skyTurns: (Clock.RATE * elapsed) / 360,
 			sunTurns: (Clock.RATE * elapsed - sunMoved) / 360
 		};
@@ -760,31 +772,52 @@ const calendarFigure = {
 	   of the star above the horizon, and the night of the model Sun. */
 	update() {
 		const phi = readNumber('transit-lat');
-		const star = Stars.find(this.starName);
+		const transits = this.starTransits(this.starName);
+		const sunDays = [];
 
-		this.nights = [];
-
-		for (let day = 0; day < DAYS_IN_YEAR; day++) {
-			const jd0 = YEAR_START + day;
-			const position = Stars.ofDate(star, jd0);
-			const start = Clock.fromLocalMeanTime(jd0, 12, 0);
-			const H0 = Diurnal.risingHourAngle(position.dec, phi);
-			const inside = Clock.transitsBetween(position.ra, start, 1, 0).map(t => 12 + (t - start) * 24);
-
-			this.nights.push({
-				day: day,
-				dec: position.dec,
-				inside: inside,
-				upHalf: (H0 / Clock.RATE) * 24,
-				dusk: this.dusk(Clock.sunDay(jd0, phi, 0)),
-				dawn: 24 + this.dawn(Clock.sunDay(jd0 + 1, phi, 0))
-			});
+		// the model Sun's day of each date, and of the day after the year
+		for (let day = 0; day <= DAYS_IN_YEAR; day++) {
+			sunDays.push(Clock.sunDay(YEAR_START + day, phi, 0));
 		}
+
+		this.nights = transits.map(({ day, dec, inside }) => ({
+			day: day,
+			dec: dec,
+			inside: inside,
+			upHalf: (Diurnal.risingHourAngle(dec, phi) / Clock.RATE) * 24,
+			dusk: this.dusk(sunDays[day]),
+			dawn: 24 + this.dawn(sunDays[day + 1])
+		}));
 
 		this.unwrapTransits();
 		this.phi = phi;
 		this.showReadout();
 		this.plot.redraw();
+	},
+
+	/* For each night of the year, the star's declination of date and its
+	   transits (hours of local mean time, 12 to 36). They do not depend on
+	   the latitude, so they are computed once per star. */
+	starTransits(name) {
+		this.transitCache = this.transitCache ?? new Map();
+
+		if (!this.transitCache.has(name)) {
+			const star = Stars.find(name);
+			const nights = [];
+
+			for (let day = 0; day < DAYS_IN_YEAR; day++) {
+				const jd0 = YEAR_START + day;
+				const position = Stars.ofDate(star, jd0);
+				const start = Clock.fromLocalMeanTime(jd0, 12, 0);
+				const inside = Clock.transitsBetween(position.ra, start, 1, 0).map(t => 12 + (t - start) * 24);
+
+				nights.push({ day: day, dec: position.dec, inside: inside });
+			}
+
+			this.transitCache.set(name, nights);
+		}
+
+		return this.transitCache.get(name);
 	},
 
 	/* The transit time as one continuous line through the year: it falls

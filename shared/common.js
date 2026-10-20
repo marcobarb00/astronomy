@@ -795,7 +795,9 @@ function buildChoice(container, names, chosen, onChoose) {
    by the small amount of each frame. options: playLabel, pauseLabel (the
    two texts of the button), onPlay (called when it starts, e.g. to pause
    another player of the same figure). The button shows a small play or
-   pause icon (inline SVG, STYLE.md §8) before its label. Returns { pause }. */
+   pause icon (inline SVG, STYLE.md §8) before its label. While its figure
+   is off the screen it stops drawing, and goes on from the same position
+   when the figure comes back. Returns { pause }. */
 const PLAY_ICON =
 	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 L11 6 L2 11 Z" fill="currentColor"></path></svg>';
@@ -821,12 +823,15 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	const playLabel = options.playLabel ?? 'Play';
 	const pauseLabel = options.pauseLabel ?? 'Pause';
 	let playing = false;
+	let looping = false; // a frame loop is running (at most one at a time)
+	let visible = true; // the figure is on the screen
 	let lastTime = null;
 	let position = 0;
-	let run = 0; // each start gets a new number: an older loop stops itself
 
-	const advance = (thisRun, now) => {
-		if (!playing || thisRun !== run) {
+	// one frame: move on by the time since the last one
+	const step = now => {
+		if (!playing || !visible) {
+			looping = false; // paused, or suspended while off the screen
 			return;
 		}
 
@@ -839,12 +844,19 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 		}
 
 		lastTime = now;
-		requestAnimationFrame(time => advance(thisRun, time));
+		requestAnimationFrame(step);
+	};
+
+	const startLoop = () => {
+		if (!looping) {
+			looping = true;
+			lastTime = null;
+			requestAnimationFrame(step);
+		}
 	};
 
 	const setPlaying = on => {
 		playing = on;
-		lastTime = null;
 		position = Number(slider.value);
 		showPlayState(button, on, on ? pauseLabel : playLabel);
 
@@ -853,13 +865,19 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 				options.onPlay();
 			}
 
-			run++;
-
-			const thisRun = run;
-
-			requestAnimationFrame(time => advance(thisRun, time));
+			startLoop();
 		}
 	};
+
+	// off the screen a player stops drawing; back on it, it goes on from
+	// the same position, still playing
+	whenOffScreen(slider.closest('figure') ?? slider, onScreen => {
+		visible = onScreen;
+
+		if (visible && playing) {
+			startLoop();
+		}
+	});
 
 	button.addEventListener('click', () => setPlaying(!playing));
 	slider.addEventListener('pointerdown', () => setPlaying(false));
@@ -867,6 +885,38 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	setPlaying(false);
 
 	return { pause: () => setPlaying(false) };
+}
+
+/* Call onChange(true / false) when 'element' comes onto or leaves the
+   screen (nothing in a browser without IntersectionObserver). */
+function whenOffScreen(element, onChange) {
+	if (typeof IntersectionObserver === 'undefined') {
+		return;
+	}
+
+	new IntersectionObserver(entries => {
+		onChange(entries[entries.length - 1].isIntersecting);
+	}).observe(element);
+}
+
+/* Call 'callback' whenever the device pixel ratio changes (the browser
+   zooms, the window moves to another screen): a canvas must then be
+   sized and drawn again at the new resolution. */
+function onPixelRatioChange(callback) {
+	if (typeof window === 'undefined' || !window.matchMedia) {
+		return;
+	}
+
+	const query = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+
+	query.addEventListener(
+		'change',
+		() => {
+			callback();
+			onPixelRatioChange(callback);
+		},
+		{ once: true }
+	);
 }
 
 /* The icon and label of a play button, and its pressed state. */

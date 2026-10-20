@@ -591,11 +591,30 @@ const Ephem = (function () {
 	/* Matrix taking J2000 mean equatorial vectors to the mean equator and
 	   equinox of date: its rows are the equinox, the 90° point and the
 	   pole of the equator of date (frame bias neglected, < 0.03"). */
-	function equatorOfDateMatrix(jdTT) {
+	function buildEquatorMatrix(jdTT) {
 		const pole = equatorPole(jdTT);
 		const equinox = normalize3(cross3(pole, eclipticPole(jdTT)));
 
 		return [equinox, cross3(pole, equinox), pole];
+	}
+
+	/* Cached as the ecliptic one: precessing a star asks for J2000 and one
+	   other date, and the pages ask for the same date for many stars. */
+	const equatorCache = { j2000: null, jd: null, matrix: null };
+
+	function equatorOfDateMatrix(jdTT) {
+		if (jdTT === Time.J2000) {
+			equatorCache.j2000 = equatorCache.j2000 ?? buildEquatorMatrix(jdTT);
+
+			return equatorCache.j2000;
+		}
+
+		if (equatorCache.jd !== jdTT) {
+			equatorCache.jd = jdTT;
+			equatorCache.matrix = buildEquatorMatrix(jdTT);
+		}
+
+		return equatorCache.matrix;
 	}
 
 	/* Precess equatorial coordinates (deg) from the mean equator and

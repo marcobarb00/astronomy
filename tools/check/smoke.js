@@ -513,8 +513,110 @@ async function runTimed(page, later) {
 	}
 }
 
+/* A player whose figure leaves the screen must stop moving, stay
+   playing, and go on from the same value when the figure comes back
+   (not restart from the start, not jump). Problems go to 'problems'. */
+async function checkPlayResume(page, problems) {
+	const players = await markAll(page, 'button.play[aria-pressed]', 'smoke-play');
+
+	for (const { selector, name } of players) {
+		const button = page.locator(selector);
+
+		if (!(await button.isVisible())) {
+			continue;
+		}
+
+		const report = await playAwayAndBack(page, button);
+
+		if (report) {
+			problems.push(`play ${name}: ${report}`);
+		}
+	}
+}
+
+/* One player: returns what went wrong, or null. */
+async function playAwayAndBack(page, button) {
+	const sliders = () =>
+		button.evaluate(el => {
+			return [...el.closest('figure').querySelectorAll('input[type=range]')].map(input => ({
+				value: Number(input.value),
+				min: Number(input.min),
+				max: Number(input.max)
+			}));
+		});
+
+	await button.scrollIntoViewIfNeeded();
+
+	const start = await sliders();
+
+	await button.click();
+	await page.waitForTimeout(400);
+
+	const playing = await sliders();
+	const k = playing.findIndex((slider, i) => slider.value !== start[i].value);
+
+	if (k < 0) {
+		await button.click();
+		return 'its slider did not move';
+	}
+
+	const offScreen = await scrollFigureAway(button);
+
+	await page.waitForTimeout(150);
+	const awayFirst = (await sliders())[k].value;
+	await page.waitForTimeout(700);
+	const awayLast = (await sliders())[k].value;
+
+	await button.scrollIntoViewIfNeeded();
+	await page.waitForTimeout(700);
+
+	const back = (await sliders())[k];
+	const pressed = await button.getAttribute('aria-pressed');
+	const range = back.max - back.min;
+	const advance = (((back.value - awayLast) % range) + range) % range;
+
+	await button.click();
+
+	if (!offScreen) {
+		return null; // the page is too short to take this figure off the screen
+	}
+
+	if (awayFirst !== awayLast) {
+		return `kept moving off the screen (${awayFirst} -> ${awayLast})`;
+	}
+
+	if (pressed !== 'true') {
+		return 'stopped playing while off the screen';
+	}
+
+	if (advance === 0 || advance > range / 2) {
+		return `did not go on from ${awayLast} when back on the screen (now ${back.value})`;
+	}
+
+	return null;
+}
+
+/* Scroll so that the figure of 'button' is off the screen; returns
+   whether it is. */
+async function scrollFigureAway(button) {
+	return button.evaluate(el => {
+		const figure = el.closest('figure');
+		const box = figure.getBoundingClientRect();
+		const below = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+
+		const by = below > box.bottom + 50 ? box.bottom + 50 : box.top - window.innerHeight - 50;
+
+		// at once: the page itself scrolls smoothly (theme.css)
+		window.scrollTo({ top: window.scrollY + by, behavior: 'instant' });
+
+		const after = figure.getBoundingClientRect();
+
+		return after.bottom < 0 || after.top > window.innerHeight;
+	});
+}
+
 /* Everything above, in order. */
-async function exercise(page, log) {
+async function exercise(page, log, problems) {
 	await logReadouts(page, log, 'as loaded');
 	await openDetails(page, log);
 	await moveSliders(page, log);
@@ -523,6 +625,7 @@ async function exercise(page, log) {
 
 	await hoverPlots(page, log);
 	await dragSpheres(page, log);
+	await checkPlayResume(page, problems);
 	await runTimed(page, later);
 	await settle(page);
 }
@@ -693,7 +796,7 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 
 		if (viewportName === 'desktop') {
 			log.push(`\n=== ${pageFile} ===`);
-			await exercise(page, log);
+			await exercise(page, log, problems);
 		}
 	} catch (error) {
 		problems.push(`smoke test stopped: ${error.message.split('\n')[0]}`);
