@@ -3,7 +3,7 @@
    PREDICTING THE SKY - MODEL: THE TURNING SKY (models/diurnal.js)
    The model of page 1.1: the sky is a rigid celestial sphere turning
    uniformly about the polar axis, seen by an observer at latitude phi.
-   Needs common.js. Touches no DOM, so it can be loaded in Node.
+   Needs common.js and time.js. Touches no DOM, so it can be loaded in Node.
 
    This model predicts altitudes and rising times, not a longitude, so it
    exports plain functions instead of make() (see README.md).
@@ -34,7 +34,7 @@ const Diurnal = (function () {
 	   23 h 56 min 04.09 s.
 	   ====================================================================== */
 
-	const DEGREES_PER_DAY = 360.98564736629;
+	const DEGREES_PER_DAY = Time.SIDEREAL_RATE;
 	const DEGREES_PER_HOUR = DEGREES_PER_DAY / 24;
 	const TURN_HOURS = 360 / DEGREES_PER_HOUR;
 

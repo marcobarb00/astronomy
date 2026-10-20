@@ -99,12 +99,9 @@ class Plot2D {
 	resize() {
 		const width = this.canvas.clientWidth || 600;
 		const height = Math.round(clamp(width * this.aspect, this.minHeight, this.maxHeight));
-		const ratio = window.devicePixelRatio || 1;
 
 		this.canvas.style.height = `${height}px`;
-		this.canvas.width = Math.round(width * ratio);
-		this.canvas.height = Math.round(height * ratio);
-		this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		scaleCanvas(this.canvas, this.ctx, width, height);
 
 		this.width = width;
 		this.height = height;
@@ -428,16 +425,7 @@ class Plot2D {
 		const { ctx } = this;
 
 		this.checkInside([y], style);
-		ctx.fillStyle = style.color ?? COL.planet;
-		ctx.beginPath();
-		ctx.arc(this.px(x), this.py(y), style.radius ?? 5, 0, TAU);
-		ctx.fill();
-
-		if (style.ring !== false) {
-			ctx.strokeStyle = COL.card;
-			ctx.lineWidth = 1.5;
-			ctx.stroke();
-		}
+		drawDot(ctx, this.px(x), this.py(y), style.radius ?? 5, style.color ?? COL.planet, style.ring !== false);
 	}
 
 	/* Horizontal line across the box at y. */

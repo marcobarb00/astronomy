@@ -41,9 +41,6 @@ const AXIS_LENGTH = 1.25;
 /* Text of an angle with two decimals: "−5.47°". */
 const formatDegrees = value => `${value.toFixed(2).replace('-', '−')}°`;
 
-/* Text of a slider's angle with one decimal: "−33.9°". */
-const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
-
 /* An angle in TeX: "-5.47^\circ" (never "-0.00", fixed in common.js). */
 const texDegrees = (value, digits = 2) => `${fixed(value, digits)}^\\circ`;
 
@@ -61,21 +58,15 @@ function texHours(ra) {
 /* An angle in degrees, minutes and seconds, for TeX: "20^\circ 30' 09''". */
 function texDms(value) {
 	const sign = value < 0 ? '-' : '';
-	const totalSeconds = Math.round(Math.abs(value) * 3600);
-	const d = Math.floor(totalSeconds / 3600);
-	const m = Math.floor((totalSeconds - 3600 * d) / 60);
-	const s = totalSeconds - 3600 * d - 60 * m;
+	const { h, m, s } = splitHms(Math.abs(value));
 
-	return `${sign}${d}^\\circ ${pad2(m)}' ${pad2(s)}''`;
+	return `${sign}${h}^\\circ ${pad2(m)}' ${pad2(s)}''`;
 }
 
 /* A unit vector in TeX, with four decimals. */
 function texVector(name, v) {
 	return `${name} = (${v.map(x => fixed(x, 4)).join(',\\ ')})`;
 }
-
-/* The mean position of date of a star of shared/stars.js. */
-const starOfDate = name => Stars.ofDate(Stars.find(name), STAR_EPOCH);
 
 /* A coordinate path in a frame: along the fundamental circle from the
    origin to the foot of the point (longitude), then up to the point
@@ -160,13 +151,11 @@ const PLAY_DAYS_PER_SECOND = 15;
 const SUN_ARROW_DEGREES = 20;
 const SUN_ARROW_RADIUS = 1.1;
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /* Day of the year (slider value) -> "21 May". */
 function formatDay(day) {
 	const date = Time.calendarDate(SUN_YEAR_START + Math.floor(day));
 
-	return `${Math.floor(date.day)} ${MONTH_NAMES[date.month - 1]}`;
+	return `${Math.floor(date.day)} ${Time.MONTH_NAMES[date.month - 1]}`;
 }
 
 /* The objects the read-out can follow: the Sun first, then the stars. */
@@ -210,7 +199,7 @@ const eclipticFigure = {
 		let sEcl = sunEcl;
 
 		if (this.chosen !== 'Sun') {
-			const eq = starOfDate(this.chosen);
+			const eq = Stars.ofDateByName(this.chosen, STAR_EPOCH);
 
 			sEq = fromLonLat(eq.ra, eq.dec);
 			sEcl = matApply(Frames.equatorialToEclipticMatrix(EPS_TODAY), sEq);
@@ -372,7 +361,7 @@ const horizonFigure = {
 	update() {
 		const phi = readNumber('hor-lat');
 		const theta = readNumber('hor-theta');
-		const eq = starOfDate(this.starName);
+		const eq = Stars.ofDateByName(this.starName, STAR_EPOCH);
 		const matrix = Frames.equatorialToHorizonMatrix(phi, theta);
 		const toEquatorial = transpose(matrix);
 

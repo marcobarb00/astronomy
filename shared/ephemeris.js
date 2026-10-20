@@ -357,30 +357,19 @@ const Ephem = (function () {
 		[2, -2, 0, 1, 107]
 	];
 
-	/* c0 + c1 T + c2 T^2 + ... (T in Julian centuries). */
-	function polyT(T, coefficients) {
-		let result = 0;
-
-		for (let i = coefficients.length - 1; i >= 0; i--) {
-			result = result * T + coefficients[i];
-		}
-
-		return result;
-	}
-
 	/* The Moon's fundamental arguments (deg), Meeus 47.1 - 47.6. */
 	function moonArguments(T) {
 		// prettier-ignore
 		return {
-			Lp: polyT(T, [218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000]),
-			D: polyT(T, [297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000]),
-			M: polyT(T, [357.5291092, 35999.0502909, -0.0001536, 1 / 24490000]),
-			Mp: polyT(T, [134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000]),
-			F: polyT(T, [93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000]),
+			Lp: polynomial(T, [218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000]),
+			D: polynomial(T, [297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000]),
+			M: polynomial(T, [357.5291092, 35999.0502909, -0.0001536, 1 / 24490000]),
+			Mp: polynomial(T, [134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000]),
+			F: polynomial(T, [93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000]),
 			A1: 119.75 + 131.849 * T,
 			A2: 53.09 + 479264.290 * T,
 			A3: 313.45 + 481266.484 * T,
-			E: polyT(T, [1, -0.002516, -0.0000074])
+			E: polynomial(T, [1, -0.002516, -0.0000074])
 		};
 	}
 
@@ -433,7 +422,10 @@ const Ephem = (function () {
 	   Valid within 0.01" over 1000 years and a few arcseconds over 10000. */
 	function meanObliquity(jdTT) {
 		const U = Time.centuries(jdTT) / 100;
-		const seconds = polyT(U, [21.448, -4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45]);
+		const seconds = polynomial(
+			U,
+			[21.448, -4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45]
+		);
 
 		return 23 + 26 / 60 + seconds * ARCSEC;
 	}
@@ -441,7 +433,7 @@ const Ephem = (function () {
 	/* Nutation in longitude and obliquity (deg), Meeus ch. 22 short series. */
 	function nutation(jdTT) {
 		const T = Time.centuries(jdTT);
-		const node = polyT(T, [125.04452, -1934.136261, 0.0020708, 1 / 450000]);
+		const node = polynomial(T, [125.04452, -1934.136261, 0.0020708, 1 / 450000]);
 		const sunL = 280.4665 + 36000.7698 * T;
 		const moonL = 218.3165 + 481267.8813 * T;
 		// prettier-ignore
@@ -519,8 +511,8 @@ const Ephem = (function () {
 
 	/* The two angles of a pole series at T centuries, in radians. */
 	function poleAngles(T, poly, periodic) {
-		let a = polyT(T, poly[0]);
-		let b = polyT(T, poly[1]);
+		let a = polynomial(T, poly[0]);
+		let b = polynomial(T, poly[1]);
 
 		periodic.forEach(([period, cosA, cosB, sinA, sinB]) => {
 			const angle = (TAU * T) / period;
@@ -789,7 +781,7 @@ const Ephem = (function () {
 	function sunMeanLongitude(jdTT) {
 		const tau = Time.centuries(jdTT) / 10;
 
-		return norm360(polyT(tau, [280.4664567, 360007.6982779, 0.03032028, 1 / 49931, -1 / 15300, -1 / 2000000]));
+		return norm360(polynomial(tau, [280.4664567, 360007.6982779, 0.03032028, 1 / 49931, -1 / 15300, -1 / 2000000]));
 	}
 
 	/* Equation of time in minutes of time, apparent minus mean solar time

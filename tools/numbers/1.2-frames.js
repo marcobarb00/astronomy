@@ -17,32 +17,21 @@
 	 8. Residual: the angle between the frames drifts
    ========================================================================== */
 
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
+const { loadFiles } = require('../check/load.js');
 
 /* ==========================================================================
    1. LOADING THE SHARED CODE
    ========================================================================== */
 
-const ROOT = path.join(__dirname, '..', '..');
-const FILES = ['common.js', 'time.js', 'ephemeris.js', 'stars.js', 'models/diurnal.js', 'models/frames.js'];
-const context = {};
-
-vm.createContext(context);
-
-FILES.forEach(file => {
-	const source = fs.readFileSync(path.join(ROOT, 'shared', file), 'utf8');
-
-	vm.runInContext(source, context, { filename: file });
-});
-
-const shared = vm.runInContext(
-	`({ sin, cos, asin, acos, atan2d, norm180, norm360, fromLonLat,
-	toLonLat, matApply, matMul, transpose, rotX, rotZ, cross3, normalize3, dot3,
-	Time, Ephem, Stars, Diurnal, Frames })`,
-	context
-);
+/* The shared scripts, in dependency order (tools/check/load.js). */
+const shared = loadFiles([
+	'shared/common.js',
+	'shared/time.js',
+	'shared/ephemeris.js',
+	'shared/stars.js',
+	'shared/models/diurnal.js',
+	'shared/models/frames.js'
+]);
 const {
 	sin,
 	cos,
