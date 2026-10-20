@@ -347,11 +347,12 @@ const horizonFigure = {
 	showObservation() {
 		this.player.pause();
 		this.starName = OBSERVATION.star;
-		byId('hor-stars')
-			.querySelectorAll('button')
-			.forEach(button => {
-				button.classList.toggle('active', button.textContent === OBSERVATION.star);
-			});
+		const buttons = [...byId('hor-stars').querySelectorAll('button')];
+
+		markChosen(
+			buttons,
+			buttons.find(button => button.textContent === OBSERVATION.star)
+		);
 		byId('hor-lat').value = OBSERVATION.phi;
 		byId('hor-theta').value = OBSERVATION.theta;
 		byId('hor-lat').dispatchEvent(new Event('input'));

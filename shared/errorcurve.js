@@ -146,7 +146,8 @@ class ErrorCurve {
 		const box = makeEl('div', 'presets');
 		const initialYears = (this.end - this.start) / 365.25;
 
-		this.spans.forEach(span => {
+		let active = null;
+		const buttons = this.spans.map(span => {
 			const button = makeEl('button', '', span.label);
 
 			button.type = 'button';
@@ -155,9 +156,13 @@ class ErrorCurve {
 
 			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
 				this.span = span;
-				button.classList.add('active');
+				active = button;
 			}
+
+			return button;
 		});
+
+		markChosen(buttons, active);
 
 		return box;
 	}
@@ -250,9 +255,7 @@ class ErrorCurve {
 
 		this.span = span;
 
-		this.spanButtons.querySelectorAll('button').forEach(b => {
-			b.classList.toggle('active', b === button);
-		});
+		markChosen([...this.spanButtons.querySelectorAll('button')], button);
 
 		this.setRange(centre - halfDays, centre + halfDays);
 	}

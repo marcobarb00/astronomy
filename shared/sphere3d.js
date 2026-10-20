@@ -47,6 +47,7 @@ const FAR_SIDE_ALPHA = 0.25; // opacity of path segments behind the sphere
 const FAR_ARROW_ALPHA = 0.35; // opacity of arrows pointing away from the viewer
 const ARROW_HEAD_SIZE = 9; // px
 const DRAG_DEGREES_PER_PX = 0.5;
+const KEY_DEGREES = 5; // one press of an arrow key turns the view by this
 const FAR_ARROW_DEPTH = 0.05; // an arrow is faded once its middle is this far behind
 
 /* labelAway: the gap between a point and its label, and the label's
@@ -84,6 +85,7 @@ class Sphere3D {
 
 		this.resize();
 		this.wireDrag();
+		this.wireKeys();
 
 		// Follow the width of the parent element (height follows the aspect).
 		this.observer = new ResizeObserver(() => {
@@ -153,6 +155,36 @@ class Sphere3D {
 			this.view.pitch = clamp(this.view.pitch + (event.clientY - last[1]) * DRAG_DEGREES_PER_PX, -89, 89);
 			last = [event.clientX, event.clientY];
 
+			this.redraw();
+		});
+	}
+
+	/* The arrow keys turn the view as dragging does (right / down = a drag
+	   to the right / down), once the canvas has the keyboard focus. */
+	wireKeys() {
+		const turns = {
+			ArrowLeft: [-KEY_DEGREES, 0],
+			ArrowRight: [KEY_DEGREES, 0],
+			ArrowUp: [0, -KEY_DEGREES],
+			ArrowDown: [0, KEY_DEGREES]
+		};
+
+		this.canvas.tabIndex = 0;
+
+		if (!this.canvas.hasAttribute('aria-label')) {
+			this.canvas.setAttribute('aria-label', 'A sphere you can turn: drag it, or use the arrow keys.');
+		}
+
+		this.canvas.addEventListener('keydown', event => {
+			const turn = turns[event.key];
+
+			if (!turn) {
+				return;
+			}
+
+			event.preventDefault(); // the keys turn the sphere, not the page
+			this.view.yaw += turn[0];
+			this.view.pitch = clamp(this.view.pitch + turn[1], -89, 89);
 			this.redraw();
 		});
 	}

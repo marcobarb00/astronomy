@@ -155,10 +155,17 @@ class Plot2D {
 			this.redraw();
 		};
 
+		this.canvas.dataset.hover = 'true';
 		this.canvas.addEventListener('pointermove', update);
 		this.canvas.addEventListener('pointerdown', update);
 
-		this.canvas.addEventListener('pointerleave', () => {
+		this.canvas.addEventListener('pointerleave', event => {
+			// on a touch screen the finger has lifted: keep the value it
+			// pointed at, until the next touch
+			if (event.pointerType === 'touch') {
+				return;
+			}
+
 			this.cursorX = null;
 			this.onHover(null);
 			this.redraw();

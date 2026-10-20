@@ -421,7 +421,7 @@ async function pressButtons(page, log) {
 
 			return {
 				text: el.textContent.trim().replace(/\s+/g, ' '),
-				isPlay: el.classList.contains('play') || el.hasAttribute('aria-pressed'),
+				isPlay: el.classList.contains('play'),
 				isStep: el.dataset.step !== undefined,
 				disabled: el.disabled
 			};
@@ -617,6 +617,67 @@ async function scrollFigureAway(button) {
 	});
 }
 
+/* Every sphere must turn with the arrow keys once it has the focus. */
+async function checkSphereKeys(page, problems) {
+	const spheres = await markAll(page, 'canvas.sphere3d', 'smoke-sphere');
+
+	for (const { selector, name } of spheres) {
+		const sphere = page.locator(selector);
+		const picture = () => sphere.evaluate(canvas => canvas.toDataURL());
+
+		await sphere.focus();
+
+		const before = await picture();
+
+		await page.keyboard.press('ArrowRight');
+
+		if ((await picture()) === before) {
+			problems.push(`sphere ${name}: the arrow keys do not turn it`);
+		}
+
+		await page.keyboard.press('ArrowLeft');
+	}
+}
+
+/* The whole text of the read-outs in the figure of 'selector' (KaTeX
+   lines or plain text alike). */
+function readoutText(page, selector) {
+	return page.evaluate(css => {
+		const element = document.querySelector(css);
+		const scope = element.closest('figure') ?? element.closest('.errorcurve') ?? document.body;
+
+		return [...scope.querySelectorAll('.readout, .errorcurve-readout')].map(node => node.textContent).join('\n');
+	}, selector);
+}
+
+/* On a touch screen, a plot that answers to the pointer must keep its
+   read-out once the finger lifts (phone width only). */
+async function checkTouchReadouts(page, problems) {
+	const plots = await markAll(page, 'canvas[data-hover]', 'smoke-touch');
+
+	for (const { selector, name } of plots) {
+		const plot = page.locator(selector);
+
+		if (!(await plot.isVisible())) {
+			continue;
+		}
+
+		await plot.scrollIntoViewIfNeeded();
+
+		const before = await readoutText(page, selector);
+		const box = await plot.boundingBox();
+
+		await page.touchscreen.tap(box.x + 0.6 * box.width, box.y + box.height / 2);
+		await page.waitForTimeout(150);
+
+		const after = await readoutText(page, selector);
+
+		if (after === before) {
+			problems.push(`plot ${name}: no read-out stays after a tap`);
+		}
+	}
+}
+
 /* Everything above, in order. */
 async function exercise(page, log, problems) {
 	await logReadouts(page, log, 'as loaded');
@@ -627,6 +688,7 @@ async function exercise(page, log, problems) {
 
 	await hoverPlots(page, log);
 	await dragSpheres(page, log);
+	await checkSphereKeys(page, problems);
 	await checkPlayResume(page, problems);
 	await runTimed(page, later);
 	await settle(page);
@@ -835,6 +897,8 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 			log.push(`\n=== ${pageFile} ===`);
 			await exercise(page, log, problems);
 			await checkWithoutCdn(browser, site, pageFile, problems);
+		} else {
+			await checkTouchReadouts(page, problems);
 		}
 	} catch (error) {
 		problems.push(`smoke test stopped: ${error.message.split('\n')[0]}`);
