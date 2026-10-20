@@ -11,8 +11,9 @@
    After each action the text of the read-outs of that figure (the TeX
    source of each line, and the value beside each slider) is written to a
    log. The log is compared with tools/check/readouts.txt byte for byte,
-   and the screenshots with a reference pixel for pixel, so any change of
-   what a page displays shows up.
+   and the screenshots with a reference pixel for pixel (up to the noise
+   of anti-aliasing, PIXEL_TOLERANCE), so any change of what a page
+   displays shows up.
 
    Usage, from the repository root:
 	 node tools/check/smoke.js --against HEAD
@@ -66,6 +67,12 @@ const VIEWPORTS = {
 
 /* Time for a page to settle (web fonts, a canvas redrawn once they load). */
 const SETTLE_MS = 400;
+
+/* Screenshots: a pixel counts as different when one of its channels
+   differs by more than this (out of 255). Chromium's anti-aliasing of a
+   few canvas edge pixels varies by 1 or 2 from run to run; any real
+   change of a figure (a line, a colour, a digit) is far larger. */
+const PIXEL_TOLERANCE = 3;
 
 /* How long a play button runs, and a step button is held. */
 const PLAY_MS = 600;
@@ -217,6 +224,21 @@ async function openPage(page, url) {
 		return !summary || summary.textContent !== 'Running…';
 	});
 
+	await settle(page);
+	await nudgeViewport(page);
+}
+
+/* Widen the window by one pixel and back. A canvas is sized when its figure
+   starts; if a web font arrives later and moves the layout by less than a
+   pixel, the canvas keeps its first size, stretched a little, or not,
+   depending on timing. The nudge makes every canvas take its size from
+   the final layout, so two runs give the same pixels. */
+async function nudgeViewport(page) {
+	const size = page.viewportSize();
+
+	await page.setViewportSize({ width: size.width + 1, height: size.height });
+	await settle(page);
+	await page.setViewportSize(size);
 	await settle(page);
 }
 
@@ -508,8 +530,9 @@ async function exercise(page, log) {
    it (the differing pixels in red over a faded copy) is saved.
    ========================================================================== */
 
-/* Runs in the page: compare two PNGs given as data URLs, { a, b }. */
-async function comparePngsInPage({ a, b }) {
+/* Runs in the page: compare two PNGs given as data URLs, { a, b }, up to
+   'tolerance' per channel. */
+async function comparePngsInPage({ a, b, tolerance }) {
 	const load = src =>
 		new Promise((resolve, reject) => {
 			const image = new Image();
@@ -545,10 +568,10 @@ async function comparePngsInPage({ a, b }) {
 
 	for (let i = 0; i < pixelsA.data.length; i += 4) {
 		const same =
-			pixelsA.data[i] === pixelsB.data[i] &&
-			pixelsA.data[i + 1] === pixelsB.data[i + 1] &&
-			pixelsA.data[i + 2] === pixelsB.data[i + 2] &&
-			pixelsA.data[i + 3] === pixelsB.data[i + 3];
+			Math.abs(pixelsA.data[i] - pixelsB.data[i]) <= tolerance &&
+			Math.abs(pixelsA.data[i + 1] - pixelsB.data[i + 1]) <= tolerance &&
+			Math.abs(pixelsA.data[i + 2] - pixelsB.data[i + 2]) <= tolerance &&
+			Math.abs(pixelsA.data[i + 3] - pixelsB.data[i + 3]) <= tolerance;
 		const x = (i / 4) % width;
 		const y = Math.floor(i / 4 / width);
 
@@ -589,7 +612,11 @@ async function compareScreenshot(browser, name, before, after) {
 
 	const dataUrl = file => `data:image/png;base64,${fs.readFileSync(file).toString('base64')}`;
 	const page = await browser.newPage();
-	const result = await page.evaluate(comparePngsInPage, { a: dataUrl(baseline), b: dataUrl(current) });
+	const result = await page.evaluate(comparePngsInPage, {
+		a: dataUrl(baseline),
+		b: dataUrl(current),
+		tolerance: PIXEL_TOLERANCE
+	});
 
 	await page.close();
 
