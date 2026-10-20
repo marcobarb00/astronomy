@@ -36,6 +36,7 @@ const SHARED_SCRIPTS = [
 	'shared/sphere3d.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js',
+	'shared/site-map.js',
 	'shared/components.js'
 ];
 

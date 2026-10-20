@@ -64,6 +64,12 @@ const EPS = 23 + 26 / 60;
 
 const ORIGIN = [0, 0, 0];
 
+/* The observers the pages come back to (degrees; longitude positive
+   east): Rome is the default place of Act I. */
+const PLACES = {
+	rome: { lat: 41.9, lon: 12.4964 }
+};
+
 /* ==========================================================================
    2. ANGLES
    All angles in the site's code are in degrees (STRUCTURE.md §6).

@@ -41,6 +41,9 @@ const PLOT_FONT = FONT_TICK;
 const PLOT_LABEL_FONT = FONT_AXIS;
 const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 
+/* About one tick label every this many pixels along each axis. */
+const PLOT_TICK_SPACING = { x: 90, y: 45 };
+
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, HOVER
    ========================================================================== */
@@ -183,7 +186,7 @@ class Plot2D {
 
 	/* Ticks along x: the custom tick function, or round numbers. */
 	ticksX() {
-		const count = Math.max(3, Math.floor((this.box.right - this.box.left) / 90));
+		const count = Math.max(3, Math.floor((this.box.right - this.box.left) / PLOT_TICK_SPACING.x));
 
 		if (this.xTicks) {
 			return this.xTicks(this.x[0], this.x[1], count);
@@ -195,7 +198,7 @@ class Plot2D {
 	}
 
 	ticksY() {
-		const count = Math.max(4, Math.floor((this.box.bottom - this.box.top) / 45));
+		const count = Math.max(4, Math.floor((this.box.bottom - this.box.top) / PLOT_TICK_SPACING.y));
 
 		if (this.yTicks) {
 			return this.yTicks(this.y[0], this.y[1], count);

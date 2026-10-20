@@ -111,8 +111,6 @@ class ErrorCurve {
 	/* Tools row (spans, ghost buttons), plot, legend, hover read-out. */
 	buildDom(options) {
 		const tools = makeEl('div', 'errorcurve-tools');
-		const spanButtons = makeEl('div', 'presets');
-		const ghostButtons = makeEl('div', 'presets');
 		const wrapper = makeEl('div');
 		const canvas = makeEl('canvas');
 
@@ -123,32 +121,9 @@ class ErrorCurve {
 		this.readout = makeEl('div', 'errorcurve-readout');
 		this.readout.textContent = ERROR_READOUT_HINT;
 		this.bandNote = makeEl('div', 'errorcurve-note');
+		this.spanButtons = this.buildSpanButtons();
 
-		const initialYears = (this.end - this.start) / 365.25;
-
-		this.spans.forEach(span => {
-			const button = makeEl('button', '', span.label);
-
-			button.type = 'button';
-			button.addEventListener('click', () => this.chooseSpan(span, button));
-			spanButtons.appendChild(button);
-
-			// the preset that matches the initial range starts active
-			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
-				this.span = span;
-				button.classList.add('active');
-			}
-		});
-
-		this.pinButton = makeEl('button', '', 'Keep as ghost');
-		this.clearButton = makeEl('button', '', 'Clear ghosts');
-		this.pinButton.type = 'button';
-		this.clearButton.type = 'button';
-		this.pinButton.addEventListener('click', () => this.pinGhost());
-		this.clearButton.addEventListener('click', () => this.clearGhosts());
-		ghostButtons.append(this.pinButton, this.clearButton);
-
-		tools.append(spanButtons, ghostButtons);
+		tools.append(this.spanButtons, this.buildGhostButtons());
 		wrapper.appendChild(canvas);
 		this.container.append(tools, wrapper, this.legendBox, this.bandNote, this.readout);
 
@@ -163,8 +138,43 @@ class ErrorCurve {
 			onDraw: () => this.draw(),
 			onHover: x => this.showReadout(x)
 		});
+	}
 
-		this.spanButtons = spanButtons;
+	/* One button per span preset; the one that matches the initial range
+	   starts active. */
+	buildSpanButtons() {
+		const box = makeEl('div', 'presets');
+		const initialYears = (this.end - this.start) / 365.25;
+
+		this.spans.forEach(span => {
+			const button = makeEl('button', '', span.label);
+
+			button.type = 'button';
+			button.addEventListener('click', () => this.chooseSpan(span, button));
+			box.appendChild(button);
+
+			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
+				this.span = span;
+				button.classList.add('active');
+			}
+		});
+
+		return box;
+	}
+
+	/* "Keep as ghost" and "Clear ghosts". */
+	buildGhostButtons() {
+		const box = makeEl('div', 'presets');
+
+		this.pinButton = makeEl('button', '', 'Keep as ghost');
+		this.clearButton = makeEl('button', '', 'Clear ghosts');
+		this.pinButton.type = 'button';
+		this.clearButton.type = 'button';
+		this.pinButton.addEventListener('click', () => this.pinGhost());
+		this.clearButton.addEventListener('click', () => this.clearGhosts());
+		box.append(this.pinButton, this.clearButton);
+
+		return box;
 	}
 
 	startYear() {

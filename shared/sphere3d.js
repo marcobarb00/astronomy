@@ -47,6 +47,13 @@ const FAR_SIDE_ALPHA = 0.25; // opacity of path segments behind the sphere
 const FAR_ARROW_ALPHA = 0.35; // opacity of arrows pointing away from the viewer
 const ARROW_HEAD_SIZE = 9; // px
 const DRAG_DEGREES_PER_PX = 0.5;
+const FAR_ARROW_DEPTH = 0.05; // an arrow is faded once its middle is this far behind
+
+/* labelAway: the gap between a point and its label, and the label's
+   height above its baseline and its half-height (px, at the label fonts). */
+const LABEL_AWAY_GAP = 12;
+const LABEL_ASCENT = 13;
+const LABEL_HALF_HEIGHT = 5;
 const LABEL_FONT = FONT_NAME; // for pages that write on a canvas themselves
 
 /* The cardinal points in the horizon frame (x south, y east, z zenith). */
@@ -304,7 +311,7 @@ class Sphere3D {
 		const shaftEnd = backOff(b, angle, 0.6 * ARROW_HEAD_SIZE);
 		const headLeft = backOff(b, angle - 0.4, ARROW_HEAD_SIZE);
 		const headRight = backOff(b, angle + 0.4, ARROW_HEAD_SIZE);
-		const isFar = (a.d + b.d) / 2 > 0.05;
+		const isFar = (a.d + b.d) / 2 > FAR_ARROW_DEPTH;
 		const color = style.color ?? COL.ink;
 
 		ctx.globalAlpha = isFar ? FAR_ARROW_ALPHA : 1;
@@ -376,7 +383,7 @@ class Sphere3D {
 	   (a 3D point or a screen position { x, y }), so two nearby labels
 	   never overlap. */
 	labelAway(text, point, awayFrom, color) {
-		const gap = 12;
+		const gap = LABEL_AWAY_GAP;
 		const q = this.project(point);
 		const r = Array.isArray(awayFrom) ? this.project(awayFrom) : awayFrom;
 		const length = Math.hypot(q.x - r.x, q.y - r.y) || 1;
@@ -391,7 +398,7 @@ class Sphere3D {
 		this.label(text, point, {
 			color: color,
 			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - ((1 - Math.abs(ux)) * width) / 2,
-			dy: gap * uy + (uy > 0 ? 13 : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * 5
+			dy: gap * uy + (uy > 0 ? LABEL_ASCENT : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * LABEL_HALF_HEIGHT
 		});
 	}
 }

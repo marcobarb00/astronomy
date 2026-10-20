@@ -310,7 +310,7 @@ const eclipticFigure = {
 
 /* The observation of section 1: Aldebaran from Rome, 1 January 2026,
    19:00 UT (tools/numbers/1.2-frames.js). */
-const OBSERVATION = { star: 'Aldebaran', phi: 41.9, theta: 38.94 };
+const OBSERVATION = { star: 'Aldebaran', phi: PLACES.rome.lat, theta: 38.94 };
 
 /* Degrees of turn per second when playing (one turn in 24 s). */
 const PLAY_DEGREES_PER_SECOND = 15;

@@ -37,6 +37,6 @@ then open <http://localhost:8000/>. Run `shared/tests.html` after changing
 
 ## Publishing a page
 
-Set `ready: true` on the page's entry in the site map at the top of
-`shared/components.js`: the hub, the previous / next links and the detour
+Set `ready: true` on the page's entry in the site map,
+`shared/site-map.js`: the hub, the previous / next links and the detour
 cards follow.

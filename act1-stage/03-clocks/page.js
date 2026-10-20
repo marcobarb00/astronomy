@@ -45,7 +45,7 @@ const PLAY_HOURS_PER_SECOND = 1;
 const PLAY_DAYS_PER_SECOND = 30;
 
 /* Rome, the default place of the page (as on pages 1.1 and 1.2). */
-const ROME = { lat: 41.9, lon: 12.4964 };
+const ROME = PLACES.rome;
 
 /* The mean obliquity of the year, for the drawn ecliptic. */
 const EPS_YEAR = Ephem.meanObliquity(YEAR_START);
@@ -428,9 +428,31 @@ const anglesFigure = {
 		this.guide(this.theta);
 
 		// the three angles
-		this.drawAngle(0, this.H, ANGLES_RING.H * R, COL.sun, ['H', 'm'], ANGLES_LABELS.H, false);
-		this.drawAngle(this.theta, this.H, ANGLES_RING.alpha * R, COL.earth, ['α', 'm'], ANGLES_LABELS.alpha, true);
-		this.drawAngle(0, this.theta, ANGLES_RING.theta * R, COL.epicycle, ['θ', 'G'], ANGLES_LABELS.theta, false);
+		this.drawAngle({
+			from: 0,
+			to: this.H,
+			r: ANGLES_RING.H * R,
+			color: COL.sun,
+			name: ['H', 'm'],
+			label: ANGLES_LABELS.H
+		});
+		this.drawAngle({
+			from: this.theta,
+			to: this.H,
+			r: ANGLES_RING.alpha * R,
+			color: COL.earth,
+			name: ['α', 'm'],
+			label: ANGLES_LABELS.alpha,
+			anticlockwise: true
+		});
+		this.drawAngle({
+			from: 0,
+			to: this.theta,
+			r: ANGLES_RING.theta * R,
+			color: COL.epicycle,
+			name: ['θ', 'G'],
+			label: ANGLES_LABELS.theta
+		});
 
 		// the points
 		this.dot(sunPoint, COL.sun, 7);
@@ -470,10 +492,12 @@ const anglesFigure = {
 		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent);
 	},
 
-	/* An arc from angle 'from' to angle 'to' (clockwise from the top, or
-	   anticlockwise when 'anticlockwise'), at radius r, with an arrowhead
-	   at its end and its name at the place given in 'label'. */
-	drawAngle(from, to, r, color, name, label, anticlockwise) {
+	/* An arc { from, to, r, color, name, label, anticlockwise }: from
+	   angle 'from' to angle 'to' (clockwise from the top, or anticlockwise
+	   when 'anticlockwise'), at radius r, with an arrowhead at its end and
+	   its name ([base, subscript]) at the place given in 'label'. */
+	drawAngle(arc) {
+		const { from, to, r, color, name, label, anticlockwise = false } = arc;
 		const ctx = this.ctx;
 		const toCanvas = angle => (angle - 90) * D2R;
 
