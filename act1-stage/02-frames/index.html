@@ -30,6 +30,8 @@
 	<script defer src="../../shared/time.js"></script>
 	<script defer src="../../shared/ephemeris.js"></script>
 	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
 	<script defer src="../../shared/models/diurnal.js"></script>
 	<script defer src="../../shared/models/frames.js"></script>
 	<script defer src="../../shared/sphere3d.js"></script>
@@ -96,6 +98,50 @@
 			</tbody>
 		</table>
 		</div>
+
+		<!-- Figure 1: the zodiac around Taurus, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-zodiac"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">The zodiac around Taurus</div>
+					<p>
+						The sky of 2026 around Aldebaran, as seen looking south: north up,
+						east to the left. The grid is the equatorial one.
+					</p>
+					<p>
+						<span class="hl">Ecliptic:</span> the Sun's yearly path. Aldebaran
+						is 16.6° north of the equator ($\delta = 16.559^\circ$) but 5.5°
+						south of the ecliptic ($\beta = -5.465^\circ$), the values of the
+						table.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>grid</dt>
+						<dd>right ascension every hour, declination every 10°</dd>
+						<dt>border</dt>
+						<dd>right ascension every 30 minutes (top and bottom), declination every 5° (sides)</dd>
+						<dt>equator</dt>
+						<dd>the celestial equator, declination 0°</dd>
+						<dt>ecliptic</dt>
+						<dd>the Sun's yearly path in 2026 (highlighted)</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
+						<dt>star lines</dt>
+						<dd>the usual figures of Taurus, Aries and Orion, named in capitals</dd>
+						<dt>Pleiades</dt>
+						<dd>the star cluster in Taurus</dd>
+						<dt>stipple</dt>
+						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
 
 		<p>
 			The horizontal coordinates change continuously: an hour later the star is
@@ -288,7 +334,7 @@
 				365.2422 = 0.9856^\circ$ a day, and returns to γ after a year. This
 				yearly motion is a different motion from the daily rotation of page 1.1,
 				which carries the Sun and the stars together and changes none of their
-				coordinates $\alpha, \delta, \lambda, \beta$. Figure 1 shows the yearly motion.
+				coordinates $\alpha, \delta, \lambda, \beta$. Figure 2 shows the yearly motion.
 			</p>
 			<aside>
 				<div class="note" data-origin="greek"></div>
@@ -339,7 +385,7 @@
 
 		$$\sin\delta = \sin\varepsilon \sin\lambda, \qquad \tan\alpha = \cos\varepsilon \tan\lambda.$$
 
-		<!-- Figure 1: ecliptic and equator -->
+		<!-- Figure 2: ecliptic and equator -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -461,7 +507,7 @@
 			transpose.
 		</p>
 
-		<!-- Figure 2: equator and horizon -->
+		<!-- Figure 3: equator and horizon -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -496,7 +542,7 @@
 				</div>
 			</div>
 			<figcaption>
-				The same sky as Figure 1, now with an observer. Press "the observation":
+				The same sky as Figure 2, now with an observer. Press "the observation":
 				the read-out gives Aldebaran's azimuth and altitude from the table of
 				section 1. Then press play: the horizon turns, $H$, $A$ and $a$ change,
 				$\alpha$ and $\delta$ do not.
@@ -677,7 +723,7 @@
 		<p>
 			The conversion formulas involve no approximation, so what is tested is
 			the obliquity put into them. The table below compares Ptolemy's values,
-			computed with his obliquity, with the real Sun of his time; Figure 3
+			computed with his obliquity, with the real Sun of his time; Figure 4
 			compares the model, with today's obliquity, with the real Sun of 2026.
 		</p>
 
@@ -857,14 +903,14 @@
 		</div>
 
 		<p>
-			Figure 3 isolates it. For each day of 2026 it takes the reference Sun's
+			Figure 4 isolates it. For each day of 2026 it takes the reference Sun's
 			ecliptic coordinates and converts them with the mean obliquity of date,
 			as the model does. It compares the result with the reference Sun's own
 			$(\alpha, \delta)$, computed with the true obliquity. Both sides use the
 			same $\lambda$ and $\beta$, so the difference is the nutation alone.
 		</p>
 
-		<!-- Figure 3: the nutation error (static, no controls) -->
+		<!-- Figure 4: the nutation error (static, no controls) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="nutation-plot"></canvas>
@@ -940,7 +986,7 @@
 		</p>
 
 		<p>
-			<strong>The angle θ is still unknown.</strong> In Figure 2, $\theta$ was
+			<strong>The angle θ is still unknown.</strong> In Figure 3, $\theta$ was
 			set with a slider. In the sky it depends on the time: it is the angle the
 			sky has turned since γ last crossed the meridian. To place a star in the
 			observer's sky at a given moment we need $\theta$ at that moment, and
@@ -956,7 +1002,7 @@
 				$R_x(-\varepsilon)$, and write out $\lambda$ and $\beta$ in terms of
 				$\alpha$ and $\delta$. Then find Aldebaran's $\lambda$ and $\beta$ from
 				$\alpha = 69.3539^\circ$, $\delta = 16.5594^\circ$ (2026.0), with
-				$\varepsilon = 23.4359^\circ$. Check in Figure 1.
+				$\varepsilon = 23.4359^\circ$. Check in Figure 2.
 			</p>
 			<details class="hint">
 				<p>
@@ -993,7 +1039,7 @@
 			<p>
 				On 21 May 2026 the Sun reaches $\lambda = 60^\circ$ ($\beta = 0$). Find
 				its declination and right ascension with $\varepsilon = 23.4359^\circ$.
-				Check them in Figure 1 on 21 May. Then repeat with Ptolemy's
+				Check them in Figure 2 on 21 May. Then repeat with Ptolemy's
 				$23^\circ 51' 20''$ and check the result against his values in the table
 				of section 4 (row $60^\circ$).
 			</p>
@@ -1028,7 +1074,7 @@
 				As the sky turns, the ecliptic meets the horizon at an angle $I$ that
 				changes. At Rome ($\varphi = 41.9^\circ$), predict the smallest and the
 				largest $I$, and which point of the ecliptic is rising at each. Check
-				with Figure 2 and its read-out. Then explain why a thin crescent Moon
+				with Figure 3 and its read-out. Then explain why a thin crescent Moon
 				after sunset is easier to see in March than in September.
 			</p>
 			<details class="hint">
