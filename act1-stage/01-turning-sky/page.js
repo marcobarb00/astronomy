@@ -694,9 +694,5 @@ const testFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	poleFigure.init();
-	skyFigure.init();
-	outsideFigure.init();
-	dayFigure.init();
-	testFigure.init();
+	startFigures([poleFigure, skyFigure, outsideFigure, dayFigure, testFigure]);
 });

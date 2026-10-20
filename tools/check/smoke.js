@@ -3,7 +3,9 @@
    A safety net for refactoring: serves the repository on a local port,
    opens every HTML page in Chromium (Playwright) at a desktop and a phone
    width, and fails on any console error or warning, uncaught exception,
-   failed request or broken local link. It saves a full-page screenshot
+   failed request or broken local link, and checks that each page still
+   starts its figures when the CDN (KaTeX) is unreachable. It saves a
+   full-page screenshot
    per page and width, then (desktop only) moves every slider, presses
    every button, opens every hint and answer, points at every plot and
    drags every sphere.
@@ -776,6 +778,40 @@ function matchesOnly(page, only) {
 	return page.includes(only) || number === only;
 }
 
+/* With the CDN unreachable (KaTeX missing), a page must still start
+   every figure: no uncaught error, no blank canvas. The failed requests
+   themselves are expected here. */
+async function checkWithoutCdn(browser, site, pageFile, problems) {
+	const html = fs.readFileSync(path.join(site.root, pageFile), 'utf8');
+
+	if (!html.includes('cdnjs.cloudflare.com')) {
+		return;
+	}
+
+	const context = await browser.newContext({ viewport: VIEWPORTS.desktop });
+	const page = await context.newPage();
+	const errors = [];
+
+	page.on('pageerror', error => errors.push(error.message));
+	await page.route(/cdnjs\.cloudflare\.com/, route => route.abort());
+	await page.goto(site.base + pageFile, { waitUntil: 'networkidle' });
+	await settle(page);
+
+	const blank = await page.evaluate(() => {
+		return [...document.querySelectorAll('canvas')]
+			.filter(canvas => {
+				const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+
+				return !pixels.some((value, i) => i % 4 === 3 && value > 0);
+			})
+			.map(canvas => canvas.id || 'a canvas');
+	});
+
+	errors.forEach(message => problems.push(`without the CDN: uncaught ${message}`));
+	blank.forEach(id => problems.push(`without the CDN: ${id} stays blank`));
+	await context.close();
+}
+
 /* Open one page at one width: screenshot (into shotDir), and (desktop)
    the controls, with their read-outs appended to 'log'. */
 async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
@@ -797,6 +833,7 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 		if (viewportName === 'desktop') {
 			log.push(`\n=== ${pageFile} ===`);
 			await exercise(page, log, problems);
+			await checkWithoutCdn(browser, site, pageFile, problems);
 		}
 	} catch (error) {
 		problems.push(`smoke test stopped: ${error.message.split('\n')[0]}`);

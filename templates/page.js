@@ -84,6 +84,5 @@ const errorFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	declinationFigure.init();
-	errorFigure.init();
+	startFigures([declinationFigure, errorFigure]);
 });
