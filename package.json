@@ -11,10 +11,12 @@
 		"typecheck": "node tools/check/typecheck.js",
 		"tests": "node tools/check/tests-node.js",
 		"golden": "node tools/check/golden.js --check",
-		"smoke": "node tools/check/smoke.js --against HEAD"
+		"smoke": "node tools/check/smoke.js --against HEAD",
+		"crosscheck": "node tools/check/crosscheck.js"
 	},
 	"devDependencies": {
 		"@eslint/js": "10.0.1",
+		"astronomy-engine": "2.1.19",
 		"eslint": "10.13.0",
 		"globals": "17.13.0",
 		"playwright": "1.56.1",
