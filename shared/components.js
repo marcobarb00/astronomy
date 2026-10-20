@@ -27,6 +27,9 @@
 		 <figcaption> ... </figcaption>
 		 <div class="keys"> ... </div>
 	 </figure>
+	 <figure class="plate-figure">                a blue plate, numbered with
+		 ... <div class="plate-label"></div> ...  the figures (theme.css §13)
+	 </figure>
 	 <nav class="pager"></nav>
 	 Site.initPage() then builds everything and typesets the $...$ math.
 
@@ -571,16 +574,20 @@ const Site = (function () {
 		});
 	}
 
-	/* Figures: "Figure n." in front of each caption. */
+	/* Figures and blue plates, numbered together in page order: "Figure n."
+	   in front of a figure's caption, "Figure n" in a plate's label. */
 	function numberFigures(root) {
-		root.querySelectorAll('figure.fig').forEach((figure, i) => {
+		root.querySelectorAll('figure.fig, figure.plate-figure').forEach((figure, i) => {
 			const caption = figure.querySelector('figcaption');
+			const plateLabel = figure.querySelector('.plate-label');
 
 			if (!figure.id) {
 				figure.id = `figure-${i + 1}`;
 			}
 
-			if (caption) {
+			if (plateLabel) {
+				plateLabel.textContent = `Figure ${i + 1}`;
+			} else if (caption) {
 				caption.prepend(makeEl('span', 'fig-label', `Figure ${i + 1}.`));
 			}
 		});

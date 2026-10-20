@@ -1,5 +1,6 @@
 #!/bin/sh
-# Fetch the stars drawn on the blue plates (STYLE.md §7) from SIMBAD (TAP
+# Fetch the stars drawn on the blue plates (STYLE.md §7, shared/plate.js;
+# tools/make-plate-stars.py turns them into shared/plate-stars.js) from SIMBAD (TAP
 # service, ADQL query): ICRS J2000 positions, proper motions and V
 # magnitudes of every star brighter than V = 5.0 north of declination +20°
 # (the polar charts) or in the band of the zodiac around Taurus (right
