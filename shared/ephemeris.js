@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - REFERENCE EPHEMERIS (ephemeris.js)
    The "reference sky" every model on the site is compared with.

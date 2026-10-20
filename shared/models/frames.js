@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: FRAMES (models/frames.js)
    The model of page 1.2: three frames on the celestial sphere, each a

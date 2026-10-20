@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - THE ERROR CURVE (errorcurve.js)
    The running thread of the site (STRUCTURE.md §7.3): a plot of
@@ -432,6 +433,7 @@ class ErrorCurve {
 	   like its curve (a line, or a band over long spans), and the shading
 	   of the dates outside the reference's range when it is visible. */
 	updateLegend() {
+		/** @type {LegendItem[]} */
 		const items = (this.curves ?? []).map(({ entry, sample, ghost }) => {
 			return {
 				label: entry.label,

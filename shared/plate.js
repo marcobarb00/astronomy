@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - BLUE PLATES (plate.js)
    Static charts of the sky in the style of a cyanotype star atlas: white

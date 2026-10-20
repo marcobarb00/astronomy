@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - SHARED LIBRARY (common.js)
    Loaded by every page, before any other shared script.
@@ -464,6 +465,9 @@ function whenCanvasFontsReady() {
    7. DOM AND KATEX HELPERS
    ========================================================================== */
 
+/** The element with this id. Typed `any`: the pages look up sliders,
+	buttons, canvases and plain blocks alike.
+	@type {(id: string) => any} */
 const byId = id => document.getElementById(id);
 const readNumber = id => Number(byId(id).value);
 
@@ -485,15 +489,17 @@ function renderTex(element, source, displayMode = true) {
 	katex.render(source, element, { throwOnError: false, displayMode: displayMode });
 }
 
-/* Typeset every element that carries a data-tex attribute. */
+/** Typeset every element that carries a data-tex attribute.
+   @param {ParentNode} [root] */
 function renderStaticMath(root = document) {
-	root.querySelectorAll('[data-tex]').forEach(element => {
+	root.querySelectorAll('[data-tex]').forEach((/** @type {HTMLElement} */ element) => {
 		renderTex(element, element.dataset.tex);
 	});
 }
 
-/* Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
-   then any data-tex element. Needs KaTeX's auto-render extension. */
+/** Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
+   then any data-tex element. Needs KaTeX's auto-render extension.
+   @param {HTMLElement} [root] */
 function renderMath(root = document.body) {
 	renderMathInElement(root, {
 		delimiters: [
@@ -650,10 +656,11 @@ function wireStepButton(button) {
 	button.addEventListener('contextmenu', event => event.preventDefault());
 }
 
-/* Wire every button inside root that drives a slider: presets set a value,
-   step buttons (data-step) step it and repeat while held. */
+/** Wire every button inside root that drives a slider: presets set a value,
+   step buttons (data-step) step it and repeat while held.
+   @param {ParentNode} [root] */
 function wirePresets(root = document) {
-	root.querySelectorAll('button[data-target]').forEach(button => {
+	root.querySelectorAll('button[data-target]').forEach((/** @type {HTMLButtonElement} */ button) => {
 		if (button.dataset.step !== undefined) {
 			wireStepButton(button);
 		} else {

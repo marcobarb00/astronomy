@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE CLOCKS (models/clock.js)
    The model of page 1.3: the sky turns uniformly with respect to mean

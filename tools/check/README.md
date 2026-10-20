@@ -7,6 +7,7 @@ loaded by any page; the site runs without them.
 |---|---|---|
 | `golden.js` | The maths, in Node: time scales, sidereal time, the equation of time, the Sun, the Moon and the planets on a set of dates, the stars of date, the models of pages 1.1 to 1.3, the formatting helpers behind every read-out, each page's own helpers, and the output of `tools/numbers/`. | `golden.txt` |
 | `tests-node.js` | The cases of `shared/tests.html` (Meeus, SOFA / ERFA, JPL Horizons, the models), run in Node; exits with 1 if one fails. | the tolerances in `shared/tests.js` |
+| `typecheck.js` | The site's JavaScript under the TypeScript checker (`// @ts-check`, non-strict, JSDoc types), once per page with the scripts that page loads. | — |
 | `smoke.js` | The pages, in Chromium (Playwright): no console error or warning, no failed request or broken link, the tests of `shared/tests.html` pass; every slider moved, every button pressed, every plot pointed at, every sphere dragged. The read-outs after each action, and a full-page screenshot per page at desktop and phone width. | `readouts.txt`, and the screenshots of a commit (`--against`) or of a local baseline |
 
 `load.js` runs the site's scripts in Node for these checks and for

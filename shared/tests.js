@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - TESTS (tests.js)
    Script of tests.html: checks time.js and ephemeris.js against the worked

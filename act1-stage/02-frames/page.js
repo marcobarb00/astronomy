@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
    Four figures, each with its own init and draw (and update when it has
