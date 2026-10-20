@@ -726,49 +726,61 @@ const PAUSE_ICON =
 	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 H5 V11 H2 Z M7 1 H10 V11 H7 Z" fill="currentColor"></path></svg>';
 
+/* A frame longer than this (seconds) is not played through: the tab was
+   in the background, or the page stalled. The player moves on by this
+   much at most, instead of jumping ahead. */
+const PLAY_MAX_FRAME_SECONDS = 0.25;
+
+/* A value past max brought back into [min, max], whole turns at a time. */
+function wrapIntoRange(value, min, max) {
+	if (value <= max) {
+		return value;
+	}
+
+	return min + ((value - min) % (max - min));
+}
+
 function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	const playLabel = options.playLabel ?? 'Play';
 	const pauseLabel = options.pauseLabel ?? 'Pause';
 	let playing = false;
 	let lastTime = null;
 	let position = 0;
+	let run = 0; // each start gets a new number: an older loop stops itself
 
-	const advance = now => {
-		if (!playing) {
+	const advance = (thisRun, now) => {
+		if (!playing || thisRun !== run) {
 			return;
 		}
 
 		if (lastTime !== null) {
-			const min = Number(slider.min);
-			const max = Number(slider.max);
+			const seconds = Math.min((now - lastTime) / 1000, PLAY_MAX_FRAME_SECONDS);
 
-			position += ((now - lastTime) / 1000) * unitsPerSecond;
-
-			if (position > max) {
-				position = min + (position - max);
-			}
-
+			position = wrapIntoRange(position + seconds * unitsPerSecond, Number(slider.min), Number(slider.max));
 			slider.value = position;
 			slider.dispatchEvent(new Event('input'));
 		}
 
 		lastTime = now;
-		requestAnimationFrame(advance);
+		requestAnimationFrame(time => advance(thisRun, time));
 	};
 
 	const setPlaying = on => {
 		playing = on;
 		lastTime = null;
 		position = Number(slider.value);
-		button.innerHTML = on ? `${PAUSE_ICON}<span>${pauseLabel}</span>` : `${PLAY_ICON}<span>${playLabel}</span>`;
-		button.setAttribute('aria-pressed', on ? 'true' : 'false');
+		showPlayState(button, on, on ? pauseLabel : playLabel);
 
 		if (on) {
 			if (options.onPlay) {
 				options.onPlay();
 			}
 
-			requestAnimationFrame(advance);
+			run++;
+
+			const thisRun = run;
+
+			requestAnimationFrame(time => advance(thisRun, time));
 		}
 	};
 
@@ -778,4 +790,10 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	setPlaying(false);
 
 	return { pause: () => setPlaying(false) };
+}
+
+/* The icon and label of a play button, and its pressed state. */
+function showPlayState(button, playing, label) {
+	button.innerHTML = `${playing ? PAUSE_ICON : PLAY_ICON}<span>${label}</span>`;
+	button.setAttribute('aria-pressed', playing ? 'true' : 'false');
 }

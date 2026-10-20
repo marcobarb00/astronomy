@@ -193,7 +193,7 @@ const Frames = (function () {
 		return eclipticToEquatorial(lon, 0, eps);
 	}
 
-	/* The reduction to the equator, alpha - lambda (deg, in (-180, 180]). */
+	/* The reduction to the equator, alpha - lambda (deg, in [-180, 180)). */
 	function reduction(lon, eps) {
 		return norm180(eclipticPoint(lon, eps).ra - lon);
 	}
