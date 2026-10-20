@@ -1,0 +1,2304 @@
+PREDICTING THE SKY - READ-OUTS (tools/check/smoke.js)
+Regenerate with: node tools/check/smoke.js --update
+
+=== act1-stage/01-turning-sky/index.html ===
+  as loaded
+    OUTPUT (sky-lat): 41.9°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -68.7^\circ | a = 39.0^\circ | a_\text{max} = 86.9^\circ,\quad a_\text{min} = -9.3^\circ
+    OUTPUT (out-lat): 41.9°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 51.0^\circ | a = 90^\circ - 51.0^\circ = 39.0^\circ
+    OUTPUT (day-dec): −16.7°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{rises and sets} | a_\text{max} = 31.4^\circ,\quad a_\text{min} = -64.8^\circ | H_0 = 74.4^\circ,\quad f = 0.413 | \text{up } 9\,\text{h}\,53\,\text{min}\ \text{of each turn}
+    OUTPUT (test-lat): 41.9°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 9\,\text{h}\,53\,\text{min} | \text{up, real: } 10\,\text{h}\,00\,\text{min} | \Delta t = 3.3\ \text{min}
+  opened 6 hints and answers
+  slider #sky-lat = -90
+    OUTPUT (sky-lat): −90.0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{never rises} | \delta = 38.8^\circ,\quad H = -68.7^\circ | a = -38.8^\circ | a_\text{max} = -38.8^\circ,\quad a_\text{min} = -38.8^\circ
+  slider #sky-lat = 90
+    OUTPUT (sky-lat): 90.0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{never sets} | \delta = 38.8^\circ,\quad H = -68.7^\circ | a = 38.8^\circ | a_\text{max} = 38.8^\circ,\quad a_\text{min} = 38.8^\circ
+  slider #sky-lat = 0
+    OUTPUT (sky-lat): 0.0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -68.7^\circ | a = 16.5^\circ | a_\text{max} = 51.2^\circ,\quad a_\text{min} = -51.2^\circ
+  slider #sky-lat + one key step
+    OUTPUT (sky-lat): 0.1°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -68.7^\circ | a = 16.5^\circ | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ
+  slider #sky-time = 0
+    OUTPUT (sky-lat): 0.1°
+    OUTPUT (sky-time): 0h00m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = 80.8^\circ | a = 7.2^\circ | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ
+  slider #sky-time = 23.93
+    OUTPUT (sky-lat): 0.1°
+    OUTPUT (sky-time): 23h56m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = 80.7^\circ | a = 7.3^\circ | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ
+  slider #sky-time = 11.97
+    OUTPUT (sky-lat): 0.1°
+    OUTPUT (sky-time): 11h58m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.2^\circ | a = -7.1^\circ | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ
+  slider #sky-time + one key step
+    OUTPUT (sky-lat): 0.1°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = -7.0^\circ | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ
+  slider #out-lat = -90
+    OUTPUT (out-lat): −90.0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 128.8^\circ | a = 90^\circ - 128.8^\circ = -38.8^\circ
+  slider #out-lat = 90
+    OUTPUT (out-lat): 90.0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 51.2^\circ | a = 90^\circ - 51.2^\circ = 38.8^\circ
+  slider #out-lat = 0
+    OUTPUT (out-lat): 0.0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 73.5^\circ | a = 90^\circ - 73.5^\circ = 16.5^\circ
+  slider #out-lat + one key step
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 73.5^\circ | a = 90^\circ - 73.5^\circ = 16.5^\circ
+  slider #out-time = 0
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 0h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 82.8^\circ | a = 90^\circ - 82.8^\circ = 7.2^\circ
+  slider #out-time = 23.93
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 23h56m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 82.7^\circ | a = 90^\circ - 82.7^\circ = 7.3^\circ
+  slider #out-time = 11.97
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 11h58m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97.1^\circ | a = 90^\circ - 97.1^\circ = -7.1^\circ
+  slider #out-time + one key step
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97.0^\circ | a = 90^\circ - 97.0^\circ = -7.0^\circ
+  slider #day-dec = -90
+    OUTPUT (day-dec): −90.0°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{never rises} | a_\text{max} = -41.9^\circ,\quad a_\text{min} = -41.9^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  slider #day-dec = 90
+    OUTPUT (day-dec): 90.0°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{never sets} | a_\text{max} = 41.9^\circ,\quad a_\text{min} = 41.9^\circ | H_0 = 180.0^\circ,\quad f = 1.000 | \text{up } 23\,\text{h}\,56\,\text{min}\ \text{of each turn}
+  slider #day-dec = 0
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{rises and sets} | a_\text{max} = 48.1^\circ,\quad a_\text{min} = -48.1^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  slider #day-dec + one key step
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{rises and sets} | a_\text{max} = 48.1^\circ,\quad a_\text{min} = -48.1^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  slider #day-lat = -90
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): −90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -0.0^\circ,\quad a_\text{min} = -0.0^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  slider #day-lat = 90
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never sets} | a_\text{max} = 0.0^\circ,\quad a_\text{min} = 0.0^\circ | H_0 = 180.0^\circ,\quad f = 1.000 | \text{up } 23\,\text{h}\,56\,\text{min}\ \text{of each turn}
+  slider #day-lat = 0
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): 0.0°
+    #day-readout: \text{rises and sets} | a_\text{max} = 90.0^\circ,\quad a_\text{min} = -90.0^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  slider #day-lat + one key step
+    OUTPUT (day-dec): 0.0°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 89.9^\circ,\quad a_\text{min} = -89.9^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  slider #test-lat = -90
+    OUTPUT (test-lat): −90.0°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } \text{never sets} | \text{up, real: } \text{never sets} | \text{lowest point lifted by } 3.3'
+  slider #test-lat = 90
+    OUTPUT (test-lat): 90.0°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  slider #test-lat = 0
+    OUTPUT (test-lat): 0.0°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 11\,\text{h}\,58\,\text{min} | \text{up, real: } 12\,\text{h}\,03\,\text{min} | \Delta t = 2.4\ \text{min}
+  slider #test-lat + one key step
+    OUTPUT (test-lat): 0.1°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 11\,\text{h}\,58\,\text{min} | \text{up, real: } 12\,\text{h}\,03\,\text{min} | \Delta t = 2.4\ \text{min}
+  button "north pole"
+    OUTPUT (sky-lat): 90.0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{never sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = 38.8^\circ | a_\text{max} = 38.8^\circ,\quad a_\text{min} = 38.8^\circ
+  button "London"
+    OUTPUT (sky-lat): 51.5°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{never sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = 24.5^\circ | a_\text{max} = 77.3^\circ,\quad a_\text{min} = 0.3^\circ
+  button "Rome"
+    OUTPUT (sky-lat): 41.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = 19.1^\circ | a_\text{max} = 86.9^\circ,\quad a_\text{min} = -9.3^\circ
+  button "Rhodes"
+    OUTPUT (sky-lat): 36.0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = 15.6^\circ | a_\text{max} = 87.2^\circ,\quad a_\text{min} = -15.2^\circ
+  button "Alexandria"
+    OUTPUT (sky-lat): 31.2°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = 12.7^\circ | a_\text{max} = 82.4^\circ,\quad a_\text{min} = -20.0^\circ
+  button "equator"
+    OUTPUT (sky-lat): 0.0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = -7.0^\circ | a_\text{max} = 51.2^\circ,\quad a_\text{min} = -51.2^\circ
+  button "Sydney"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = -26.8^\circ | a_\text{max} = 17.3^\circ,\quad a_\text{min} = -85.1^\circ
+  button "Polaris"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Polaris}:\ \text{never rises} | \delta = 89.3^\circ,\quad H = 142.2^\circ | a = -34.5^\circ | a_\text{max} = -33.2^\circ,\quad a_\text{min} = -34.6^\circ
+  button "Dubhe"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Dubhe}:\ \text{never rises} | \delta = 61.8^\circ,\quad H = 14.3^\circ | a = -6.3^\circ | a_\text{max} = -5.7^\circ,\quad a_\text{min} = -62.1^\circ
+  button "Vega"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{rises and sets} | \delta = 38.8^\circ,\quad H = -99.0^\circ | a = -26.8^\circ | a_\text{max} = 17.3^\circ,\quad a_\text{min} = -85.1^\circ
+  button "Mintaka"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Mintaka}:\ \text{rises and sets} | \delta = -0.3^\circ,\quad H = 97.2^\circ | a = -5.8^\circ | a_\text{max} = 56.4^\circ,\quad a_\text{min} = -55.8^\circ
+  button "Sirius"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Sirius}:\ \text{rises and sets} | \delta = -16.7^\circ,\quad H = 78.9^\circ | a = 18.3^\circ | a_\text{max} = 72.8^\circ,\quad a_\text{min} = -39.4^\circ
+  button "Antares"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Antares}:\ \text{rises and sets} | \delta = -26.4^\circ,\quad H = -67.2^\circ | a = 32.5^\circ | a_\text{max} = 82.5^\circ,\quad a_\text{min} = -29.7^\circ
+  button "Canopus"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Canopus}:\ \text{rises and sets} | \delta = -52.7^\circ,\quad H = 84.2^\circ | a = 29.6^\circ | a_\text{max} = 71.2^\circ,\quad a_\text{min} = -3.4^\circ
+  button "Acrux"
+    OUTPUT (sky-lat): −33.9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Acrux}:\ \text{never sets} | \delta = -63.1^\circ,\quad H = -6.5^\circ | a = 60.5^\circ | a_\text{max} = 60.8^\circ,\quad a_\text{min} = 7.0^\circ
+  button "Vega"
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97.0^\circ | a = 90^\circ - 97.0^\circ = -7.0^\circ
+  button "Sirius"
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Sirius} | \angle(\hat{\mathbf z}, \mathbf s) = 79.4^\circ | a = 90^\circ - 79.4^\circ = 10.6^\circ
+  button "Canopus"
+    OUTPUT (out-lat): 0.1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Canopus} | \angle(\hat{\mathbf z}, \mathbf s) = 86.6^\circ | a = 90^\circ - 86.6^\circ = 3.4^\circ
+  button "Dubhe"
+    OUTPUT (day-dec): 61.8°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 28.4^\circ,\quad a_\text{min} = -28.1^\circ | H_0 = 90.2^\circ,\quad f = 0.501 | \text{up } 12\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  button "Capella"
+    OUTPUT (day-dec): 46.0°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 44.1^\circ,\quad a_\text{min} = -43.9^\circ | H_0 = 90.1^\circ,\quad f = 0.501 | \text{up } 11\,\text{h}\,59\,\text{min}\ \text{of each turn}
+  button "Vega"
+    OUTPUT (day-dec): 38.8°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 51.3^\circ,\quad a_\text{min} = -51.1^\circ | H_0 = 90.1^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,59\,\text{min}\ \text{of each turn}
+  button "Mintaka"
+    OUTPUT (day-dec): −0.3°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 89.6^\circ,\quad a_\text{min} = -89.8^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  button "Sirius"
+    OUTPUT (day-dec): −16.7°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 73.2^\circ,\quad a_\text{min} = -73.4^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  button "Canopus"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{rises and sets} | a_\text{max} = 37.2^\circ,\quad a_\text{min} = -37.4^\circ | H_0 = 89.9^\circ,\quad f = 0.499 | \text{up } 11\,\text{h}\,57\,\text{min}\ \text{of each turn}
+  button "equator"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 0.0°
+    #day-readout: \text{rises and sets} | a_\text{max} = 37.3^\circ,\quad a_\text{min} = -37.3^\circ | H_0 = 90.0^\circ,\quad f = 0.500 | \text{up } 11\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  button "Alexandria"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 31.2°
+    #day-readout: \text{rises and sets} | a_\text{max} = 6.1^\circ,\quad a_\text{min} = -68.5^\circ | H_0 = 37.3^\circ,\quad f = 0.207 | \text{up } 4\,\text{h}\,58\,\text{min}\ \text{of each turn}
+  button "Rhodes"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 36.0°
+    #day-readout: \text{rises and sets} | a_\text{max} = 1.3^\circ,\quad a_\text{min} = -73.3^\circ | H_0 = 17.5^\circ,\quad f = 0.097 | \text{up } 2\,\text{h}\,20\,\text{min}\ \text{of each turn}
+  button "Rome"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{never rises} | a_\text{max} = -4.6^\circ,\quad a_\text{min} = -79.2^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  button "London"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 51.5°
+    #day-readout: \text{never rises} | a_\text{max} = -14.2^\circ,\quad a_\text{min} = -88.8^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  button "north pole"
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  button "Alexandria"
+    OUTPUT (test-lat): 31.2°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 10\,\text{h}\,34\,\text{min} | \text{up, real: } 10\,\text{h}\,40\,\text{min} | \Delta t = 2.8\ \text{min}
+  button "Rhodes"
+    OUTPUT (test-lat): 36.0°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 10\,\text{h}\,17\,\text{min} | \text{up, real: } 10\,\text{h}\,23\,\text{min} | \Delta t = 3.0\ \text{min}
+  button "Rome"
+    OUTPUT (test-lat): 41.9°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 9\,\text{h}\,53\,\text{min} | \text{up, real: } 10\,\text{h}\,00\,\text{min} | \Delta t = 3.3\ \text{min}
+  button "London"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 9\,\text{h}\,01\,\text{min} | \text{up, real: } 9\,\text{h}\,09\,\text{min} | \Delta t = 4.1\ \text{min}
+  button "Sirius"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Sirius},\ \delta = -16.75^\circ | \text{up, model: } 9\,\text{h}\,01\,\text{min} | \text{up, real: } 9\,\text{h}\,09\,\text{min} | \Delta t = 4.1\ \text{min}
+  button "Mintaka"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Mintaka},\ \delta = -0.28^\circ | \text{up, model: } 11\,\text{h}\,55\,\text{min} | \text{up, real: } 12\,\text{h}\,03\,\text{min} | \Delta t = 3.7\ \text{min}
+  button "Vega"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Vega},\ \delta = 38.81^\circ | \text{up, model: } \text{never sets} | \text{up, real: } \text{never sets} | \text{lowest point lifted by } 26.4'
+  button "Antares"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Antares},\ \delta = -26.49^\circ | \text{up, model: } 6\,\text{h}\,49\,\text{min} | \text{up, real: } 6\,\text{h}\,59\,\text{min} | \Delta t = 5.2\ \text{min}
+  button "Capella"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Capella},\ \delta = 46.02^\circ | \text{up, model: } \text{never sets} | \text{up, real: } \text{never sets} | \text{lowest point lifted by } 7.0'
+  button "Canopus"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  hover #day-curve at 0.3
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-curve at 0.6
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-curve at 0.9
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-curve left
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-map at 0.3
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-map at 0.6
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-map at 0.9
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #day-map left
+    OUTPUT (day-dec): −52.7°
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{never rises} | a_\text{max} = -52.7^\circ,\quad a_\text{min} = -52.7^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+  hover #test-plot at 0.3
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  hover #test-plot at 0.6
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  hover #test-plot at 0.9
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  hover #test-plot left
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
+  dragged 2 spheres
+
+=== act1-stage/02-frames/index.html ===
+  as loaded
+    OUTPUT (ecl-day): 21 May
+    #ecl-readout: \text{the Sun, 21 May 2026} | \alpha = 57.80^\circ\ (3^\text{h}51^\text{m}),\quad \delta = 20.14^\circ | \lambda = 59.98^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (0.5002,\ 0.7945,\ 0.3444) | \mathbf s_\text{ecl} = (0.5002,\ 0.8659,\ 0.0000)
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
+  opened 6 hints and answers
+  slider #ecl-day = 0
+    OUTPUT (ecl-day): 1 Jan
+    #ecl-readout: \text{the Sun, 1 Jan 2026} | \alpha = 281.50^\circ\ (18^\text{h}46^\text{m}),\quad \delta = -23.01^\circ | \lambda = 280.57^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (0.1835,\ -0.9019,\ -0.3910) | \mathbf s_\text{ecl} = (0.1835,\ -0.9830,\ 0.0000)
+  slider #ecl-day = 364
+    OUTPUT (ecl-day): 31 Dec
+    #ecl-readout: \text{the Sun, 31 Dec 2026} | \alpha = 280.12^\circ\ (18^\text{h}40^\text{m}),\quad \delta = -23.11^\circ | \lambda = 279.30^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (0.1617,\ -0.9054,\ -0.3925) | \mathbf s_\text{ecl} = (0.1617,\ -0.9868,\ 0.0000)
+  slider #ecl-day = 182
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{the Sun, 2 Jul 2026} | \alpha = 101.05^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23.05^\circ | \lambda = 100.16^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1764,\ 0.9031,\ 0.3915) | \mathbf s_\text{ecl} = (-0.1764,\ 0.9843,\ 0.0000)
+  slider #ecl-day + one key step
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{the Sun, 2 Jul 2026} | \alpha = 101.06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23.05^\circ | \lambda = 100.17^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1766,\ 0.9031,\ 0.3915) | \mathbf s_\text{ecl} = (-0.1766,\ 0.9843,\ 0.0000)
+  slider #hor-lat = -90
+    OUTPUT (hor-lat): -90.0°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 30.41^\circ,\quad a = -16.56^\circ | I = 23.4^\circ
+  slider #hor-lat = 90
+    OUTPUT (hor-lat): 90.0°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 149.59^\circ,\quad a = 16.56^\circ | I = 23.4^\circ
+  slider #hor-lat = 0
+    OUTPUT (hor-lat): 0.0°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.57^\circ,\quad a = 55.75^\circ | I = 75.5^\circ
+  slider #hor-lat + one key step
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.70^\circ,\quad a = 55.80^\circ | I = 75.6^\circ
+  slider #hor-theta = 0
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 0.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ | I = 89.9^\circ
+  slider #hor-theta = 360
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 360.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ | I = 89.9^\circ
+  slider #hor-theta = 180
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.65^\circ | A = 287.66^\circ,\quad a = -19.72^\circ | I = 89.9^\circ
+  slider #hor-theta + one key step
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
+  button "‹ previous day"
+    OUTPUT (ecl-day): 1 Jul
+    #ecl-readout: \text{the Sun, 1 Jul 2026} | \alpha = 100.03^\circ\ (6^\text{h}40^\text{m}),\quad \delta = 23.11^\circ | \lambda = 99.22^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1602,\ 0.9057,\ 0.3926) | \mathbf s_\text{ecl} = (-0.1602,\ 0.9871,\ 0.0000)
+  button "next day ›"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{the Sun, 2 Jul 2026} | \alpha = 101.06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23.05^\circ | \lambda = 100.17^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1766,\ 0.9031,\ 0.3915) | \mathbf s_\text{ecl} = (-0.1766,\ 0.9843,\ 0.0000)
+  button "Sun"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{the Sun, 2 Jul 2026} | \alpha = 101.06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23.05^\circ | \lambda = 100.17^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1766,\ 0.9031,\ 0.3915) | \mathbf s_\text{ecl} = (-0.1766,\ 0.9843,\ 0.0000)
+  button "Aldebaran"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Aldebaran} | \alpha = 69.35^\circ\ (4^\text{h}37^\text{m}),\quad \delta = 16.56^\circ | \lambda = 70.15^\circ,\quad \beta = -5.47^\circ | \mathbf s_\text{eq} = (0.3380,\ 0.8970,\ 0.2850) | \mathbf s_\text{ecl} = (0.3380,\ 0.9363,\ -0.0952)
+  button "Spica"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Spica} | \alpha = 201.64^\circ\ (13^\text{h}27^\text{m}),\quad \delta = -11.30^\circ | \lambda = 204.20^\circ,\quad \beta = -2.06^\circ | \mathbf s_\text{eq} = (-0.9115,\ -0.3617,\ -0.1959) | \mathbf s_\text{ecl} = (-0.9115,\ -0.4097,\ -0.0359)
+  button "Antares"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Antares} | \alpha = 247.75^\circ\ (16^\text{h}31^\text{m}),\quad \delta = -26.49^\circ | \lambda = 250.13^\circ,\quad \beta = -4.57^\circ | \mathbf s_\text{eq} = (-0.3389,\ -0.8284,\ -0.4460) | \mathbf s_\text{ecl} = (-0.3389,\ -0.9374,\ -0.0797)
+  button "Vega"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Vega} | \alpha = 279.45^\circ\ (18^\text{h}38^\text{m}),\quad \delta = 38.81^\circ | \lambda = 285.68^\circ,\quad \beta = 61.73^\circ | \mathbf s_\text{eq} = (0.1280,\ -0.7687,\ 0.6267) | \mathbf s_\text{ecl} = (0.1280,\ -0.4560,\ 0.8807)
+  button "Polaris"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Polaris} | \alpha = 46.49^\circ\ (3^\text{h}06^\text{m}),\quad \delta = 89.37^\circ | \lambda = 88.93^\circ,\quad \beta = 66.10^\circ | \mathbf s_\text{eq} = (0.0076,\ 0.0080,\ 0.9999) | \mathbf s_\text{ecl} = (0.0076,\ 0.4050,\ 0.9143)
+  button "Sirius"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Sirius} | \alpha = 101.57^\circ\ (6^\text{h}46^\text{m}),\quad \delta = -16.75^\circ | \lambda = 104.44^\circ,\quad \beta = -39.61^\circ | \mathbf s_\text{eq} = (-0.1921,\ 0.9381,\ -0.2883) | \mathbf s_\text{ecl} = (-0.1921,\ 0.7461,\ -0.6376)
+  button "Canopus"
+    OUTPUT (ecl-day): 2 Jul
+    #ecl-readout: \text{Canopus} | \alpha = 96.13^\circ\ (6^\text{h}25^\text{m}),\quad \delta = -52.71^\circ | \lambda = 105.32^\circ,\quad \beta = -75.82^\circ | \mathbf s_\text{eq} = (-0.0647,\ 0.6024,\ -0.7956) | \mathbf s_\text{ecl} = (-0.0647,\ 0.2363,\ -0.9695)
+  button "north pole"
+    OUTPUT (hor-lat): 90.0°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 290.66^\circ,\quad a = 16.56^\circ | I = 23.4^\circ
+  button "London"
+    OUTPUT (hor-lat): 51.5°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 296.24^\circ,\quad a = 0.72^\circ | I = 44.1^\circ
+  button "Rome"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 296.03^\circ,\quad a = -3.52^\circ | I = 52.2^\circ
+  button "Alexandria"
+    OUTPUT (hor-lat): 31.2°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 295.04^\circ,\quad a = -8.14^\circ | I = 61.6^\circ
+  button "equator"
+    OUTPUT (hor-lat): 0.0°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.63^\circ,\quad a = -19.76^\circ | I = 90.0^\circ
+  button "the observation"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
+  button "Aldebaran"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
+  button "Vega"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Vega:}\ \alpha = 279.45^\circ,\quad \delta = 38.81^\circ | H = \theta - \alpha = 119.49^\circ | A = 316.81^\circ,\quad a = 7.65^\circ | I = 64.7^\circ
+  button "Sirius"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Sirius:}\ \alpha = 101.57^\circ,\quad \delta = -16.75^\circ | H = \theta - \alpha = -62.63^\circ | A = 120.88^\circ,\quad a = 7.77^\circ | I = 64.7^\circ
+  button "Polaris"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Polaris:}\ \alpha = 46.49^\circ,\quad \delta = 89.37^\circ | H = \theta - \alpha = -7.55^\circ | A = 0.11^\circ,\quad a = 42.52^\circ | I = 64.7^\circ
+  button "Canopus"
+    OUTPUT (hor-lat): 41.9°
+    OUTPUT (hor-theta): 38.9°
+    #hor-readout: \text{Canopus:}\ \alpha = 96.13^\circ,\quad \delta = -52.71^\circ | H = \theta - \alpha = -57.19^\circ | A = 147.89^\circ,\quad a = -16.68^\circ | I = 64.7^\circ
+  hover #nutation-plot at 0.3
+  hover #nutation-plot at 0.6
+  hover #nutation-plot at 0.9
+  hover #nutation-plot left
+  dragged 2 spheres
+
+=== act1-stage/03-clocks/index.html ===
+  as loaded
+    OUTPUT (wheel-day): 1 Jan 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns}
+    OUTPUT (sid-time): 19:00
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9497.2917 | \theta_G = 26.44^\circ = 1^\text{h}45^\text{m}46^\text{s} | \theta = \theta_G +12.50^\circ = 38.94^\circ | \alpha = 69.35^\circ,\quad H = -30.41^\circ | a = 53.7^\circ
+    OUTPUT (transit-lat): 41.9°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 114.2^\circ | \text{day } 15\,\text{h}\,14\,\text{min} | \text{sunrise } \text{04:23},\quad \text{sunset } \text{19:37}
+    OUTPUT (test-lat): 41.9°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -13.0\,\text{min}\ \text{to}\ +18.8\,\text{min} | \text{set } -16.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{day } -5.3\,\text{min}\ \text{to}\ 0.0\,\text{min}
+  opened 7 hints and answers
+  slider #wheel-day = 0
+    OUTPUT (wheel-day): 1 Jan 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns}
+  slider #wheel-day = 365
+    OUTPUT (wheel-day): 1 Jan 2027
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 365\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 366.501\ \text{turns} | \text{Sun: } 365.500\ \text{turns}
+  slider #wheel-day = 183
+    OUTPUT (wheel-day): 3 Jul 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 184.002\ \text{turns} | \text{Sun: } 183.499\ \text{turns}
+  slider #wheel-day + one key step
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns}
+  slider #wheel-time = 0
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 00:00
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 184.504\ \text{turns} | \text{Sun: } 183.999\ \text{turns}
+  slider #wheel-time = 24
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 00:00
+    #wheel-readout: \text{elapsed: } 185\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 185.507\ \text{turns} | \text{Sun: } 184.999\ \text{turns}
+  slider #wheel-time = 12
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns}
+  slider #wheel-time + one key step
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns}
+  slider #sid-time = 0
+    OUTPUT (sid-time): 00:00
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9496.5000 | \theta_G = 100.66^\circ = 6^\text{h}42^\text{m}39^\text{s} | \theta = \theta_G +12.50^\circ = 113.16^\circ | \alpha = 69.35^\circ,\quad H = 43.81^\circ | a = 44.8^\circ
+  slider #sid-time = 24
+    OUTPUT (sid-time): 00:00
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9497.5000 | \theta_G = 101.65^\circ = 6^\text{h}46^\text{m}35^\text{s} | \theta = \theta_G +12.50^\circ = 114.15^\circ | \alpha = 69.35^\circ,\quad H = 44.79^\circ | a = 44.2^\circ
+  slider #sid-time = 12
+    OUTPUT (sid-time): 12:00
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9497.0000 | \theta_G = 281.15^\circ = 18^\text{h}44^\text{m}37^\text{s} | \theta = \theta_G +12.50^\circ = 293.65^\circ | \alpha = 69.35^\circ,\quad H = -135.70^\circ | a = -18.7^\circ
+  slider #sid-time + one key step
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ | a = -18.6^\circ
+  slider #sid-lon = -180
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 180.00° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ | a = 52.7^\circ
+  slider #sid-lon = 180
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 180.00° E
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ | a = 52.7^\circ
+  slider #sid-lon = 0
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0.00°
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ | a = -24.5^\circ
+  slider #sid-lon + one key step
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0.01° E
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ | a = -24.5^\circ
+  slider #transit-lat = -60
+    OUTPUT (transit-lat): −60.0°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+  slider #transit-lat = 60
+    OUTPUT (transit-lat): 60.0°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+  slider #transit-lat = 0
+    OUTPUT (transit-lat): 0.0°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+  slider #transit-lat + one key step
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+  slider #day-lat = -90
+    OUTPUT (day-lat): −90.0°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
+  slider #day-lat = 90
+    OUTPUT (day-lat): 90.0°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  slider #day-lat = 0
+    OUTPUT (day-lat): 0.0°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 90.9^\circ | \text{day } 12\,\text{h}\,07\,\text{min} | \text{sunrise } \text{05:56},\quad \text{sunset } \text{18:04}
+  slider #day-lat + one key step
+    OUTPUT (day-lat): 0.1°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 91.0^\circ | \text{day } 12\,\text{h}\,08\,\text{min} | \text{sunrise } \text{05:56},\quad \text{sunset } \text{18:04}
+  slider #test-lat = -65
+    OUTPUT (test-lat): −65.0°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -17.7\,\text{min}\ \text{to}\ +9.0\,\text{min} | \text{set } -8.9\,\text{min}\ \text{to}\ +21.5\,\text{min} | \text{day } -1.3\,\text{min}\ \text{to}\ +13.6\,\text{min}
+  slider #test-lat = 65
+    OUTPUT (test-lat): 65.0°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.2\,\text{min}\ \text{to}\ +11.3\,\text{min} | \text{day } -13.1\,\text{min}\ \text{to}\ +0.6\,\text{min}
+  slider #test-lat = 0
+    OUTPUT (test-lat): 0.0°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -14.2\,\text{min}\ \text{to}\ +16.4\,\text{min} | \text{set } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{day } -0.3\,\text{min}\ \text{to}\ +0.2\,\text{min}
+  slider #test-lat + one key step
+    OUTPUT (test-lat): 0.1°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -14.2\,\text{min}\ \text{to}\ +16.4\,\text{min} | \text{set } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{day } -0.3\,\text{min}\ \text{to}\ +0.2\,\text{min}
+  button "‹ previous day"
+    OUTPUT (wheel-day): 3 Jul 2026
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 184.003\ \text{turns} | \text{Sun: } 183.500\ \text{turns}
+  button "next day ›"
+    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns}
+  button "Greenwich"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0.00°
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ | a = -24.5^\circ
+  button "Rome"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 12.50° E
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ | a = -18.6^\circ
+  button "Alexandria"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 29.92° E
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.22^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ | a = -8.4^\circ
+  button "New York"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74.01° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ | a = -19.8^\circ
+  button "Aldebaran"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74.01° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ | a = -19.8^\circ
+  button "Vega"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74.01° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ | a = 36.6^\circ
+  button "Sirius"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74.01° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ | a = -22.7^\circ
+  button "Arcturus"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74.01° W
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ | a = 66.4^\circ
+  button "Sirius"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+  button "Betelgeuse"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Betelgeuse: point at the plot to read a night} |  |  | 
+  button "Vega"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Vega: point at the plot to read a night} |  |  | 
+  button "Antares"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Antares: point at the plot to read a night} |  |  | 
+  button "Arcturus"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Arcturus: point at the plot to read a night} |  |  | 
+  button "Canopus"
+    OUTPUT (transit-lat): 0.1°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  button "Alexandria"
+    OUTPUT (transit-lat): 31.2°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  button "Rome"
+    OUTPUT (transit-lat): 41.9°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  button "London"
+    OUTPUT (transit-lat): 51.5°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  button "Sydney"
+    OUTPUT (transit-lat): −33.9°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  button "equator"
+    OUTPUT (day-lat): 0.0°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 90.9^\circ | \text{day } 12\,\text{h}\,07\,\text{min} | \text{sunrise } \text{05:56},\quad \text{sunset } \text{18:04}
+  button "Alexandria"
+    OUTPUT (day-lat): 31.2°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 106.3^\circ | \text{day } 14\,\text{h}\,11\,\text{min} | \text{sunrise } \text{04:55},\quad \text{sunset } \text{19:05}
+  button "Rome"
+    OUTPUT (day-lat): 41.9°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 114.2^\circ | \text{day } 15\,\text{h}\,14\,\text{min} | \text{sunrise } \text{04:23},\quad \text{sunset } \text{19:37}
+  button "London"
+    OUTPUT (day-lat): 51.5°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 124.8^\circ | \text{day } 16\,\text{h}\,38\,\text{min} | \text{sunrise } \text{03:41},\quad \text{sunset } \text{20:19}
+  button "Tromsø"
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  button "equator"
+    OUTPUT (test-lat): 0.0°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -14.2\,\text{min}\ \text{to}\ +16.4\,\text{min} | \text{set } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{day } -0.3\,\text{min}\ \text{to}\ +0.2\,\text{min}
+  button "Rome"
+    OUTPUT (test-lat): 41.9°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -13.0\,\text{min}\ \text{to}\ +18.8\,\text{min} | \text{set } -16.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{day } -5.3\,\text{min}\ \text{to}\ 0.0\,\text{min}
+  button "London"
+    OUTPUT (test-lat): 51.5°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -12.5\,\text{min}\ \text{to}\ +19.9\,\text{min} | \text{set } -16.9\,\text{min}\ \text{to}\ +13.9\,\text{min} | \text{day } -7.5\,\text{min}\ \text{to}\ 0.0\,\text{min}
+  button "65° N"
+    OUTPUT (test-lat): 65.0°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.2\,\text{min}\ \text{to}\ +11.3\,\text{min} | \text{day } -13.1\,\text{min}\ \text{to}\ +0.6\,\text{min}
+  button "Sydney"
+    OUTPUT (test-lat): −33.9°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
+  hover #transit-plot at 0.3
+    OUTPUT (transit-lat): −33.9°
+    #transit-readout: \text{Canopus, night of 31 Mar 2026} | \text{transit } \text{17:48},\quad \text{sky: daylight} |  | a = 71.2^\circ
+  hover #transit-plot at 0.6
+    OUTPUT (transit-lat): −33.9°
+    #transit-readout: \text{Canopus, night of 30 Jul 2026} | \text{transit } \text{09:48},\quad \text{sky: daylight} |  | a = 71.2^\circ
+  hover #transit-plot at 0.9
+    OUTPUT (transit-lat): −33.9°
+    #transit-readout: \text{Canopus, night of 28 Nov 2026} | \text{transit } \text{01:53},\quad \text{sky: dark} |  | a = 71.2^\circ
+  hover #transit-plot left
+    OUTPUT (transit-lat): −33.9°
+    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+  hover #day-curve at 0.3
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.34^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
+  hover #day-curve at 0.6
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.6^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
+  hover #day-curve at 0.9
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{3 Dec 2026:}\ \delta_\odot = -22.27^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
+  hover #day-curve left
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  hover #day-map at 0.3
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  hover #day-map at 0.6
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  hover #day-map at 0.9
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  hover #day-map left
+    OUTPUT (day-lat): 69.7°
+    #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
+  hover #test-plot at 0.3
+    OUTPUT (test-lat): −33.9°
+    #test-readout: \text{21 Mar 2026} | \text{noon } -7.2\,\text{min} | \text{rise } -9.0\,\text{min} | \text{set } -4.8\,\text{min} | \text{day } +4.1\,\text{min}
+  hover #test-plot at 0.6
+    OUTPUT (test-lat): −33.9°
+    #test-readout: \text{26 Jul 2026} | \text{noon } -6.6\,\text{min} | \text{rise } -7.2\,\text{min} | \text{set } -6.2\,\text{min} | \text{day } +1.0\,\text{min}
+  hover #test-plot at 0.9
+    OUTPUT (test-lat): −33.9°
+    #test-readout: \text{1 Dec 2026} | \text{noon } +11.0\,\text{min} | \text{rise } +10.4\,\text{min} | \text{set } +11.3\,\text{min} | \text{day } +0.8\,\text{min}
+  hover #test-plot left
+    OUTPUT (test-lat): −33.9°
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
+  dragged 1 spheres
+
+=== archive/copernican_revolution/index.html ===
+  as loaded
+    OUTPUT (R): 1.52
+    OUTPUT (r): 1.00
+    OUTPUT (T): 1.87 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  opened 9 hints and answers
+  button "1 · Timeline"
+    OUTPUT (R): 1.52
+    OUTPUT (r): 1.00
+    OUTPUT (T): 1.87 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "2 · Ptolemy's sources"
+    OUTPUT (R): 1.52
+    OUTPUT (r): 1.00
+    OUTPUT (T): 1.87 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "3 · Model comparison"
+    OUTPUT (R): 1.52
+    OUTPUT (r): 1.00
+    OUTPUT (T): 1.87 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Mercury"
+    OUTPUT (R): 1.00
+    OUTPUT (r): 0.39
+    OUTPUT (T): 0.24 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Venus"
+    OUTPUT (R): 1.00
+    OUTPUT (r): 0.72
+    OUTPUT (T): 0.61 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Mars"
+    OUTPUT (R): 1.52
+    OUTPUT (r): 1.00
+    OUTPUT (T): 1.87 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Jupiter"
+    OUTPUT (R): 5.20
+    OUTPUT (r): 1.00
+    OUTPUT (T): 11.86 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Saturn"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 29.47 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Superior"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 29.47 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Inferior"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 0.03 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "⏮ Previous event"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 0.03 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "▶ Play"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 0.03 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "Next event ⏭"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 0.03 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  button "↺ Reset"
+    OUTPUT (R): 9.54
+    OUTPUT (r): 1.00
+    OUTPUT (T): 0.03 yr
+    OUTPUT (speed): 60 d/s
+    OUTPUT (trail): 1.20 syn.
+  dragged 0 spheres
+
+=== archive/hipparchus_model/index.html ===
+  as loaded
+    OUTPUT (eu-i): 13°
+    OUTPUT (eu-syn): 390 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  opened 0 hints and answers
+  slider #eu-i = 0
+    OUTPUT (eu-i): 0°
+    OUTPUT (eu-syn): 390 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-i = 60
+    OUTPUT (eu-i): 60°
+    OUTPUT (eu-syn): 390 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-i = 30
+    OUTPUT (eu-i): 30°
+    OUTPUT (eu-syn): 390 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-i + one key step
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 390 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-syn = 100
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 100 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-syn = 800
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 800 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-syn = 450
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 450 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-syn + one key step
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 12.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-sid = 1
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 1.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-sid = 30
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 30.00 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-sid = 15.5
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.50 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-sid + one key step
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 60 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-speed = 5
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 5 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-speed = 200
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 200 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-speed = 105
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 105 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-speed + one key step
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-trail = 0.1
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 0.1 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-trail = 3
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 3 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-trail = 1.5000000000000002
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.5 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  slider #eu-trail + one key step
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "1 · Starting point"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "2 · Star catalogue"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): -129°
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "3 · Precession"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "4 · The Sun"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "5 · Eccentric & epicycle"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4.8°
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "6 · The Moon"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "7 · Tools & limits"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "R = 3438 (Hipparchus)"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "R = 60 (Ptolemy)"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "Hipparchus"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 67.33
+    OUTPUT (ecl-ratio): 2.50
+    OUTPUT (ecl-size): 16.62′
+  button "Ptolemy"
+    OUTPUT (eu-i): 31°
+    OUTPUT (eu-syn): 460 d
+    OUTPUT (eu-sid): 15.51 yr
+    OUTPUT (eu-speed): 110 d/s
+    OUTPUT (eu-trail): 1.6 syn.
+    OUTPUT (pre-year): 130 BCE
+    OUTPUT (pre-speed): 300 yr/s
+    OUTPUT (pre-timo): 8.0
+    OUTPUT (pre-hipp): 6.0
+    OUTPUT (sun-spring): 94.50 d
+    OUTPUT (sun-summer): 92.50 d
+    OUTPUT (sun-zoom): 5×
+    OUTPUT (sun-speed): 30 d/s
+    OUTPUT (eq-e): 0.25
+    OUTPUT (eq-speed): 30°/s
+    OUTPUT (lp-r): 0.35
+    OUTPUT (lp-k): 6
+    OUTPUT (moon-r): 4;46ᵖ
+    OUTPUT (moon-zoom): 3×
+    OUTPUT (moon-speed): 2 d/s
+    OUTPUT (ch-angle): 60°
+    OUTPUT (ecl-moon): 64.17
+    OUTPUT (ecl-ratio): 2.60
+    OUTPUT (ecl-size): 15.67′
+  dragged 0 spheres
+
+=== archive/spherical_astronomy/index.html ===
+  as loaded
+    OUTPUT (h0): 0 h
+    OUTPUT (ls0): 30°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  opened 0 hints and answers
+  slider #h0 = 0
+    OUTPUT (h0): 0 h
+    OUTPUT (ls0): 30°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #h0 = 24
+    OUTPUT (h0): 24 h
+    OUTPUT (ls0): 30°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #h0 = 12
+    OUTPUT (h0): 12 h
+    OUTPUT (ls0): 30°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #h0 + one key step
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 30°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #ls0 = 0
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 0°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #ls0 = 360
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 360°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #ls0 = 180
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 180°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  slider #ls0 + one key step
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "1 · Sphere & motions"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "2 · Celestial"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "3 · Ecliptic"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "4 · Horizontal"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "5 · Ecliptic ⇄ celestial"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "6 · Celestial → horizontal"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "7 · Meridian transits"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "8 · Climes & solstices"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "Vernal equinox"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 0°
+  button "Summer solstice"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 90°
+  button "Autumnal equinox"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 180°
+  button "Winter solstice"
+    OUTPUT (h0): 12.1 h
+    OUTPUT (ls0): 181°
+    OUTPUT (al1): 60°
+    OUTPUT (de1): 45°
+    OUTPUT (la2): 60°
+    OUTPUT (be2): 50°
+    OUTPUT (A3): 65°
+    OUTPUT (a3): 35°
+    OUTPUT (L4): 75°
+    OUTPUT (a04): 270°
+    OUTPUT (la5): 60°
+    OUTPUT (be5): 15°
+    OUTPUT (al6): 60°
+    OUTPUT (de6): 25°
+    OUTPUT (L6): 55°
+    OUTPUT (a06): 30°
+    OUTPUT (L2): 45°
+    OUTPUT (del2): 25°
+    OUTPUT (L3): 45°
+    OUTPUT (lam3): 270°
+  dragged 0 spheres
+
+=== design/references/index.html ===
+  as loaded
+    .readout: 
+  opened 0 hints and answers
+  slider smoke-slider 0 = -90
+    .readout: 
+  slider smoke-slider 0 = 90
+    .readout: 
+  slider smoke-slider 0 = 0
+    .readout: 
+  slider smoke-slider 0 + one key step
+    .readout: 
+  slider smoke-slider 1 = 0
+    .readout: 
+  slider smoke-slider 1 = 24
+    .readout: 
+  slider smoke-slider 1 = 12
+    .readout: 
+  slider smoke-slider 1 + one key step
+    .readout: 
+  button "London"
+    .readout: 
+  button "Rome"
+    .readout: 
+  button "Rhodes"
+    .readout: 
+  button "Alexandria"
+    .readout: 
+  dragged 0 spheres
+
+=== index.html ===
+  as loaded
+  opened 0 hints and answers
+  dragged 0 spheres
+
+=== shared/tests.html ===
+  as loaded
+    #summary: All 105 tests pass.
+  opened 0 hints and answers
+  dragged 0 spheres
+
+=== templates/demo.html ===
+  as loaded
+    OUTPUT (day): 21 Mar 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 23\,\text{h}\,56\,\text{min} | \lambda_\odot = 0.89^\circ | \alpha_\odot = 0\,\text{h}\,03\,\text{min},\quad \delta_\odot = 0.35^\circ | a_\odot = 45.3^\circ
+    #eot-readout: 
+    OUTPUT (year-length): 365.2420 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 2 hints and answers
+  slider #day = 1
+    OUTPUT (day): 1 Jan 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 18\,\text{h}\,45\,\text{min} | \lambda_\odot = 281.08^\circ | \alpha_\odot = 18\,\text{h}\,48\,\text{min},\quad \delta_\odot = -22.98^\circ | a_\odot = 22.0^\circ
+  slider #day = 365
+    OUTPUT (day): 31 Dec 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 18\,\text{h}\,40\,\text{min} | \lambda_\odot = 279.81^\circ | \alpha_\odot = 18\,\text{h}\,43\,\text{min},\quad \delta_\odot = -23.07^\circ | a_\odot = 21.9^\circ
+  slider #day = 183
+    OUTPUT (day): 2 Jul 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,42\,\text{min} | \lambda_\odot = 100.64^\circ | \alpha_\odot = 6\,\text{h}\,46\,\text{min},\quad \delta_\odot = 23.01^\circ | a_\odot = 68.0^\circ
+  slider #day + one key step
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,46\,\text{min} | \lambda_\odot = 101.59^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 67.9^\circ
+  slider #hour = 0
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 0h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 18\,\text{h}\,44\,\text{min} | \lambda_\odot = 101.11^\circ | \alpha_\odot = 6\,\text{h}\,48\,\text{min},\quad \delta_\odot = 22.97^\circ | a_\odot = -22.0^\circ
+  slider #hour = 24
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 24h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 18\,\text{h}\,48\,\text{min} | \lambda_\odot = 102.07^\circ | \alpha_\odot = 6\,\text{h}\,52\,\text{min},\quad \delta_\odot = 22.89^\circ | a_\odot = -22.1^\circ
+  slider #hour = 12
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h00m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,46\,\text{min} | \lambda_\odot = 101.59^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 67.9^\circ
+  slider #hour + one key step
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 45°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 67.8^\circ
+  slider #latitude = -90
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): -90°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = -22.9^\circ
+  slider #latitude = 90
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 90°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 22.9^\circ
+  slider #latitude = 0
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 0°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 66.9^\circ
+  slider #latitude + one key step
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 1°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 67.9^\circ
+  slider #year-length = 365.2
+    OUTPUT (year-length): 365.2000 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  slider #year-length = 365.3
+    OUTPUT (year-length): 365.3000 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  slider #year-length = 365.25
+    OUTPUT (year-length): 365.2500 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  slider #year-length + one key step
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "‹ previous day"
+    OUTPUT (day): 2 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 1°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,57\,\text{min} | \lambda_\odot = 100.65^\circ | \alpha_\odot = 6\,\text{h}\,46\,\text{min},\quad \delta_\odot = 23.01^\circ | a_\odot = 67.8^\circ
+  button "next day ›"
+    OUTPUT (day): 3 Jul 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 1°
+    #sphere-readout: \text{LST} = 7\,\text{h}\,01\,\text{min} | \lambda_\odot = 101.60^\circ | \alpha_\odot = 6\,\text{h}\,50\,\text{min},\quad \delta_\odot = 22.93^\circ | a_\odot = 67.9^\circ
+  button "equinox"
+    OUTPUT (day): 21 Mar 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 1°
+    #sphere-readout: \text{LST} = 0\,\text{h}\,11\,\text{min} | \lambda_\odot = 0.90^\circ | \alpha_\odot = 0\,\text{h}\,03\,\text{min},\quad \delta_\odot = 0.36^\circ | a_\odot = 87.9^\circ
+  button "solstice"
+    OUTPUT (day): 21 Jun 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 1°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,14\,\text{min} | \lambda_\odot = 90.16^\circ | \alpha_\odot = 6\,\text{h}\,01\,\text{min},\quad \delta_\odot = 23.44^\circ | a_\odot = 67.3^\circ
+  button "pole"
+    OUTPUT (day): 21 Jun 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 90°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,14\,\text{min} | \lambda_\odot = 90.16^\circ | \alpha_\odot = 6\,\text{h}\,01\,\text{min},\quad \delta_\odot = 23.44^\circ | a_\odot = 23.4^\circ
+  button "equator"
+    OUTPUT (day): 21 Jun 2026
+    OUTPUT (hour): 12h15m
+    OUTPUT (latitude): 0°
+    #sphere-readout: \text{LST} = 6\,\text{h}\,14\,\text{min} | \lambda_\odot = 90.16^\circ | \alpha_\odot = 6\,\text{h}\,01\,\text{min},\quad \delta_\odot = 23.44^\circ | a_\odot = 66.3^\circ
+  button "1 year"
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "10 years"
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "500 years"
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "Keep as ghost"
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "Clear ghosts"
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #fig-eot at 0.3
+    #eot-readout: 
+  hover #fig-eot at 0.6
+    #eot-readout: 
+  hover #fig-eot at 0.9
+    #eot-readout: 
+  hover #fig-eot left
+    #eot-readout: 
+  hover #fig-error-plot at 0.3
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: 19 Jan 1905 · Hipparchus' year: −0.16° · uniform circle: +0.20°
+  hover #fig-error-plot at 0.6
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: 3 Dec 2067 · Hipparchus' year: +0.72° · uniform circle: +0.46°
+  hover #fig-error-plot at 0.9
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: 17 Oct 2230 · Hipparchus' year: +0.87° · uniform circle: −0.00°
+  hover #fig-error-plot left
+    OUTPUT (year-length): 365.2505 d
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 1 spheres
+
+=== templates/page.html ===
+  as loaded
+    OUTPUT (eps): 23.4°
+    #declination-readout: \delta_\text{max} = \varepsilon = 23.4^\circ
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 3 hints and answers
+  slider #eps = 0
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  slider #eps = 40
+    OUTPUT (eps): 40°
+    #declination-readout: \delta_\text{max} = \varepsilon = 40.0^\circ
+  slider #eps = 20
+    OUTPUT (eps): 20°
+    #declination-readout: \delta_\text{max} = \varepsilon = 20.0^\circ
+  slider #eps + one key step
+    OUTPUT (eps): 20.1°
+    #declination-readout: \delta_\text{max} = \varepsilon = 20.1^\circ
+  button "today"
+    OUTPUT (eps): 23.4°
+    #declination-readout: \delta_\text{max} = \varepsilon = 23.4^\circ
+  button "no tilt"
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "Keep as ghost"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "Clear ghosts"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #fig-declination at 0.3
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  hover #fig-declination at 0.6
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  hover #fig-declination at 0.9
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  hover #fig-declination left
+    OUTPUT (eps): 0°
+    #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
+  hover #fig-error-plot at 0.3
+    .errorcurve-readout: 19 Mar 2002 · mean Sun : −110.4′
+  hover #fig-error-plot at 0.6
+    .errorcurve-readout: 14 Oct 2034 · mean Sun : +114.1′
+  hover #fig-error-plot at 0.9
+    .errorcurve-readout: 11 May 2067 · mean Sun : −92.3′
+  hover #fig-error-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 0 spheres
