@@ -49,8 +49,8 @@ const Clock = (function () {
 	/* Greenwich mean sidereal time at J2000.0 (deg) and its rate per day
 	   of UT, Meeus 12.4 (linear part). The rate is 360° + n, with n the
 	   mean Sun's daily motion (models/mean-sun.js). */
-	const THETA0 = 280.46061837;
-	const RATE = 360.98564736629;
+	const THETA0 = Time.GMST_AT_J2000;
+	const RATE = Time.SIDEREAL_RATE;
 
 	/* One turn of the sky (a sidereal day) in hours of mean solar time:
 	   23 h 56 min 04.09 s. */
@@ -115,15 +115,7 @@ const Clock = (function () {
 	/* JD(UT) of every upper transit of right ascension ra within the UT
 	   day [jd0, jd0 + 1). Usually one; on one day a year, two. */
 	function transits(ra, jd0, lon) {
-		const first = norm360(ra - lon - gmst(jd0)) / RATE;
-		const turn = 360 / RATE;
-		const list = [];
-
-		for (let t = first; t < 1; t += turn) {
-			list.push(jd0 + t);
-		}
-
-		return list;
+		return transitsBetween(ra, jd0, 1, lon);
 	}
 
 	/* JD(UT) of the transits within any window [start, start + length),

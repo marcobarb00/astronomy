@@ -36,9 +36,6 @@ const TEST_EPOCH = Time.julianDay(2026, 1, 1);
    sized by its V magnitude. */
 const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(star.mag) });
 
-/* Text of a declination or latitude: "−16.7°" (one decimal). */
-const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
-
 /* Text of a class from Diurnal.classify, for KaTeX. */
 const CLASS_TEXT = {
 	circumpolar: '\\text{never sets}',
@@ -109,13 +106,6 @@ const poleFigure = {
    Drawn in the horizon frame (x south, y east, z zenith): time and latitude
    turn the sky, never the ground. Stars at their J2000 positions.
    ========================================================================== */
-
-const HORIZON_POINTS = [
-	['S', [1, 0, 0]],
-	['E', [0, 1, 0]],
-	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
-];
 
 const skyFigure = {
 	sphere: null,
@@ -190,7 +180,7 @@ const skyFigure = {
 		const toSky = v => matApply(matrix, v);
 
 		s.outline();
-		this.drawGround();
+		s.ground();
 
 		// the equator and Ptolemy's two circles
 		s.circle(toSky([1, 0, 0]), toSky([0, 1, 0]), { color: COL.earth, width: 2 });
@@ -208,22 +198,6 @@ const skyFigure = {
 		// the axis of the turn
 		s.axis(scale(pole, 1.25), 'P', { color: COL.ink });
 		s.axis(scale(pole, -1.25), 'P′', { color: COL.muted, labelColor: COL.muted });
-	},
-
-	/* The ground: horizon, cardinal points, zenith, meridian. */
-	drawGround() {
-		const s = this.sphere;
-
-		s.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
-		s.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
-		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
-
-		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
-		});
-
-		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
-		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });
 	},
 
 	/* Around the raised pole, the circle of radius |phi| holds the stars

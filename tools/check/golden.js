@@ -609,7 +609,9 @@ function page12(c) {
 	row('texDms', [23.855555, -0.5, 20.5025].map(v => quote(c.texDms(v))).join(' '));
 	row('texVector', quote(c.texVector('\\mathbf s', [0.123456, -0.00001, 1])));
 	row('formatDay', [0, 31.5, 140, 364.99].map(v => quote(c.formatDay(v))).join(' '));
-	row('starOfDate(Aldebaran)', num(c.starOfDate('Aldebaran').ra), num(c.starOfDate('Aldebaran').dec));
+	const aldebaran = c.Stars.ofDateByName('Aldebaran', inContext(c, 'STAR_EPOCH'));
+
+	row('starOfDate(Aldebaran)', num(aldebaran.ra), num(aldebaran.dec));
 
 	out('  nutationErrors(2026), every 30 days: day, deps, dDec, dRA (arcsec)');
 	const days = c.nutationErrors(2026);
@@ -642,7 +644,7 @@ function page13(c) {
 	row('formatAngle', [-16.7, -0.04, 41.9].map(v => quote(c.formatAngle(v))).join(' '));
 	row('formatLongitude', [-74.006, -0.004, 0, 12.4964, 180].map(v => quote(c.formatLongitude(v))).join(' '));
 	row('clockText', [-0.5, 0, 12.999, 23.9999, 25.25].map(v => quote(c.clockText(v))).join(' '));
-	row('texDuration', [0, 9.99999, 15.25].map(v => quote(c.texDuration(v))).join(' '));
+	row('texDuration', [0, 9.99999, 15.25].map(v => quote(c.hmTex(v))).join(' '));
 	row('texClock', quote(c.texClock(19.0833)));
 	row('texMinutes', [-16.44, -0.04, 0, 0.05, 22.9].map(v => quote(c.texMinutes(v))).join(' '));
 	row('texHms', [0, 38.94, 359.9999, -1].map(v => quote(c.texHms(v))).join(' '));

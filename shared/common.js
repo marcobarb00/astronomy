@@ -7,7 +7,7 @@
 
    TABLE OF CONTENTS
 	 1. Constants and shared palette
-	 2. Angles                (trigonometry in degrees, wrapping)
+	 2. Angles and numbers    (trigonometry in degrees, wrapping, polynomials, roots)
 	 3. Vectors and matrices  (3D vectors, spherical <-> cartesian, rotations)
 	 4. Formatting helpers    (degrees, sexagesimal, hours, days, TeX)
 	 5. Colour helpers        (translucent versions, text colours)
@@ -93,6 +93,41 @@ const norm360 = x => ((x % 360) + 360) % 360;
 
 /* Angle in [-180, 180): the signed difference of two longitudes. */
 const norm180 = x => norm360(x + 180) - 180;
+
+/* ---------- Numbers ---------- */
+
+/* c0 + c1 t + c2 t^2 + ... (Horner's scheme). */
+function polynomial(t, coefficients) {
+	let result = 0;
+
+	for (let i = coefficients.length - 1; i >= 0; i--) {
+		result = result * t + coefficients[i];
+	}
+
+	return result;
+}
+
+/* A root of f in [a, b] by 'steps' halvings, NaN when f has the same sign
+   at both ends (no root to find there). */
+function bisect(f, a, b, steps = 40) {
+	const signA = Math.sign(f(a));
+
+	if (signA !== 0 && signA === Math.sign(f(b))) {
+		return NaN;
+	}
+
+	for (let i = 0; i < steps; i++) {
+		const middle = (a + b) / 2;
+
+		if (Math.sign(f(middle)) === signA) {
+			a = middle;
+		} else {
+			b = middle;
+		}
+	}
+
+	return (a + b) / 2;
+}
 
 /* ==========================================================================
    3. VECTORS AND MATRICES
@@ -223,6 +258,19 @@ function fixedAngle(degrees, digits = 1) {
 
 const fmt3 = x => fixed(x, 3);
 
+/* An angle with one decimal and a true minus sign, for a slider: "−16.7°". */
+const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
+
+/* A value (hours or degrees) as whole units, minutes and seconds, the
+   seconds rounded to 'digits' decimals with the carry: { h, m, s }. */
+function splitHms(value, digits = 0) {
+	const total = Number((value * 3600).toFixed(digits));
+	const h = Math.floor(total / 3600);
+	const m = Math.floor((total - h * 3600) / 60);
+
+	return { h, m, s: total - h * 3600 - m * 60 };
+}
+
 /* Split a value into whole units and a rounded remainder in 1/base units.
    Handles the carry (e.g. 59.9 min -> next unit). */
 function splitWithCarry(value, base) {
@@ -255,11 +303,8 @@ function hm(hours) {
 /* Hours -> "13h14m05.2s" (seconds with 'digits' decimals; no sign on a
    value that rounds to zero). */
 function hms(hours, digits = 1) {
-	const totalSeconds = Number((Math.abs(hours) * 3600).toFixed(digits));
-	const sign = hours < 0 && totalSeconds > 0 ? '-' : '';
-	const h = Math.floor(totalSeconds / 3600);
-	const m = Math.floor((totalSeconds - h * 3600) / 60);
-	const s = totalSeconds - h * 3600 - m * 60;
+	const { h, m, s } = splitHms(Math.abs(hours), digits);
+	const sign = hours < 0 && h + m + s > 0 ? '-' : '';
 	const secondsText = s.toFixed(digits).padStart(digits > 0 ? digits + 3 : 2, '0');
 
 	return `${sign}${h}h${pad2(m)}m${secondsText}s`;
@@ -420,6 +465,32 @@ function starPath(x, y, s) {
 	});
 
 	return parts.join(' ') + ' Z';
+}
+
+/* A dot (a point that is not a star) of the given radius and colour,
+   with a thin ring in the card colour when 'ring' (so it stands out from
+   a line under it). */
+function drawDot(ctx, x, y, radius, color, ring = true) {
+	ctx.fillStyle = color;
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, TAU);
+	ctx.fill();
+
+	if (ring) {
+		ctx.strokeStyle = COL.card;
+		ctx.lineWidth = 1.5;
+		ctx.stroke();
+	}
+}
+
+/* Give a canvas a bitmap of width x height CSS pixels at the device pixel
+   ratio, and scale its context so the drawing is in CSS pixels. */
+function scaleCanvas(canvas, ctx, width, height) {
+	const ratio = window.devicePixelRatio || 1;
+
+	canvas.width = Math.round(width * ratio);
+	canvas.height = Math.round(height * ratio);
+	ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 /* Fill a four-pointed star on a canvas with the current fillStyle.

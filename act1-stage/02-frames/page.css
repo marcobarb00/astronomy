@@ -17,17 +17,6 @@ figure.fig {
 	--ctl-output: 5.5em;
 }
 
-/* The star buttons keep one width, so the row does not reflow when the
-   active one changes. */
-.star-choice button {
-	min-width: 5.6em;
-}
-
-/* The play button keeps its width between "Play" and "Pause". */
-button.play {
-	min-width: 7.5em;
-}
-
 /* ==========================================================================
    2. THE TABLES OF THE PROSE
    The observation, the three frames and Ptolemy's tables against the real

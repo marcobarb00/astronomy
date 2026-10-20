@@ -20,7 +20,6 @@
 
 const DEMO_YEAR = 2026;
 
-const MEAN_LONGITUDE_J2000 = 280.46646; // mean Sun at J2000 (Meeus 25.2), deg
 const TROPICAL_YEAR = 365.24219; // days
 const HIPPARCHUS_YEAR = 365 + 1 / 4 - 1 / 300;
 
@@ -42,20 +41,6 @@ function formatDay(day) {
    sky turns above it: x towards the south point, y towards the east
    point, z towards the zenith. The observer is on the Greenwich meridian.
    ========================================================================== */
-
-const HORIZON_POINTS = [
-	['S', [1, 0, 0]],
-	['E', [0, 1, 0]],
-	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
-];
-
-/* Equatorial -> horizon frame for latitude phi and local sidereal time:
-   turn the sky by -LST about the pole (the meridian onto the x axis),
-   then tilt the pole down to altitude phi in the north. */
-function equatorialToHorizon(latitude, lst) {
-	return matMul(rotY(latitude - 90), rotZ(-lst));
-}
 
 const skyFigure = {
 	sphere: null,
@@ -87,7 +72,7 @@ const skyFigure = {
 		const sun = Ephem.sun(jdTT);
 		const sunEq = Ephem.equatorial(sun, jdTT);
 		const lst = Time.lst(jdUT, 0);
-		const M = equatorialToHorizon(readNumber('latitude'), lst);
+		const M = Diurnal.equatorialToHorizon(readNumber('latitude'), lst);
 		const toSky = v => matApply(M, v);
 		const eclipticToEquator = rotX(eps);
 
@@ -238,7 +223,7 @@ const eotFigure = {
 
 /* The uniform-circle Sun for a year of Y days: JD(TT) -> longitude (deg). */
 function uniformCircle(yearLength) {
-	return jd => norm360(MEAN_LONGITUDE_J2000 + (360 / yearLength) * (jd - Time.J2000));
+	return jd => norm360(MeanSun.MODERN.L0 + (360 / yearLength) * (jd - Time.J2000));
 }
 
 const errorFigure = {

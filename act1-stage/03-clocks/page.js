@@ -62,9 +62,6 @@ const monthTicks = () => MONTH_STARTS;
 /* "1 Jan 2026" for a day index of the year. */
 const dayText = day => Time.formatDate(YEAR_START + day);
 
-/* An angle with one decimal: "−16.8°". */
-const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
-
 /* A longitude: "12.50° E", "74.01° W". */
 function formatLongitude(lon) {
 	if (Math.abs(lon) < 0.005) {
@@ -81,11 +78,6 @@ function clockText(hours) {
 	return `${pad2(whole % 24)}:${pad2(rest)}`;
 }
 
-/* Hours -> "13 h 05 min" in TeX, with a sign when asked. */
-function texDuration(hours) {
-	return hmTex(hours);
-}
-
 /* A clock time inside TeX, as text so the colon is not spaced: "\text{04:23}". */
 const texClock = hours => `\\text{${clockText(hours)}}`;
 
@@ -99,10 +91,7 @@ function texMinutes(minutes) {
 
 /* An angle in hours, minutes, seconds for TeX: "2^\text{h}35^\text{m}45^\text{s}". */
 function texHms(degrees) {
-	const total = Math.round((norm360(degrees) / 15) * 3600);
-	const h = Math.floor(total / 3600);
-	const m = Math.floor((total - 3600 * h) / 60);
-	const s = total - 3600 * h - 60 * m;
+	const { h, m, s } = splitHms(norm360(degrees) / 15);
 
 	return `${h % 24}^\\text{h}${pad2(m)}^\\text{m}${pad2(s)}^\\text{s}`;
 }
@@ -118,14 +107,11 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 
 	const resize = () => {
 		const width = targetWidth();
-		const ratio = window.devicePixelRatio || 1;
 
 		canvas.style.width = `${width}px`;
 		canvas.style.height = `${width}px`;
-		canvas.width = Math.round(width * ratio);
-		canvas.height = Math.round(width * ratio);
 		owner.ctx = canvas.getContext('2d');
-		owner.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		scaleCanvas(canvas, owner.ctx, width, width);
 		owner.width = width;
 		owner.cx = width / 2;
 		owner.cy = width / 2;
@@ -160,9 +146,6 @@ function centredLabel(ctx, text, point, color) {
 	ctx.textBaseline = 'middle';
 	ctx.fillText(text, point.x, point.y);
 }
-
-/* The mean position of date of a star of shared/stars.js. */
-const starOfDate = (name, jd) => Stars.ofDate(Stars.find(name), jd);
 
 /* ==========================================================================
    1. FIGURE 1: THE SKY FROM ABOVE THE POLE
@@ -251,7 +234,7 @@ const wheelFigure = {
 		const hours = (elapsed - days) * 24;
 
 		showLines('wheel-readout', [
-			`\\text{elapsed: } ${days}\\,\\text{d}\\ ${texDuration(hours)}`,
+			`\\text{elapsed: } ${days}\\,\\text{d}\\ ${hmTex(hours)}`,
 			`\\text{sky: } ${skyTurns.toFixed(3)}\\ \\text{turns}`,
 			`\\text{Sun: } ${sunTurns.toFixed(3)}\\ \\text{turns}`
 		]);
@@ -374,13 +357,7 @@ const wheelFigure = {
 		const ctx = this.ctx;
 		const q = this.toScreen(ra, dec);
 
-		ctx.fillStyle = color;
-		ctx.beginPath();
-		ctx.arc(q.x, q.y, radius, 0, TAU);
-		ctx.fill();
-		ctx.strokeStyle = COL.card;
-		ctx.lineWidth = 1.5;
-		ctx.stroke();
+		drawDot(ctx, q.x, q.y, radius, color);
 
 		if (label) {
 			ctx.font = labelFont(label);
@@ -554,15 +531,7 @@ const anglesFigure = {
 	},
 
 	dot(point, color, radius) {
-		const ctx = this.ctx;
-
-		ctx.fillStyle = color;
-		ctx.beginPath();
-		ctx.arc(point.x, point.y, radius, 0, TAU);
-		ctx.fill();
-		ctx.strokeStyle = COL.card;
-		ctx.lineWidth = 1.5;
-		ctx.stroke();
+		drawDot(this.ctx, point.x, point.y, radius, color);
 	}
 };
 
@@ -574,13 +543,6 @@ const anglesFigure = {
    westward to the vernal point), alpha (from the vernal point eastward to
    the star's circle), H (from M westward to the star's circle).
    ========================================================================== */
-
-const HORIZON_POINTS = [
-	['S', [1, 0, 0]],
-	['E', [0, 1, 0]],
-	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
-];
 
 /* The arcs are drawn just outside the sphere, one ring each, so they do
    not hide one another. */
@@ -618,7 +580,7 @@ const siderealFigure = {
 	update() {
 		const jd = YEAR_START + readNumber('sid-time') / 24;
 		const lon = readNumber('sid-lon');
-		const star = starOfDate(this.starName, YEAR_START);
+		const star = Stars.ofDateByName(this.starName, YEAR_START);
 		const thetaG = Clock.gmst(jd);
 		const theta = norm360(thetaG + lon);
 
@@ -661,7 +623,7 @@ const siderealFigure = {
 		const pole = toHor([0, 0, 1]);
 
 		s.outline();
-		this.drawGround();
+		s.ground();
 		s.circle(toHor([1, 0, 0]), toHor([0, 1, 0]), { color: COL.earth, width: 2 });
 		this.drawArcs(toHor);
 		this.drawStar(toHor, pole);
@@ -669,22 +631,6 @@ const siderealFigure = {
 		s.point(toHor([1, 0, 0]), { color: COL.ink, radius: 5, always: true });
 		s.labelAway('γ', toHor([1, 0, 0]), ORIGIN, COL.ink);
 		s.axis(scale(pole, 1.25), 'P', { color: COL.ink });
-	},
-
-	/* Horizon, cardinal points, zenith, meridian. */
-	drawGround() {
-		const s = this.sphere;
-
-		s.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
-		s.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
-		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
-
-		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
-		});
-
-		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
-		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });
 	},
 
 	/* The arcs theta, alpha and H along the equator, with the point M. */
@@ -962,6 +908,10 @@ const calendarFigure = {
    that line runs off to the poles at the equinoxes. */
 const DAY_LEVELS = [6, 9, 15, 18];
 
+/* The lines are searched for between these latitudes (deg), just short
+   of the poles, where the day's length has no limit. */
+const CONTOUR_LATITUDE = 89.9;
+
 /* The default date of the read-out: the June solstice. */
 const JUNE_SOLSTICE_DAY = Time.julianDay(YEAR, 6, 21) - YEAR_START;
 
@@ -1034,7 +984,7 @@ const dayLengthFigure = {
 		// last two instead of removing one
 		showLines('day-readout', [
 			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${fixed(sunDay.dec, 2)}^\\circ,\\quad H_0 = ${fixed(sunDay.H0, 1)}^\\circ`,
-			`\\text{day } ${texDuration(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
+			`\\text{day } ${hmTex(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
 			rises
 				? `\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}`
 				: '\\text{no sunrise or sunset}'
@@ -1048,24 +998,7 @@ const dayLengthFigure = {
 
 		return this.declinations.map(dec => {
 			const f = phi => (2 * Diurnal.risingHourAngle(dec, phi, h0)) / 15 - hours;
-			let lo = -89.9;
-			let hi = 89.9;
-
-			if (f(lo) * f(hi) > 0) {
-				return NaN;
-			}
-
-			for (let i = 0; i < 40; i++) {
-				const mid = (lo + hi) / 2;
-
-				if (f(mid) * f(lo) > 0) {
-					lo = mid;
-				} else {
-					hi = mid;
-				}
-			}
-
-			return (lo + hi) / 2;
+			return bisect(f, -CONTOUR_LATITUDE, CONTOUR_LATITUDE);
 		});
 	},
 
@@ -1228,30 +1161,8 @@ const testFigure = {
 		return Diurnal.altitude(sun.dec, norm180(Ephem.apparentSiderealTime(jdUT) - sun.ra), phi);
 	},
 
-	/* Root of f in [a, b] by bisection, NaN when f has the same sign at
-	   both ends (no root to find there). */
-	bisect(f, a, b) {
-		const signA = Math.sign(f(a));
-
-		if (signA !== 0 && signA === Math.sign(f(b))) {
-			return NaN;
-		}
-
-		for (let i = 0; i < BISECTION_STEPS; i++) {
-			const middle = (a + b) / 2;
-
-			if (Math.sign(f(middle)) === signA) {
-				a = middle;
-			} else {
-				b = middle;
-			}
-		}
-
-		return (a + b) / 2;
-	},
-
 	realNoon(jd0) {
-		return this.bisect(jd => this.sunHourAngle(jd), jd0 + 0.5 - NOON_SEARCH, jd0 + 0.5 + NOON_SEARCH);
+		return bisect(jd => this.sunHourAngle(jd), jd0 + 0.5 - NOON_SEARCH, jd0 + 0.5 + NOON_SEARCH, BISECTION_STEPS);
 	},
 
 	/* The real sunrise and sunset (JD(UT)), NaN if the Sun does not cross h0. */
@@ -1264,8 +1175,8 @@ const testFigure = {
 		}
 
 		return {
-			rise: this.bisect(above, noon - RISE_SET_SEARCH, noon),
-			set: this.bisect(above, noon, noon + RISE_SET_SEARCH)
+			rise: bisect(above, noon - RISE_SET_SEARCH, noon, BISECTION_STEPS),
+			set: bisect(above, noon, noon + RISE_SET_SEARCH, BISECTION_STEPS)
 		};
 	},
 

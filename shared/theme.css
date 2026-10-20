@@ -795,6 +795,42 @@ button.play .icon {
 	flex: none;
 }
 
+/* A play button keeps its width between "Play" and "Pause" (a page with
+   longer labels widens it). */
+button.play {
+	min-width: 7.5em;
+}
+
+/* Star buttons keep one width, so a row does not reflow when the active
+   one changes. */
+.star-choice button {
+	min-width: 5.6em;
+}
+
+/* Two panels side by side, "(a)" and "(b)", each with its small-caps
+   title above and its controls underneath (stacked at phone width,
+   section 16). */
+.panels,
+.panel-controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+.panel-controls {
+	margin-top: 10px;
+}
+
+.panel-title {
+	margin: 0 0 4px;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
 /* Live numbers next to a figure: a small table, ink rules at the top and
    bottom, light rules between the lines. Every line has the same height,
    whatever its sub- and superscripts, and empty lines keep theirs: with the
@@ -1466,6 +1502,11 @@ dl.origin-key dd {
    ========================================================================== */
 
 @media (max-width: 800px) {
+	.panels,
+	.panel-controls {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
 	/* A long inline formula may break after a relation or an operator
 	   (KaTeX's own break points), rather than widen the page. Display
 	   equations still scroll. */

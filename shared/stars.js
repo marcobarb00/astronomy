@@ -101,6 +101,11 @@ const Stars = (function () {
 		return { ra: p.lon, dec: p.lat };
 	}
 
+	/* The same for the star with this name (Stars.find). */
+	function ofDateByName(name, jdTT) {
+		return ofDate(find(name), jdTT);
+	}
+
 	/* Mean right ascension and declination of date (deg): { ra, dec }. */
 	function ofDate(star, jdTT) {
 		const p = atEpoch(star, jdTT);
@@ -117,6 +122,7 @@ const Stars = (function () {
 		find,
 		vectorJ2000,
 		atEpoch,
-		ofDate
+		ofDate,
+		ofDateByName
 	};
 })();

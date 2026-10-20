@@ -49,6 +49,14 @@ const ARROW_HEAD_SIZE = 9; // px
 const DRAG_DEGREES_PER_PX = 0.5;
 const LABEL_FONT = FONT_NAME; // for pages that write on a canvas themselves
 
+/* The cardinal points in the horizon frame (x south, y east, z zenith). */
+const HORIZON_POINTS = [
+	['S', [1, 0, 0]],
+	['E', [0, 1, 0]],
+	['N', [-1, 0, 0]],
+	['W', [0, -1, 0]]
+];
+
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, DRAGGING
    ========================================================================== */
@@ -89,12 +97,9 @@ class Sphere3D {
 	resize() {
 		const width = this.canvas.clientWidth || 400;
 		const height = Math.round(width * this.aspect);
-		const ratio = window.devicePixelRatio || 1;
 
 		this.canvas.style.height = `${height}px`;
-		this.canvas.width = Math.round(width * ratio);
-		this.canvas.height = Math.round(height * ratio);
-		this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		scaleCanvas(this.canvas, this.ctx, width, height);
 
 		this.width = width;
 		this.height = height;
@@ -271,17 +276,7 @@ class Sphere3D {
 		const isFar = q.d > 0 && !style.always;
 
 		ctx.globalAlpha = isFar ? FAR_ARROW_ALPHA : 1;
-		ctx.fillStyle = style.color ?? COL.planet;
-		ctx.beginPath();
-		ctx.arc(q.x, q.y, style.radius ?? 5, 0, TAU);
-		ctx.fill();
-
-		if (style.ring) {
-			ctx.strokeStyle = COL.card;
-			ctx.lineWidth = 1.5;
-			ctx.stroke();
-		}
-
+		drawDot(ctx, q.x, q.y, style.radius ?? 5, style.color ?? COL.planet, Boolean(style.ring));
 		ctx.globalAlpha = 1;
 	}
 
@@ -338,6 +333,23 @@ class Sphere3D {
 	axis(tip, text, style = {}) {
 		this.arrow(ORIGIN, tip, style);
 		this.label(text, tip, { color: style.labelColor ?? COL.ink, dx: 6, dy: -4 });
+	}
+
+	/* The observer's ground, for a sphere drawn in the horizon frame (x
+	   towards the south point, y east, z towards the zenith): the shaded
+	   horizon plane and its circle, the meridian (dotted), the cardinal
+	   points N, E, S, W and the zenith Z. */
+	ground() {
+		this.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
+		this.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
+		this.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
+
+		HORIZON_POINTS.forEach(([name, point]) => {
+			this.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
+		});
+
+		this.point([0, 0, 1], { color: COL.deferent, radius: 4 });
+		this.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });
 	}
 
 	/* Text next to a 3D point. style: color (a line colour is drawn in its
