@@ -11,6 +11,8 @@
 *.csv
 *.sh
 *.py
+*.yml
+*.yaml
 
 # Not ours to format: the earlier pages, generated data, outputs.
 archive/
