@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - PAGE COMPONENTS (components.js)
    The site map and the parts every article shares, in the star-atlas
@@ -348,7 +349,8 @@ const Site = (function () {
 	   project path.
 	   ====================================================================== */
 
-	const ROOT = document.currentScript ? new URL('../', document.currentScript.src).href : '../';
+	const script = /** @type {HTMLScriptElement | null} */ (document.currentScript);
+	const ROOT = script ? new URL('../', script.src).href : '../';
 
 	const href = path => ROOT + path;
 
@@ -873,7 +875,8 @@ const GraduatedFrame = (function () {
 		layout(frame);
 	}
 
-	/* Build every frame inside root. */
+	/** Build every frame inside root.
+	   @param {ParentNode} [root] */
 	function attachAll(root = document) {
 		root.querySelectorAll('.frame').forEach(attach);
 	}

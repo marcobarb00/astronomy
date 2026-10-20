@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE 1.3 · CLOCKS - SCRIPT (page.js)
    Six figures, each with its own init and draw (and update when it has

@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    DEMO OF THE SHARED COMPONENTS - SCRIPT (demo.js)
    Three figures; the chosen date (day of 2026 + time UT) drives the first two:

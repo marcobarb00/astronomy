@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - BRIGHT STARS (stars.js)
    A small catalogue of bright stars for the figures and the reference sky,

@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE 1.1 · THE TURNING SKY - SCRIPT (page.js)
    Five figures, each with its own init (and update / draw when it moves):

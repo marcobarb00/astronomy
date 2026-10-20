@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - TIME (time.js)
    Julian Date, calendar conversions, Delta T and sidereal time.

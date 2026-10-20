@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - 2D PLOTS (plot2d.js)
    Simple 2D plots on a canvas: axes, grid, curves, bands, markers, an HTML
@@ -43,6 +44,9 @@ const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, HOVER
    ========================================================================== */
+
+/** An entry of Plot2D.legend (section 6).
+	@typedef {{ label: string, color: string, mark?: string, ghost?: boolean, hidden?: boolean }} LegendItem */
 
 class Plot2D {
 	/* options: x, y ([min, max]), xLabel, yLabel, xFormat, yFormat,
@@ -487,6 +491,8 @@ class Plot2D {
 	   its size.
 	   ====================================================================== */
 
+	/** @param {HTMLElement} container
+		@param {LegendItem[]} items */
 	static legend(container, items) {
 		container.classList.add('legend');
 		container.innerHTML = '';

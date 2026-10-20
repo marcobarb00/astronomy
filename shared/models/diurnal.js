@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE TURNING SKY (models/diurnal.js)
    The model of page 1.1: the sky is a rigid celestial sphere turning

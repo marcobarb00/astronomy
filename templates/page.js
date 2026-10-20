@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE TEMPLATE - SCRIPT (page.js)
    Each figure has its own section with three functions:
