@@ -561,8 +561,5 @@ const nutationFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	zodiacFigure.init();
-	eclipticFigure.init();
-	horizonFigure.init();
-	nutationFigure.init();
+	startFigures([zodiacFigure, eclipticFigure, horizonFigure, nutationFigure]);
 });

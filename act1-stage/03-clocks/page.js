@@ -1316,10 +1316,5 @@ const testFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	wheelFigure.init();
-	anglesFigure.init();
-	siderealFigure.init();
-	calendarFigure.init();
-	dayLengthFigure.init();
-	testFigure.init();
+	startFigures([wheelFigure, anglesFigure, siderealFigure, calendarFigure, dayLengthFigure, testFigure]);
 });

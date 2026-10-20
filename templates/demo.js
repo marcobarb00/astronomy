@@ -283,8 +283,6 @@ function onDateChange() {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	skyFigure.init();
-	eotFigure.init();
-	errorFigure.init();
+	startFigures([skyFigure, eotFigure, errorFigure]);
 	onDateChange();
 });

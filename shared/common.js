@@ -588,6 +588,12 @@ function makeEl(tag, className = '', html = '') {
 
 /* Typeset one TeX string into an element (display style by default). */
 function renderTex(element, source, displayMode = true) {
+	// KaTeX did not load (a CDN failure): the TeX source, as plain text
+	if (typeof katex === 'undefined') {
+		element.textContent = source;
+		return;
+	}
+
 	katex.render(source, element, { throwOnError: false, displayMode: displayMode });
 }
 
@@ -603,6 +609,13 @@ function renderStaticMath(root = document) {
    then any data-tex element. Needs KaTeX's auto-render extension.
    @param {HTMLElement} [root] */
 function renderMath(root = document.body) {
+	// without the auto-render extension (a CDN failure) the prose keeps
+	// its $...$ source; the read-outs still get their text
+	if (typeof renderMathInElement !== 'function') {
+		renderStaticMath(root);
+		return;
+	}
+
 	renderMathInElement(root, {
 		delimiters: [
 			{ left: '$$', right: '$$', display: true },
@@ -767,6 +780,18 @@ function wirePresets(root = document) {
 			wireStepButton(button);
 		} else {
 			button.addEventListener('click', () => applyPreset(button));
+		}
+	});
+}
+
+/* Start each figure of a page (its init()), one at a time: a figure that
+   fails reports it in the console and does not stop the others. */
+function startFigures(figures) {
+	figures.forEach(figure => {
+		try {
+			figure.init();
+		} catch (error) {
+			console.error('A figure could not start:', error);
 		}
 	});
 }
