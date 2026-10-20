@@ -208,7 +208,8 @@ per page**, and only where the page is about the sky itself.
 epicycles, equants, error curves). Those are always ink on parchment, in a
 graduated frame.
 
-Anatomy (see the reference page and `design/references/polar-sky.svg`):
+Anatomy (see the reference page and `design/references/polar-sky.svg`;
+pages 1.1 and 1.2 have one each):
 
 - `--plate` ground, with a thin inner line in the parchment colour 6 px in
   from the edge.
@@ -220,9 +221,21 @@ Anatomy (see the reference page and `design/references/polar-sky.svg`):
 - The Milky Way as fine stipple.
 - **One** element highlighted in `--plate-accent` (e.g. the circumpolar
   limit for the observer's latitude).
-- Star positions from `shared/stars.js` or a catalogue, never invented.
+- Star positions from `shared/stars.js` or a catalogue, never invented
+  (`shared/plate-stars.js`, from SIMBAD).
 - The title and caption may sit on the plate, beside the chart:
   "Figure 1" in small caps `--plate-accent`, title in Cormorant Garamond.
+  A plate is a figure: it is numbered with the other figures and has its
+  keys under it.
+- A polar chart shows the sky as seen from the ground: around the north
+  pole, right ascension increases clockwise (the reference SVG is drawn the
+  other way, as seen from outside the sphere). A rectangular chart is seen
+  looking south: north up, east to the left.
+- Text on a chart keeps its size on the screen, at least 13 px, whatever
+  the width of the chart; on a phone the minor labels are left out.
+- Built by `shared/plate.js` (`Plate.polar`, `Plate.rectangular`, the
+  highlights) and styled by `shared/theme.css` §13: a page never draws its
+  own.
 
 ## 8. Controls
 

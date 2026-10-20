@@ -42,7 +42,9 @@ same style:
   `shared/components.js`), four-pointed stars (`drawStar` in
   `shared/common.js`, `Sphere3D.star`, `Plot2D.star`; a star is never a
   dot), margin notes for origins and detours (`<div class="row">` with an
-  `<aside>`, see `templates/page.html`).
+  `<aside>`, see `templates/page.html`), and the blue plate for a static
+  chart of the sky (`shared/plate.js`, at most one per page, `STYLE.md` §7;
+  see Figure 1 of pages 1.1 and 1.2).
 - Format the equations with KaTeX.
 - Only when it is useful, generate 3D diagrams.
 
