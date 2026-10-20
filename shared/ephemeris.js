@@ -774,11 +774,15 @@ const Ephem = (function () {
 	   8. DERIVED QUANTITIES
 	   ====================================================================== */
 
-	/* Greenwich apparent sidereal time (deg) = GMST + nutation in RA. */
+	/* Greenwich apparent sidereal time (deg) = GMST + nutation in RA (the
+	   equation of the equinoxes). GMST takes the clock time, JD(UT); the
+	   nutation and the obliquity take Terrestrial Time, JD(TT). */
 	function apparentSiderealTime(jdUT) {
-		const n = nutation(jdUT);
+		const jdTT = Time.ttFromUt(jdUT);
+		const n = nutation(jdTT);
+		const trueObliquity = meanObliquity(jdTT) + n.deps;
 
-		return norm360(Time.gmst(jdUT) + n.dpsi * cos(obliquity(jdUT)));
+		return norm360(Time.gmst(jdUT) + n.dpsi * cos(trueObliquity));
 	}
 
 	/* The Sun's mean longitude (deg), Meeus 28.2 (tau in Julian millennia). */

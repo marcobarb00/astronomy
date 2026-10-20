@@ -15,7 +15,7 @@ range start: -2999-1-1
   JD(TT), utFromTt(JD(TT))       625674.359870778  625673.500000841
   GMST Time.gmst (deg)           75.998117089
   GMST Clock.gmst (deg)          75.025459409
-  GAST (deg)                     75.999601602
+  GAST (deg)                     75.999634061
   LST at 12.4964 E, -74.0 E      88.494517089  1.025459409
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -3.115109682
@@ -34,7 +34,7 @@ Thales eclipse: -584-5-28
   JD(TT), utFromTt(JD(TT))       1507899.713741553  1507899.500000104
   GMST Time.gmst (deg)           239.018214405
   GMST Clock.gmst (deg)          238.758831978
-  GAST (deg)                     239.014285455
+  GAST (deg)                     239.014288579
   LST at 12.4964 E, -74.0 E      251.514614405  164.758831978
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         9.175244434
@@ -53,7 +53,7 @@ Ptolemy: 139-7-20.5
   JD(TT), utFromTt(JD(TT))       1772028.106679559  1772028.000000032
   GMST Time.gmst (deg)           116.453654826
   GMST Clock.gmst (deg)          116.319219112
-  GAST (deg)                     116.449719943
+  GAST (deg)                     116.449718006
   LST at 12.4964 E, -74.0 E      128.950054826  42.319219112
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -2.371197698
@@ -72,7 +72,7 @@ last Julian day: 1582-10-4
   JD(TT), utFromTt(JD(TT))       2299159.501494447  2299159.500000000
   GMST Time.gmst (deg)           22.100636952
   GMST Clock.gmst (deg)          22.093882591
-  GAST (deg)                     22.104704103
+  GAST (deg)                     22.104704093
   LST at 12.4964 E, -74.0 E      34.597036952  308.093882591
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.698775272
@@ -91,7 +91,7 @@ first Gregorian day: 1582-10-15
   JD(TT), utFromTt(JD(TT))       2299160.501494428  2299160.500000000
   GMST Time.gmst (deg)           23.086284228
   GMST Clock.gmst (deg)          23.079529956
-  GAST (deg)                     23.090351125
+  GAST (deg)                     23.090351133
   LST at 12.4964 E, -74.0 E      35.582684228  309.079529956
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.919602802
@@ -110,7 +110,7 @@ Sputnik (Meeus 7.a): 1957-10-4.81
   JD(TT), utFromTt(JD(TT))       2436116.310372137  2436116.310000000
   GMST Time.gmst (deg)           304.813023808
   GMST Clock.gmst (deg)          304.812954586
-  GAST (deg)                     304.815919182
+  GAST (deg)                     304.815919174
   LST at 12.4964 E, -74.0 E      317.309423808  230.812954586
   local mean time at 12.4964 E (h) 20.273093335
   equation of time (min)         11.314038954
@@ -129,7 +129,7 @@ Meeus 12.a: 1987-4-10
   JD(TT), utFromTt(JD(TT))       2446895.500641634  2446895.500000000
   GMST Time.gmst (deg)           197.693195091
   GMST Clock.gmst (deg)          197.693188805
-  GAST (deg)                     197.692210673
+  GAST (deg)                     197.692210658
   LST at 12.4964 E, -74.0 E      210.189595091  123.693188805
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -1.600699348
@@ -148,7 +148,7 @@ Meeus 47.a: 1992-4-12
   JD(TT), utFromTt(JD(TT))       2448724.500677638  2448724.500000000
   GMST Time.gmst (deg)           200.442224062
   GMST Clock.gmst (deg)          200.442221749
-  GAST (deg)                     200.446424787
+  GAST (deg)                     200.446424782
   LST at 12.4964 E, -74.0 E      212.938624062  126.442221749
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -0.861033221
@@ -167,7 +167,7 @@ Meeus 25.a: 1992-10-13
   JD(TT), utFromTt(JD(TT))       2448908.500682340  2448908.500000000
   GMST Time.gmst (deg)           21.801339168
   GMST Clock.gmst (deg)          21.801337146
-  GAST (deg)                     21.805424263
+  GAST (deg)                     21.805424253
   LST at 12.4964 E, -74.0 E      34.297739168  307.801337146
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.709371209
@@ -186,7 +186,7 @@ J2000.0: 2000-1-1.5
   JD(TT), utFromTt(JD(TT))       2451545.000739126  2451545.000000000
   GMST Time.gmst (deg)           280.460618370
   GMST Clock.gmst (deg)          280.460618370
-  GAST (deg)                     280.457042349
+  GAST (deg)                     280.457042351
   LST at 12.4964 E, -74.0 E      292.957018370  206.460618370
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -3.296195918
@@ -205,7 +205,7 @@ J2000.0: 2000-1-1.5
   JD(TT), utFromTt(JD(TT))       2461041.500868919  2461041.500000000
   GMST Time.gmst (deg)           100.660858567
   GMST Clock.gmst (deg)          100.660832343
-  GAST (deg)                     100.662251255
+  GAST (deg)                     100.662251285
   LST at 12.4964 E, -74.0 E      113.157258567  26.660832343
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -3.341636538
@@ -224,7 +224,7 @@ J2000.0: 2000-1-1.5
   JD(TT), utFromTt(JD(TT))       2461213.000872266  2461213.000000000
   GMST Time.gmst (deg)           89.699382842
   GMST Clock.gmst (deg)          89.699355662
-  GAST (deg)                     89.701344666
+  GAST (deg)                     89.701344658
   LST at 12.4964 E, -74.0 E      102.195782842  15.699355662
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -1.839994723
@@ -243,7 +243,7 @@ range end: 3000-12-31
   JD(TT), utFromTt(JD(TT))       2817151.551426094  2817151.499999987
   GMST Time.gmst (deg)           99.583285034
   GMST Clock.gmst (deg)          99.544441879
-  GAST (deg)                     99.585261409
+  GAST (deg)                     99.585262978
   LST at 12.4964 E, -74.0 E      112.079685034  25.544441879
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -0.458968659
@@ -1810,7 +1810,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
-  x = -0.001                     "-0°00'" "0h00m" "-0h00m03.6s" "-0h00m04s" "0d00h" "−0.0" "−0.001" "−0.0′" "-0;00 (0.001°)" "-0;00,04 (0.001°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "-0.001" "-0.001" "\\alpha=-0°00'"  359.999000000  -0.001000000
+  x = -0.001                     "0°00'" "0h00m" "-0h00m03.6s" "-0h00m04s" "0d00h" "+0.0" "−0.001" "+0.0′" "0;00 (0.001°)" "-0;00,04 (0.001°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "-0.001" "-0.001" "\\alpha=0°00'"  359.999000000  -0.001000000
   x = 0                          "0°00'" "0h00m" "0h00m00.0s" "0h00m00s" "0d00h" "+0.0" "+0.000" "+0.0′" "0;00 (0.000°)" "0;00,00 (0.000°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "+0.000" "0.000" "\\alpha=0°00'"  0.000000000  0.000000000
   x = 0.0083                     "0°00'" "0h00m" "0h00m29.9s" "0h00m30s" "0d00h" "+0.0" "+0.008" "+0.0′" "0;00 (0.008°)" "0;00,30 (0.008°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "+0.008" "0.008" "\\alpha=0°00'"  0.008300000  0.008300000
   x = 0.99999                    "1°00'" "1h00m" "1h00m00.0s" "1h00m00s" "1d00h" "+1.0" "+1.000" "+1.0′" "1;00 (1.000°)" "1;00,00 (1.000°)" "1\\,\\text{h}\\,00\\,\\text{min}" "1\\,\\text{d}\\,00\\,\\text{h}" "+1.000" "1.000" "\\alpha=1°00'"  0.999990000  0.999990000
@@ -1841,10 +1841,24 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   -600, 600, 6                   -600.000000:601 BC -400.000000:401 BC -200.000000:201 BC 0.000000:1 BC 200.000000:200 400.000000:400 600.000000:600
   niceCeiling                    0.500000 1.000000 2.000000 2.500000 5.000000 10.000000 20.000000 1000.000000
   runningExtreme                 [3,4,4,5,9,9,9,6]
-  stripTex                       "_model (Hipparchus)"
+  stripTex                       "λmodel (Hipparchus)"
+  stripTex                       "mean Sun λ̄"
+  stripTex                       "Hipparchus' year, Y = 365 1/4 - 1/300 d"
+  stripTex                       "Δλ of ε0, δ☉"
+  fixed and fixedAngle (never "-0.0"; an angle in [0, 360) never "360.0")
+  x = -0.04                      "0.0" "-0.04" "0.0" "-0.04"
+  x = -0.05                      "-0.1" "-0.05" "-0.1" "-0.05"
+  x = -0.051                     "-0.1" "-0.05" "-0.1" "-0.05"
+  x = 0                          "0.0" "0.00" "0.0" "0.00"
+  x = 0.04                       "0.0" "0.04" "0.0" "0.04"
+  x = 12.345                     "12.3" "12.35" "12.3" "12.35"
+  x = 359.94                     "359.9" "359.94" "359.9" "359.94"
+  x = 359.95                     "359.9" "359.95" "359.9" "359.95"
+  x = 359.999                    "360.0" "360.00" "0.0" "0.00"
+  x = -12.5                      "-12.5" "-12.50" "-12.5" "-12.50"
 
 === 8a. PAGE 1.1 (act1-stage/01-turning-sky/page.js) ===
-  formatAngle                    "−16.7°" "−0.0°" "0.0°" "41.9°" "90.0°"
+  formatAngle                    "−16.7°" "0.0°" "0.0°" "41.9°" "90.0°"
   seenHorizonDepth()             -0.573875490609
   TEST_HALF_TURN, TEST_EPOCH     11.967234795949  2461041.500000000
   CLASS_TEXT                     "{\"circumpolar\":\"\\\\text{never sets}\",\"rises\":\"\\\\text{rises and sets}\",\"never\":\"\\\\text{never rises}\"}"
@@ -1855,6 +1869,8 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   EPS_TODAY                      23.435910446294
   formatDegrees                  "−5.47°" "0.00°" "12.35°"
   texDegrees                     "0.00^\\circ" "-5.47^\\circ" "360.00^\\circ"
+  texAngle360                    "0.00^\\circ" "5.47^\\circ" "359.99^\\circ" "0.00^\\circ"
+  formatAngle                    "−33.9°" "0.0°" "0.0°" "41.9°" "360.0°"
   texHours                       "0^\\text{h}00^\\text{m}" "4^\\text{h}36^\\text{m}" "0^\\text{h}00^\\text{m}" "23^\\text{h}00^\\text{m}"
   texDms                         "23^\\circ 51' 20''" "-0^\\circ 30' 00''" "20^\\circ 30' 09''"
   texVector                      "\\mathbf s = (0.1235,\\ 0.0000,\\ 1.0000)"
@@ -1881,7 +1897,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   MONTH_STARTS                   0:Jan 31:Feb 59:Mar 90:Apr 120:May 151:Jun 181:Jul 212:Aug 243:Sep 273:Oct 304:Nov 334:Dec
   JUNE_SOLSTICE_DAY              171
   dayText                        "1 Jan 2026" "1 Mar 2026" "31 Dec 2026"
-  formatAngle                    "−16.7°" "−0.0°" "41.9°"
+  formatAngle                    "−16.7°" "0.0°" "41.9°"
   formatLongitude                "74.01° W" "0.00°" "0.00°" "12.50° E" "180.00° E"
   clockText                      "23:30" "00:00" "13:00" "00:00" "01:15"
   texDuration                    "0\\,\\text{h}\\,00\\,\\text{min}" "10\\,\\text{h}\\,00\\,\\text{min}" "15\\,\\text{h}\\,15\\,\\text{min}"
@@ -1893,7 +1909,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   calendar dusk, dawn (day 171, 66.5) 36.000000000  0.000000000
   calendar dusk, dawn (day 171, -60) 14.934665127  9.065044125
   Figure 6, every 30 days: real noon, and rise / set at 41.9 and 65
-  day 0                          2461042.002487237  2461041.810945106  2461042.194130513  2461041.921081248  2461042.084089912
+  day 0                          2461042.002487237  2461041.810945105  2461042.194130512  2461041.921081248  2461042.084089912
   day 30                         2461072.009329427  2461071.801152604  2461072.217834904  2461071.868460991  2461072.150862979
   day 60                         2461102.008419327  2461101.773322118  2461102.243972020  2461101.796208926  2461102.221638231
   day 90                         2461132.002689958  2461131.738223963  2461132.267670982  2461131.719861801  2461132.286859683

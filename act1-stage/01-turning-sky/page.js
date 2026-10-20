@@ -37,7 +37,7 @@ const TEST_EPOCH = Time.julianDay(2026, 1, 1);
 const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(star.mag) });
 
 /* Text of a declination or latitude: "−16.7°" (one decimal). */
-const formatAngle = value => `${value.toFixed(1).replace('-', '−')}°`;
+const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
 
 /* Text of a class from Diurnal.classify, for KaTeX. */
 const CLASS_TEXT = {
@@ -173,10 +173,10 @@ const skyFigure = {
 
 		showLines('sky-readout', [
 			`\\text{${this.star.name}}:\\ ${CLASS_TEXT[Diurnal.classify(dec, phi)]}`,
-			`\\delta = ${dec.toFixed(1)}^\\circ,\\quad H = ${H.toFixed(1)}^\\circ`,
-			`a = ${a.toFixed(1)}^\\circ`,
-			`a_\\text{max} = ${Diurnal.upperCulmination(dec, phi).toFixed(1)}^\\circ,\\quad ` +
-				`a_\\text{min} = ${Diurnal.lowerCulmination(dec, phi).toFixed(1)}^\\circ`
+			`\\delta = ${fixed(dec, 1)}^\\circ,\\quad H = ${fixed(H, 1)}^\\circ`,
+			`a = ${fixed(a, 1)}^\\circ`,
+			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
+				`a_\\text{min} = ${fixed(Diurnal.lowerCulmination(dec, phi), 1)}^\\circ`
 		]);
 	},
 
@@ -313,8 +313,8 @@ const outsideFigure = {
 
 		showLines('out-readout', [
 			`\\text{${this.star.name}}`,
-			`\\angle(\\hat{\\mathbf z}, \\mathbf s) = ${angle.toFixed(1)}^\\circ`,
-			`a = 90^\\circ - ${angle.toFixed(1)}^\\circ = ${(90 - angle).toFixed(1)}^\\circ`
+			`\\angle(\\hat{\\mathbf z}, \\mathbf s) = ${fixed(angle, 1)}^\\circ`,
+			`a = 90^\\circ - ${fixed(angle, 1)}^\\circ = ${fixed(90 - angle, 1)}^\\circ`
 		]);
 	},
 
@@ -458,9 +458,9 @@ const dayFigure = {
 		const f = H0 / 180;
 		const lines = [
 			CLASS_TEXT[Diurnal.classify(dec, phi)],
-			`a_\\text{max} = ${Diurnal.upperCulmination(dec, phi).toFixed(1)}^\\circ,\\quad ` +
-				`a_\\text{min} = ${Diurnal.lowerCulmination(dec, phi).toFixed(1)}^\\circ`,
-			`H_0 = ${H0.toFixed(1)}^\\circ,\\quad f = ${f.toFixed(3)}`,
+			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
+				`a_\\text{min} = ${fixed(Diurnal.lowerCulmination(dec, phi), 1)}^\\circ`,
+			`H_0 = ${fixed(H0, 1)}^\\circ,\\quad f = ${fixed(f, 3)}`,
 			`\\text{up } ${hmTex(f * Diurnal.TURN_HOURS)}\\ \\text{of each turn}`
 		];
 
@@ -663,13 +663,13 @@ const testFigure = {
 		let difference = '';
 
 		if (model === 'rises' && real === 'rises') {
-			difference = `\\Delta t = ${(((upReal - upModel) / 2) * 60).toFixed(1)}\\ \\text{min}`;
+			difference = `\\Delta t = ${fixed(((upReal - upModel) / 2) * 60, 1)}\\ \\text{min}`;
 		} else if (model === 'circumpolar') {
-			difference = `\\text{lowest point lifted by } ${(Ephem.refraction(lowest) * 60).toFixed(1)}'`;
+			difference = `\\text{lowest point lifted by } ${fixed(Ephem.refraction(lowest) * 60, 1)}'`;
 		}
 
 		const lines = [
-			`\\text{${this.star.name}},\\ \\delta = ${this.dec.toFixed(2)}^\\circ`,
+			`\\text{${this.star.name}},\\ \\delta = ${fixed(this.dec, 2)}^\\circ`,
 			`\\text{up, model: } ${upText(model, upModel)}`,
 			`\\text{up, real: } ${upText(real, upReal)}`
 		];

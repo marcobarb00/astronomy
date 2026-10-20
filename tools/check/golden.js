@@ -558,6 +558,16 @@ function displaySection(c) {
 	row('niceCeiling', [0.3, 1, 1.01, 2.2, 4.9, 7, 12, 600].map(v => num(c.niceCeiling(v), 6)).join(' '));
 	row('runningExtreme', JSON.stringify(c.runningExtreme([3, 1, 4, 1, 5, 9, 2, 6], 3, Math.max)));
 	row('stripTex', quote(c.stripTex('$\\lambda_\\text{model}$ (Hipparchus)')));
+	[
+		'mean Sun $\\bar\\lambda$',
+		"Hipparchus' year, $Y = 365\\tfrac14 - \\tfrac1{300}$ d",
+		'$\\Delta\\lambda$ of $\\varepsilon_0$, $\\delta_\\odot$'
+	].forEach(label => row('stripTex', quote(c.stripTex(label))));
+
+	out('  fixed and fixedAngle (never "-0.0"; an angle in [0, 360) never "360.0")');
+	[-0.04, -0.05, -0.051, 0, 0.04, 12.345, 359.94, 359.95, 359.999, -12.5].forEach(x => {
+		row(`x = ${x}`, [c.fixed(x), c.fixed(x, 2), c.fixedAngle(x), c.fixedAngle(x, 2)].map(quote).join(' '));
+	});
 }
 
 /* ==========================================================================
@@ -593,6 +603,8 @@ function page12(c) {
 	row('EPS_TODAY', num(inContext(c, 'EPS_TODAY'), 12));
 	row('formatDegrees', [-5.4721, 0, 12.345].map(v => quote(c.formatDegrees(v))).join(' '));
 	row('texDegrees', [-0.001, -5.4721, 359.999].map(v => quote(c.texDegrees(v))).join(' '));
+	row('texAngle360', [-0.001, 5.4721, 359.994, 359.999].map(v => quote(c.texAngle360(v))).join(' '));
+	row('formatAngle', [-33.9, -0.04, 0, 41.9, 360].map(v => quote(c.formatAngle(v))).join(' '));
 	row('texHours', [0, 68.98, 359.999, -15].map(v => quote(c.texHours(v))).join(' '));
 	row('texDms', [23.855555, -0.5, 20.5025].map(v => quote(c.texDms(v))).join(' '));
 	row('texVector', quote(c.texVector('\\mathbf s', [0.123456, -0.00001, 1])));

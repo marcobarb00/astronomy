@@ -579,10 +579,58 @@ function timeTicks(min, max, count) {
 	return ticks;
 }
 
-/* Plain text of a label that may contain $...$ TeX. */
+/* The TeX commands of a label that have a plain-text form. */
+const TEX_SYMBOLS = {
+	alpha: 'α',
+	beta: 'β',
+	gamma: 'γ',
+	delta: 'δ',
+	epsilon: 'ε',
+	varepsilon: 'ε',
+	eta: 'η',
+	theta: 'θ',
+	kappa: 'κ',
+	lambda: 'λ',
+	mu: 'μ',
+	nu: 'ν',
+	pi: 'π',
+	rho: 'ρ',
+	sigma: 'σ',
+	tau: 'τ',
+	phi: 'φ',
+	varphi: 'φ',
+	omega: 'ω',
+	Delta: 'Δ',
+	Lambda: 'Λ',
+	Omega: 'Ω',
+	odot: '☉',
+	circ: '°',
+	prime: '′'
+};
+
+/* Plain text of a label that may contain $...$ TeX, for the hover
+   read-out: "$\bar\lambda$" -> "λ̄", "$\lambda_\text{model}$" ->
+   "λmodel", "$Y = 365\tfrac14$" -> "Y = 365 1/4". Text outside the
+   dollars is kept as it is. */
 function stripTex(label) {
-	return label
-		.replace(/\$([^$]*)\$/g, '$1')
-		.replace(/\\[a-zA-Z]+/g, '')
-		.replace(/[{}]/g, '');
+	return label.replace(/\$([^$]*)\$/g, (match, tex) => texToText(tex));
+}
+
+/* The plain text of one TeX formula. */
+function texToText(tex) {
+	const group = '(\\{[^{}]*\\}|\\\\[a-zA-Z]+|[^\\s\\\\{}])';
+	const unbrace = text => text.replace(/^\{|\}$/g, '');
+
+	return tex
+		.replace(/\\(?:text|mathrm|mathit|mathbf)\{([^{}]*)\}/g, '$1')
+		.replace(new RegExp(`\\\\[td]?frac\\s*${group}\\s*${group}`, 'g'), (match, top, bottom) => {
+			return ` ${unbrace(top)}/${unbrace(bottom)}`;
+		})
+		.replace(/\\([a-zA-Z]+)/g, (match, name) => TEX_SYMBOLS[name] ?? (name === 'bar' ? '\\bar' : ''))
+		.replace(new RegExp(`\\\\bar\\s*${group}`, 'g'), (match, base) => `${unbrace(base)}̄`)
+		.replace(new RegExp(`[_^]${group}`, 'g'), (match, script) => unbrace(script))
+		.replace(/\\[,;!]|~/g, ' ')
+		.replace(/[{}\\]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
 }

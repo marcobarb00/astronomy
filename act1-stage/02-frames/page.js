@@ -41,16 +41,15 @@ const AXIS_LENGTH = 1.25;
 /* Text of an angle with two decimals: "−5.47°". */
 const formatDegrees = value => `${value.toFixed(2).replace('-', '−')}°`;
 
-/* A number with 'digits' decimals, never "-0.00" for a value that rounds
-   to zero. */
-function fixedNoNegativeZero(value, digits) {
-	const text = value.toFixed(digits);
+/* Text of a slider's angle with one decimal: "−33.9°". */
+const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
 
-	return Number(text) === 0 ? (0).toFixed(digits) : text;
-}
+/* An angle in TeX: "-5.47^\circ" (never "-0.00", fixed in common.js). */
+const texDegrees = (value, digits = 2) => `${fixed(value, digits)}^\\circ`;
 
-/* The same in TeX: "-5.47^\circ". */
-const texDegrees = (value, digits = 2) => `${fixedNoNegativeZero(value, digits)}^\\circ`;
+/* An angle that lives in [0°, 360°) in TeX: a value that rounds up to
+   360 is written 0 (fixedAngle in common.js). */
+const texAngle360 = (value, digits = 2) => `${fixedAngle(value, digits)}^\\circ`;
 
 /* A right ascension in hours and minutes, for TeX: "4^\text{h}37^\text{m}". */
 function texHours(ra) {
@@ -72,7 +71,7 @@ function texDms(value) {
 
 /* A unit vector in TeX, with four decimals. */
 function texVector(name, v) {
-	return `${name} = (${v.map(x => fixedNoNegativeZero(x, 4)).join(',\\ ')})`;
+	return `${name} = (${v.map(x => fixed(x, 4)).join(',\\ ')})`;
 }
 
 /* The mean position of date of a star of shared/stars.js. */
@@ -245,8 +244,8 @@ const eclipticFigure = {
 
 		showLines('ecl-readout', [
 			title,
-			`\\alpha = ${texDegrees(eq.lon)}\\ (${texHours(eq.lon)}),\\quad \\delta = ${texDegrees(eq.lat)}`,
-			`\\lambda = ${texDegrees(ecl.lon)},\\quad \\beta = ${texDegrees(ecl.lat)}`,
+			`\\alpha = ${texAngle360(eq.lon)}\\ (${texHours(eq.lon)}),\\quad \\delta = ${texDegrees(eq.lat)}`,
+			`\\lambda = ${texAngle360(ecl.lon)},\\quad \\beta = ${texDegrees(ecl.lat)}`,
 			texVector('\\mathbf s_\\text{eq}', sEq),
 			texVector('\\mathbf s_\\text{ecl}', sEcl)
 		]);
@@ -341,16 +340,8 @@ const horizonFigure = {
 			onDraw: () => this.draw()
 		});
 
-		wireSlider(
-			byId('hor-lat'),
-			() => this.update(),
-			value => `${value.toFixed(1)}°`
-		);
-		wireSlider(
-			byId('hor-theta'),
-			() => this.update(),
-			value => `${value.toFixed(1)}°`
-		);
+		wireSlider(byId('hor-lat'), () => this.update(), formatAngle);
+		wireSlider(byId('hor-theta'), () => this.update(), formatAngle);
 		wirePresets(figure);
 		this.player = wirePlayButton(byId('hor-play'), byId('hor-theta'), PLAY_DEGREES_PER_SECOND);
 
@@ -402,9 +393,9 @@ const horizonFigure = {
 		const { eq, hor, angle } = this.state;
 
 		showLines('hor-readout', [
-			`\\text{${this.starName}:}\\ \\alpha = ${texDegrees(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
+			`\\text{${this.starName}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
 			`H = \\theta - \\alpha = ${texDegrees(hor.H)}`,
-			`A = ${texDegrees(hor.A)},\\quad a = ${texDegrees(hor.a)}`,
+			`A = ${texAngle360(hor.A)},\\quad a = ${texDegrees(hor.a)}`,
 			`I = ${texDegrees(angle, 1)}`
 		]);
 	},

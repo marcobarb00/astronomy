@@ -98,7 +98,7 @@ Regenerate with: node tools/check/smoke.js --update
   slider #day-lat = -90
     OUTPUT (day-dec): 0.0°
     OUTPUT (day-lat): −90.0°
-    #day-readout: \text{never rises} | a_\text{max} = -0.0^\circ,\quad a_\text{min} = -0.0^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
+    #day-readout: \text{never rises} | a_\text{max} = 0.0^\circ,\quad a_\text{min} = 0.0^\circ | H_0 = 0.0^\circ,\quad f = 0.000 | \text{up } 0\,\text{h}\,00\,\text{min}\ \text{of each turn}
   slider #day-lat = 90
     OUTPUT (day-dec): 0.0°
     OUTPUT (day-lat): 90.0°
@@ -340,7 +340,7 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (ecl-day): 2 Jul
     #ecl-readout: \text{the Sun, 2 Jul 2026} | \alpha = 101.06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23.05^\circ | \lambda = 100.17^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1766,\ 0.9031,\ 0.3915) | \mathbf s_\text{ecl} = (-0.1766,\ 0.9843,\ 0.0000)
   slider #hor-lat = -90
-    OUTPUT (hor-lat): -90.0°
+    OUTPUT (hor-lat): −90.0°
     OUTPUT (hor-theta): 38.9°
     #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 30.41^\circ,\quad a = -16.56^\circ | I = 23.4^\circ
   slider #hor-lat = 90
@@ -2243,7 +2243,7 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 3 Dec 2067 · Hipparchus' year: +0.72° · uniform circle: +0.46°
   hover #fig-error-plot at 0.9
     OUTPUT (year-length): 365.2505 d
-    .errorcurve-readout: 17 Oct 2230 · Hipparchus' year: +0.87° · uniform circle: −0.00°
+    .errorcurve-readout: 17 Oct 2230 · Hipparchus' year: +0.87° · uniform circle: +0.00°
   hover #fig-error-plot left
     OUTPUT (year-length): 365.2505 d
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
@@ -2294,11 +2294,11 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (eps): 0°
     #declination-readout: \delta_\text{max} = \varepsilon = 0.0^\circ
   hover #fig-error-plot at 0.3
-    .errorcurve-readout: 19 Mar 2002 · mean Sun : −110.4′
+    .errorcurve-readout: 19 Mar 2002 · mean Sun λ̄: −110.4′
   hover #fig-error-plot at 0.6
-    .errorcurve-readout: 14 Oct 2034 · mean Sun : +114.1′
+    .errorcurve-readout: 14 Oct 2034 · mean Sun λ̄: +114.1′
   hover #fig-error-plot at 0.9
-    .errorcurve-readout: 11 May 2067 · mean Sun : −92.3′
+    .errorcurve-readout: 11 May 2067 · mean Sun λ̄: −92.3′
   hover #fig-error-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
