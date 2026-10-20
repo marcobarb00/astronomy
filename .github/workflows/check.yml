@@ -51,6 +51,17 @@ jobs:
       - name: Golden values
         run: node tools/check/golden.js --check
 
+      # Report only: the reference sky against astronomy-engine and JPL.
+      - name: Cross-check of the reference sky (report only)
+        continue-on-error: true
+        run: |
+          {
+            echo '## Cross-check of the reference sky'
+            echo '```'
+            node tools/check/crosscheck.js
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       # The commit to compare the screenshots with: the base of a pull
       # request, or the commit before the push (the parent for a new branch).
       - name: Smoke test
