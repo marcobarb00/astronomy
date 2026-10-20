@@ -157,7 +157,7 @@ for (let i = 0; i < 60; i++) {
 }
 
 console.log(`a star on the apparent horizon is ${(-horizon * 60).toFixed(2)}' below the true one`);
-console.log(`Figure 4 scale: deepest model - real = ${(horizon * 60).toFixed(2)}' -> fixed range [-40', +5']`);
+console.log(`Figure 5 scale: deepest model - real = ${(horizon * 60).toFixed(2)}' -> fixed range [-40', +5']`);
 
 title('Rising earlier, setting later (stars of 2026.0)');
 [['Sirius', 'rome'], ['Mintaka', 'rome'], ['Vega', 'rome'], ['Antares', 'rome'],
