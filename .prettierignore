@@ -1,0 +1,18 @@
+# Prettier formats the JavaScript and the CSS only (npm run format).
+# Never the HTML: it would rewrap the prose and the KaTeX.
+*.html
+*.md
+*.json
+*.mjs
+*.svg
+*.txt
+*.csv
+*.sh
+*.py
+
+# Not ours to format: the earlier pages, generated data, outputs.
+archive/
+shared/plate-stars.js
+node_modules/
+tools/check/out/
+.claude/

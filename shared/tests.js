@@ -636,8 +636,10 @@ function testPrecession() {
 
 	const cases = [
 		['Ecliptic pole, epoch −1500', 'ERFA ltpecl', Ephem.eclipticPole(jdOfJulianEpoch(-1500)),
+			// eslint-disable-next-line no-loss-of-precision -- the ERFA values as printed
 			[0.4768625676477096525e-3, -0.4052259533091875112, 0.9142164401096448012]],
 		['Equator pole, epoch −2500', 'ERFA ltpequ', Ephem.equatorPole(jdOfJulianEpoch(-2500)),
+			// eslint-disable-next-line no-loss-of-precision -- the ERFA values as printed
 			[-0.3586652560237326659, -0.1996978910771128475, 0.9118552442250819624]]
 	];
 
@@ -997,11 +999,11 @@ function testFrames() {
 				norm180(back.lon - lon) * cos(lat), back.lat - lat
 			];
 
-			for (let phi = -70; phi <= 70; phi += 35) {
+			for (let latitude = -70; latitude <= 70; latitude += 35) {
 				const theta = lon * 1.7 + 11;
-				const hor = Frames.equatorialToHorizontal(eq.ra, eq.dec, phi, theta);
-				const horMatrix = Frames.toHorizontal(matApply(Frames.equatorialToHorizonMatrix(phi, theta), fromLonLat(eq.ra, eq.dec)));
-				const eqBack = Frames.horizontalToEquatorial(hor.A, hor.a, phi, theta);
+				const hor = Frames.equatorialToHorizontal(eq.ra, eq.dec, latitude, theta);
+				const horMatrix = Frames.toHorizontal(matApply(Frames.equatorialToHorizonMatrix(latitude, theta), fromLonLat(eq.ra, eq.dec)));
+				const eqBack = Frames.horizontalToEquatorial(hor.A, hor.a, latitude, theta);
 
 				differences.push(
 					norm180(horMatrix.A - hor.A) * cos(hor.a), horMatrix.a - hor.a,

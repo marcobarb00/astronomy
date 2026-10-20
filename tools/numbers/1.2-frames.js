@@ -255,7 +255,7 @@ console.log(`fit: eps = ${f(epsFit, 4)} (${arcmin(epsFit - eps2026Mid, 2)} from 
 	` phi = ${f(phiFit, 4)} (${arcmin(phiFit - ALEXANDRIA.phi, 2)} from ${ALEXANDRIA.phi})`);
 
 title('Ptolemy and the others');
-console.log(`Ptolemy: 2 eps = 47°42'40\" -> eps = ${toDms(Frames.PTOLEMY_OBLIQUITY)} = ${f(Frames.PTOLEMY_OBLIQUITY, 4)}`);
+console.log(`Ptolemy: 2 eps = 47°42'40" -> eps = ${toDms(Frames.PTOLEMY_OBLIQUITY)} = ${f(Frames.PTOLEMY_OBLIQUITY, 4)}`);
 console.log(`ratio 11/83: 2 eps = ${toDms(2 * Frames.RATIO_11_83_OBLIQUITY)} -> eps = ${toDms(Frames.RATIO_11_83_OBLIQUITY)} = ${f(Frames.RATIO_11_83_OBLIQUITY, 4)}`);
 console.log(`Ptolemy's bounds: 47°40' < 2 eps < 47°45' -> ${f(dms(47, 40) / 2, 4)} < eps < ${f(dms(47, 45) / 2, 4)}`);
 [[-229, 'Eratosthenes (c. 230 BC)'], [-134, 'Hipparchus (c. 135 BC)'], [137, 'Ptolemy (AD 137)'],
@@ -265,7 +265,7 @@ console.log(`Ptolemy's bounds: 47°40' < 2 eps < 47°45' -> ${f(dms(47, 40) / 2,
 	console.log(`${label.padEnd(26)} true mean eps = ${f(eps, 4)} = ${toDms(eps)};` +
 		` Ptolemy's value is ${arcmin(Frames.PTOLEMY_OBLIQUITY - eps, 1)} larger`);
 });
-console.log(`Copernicus (De Rev. II 2): "not more than 23°29\'" = ${f(dms(23, 29), 4)}`);
+console.log(`Copernicus (De Rev. II 2): "not more than 23°29'" = ${f(dms(23, 29), 4)}`);
 
 title('The origin: the March equinox 2026');
 const equinox = sunAtLongitude(0, Time.julianDay(2026, 3, 20));
@@ -415,7 +415,7 @@ console.log(`tan alpha = cos eps tan 60 = ${f(cos(eps60) * Math.tan(Math.PI / 3)
 	` (alpha - lambda = ${f(model60.ra - 60, 3)} = ${arcmin(model60.ra - 60, 1)})`);
 console.log(`reference Sun then: alpha = ${f(real60.ra, 3)}, delta = ${f(real60.dec, 3)}, beta = ${arcsec(real60.lat, 2)};` +
 	` model - real: ${arcsec(norm180(model60.ra - real60.ra), 1)}, ${arcsec(model60.dec - real60.dec, 1)}`);
-console.log(`with Ptolemy's eps: delta = ${f(ptolemy60.dec, 4)} = ${toDms(ptolemy60.dec)} (table I 15: 20°30'09\"),` +
+console.log(`with Ptolemy's eps: delta = ${f(ptolemy60.dec, 4)} = ${toDms(ptolemy60.dec)} (table I 15: 20°30'09"),` +
 	` alpha = ${f(ptolemy60.ra, 4)} = ${toDms(ptolemy60.ra)} (I 16: 57°44')`);
 
 title('Exercise 3: the ecliptic against the horizon at Rome');

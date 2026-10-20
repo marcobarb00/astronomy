@@ -38,15 +38,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const childProcess = require('child_process');
+const { ROOT, loadFiles, loadPage, inContext } = require('./load.js');
 
 
 /* ==========================================================================
-   1. LOADING THE CODE
+   1. LOADING THE CODE (tools/check/load.js)
    ========================================================================== */
 
-const ROOT = path.join(__dirname, '..', '..');
 const GOLDEN_FILE = path.join(__dirname, 'golden.txt');
 
 /* The shared files with no DOM at load time, in dependency order. */
@@ -71,60 +70,6 @@ const PAGE_FILES = [
 	'act1-stage/02-frames/index.html',
 	'act1-stage/03-clocks/index.html'
 ];
-
-/* The smallest stand-in for the browser that lets a page's scripts load:
-   nothing runs before DOMContentLoaded, which never fires here. */
-function browserStub() {
-	return {
-		console: console,
-		document: {
-			currentScript: null,
-			addEventListener: () => {}
-		},
-		window: {
-			devicePixelRatio: 1
-		}
-	};
-}
-
-/* Run the given files (paths from the repository root) in a new context.
-   Returns an object whose properties are the context's global names: a
-   top-level const of a script is not a property of the context, so each
-   name is looked up by evaluating it there. */
-function loadContext(files) {
-	const context = browserStub();
-
-	vm.createContext(context);
-
-	files.forEach(file => {
-		const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
-
-		vm.runInContext(source, context, { filename: file });
-	});
-
-	return new Proxy({}, {
-		get: (target, name) => (name === CONTEXT ? context : vm.runInContext(String(name), context))
-	});
-}
-
-/* The key under which loadContext's object hands back its vm context. */
-const CONTEXT = Symbol('context');
-
-/* The local scripts of a page, in the order of its <script> tags. */
-function pageScripts(htmlFile) {
-	const html = fs.readFileSync(path.join(ROOT, htmlFile), 'utf8');
-	const folder = path.dirname(htmlFile);
-	const sources = [...html.matchAll(/<script[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]);
-
-	return sources
-		.filter(source => !/^https?:/.test(source))
-		.map(source => path.posix.normalize(path.posix.join(folder, source)));
-}
-
-/* Evaluate an expression in the context of a loadContext object. */
-function inContext(names, expression) {
-	return vm.runInContext(expression, names[CONTEXT]);
-}
 
 
 /* ==========================================================================
@@ -596,8 +541,8 @@ function numbersSection() {
 
 /* Build the whole table, as one string. */
 function buildTable() {
-	const shared = loadContext(SHARED_FILES);
-	const pages = PAGE_FILES.map(file => loadContext(pageScripts(file)));
+	const shared = loadFiles(SHARED_FILES);
+	const pages = PAGE_FILES.map(file => loadPage(file));
 
 	out('PREDICTING THE SKY - GOLDEN VALUES (tools/check/golden.js)');
 	out('Regenerate with: node tools/check/golden.js --write');
