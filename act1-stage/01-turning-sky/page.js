@@ -79,7 +79,7 @@ function dailyCircle(dec, matrix) {
    ========================================================================== */
 
 /* Rome's latitude, as in the prose and the presets. */
-const ROME_LATITUDE = 41.9;
+const ROME_LATITUDE = PLACES.rome.lat;
 
 const poleFigure = {
 	init() {

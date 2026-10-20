@@ -319,50 +319,66 @@ const Plate = (function () {
 	   4. GRADUATED RING AND BORDER
 	   ====================================================================== */
 
-	/* An hour ring between radii r1 and r2 about (cx, cy): 24 segments,
-	   light and dark in turn, hour h centred at angleOf(h) (degrees
-	   clockwise from the top), labelled at radius rLabel. Odd hours are
-	   'minor' labels, left out on a phone (theme.css). */
-	function drawHourRing(svg, cx, cy, r1, r2, rLabel, angleOf) {
-		const ring = svgEl('g', { class: 'ring' }, svg);
+	/* An hour ring about (cx, cy) between the radii inner and outer: 24
+	   segments, light and dark in turn, hour h centred at angleOf(h)
+	   (degrees clockwise from the top), labelled at the radius 'label'.
+	   Odd hours are 'minor' labels, left out on a phone (theme.css). */
+	function drawHourRing(svg, ring, angleOf) {
+		const { cx, cy, inner, outer, label } = ring;
+		const group = svgEl('g', { class: 'ring' }, svg);
 		const point = (angle, r) => ({ x: cx + r * sin(angle), y: cy - r * cos(angle) });
 
 		for (let h = 0; h < 24; h++) {
-			const a0 = angleOf(h) - 7.5;
-			const a1 = angleOf(h) + 7.5;
-			const p0 = point(a0, r1);
-			const p1 = point(a1, r1);
-			const p2 = point(a1, r2);
-			const p3 = point(a0, r2);
+			const at = point(angleOf(h), label);
 
-			// from a0 to a1 is clockwise on the screen (SVG sweep flag 1), and back
-			const d =
-				`M${p0.x} ${p0.y} A${r1} ${r1} 0 0 1 ${p1.x} ${p1.y} ` +
-				`L${p2.x} ${p2.y} A${r2} ${r2} 0 0 0 ${p3.x} ${p3.y} Z`;
-
-			svgEl('path', { d: d, class: h % 2 === 0 ? 'light' : 'dark' }, ring);
-
-			const at = point(angleOf(h), rLabel);
-
-			svgText(ring, `${h}h`, at.x, at.y + 5, {
+			svgEl(
+				'path',
+				{ d: ringSegment(point, angleOf(h), inner, outer), class: h % 2 === 0 ? 'light' : 'dark' },
+				group
+			);
+			svgText(group, `${h}h`, at.x, at.y + 5, {
 				'text-anchor': 'middle',
 				class: h % 2 === 0 ? 'hour' : 'hour minor'
 			});
 		}
 
-		svgEl('circle', { cx: cx, cy: cy, r: r1, class: 'edge' }, ring);
-		svgEl('circle', { cx: cx, cy: cy, r: r2, class: 'edge' }, ring);
+		svgEl('circle', { cx: cx, cy: cy, r: inner, class: 'edge' }, group);
+		svgEl('circle', { cx: cx, cy: cy, r: outer, class: 'edge' }, group);
+	}
+
+	/* The SVG path of one hour of the ring (15° centred on 'centre'), from
+	   centre - 7.5° to centre + 7.5°, clockwise on the screen along the
+	   inner edge (SVG sweep flag 1), and back along the outer one. */
+	function ringSegment(point, centre, inner, outer) {
+		const p0 = point(centre - 7.5, inner);
+		const p1 = point(centre + 7.5, inner);
+		const p2 = point(centre + 7.5, outer);
+		const p3 = point(centre - 7.5, outer);
+
+		return (
+			`M${p0.x} ${p0.y} A${inner} ${inner} 0 0 1 ${p1.x} ${p1.y} ` +
+			`L${p2.x} ${p2.y} A${outer} ${outer} 0 0 0 ${p3.x} ${p3.y} Z`
+		);
 	}
 
 	/* The border of a rectangular chart, 'band' wide: light and dark bands
-	   every raStep degrees of right ascension (top, bottom) and every decStep
-	   degrees of declination (sides); hours labelled under it, degrees on its
-	   left. */
-	function drawBorder(svg, area, at, band, raStep, decStep) {
-		const { raMin, raMax, decMin, decMax } = area;
+	   every raStep degrees of right ascension (top, bottom) and every
+	   decStep degrees of declination (sides); hours labelled under it,
+	   degrees on its left. at(ra, dec) is the chart's projection. */
+	function drawBorder(svg, area, at, style) {
 		const border = svgEl('g', { class: 'ring' }, svg);
-		const topLeft = at(raMax, decMax);
-		const bottomRight = at(raMin, decMin);
+		const corners = { topLeft: at(area.raMax, area.decMax), bottomRight: at(area.raMin, area.decMin) };
+
+		drawBorderBands(border, area, at, corners, style);
+		drawBorderEdges(border, corners, style.band);
+		drawBorderLabels(border, area, at, style.band);
+	}
+
+	/* The light and dark bands along the four sides. */
+	function drawBorderBands(border, area, at, corners, style) {
+		const { raMin, raMax, decMin, decMax } = area;
+		const { topLeft, bottomRight } = corners;
+		const { band, raStep, decStep } = style;
 		const box = (x, y, w, h, light) => {
 			svgEl('rect', { x: x, y: y, width: w, height: h, class: light ? 'light' : 'dark' }, border);
 		};
@@ -382,29 +398,31 @@ const Plate = (function () {
 			box(topLeft.x - band, y, band, h, i % 2 === 0);
 			box(bottomRight.x, y, band, h, i % 2 === 0);
 		}
+	}
+
+	/* The outer and inner edges of the border. */
+	function drawBorderEdges(border, corners, band) {
+		const { topLeft, bottomRight } = corners;
+		const width = bottomRight.x - topLeft.x;
+		const height = bottomRight.y - topLeft.y;
 
 		svgEl(
 			'rect',
 			{
 				x: topLeft.x - band,
 				y: topLeft.y - band,
-				width: bottomRight.x - topLeft.x + 2 * band,
-				height: bottomRight.y - topLeft.y + 2 * band,
+				width: width + 2 * band,
+				height: height + 2 * band,
 				class: 'edge'
 			},
 			border
 		);
-		svgEl(
-			'rect',
-			{
-				x: topLeft.x,
-				y: topLeft.y,
-				width: bottomRight.x - topLeft.x,
-				height: bottomRight.y - topLeft.y,
-				class: 'edge'
-			},
-			border
-		);
+		svgEl('rect', { x: topLeft.x, y: topLeft.y, width: width, height: height, class: 'edge' }, border);
+	}
+
+	/* Hours under the border, degrees on its left. */
+	function drawBorderLabels(border, area, at, band) {
+		const { raMin, raMax, decMin, decMax } = area;
 
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
@@ -474,7 +492,7 @@ const Plate = (function () {
 		});
 
 		drawMilkyWay(svgEl('g', { class: 'milky-way' }, svg), project);
-		drawHourRing(svg, c, c, R + 6, R + 20, R + 38, h => 15 * h);
+		drawHourRing(svg, { cx: c, cy: c, inner: R + 6, outer: R + 20, label: R + 38 }, h => 15 * h);
 
 		drawFigures(
 			svgEl('g', { class: 'figure-lines' }, svg),
@@ -546,7 +564,7 @@ const Plate = (function () {
 			svgText(layer, 'equator', left + width - 8, at(0, 0).y - 6, { class: 'circle-name', 'text-anchor': 'end' });
 		}
 
-		drawBorder(svg, area, at, band, 7.5, 5);
+		drawBorder(svg, area, at, { band: band, raStep: 7.5, decStep: 5 });
 		fitText(svg, width + 2 * left);
 
 		return { svg, layer, at, project };
