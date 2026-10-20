@@ -203,7 +203,25 @@ function transpose(m) {
    ========================================================================== */
 
 const pad2 = n => String(n).padStart(2, '0');
-const fmt3 = x => x.toFixed(3);
+
+/* x with 'digits' decimals, as toFixed, but never "-0.0": a value that
+   rounds to zero is written without a sign. */
+function fixed(x, digits = 1) {
+	const text = x.toFixed(digits);
+
+	return Number(text) === 0 ? (0).toFixed(digits) : text;
+}
+
+/* An angle that lives in [0°, 360°) (a right ascension, a longitude, an
+   azimuth, a sidereal time) with 'digits' decimals: a value that rounds
+   up to 360 is written 0, as the angle it is. */
+function fixedAngle(degrees, digits = 1) {
+	const text = fixed(degrees, digits);
+
+	return Number(text) >= 360 ? fixed(Number(text) - 360, digits) : text;
+}
+
+const fmt3 = x => fixed(x, 3);
 
 /* Split a value into whole units and a rounded remainder in 1/base units.
    Handles the carry (e.g. 59.9 min -> next unit). */
@@ -219,10 +237,10 @@ function splitWithCarry(value, base) {
 	return { whole, rest };
 }
 
-/* Degrees -> "D°MM'" */
+/* Degrees -> "D°MM'" (no sign on a value that rounds to 0°00'). */
 function dms(degrees) {
-	const sign = degrees < 0 ? '-' : '';
 	const { whole, rest } = splitWithCarry(Math.abs(degrees), 60);
+	const sign = degrees < 0 && whole + rest > 0 ? '-' : '';
 
 	return `${sign}${whole}°${pad2(rest)}'`;
 }
@@ -234,10 +252,11 @@ function hm(hours) {
 	return `${whole}h${pad2(rest)}m`;
 }
 
-/* Hours -> "13h14m05.2s" (seconds with 'digits' decimals). */
+/* Hours -> "13h14m05.2s" (seconds with 'digits' decimals; no sign on a
+   value that rounds to zero). */
 function hms(hours, digits = 1) {
-	const sign = hours < 0 ? '-' : '';
 	const totalSeconds = Number((Math.abs(hours) * 3600).toFixed(digits));
+	const sign = hours < 0 && totalSeconds > 0 ? '-' : '';
 	const h = Math.floor(totalSeconds / 3600);
 	const m = Math.floor((totalSeconds - h * 3600) / 60);
 	const s = totalSeconds - h * 3600 - m * 60;
@@ -253,11 +272,13 @@ function dh(days) {
 	return `${whole}d${pad2(rest)}h`;
 }
 
-/* Signed number with a fixed number of decimals: "+0.50" / "−0.50". */
+/* Signed number with a fixed number of decimals: "+0.50" / "−0.50"
+   (a value that rounds to zero is "+0.00"). */
 function signed(x, digits = 1) {
-	const sign = x < 0 ? '−' : '+';
+	const text = Math.abs(x).toFixed(digits);
+	const sign = x < 0 && Number(text) !== 0 ? '−' : '+';
 
-	return sign + Math.abs(x).toFixed(digits);
+	return sign + text;
 }
 
 /* An angle in degrees shown in arcminutes: "+12.3′". */
@@ -269,8 +290,8 @@ function arcmin(degrees, digits = 1) {
    value: sexagesimal(2.4833) -> "2;29 (2.483°)". 'places' = sexagesimal
    places after the semicolon. */
 function sexagesimal(degrees, places = 1) {
-	const sign = degrees < 0 ? '-' : '';
 	let units = Math.round(Math.abs(degrees) * Math.pow(60, places));
+	const sign = degrees < 0 && units > 0 ? '-' : '';
 	const digits = [];
 
 	for (let i = 0; i < places; i++) {
@@ -296,8 +317,12 @@ function dhTex(days) {
 
 /* ---------- TeX fragments for live read-outs ---------- */
 
-/* Signed number with three decimals: "+0.500" / "-0.500". */
-const signed3 = x => (x < 0 ? '-' : '+') + Math.abs(x).toFixed(3);
+/* Signed number with three decimals: "+0.500" / "-0.500" (and "+0.000"). */
+function signed3(x) {
+	const text = Math.abs(x).toFixed(3);
+
+	return (x < 0 && Number(text) !== 0 ? '-' : '+') + text;
+}
 
 /* "\alpha=12°30'" */
 const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
@@ -558,7 +583,7 @@ function formatSliderValue(input, formatter) {
 		return formatter(value);
 	}
 
-	const text = Number.isInteger(value) ? value : value.toFixed(1);
+	const text = Number.isInteger(value) ? value : fixed(value, 1);
 
 	return text + (input.dataset.unit ?? '°');
 }

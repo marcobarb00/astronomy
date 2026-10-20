@@ -111,9 +111,9 @@ const skyFigure = {
 
 		showLines('sphere-readout', [
 			`\\text{LST} = ${hmTex(lst / 15)}`,
-			`\\lambda_\\odot = ${sun.lon.toFixed(2)}^\\circ`,
-			`\\alpha_\\odot = ${hmTex(sunEq.ra / 15)},\\quad \\delta_\\odot = ${sunEq.dec.toFixed(2)}^\\circ`,
-			`a_\\odot = ${altitude.toFixed(1)}^\\circ`
+			`\\lambda_\\odot = ${fixedAngle(sun.lon, 2)}^\\circ`,
+			`\\alpha_\\odot = ${hmTex(sunEq.ra / 15)},\\quad \\delta_\\odot = ${fixed(sunEq.dec, 2)}^\\circ`,
+			`a_\\odot = ${fixed(altitude, 1)}^\\circ`
 		]);
 	},
 

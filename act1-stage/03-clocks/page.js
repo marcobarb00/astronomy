@@ -63,7 +63,7 @@ const monthTicks = () => MONTH_STARTS;
 const dayText = day => Time.formatDate(YEAR_START + day);
 
 /* An angle with one decimal: "−16.8°". */
-const formatAngle = value => `${value.toFixed(1).replace('-', '−')}°`;
+const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
 
 /* A longitude: "12.50° E", "74.01° W". */
 function formatLongitude(lon) {
@@ -639,14 +639,15 @@ const siderealFigure = {
 	showReadout() {
 		const { jd, lon, thetaG, theta, star, H } = this.state;
 		const a = Diurnal.altitude(star.dec, H, ROME.lat);
-		const lonText = `${lon < 0 ? '-' : '+'}${Math.abs(lon).toFixed(2)}^\\circ`;
+		const lonValue = fixed(lon, 2);
+		const lonText = `${lonValue.startsWith('-') ? lonValue : `+${lonValue}`}^\\circ`;
 
 		showLines('sid-readout', [
 			`d = ${(jd - Time.J2000).toFixed(4)}`,
-			`\\theta_G = ${thetaG.toFixed(2)}^\\circ = ${texHms(thetaG)}`,
-			`\\theta = \\theta_G ${lonText} = ${theta.toFixed(2)}^\\circ`,
-			`\\alpha = ${star.ra.toFixed(2)}^\\circ,\\quad H = ${H.toFixed(2)}^\\circ`,
-			`a = ${a.toFixed(1)}^\\circ`
+			`\\theta_G = ${fixedAngle(thetaG, 2)}^\\circ = ${texHms(thetaG)}`,
+			`\\theta = \\theta_G ${lonText} = ${fixedAngle(theta, 2)}^\\circ`,
+			`\\alpha = ${fixedAngle(star.ra, 2)}^\\circ,\\quad H = ${fixed(H, 2)}^\\circ`,
+			`a = ${fixed(a, 1)}^\\circ`
 		]);
 	},
 
@@ -892,7 +893,7 @@ const calendarFigure = {
 			`\\text{${this.starName}, night of ${dayText(night.day)}}`,
 			transitLine(night.inside[0]),
 			transitLine(night.inside[1]),
-			a > 0 ? `a = ${a.toFixed(1)}^\\circ` : `a = ${a.toFixed(1)}^\\circ\\ \\text{(below the horizon)}`
+			a > 0 ? `a = ${fixed(a, 1)}^\\circ` : `a = ${fixed(a, 1)}^\\circ\\ \\text{(below the horizon)}`
 		]);
 	},
 
@@ -1032,7 +1033,7 @@ const dayLengthFigure = {
 		// always three lines (data-lines); polar day and night rewrite the
 		// last two instead of removing one
 		showLines('day-readout', [
-			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${sunDay.dec.toFixed(2)}^\\circ,\\quad H_0 = ${sunDay.H0.toFixed(1)}^\\circ`,
+			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${fixed(sunDay.dec, 2)}^\\circ,\\quad H_0 = ${fixed(sunDay.H0, 1)}^\\circ`,
 			`\\text{day } ${texDuration(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
 			rises
 				? `\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}`
