@@ -21,6 +21,7 @@ and style rules are in [`CLAUDE.md`](CLAUDE.md).
 | `templates/demo.html` | A demo of the sphere, plot, error curve and exercise working together. |
 | `archive/` | The earlier pages, kept for reference and not linked from the site. |
 | `tools/numbers/` | The script behind each page's numbers, run with Node. |
+| `tools/check/` | Checks run after every change: the golden values of the maths and a smoke test of every page (`tools/check/README.md`). |
 
 ## Running locally
 
