@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. Figure 3: two panels with their controls underneath
+	 2. Figure 4: two panels with their controls underneath
 	 3. Phone width
    ========================================================================== */
 
@@ -24,9 +24,9 @@ figure.fig {
 	min-width: 5.6em;
 }
 
-/* The play button keeps its width between "play" and "pause". */
+/* The play button keeps its width between "Play" and "Pause". */
 button.play {
-	min-width: 6.5em;
+	min-width: 7.5em;
 }
 
 
@@ -46,12 +46,19 @@ button.play {
 	margin-top: 10px;
 }
 
-/* "(a) altitude through one turn" above each panel. */
+/* "declination δ" needs a wider label column than the shared 90 px. */
+.panel-controls .ctl {
+	grid-template-columns: 118px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* "(a) altitude through one turn" above each panel, in small caps. */
 .panel-title {
 	margin: 0 0 4px;
-	color: var(--muted);
-	font-size: .9rem;
+	font-family: var(--font-label);
+	font-size: 16px;
 	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
 }
 
 
@@ -59,13 +66,13 @@ button.play {
    3. PHONE WIDTH
    ========================================================================== */
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
 	.panels,
 	.panel-controls {
 		grid-template-columns: minmax(0, 1fr);
 	}
 
-	/* "declination δ" needs a little more than the shared 74px label column */
+	/* "declination δ" still needs more than the shared 74 px label column */
 	.panel-controls .ctl {
 		grid-template-columns: 104px minmax(0, 1fr) var(--ctl-output);
 	}

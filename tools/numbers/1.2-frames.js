@@ -12,7 +12,7 @@
 	 3. Observation: The three coordinate systems
 	 4. Model: the matrices, checked
 	 5. Fit: the obliquity from the solstices; the equinox
-	 6. Test: Ptolemy's tables; the nutation error (Figure 3)
+	 6. Test: Ptolemy's tables; the nutation error (Figure 4)
 	 7. Exercises
 	 8. Residual: the angle between the frames drifts
    ========================================================================== */
@@ -206,10 +206,10 @@ console.log(`2000 random directions: matrices, formulas, inverses and Ephem agre
    (with refraction), at the two solstices.
    ========================================================================== */
 
-title('Model: the Sun along the ecliptic (Figure 1)');
+title('Model: the Sun along the ecliptic (Figure 2)');
 
 /* The Sun's mean motion along the ecliptic: 360° per tropical year
-   (reference Sun, over 2026), and its position on Figure 1's first date. */
+   (reference Sun, over 2026), and its position on Figure 2's first date. */
 const sunStart = Ephem.sun(Time.julianDay(2026, 1, 1)).lon;
 const sunEnd = Ephem.sun(Time.julianDay(2027, 1, 1)).lon;
 const may21 = Ephem.sun(Time.julianDay(2026, 5, 21));
@@ -331,7 +331,7 @@ for (let lon = 10; lon <= 90; lon += 10) {
 		` ${f(real.ra, 3).padStart(10)} | ${((ptRA - real.ra) * 60).toFixed(1).padStart(6)}'  [${dateText(jd)}]`);
 }
 
-title('Test 2 (Figure 3): the nutation error over 2026');
+title('Test 2 (Figure 4): the nutation error over 2026');
 
 /* Each day of 2026 at 0h TT: the reference Sun's apparent (lambda, beta)
    turned into (alpha, delta) with the MEAN obliquity of date (the model:
@@ -369,7 +369,7 @@ console.log(`largest |d delta| = ${f(Math.abs(decMax.dDec), 2)}" (day ${decMax.d
 	` largest |d alpha| = ${f(Math.abs(raMax.dRA), 2)}" (day ${raMax.day}, lambda ${f(raMax.lon, 0)})`);
 console.log(`June solstice (day ${june.day}): d delta = ${f(june.dDec, 2)}", -d eps = ${f(-june.deps, 2)}"`);
 console.log(`December solstice (day ${december.day}): d delta = ${f(december.dDec, 2)}", +d eps = ${f(december.deps, 2)}"`);
-console.log(`Figure 3 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`);
+console.log(`Figure 4 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`);
 
 title('Residual: an old obliquity used today');
 

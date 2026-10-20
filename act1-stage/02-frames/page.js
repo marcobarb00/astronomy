@@ -1,25 +1,28 @@
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
-   Three figures, each with its own init and draw (and update when it has
+   Four figures, each with its own init and draw (and update when it has
    controls):
-	 1. ecliptic and equator      (3D, equatorial frame: the stars never move;
+	 1. the zodiac around Taurus  (a blue plate: a static chart of the stars)
+	 2. ecliptic and equator      (3D, equatorial frame: the stars never move;
 								   the date moves the Sun along the ecliptic)
-	 2. equator and horizon       (3D, equatorial frame: latitude and the turn
+	 3. equator and horizon       (3D, equatorial frame: latitude and the turn
 								   of the sky move the horizon frame)
-	 3. the nutation error        (2D, static: mean against true obliquity
+	 4. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
    The comparison of Ptolemy's tables with the real Sun is a static table in
    index.html (numbers from tools/numbers/1.2-frames.js).
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
-   models/frames.js, sphere3d.js, plot2d.js, components.js.
+   models/frames.js, plate-stars.js, plate.js, sphere3d.js, plot2d.js,
+   components.js.
    Every number quoted in the prose comes from tools/numbers/1.2-frames.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
-	 1. Figure 1: ecliptic and equator
-	 2. Figure 2: equator and horizon
-	 3. Figure 3: the nutation error
-	 4. Page start
+	 1. Figure 1: the zodiac around Taurus
+	 2. Figure 2: ecliptic and equator
+	 3. Figure 3: equator and horizon
+	 4. Figure 4: the nutation error
+	 5. Page start
    ========================================================================== */
 
 
@@ -98,7 +101,49 @@ function drawCoordinatePath(sphere, axes, lon, lat, names, color) {
 
 
 /* ==========================================================================
-   1. FIGURE 1: ECLIPTIC AND EQUATOR
+   1. FIGURE 1: THE ZODIAC AROUND TAURUS
+   A blue plate (shared/plate.js): the stars of 2026 around Aldebaran, as
+   seen looking south, on the equatorial grid. Highlighted: the ecliptic
+   of 2026, so that the star's two sets of coordinates in the table can be
+   seen against their two circles.
+   ========================================================================== */
+
+/* The area of the chart (degrees): right ascension 1h30 to 6h30. */
+const ZODIAC_AREA = { raMin: 22.5, raMax: 97.5, decMin: -10, decMax: 30 };
+
+/* The ecliptic is named at this longitude (deg). */
+const ZODIAC_ECLIPTIC_NAME_AT = 45;
+
+const zodiacFigure = {
+	init() {
+		const chart = Plate.rectangular(byId('plate-zodiac'), {
+			area: ZODIAC_AREA,
+			figures: ['TAURUS', 'ARIES', 'ORION'],
+			names: [
+				['alf Tau', 'Aldebaran', 8, 22],
+				['alf Ori', 'Betelgeuse', 9, 4],
+				['bet Ori', 'Rigel', 9, 4],
+				['alf Ari', 'Hamal', -9, 4, 'end'],
+				['eta Tau', 'Pleiades', -14, -12]
+			],
+			label: 'Chart of the band of the zodiac around Taurus, with the ecliptic highlighted.'
+		});
+		const eps = Ephem.meanObliquity(Plate.EPOCH);
+		const ecliptic = [];
+
+		for (let lon = 0; lon <= 120; lon += 1) {
+			ecliptic.push(Frames.eclipticPoint(lon, eps));
+		}
+
+		const nameAt = Frames.eclipticPoint(ZODIAC_ECLIPTIC_NAME_AT, eps);
+
+		Plate.highlightCurve(chart, ecliptic, 'ecliptic', [nameAt.ra, nameAt.dec, 8, 18]);
+	}
+};
+
+
+/* ==========================================================================
+   2. FIGURE 2: ECLIPTIC AND EQUATOR
    Drawn in the equatorial frame with the obliquity of 2026.0: the stars,
    the equator and the ecliptic never move. The date moves only the Sun,
    along the ecliptic, about 1° a day: the yearly motion. The daily
@@ -236,7 +281,7 @@ const eclipticFigure = {
 		drawCoordinatePath(s, eclipticAxes, ecl.lon, ecl.lat, ['λ', 'β'], COL.sun);
 
 		if (this.chosen !== 'Sun') {
-			s.point(sEq, { color: COL.planet, radius: 6, ring: true });
+			s.star(sEq, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 			s.labelAway(this.chosen, sEq, { x: s.cx, y: s.cy }, COL.planet);
 		}
 
@@ -266,8 +311,8 @@ const eclipticFigure = {
 
 
 /* ==========================================================================
-   2. FIGURE 2: EQUATOR AND HORIZON
-   Drawn in the equatorial frame, as Figure 2 of page 1.1: the stars, the
+   3. FIGURE 3: EQUATOR AND HORIZON
+   Drawn in the equatorial frame, as Figure 3 of page 1.1: the stars, the
    equator and the ecliptic never move; the latitude and the turn of the
    sky move the observer's horizon frame.
    ========================================================================== */
@@ -390,7 +435,7 @@ const horizonFigure = {
 		s.circle(south, zenith, { color: COL.muted, width: 1, dash: [2, 4] });
 
 		[['S', south], ['E', east], ['N', negate(south)], ['W', negate(east)]].forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point(zenith, { color: COL.deferent, radius: 5 });
@@ -412,14 +457,14 @@ const horizonFigure = {
 		drawCoordinatePath(s, hourAxes, hor.H, eq.dec, ['H', 'δ'], COL.earth);
 		drawCoordinatePath(s, horizonAxes, hor.A, hor.a, ['A', 'a'], COL.deferent);
 
-		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
+		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.starName, starPoint, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
 
 
 /* ==========================================================================
-   3. FIGURE 3: THE NUTATION ERROR
+   4. FIGURE 4: THE NUTATION ERROR
    A static figure: no controls. Each day of 2026, the reference Sun's
    apparent (lambda, beta) is turned into (alpha, delta) with the MEAN
    obliquity of date, and compared with the reference Sun's own
@@ -493,12 +538,13 @@ const nutationFigure = {
 
 
 /* ==========================================================================
-   4. PAGE START
+   5. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
+	zodiacFigure.init();
 	eclipticFigure.init();
 	horizonFigure.init();
 	nutationFigure.init();

@@ -1,22 +1,24 @@
 /* ==========================================================================
    PAGE 1.1 · THE TURNING SKY - SCRIPT (page.js)
-   Four figures, each with its own init / update / draw:
-	 1. the observer's sky        (3D, horizon frame: the ground never moves)
-	 2. the sky seen from outside (3D, equatorial frame: the stars never move)
-	 3. the day of a star         (2D: altitude through a turn, and the map of
+   Five figures, each with its own init (and update / draw when it moves):
+	 1. the sky around the pole   (a blue plate: a static chart of the stars)
+	 2. the observer's sky        (3D, horizon frame: the ground never moves)
+	 3. the sky seen from outside (3D, equatorial frame: the stars never move)
+	 4. the day of a star         (2D: altitude through a turn, and the map of
 								   the three classes over latitude and declination)
-	 4. the model against the sky (2D: altitude error from refraction)
+	 5. the model against the sky (2D: altitude error from refraction)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
-   sphere3d.js, plot2d.js, components.js.
+   plate-stars.js, plate.js, sphere3d.js, plot2d.js, components.js.
    Every number quoted in the prose comes from tools/numbers/1.1-turning-sky.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
-	 1. Figure 1: the observer's sky
-	 2. Figure 2: the sky seen from outside
-	 3. Figure 3: the day of a star
-	 4. Figure 4: the model against the sky
-	 5. Page start
+	 1. Figure 1: the sky around the pole
+	 2. Figure 2: the observer's sky
+	 3. Figure 3: the sky seen from outside
+	 4. Figure 4: the day of a star
+	 5. Figure 5: the model against the sky
+	 6. Page start
    ========================================================================== */
 
 
@@ -27,8 +29,12 @@
 /* The time sliders run at one hour of sky per second when playing. */
 const PLAY_HOURS_PER_SECOND = 1;
 
-/* Epoch of the real sky in Figure 4 (stars carried to it). */
+/* Epoch of the real sky in Figure 5 (stars carried to it). */
 const TEST_EPOCH = Time.julianDay(2026, 1, 1);
+
+/* The style of a background star (STYLE.md §5): ink at 55% opacity,
+   sized by its V magnitude. */
+const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(star.mag) });
 
 /* Text of a declination or latitude: "−16.7°" (one decimal). */
 const formatAngle = value => `${value.toFixed(1).replace('-', '−')}°`;
@@ -70,7 +76,38 @@ function dailyCircle(dec, matrix) {
 
 
 /* ==========================================================================
-   1. FIGURE 1: THE OBSERVER'S SKY
+   1. FIGURE 1: THE SKY AROUND THE POLE
+   A blue plate (shared/plate.js): the stars of 2026 around the north
+   celestial pole, as seen from the ground. Highlighted: the circle of
+   declination 90° - 41.9°, inside which the stars never set at Rome.
+   ========================================================================== */
+
+/* Rome's latitude, as in the prose and the presets. */
+const ROME_LATITUDE = 41.9;
+
+const poleFigure = {
+	init() {
+		const chart = Plate.polar(byId('plate-pole'), {
+			rimDec: 25,
+			figures: ['URSA MAJOR', 'URSA MINOR', 'CASSIOPEIA', 'CEPHEUS', 'CYGNUS'],
+			names: [
+				['alf UMi', 'Polaris', 8, 4],
+				['bet UMi', 'Kochab', -58, 4],
+				['alf UMa', 'Dubhe', 9, 4],
+				['alf Aur', 'Capella', 9, 4],
+				['alf Lyr', 'Vega', 10, 4],
+				['alf Cyg', 'Deneb', 9, 16]
+			],
+			label: 'Chart of the northern sky around the celestial pole, with a dashed circle around the stars that never set at Rome.'
+		});
+
+		Plate.highlightCircle(chart, 90 - ROME_LATITUDE);
+	}
+};
+
+
+/* ==========================================================================
+   2. FIGURE 2: THE OBSERVER'S SKY
    Drawn in the horizon frame (x south, y east, z zenith): time and latitude
    turn the sky, never the ground. Stars at their J2000 positions.
    ========================================================================== */
@@ -158,10 +195,10 @@ const skyFigure = {
 		s.circle(toSky([1, 0, 0]), toSky([0, 1, 0]), { color: COL.earth, width: 2 });
 		this.drawPtolemyCircles(pole);
 
-		// the other bright stars
+		// the other bright stars, sized by brightness
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(toSky(fromLonLat(star.ra, star.dec)), { color: COL.muted, radius: 2.5 });
+				s.star(toSky(fromLonLat(star.ra, star.dec)), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -181,7 +218,7 @@ const skyFigure = {
 		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
 
 		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
@@ -217,14 +254,14 @@ const skyFigure = {
 			});
 		});
 
-		s.point(point, { color: COL.planet, radius: 6, ring: true });
+		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
 
 
 /* ==========================================================================
-   2. FIGURE 2: THE SKY SEEN FROM OUTSIDE
+   3. FIGURE 3: THE SKY SEEN FROM OUTSIDE
    Drawn in the equatorial frame: the stars never move; the observer's
    zenith and horizon turn eastward about the axis.
    ========================================================================== */
@@ -298,7 +335,7 @@ const outsideFigure = {
 
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(fromLonLat(star.ra, star.dec), { color: COL.muted, radius: 2.5 });
+				s.star(fromLonLat(star.ra, star.dec), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -330,7 +367,7 @@ const outsideFigure = {
 		const b = s.project(starPoint);
 
 		s.arc(zenith, toward, angle, { color: COL.planet, width: 2.5 });
-		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
+		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 
 		// the star's label beyond the star, Z's label beyond the zenith
 		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
@@ -347,7 +384,7 @@ const outsideFigure = {
 
 
 /* ==========================================================================
-   3. FIGURE 3: THE DAY OF A STAR
+   4. FIGURE 4: THE DAY OF A STAR
    (a) altitude against hour angle for the chosen declination and latitude;
    (b) the plane of latitude and declination, split into the three classes,
 	   with lines of equal fraction of the turn above the horizon.
@@ -520,7 +557,7 @@ const dayFigure = {
 
 
 /* ==========================================================================
-   4. FIGURE 4: THE MODEL AGAINST THE SKY
+   5. FIGURE 5: THE MODEL AGAINST THE SKY
    Over one turn, the model's altitude minus the real one. The model's
    star is fitted on the night (its position of TEST_EPOCH); the real sky
    adds refraction. Fixed scale: the deepest value is -34.4' (a star on
@@ -652,12 +689,13 @@ const testFigure = {
 
 
 /* ==========================================================================
-   5. PAGE START
+   6. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
+	poleFigure.init();
 	skyFigure.init();
 	outsideFigure.init();
 	dayFigure.init();

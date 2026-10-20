@@ -27,9 +27,9 @@ figure.fig {
 	min-width: 5.6em;
 }
 
-/* A play button keeps its width between "play a year" and "pause". */
+/* A play button keeps its width between "Play a year" and "Pause". */
 button.play {
-	min-width: 8.5em;
+	min-width: 9.5em;
 }
 
 
@@ -61,12 +61,14 @@ button.play {
 	margin-top: 10px;
 }
 
-/* "(a) the day through 2026 at latitude φ" above each panel. */
+/* "(a) the day through 2026 at latitude φ" above each panel, in small caps. */
 .panel-title {
 	margin: 0 0 4px;
-	color: var(--muted);
-	font-size: .9rem;
+	font-family: var(--font-label);
+	font-size: 16px;
 	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
 }
 
 
@@ -89,7 +91,7 @@ table.prose-table td:first-child {
    5. PHONE WIDTH
    ========================================================================== */
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
 	.panels,
 	.panel-controls {
 		grid-template-columns: minmax(0, 1fr);

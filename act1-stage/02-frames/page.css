@@ -24,9 +24,9 @@ figure.fig {
 	min-width: 5.6em;
 }
 
-/* The play button keeps its width between "play" and "pause". */
+/* The play button keeps its width between "Play" and "Pause". */
 button.play {
-	min-width: 6.5em;
+	min-width: 7.5em;
 }
 
 
@@ -49,7 +49,7 @@ table.prose-table td:first-child {
 /* Difference columns (Ptolemy − real): in the colour of the errors in the
    figures, on a faint band, so they stand apart from the values. */
 table.prose-table .diff {
-	color: var(--planet);
+	color: var(--planet-text);
 	font-weight: 600;
 	background: color-mix(in srgb, var(--planet) 8%, var(--card));
 }
@@ -65,7 +65,7 @@ table.prose-table thead tr + tr th:first-child {
    3. PHONE WIDTH
    ========================================================================== */
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
 	/* "obliquity ε" needs a little more than the shared 74px label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);

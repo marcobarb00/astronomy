@@ -13,24 +13,37 @@
 </head>
 
 <body>
-<main class="single">
-	<header class="hub-head">
-		<p class="page-number">An interactive course in classical positional astronomy</p>
-		<h1>Predicting the Sky</h1>
-		<p class="lead">
-			By the end you can compute where the Sun, the Moon and a planet are on a
-			given date, using geometric models you derived yourself, and you know how
-			wrong each model is and why.
-		</p>
-		<p class="lead">
-			Every page either adds a piece to that machine or removes an error the
-			previous piece left behind; a running <em>error curve</em> shows the
-			model against the real sky, page after page.
-		</p>
+<main class="page hub">
+	<!-- Header: title, then the double rule (theme.css) -->
+	<header class="page-head hub-head">
+		<div class="titles">
+			<p class="act-line">An interactive course in classical positional astronomy</p>
+			<h1>Predicting the Sky</h1>
+		</div>
 	</header>
+
+	<p class="lead">
+		By the end you can compute where the Sun, the Moon and a planet are on a
+		given date, using geometric models you derived yourself, and you know how
+		wrong each model is and why.
+	</p>
+	<p>
+		Every page either adds a piece to that machine or removes an error the
+		previous piece left behind; a running <em>error curve</em> shows the
+		model against the real sky, page after page.
+	</p>
 
 	<!-- The five acts and the epilogue, built from the site map -->
 	<div id="map"></div>
+
+	<!-- The key of the origin notes in the margins of the pages -->
+	<section class="origins" id="origins">
+		<p class="act-label">Origins</p>
+		<p>
+			A note in the margin of a page says where the idea in the paragraph
+			beside it comes from:
+		</p>
+	</section>
 
 	<footer class="hub-foot">
 		Sources: Ptolemy's <em>Almagest</em>, Copernicus' <em>De Revolutionibus</em>,
@@ -41,9 +54,11 @@
 </main>
 
 <script>
-	/* The hub: draw the map of acts once the shared scripts have loaded. */
+	/* The hub: draw the map of acts and the key of origins once the shared
+	   scripts have loaded. */
 	document.addEventListener('DOMContentLoaded', () => {
 		Site.renderHub(byId('map'));
+		Site.renderOriginKey(byId('origins'));
 	});
 </script>
 </body>

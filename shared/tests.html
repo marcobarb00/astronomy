@@ -21,26 +21,30 @@
 </head>
 
 <body>
-<div class="site-bar"><a href="../index.html">← Predicting the Sky</a></div>
-
 <main class="single">
+	<a class="site-link" href="../index.html">Predicting the Sky</a>
+
+	<!-- Header: titles, then the double rule (theme.css) -->
 	<header class="page-head">
-		<p class="page-number">Shared code</p>
-		<h1>Tests of the shared code</h1>
-		<p class="sub">
-			Each case is a worked example from J. Meeus, <em>Astronomical Algorithms</em>
-			(2nd ed., 1998), a value from the SOFA / ERFA test suite, a position from
-			JPL Horizons (DE441), or an internal consistency check. The tolerance of
-			each ephemeris case is the accuracy documented in the header of
-			<code>ephemeris.js</code>: the reference sky uses Standish's Keplerian
-			elements, so it is not expected to match Meeus' full VSOP87 results to
-			the arcsecond.
-		</p>
+		<div class="titles">
+			<p class="act-line">Shared code</p>
+			<h1>Tests of the shared code</h1>
+		</div>
 	</header>
+
+	<p class="lead">
+		Each case is a worked example from J. Meeus, <em>Astronomical Algorithms</em>
+		(2nd ed., 1998), a value from the SOFA / ERFA test suite, a position from
+		JPL Horizons (DE441), or an internal consistency check. The tolerance of
+		each ephemeris case is the accuracy documented in the header of
+		<code>ephemeris.js</code>: the reference sky uses Standish's Keplerian
+		elements, so it is not expected to match Meeus' full VSOP87 results to
+		the arcsecond.
+	</p>
 
 	<div id="summary" class="summary">Running…</div>
 
-	<div class="card table-scroll">
+	<div class="table-scroll">
 		<table class="tests">
 			<thead>
 				<tr>
