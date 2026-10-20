@@ -35,3 +35,10 @@ and commit them with the change, so the diff shows exactly what moved.
 `smoke.js` needs Playwright and its Chromium (`npm i -D playwright`,
 `npx playwright install chromium`); a global install also works. It writes
 its screenshots, its log and images of any difference to `tools/check/out/`.
+
+On GitHub, `.github/workflows/check.yml` runs all of these on every push
+and pull request. A change in `golden.txt` or `readouts.txt`, a console
+error or a failed check fails the build; screenshot differences from the
+previous commit are only reported (in the job summary, with the images
+as an artifact), since fonts and anti-aliasing differ a little between
+machines.

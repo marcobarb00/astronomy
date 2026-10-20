@@ -26,6 +26,10 @@
 		 save readouts.txt and the screenshots as the new baseline
 	 node tools/check/smoke.js --only 1.3
 		 only the pages whose path contains "1.3", or page 1.3 itself
+	 node tools/check/smoke.js --ci --against <ref>
+		 for the GitHub Action: a problem on a page or a difference from
+		 readouts.txt fails; differences from <ref> (screenshots, and
+		 read-outs regenerated on purpose) are only reported
    Output: tools/check/out/ (screenshots, the log, images of the
    differences: the differing pixels in red over a faded copy).
    Needs Playwright with its Chromium (npm i -D playwright; npx playwright
@@ -644,13 +648,14 @@ async function compareScreenshot(browser, name, before, after) {
    7. MAIN
    ========================================================================== */
 
-/* Command line: --update, --against <git ref>, --only <text>. */
+/* Command line: --update, --against <git ref>, --only <text>, --ci. */
 function readArguments() {
 	const args = process.argv.slice(2);
 	const valueOf = flag => (args.indexOf(flag) >= 0 ? args[args.indexOf(flag) + 1] : null);
 
 	return {
 		update: args.includes('--update'),
+		ci: args.includes('--ci'),
 		against: valueOf('--against'),
 		only: valueOf('--only')
 	};
@@ -751,6 +756,10 @@ async function main() {
 	const nowDir = path.join(OUT_DIR, 'now');
 	const failures = [];
 
+	// with --ci, what may legitimately change from one commit to the next
+	// (screenshots, read-outs regenerated on purpose) is reported, not failed
+	const reported = options.ci ? [] : failures;
+
 	fs.rmSync(OUT_DIR, { recursive: true, force: true });
 	fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -784,13 +793,39 @@ async function main() {
 	if (options.update) {
 		saveBaseline(now, nowDir, options.only);
 	} else {
-		await compareAll(browser, now, nowDir, before, options.only, failures);
+		await compareAll(browser, now, nowDir, before, options.only, failures, reported);
 	}
 
 	await browser.close();
 
+	if (options.ci) {
+		writeSummary(failures, reported, before.label);
+	}
+
 	console.log(failures.length === 0 ? '\nsmoke: all pages pass' : `\nsmoke: ${failures.length} problems`);
 	process.exitCode = failures.length === 0 ? 0 : 1;
+}
+
+/* --ci: the problems and the reported differences, also in the summary
+   of the GitHub Actions job when there is one. */
+function writeSummary(failures, reported, label) {
+	const lines = ['## Smoke test', ''];
+
+	lines.push(failures.length === 0 ? 'No problems on any page.' : `**${failures.length} problems:**`);
+	failures.forEach(text => lines.push(`- ${text}`));
+	lines.push('', `### Differences from ${label} (reported, not failed)`, '');
+	lines.push(reported.length === 0 ? 'None: every screenshot and read-out is identical.' : '');
+	reported.forEach(text => lines.push(`- ${text}`));
+
+	if (reported.length > 0) {
+		lines.push('', 'The images of the differences are in the artifact of this run.');
+	}
+
+	console.log(`\n${lines.join('\n')}`);
+
+	if (process.env.GITHUB_STEP_SUMMARY) {
+		fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
+	}
 }
 
 /* --update: the read-outs (only for a full run) and the screenshots. */
@@ -829,8 +864,9 @@ function compareReadouts(expected, actual, label, failures) {
 
 /* Compare the read-outs (with readouts.txt on a full run, and with the
    commit of --against) and the screenshots (with the baseline or the
-   commit of --against). */
-async function compareAll(browser, now, nowDir, before, only, failures) {
+   commit of --against). A difference from readouts.txt always goes to
+   'failures'; the others to 'reported' (the same list, without --ci). */
+async function compareAll(browser, now, nowDir, before, only, failures, reported) {
 	let differing = 0;
 
 	console.log('');
@@ -840,7 +876,7 @@ async function compareAll(browser, now, nowDir, before, only, failures) {
 	}
 
 	if (before.readouts !== null) {
-		compareReadouts(before.readouts, now.readouts, before.label, failures);
+		compareReadouts(before.readouts, now.readouts, before.label, reported);
 	}
 
 	if (!fs.existsSync(before.dir)) {
@@ -853,7 +889,7 @@ async function compareAll(browser, now, nowDir, before, only, failures) {
 
 		if (report) {
 			differing++;
-			failures.push(`screenshot ${report}`);
+			reported.push(`screenshot ${report}`);
 			console.log(`smoke: screenshot ${report}`);
 		}
 	}
