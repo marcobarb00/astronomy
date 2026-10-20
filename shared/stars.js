@@ -30,7 +30,6 @@
    ========================================================================== */
 
 const Stars = (function () {
-
 	/* ======================================================================
 	   1. THE CATALOGUE
 	   name, SIMBAD identifier, ra and dec (deg, ICRS J2000),
@@ -38,6 +37,7 @@ const Stars = (function () {
 	   star's mark in the figures, starSize in common.js).
 	   ====================================================================== */
 
+	// prettier-ignore
 	const LIST = [
 		{ name: 'Polaris',    id: 'alf UMi', ra: 37.954560670189856,  dec: 89.26410896994187,   pmra: 44.48,    pmdec: -11.85, mag: 2.02 },
 		{ name: 'Kochab',     id: 'bet UMi', ra: 222.67635749796767,  dec: 74.15550393675127,   pmra: -32.61,   pmdec: 11.42, mag: 2.08 },
@@ -75,7 +75,6 @@ const Stars = (function () {
 		return star;
 	}
 
-
 	/* ======================================================================
 	   2. POSITIONS
 	   ====================================================================== */
@@ -107,7 +106,6 @@ const Stars = (function () {
 
 		return Ephem.precessEquatorial(p.ra, p.dec, Time.J2000, jdTT);
 	}
-
 
 	/* ======================================================================
 	   3. EXPORT

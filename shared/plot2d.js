@@ -32,7 +32,6 @@
 	 6. Legend (HTML)
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS
    ========================================================================== */
@@ -41,13 +40,11 @@ const PLOT_FONT = FONT_TICK;
 const PLOT_LABEL_FONT = FONT_AXIS;
 const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 
-
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, HOVER
    ========================================================================== */
 
 class Plot2D {
-
 	/* options: x, y ([min, max]), xLabel, yLabel, xFormat, yFormat,
 	   xTicks, yTicks (function (min, max, count) -> [{ value, label }]),
 	   aspect (height / width), minHeight, maxHeight, onDraw(plot),
@@ -158,7 +155,6 @@ class Plot2D {
 		});
 	}
 
-
 	/* ======================================================================
 	   3. COORDINATES AND TICKS
 	   ====================================================================== */
@@ -167,21 +163,21 @@ class Plot2D {
 	px(x) {
 		const { left, right } = this.box;
 
-		return left + (x - this.x[0]) / (this.x[1] - this.x[0]) * (right - left);
+		return left + ((x - this.x[0]) / (this.x[1] - this.x[0])) * (right - left);
 	}
 
 	/* Data y -> pixel y. */
 	py(y) {
 		const { top, bottom } = this.box;
 
-		return bottom - (y - this.y[0]) / (this.y[1] - this.y[0]) * (bottom - top);
+		return bottom - ((y - this.y[0]) / (this.y[1] - this.y[0])) * (bottom - top);
 	}
 
 	/* Pixel x -> data x. */
 	fromPx(px) {
 		const { left, right } = this.box;
 
-		return this.x[0] + (px - left) / (right - left) * (this.x[1] - this.x[0]);
+		return this.x[0] + ((px - left) / (right - left)) * (this.x[1] - this.x[0]);
 	}
 
 	/* Ticks along x: the custom tick function, or round numbers. */
@@ -208,7 +204,6 @@ class Plot2D {
 			return { value, label: this.yFormat(value) };
 		});
 	}
-
 
 	/* ======================================================================
 	   4. FRAME: GRID, AXES, LABELS
@@ -303,7 +298,6 @@ class Plot2D {
 		this.ctx.restore();
 	}
 
-
 	/* ======================================================================
 	   5. MARKS: CURVES, BANDS, MARKERS, LINES, TEXT
 	   Every mark takes a style object: color, width, dash, alpha.
@@ -339,8 +333,10 @@ class Plot2D {
 
 		if (outside) {
 			this.warnedOutside = true;
-			console.warn(`Plot2D "${this.canvas.id}": data outside the y range [${this.y}]; ` +
-				'widen the fixed range to cover every value of the controls.');
+			console.warn(
+				`Plot2D "${this.canvas.id}": data outside the y range [${this.y}]; ` +
+					'widen the fixed range to cover every value of the controls.'
+			);
 		}
 	}
 
@@ -479,7 +475,6 @@ class Plot2D {
 		ctx.fillText(label, this.px(x) + (style.dx ?? 4), this.py(y) + (style.dy ?? -4));
 	}
 
-
 	/* ======================================================================
 	   6. LEGEND (HTML)
 	   Built in HTML, not on the canvas, so labels can carry KaTeX ($...$).
@@ -518,7 +513,6 @@ class Plot2D {
 		}
 	}
 }
-
 
 /* ==========================================================================
    HELPERS

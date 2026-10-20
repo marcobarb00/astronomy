@@ -22,28 +22,20 @@
    ========================================================================== */
 
 const Time = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS
 	   ====================================================================== */
 
-	const J2000 = 2451545.0;              // 2000 January 1.5 TT
+	const J2000 = 2451545.0; // 2000 January 1.5 TT
 	const DAYS_PER_CENTURY = 36525;
-	const MJD_OFFSET = 2400000.5;         // MJD = JD - 2400000.5
-	const UNIX_EPOCH_JD = 2440587.5;      // 1970 January 1.0 UT
+	const MJD_OFFSET = 2400000.5; // MJD = JD - 2400000.5
+	const UNIX_EPOCH_JD = 2440587.5; // 1970 January 1.0 UT
 	const GREGORIAN_START_JD = 2299160.5; // 1582 October 15.0
 	const MS_PER_DAY = 86400000;
 
-	const MONTH_NAMES = [
-		'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-	];
+	const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-	const WEEKDAY_NAMES = [
-		'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-		'Thursday', 'Friday', 'Saturday'
-	];
-
+	const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 	/* ======================================================================
 	   2. CALENDAR DATE <-> JULIAN DATE
@@ -73,8 +65,7 @@ const Time = (function () {
 			m += 12;
 		}
 
-		const gregorian = (calendar === 'gregorian') ||
-			(calendar === 'auto' && isGregorianDate(year, month, day));
+		const gregorian = calendar === 'gregorian' || (calendar === 'auto' && isGregorianDate(year, month, day));
 		let b = 0;
 
 		if (gregorian) {
@@ -83,9 +74,7 @@ const Time = (function () {
 			b = 2 - a + Math.floor(a / 4);
 		}
 
-		return Math.floor(365.25 * (y + 4716)) +
-			Math.floor(30.6001 * (m + 1)) +
-			day + b - 1524.5;
+		return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
 	}
 
 	/* Calendar date of a Julian Date (Meeus ch. 7). Returns
@@ -94,8 +83,7 @@ const Time = (function () {
 	function calendarDate(jd, calendar = 'auto') {
 		const z = Math.floor(jd + 0.5);
 		const f = jd + 0.5 - z;
-		const gregorian = (calendar === 'gregorian') ||
-			(calendar === 'auto' && z >= GREGORIAN_START_JD + 0.5);
+		const gregorian = calendar === 'gregorian' || (calendar === 'auto' && z >= GREGORIAN_START_JD + 0.5);
 		let a = z;
 
 		if (gregorian) {
@@ -109,8 +97,8 @@ const Time = (function () {
 		const d = Math.floor(365.25 * c);
 		const e = Math.floor((b - d) / 30.6001);
 		const day = b - d - Math.floor(30.6001 * e) + f;
-		const month = (e < 14) ? e - 1 : e - 13;
-		const year = (month > 2) ? c - 4716 : c - 4715;
+		const month = e < 14 ? e - 1 : e - 13;
+		const year = month > 2 ? c - 4716 : c - 4715;
 
 		return { year, month, day };
 	}
@@ -129,7 +117,6 @@ const Time = (function () {
 	function mjd(jd) {
 		return jd - MJD_OFFSET;
 	}
-
 
 	/* ======================================================================
 	   3. CALENDAR HELPERS
@@ -157,9 +144,7 @@ const Time = (function () {
 	function dayOfYear(year, month, day) {
 		const k = isLeapYear(year) ? 1 : 2;
 
-		return Math.floor(275 * month / 9) -
-			k * Math.floor((month + 9) / 12) +
-			Math.floor(day) - 30;
+		return Math.floor((275 * month) / 9) - k * Math.floor((month + 9) / 12) + Math.floor(day) - 30;
 	}
 
 	/* Year with its fraction, e.g. 1992.78 (for axes and Delta T). */
@@ -194,7 +179,6 @@ const Time = (function () {
 		return fromDate(new Date());
 	}
 
-
 	/* ======================================================================
 	   4. DELTA T AND TIME SCALES
 	   Delta T = TT - UT in seconds, from the polynomials of Espenak & Meeus
@@ -223,6 +207,7 @@ const Time = (function () {
 	}
 
 	/* Delta T in seconds for a decimal year y. */
+	// prettier-ignore
 	function deltaT(y) {
 		if (y < -500) {
 			return deltaTParabola(y);
@@ -285,7 +270,6 @@ const Time = (function () {
 		return jdTT - deltaT(decimalYear(jdTT)) / 86400;
 	}
 
-
 	/* ======================================================================
 	   5. SIDEREAL TIME AND HOUR ANGLE
 	   ====================================================================== */
@@ -293,10 +277,7 @@ const Time = (function () {
 	/* Greenwich mean sidereal time in degrees [0, 360), Meeus 12.4. */
 	function gmst(jdUT) {
 		const t = centuries(jdUT);
-		const theta = 280.46061837 +
-			360.98564736629 * (jdUT - J2000) +
-			0.000387933 * t * t -
-			t * t * t / 38710000;
+		const theta = 280.46061837 + 360.98564736629 * (jdUT - J2000) + 0.000387933 * t * t - (t * t * t) / 38710000;
 
 		return norm360(theta);
 	}
@@ -310,7 +291,6 @@ const Time = (function () {
 	function hourAngle(lstDegrees, rightAscension) {
 		return norm360(lstDegrees - rightAscension);
 	}
-
 
 	/* ======================================================================
 	   6. FORMATTING
@@ -340,7 +320,6 @@ const Time = (function () {
 
 		return text;
 	}
-
 
 	/* ======================================================================
 	   7. EXPORT

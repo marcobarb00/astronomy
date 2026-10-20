@@ -78,20 +78,19 @@
    ========================================================================== */
 
 const Ephem = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS AND RANGE
 	   ====================================================================== */
 
-	const ARCSEC = 1 / 3600;                  // one arcsecond in degrees
-	const AU_KM = 149597870.7;                // astronomical unit (km)
-	const LIGHT_TIME_PER_AU = 0.0057755183;   // days for light to cross 1 AU
-	const EARTH_MOON_MASS_RATIO = 81.30056;   // M_earth / M_moon
-	const ABERRATION_CONSTANT = 20.49552;     // kappa (arcsec)
+	const ARCSEC = 1 / 3600; // one arcsecond in degrees
+	const AU_KM = 149597870.7; // astronomical unit (km)
+	const LIGHT_TIME_PER_AU = 0.0057755183; // days for light to cross 1 AU
+	const EARTH_MOON_MASS_RATIO = 81.30056; // M_earth / M_moon
+	const ABERRATION_CONSTANT = 20.49552; // kappa (arcsec)
 
 	const RANGE = {
-		start: Time.julianDay(-2999, 1, 1),   // 3000 BC January 1
-		end: Time.julianDay(3000, 12, 31)     // 3000 AD December 31
+		start: Time.julianDay(-2999, 1, 1), // 3000 BC January 1
+		end: Time.julianDay(3000, 12, 31) // 3000 AD December 31
 	};
 
 	const PLANETS = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
@@ -99,7 +98,6 @@ const Ephem = (function () {
 	function inRange(jd) {
 		return jd >= RANGE.start && jd <= RANGE.end;
 	}
-
 
 	/* ======================================================================
 	   2. STANDISH'S KEPLERIAN ELEMENTS
@@ -114,6 +112,7 @@ const Ephem = (function () {
 	   2026-10-17.
 	   ====================================================================== */
 
+	// prettier-ignore
 	const ELEMENTS = {
 		mercury: {
 			at:   [0.38709843, 0.20563661, 7.00559432, 252.25166724, 77.45771895, 48.33961819],
@@ -152,7 +151,6 @@ const Ephem = (function () {
 			extra: { b: -0.00041348, c: 0.68346318, s: -0.10162547, f: 7.67025000 }
 		}
 	};
-
 
 	/* ======================================================================
 	   3. HELIOCENTRIC POSITIONS FROM THE ELEMENTS
@@ -219,7 +217,6 @@ const Ephem = (function () {
 
 		return matApply(orbitToEcliptic, [xp, yp, 0]);
 	}
-
 
 	/* ======================================================================
 	   4. THE MOON (Meeus, Astronomical Algorithms, ch. 47)
@@ -372,6 +369,7 @@ const Ephem = (function () {
 
 	/* The Moon's fundamental arguments (deg), Meeus 47.1 - 47.6. */
 	function moonArguments(T) {
+		// prettier-ignore
 		return {
 			Lp: polyT(T, [218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000]),
 			D: polyT(T, [297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000]),
@@ -397,8 +395,13 @@ const Ephem = (function () {
 		const a = moonArguments(T);
 		let sumL = 3958 * sin(a.A1) + 1962 * sin(a.Lp - a.F) + 318 * sin(a.A2);
 		let sumR = 0;
-		let sumB = -2235 * sin(a.Lp) + 382 * sin(a.A3) + 175 * sin(a.A1 - a.F) +
-			175 * sin(a.A1 + a.F) + 127 * sin(a.Lp - a.Mp) - 115 * sin(a.Lp + a.Mp);
+		let sumB =
+			-2235 * sin(a.Lp) +
+			382 * sin(a.A3) +
+			175 * sin(a.A1 - a.F) +
+			175 * sin(a.A1 + a.F) +
+			127 * sin(a.Lp - a.Mp) -
+			115 * sin(a.Lp + a.Mp);
 
 		MOON_LR.forEach(([d, m, mp, f, cl, cr]) => {
 			const argument = d * a.D + m * a.M + mp * a.Mp + f * a.F;
@@ -421,7 +424,6 @@ const Ephem = (function () {
 		};
 	}
 
-
 	/* ======================================================================
 	   5. OBLIQUITY, NUTATION, PRECESSION
 	   ====================================================================== */
@@ -430,8 +432,7 @@ const Ephem = (function () {
 	   Valid within 0.01" over 1000 years and a few arcseconds over 10000. */
 	function meanObliquity(jdTT) {
 		const U = Time.centuries(jdTT) / 100;
-		const seconds = polyT(U, [21.448, -4680.93, -1.55, 1999.25, -51.38,
-			-249.67, -39.05, 7.12, 27.87, 5.79, 2.45]);
+		const seconds = polyT(U, [21.448, -4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45]);
 
 		return 23 + 26 / 60 + seconds * ARCSEC;
 	}
@@ -442,8 +443,10 @@ const Ephem = (function () {
 		const node = polyT(T, [125.04452, -1934.136261, 0.0020708, 1 / 450000]);
 		const sunL = 280.4665 + 36000.7698 * T;
 		const moonL = 218.3165 + 481267.8813 * T;
+		// prettier-ignore
 		const dpsi = -17.20 * sin(node) - 1.32 * sin(2 * sunL) -
 			0.23 * sin(2 * moonL) + 0.21 * sin(2 * node);
+		// prettier-ignore
 		const deps = 9.20 * cos(node) + 0.57 * cos(2 * sunL) +
 			0.10 * cos(2 * moonL) - 0.09 * cos(2 * node);
 
@@ -467,14 +470,16 @@ const Ephem = (function () {
 	   drift by 1' at 2000 BC and 2.5' at 3000 BC.)
 	   Rows: period (centuries), then cos and sin coefficients (arcsec). */
 
-	const EPS0_LTP = 84381.406 * ARCSEC;       // obliquity at J2000 (deg)
+	const EPS0_LTP = 84381.406 * ARCSEC; // obliquity at J2000 (deg)
 
+	// prettier-ignore
 	const LTP_ECLIPTIC_POLY = [
 		[5851.607687, -0.1189000, -0.00028913, 0.000000101],      // P_A
 		[-1600.886300, 1.1689818, -0.00000020, -0.000000437]      // Q_A
 	];
 
 	// period, cos P_A, cos Q_A, sin P_A, sin Q_A
+	// prettier-ignore
 	const LTP_ECLIPTIC_PERIODIC = [
 		[708.15, -5486.751211, -684.661560, 667.666730, -5523.863691],
 		[2309.00, -17.127623, 2446.283880, -2354.886252, -549.747450],
@@ -486,12 +491,14 @@ const Ephem = (function () {
 		[547.00, 46.140315, 101.135679, -120.972830, 22.885731]
 	];
 
+	// prettier-ignore
 	const LTP_EQUATOR_POLY = [
 		[5453.282155, 0.4252841, -0.00037173, -0.000000152],      // X
 		[-73750.930350, -0.7675452, -0.00018725, 0.000000231]     // Y
 	];
 
 	// period, cos X, cos Y, sin X, sin Y
+	// prettier-ignore
 	const LTP_EQUATOR_PERIODIC = [
 		[256.75, -819.940624, 75004.344875, 81491.287984, 1558.515853],
 		[708.15, -8444.676815, 624.033993, 787.163481, 7774.939698],
@@ -515,7 +522,7 @@ const Ephem = (function () {
 		let b = polyT(T, poly[1]);
 
 		periodic.forEach(([period, cosA, cosB, sinA, sinB]) => {
-			const angle = TAU * T / period;
+			const angle = (TAU * T) / period;
 
 			a += cosA * Math.cos(angle) + sinA * Math.sin(angle);
 			b += cosB * Math.cos(angle) + sinB * Math.sin(angle);
@@ -607,7 +614,6 @@ const Ephem = (function () {
 		return { ra: p.lon, dec: p.lat };
 	}
 
-
 	/* ======================================================================
 	   6. COORDINATE TRANSFORMATIONS
 	   ====================================================================== */
@@ -633,7 +639,6 @@ const Ephem = (function () {
 	function equatorial(ecliptic, jdTT, apparent = true) {
 		return eclipticToEquatorial(ecliptic.lon, ecliptic.lat, obliquity(jdTT, apparent));
 	}
-
 
 	/* ======================================================================
 	   7. GEOCENTRIC POSITIONS
@@ -664,8 +669,7 @@ const Ephem = (function () {
 		const result = ofDate(negate(earthJ2000(jdTT)), jdTT);
 
 		if (apparent) {
-			result.lon = norm360(result.lon +
-				nutation(jdTT).dpsi - 20.4898 * ARCSEC / result.dist);
+			result.lon = norm360(result.lon + nutation(jdTT).dpsi - (20.4898 * ARCSEC) / result.dist);
 		}
 
 		return result;
@@ -765,7 +769,6 @@ const Ephem = (function () {
 		return position(body, jdTT, options).lon;
 	}
 
-
 	/* ======================================================================
 	   8. DERIVED QUANTITIES
 	   ====================================================================== */
@@ -781,8 +784,7 @@ const Ephem = (function () {
 	function sunMeanLongitude(jdTT) {
 		const tau = Time.centuries(jdTT) / 10;
 
-		return norm360(polyT(tau, [280.4664567, 360007.6982779, 0.03032028,
-			1 / 49931, -1 / 15300, -1 / 2000000]));
+		return norm360(polyT(tau, [280.4664567, 360007.6982779, 0.03032028, 1 / 49931, -1 / 15300, -1 / 2000000]));
 	}
 
 	/* Equation of time in minutes of time, apparent minus mean solar time
@@ -796,7 +798,6 @@ const Ephem = (function () {
 
 		return norm180(E) * 4;
 	}
-
 
 	/* ---------- Atmospheric refraction ----------
 	   Standard air (1010 mbar, 10 °C), J. Meeus, Astronomical Algorithms,
@@ -829,7 +830,6 @@ const Ephem = (function () {
 
 		return Math.max(0, R) / 60;
 	}
-
 
 	/* ======================================================================
 	   9. EXPORT

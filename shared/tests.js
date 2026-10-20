@@ -24,7 +24,6 @@
 	14. Run
    ========================================================================== */
 
-
 /* ==========================================================================
    1. TEST HARNESS
    A case compares a computed value with an expected one:
@@ -42,10 +41,7 @@ function group(title) {
 /* Numeric case. options: name, source, expected, computed, tol (in display
    units), unit, scale (value -> display units), show (formatter), angle. */
 function check(options) {
-	const {
-		name, source, expected, computed, tol,
-		unit = '', scale = 1, show = String, angle = false
-	} = options;
+	const { name, source, expected, computed, tol, unit = '', scale = 1, show = String, angle = false } = options;
 	const difference = angle ? norm180(computed - expected) : computed - expected;
 	const error = difference * scale;
 	const pass = Number.isFinite(error) && Math.abs(error) <= tol;
@@ -105,14 +101,14 @@ function render() {
 	});
 
 	summary.className = 'summary ' + (failed.length === 0 ? 'pass' : 'fail');
-	summary.textContent = failed.length === 0 ?
-		`All ${cases.length} tests pass.` :
-		`${failed.length} of ${cases.length} tests FAIL: ${failed.map(r => r.name).join(', ')}`;
+	summary.textContent =
+		failed.length === 0
+			? `All ${cases.length} tests pass.`
+			: `${failed.length} of ${cases.length} tests FAIL: ${failed.map(r => r.name).join(', ')}`;
 
 	// Also report to the console, for automated checks.
 	console.log(`tests: ${cases.length - failed.length} / ${cases.length} pass`);
 }
-
 
 /* ==========================================================================
    2. FORMATTING
@@ -154,7 +150,6 @@ function dmsSeconds(degrees) {
 function showCalendar(c) {
 	return `${c.year} ${c.month} ${Number(c.day.toFixed(4))}`;
 }
-
 
 /* ==========================================================================
    3. TIME: JULIAN DATE AND CALENDAR (Meeus ch. 7)
@@ -221,15 +216,17 @@ function testJulianDay() {
 		});
 	});
 
-	checkEqual('Day of the week, 1954 Jun 30', 'ch. 7', 'Wednesday',
-		Time.weekdayName(Time.julianDay(1954, 6, 30)));
+	checkEqual('Day of the week, 1954 Jun 30', 'ch. 7', 'Wednesday', Time.weekdayName(Time.julianDay(1954, 6, 30)));
 	checkEqual('Day of the year, 1978 Nov 14', 'ch. 7', 318, Time.dayOfYear(1978, 11, 14));
 	checkEqual('Day of the year, 1988 Apr 22', 'ch. 7', 113, Time.dayOfYear(1988, 4, 22));
-	checkEqual('Days 1910 Apr 20 → 1986 Feb 9 (Halley)', 'ch. 7', 27689,
-		Time.julianDay(1986, 2, 9) - Time.julianDay(1910, 4, 20));
+	checkEqual(
+		'Days 1910 Apr 20 → 1986 Feb 9 (Halley)',
+		'ch. 7',
+		27689,
+		Time.julianDay(1986, 2, 9) - Time.julianDay(1910, 4, 20)
+	);
 	checkEqual('MJD of 1858 Nov 17.0', 'ch. 7', 0, Time.mjd(Time.julianDay(1858, 11, 17)));
 }
-
 
 /* ==========================================================================
    4. TIME: DELTA T AND SIDEREAL TIME (Meeus ch. 10, 12)
@@ -296,7 +293,6 @@ function testSiderealTime() {
 	});
 }
 
-
 /* ==========================================================================
    5. EPHEMERIS: OBLIQUITY AND NUTATION (Meeus ch. 22)
    The short nutation series is accurate to 0.5" in longitude and 0.1" in
@@ -341,6 +337,7 @@ function testNutation() {
 		show: showDms
 	});
 
+	// prettier-ignore
 	check({
 		name: 'True obliquity ε',
 		source: 'Ex. 22.a',
@@ -352,7 +349,6 @@ function testNutation() {
 		show: showDms
 	});
 }
-
 
 /* ==========================================================================
    6. EPHEMERIS: THE SUN AND THE EQUATION OF TIME (Meeus ch. 25, 28)
@@ -434,7 +430,6 @@ function testSun() {
 	});
 }
 
-
 /* ==========================================================================
    7. EPHEMERIS: VENUS (Meeus ch. 32, 33)
    ========================================================================== */
@@ -459,6 +454,7 @@ function testVenus() {
 		angle: true
 	});
 
+	// prettier-ignore
 	check({
 		name: 'Heliocentric latitude B',
 		source: 'Ex. 32.a',
@@ -537,7 +533,6 @@ function testVenus() {
 	});
 }
 
-
 /* ==========================================================================
    8. EPHEMERIS: THE MOON (Meeus ch. 47)
    The reference Moon IS Meeus' truncated theory, so the geometric values
@@ -597,6 +592,7 @@ function testMoon() {
 		angle: true
 	});
 
+	// prettier-ignore
 	check({
 		name: 'Apparent right ascension α',
 		source: 'Ex. 47.a',
@@ -621,7 +617,6 @@ function testMoon() {
 	});
 }
 
-
 /* ==========================================================================
    9. EPHEMERIS: LONG-TERM PRECESSION (SOFA / ERFA)
    The pole vectors of Vondrak, Capitaine & Wallace (2011), against the
@@ -635,12 +630,20 @@ function testPrecession() {
 	group('Long-term precession · ephemeris.js');
 
 	const cases = [
-		['Ecliptic pole, epoch −1500', 'ERFA ltpecl', Ephem.eclipticPole(jdOfJulianEpoch(-1500)),
+		[
+			'Ecliptic pole, epoch −1500',
+			'ERFA ltpecl',
+			Ephem.eclipticPole(jdOfJulianEpoch(-1500)),
 			// eslint-disable-next-line no-loss-of-precision -- the ERFA values as printed
-			[0.4768625676477096525e-3, -0.4052259533091875112, 0.9142164401096448012]],
-		['Equator pole, epoch −2500', 'ERFA ltpequ', Ephem.equatorPole(jdOfJulianEpoch(-2500)),
+			[0.4768625676477096525e-3, -0.4052259533091875112, 0.9142164401096448012]
+		],
+		[
+			'Equator pole, epoch −2500',
+			'ERFA ltpequ',
+			Ephem.equatorPole(jdOfJulianEpoch(-2500)),
 			// eslint-disable-next-line no-loss-of-precision -- the ERFA values as printed
-			[-0.3586652560237326659, -0.1996978910771128475, 0.9118552442250819624]]
+			[-0.3586652560237326659, -0.1996978910771128475, 0.9118552442250819624]
+		]
 	];
 
 	cases.forEach(([name, source, computed, expected]) => {
@@ -657,7 +660,6 @@ function testPrecession() {
 	});
 }
 
-
 /* ==========================================================================
    10. EPHEMERIS: JPL HORIZONS SPOT CHECKS (DE441)
    Apparent geocentric ecliptic longitude of date from JPL Horizons
@@ -667,6 +669,7 @@ function testPrecession() {
    500 BC - 2500 AD in the header of ephemeris.js, rounded up.
    ========================================================================== */
 
+// prettier-ignore
 const HORIZONS = {
 	sun: { tol: 1, lon: [277.8067477, 280.2381372, 280.3681519] },
 	moon: { tol: 2, lon: [227.7461056, 165.5780597, 223.3148557] },
@@ -701,7 +704,6 @@ function testHorizons() {
 	});
 }
 
-
 /* ==========================================================================
    11. INTERNAL CONSISTENCY
    ========================================================================== */
@@ -730,8 +732,12 @@ function testConsistency() {
 	});
 
 	// The calendar reform: 1582 Oct 4 (Julian) is followed by Oct 15 (Gregorian).
-	checkEqual('Day after 1582 Oct 4 (Julian)', 'ch. 7',
-		'1582 10 15', showCalendar(Time.calendarDate(Time.julianDay(1582, 10, 4) + 1)));
+	checkEqual(
+		'Day after 1582 Oct 4 (Julian)',
+		'ch. 7',
+		'1582 10 15',
+		showCalendar(Time.calendarDate(Time.julianDay(1582, 10, 4) + 1))
+	);
 
 	// Precession there and back again.
 	let worstPrecession = 0;
@@ -765,7 +771,7 @@ function testConsistency() {
 	}
 
 	check({
-		name: 'Kepler\'s equation residual, e = 0.2',
+		name: "Kepler's equation residual, e = 0.2",
 		source: 'solveKepler',
 		expected: 0,
 		computed: worstKepler,
@@ -775,7 +781,6 @@ function testConsistency() {
 		show: x => x.toExponential(1) + '°'
 	});
 }
-
 
 /* ==========================================================================
    12. REFRACTION, STARS, THE TURNING SKY, FRAMES
@@ -821,8 +826,8 @@ function testStarPrecession() {
 	// Example 21.b: theta Persei, J2000 to 2028 Nov 13.19 TD, with the
 	// proper motion in right ascension given in seconds of time per year.
 	const years = (2462088.69 - Time.J2000) / 365.25;
-	const ra0 = (2 + 44 / 60 + 11.986 / 3600) * 15 + 0.03425 * years * 15 / 3600;
-	const dec0 = 49 + 13 / 60 + 42.48 / 3600 - 0.0895 * years / 3600;
+	const ra0 = (2 + 44 / 60 + 11.986 / 3600) * 15 + (0.03425 * years * 15) / 3600;
+	const dec0 = 49 + 13 / 60 + 42.48 / 3600 - (0.0895 * years) / 3600;
 	const p = Ephem.precessEquatorial(ra0, dec0, Time.J2000, 2462088.69);
 
 	check({
@@ -870,7 +875,7 @@ function testDiurnal() {
 	// Almagest II 3: at Rhodes (phi = 36°) with Ptolemy's obliquity
 	// 23;51,20 the longest day is 14 1/2 equinoctial hours.
 	const eps = 23 + 51 / 60 + 20 / 3600;
-	const longestDay = 2 * Diurnal.risingHourAngle(eps, 36) / 15;
+	const longestDay = (2 * Diurnal.risingHourAngle(eps, 36)) / 15;
 
 	check({
 		name: 'Longest day at Rhodes, φ = 36°',
@@ -898,8 +903,10 @@ function testDiurnal() {
 				worstAltitude = Math.max(worstAltitude, Math.abs(asin(v[2]) - a));
 			}
 
-			worstFraction = Math.max(worstFraction,
-				Math.abs(Diurnal.fractionAbove(dec, phi) + Diurnal.fractionAbove(-dec, phi) - 1));
+			worstFraction = Math.max(
+				worstFraction,
+				Math.abs(Diurnal.fractionAbove(dec, phi) + Diurnal.fractionAbove(-dec, phi) - 1)
+			);
 		}
 	}
 
@@ -908,7 +915,7 @@ function testDiurnal() {
 		source: 'page 1.1',
 		expected: 0,
 		computed: worstAltitude,
-		tol: 0.01,          // asin loses digits near the zenith
+		tol: 0.01, // asin loses digits near the zenith
 		unit: '″',
 		scale: ARCSEC_PER_DEG,
 		show: x => x.toExponential(1) + '°'
@@ -935,19 +942,20 @@ function testDiurnal() {
 	});
 }
 
-
 function testFrames() {
 	group('Frames · models/frames.js (page 1.2)');
 
 	// Meeus example 13.a: Pollux, equatorial -> ecliptic (eps = 23.4392911°).
 	const pollux = Frames.equatorialToEcliptic(116.328942, 28.026183, 23.4392911);
 
+	// prettier-ignore
 	check({
 		name: 'Pollux: λ', source: 'Meeus ex. 13.a',
 		expected: 113.215630, computed: pollux.lon,
 		tol: 0.1, unit: '″', scale: ARCSEC_PER_DEG, show: showDeg, angle: true
 	});
 
+	// prettier-ignore
 	check({
 		name: 'Pollux: β', source: 'Meeus ex. 13.a',
 		expected: 6.684170, computed: pollux.lat,
@@ -962,24 +970,42 @@ function testFrames() {
 	const venus = Frames.equatorialToHorizontal(0, venusDec, phi, 64.352133);
 
 	check({
-		name: 'Venus: azimuth from the north', source: 'Meeus ex. 13.b',
-		expected: 68.0337 + 180, computed: venus.A,
-		tol: 1, unit: '″', scale: ARCSEC_PER_DEG, show: x => x.toFixed(4) + '°', angle: true
+		name: 'Venus: azimuth from the north',
+		source: 'Meeus ex. 13.b',
+		expected: 68.0337 + 180,
+		computed: venus.A,
+		tol: 1,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: x => x.toFixed(4) + '°',
+		angle: true
 	});
 
 	check({
-		name: 'Venus: altitude', source: 'Meeus ex. 13.b',
-		expected: 15.1249, computed: venus.a,
-		tol: 1, unit: '″', scale: ARCSEC_PER_DEG, show: x => x.toFixed(4) + '°'
+		name: 'Venus: altitude',
+		source: 'Meeus ex. 13.b',
+		expected: 15.1249,
+		computed: venus.a,
+		tol: 1,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: x => x.toFixed(4) + '°'
 	});
 
 	// Almagest I 14: the two worked declinations, lambda = 30° and 60°.
-	[[30, 11 + 40 / 60], [60, 20 + 30 / 60 + 9 / 3600]].forEach(([lon, expected]) => {
+	[
+		[30, 11 + 40 / 60],
+		[60, 20 + 30 / 60 + 9 / 3600]
+	].forEach(([lon, expected]) => {
 		check({
-			name: `Ptolemy's declination at λ = ${lon}°`, source: 'Almagest I 14',
+			name: `Ptolemy's declination at λ = ${lon}°`,
+			source: 'Almagest I 14',
 			expected: expected,
 			computed: Frames.eclipticPoint(lon, Frames.PTOLEMY_OBLIQUITY).dec,
-			tol: 2, unit: '″', scale: ARCSEC_PER_DEG, show: showDms
+			tol: 2,
+			unit: '″',
+			scale: ARCSEC_PER_DEG,
+			show: showDms
 		});
 	});
 
@@ -994,20 +1020,27 @@ function testFrames() {
 			const viaEphem = Ephem.eclipticToEquatorial(lon, lat, EPS);
 			const back = Frames.equatorialToEcliptic(eq.ra, eq.dec, EPS);
 			const differences = [
-				norm180(viaMatrix.lon - eq.ra) * cos(eq.dec), viaMatrix.lat - eq.dec,
-				norm180(viaEphem.ra - eq.ra) * cos(eq.dec), viaEphem.dec - eq.dec,
-				norm180(back.lon - lon) * cos(lat), back.lat - lat
+				norm180(viaMatrix.lon - eq.ra) * cos(eq.dec),
+				viaMatrix.lat - eq.dec,
+				norm180(viaEphem.ra - eq.ra) * cos(eq.dec),
+				viaEphem.dec - eq.dec,
+				norm180(back.lon - lon) * cos(lat),
+				back.lat - lat
 			];
 
 			for (let latitude = -70; latitude <= 70; latitude += 35) {
 				const theta = lon * 1.7 + 11;
 				const hor = Frames.equatorialToHorizontal(eq.ra, eq.dec, latitude, theta);
-				const horMatrix = Frames.toHorizontal(matApply(Frames.equatorialToHorizonMatrix(latitude, theta), fromLonLat(eq.ra, eq.dec)));
+				const horMatrix = Frames.toHorizontal(
+					matApply(Frames.equatorialToHorizonMatrix(latitude, theta), fromLonLat(eq.ra, eq.dec))
+				);
 				const eqBack = Frames.horizontalToEquatorial(hor.A, hor.a, latitude, theta);
 
 				differences.push(
-					norm180(horMatrix.A - hor.A) * cos(hor.a), horMatrix.a - hor.a,
-					norm180(eqBack.ra - eq.ra) * cos(eq.dec), eqBack.dec - eq.dec
+					norm180(horMatrix.A - hor.A) * cos(hor.a),
+					horMatrix.a - hor.a,
+					norm180(eqBack.ra - eq.ra) * cos(eq.dec),
+					eqBack.dec - eq.dec
 				);
 			}
 
@@ -1036,11 +1069,11 @@ function testFrames() {
 	});
 
 	check({
-		name: 'Ptolemy\'s table of inclination, 90 entries',
+		name: "Ptolemy's table of inclination, 90 entries",
 		source: 'Almagest I 15',
 		expected: 0,
 		computed: worstTable,
-		tol: 10,           // the largest is a scribal error Toomer flags (27°)
+		tol: 10, // the largest is a scribal error Toomer flags (27°)
 		unit: '″',
 		scale: ARCSEC_PER_DEG,
 		show: showDms
@@ -1053,11 +1086,11 @@ function testFrames() {
 	});
 
 	check({
-		name: 'Ptolemy\'s right ascensions, every 10°',
+		name: "Ptolemy's right ascensions, every 10°",
 		source: 'Almagest I 16',
 		expected: 0,
 		computed: worstRA,
-		tol: 0.5,          // Ptolemy rounds to the minute
+		tol: 0.5, // Ptolemy rounds to the minute
 		unit: '′',
 		scale: 60,
 		show: showDms
@@ -1077,7 +1110,6 @@ function testFrames() {
 		show: showDeg
 	});
 }
-
 
 /* ==========================================================================
    13. THE CLOCKS AND THE MEAN SUN (page 1.3)
@@ -1102,11 +1134,11 @@ function testClock() {
 	// The clock's rate is 360° plus the mean Sun's daily motion; the two
 	// published values differ by 2e-5" a day.
 	check({
-		name: 'Sidereal rate − 360° = mean Sun\'s n',
+		name: "Sidereal rate − 360° = mean Sun's n",
 		source: 'Meeus 12.4, 25.2',
 		expected: MeanSun.MODERN.n,
 		computed: Clock.RATE - 360,
-		tol: 1e-4,          // 0.8" a century: UT and TT days, rounding
+		tol: 1e-4, // 0.8" a century: UT and TT days, rounding
 		unit: '″/day',
 		scale: ARCSEC_PER_DEG,
 		show: x => x.toFixed(10) + '°'
@@ -1183,7 +1215,6 @@ function testClock() {
 		show: x => x.toFixed(4) + ' d'
 	});
 }
-
 
 /* ==========================================================================
    14. RUN

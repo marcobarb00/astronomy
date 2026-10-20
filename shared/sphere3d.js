@@ -37,25 +37,22 @@
 	 5. Sampling helpers
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS
    ========================================================================== */
 
-const SPHERE_FILL = 0.38;          // sphere radius as a fraction of the canvas size (room for poles and labels)
-const FAR_SIDE_ALPHA = 0.25;       // opacity of path segments behind the sphere
-const FAR_ARROW_ALPHA = 0.35;      // opacity of arrows pointing away from the viewer
-const ARROW_HEAD_SIZE = 9;         // px
+const SPHERE_FILL = 0.38; // sphere radius as a fraction of the canvas size (room for poles and labels)
+const FAR_SIDE_ALPHA = 0.25; // opacity of path segments behind the sphere
+const FAR_ARROW_ALPHA = 0.35; // opacity of arrows pointing away from the viewer
+const ARROW_HEAD_SIZE = 9; // px
 const DRAG_DEGREES_PER_PX = 0.5;
-const LABEL_FONT = FONT_NAME;      // for pages that write on a canvas themselves
-
+const LABEL_FONT = FONT_NAME; // for pages that write on a canvas themselves
 
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, DRAGGING
    ========================================================================== */
 
 class Sphere3D {
-
 	/* options: yaw, pitch (deg), aspect (height / width), onDraw(sphere). */
 	constructor(canvas, options = {}) {
 		this.canvas = canvas;
@@ -141,7 +138,6 @@ class Sphere3D {
 		});
 	}
 
-
 	/* ======================================================================
 	   3. PROJECTION
 	   ====================================================================== */
@@ -167,7 +163,6 @@ class Sphere3D {
 	isFront(point) {
 		return this.project(point).d <= 0;
 	}
-
 
 	/* ======================================================================
 	   4. DRAWING PRIMITIVES
@@ -350,7 +345,7 @@ class Sphere3D {
 		const { ctx } = this;
 		const q = this.project(p);
 
-		ctx.globalAlpha = (q.d > 0 && !style.always) ? 0.5 : 1;
+		ctx.globalAlpha = q.d > 0 && !style.always ? 0.5 : 1;
 		ctx.fillStyle = textColor(style.color ?? COL.ink);
 		ctx.font = style.font ?? labelFont(text, style.kind);
 		ctx.textAlign = 'left';
@@ -382,12 +377,11 @@ class Sphere3D {
 		// left-aligned text on its baseline: shift it so its box sits on the far side
 		this.label(text, point, {
 			color: color,
-			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - (1 - Math.abs(ux)) * width / 2,
+			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - ((1 - Math.abs(ux)) * width) / 2,
 			dy: gap * uy + (uy > 0 ? 13 : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * 5
 		});
 	}
 }
-
 
 /* ==========================================================================
    5. SAMPLING HELPERS
@@ -420,7 +414,7 @@ function sampleArc(a, b, angle, radius = 1, steps = 40) {
 	const points = [];
 
 	for (let i = 0; i <= steps; i++) {
-		points.push(arcPoint(a, b, angle * i / steps, radius));
+		points.push(arcPoint(a, b, (angle * i) / steps, radius));
 	}
 
 	return points;

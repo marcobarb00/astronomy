@@ -25,7 +25,6 @@
 	 5. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
@@ -99,7 +98,6 @@ function drawCoordinatePath(sphere, axes, lon, lat, names, color) {
 	}
 }
 
-
 /* ==========================================================================
    1. FIGURE 1: THE ZODIAC AROUND TAURUS
    A blue plate (shared/plate.js): the stars of 2026 around Aldebaran, as
@@ -141,7 +139,6 @@ const zodiacFigure = {
 	}
 };
 
-
 /* ==========================================================================
    2. FIGURE 2: ECLIPTIC AND EQUATOR
    Drawn in the equatorial frame with the obliquity of 2026.0: the stars,
@@ -163,8 +160,7 @@ const PLAY_DAYS_PER_SECOND = 15;
 const SUN_ARROW_DEGREES = 20;
 const SUN_ARROW_RADIUS = 1.1;
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /* Day of the year (slider value) -> "21 May". */
 function formatDay(day) {
@@ -230,7 +226,11 @@ const eclipticFigure = {
 			ecl: toLonLat(sEcl),
 			// the ecliptic frame's axes in equatorial components: the columns
 			// of R_x(eps)
-			eclipticAxes: [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map(axis => matApply(toEquatorial, axis))
+			eclipticAxes: [
+				[1, 0, 0],
+				[0, 1, 0],
+				[0, 0, 1]
+			].map(axis => matApply(toEquatorial, axis))
 		};
 
 		this.showReadout();
@@ -239,9 +239,8 @@ const eclipticFigure = {
 
 	showReadout() {
 		const { day, eq, ecl, sEq, sEcl } = this.state;
-		const title = this.chosen === 'Sun' ?
-			`\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` :
-			`\\text{${this.chosen}}`;
+		const title =
+			this.chosen === 'Sun' ? `\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` : `\\text{${this.chosen}}`;
 
 		showLines('ecl-readout', [
 			title,
@@ -254,12 +253,16 @@ const eclipticFigure = {
 
 	draw() {
 		if (!this.state) {
-			return;    // a resize can ask for a drawing before the first update
+			return; // a resize can ask for a drawing before the first update
 		}
 
 		const s = this.sphere;
 		const { eq, ecl, sEq, eclipticAxes } = this.state;
-		const equatorAxes = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+		const equatorAxes = [
+			[1, 0, 0],
+			[0, 1, 0],
+			[0, 0, 1]
+		];
 		const [, yEcl, K] = eclipticAxes;
 
 		s.outline();
@@ -309,7 +312,6 @@ const eclipticFigure = {
 	}
 };
 
-
 /* ==========================================================================
    3. FIGURE 3: EQUATOR AND HORIZON
    Drawn in the equatorial frame, as Figure 3 of page 1.1: the stars, the
@@ -338,16 +340,23 @@ const horizonFigure = {
 			onDraw: () => this.draw()
 		});
 
-		wireSlider(byId('hor-lat'), () => this.update(), value => `${value.toFixed(1)}°`);
-		wireSlider(byId('hor-theta'), () => this.update(), value => `${value.toFixed(1)}°`);
+		wireSlider(
+			byId('hor-lat'),
+			() => this.update(),
+			value => `${value.toFixed(1)}°`
+		);
+		wireSlider(
+			byId('hor-theta'),
+			() => this.update(),
+			value => `${value.toFixed(1)}°`
+		);
 		wirePresets(figure);
 		this.player = wirePlayButton(byId('hor-play'), byId('hor-theta'), PLAY_DEGREES_PER_SECOND);
 
-		buildChoice(byId('hor-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Polaris', 'Canopus'],
-			this.starName, name => {
-				this.starName = name;
-				this.update();
-			});
+		buildChoice(byId('hor-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Polaris', 'Canopus'], this.starName, name => {
+			this.starName = name;
+			this.update();
+		});
 
 		byId('hor-observation').addEventListener('click', () => this.showObservation());
 		this.update();
@@ -357,9 +366,11 @@ const horizonFigure = {
 	showObservation() {
 		this.player.pause();
 		this.starName = OBSERVATION.star;
-		byId('hor-stars').querySelectorAll('button').forEach(button => {
-			button.classList.toggle('active', button.textContent === OBSERVATION.star);
-		});
+		byId('hor-stars')
+			.querySelectorAll('button')
+			.forEach(button => {
+				button.classList.toggle('active', button.textContent === OBSERVATION.star);
+			});
 		byId('hor-lat').value = OBSERVATION.phi;
 		byId('hor-theta').value = OBSERVATION.theta;
 		byId('hor-lat').dispatchEvent(new Event('input'));
@@ -434,7 +445,12 @@ const horizonFigure = {
 		s.circle(south, east, { color: COL.deferent, width: 2 });
 		s.circle(south, zenith, { color: COL.muted, width: 1, dash: [2, 4] });
 
-		[['S', south], ['E', east], ['N', negate(south)], ['W', negate(east)]].forEach(([name, point]) => {
+		[
+			['S', south],
+			['E', east],
+			['N', negate(south)],
+			['W', negate(east)]
+		].forEach(([name, point]) => {
 			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
@@ -462,7 +478,6 @@ const horizonFigure = {
 	}
 };
 
-
 /* ==========================================================================
    4. FIGURE 4: THE NUTATION ERROR
    A static figure: no controls. Each day of 2026, the reference Sun's
@@ -475,11 +490,17 @@ const horizonFigure = {
    ========================================================================== */
 
 const NUTATION_YEAR = 2026;
-const NUTATION_Y_RANGE = [-12, 12];     // arcseconds
+const NUTATION_Y_RANGE = [-12, 12]; // arcseconds
 
 /* x ticks at the first of every other month (day of the year 2026). */
 const MONTH_TICKS = [
-	[0, 'Jan'], [59, 'Mar'], [120, 'May'], [181, 'Jul'], [243, 'Sep'], [304, 'Nov'], [365, '']
+	[0, 'Jan'],
+	[59, 'Mar'],
+	[120, 'May'],
+	[181, 'Jul'],
+	[243, 'Sep'],
+	[304, 'Nov'],
+	[365, '']
 ];
 
 /* The errors of each day of the year (arcseconds). */
@@ -529,13 +550,28 @@ const nutationFigure = {
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
-		p.curve(xs, this.days.map(d => d.deps), envelope);
-		p.curve(xs, this.days.map(d => -d.deps), envelope);
-		p.curve(xs, this.days.map(d => d.dDec), { color: COL.planet, width: 2.5 });
-		p.curve(xs, this.days.map(d => d.dRA), { color: COL.epicycle, width: 2.5 });
+		p.curve(
+			xs,
+			this.days.map(d => d.deps),
+			envelope
+		);
+		p.curve(
+			xs,
+			this.days.map(d => -d.deps),
+			envelope
+		);
+		p.curve(
+			xs,
+			this.days.map(d => d.dDec),
+			{ color: COL.planet, width: 2.5 }
+		);
+		p.curve(
+			xs,
+			this.days.map(d => d.dRA),
+			{ color: COL.epicycle, width: 2.5 }
+		);
 	}
 };
-
 
 /* ==========================================================================
    5. PAGE START

@@ -26,7 +26,6 @@
    ========================================================================== */
 
 const Diurnal = (function () {
-
 	/* ======================================================================
 	   1. ROTATION RATE
 	   The sky turns 360.98564736629° per day of clock time (UT), the rate
@@ -37,7 +36,6 @@ const Diurnal = (function () {
 	const DEGREES_PER_DAY = 360.98564736629;
 	const DEGREES_PER_HOUR = DEGREES_PER_DAY / 24;
 	const TURN_HOURS = 360 / DEGREES_PER_HOUR;
-
 
 	/* ======================================================================
 	   2. FRAMES
@@ -68,7 +66,6 @@ const Diurnal = (function () {
 	function hourAngle(theta, ra) {
 		return norm180(theta - ra);
 	}
-
 
 	/* ======================================================================
 	   3. ALTITUDE, CULMINATIONS, RISING
@@ -111,7 +108,7 @@ const Diurnal = (function () {
 		const denominator = cos(phi) * cos(dec);
 
 		if (Math.abs(denominator) < 1e-12) {
-			return classify(dec, phi, h0) === 'circumpolar' ? 180 : 0;    // at a pole
+			return classify(dec, phi, h0) === 'circumpolar' ? 180 : 0; // at a pole
 		}
 
 		const c = (sin(h0) - sin(phi) * sin(dec)) / denominator;
@@ -131,7 +128,6 @@ const Diurnal = (function () {
 	function fractionAbove(dec, phi, h0 = 0) {
 		return risingHourAngle(dec, phi, h0) / 180;
 	}
-
 
 	/* ======================================================================
 	   4. EXPORT
