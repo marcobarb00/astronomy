@@ -135,7 +135,7 @@ const skyFigure = {
 
 		// Vega and its daily circle
 		s.smallCircle(st.pole, 90 - VEGA.dec, { color: COL.planet, width: 1.5, dash: [5, 4] });
-		s.point(st.vega, { color: COL.planet, radius: 4 });
+		s.star(st.vega, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.label('Vega', st.vega, { color: COL.planet });
 
 		// the Sun
@@ -151,7 +151,7 @@ const skyFigure = {
 		s.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
 
 		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.08), { color: COL.deferent, dx: -5, dy: 5 });
+			s.label(name, scale(point, 1.08), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
 		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });

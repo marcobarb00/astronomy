@@ -9,9 +9,10 @@
 	 2. Angles                (trigonometry in degrees, wrapping)
 	 3. Vectors and matrices  (3D vectors, spherical <-> cartesian, rotations)
 	 4. Formatting helpers    (degrees, sexagesimal, hours, days, TeX)
-	 5. Colour helpers        (translucent versions of the palette)
-	 6. DOM and KaTeX helpers
-	 7. UI wiring helpers     (sliders, presets, choice buttons, play button)
+	 5. Colour helpers        (translucent versions, text colours)
+	 6. Drawing helpers       (four-pointed stars, canvas fonts)
+	 7. DOM and KaTeX helpers
+	 8. UI wiring helpers     (sliders, presets, choice buttons, play button)
    ========================================================================== */
 
 
@@ -19,18 +20,38 @@
    1. CONSTANTS AND SHARED PALETTE
    ========================================================================== */
 
-/* Shared palette - must mirror the :root variables in the CSS. */
+/* Shared palette (STYLE.md §2) - must mirror the :root variables in
+   shared/theme.css. Figure colours come in two kinds: the line colour
+   (strokes and fills only) and its text colour (labels), which is at
+   least 4.5:1 on the page background. */
 const COL = {
-	bg:       '#f6f4ef',
-	card:     '#ffffff',
-	ink:      '#2f3440',
-	muted:    '#7b8190',
-	line:     '#e2ded4',
-	earth:    '#6f9bd1',
-	planet:   '#d77a7a',
-	sun:      '#e6b450',
-	deferent: '#8fbf9f',
-	epicycle: '#a58bd0'
+	// page
+	bg:           '#f3eee2',   // parchment
+	card:         '#f7f3ea',   // inside figures and frames
+	ink:          '#1d2a44',   // text, rules, frames, outlines
+	muted:        '#5b6475',   // secondary text
+	line:         '#c9bc9c',   // light rules, grid lines
+	accent:       '#7a5718',   // labels, Play, links
+
+	// figures: line colours
+	earth:        '#2f5687',   // celestial equator, Earth
+	planet:       '#a23b2e',   // object of interest
+	sun:          '#b8862b',   // Sun, ecliptic
+	deferent:     '#4d7a55',   // horizon, deferent
+	epicycle:     '#6e5a9a',   // epicycle, Ptolemy's circles
+
+	// figures: text colours of the same elements
+	earthText:    '#2f5687',
+	planetText:   '#8d2f24',
+	sunText:      '#7a5718',
+	deferentText: '#3e6346',
+	epicycleText: '#5e4a87',
+
+	// the blue plate (static sky charts only, STYLE.md §7)
+	plate:        '#1f3a6b',
+	plateInk:     '#eef3fb',
+	plateSoft:    '#c9d5ea',
+	plateAccent:  '#f2c96b'
 };
 
 const TAU = 2 * Math.PI;
@@ -317,9 +338,137 @@ function withAlpha(hex, alpha) {
 	return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+/* The text colour that goes with a line colour (STYLE.md §2): a label
+   drawn in a figure's colour uses its darker text version, so that it
+   stays readable. Any other colour is returned unchanged. */
+const TEXT_COLOURS = {
+	[COL.earth]: COL.earthText,
+	[COL.planet]: COL.planetText,
+	[COL.sun]: COL.sunText,
+	[COL.deferent]: COL.deferentText,
+	[COL.epicycle]: COL.epicycleText
+};
+
+function textColor(color) {
+	return TEXT_COLOURS[color] ?? color;
+}
+
 
 /* ==========================================================================
-   6. DOM AND KATEX HELPERS
+   6. DRAWING HELPERS
+   ========================================================================== */
+
+/* ---------- Four-pointed stars (STYLE.md §5) ----------
+   Every star in every figure is drawn by drawStar: never as a dot. */
+
+/* The inner corners of the star sit at this fraction of its half-size. */
+const STAR_WAIST = 0.28;
+
+/* Half-size s (px) of a star's mark from its V magnitude: linear from
+   STAR_SIZE_BRIGHT at STAR_MAG_BRIGHT to STAR_SIZE_FAINT at
+   STAR_MAG_FAINT, and clamped there. The chosen star of a figure is drawn
+   at STAR_SIZE_CHOSEN, larger than any background star. */
+const STAR_MAG_BRIGHT = -1.5;     // Sirius is -1.46
+const STAR_MAG_FAINT = 5.5;       // sigma Octantis is 5.42
+const STAR_SIZE_BRIGHT = 8;
+const STAR_SIZE_FAINT = 3;
+const STAR_SIZE_CHOSEN = 9;
+
+function starSize(mag) {
+	const t = clamp((mag - STAR_MAG_BRIGHT) / (STAR_MAG_FAINT - STAR_MAG_BRIGHT), 0, 1);
+
+	return lerp(STAR_SIZE_BRIGHT, STAR_SIZE_FAINT, t);
+}
+
+/* The eight corners of a four-pointed star centred on (x, y), half-size s:
+   the four points (north, east, south, west) and the four waists. */
+function starCorners(x, y, s) {
+	const w = STAR_WAIST * s;
+
+	return [
+		[x, y - s], [x + w, y - w], [x + s, y], [x + w, y + w],
+		[x, y + s], [x - w, y + w], [x - s, y], [x - w, y - w]
+	];
+}
+
+/* The same star as an SVG path ("M x y L ... Z"). */
+function starPath(x, y, s) {
+	const parts = starCorners(x, y, s).map((p, i) => {
+		const command = (i === 0) ? 'M' : 'L';
+
+		return `${command}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+	});
+
+	return parts.join(' ') + ' Z';
+}
+
+/* Fill a four-pointed star on a canvas with the current fillStyle.
+   ring (a colour, optional) first strokes a thin halo of that colour, so
+   the star stands out from a line drawn under it. */
+function drawStar(ctx, x, y, s, ring = null) {
+	ctx.beginPath();
+
+	starCorners(x, y, s).forEach((p, i) => {
+		if (i === 0) {
+			ctx.moveTo(p[0], p[1]);
+		} else {
+			ctx.lineTo(p[0], p[1]);
+		}
+	});
+
+	ctx.closePath();
+
+	if (ring) {
+		ctx.save();
+		ctx.strokeStyle = ring;
+		ctx.lineWidth = 3;
+		ctx.lineJoin = 'round';
+		ctx.stroke();
+		ctx.restore();
+	}
+
+	ctx.fill();
+}
+
+/* ---------- Canvas fonts (STYLE.md §3) ----------
+   Labels in figures: names (Vega, meridian, never sets) in Cormorant SC,
+   symbols (P, Z, gamma, theta, 90° - a) in Cormorant Garamond italic, as
+   variables are in the text. Ticks and axis titles in Spectral. */
+const FONT_NAME = '600 17px "Cormorant SC", Georgia, serif';
+const FONT_SYMBOL = 'italic 500 21px "Cormorant Garamond", Georgia, serif';
+const FONT_TICK = '13px Spectral, Georgia, serif';
+const FONT_AXIS = 'italic 15px Spectral, Georgia, serif';
+
+/* The font of a label: a name when it holds a word (two lower-case
+   letters in a row), a symbol otherwise. kind ('name' or 'symbol')
+   overrides the guess, e.g. for the cardinal points N, E, S, W. */
+function labelFont(text, kind = null) {
+	const isName = kind ? kind === 'name' : /[a-z]{2}/.test(text);
+
+	return isName ? FONT_NAME : FONT_SYMBOL;
+}
+
+/* A promise that resolves once the fonts used on canvases are loaded (a
+   canvas does not redraw by itself when a web font arrives). Figures call
+   it and redraw; it is created on first use, so loading common.js in
+   Node touches nothing. */
+let canvasFontsPromise = null;
+
+function whenCanvasFontsReady() {
+	if (canvasFontsPromise === null) {
+		const fonts = (typeof document !== 'undefined') ? document.fonts : null;
+
+		canvasFontsPromise = fonts ?
+			Promise.all([FONT_NAME, FONT_SYMBOL, FONT_TICK, FONT_AXIS].map(font => fonts.load(font))).catch(() => {}) :
+			Promise.resolve();
+	}
+
+	return canvasFontsPromise;
+}
+
+
+/* ==========================================================================
+   7. DOM AND KATEX HELPERS
    ========================================================================== */
 
 const byId = id => document.getElementById(id);
@@ -397,7 +546,7 @@ function showLines(containerId, lines) {
 
 
 /* ==========================================================================
-   7. UI WIRING HELPERS
+   8. UI WIRING HELPERS
    Generic behaviour shared by every figure. Each helper receives a callback
    (onChange) so it does not need to know which page it is on.
    ========================================================================== */
@@ -544,10 +693,16 @@ function buildChoice(container, names, chosen, onChoose) {
    from the slider, so a slider with a coarse step (one day) still advances
    by the small amount of each frame. options: playLabel, pauseLabel (the
    two texts of the button), onPlay (called when it starts, e.g. to pause
-   another player of the same figure). Returns { pause }. */
+   another player of the same figure). The button shows a small play or
+   pause icon (inline SVG, STYLE.md §8) before its label. Returns { pause }. */
+const PLAY_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+	'<path d="M2 1 L11 6 L2 11 Z" fill="currentColor"></path></svg>';
+const PAUSE_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+	'<path d="M2 1 H5 V11 H2 Z M7 1 H10 V11 H7 Z" fill="currentColor"></path></svg>';
+
 function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
-	const playLabel = options.playLabel ?? '▶ play';
-	const pauseLabel = options.pauseLabel ?? '❚❚ pause';
+	const playLabel = options.playLabel ?? 'Play';
+	const pauseLabel = options.pauseLabel ?? 'Pause';
 	let playing = false;
 	let lastTime = null;
 	let position = 0;
@@ -579,7 +734,7 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 		playing = on;
 		lastTime = null;
 		position = Number(slider.value);
-		button.textContent = on ? pauseLabel : playLabel;
+		button.innerHTML = on ? `${PAUSE_ICON}<span>${pauseLabel}</span>` : `${PLAY_ICON}<span>${playLabel}</span>`;
 		button.setAttribute('aria-pressed', on ? 'true' : 'false');
 
 		if (on) {

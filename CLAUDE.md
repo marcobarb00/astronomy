@@ -30,10 +30,21 @@ can be hosted on a GitHub page.
 The simulations are generated in multiple sessions, so they must all have the
 same style:
 
-- Light theme, soft palette.
-- The `:root` CSS variables at the top (background, card, ink,
-  earth / planet / sun / deferent / epicycle colours) and the shared `COL`
-  palette in the JS are the shared theme: reuse them, do not invent new colours.
+- Every page follows `STYLE.md`, the visual style of the site (a star
+  atlas: navy ink on parchment). Read it, and look at
+  `design/references/index.html`, before writing a page or a figure.
+- The palette is the one of `STYLE.md` §2: the `:root` CSS variables in
+  `shared/theme.css` and the `COL` palette in `shared/common.js` hold it, in
+  sync. Reuse them, do not invent new colours. A label in a figure uses the
+  text colour of its line colour (`textColor`, `--*-text`).
+- Use the shared pieces, never a page's own copy: the graduated frame
+  around every figure (`<div class="frame">`, built by `GraduatedFrame` in
+  `shared/components.js`), four-pointed stars (`drawStar` in
+  `shared/common.js`, `Sphere3D.star`, `Plot2D.star`; a star is never a
+  dot), margin notes for origins and detours (`<div class="row">` with an
+  `<aside>`, see `templates/page.html`), and the blue plate for a static
+  chart of the sky (`shared/plate.js`, at most one per page, `STYLE.md` §7;
+  see Figure 1 of pages 1.1 and 1.2).
 - Format the equations with KaTeX.
 - Only when it is useful, generate 3D diagrams.
 
@@ -57,12 +68,12 @@ same style:
   about. An observer's sky is drawn in the horizon frame: changing the date,
   the time or the latitude turns the sky, never the ground.
 - Text in and next to a figure is easy to read: read-outs and slider values
-  at the size of the body text, labels drawn on a canvas at 13 px or more.
+  at 16 px (`STYLE.md` §3), labels drawn on a canvas at 13 px or more.
   The shared theme and `plot2d.js` / `sphere3d.js` already do this; do not
   shrink them per page.
 - A legend sample looks like the mark it describes: a dot for a point, a line
   for a curve, a band for a filled region, faint and dashed for a ghost
-  (`Plot2D.legend` takes `mark: 'line' | 'dot' | 'band'`).
+  (`Plot2D.legend` takes `mark: 'line' | 'dot' | 'band' | 'star'`).
 - A control never moves under the pointer. The value beside a slider sits in
   a fixed-width column (`--ctl-output` in `shared/theme.css`): never let it
   follow its text, or the track resizes while dragging and the value
