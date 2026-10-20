@@ -29,6 +29,8 @@
 	<script defer src="../../shared/time.js"></script>
 	<script defer src="../../shared/ephemeris.js"></script>
 	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
 	<script defer src="../../shared/models/diurnal.js"></script>
 	<script defer src="../../shared/sphere3d.js"></script>
 	<script defer src="../../shared/plot2d.js"></script>
@@ -109,7 +111,51 @@
 			from Rhodes but never from Rome.
 		</p>
 
-		<!-- Figure 1: the observer's sky -->
+		<!-- Figure 1: the sky around the pole, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-pole"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">The sky around the pole</div>
+					<p>
+						The northern sky of 2026 around the celestial pole, as seen from
+						the ground looking up. In one sidereal day every star turns once
+						about the centre, anticlockwise in this view.
+					</p>
+					<p>
+						<span class="hl">Dashed circle:</span> declination 48.1°, that is
+						$90^\circ - \varphi$ for Rome. The stars inside it never set at
+						Rome; Capella, just outside, dips below the horizon.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>P</dt>
+						<dd>the north celestial pole, at the centre; Polaris is 0.63° from it</dd>
+						<dt>ring</dt>
+						<dd>right ascension in hours, increasing clockwise as seen from the ground</dd>
+						<dt>circles</dt>
+						<dd>declination every 10°, from +30° to +80° (labelled +40°, +60°, +80°); the chart ends at +25°</dd>
+						<dt>radial lines</dt>
+						<dd>right ascension every 2 hours</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
+						<dt>star lines</dt>
+						<dd>the usual figures of five constellations, named in capitals</dd>
+						<dt>stipple</dt>
+						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
+						<dt>dashed circle</dt>
+						<dd>declination 48.1° (highlighted): inside it, the stars that never set at Rome</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- Figure 2: the observer's sky -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -337,7 +383,7 @@
 		</div>
 
 		<p>
-			Every result on this page, and the altitude read-out of Figure 1,
+			Every result on this page, and the altitude read-out of Figure 2,
 			follows from this formula.
 		</p>
 
@@ -378,7 +424,7 @@
 			</aside>
 		</div>
 
-		<!-- Figure 2: the same sky seen from outside -->
+		<!-- Figure 3: the same sky seen from outside -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -406,7 +452,7 @@
 			</div>
 			<figcaption>
 				The same sky seen from outside, with the stars held still and the Earth
-				turning instead. Give it the time and latitude of Figure 1: the altitude
+				turning instead. Give it the time and latitude of Figure 2: the altitude
 				comes out the same.
 			</figcaption>
 			<div class="keys">
@@ -418,7 +464,7 @@
 						<dt class="c-earth">equator</dt>
 						<dd>the great circle 90° from P</dd>
 						<dt class="c-muted">stars</dt>
-						<dd>the bright stars of Figure 1, fixed</dd>
+						<dd>the bright stars of Figure 2, fixed</dd>
 						<dt class="c-deferent">Z</dt>
 						<dd>the observer's zenith; the Earth's turn carries it eastward (arrow) along the dashed circle, $90^\circ - \varphi$ from P</dd>
 						<dt class="c-deferent">horizon</dt>
@@ -482,7 +528,7 @@
 			As the sky turns, that star stays at the same distance from P, so it
 			never gets as far as the horizon. Its mirror image around the south pole
 			holds the stars that never rise. Both are the dashed purple circles of
-			Figure 1.
+			Figure 2.
 		</p>
 
 		<p>
@@ -506,7 +552,7 @@
 			(<em>Almagest</em> I 8), and why the Sun on it gives equal day and night.
 		</p>
 
-		<!-- Figure 3: the day of a star -->
+		<!-- Figure 4: the day of a star -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -681,12 +727,12 @@
 		<p>
 			The model's star is at its true altitude $a$; the sky shows it at $a +
 			R$. So the model's error is $\Delta a = a_\text{model} - a_\text{real} =
-			-R$: Figure 4 is the refraction itself, followed through one turn of the
+			-R$: Figure 5 is the refraction itself, followed through one turn of the
 			sky. It is plotted as an error, model minus sky, as every error on this
 			site will be.
 		</p>
 
-		<!-- Figure 4: the model against the sky -->
+		<!-- Figure 5: the model against the sky -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -801,7 +847,7 @@
 			<p>
 				Show that, for $\varphi > 0$, a star never sets exactly when $\delta >
 				90^\circ - \varphi$, and never rises exactly when $\delta < \varphi -
-				90^\circ$. Then, with Figure 1, sort Dubhe, Capella, Deneb, Vega and
+				90^\circ$. Then, with Figure 2, sort Dubhe, Capella, Deneb, Vega and
 				Canopus at Rhodes ($36^\circ$), Rome ($41.9^\circ$) and London
 				($51.5^\circ$).
 			</p>
@@ -853,7 +899,7 @@
 				(b) Ptolemy takes Rhodes at $\varphi = 36^\circ$ with the obliquity
 				$\varepsilon = 23^\circ 51' 20''$ ($23.856^\circ$), the Sun's declination
 				at the summer solstice. Find the longest day (<em>Almagest</em> II 2–3).
-				Check both in Figure 3.
+				Check both in Figure 4.
 			</p>
 			<details class="hint">
 				<p>
