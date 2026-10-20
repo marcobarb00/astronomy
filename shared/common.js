@@ -15,7 +15,6 @@
 	 8. UI wiring helpers     (sliders, presets, choice buttons, play button)
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS AND SHARED PALETTE
    ========================================================================== */
@@ -26,32 +25,32 @@
    least 4.5:1 on the page background. */
 const COL = {
 	// page
-	bg:           '#f3eee2',   // parchment
-	card:         '#f7f3ea',   // inside figures and frames
-	ink:          '#1d2a44',   // text, rules, frames, outlines
-	muted:        '#5b6475',   // secondary text
-	line:         '#c9bc9c',   // light rules, grid lines
-	accent:       '#7a5718',   // labels, Play, links
+	bg: '#f3eee2', // parchment
+	card: '#f7f3ea', // inside figures and frames
+	ink: '#1d2a44', // text, rules, frames, outlines
+	muted: '#5b6475', // secondary text
+	line: '#c9bc9c', // light rules, grid lines
+	accent: '#7a5718', // labels, Play, links
 
 	// figures: line colours
-	earth:        '#2f5687',   // celestial equator, Earth
-	planet:       '#a23b2e',   // object of interest
-	sun:          '#b8862b',   // Sun, ecliptic
-	deferent:     '#4d7a55',   // horizon, deferent
-	epicycle:     '#6e5a9a',   // epicycle, Ptolemy's circles
+	earth: '#2f5687', // celestial equator, Earth
+	planet: '#a23b2e', // object of interest
+	sun: '#b8862b', // Sun, ecliptic
+	deferent: '#4d7a55', // horizon, deferent
+	epicycle: '#6e5a9a', // epicycle, Ptolemy's circles
 
 	// figures: text colours of the same elements
-	earthText:    '#2f5687',
-	planetText:   '#8d2f24',
-	sunText:      '#7a5718',
+	earthText: '#2f5687',
+	planetText: '#8d2f24',
+	sunText: '#7a5718',
 	deferentText: '#3e6346',
 	epicycleText: '#5e4a87',
 
 	// the blue plate (static sky charts only, STYLE.md §7)
-	plate:        '#1f3a6b',
-	plateInk:     '#eef3fb',
-	plateSoft:    '#c9d5ea',
-	plateAccent:  '#f2c96b'
+	plate: '#1f3a6b',
+	plateInk: '#eef3fb',
+	plateSoft: '#c9d5ea',
+	plateAccent: '#f2c96b'
 };
 
 const TAU = 2 * Math.PI;
@@ -63,7 +62,6 @@ const R2D = 180 / Math.PI;
 const EPS = 23 + 26 / 60;
 
 const ORIGIN = [0, 0, 0];
-
 
 /* ==========================================================================
    2. ANGLES
@@ -95,7 +93,6 @@ const norm360 = x => ((x % 360) + 360) % 360;
 /* Angle in [-180, 180): the signed difference of two longitudes. */
 const norm180 = x => norm360(x + 180) - 180;
 
-
 /* ==========================================================================
    3. VECTORS AND MATRICES
    Vectors are plain arrays [x, y, z]; matrices are arrays of three rows.
@@ -110,11 +107,7 @@ const dot3 = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const length3 = v => Math.sqrt(dot3(v, v));
 
 function cross3(a, b) {
-	return [
-		a[1] * b[2] - a[2] * b[1],
-		a[2] * b[0] - a[0] * b[2],
-		a[0] * b[1] - a[1] * b[0]
-	];
+	return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 }
 
 function normalize3(v) {
@@ -132,11 +125,7 @@ function lin2(a, b, x, y) {
 
 /* Unit vector (times r) with longitude lon and latitude lat in the base frame. */
 function fromLonLat(lon, lat, r = 1) {
-	return [
-		r * cos(lat) * cos(lon),
-		r * cos(lat) * sin(lon),
-		r * sin(lat)
-	];
+	return [r * cos(lat) * cos(lon), r * cos(lat) * sin(lon), r * sin(lat)];
 }
 
 /* Inverse of fromLonLat: { lon in [0, 360), lat, r }. */
@@ -196,16 +185,17 @@ function matApply(m, v) {
 /* Product of two or more matrices, left to right: matMul(A, B, C) = A B C. */
 function matMul(...matrices) {
 	return matrices.reduce((a, b) => {
-		return a.map(row => [0, 1, 2].map(j => {
-			return row[0] * b[0][j] + row[1] * b[1][j] + row[2] * b[2][j];
-		}));
+		return a.map(row =>
+			[0, 1, 2].map(j => {
+				return row[0] * b[0][j] + row[1] * b[1][j] + row[2] * b[2][j];
+			})
+		);
 	});
 }
 
 function transpose(m) {
 	return [0, 1, 2].map(i => [m[0][i], m[1][i], m[2][i]]);
 }
-
 
 /* ==========================================================================
    4. FORMATTING HELPERS
@@ -314,14 +304,13 @@ const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
 /* "lhs=c0\,\mathbf a+c1\,\mathbf b+c2\,\mathbf c" from [[coefficient, axisName], ...] */
 function texLinear(lhs, terms) {
 	const pieces = terms.map(([coefficient, axisName], i) => {
-		const number = (i === 0) ? fmt3(coefficient) : signed3(coefficient);
+		const number = i === 0 ? fmt3(coefficient) : signed3(coefficient);
 
 		return `${number}\\,\\mathbf ${axisName}`;
 	});
 
 	return `${lhs}=${pieces.join('')}`;
 }
-
 
 /* ==========================================================================
    5. COLOUR HELPERS
@@ -353,7 +342,6 @@ function textColor(color) {
 	return TEXT_COLOURS[color] ?? color;
 }
 
-
 /* ==========================================================================
    6. DRAWING HELPERS
    ========================================================================== */
@@ -368,8 +356,8 @@ const STAR_WAIST = 0.28;
    STAR_SIZE_BRIGHT at STAR_MAG_BRIGHT to STAR_SIZE_FAINT at
    STAR_MAG_FAINT, and clamped there. The chosen star of a figure is drawn
    at STAR_SIZE_CHOSEN, larger than any background star. */
-const STAR_MAG_BRIGHT = -1.5;     // Sirius is -1.46
-const STAR_MAG_FAINT = 5.5;       // sigma Octantis is 5.42
+const STAR_MAG_BRIGHT = -1.5; // Sirius is -1.46
+const STAR_MAG_FAINT = 5.5; // sigma Octantis is 5.42
 const STAR_SIZE_BRIGHT = 8;
 const STAR_SIZE_FAINT = 3;
 const STAR_SIZE_CHOSEN = 9;
@@ -386,15 +374,21 @@ function starCorners(x, y, s) {
 	const w = STAR_WAIST * s;
 
 	return [
-		[x, y - s], [x + w, y - w], [x + s, y], [x + w, y + w],
-		[x, y + s], [x - w, y + w], [x - s, y], [x - w, y - w]
+		[x, y - s],
+		[x + w, y - w],
+		[x + s, y],
+		[x + w, y + w],
+		[x, y + s],
+		[x - w, y + w],
+		[x - s, y],
+		[x - w, y - w]
 	];
 }
 
 /* The same star as an SVG path ("M x y L ... Z"). */
 function starPath(x, y, s) {
 	const parts = starCorners(x, y, s).map((p, i) => {
-		const command = (i === 0) ? 'M' : 'L';
+		const command = i === 0 ? 'M' : 'L';
 
 		return `${command}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
 	});
@@ -456,16 +450,15 @@ let canvasFontsPromise = null;
 
 function whenCanvasFontsReady() {
 	if (canvasFontsPromise === null) {
-		const fonts = (typeof document !== 'undefined') ? document.fonts : null;
+		const fonts = typeof document !== 'undefined' ? document.fonts : null;
 
-		canvasFontsPromise = fonts ?
-			Promise.all([FONT_NAME, FONT_SYMBOL, FONT_TICK, FONT_AXIS].map(font => fonts.load(font))).catch(() => {}) :
-			Promise.resolve();
+		canvasFontsPromise = fonts
+			? Promise.all([FONT_NAME, FONT_SYMBOL, FONT_TICK, FONT_AXIS].map(font => fonts.load(font))).catch(() => {})
+			: Promise.resolve();
 	}
 
 	return canvasFontsPromise;
 }
-
 
 /* ==========================================================================
    7. DOM AND KATEX HELPERS
@@ -544,7 +537,6 @@ function showLines(containerId, lines) {
 	}
 }
 
-
 /* ==========================================================================
    8. UI WIRING HELPERS
    Generic behaviour shared by every figure. Each helper receives a callback
@@ -602,10 +594,10 @@ function applyPreset(button) {
 
 /* Press and hold on a step button: one step at once, then, after a
    pause, repeated steps that speed up (milliseconds). */
-const STEP_HOLD_DELAY = 400;       // before the first repeat
-const STEP_REPEAT_START = 150;     // first interval between repeats
-const STEP_REPEAT_FASTEST = 25;    // shortest interval (40 steps per second)
-const STEP_REPEAT_FACTOR = 0.85;   // each interval is this times the previous
+const STEP_HOLD_DELAY = 400; // before the first repeat
+const STEP_REPEAT_START = 150; // first interval between repeats
+const STEP_REPEAT_FASTEST = 25; // shortest interval (40 steps per second)
+const STEP_REPEAT_FACTOR = 0.85; // each interval is this times the previous
 
 /* A step button repeats while held (mouse, pen or finger). The click that
    follows a press is ignored, so a short press is still exactly one step;
@@ -642,12 +634,12 @@ function wireStepButton(button) {
 
 	button.addEventListener('pointercancel', () => {
 		stop();
-		pressed = false;      // no click follows a cancelled press
+		pressed = false; // no click follows a cancelled press
 	});
 
 	button.addEventListener('click', () => {
 		if (pressed) {
-			pressed = false;  // already stepped on pointerdown
+			pressed = false; // already stepped on pointerdown
 			return;
 		}
 
@@ -695,9 +687,11 @@ function buildChoice(container, names, chosen, onChoose) {
    two texts of the button), onPlay (called when it starts, e.g. to pause
    another player of the same figure). The button shows a small play or
    pause icon (inline SVG, STYLE.md §8) before its label. Returns { pause }. */
-const PLAY_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+const PLAY_ICON =
+	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 L11 6 L2 11 Z" fill="currentColor"></path></svg>';
-const PAUSE_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+const PAUSE_ICON =
+	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 H5 V11 H2 Z M7 1 H10 V11 H7 Z" fill="currentColor"></path></svg>';
 
 function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
@@ -716,7 +710,7 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 			const min = Number(slider.min);
 			const max = Number(slider.max);
 
-			position += (now - lastTime) / 1000 * unitsPerSecond;
+			position += ((now - lastTime) / 1000) * unitsPerSecond;
 
 			if (position > max) {
 				position = min + (position - max);

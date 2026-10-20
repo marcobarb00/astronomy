@@ -28,7 +28,6 @@ const ROOT = path.join(__dirname, '..', '..');
 /* The key under which a loaded object hands back its vm context. */
 const CONTEXT = Symbol('context');
 
-
 /* ==========================================================================
    1. THE BROWSER STAND-IN
    ========================================================================== */
@@ -56,7 +55,6 @@ function browserStub() {
 	};
 }
 
-
 /* ==========================================================================
    2. LOADING FILES AND PAGES
    ========================================================================== */
@@ -76,9 +74,12 @@ function loadFiles(files) {
 		vm.runInContext(source, context, { filename: file });
 	});
 
-	return new Proxy({}, {
-		get: (target, name) => (name === CONTEXT ? context : vm.runInContext(String(name), context))
-	});
+	return new Proxy(
+		{},
+		{
+			get: (target, name) => (name === CONTEXT ? context : vm.runInContext(String(name), context))
+		}
+	);
 }
 
 /* The local scripts of a page (path from the root), in the order of its
@@ -107,7 +108,6 @@ function inContext(names, expression) {
 function fireDomContentLoaded(names) {
 	names[CONTEXT].__domContentLoaded.forEach(handler => handler());
 }
-
 
 /* ==========================================================================
    3. EXPORT

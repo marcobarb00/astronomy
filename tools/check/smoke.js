@@ -47,7 +47,6 @@ const path = require('path');
 const http = require('http');
 const childProcess = require('child_process');
 
-
 /* ==========================================================================
    1. SETTINGS
    ========================================================================== */
@@ -82,7 +81,6 @@ function loadPlaywright() {
 		return require(path.join(globalRoot, 'playwright'));
 	}
 }
-
 
 /* ==========================================================================
    2. STATIC SERVER
@@ -125,7 +123,9 @@ function startServer(root) {
 			return;
 		}
 
-		response.writeHead(200, { 'Content-Type': MIME[path.extname(file).toLowerCase()] ?? 'application/octet-stream' });
+		response.writeHead(200, {
+			'Content-Type': MIME[path.extname(file).toLowerCase()] ?? 'application/octet-stream'
+		});
 		fs.createReadStream(file).pipe(response);
 	});
 
@@ -135,7 +135,6 @@ function startServer(root) {
 		});
 	});
 }
-
 
 /* ==========================================================================
    3. PAGES AND ERRORS
@@ -161,7 +160,10 @@ function findPages(root, folder = '') {
 /* A file name for a page: "act1-stage/01-turning-sky/index.html" ->
    "act1-stage_01-turning-sky". */
 function slug(page) {
-	return page.replace(/\/index\.html$/, '').replace(/\.html$/, '').replace(/[\\/]/g, '_');
+	return page
+		.replace(/\/index\.html$/, '')
+		.replace(/\.html$/, '')
+		.replace(/[\\/]/g, '_');
 }
 
 /* Collect every problem the page reports into 'problems'. */
@@ -220,9 +222,12 @@ async function openPage(page, url) {
 
 /* Two animation frames and a short pause. */
 async function settle(page, ms = SETTLE_MS) {
-	await page.evaluate(() => new Promise(resolve => {
-		requestAnimationFrame(() => requestAnimationFrame(resolve));
-	}));
+	await page.evaluate(
+		() =>
+			new Promise(resolve => {
+				requestAnimationFrame(() => requestAnimationFrame(resolve));
+			})
+	);
 	await page.waitForTimeout(ms);
 }
 
@@ -254,7 +259,6 @@ async function checkTests(page, problems) {
 	}
 }
 
-
 /* ==========================================================================
    4. READ-OUTS
    What a figure shows in words: each read-out line as its TeX source (or
@@ -267,7 +271,8 @@ async function checkTests(page, problems) {
 function readoutsInPage(selector) {
 	const element = selector ? document.querySelector(selector) : null;
 	const scope = element?.closest('figure') ?? element?.closest('.errorcurve') ?? document.body;
-	const name = node => (node.id ? `#${node.id}` : node.className ? `.${String(node.className).split(' ')[0]}` : node.tagName);
+	const name = node =>
+		node.id ? `#${node.id}` : node.className ? `.${String(node.className).split(' ')[0]}` : node.tagName;
 	const lineText = line => {
 		const tex = line.querySelector('annotation[encoding="application/x-tex"]');
 
@@ -276,10 +281,10 @@ function readoutsInPage(selector) {
 	const result = [];
 
 	scope.querySelectorAll('.readout, output, .errorcurve-readout, #summary').forEach(node => {
-		const parts = node.classList.contains('readout') ?
-			[...node.querySelectorAll(':scope > .eq')].map(lineText) :
-			[node.textContent.trim()];
-		const owner = node.tagName === 'OUTPUT' ? node.parentElement.querySelector('input')?.id ?? '' : '';
+		const parts = node.classList.contains('readout')
+			? [...node.querySelectorAll(':scope > .eq')].map(lineText)
+			: [node.textContent.trim()];
+		const owner = node.tagName === 'OUTPUT' ? (node.parentElement.querySelector('input')?.id ?? '') : '';
 
 		result.push(`${name(node)}${owner ? ` (${owner})` : ''}: ${parts.join(' | ')}`);
 	});
@@ -294,7 +299,6 @@ async function logReadouts(page, log, heading, selector = null) {
 	log.push(`  ${heading}`);
 	found.forEach(line => log.push(`    ${line}`));
 }
-
 
 /* ==========================================================================
    5. EXERCISING THE CONTROLS
@@ -326,13 +330,16 @@ async function openDetails(page, log) {
    return, for each, the selector that finds it and the name the log uses
    (its id, or its kind and index). */
 async function markAll(page, selector, key) {
-	const marked = await page.evaluate(([css, attribute]) => {
-		return [...document.querySelectorAll(css)].map((element, i) => {
-			element.setAttribute(attribute, String(i));
+	const marked = await page.evaluate(
+		([css, attribute]) => {
+			return [...document.querySelectorAll(css)].map((element, i) => {
+				element.setAttribute(attribute, String(i));
 
-			return element.id;
-		});
-	}, [selector, `data-${key}`]);
+				return element.id;
+			});
+		},
+		[selector, `data-${key}`]
+	);
 
 	return marked.map((id, i) => ({
 		selector: `[data-${key}="${i}"]`,
@@ -494,7 +501,6 @@ async function exercise(page, log) {
 	await settle(page);
 }
 
-
 /* ==========================================================================
    6. SCREENSHOTS AND THEIR COMPARISON
    Compared in the browser itself, pixel by pixel, so no image library is
@@ -504,13 +510,14 @@ async function exercise(page, log) {
 
 /* Runs in the page: compare two PNGs given as data URLs, { a, b }. */
 async function comparePngsInPage({ a, b }) {
-	const load = src => new Promise((resolve, reject) => {
-		const image = new Image();
+	const load = src =>
+		new Promise((resolve, reject) => {
+			const image = new Image();
 
-		image.onload = () => resolve(image);
-		image.onerror = reject;
-		image.src = src;
-	});
+			image.onload = () => resolve(image);
+			image.onerror = reject;
+			image.src = src;
+		});
 	const [imageA, imageB] = await Promise.all([load(a), load(b)]);
 
 	if (imageA.width !== imageB.width || imageA.height !== imageB.height) {
@@ -537,7 +544,8 @@ async function comparePngsInPage({ a, b }) {
 	let count = 0;
 
 	for (let i = 0; i < pixelsA.data.length; i += 4) {
-		const same = pixelsA.data[i] === pixelsB.data[i] &&
+		const same =
+			pixelsA.data[i] === pixelsB.data[i] &&
 			pixelsA.data[i + 1] === pixelsB.data[i + 1] &&
 			pixelsA.data[i + 2] === pixelsB.data[i + 2] &&
 			pixelsA.data[i + 3] === pixelsB.data[i + 3];
@@ -599,10 +607,11 @@ async function compareScreenshot(browser, name, before, after) {
 	fs.mkdirSync(path.dirname(diffFile), { recursive: true });
 	fs.writeFileSync(diffFile, Buffer.from(result.image.split(',')[1], 'base64'));
 
-	return `${name}: ${result.count} pixels differ, in x ${left}-${right}, y ${top}-${bottom} ` +
-		`(see ${path.relative(ROOT, diffFile)})`;
+	return (
+		`${name}: ${result.count} pixels differ, in x ${left}-${right}, y ${top}-${bottom} ` +
+		`(see ${path.relative(ROOT, diffFile)})`
+	);
 }
-
 
 /* ==========================================================================
    7. MAIN
@@ -669,8 +678,10 @@ async function capture(browser, root, shotDir, only, label) {
 	const { server, base } = await startServer(root);
 	const site = { root, base };
 	const pages = findPages(root).filter(page => matchesOnly(page, only));
-	const log = ['PREDICTING THE SKY - READ-OUTS (tools/check/smoke.js)',
-		'Regenerate with: node tools/check/smoke.js --update'];
+	const log = [
+		'PREDICTING THE SKY - READ-OUTS (tools/check/smoke.js)',
+		'Regenerate with: node tools/check/smoke.js --update'
+	];
 	const screenshots = [];
 	const failures = [];
 
@@ -724,7 +735,13 @@ async function main() {
 		const againstDir = path.join(OUT_DIR, 'against');
 
 		try {
-			const result = await capture(browser, source.folder, againstDir, options.only, `pages of ${options.against}`);
+			const result = await capture(
+				browser,
+				source.folder,
+				againstDir,
+				options.only,
+				`pages of ${options.against}`
+			);
 
 			before = { dir: againstDir, readouts: result.readouts, label: options.against };
 		} finally {

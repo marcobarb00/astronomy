@@ -41,7 +41,6 @@ const path = require('path');
 const childProcess = require('child_process');
 const { ROOT, loadFiles, loadPage, inContext } = require('./load.js');
 
-
 /* ==========================================================================
    1. LOADING THE CODE (tools/check/load.js)
    ========================================================================== */
@@ -70,7 +69,6 @@ const PAGE_FILES = [
 	'act1-stage/02-frames/index.html',
 	'act1-stage/03-clocks/index.html'
 ];
-
 
 /* ==========================================================================
    2. FORMATTING
@@ -108,7 +106,6 @@ const vec = (v, digits = 12) => `[${v.map(x => num(x, digits)).join(', ')}]`;
 /* A string shown exactly, between quotes. */
 const quote = text => JSON.stringify(text);
 
-
 /* ==========================================================================
    3. TIME AND SIDEREAL TIME
    ========================================================================== */
@@ -143,11 +140,18 @@ function timeSection(c) {
 		out(`\n${label}: ${year}-${month}-${day}`);
 		row('JD(UT)', num(jdUT));
 		row('calendarDate(JD)', back.year, back.month, num(back.day));
-		row('julianDay gregorian / julian', num(Time.julianDay(year, month, day, 'gregorian')),
-			num(Time.julianDay(year, month, day, 'julian')));
+		row(
+			'julianDay gregorian / julian',
+			num(Time.julianDay(year, month, day, 'gregorian')),
+			num(Time.julianDay(year, month, day, 'julian'))
+		);
 		row('MJD, centuries', num(Time.mjd(jdUT)), num(Time.centuries(jdUT), 12));
-		row('weekday, day of year, leap', Time.weekdayName(jdUT), Time.dayOfYear(year, month, day),
-			Time.isLeapYear(year));
+		row(
+			'weekday, day of year, leap',
+			Time.weekdayName(jdUT),
+			Time.dayOfYear(year, month, day),
+			Time.isLeapYear(year)
+		);
 		row('decimalYear', num(Time.decimalYear(jdUT)));
 		row('jdFromDecimalYear(decimalYear)', num(Time.jdFromDecimalYear(Time.decimalYear(jdUT))));
 		row('Delta T (s)', num(Time.deltaT(Time.decimalYear(jdUT)), 6));
@@ -158,12 +162,15 @@ function timeSection(c) {
 		row('LST at 12.4964 E, -74.0 E', num(Time.lst(jdUT, 12.4964)), num(Clock.lst(jdUT, -74)));
 		row('local mean time at 12.4964 E (h)', num(Clock.localMeanTime(jdUT, 12.4964)));
 		row('equation of time (min)', num(Ephem.equationOfTime(jdTT)));
-		row('formatDate', quote(Time.formatDate(jdUT)), quote(Time.formatDate(jdUT, { time: true })),
-			quote(Time.formatDate(jdUT, { era: 'astronomical' })));
+		row(
+			'formatDate',
+			quote(Time.formatDate(jdUT)),
+			quote(Time.formatDate(jdUT, { time: true })),
+			quote(Time.formatDate(jdUT, { era: 'astronomical' }))
+		);
 		row('Ephem.inRange', Ephem.inRange(jdTT));
 	});
 }
-
 
 /* ==========================================================================
    4. THE REFERENCE SKY: SUN, MOON, PLANETS
@@ -203,8 +210,14 @@ function skySection(c) {
 		row('equator pole (J2000 eq.)', vec(Ephem.equatorPole(jdTT)));
 	});
 
-	out('\nKepler\'s equation (M, e -> E)');
-	[[0, 0.2], [5, 0.0167], [90, 0.2056], [179.9, 0.0934], [-120, 0.0485]].forEach(([M, e]) => {
+	out("\nKepler's equation (M, e -> E)");
+	[
+		[0, 0.2],
+		[5, 0.0167],
+		[90, 0.2056],
+		[179.9, 0.0934],
+		[-120, 0.0485]
+	].forEach(([M, e]) => {
 		row(`M ${M}, e ${e}`, num(Ephem.solveKepler(M, e), 12));
 	});
 
@@ -213,7 +226,6 @@ function skySection(c) {
 		row(`h ${h}`, num(Ephem.refraction(h), 12), num(Ephem.refractionOfApparent(h), 12));
 	});
 }
-
 
 /* ==========================================================================
    5. STARS OF DATE
@@ -250,7 +262,6 @@ function starSection(c) {
 	});
 }
 
-
 /* ==========================================================================
    6. THE MODELS: TURNING SKY, FRAMES, MEAN SUN, CLOCKS
    ========================================================================== */
@@ -265,7 +276,7 @@ function diurnalSection(c) {
 	row('rates', num(Diurnal.DEGREES_PER_DAY, 12), num(Diurnal.DEGREES_PER_HOUR, 12), num(Diurnal.TURN_HOURS, 12));
 	row('hourAngle(10, 350), (350, 10)', num(Diurnal.hourAngle(10, 350)), num(Diurnal.hourAngle(350, 10)));
 	row('hourAngle(180, 0), (0, 180)', num(Diurnal.hourAngle(180, 0)), num(Diurnal.hourAngle(0, 180)));
-	out('  dec, phi: class (h0 = 0, -34\', -50\'), H0 for each h0, a_max, a_min, a at H = 0 45 90 180');
+	out("  dec, phi: class (h0 = 0, -34', -50'), H0 for each h0, a_max, a_min, a at H = 0 45 90 180");
 
 	declinations.forEach(dec => {
 		latitudes.forEach(phi => {
@@ -273,15 +284,26 @@ function diurnalSection(c) {
 			const H0 = horizons.map(h0 => num(Diurnal.risingHourAngle(dec, phi, h0)));
 			const altitudes = [0, 45, 90, 180].map(H => num(Diurnal.altitude(dec, H, phi)));
 
-			row(`${dec}, ${phi}`, classes.join('/'), H0.join(' '),
-				num(Diurnal.upperCulmination(dec, phi)), num(Diurnal.lowerCulmination(dec, phi)),
-				altitudes.join(' '), num(Diurnal.fractionAbove(dec, phi), 12));
+			row(
+				`${dec}, ${phi}`,
+				classes.join('/'),
+				H0.join(' '),
+				num(Diurnal.upperCulmination(dec, phi)),
+				num(Diurnal.lowerCulmination(dec, phi)),
+				altitudes.join(' '),
+				num(Diurnal.fractionAbove(dec, phi), 12)
+			);
 		});
 	});
 
 	row('starInSky(38.78, 30)', vec(Diurnal.starInSky(38.78, 30)));
 	row('zenithInSky(41.9)', vec(Diurnal.zenithInSky(41.9)));
-	row('equatorialToHorizon(41.9, 38.94)', Diurnal.equatorialToHorizon(41.9, 38.94).map(r => vec(r)).join(' '));
+	row(
+		'equatorialToHorizon(41.9, 38.94)',
+		Diurnal.equatorialToHorizon(41.9, 38.94)
+			.map(r => vec(r))
+			.join(' ')
+	);
 }
 
 function framesSection(c) {
@@ -290,9 +312,14 @@ function framesSection(c) {
 
 	title('6b. FRAMES (models/frames.js)');
 	row('Ptolemy, 11:83 obliquity', num(Frames.PTOLEMY_OBLIQUITY, 12), num(Frames.RATIO_11_83_OBLIQUITY, 12));
-	row('Ptolemy right ascensions', Frames.ptolemyRightAscensions().map(x => num(x)).join(' '));
+	row(
+		'Ptolemy right ascensions',
+		Frames.ptolemyRightAscensions()
+			.map(x => num(x))
+			.join(' ')
+	);
 
-	out('  Ptolemy\'s declination table against eclipticPoint (lon, table, computed)');
+	out("  Ptolemy's declination table against eclipticPoint (lon, table, computed)");
 	Frames.PTOLEMY_DECLINATIONS.forEach((dec, i) => {
 		if ((i + 1) % 5 === 0 || i < 3) {
 			row(`lon ${i + 1}`, num(dec), num(Frames.eclipticPoint(i + 1, Frames.PTOLEMY_OBLIQUITY).dec));
@@ -306,15 +333,32 @@ function framesSection(c) {
 				const eq = Frames.eclipticToEquatorial(lon, lat, eps);
 				const back = Frames.equatorialToEcliptic(eq.ra, eq.dec, eps);
 
-				row(`${lon}, ${lat}, ${num(eps, 4)}`, num(eq.ra), num(eq.dec), num(back.lon), num(back.lat),
-					num(Frames.reduction(lon, eps)));
+				row(
+					`${lon}, ${lat}, ${num(eps, 4)}`,
+					num(eq.ra),
+					num(eq.dec),
+					num(back.lon),
+					num(back.lat),
+					num(Frames.reduction(lon, eps))
+				);
 			});
 		}
 	});
 
 	out('  equatorial -> horizontal -> equatorial (ra, dec, phi, theta: A, a, H, back ra, back dec)');
-	[[68.98, 16.51], [279.23, 38.78], [101.29, -16.72], [37.95, 89.26], [95.99, -52.70]].forEach(([ra, dec]) => {
-		[[41.9, 38.94], [-33.9, 200], [0, 0], [89, 123.4]].forEach(([phi, theta]) => {
+	[
+		[68.98, 16.51],
+		[279.23, 38.78],
+		[101.29, -16.72],
+		[37.95, 89.26],
+		[95.99, -52.7]
+	].forEach(([ra, dec]) => {
+		[
+			[41.9, 38.94],
+			[-33.9, 200],
+			[0, 0],
+			[89, 123.4]
+		].forEach(([phi, theta]) => {
 			const hor = Frames.equatorialToHorizontal(ra, dec, phi, theta);
 			const back = Frames.horizontalToEquatorial(hor.A, hor.a, phi, theta);
 
@@ -323,13 +367,26 @@ function framesSection(c) {
 	});
 
 	row('fromHorizontal(120, 30)', vec(Frames.fromHorizontal(120, 30)));
-	row('toHorizontal([0.3, -0.4, 0.5])', num(Frames.toHorizontal([0.3, -0.4, 0.5]).A),
-		num(Frames.toHorizontal([0.3, -0.4, 0.5]).a));
+	row(
+		'toHorizontal([0.3, -0.4, 0.5])',
+		num(Frames.toHorizontal([0.3, -0.4, 0.5]).A),
+		num(Frames.toHorizontal([0.3, -0.4, 0.5]).a)
+	);
 	row('eclipticPole(23.44)', vec(Frames.eclipticPole(23.44)));
 
-	[[41.9, 0], [41.9, 90], [41.9, 270], [-33.9, 180], [66.56, 90], [0, 0]].forEach(([phi, theta]) => {
-		row(`ecliptic-horizon ${phi}, ${theta}`, num(Frames.eclipticPoleAltitude(EPS, phi, theta)),
-			num(Frames.eclipticHorizonAngle(EPS, phi, theta)));
+	[
+		[41.9, 0],
+		[41.9, 90],
+		[41.9, 270],
+		[-33.9, 180],
+		[66.56, 90],
+		[0, 0]
+	].forEach(([phi, theta]) => {
+		row(
+			`ecliptic-horizon ${phi}, ${theta}`,
+			num(Frames.eclipticPoleAltitude(EPS, phi, theta)),
+			num(Frames.eclipticHorizonAngle(EPS, phi, theta))
+		);
 	});
 }
 
@@ -340,14 +397,18 @@ function clockSection(c) {
 	title('6c. THE MEAN SUN AND THE CLOCKS (models/mean-sun.js, models/clock.js)');
 	row('MeanSun.MODERN', num(MeanSun.MODERN.L0), num(MeanSun.MODERN.n, 12), num(MeanSun.MODERN.epoch));
 	row('year length (days)', num(MeanSun.yearLength(), 9));
-	row('Clock constants', num(Clock.THETA0), num(Clock.RATE, 12), num(Clock.SIDEREAL_DAY_HOURS, 12),
-		num(Clock.SUN_HORIZON, 12));
+	row(
+		'Clock constants',
+		num(Clock.THETA0),
+		num(Clock.RATE, 12),
+		num(Clock.SIDEREAL_DAY_HOURS, 12),
+		num(Clock.SUN_HORIZON, 12)
+	);
 
 	DATES.forEach(([label, year, month, day]) => {
 		const jd = Time.julianDay(year, month, day);
 
-		row(`mean Sun, ${label}`, num(meanSun(jd)), num(Clock.meanLongitude(jd)),
-			num(Clock.sunDeclination(jd)));
+		row(`mean Sun, ${label}`, num(meanSun(jd)), num(Clock.meanLongitude(jd)), num(Clock.sunDeclination(jd)));
 	});
 
 	out('  sunDay (jd0, phi, lon): noon, rise, set, hours, H0, dec, kind');
@@ -358,8 +419,16 @@ function clockSection(c) {
 			[0, 12.4964].forEach(lon => {
 				const d = Clock.sunDay(jd0, phi, lon);
 
-				row(`2026-${month}-21, ${phi}, ${lon}`, num(d.noon), num(d.rise), num(d.set), num(d.hours),
-					num(d.H0), num(d.dec), d.kind);
+				row(
+					`2026-${month}-21, ${phi}, ${lon}`,
+					num(d.noon),
+					num(d.rise),
+					num(d.set),
+					num(d.hours),
+					num(d.H0),
+					num(d.dec),
+					d.kind
+				);
 			});
 		});
 	}
@@ -374,12 +443,15 @@ function clockSection(c) {
 		});
 	});
 
-	row('hourAngle(2026-01-01 19h, 12.4964, 68.98)',
-		num(Clock.hourAngle(Time.julianDayTime(2026, 1, 1, 19), 12.4964, 68.98)));
-	row('fromLocalMeanTime(2026-01-01, 12, 12.4964)',
-		num(Clock.fromLocalMeanTime(Time.julianDay(2026, 1, 1), 12, 12.4964)));
+	row(
+		'hourAngle(2026-01-01 19h, 12.4964, 68.98)',
+		num(Clock.hourAngle(Time.julianDayTime(2026, 1, 1, 19), 12.4964, 68.98))
+	);
+	row(
+		'fromLocalMeanTime(2026-01-01, 12, 12.4964)',
+		num(Clock.fromLocalMeanTime(Time.julianDay(2026, 1, 1), 12, 12.4964))
+	);
 }
-
 
 /* ==========================================================================
    7. DISPLAY HELPERS (SHARED)
@@ -392,39 +464,101 @@ function displaySection(c) {
 	title('7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js)');
 
 	samples.forEach(x => {
-		row(`x = ${x}`, [
-			c.dms(x), c.hm(Math.abs(x)), c.hms(x), c.hms(x, 0), c.dh(Math.abs(x)), c.signed(x), c.signed(x, 3),
-			c.arcmin(x / 60), c.sexagesimal(x), c.sexagesimal(x, 2), c.hmTex(Math.abs(x)), c.dhTex(Math.abs(x)),
-			c.signed3(x), c.fmt3(x), c.texAngle('\\alpha', x)
-		].map(quote).join(' '), num(c.norm360(x)), num(c.norm180(x)));
+		row(
+			`x = ${x}`,
+			[
+				c.dms(x),
+				c.hm(Math.abs(x)),
+				c.hms(x),
+				c.hms(x, 0),
+				c.dh(Math.abs(x)),
+				c.signed(x),
+				c.signed(x, 3),
+				c.arcmin(x / 60),
+				c.sexagesimal(x),
+				c.sexagesimal(x, 2),
+				c.hmTex(Math.abs(x)),
+				c.dhTex(Math.abs(x)),
+				c.signed3(x),
+				c.fmt3(x),
+				c.texAngle('\\alpha', x)
+			]
+				.map(quote)
+				.join(' '),
+			num(c.norm360(x)),
+			num(c.norm180(x))
+		);
 	});
 
-	row('texLinear', quote(c.texLinear('\\mathbf s', [[0.5, 'a'], [-0.25, 'b'], [0.125, 'c']])));
-	row('formatYear', [-584, 0, 1, 2026].map(y => quote(c.Time.formatYear(y))).join(' '),
-		quote(c.Time.formatYear(-584, 'astronomical')));
+	row(
+		'texLinear',
+		quote(
+			c.texLinear('\\mathbf s', [
+				[0.5, 'a'],
+				[-0.25, 'b'],
+				[0.125, 'c']
+			])
+		)
+	);
+	row(
+		'formatYear',
+		[-584, 0, 1, 2026].map(y => quote(c.Time.formatYear(y))).join(' '),
+		quote(c.Time.formatYear(-584, 'astronomical'))
+	);
 	row('withAlpha', quote(c.withAlpha(c.COL.planet, 0.4)), quote(c.withAlpha(c.COL.ink, 1)));
-	row('textColor', Object.keys(c.COL).map(key => `${key}:${c.textColor(c.COL[key])}`).join(' '));
+	row(
+		'textColor',
+		Object.keys(c.COL)
+			.map(key => `${key}:${c.textColor(c.COL[key])}`)
+			.join(' ')
+	);
 	row('starSize -1.5 0 2 5.5 7', [-1.5, 0, 2, 5.5, 7].map(m => num(c.starSize(m), 6)).join(' '));
 	row('starPath(10, 20, 5)', quote(c.starPath(10, 20, 5)));
-	row('labelFont', ['P', 'Vega', 'N', '90° − a', 'θ'].map(t => quote(c.labelFont(t))).join(' '),
-		quote(c.labelFont('N', 'name')));
+	row(
+		'labelFont',
+		['P', 'Vega', 'N', '90° − a', 'θ'].map(t => quote(c.labelFont(t))).join(' '),
+		quote(c.labelFont('N', 'name'))
+	);
 
 	out('  niceTicks(min, max, count)');
-	[[-15, 15, 6], [0, 365, 5], [-90, 90, 4], [0.1, 0.7, 6], [1990.3, 2010.8, 7], [-3000, 3000, 8], [5, 5, 3]]
-		.forEach(([min, max, count]) => {
-			row(`${min}, ${max}, ${count}`, c.niceTicks(min, max, count).map(v => c.formatTick(v)).join(' '));
-		});
+	[
+		[-15, 15, 6],
+		[0, 365, 5],
+		[-90, 90, 4],
+		[0.1, 0.7, 6],
+		[1990.3, 2010.8, 7],
+		[-3000, 3000, 8],
+		[5, 5, 3]
+	].forEach(([min, max, count]) => {
+		row(
+			`${min}, ${max}, ${count}`,
+			c
+				.niceTicks(min, max, count)
+				.map(v => c.formatTick(v))
+				.join(' ')
+		);
+	});
 
 	out('  timeTicks(min, max, count)');
-	[[2026, 2027, 6], [2026.2, 2026.9, 12], [1990, 2010, 6], [-600, 600, 6]].forEach(([min, max, count]) => {
-		row(`${min}, ${max}, ${count}`, c.timeTicks(min, max, count).map(t => `${num(t.value, 6)}:${t.label}`).join(' '));
+	[
+		[2026, 2027, 6],
+		[2026.2, 2026.9, 12],
+		[1990, 2010, 6],
+		[-600, 600, 6]
+	].forEach(([min, max, count]) => {
+		row(
+			`${min}, ${max}, ${count}`,
+			c
+				.timeTicks(min, max, count)
+				.map(t => `${num(t.value, 6)}:${t.label}`)
+				.join(' ')
+		);
 	});
 
 	row('niceCeiling', [0.3, 1, 1.01, 2.2, 4.9, 7, 12, 600].map(v => num(c.niceCeiling(v), 6)).join(' '));
 	row('runningExtreme', JSON.stringify(c.runningExtreme([3, 1, 4, 1, 5, 9, 2, 6], 3, Math.max)));
 	row('stripTex', quote(c.stripTex('$\\lambda_\\text{model}$ (Hipparchus)')));
 }
-
 
 /* ==========================================================================
    8. PAGE SCRIPTS: HELPERS AND PRECOMPUTED VALUES
@@ -438,7 +572,19 @@ function page11(c) {
 	row('seenHorizonDepth()', num(c.seenHorizonDepth(), 12));
 	row('TEST_HALF_TURN, TEST_EPOCH', num(inContext(c, 'TEST_HALF_TURN'), 12), num(inContext(c, 'TEST_EPOCH')));
 	row('CLASS_TEXT', quote(JSON.stringify(inContext(c, 'CLASS_TEXT'))));
-	row('splitByHorizon', quote(JSON.stringify(c.splitByHorizon([[0, 0, 1], [0, 0, -1], [0, 0, -2], [0, 0, 3]]))));
+	row(
+		'splitByHorizon',
+		quote(
+			JSON.stringify(
+				c.splitByHorizon([
+					[0, 0, 1],
+					[0, 0, -1],
+					[0, 0, -2],
+					[0, 0, 3]
+				])
+			)
+		)
+	);
 	row('dailyCircle(38.78, R)[7]', vec(c.dailyCircle(38.78, c.Diurnal.equatorialToHorizon(41.9, 30))[7]));
 }
 
@@ -473,7 +619,12 @@ function page13(c) {
 
 	title('8c. PAGE 1.3 (act1-stage/03-clocks/page.js)');
 	row('YEAR_START, EPS_YEAR', num(inContext(c, 'YEAR_START')), num(inContext(c, 'EPS_YEAR'), 12));
-	row('MONTH_STARTS', inContext(c, 'MONTH_STARTS').map(m => `${m.value}:${m.label}`).join(' '));
+	row(
+		'MONTH_STARTS',
+		inContext(c, 'MONTH_STARTS')
+			.map(m => `${m.value}:${m.label}`)
+			.join(' ')
+	);
 	row('JUNE_SOLSTICE_DAY', inContext(c, 'JUNE_SOLSTICE_DAY'));
 	row('dayText', [0, 59, 364].map(d => quote(c.dayText(d))).join(' '));
 	row('formatAngle', [-16.7, -0.04, 41.9].map(v => quote(c.formatAngle(v))).join(' '));
@@ -483,14 +634,28 @@ function page13(c) {
 	row('texClock', quote(c.texClock(19.0833)));
 	row('texMinutes', [-16.44, -0.04, 0, 0.05, 22.9].map(v => quote(c.texMinutes(v))).join(' '));
 	row('texHms', [0, 38.94, 359.9999, -1].map(v => quote(c.texHms(v))).join(' '));
-	row('nightTicks 8, 4', c.nightTicks(8).map(t => t.label).join(' '), '|', c.nightTicks(4).map(t => t.label).join(' '));
+	row(
+		'nightTicks 8, 4',
+		c
+			.nightTicks(8)
+			.map(t => t.label)
+			.join(' '),
+		'|',
+		c
+			.nightTicks(4)
+			.map(t => t.label)
+			.join(' ')
+	);
 
 	// Figure 4: the night bounds of the model Sun
 	[41.9, 66.5, -60].forEach(phi => {
 		const jd0 = inContext(c, 'YEAR_START') + 171;
 
-		row(`calendar dusk, dawn (day 171, ${phi})`, num(calendar.dusk(c.Clock.sunDay(jd0, phi, 0))),
-			num(calendar.dawn(c.Clock.sunDay(jd0 + 1, phi, 0))));
+		row(
+			`calendar dusk, dawn (day 171, ${phi})`,
+			num(calendar.dusk(c.Clock.sunDay(jd0, phi, 0))),
+			num(calendar.dawn(c.Clock.sunDay(jd0 + 1, phi, 0)))
+		);
 	});
 
 	// Figure 6: the real Sun tabulated, its noons, rises and sets
@@ -512,7 +677,6 @@ function page13(c) {
 	});
 }
 
-
 /* ==========================================================================
    9. THE NUMBERS SCRIPTS (tools/numbers/)
    Every number quoted in the prose of the pages, as each script prints it.
@@ -520,7 +684,10 @@ function page13(c) {
 
 function numbersSection() {
 	const folder = path.join(ROOT, 'tools', 'numbers');
-	const scripts = fs.readdirSync(folder).filter(name => name.endsWith('.js')).sort();
+	const scripts = fs
+		.readdirSync(folder)
+		.filter(name => name.endsWith('.js'))
+		.sort();
 
 	scripts.forEach(name => {
 		const output = childProcess.execFileSync(process.execPath, [path.join(folder, name)], {
@@ -533,7 +700,6 @@ function numbersSection() {
 		out(output.trimEnd());
 	});
 }
-
 
 /* ==========================================================================
    10. MAIN

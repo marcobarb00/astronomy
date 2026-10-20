@@ -13,7 +13,6 @@
 	 3. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    1. FIGURE 1: THE SUN'S DECLINATION OVER A YEAR
    ========================================================================== */
@@ -38,9 +37,7 @@ const declinationFigure = {
 
 	update() {
 		this.eps = readNumber('eps');
-		showLines('declination-readout', [
-			`\\delta_\\text{max} = \\varepsilon = ${this.eps.toFixed(1)}^\\circ`
-		]);
+		showLines('declination-readout', [`\\delta_\\text{max} = \\varepsilon = ${this.eps.toFixed(1)}^\\circ`]);
 		this.plot.redraw();
 	},
 
@@ -49,7 +46,6 @@ const declinationFigure = {
 		this.plot.fn(lambda => asin(sin(this.eps) * sin(lambda)), { color: COL.sun });
 	}
 };
-
 
 /* ==========================================================================
    2. FIGURE 2: ERROR CURVE OF A MODEL SUN
@@ -79,7 +75,6 @@ const errorFigure = {
 		});
 	}
 };
-
 
 /* ==========================================================================
    3. PAGE START

@@ -32,7 +32,6 @@
    ========================================================================== */
 
 const Frames = (function () {
-
 	/* ======================================================================
 	   1. HISTORICAL VALUES (deg): OBLIQUITY, PTOLEMY'S TABLES
 	   ====================================================================== */
@@ -43,7 +42,7 @@ const Frames = (function () {
 
 	/* The ratio 11 : 83 of the meridian (Almagest I 12, attributed to
 	   Eratosthenes and Hipparchus): 2 eps = 360° x 11 / 83. */
-	const RATIO_11_83_OBLIQUITY = 180 * 11 / 83;
+	const RATIO_11_83_OBLIQUITY = (180 * 11) / 83;
 
 	/* Degrees, minutes, seconds -> degrees. */
 	const fromDms = (d, m = 0, s = 0) => d + m / 60 + s / 3600;
@@ -54,6 +53,7 @@ const Frames = (function () {
 	   Transcribed as printed, [degrees, minutes, seconds]. Toomer flags
 	   27° and 51° as probable scribal errors (computed 10°34'48" and
 	   18°19'07"). */
+	// prettier-ignore
 	const PTOLEMY_DECLINATIONS = [
 		[0, 24, 16], [0, 48, 31], [1, 12, 46], [1, 37, 0], [2, 1, 12],
 		[2, 25, 22], [2, 49, 30], [3, 13, 35], [3, 37, 37], [4, 1, 38],
@@ -79,6 +79,7 @@ const Frames = (function () {
 	   the equator that crosses the meridian with each 10° of the ecliptic,
 	   from the equinox, [degrees, minutes]. Their running sums are the
 	   right ascensions of lambda = 10°, 20°, ..., 90°. */
+	// prettier-ignore
 	const PTOLEMY_RIGHT_ASCENSION_STEPS = [
 		[9, 10], [9, 15], [9, 25], [9, 40], [9, 58], [10, 16], [10, 34], [10, 47], [10, 55]
 	].map(([d, m]) => fromDms(d, m));
@@ -87,13 +88,14 @@ const Frames = (function () {
 	function ptolemyRightAscensions() {
 		let sum = 0;
 
-		return [0].concat(PTOLEMY_RIGHT_ASCENSION_STEPS.map(step => {
-			sum += step;
+		return [0].concat(
+			PTOLEMY_RIGHT_ASCENSION_STEPS.map(step => {
+				sum += step;
 
-			return sum;
-		}));
+				return sum;
+			})
+		);
 	}
-
 
 	/* ======================================================================
 	   2. MATRICES
@@ -121,7 +123,6 @@ const Frames = (function () {
 		return matMul(equatorialToHorizonMatrix(phi, theta), eclipticToEquatorialMatrix(eps));
 	}
 
-
 	/* ======================================================================
 	   3. COORDINATES AND VECTORS
 	   Equatorial and ecliptic coordinates are a longitude and a latitude
@@ -139,7 +140,6 @@ const Frames = (function () {
 
 		return { A: norm360(180 - p.lon), a: p.lat };
 	}
-
 
 	/* ======================================================================
 	   4. THE MULTIPLIED-OUT FORMULAS
@@ -197,7 +197,6 @@ const Frames = (function () {
 		return norm180(eclipticPoint(lon, eps).ra - lon);
 	}
 
-
 	/* ======================================================================
 	   5. ANGLES BETWEEN THE FRAMES
 	   ====================================================================== */
@@ -217,7 +216,6 @@ const Frames = (function () {
 	function eclipticHorizonAngle(eps, phi, theta) {
 		return 90 - Math.abs(eclipticPoleAltitude(eps, phi, theta));
 	}
-
 
 	/* ======================================================================
 	   6. EXPORT

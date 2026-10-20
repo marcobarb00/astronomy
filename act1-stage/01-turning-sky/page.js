@@ -21,7 +21,6 @@
 	 6. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
@@ -74,7 +73,6 @@ function dailyCircle(dec, matrix) {
 	return sampleParametric(ra => matApply(matrix, fromLonLat(ra, dec)), 2);
 }
 
-
 /* ==========================================================================
    1. FIGURE 1: THE SKY AROUND THE POLE
    A blue plate (shared/plate.js): the stars of 2026 around the north
@@ -104,7 +102,6 @@ const poleFigure = {
 		Plate.highlightCircle(chart, 90 - ROME_LATITUDE);
 	}
 };
-
 
 /* ==========================================================================
    2. FIGURE 2: THE OBSERVER'S SKY
@@ -138,12 +135,15 @@ const skyFigure = {
 		wirePresets(figure);
 		wirePlayButton(byId('sky-play'), byId('sky-time'), PLAY_HOURS_PER_SECOND);
 
-		buildChoice(byId('sky-stars'),
+		buildChoice(
+			byId('sky-stars'),
 			['Polaris', 'Dubhe', 'Vega', 'Mintaka', 'Sirius', 'Antares', 'Canopus', 'Acrux'],
-			this.star.name, name => {
+			this.star.name,
+			name => {
 				this.star = Stars.find(name);
 				this.update();
-			});
+			}
+		);
 
 		this.update();
 	},
@@ -181,7 +181,7 @@ const skyFigure = {
 
 	draw() {
 		if (!this.state) {
-			return;    // a resize can ask for a drawing before the first update
+			return; // a resize can ask for a drawing before the first update
 		}
 
 		const s = this.sphere;
@@ -231,7 +231,7 @@ const skyFigure = {
 		const radius = Math.abs(this.state.phi);
 
 		if (radius < 0.5) {
-			return;    // at the equator both circles shrink to the poles
+			return; // at the equator both circles shrink to the poles
 		}
 
 		const raised = this.state.phi > 0 ? pole : negate(pole);
@@ -258,7 +258,6 @@ const skyFigure = {
 		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
-
 
 /* ==========================================================================
    3. FIGURE 3: THE SKY SEEN FROM OUTSIDE
@@ -382,7 +381,6 @@ const outsideFigure = {
 	}
 };
 
-
 /* ==========================================================================
    4. FIGURE 4: THE DAY OF A STAR
    (a) altitude against hour angle for the chosen declination and latitude;
@@ -484,7 +482,12 @@ const dayFigure = {
 		}
 
 		p.frame();
-		p.band(xs, xs.map(() => 0), above, { color: COL.planet, alpha: 0.18 });
+		p.band(
+			xs,
+			xs.map(() => 0),
+			above,
+			{ color: COL.planet, alpha: 0.18 }
+		);
 		p.hline(0, { color: COL.deferent, width: 2 });
 		p.curve(xs, altitudes, { color: COL.planet });
 
@@ -518,10 +521,30 @@ const dayFigure = {
 		const sunBand = { color: COL.sun, alpha: 0.3 };
 		const mutedBand = { color: COL.muted, alpha: 0.25 };
 
-		p.band(north, north.map(phi => 90 - phi), north.map(() => 90), sunBand);
-		p.band(south, south.map(() => -90), south.map(phi => -90 - phi), sunBand);
-		p.band(north, north.map(() => -90), north.map(phi => phi - 90), mutedBand);
-		p.band(south, south.map(phi => phi + 90), south.map(() => 90), mutedBand);
+		p.band(
+			north,
+			north.map(phi => 90 - phi),
+			north.map(() => 90),
+			sunBand
+		);
+		p.band(
+			south,
+			south.map(() => -90),
+			south.map(phi => -90 - phi),
+			sunBand
+		);
+		p.band(
+			north,
+			north.map(() => -90),
+			north.map(phi => phi - 90),
+			mutedBand
+		);
+		p.band(
+			south,
+			south.map(phi => phi + 90),
+			south.map(() => 90),
+			mutedBand
+		);
 
 		p.text('never sets', 30, 72, { color: COL.ink });
 		p.text('never rises', 30, -86, { color: COL.ink });
@@ -555,7 +578,6 @@ const dayFigure = {
 	}
 };
 
-
 /* ==========================================================================
    5. FIGURE 5: THE MODEL AGAINST THE SKY
    Over one turn, the model's altitude minus the real one. The model's
@@ -564,7 +586,7 @@ const dayFigure = {
    the seen horizon), computed in tools/numbers/1.1-turning-sky.js.
    ========================================================================== */
 
-const TEST_Y_RANGE = [-40, 5];         // arcminutes
+const TEST_Y_RANGE = [-40, 5]; // arcminutes
 const TEST_HALF_TURN = Diurnal.TURN_HOURS / 2;
 
 /* True altitude (deg) of a star seen exactly on the horizon: t = -R(t). */
@@ -589,7 +611,7 @@ const testFigure = {
 		this.plot = new Plot2D(byId('test-plot'), {
 			x: [-12, 12],
 			y: TEST_Y_RANGE,
-			xLabel: 'clock time from the star\'s highest point (h)',
+			xLabel: "clock time from the star's highest point (h)",
 			yLabel: 'Δa (arcmin)',
 			aspect: 0.62,
 			xTicks: () => [-12, -9, -6, -3, 0, 3, 6, 9, 12].map(value => ({ value, label: String(value) })),
@@ -599,12 +621,15 @@ const testFigure = {
 		wireSlider(byId('test-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
 
-		buildChoice(byId('test-stars'),
+		buildChoice(
+			byId('test-stars'),
 			['Sirius', 'Mintaka', 'Vega', 'Antares', 'Capella', 'Canopus'],
-			this.star.name, name => {
+			this.star.name,
+			name => {
 				this.star = Stars.find(name);
 				this.update();
-			});
+			}
+		);
 
 		this.update();
 	},
@@ -621,8 +646,8 @@ const testFigure = {
 	showReadout() {
 		const model = Diurnal.classify(this.dec, this.phi);
 		const real = Diurnal.classify(this.dec, this.phi, this.depth);
-		const upModel = 2 * this.modelH0 / Diurnal.DEGREES_PER_HOUR;
-		const upReal = 2 * this.realH0 / Diurnal.DEGREES_PER_HOUR;
+		const upModel = (2 * this.modelH0) / Diurnal.DEGREES_PER_HOUR;
+		const upReal = (2 * this.realH0) / Diurnal.DEGREES_PER_HOUR;
 		const lowest = Diurnal.lowerCulmination(this.dec, this.phi);
 
 		// always four lines (data-lines): the star, the model, the real sky,
@@ -637,7 +662,7 @@ const testFigure = {
 		let difference = '';
 
 		if (model === 'rises' && real === 'rises') {
-			difference = `\\Delta t = ${((upReal - upModel) / 2 * 60).toFixed(1)}\\ \\text{min}`;
+			difference = `\\Delta t = ${(((upReal - upModel) / 2) * 60).toFixed(1)}\\ \\text{min}`;
 		} else if (model === 'circumpolar') {
 			difference = `\\text{lowest point lifted by } ${(Ephem.refraction(lowest) * 60).toFixed(1)}'`;
 		}
@@ -686,7 +711,6 @@ const testFigure = {
 		this.plot.marker(t, y, { color });
 	}
 };
-
 
 /* ==========================================================================
    6. PAGE START

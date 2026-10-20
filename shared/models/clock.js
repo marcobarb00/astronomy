@@ -41,7 +41,6 @@
    ========================================================================== */
 
 const Clock = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS
 	   ====================================================================== */
@@ -54,7 +53,7 @@ const Clock = (function () {
 
 	/* One turn of the sky (a sidereal day) in hours of mean solar time:
 	   23 h 56 min 04.09 s. */
-	const SIDEREAL_DAY_HOURS = 24 * 360 / RATE;
+	const SIDEREAL_DAY_HOURS = (24 * 360) / RATE;
 
 	/* The Sun's hour angle grows 15° per hour of mean solar time. */
 	const SUN_DEGREES_PER_HOUR = 15;
@@ -66,7 +65,6 @@ const Clock = (function () {
 
 	/* The model Sun's longitude. */
 	const meanLongitude = MeanSun.make(MeanSun.MODERN);
-
 
 	/* ======================================================================
 	   2. SIDEREAL TIME AND HOUR ANGLE
@@ -89,7 +87,6 @@ const Clock = (function () {
 		return norm180(lst(jdUT, lon) - ra);
 	}
 
-
 	/* ======================================================================
 	   3. LOCAL MEAN TIME
 	   Local mean time = UT + lon / 15° (hours): the mean solar time of the
@@ -100,14 +97,13 @@ const Clock = (function () {
 	function localMeanTime(jdUT, lon) {
 		const ut = (jdUT + 0.5 - Math.floor(jdUT + 0.5)) * 24;
 
-		return ((ut + lon / 15) % 24 + 24) % 24;
+		return (((ut + lon / 15) % 24) + 24) % 24;
 	}
 
 	/* JD(UT) of a local mean time (hours) on the date whose 0h UT is jd0. */
 	function fromLocalMeanTime(jd0, hours, lon) {
 		return jd0 + (hours - lon / 15) / 24;
 	}
-
 
 	/* ======================================================================
 	   4. TRANSITS OF A STAR
@@ -142,7 +138,6 @@ const Clock = (function () {
 
 		return list;
 	}
-
 
 	/* ======================================================================
 	   5. THE MODEL SUN: NOON, SUNRISE, SUNSET, LENGTH OF THE DAY
@@ -180,13 +175,12 @@ const Clock = (function () {
 			noon: noon,
 			rise: sets ? noon - halfDay : NaN,
 			set: sets ? noon + halfDay : NaN,
-			hours: 2 * H0 / SUN_DEGREES_PER_HOUR,
+			hours: (2 * H0) / SUN_DEGREES_PER_HOUR,
 			H0: H0,
 			dec: dec,
 			kind: kind
 		};
 	}
-
 
 	/* ======================================================================
 	   6. EXPORT

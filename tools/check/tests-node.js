@@ -24,8 +24,10 @@ function main() {
 	const failed = cases.filter(result => !result.pass);
 
 	failed.forEach(result => {
-		console.log(`FAIL ${result.name} (${result.source}): expected ${result.expected}, ` +
-			`computed ${result.computed}, error ${result.error}, tolerance ${result.tolerance}`);
+		console.log(
+			`FAIL ${result.name} (${result.source}): expected ${result.expected}, ` +
+				`computed ${result.computed}, error ${result.error}, tolerance ${result.tolerance}`
+		);
 	});
 
 	console.log(`tests: ${cases.length - failed.length} / ${cases.length} pass`);

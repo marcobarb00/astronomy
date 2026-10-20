@@ -29,7 +29,6 @@
 	 7. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
@@ -92,14 +91,14 @@ const texClock = hours => `\\text{${clockText(hours)}}`;
 /* Minutes with a sign, in TeX: "+16.5\,\text{min}". */
 function texMinutes(minutes) {
 	const rounded = Math.round(minutes * 10) / 10;
-	const sign = rounded < 0 ? '-' : (rounded > 0 ? '+' : '');
+	const sign = rounded < 0 ? '-' : rounded > 0 ? '+' : '';
 
 	return `${sign}${Math.abs(rounded).toFixed(1)}\\,\\text{min}`;
 }
 
 /* An angle in hours, minutes, seconds for TeX: "2^\text{h}35^\text{m}45^\text{s}". */
 function texHms(degrees) {
-	const total = Math.round(norm360(degrees) / 15 * 3600);
+	const total = Math.round((norm360(degrees) / 15) * 3600);
 	const h = Math.floor(total / 3600);
 	const m = Math.floor((total - 3600 * h) / 60);
 	const s = total - 3600 * h - 60 * m;
@@ -163,7 +162,6 @@ function centredLabel(ctx, text, point, color) {
 
 /* The mean position of date of a star of shared/stars.js. */
 const starOfDate = (name, jd) => Stars.ofDate(Stars.find(name), jd);
-
 
 /* ==========================================================================
    1. FIGURE 1: THE SKY FROM ABOVE THE POLE
@@ -238,7 +236,7 @@ const wheelFigure = {
 			theta: Clock.gmst(jd),
 			sunRa: sunRa,
 			sunDec: Ephem.equatorial(Ephem.sun(Time.ttFromUt(jd)), Time.ttFromUt(jd)).dec,
-			skyTurns: Clock.RATE * elapsed / 360,
+			skyTurns: (Clock.RATE * elapsed) / 360,
 			sunTurns: (Clock.RATE * elapsed - sunMoved) / 360
 		};
 
@@ -260,7 +258,7 @@ const wheelFigure = {
 
 	/* Screen position of a direction (ra, dec), with theta the turn of the sky. */
 	toScreen(ra, dec) {
-		const r = this.R * (90 - dec) / (90 - WHEEL_RIM_DEC);
+		const r = (this.R * (90 - dec)) / (90 - WHEEL_RIM_DEC);
 
 		return clockwisePoint(this, this.state.theta - ra, r);
 	},
@@ -292,7 +290,7 @@ const wheelFigure = {
 		ctx.lineWidth = style.width;
 		ctx.setLineDash(style.dash ?? []);
 		ctx.beginPath();
-		ctx.arc(this.cx, this.cy, this.R * (90 - dec) / (90 - WHEEL_RIM_DEC), 0, TAU);
+		ctx.arc(this.cx, this.cy, (this.R * (90 - dec)) / (90 - WHEEL_RIM_DEC), 0, TAU);
 		ctx.stroke();
 		ctx.setLineDash([]);
 	},
@@ -392,7 +390,6 @@ const wheelFigure = {
 		}
 	}
 };
-
 
 /* ==========================================================================
    2. FIGURE 2: THE THREE ANGLES ON THE EQUATOR
@@ -568,7 +565,6 @@ const anglesFigure = {
 	}
 };
 
-
 /* ==========================================================================
    3. FIGURE 3: SIDEREAL TIME AND HOUR ANGLE
    Drawn in the horizon frame of an observer at Rome's latitude on
@@ -731,7 +727,6 @@ const siderealFigure = {
 	}
 };
 
-
 /* ==========================================================================
    4. FIGURE 4: THE STAR CALENDAR
    For each night of 2026 (from local mean noon on the date to the next
@@ -802,14 +797,13 @@ const calendarFigure = {
 			const position = Stars.ofDate(star, jd0);
 			const start = Clock.fromLocalMeanTime(jd0, 12, 0);
 			const H0 = Diurnal.risingHourAngle(position.dec, phi);
-			const inside = Clock.transitsBetween(position.ra, start, 1, 0)
-				.map(t => 12 + (t - start) * 24);
+			const inside = Clock.transitsBetween(position.ra, start, 1, 0).map(t => 12 + (t - start) * 24);
 
 			this.nights.push({
 				day: day,
 				dec: position.dec,
 				inside: inside,
-				upHalf: H0 / Clock.RATE * 24,
+				upHalf: (H0 / Clock.RATE) * 24,
 				dusk: this.dusk(Clock.sunDay(jd0, phi, 0)),
 				dawn: 24 + this.dawn(Clock.sunDay(jd0 + 1, phi, 0))
 			});
@@ -875,9 +869,7 @@ const calendarFigure = {
 
 	showReadout() {
 		if (this.hoverDay === null) {
-			showLines('transit-readout', [
-				`\\text{${this.starName}: point at the plot to read a night}`
-			]);
+			showLines('transit-readout', [`\\text{${this.starName}: point at the plot to read a night}`]);
 			return;
 		}
 
@@ -947,12 +939,14 @@ const calendarFigure = {
 		const xs = this.nights.map(night => night.day + 0.5);
 
 		[0, 24, 48].forEach(shift => {
-			this.plot.curve(xs, this.unwrapped.map(hours => hours + shift),
-				{ color: COL.planet, width: 2.5, clip: true });
+			this.plot.curve(
+				xs,
+				this.unwrapped.map(hours => hours + shift),
+				{ color: COL.planet, width: 2.5, clip: true }
+			);
 		});
 	}
 };
-
 
 /* ==========================================================================
    5. FIGURE 5: THE LENGTH OF THE DAY
@@ -1039,9 +1033,9 @@ const dayLengthFigure = {
 		showLines('day-readout', [
 			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${sunDay.dec.toFixed(2)}^\\circ,\\quad H_0 = ${sunDay.H0.toFixed(1)}^\\circ`,
 			`\\text{day } ${texDuration(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
-			rises ?
-				`\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}` :
-				'\\text{no sunrise or sunset}'
+			rises
+				? `\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}`
+				: '\\text{no sunrise or sunset}'
 		]);
 	},
 
@@ -1051,7 +1045,7 @@ const dayLengthFigure = {
 		const h0 = Clock.SUN_HORIZON;
 
 		return this.declinations.map(dec => {
-			const f = phi => 2 * Diurnal.risingHourAngle(dec, phi, h0) / 15 - hours;
+			const f = phi => (2 * Diurnal.risingHourAngle(dec, phi, h0)) / 15 - hours;
 			let lo = -89.9;
 			let hi = 89.9;
 
@@ -1079,7 +1073,11 @@ const dayLengthFigure = {
 		const xs = this.days.map((d, i) => i);
 
 		p.frame();
-		p.curve(xs, this.days.map(d => d.hours), { color: COL.sun, width: 2.5 });
+		p.curve(
+			xs,
+			this.days.map(d => d.hours),
+			{ color: COL.sun, width: 2.5 }
+		);
 	},
 
 	/* Panel (b). */
@@ -1096,10 +1094,30 @@ const dayLengthFigure = {
 
 		// polar day: north of 90° + h0 - dec, south of -(90° + h0) - dec;
 		// polar night: north of 90° - h0 + dec, south of dec - 90° + h0
-		p.band(xs, this.declinations.map(dec => Math.min(90, 90 + h0 - dec)), top, sunBand);
-		p.band(xs, bottom, this.declinations.map(dec => Math.max(-90, -90 - h0 - dec)), sunBand);
-		p.band(xs, this.declinations.map(dec => Math.min(90, 90 - h0 + dec)), top, nightBand);
-		p.band(xs, bottom, this.declinations.map(dec => Math.max(-90, dec - 90 + h0)), nightBand);
+		p.band(
+			xs,
+			this.declinations.map(dec => Math.min(90, 90 + h0 - dec)),
+			top,
+			sunBand
+		);
+		p.band(
+			xs,
+			bottom,
+			this.declinations.map(dec => Math.max(-90, -90 - h0 - dec)),
+			sunBand
+		);
+		p.band(
+			xs,
+			this.declinations.map(dec => Math.min(90, 90 - h0 + dec)),
+			top,
+			nightBand
+		);
+		p.band(
+			xs,
+			bottom,
+			this.declinations.map(dec => Math.max(-90, dec - 90 + h0)),
+			nightBand
+		);
 
 		this.contours.forEach((ys, i) => {
 			p.curve(xs, ys, { color: COL.earth, width: 1.5 });
@@ -1120,7 +1138,6 @@ const dayLengthFigure = {
 	}
 };
 
-
 /* ==========================================================================
    6. FIGURE 6: THE CLOCK AGAINST THE SUN
    Model minus real time of noon, sunrise and sunset through 2026, at the
@@ -1132,7 +1149,7 @@ const dayLengthFigure = {
    ========================================================================== */
 
 const TEST_RANGE = [-25, 25];
-const SUN_TABLE_STEP = 0.25;            // days
+const SUN_TABLE_STEP = 0.25; // days
 
 const testFigure = {
 	plot: null,
@@ -1304,7 +1321,6 @@ const testFigure = {
 		p.curve(xs, this.errors.noon, { color: COL.sun, width: 2.5 });
 	}
 };
-
 
 /* ==========================================================================
    7. PAGE START
