@@ -76,7 +76,7 @@ const HOLD_MS = 900;
 function loadPlaywright() {
 	try {
 		return require('playwright');
-	} catch (error) {
+	} catch {
 		const globalRoot = childProcess.execSync('npm root -g', { encoding: 'utf8' }).trim();
 
 		return require(path.join(globalRoot, 'playwright'));

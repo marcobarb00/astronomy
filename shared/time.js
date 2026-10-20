@@ -95,7 +95,7 @@ const Time = (function () {
 		const z = Math.floor(jd + 0.5);
 		const f = jd + 0.5 - z;
 		const gregorian = (calendar === 'gregorian') ||
-			(calendar === 'auto' && z >= 2299161);
+			(calendar === 'auto' && z >= GREGORIAN_START_JD + 0.5);
 		let a = z;
 
 		if (gregorian) {

@@ -630,8 +630,8 @@ const Ephem = (function () {
 
 	/* Equatorial coordinates of an ecliptic position of date. Apparent
 	   positions use the true obliquity, geometric ones the mean obliquity. */
-	function equatorial(position, jdTT, apparent = true) {
-		return eclipticToEquatorial(position.lon, position.lat, obliquity(jdTT, apparent));
+	function equatorial(ecliptic, jdTT, apparent = true) {
+		return eclipticToEquatorial(ecliptic.lon, ecliptic.lat, obliquity(jdTT, apparent));
 	}
 
 
@@ -643,8 +643,8 @@ const Ephem = (function () {
 	   Earth-Moon barycentre minus the Moon's share of the Earth-Moon vector. */
 	function earthJ2000(jdTT) {
 		const emb = heliocentricJ2000('emb', jdTT);
-		const moon = moonGeometric(jdTT);
-		const moonOfDate = fromLonLat(moon.lon, moon.lat, moon.dist / AU_KM);
+		const moonNow = moonGeometric(jdTT);
+		const moonOfDate = fromLonLat(moonNow.lon, moonNow.lat, moonNow.dist / AU_KM);
 		const moonJ2000 = precessVector(moonOfDate, jdTT, Time.J2000);
 
 		return sub3(emb, scale(moonJ2000, 1 / (1 + EARTH_MOON_MASS_RATIO)));
@@ -661,27 +661,27 @@ const Ephem = (function () {
 	/* The Sun: { lon, lat (deg), dist (au) }. */
 	function sun(jdTT, options = {}) {
 		const { apparent = true } = options;
-		const position = ofDate(negate(earthJ2000(jdTT)), jdTT);
+		const result = ofDate(negate(earthJ2000(jdTT)), jdTT);
 
 		if (apparent) {
-			position.lon = norm360(position.lon +
-				nutation(jdTT).dpsi - 20.4898 * ARCSEC / position.dist);
+			result.lon = norm360(result.lon +
+				nutation(jdTT).dpsi - 20.4898 * ARCSEC / result.dist);
 		}
 
-		return position;
+		return result;
 	}
 
 	/* The Moon: { lon, lat (deg), dist (km) }. Apparent = with nutation
 	   (the Moon's aberration, 0.7", is neglected as in Meeus). */
 	function moon(jdTT, options = {}) {
 		const { apparent = true } = options;
-		const position = moonGeometric(jdTT);
+		const result = moonGeometric(jdTT);
 
 		if (apparent) {
-			position.lon = norm360(position.lon + nutation(jdTT).dpsi);
+			result.lon = norm360(result.lon + nutation(jdTT).dpsi);
 		}
 
-		return position;
+		return result;
 	}
 
 	/* Annual aberration of a body at (lon, lat) of date, Meeus 23.2.
@@ -731,16 +731,16 @@ const Ephem = (function () {
 			}
 		}
 
-		const position = ofDate(geocentric, jdTT);
+		const result = ofDate(geocentric, jdTT);
 
 		if (apparent) {
-			const ab = aberration(position.lon, position.lat, jdTT);
+			const ab = aberration(result.lon, result.lat, jdTT);
 
-			position.lon = norm360(position.lon + ab.dlon + nutation(jdTT).dpsi);
-			position.lat += ab.dlat;
+			result.lon = norm360(result.lon + ab.dlon + nutation(jdTT).dpsi);
+			result.lat += ab.dlat;
 		}
 
-		return position;
+		return result;
 	}
 
 	/* Any body by name: 'sun', 'moon' or a planet. */
