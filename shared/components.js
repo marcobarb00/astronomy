@@ -106,40 +106,39 @@ const Site = (function () {
 		{
 			number: '1.1', act: 1, ready: true,
 			title: 'The turning sky',
-			question: 'You spin me right round, baby, right round',
+			question: 'What moves, and around what?',
 			path: 'act1-stage/01-turning-sky/index.html'
 		},
 		{
 			number: '1.2', act: 1, ready: true,
 			title: 'Frames',
-			question: 'A whole new world. A new fantastic point of view',
+			question: 'How do we point to stars?',
 			path: 'act1-stage/02-frames/index.html'
 		},
 		{
 			number: '1.3', act: 1, ready: true,
 			title: 'Clocks',
-			question: 'What time is it? Summer time!',
+			question: 'What time is it according to the sky?',
 			path: 'act1-stage/03-clocks/index.html'
 		},
 		{
 			number: '2.1', act: 2, ready: false,
 			title: 'The uneven year',
-			question: 'Why is the worst season the longest?',
+			question: 'Why are the seasons not equal?',
 			path: 'act2-sun/01-uneven-year/index.html'
 		},
 		{
 			number: '2.2', act: 2, ready: false,
 			title: 'The equation of time',
-			question: 'Time is relative, okay? It can stretch and it can squeeze, but... it can\'t run backwards.',
+			question: 'Why does the sundial disagree with the clock?',
 			path: 'act2-sun/02-equation-of-time/index.html'
 		},
 		{
 			number: '2.3', act: 2, ready: false,
 			title: 'Precession',
-			question: 'what will we call polaris when it won\'t be the pole star anymore?',
+			question: 'Why do the stars\' longitudes grow?',
 			path: 'act2-sun/03-precession/index.html'
 		},
-		// TODO find other funny jokes
 		{
 			number: '3.1', act: 3, ready: false,
 			title: 'The first anomaly',
