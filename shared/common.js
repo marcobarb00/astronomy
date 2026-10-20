@@ -799,16 +799,30 @@ function startFigures(figures) {
 /* A row of buttons, one per name (e.g. a star); the chosen one is marked
    active. onChoose(name) runs when another one is picked. */
 function buildChoice(container, names, chosen, onChoose) {
-	names.forEach(name => {
-		const button = makeEl('button', name === chosen ? 'active' : '', name);
+	const buttons = names.map(name => {
+		const button = makeEl('button', '', name);
 
 		button.type = 'button';
 		button.addEventListener('click', () => {
-			container.querySelectorAll('button').forEach(other => other.classList.remove('active'));
-			button.classList.add('active');
+			markChosen(buttons, button);
 			onChoose(name);
 		});
 		container.appendChild(button);
+
+		return button;
+	});
+
+	markChosen(buttons, buttons[names.indexOf(chosen)]);
+}
+
+/* Mark 'chosen' as the active button of its row: the class that shows it,
+   and aria-pressed, so that a screen reader says which one is chosen. */
+function markChosen(buttons, chosen) {
+	buttons.forEach(button => {
+		const on = button === chosen;
+
+		button.classList.toggle('active', on);
+		button.setAttribute('aria-pressed', on ? 'true' : 'false');
 	});
 }
 

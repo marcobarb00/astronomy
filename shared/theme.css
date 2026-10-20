@@ -88,8 +88,12 @@
 	box-sizing: border-box;
 }
 
-html {
-	scroll-behavior: smooth;
+/* The contents scroll smoothly to a section, unless the reader asked the
+   system for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 body {
@@ -742,7 +746,8 @@ button.small:hover,
 	color: var(--bg);
 }
 
-button:focus-visible {
+button:focus-visible,
+canvas.sphere3d:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
