@@ -6,8 +6,9 @@
 	 1. the zodiac around Taurus  (a blue plate: a static chart of the stars)
 	 2. ecliptic and equator      (3D, equatorial frame: the stars never move;
 								   the date moves the Sun along the ecliptic)
-	 3. equator and horizon       (3D, equatorial frame: latitude and the turn
-								   of the sky move the horizon frame)
+	 3. equator and horizon       (3D, horizon frame: latitude and the turn
+								   of the sky move the sky, never the ground;
+								   a button switches to the equatorial frame)
 	 4. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
    The comparison of Ptolemy's tables with the real Sun is a static table in
@@ -303,9 +304,13 @@ const eclipticFigure = {
 
 /* ==========================================================================
    3. FIGURE 3: EQUATOR AND HORIZON
-   Drawn in the equatorial frame, as Figure 3 of page 1.1: the stars, the
-   equator and the ecliptic never move; the latitude and the turn of the
-   sky move the observer's horizon frame.
+   Drawn by default in the horizon frame, as Figure 2 of page 1.1: the
+   ground never moves, and the latitude and the turn of the sky move the
+   equator, the ecliptic and the stars. A pair of buttons redraws the same
+   scene in the equatorial frame, as Figure 3 of page 1.1: then the stars
+   stay still and the horizon moves. Everything is computed in equatorial
+   coordinates and carried into the chosen frame by fromEq (an equatorial
+   vector) and fromHor (a horizon vector).
    ========================================================================== */
 
 /* The observation of section 1: Aldebaran from Rome, 1 January 2026,
@@ -315,9 +320,17 @@ const OBSERVATION = { star: 'Aldebaran', phi: PLACES.rome.lat, theta: 38.94 };
 /* Degrees of turn per second when playing (one turn in 24 s). */
 const PLAY_DEGREES_PER_SECOND = 15;
 
+/* The two frames the figure can be drawn in (the labels of its buttons). */
+const HORIZON_VIEW = 'horizon frame';
+const EQUATORIAL_VIEW = 'equatorial frame';
+
+/* A vector that stays as it is: the map into the frame it is given in. */
+const sameVector = v => v;
+
 const horizonFigure = {
 	sphere: null,
 	starName: OBSERVATION.star,
+	view: HORIZON_VIEW,
 	state: null,
 
 	init() {
@@ -327,6 +340,11 @@ const horizonFigure = {
 			yaw: 240,
 			pitch: 20,
 			onDraw: () => this.draw()
+		});
+
+		buildChoice(byId('hor-frames'), [HORIZON_VIEW, EQUATORIAL_VIEW], this.view, name => {
+			this.view = name;
+			this.update();
 		});
 
 		wireSlider(byId('hor-lat'), () => this.update(), formatAngle);
@@ -343,7 +361,7 @@ const horizonFigure = {
 		this.update();
 	},
 
-	/* Back to the observation of section 1. */
+	/* Back to the observation of section 1 (the frame stays as chosen). */
 	showObservation() {
 		this.player.pause();
 		this.starName = OBSERVATION.star;
@@ -364,7 +382,9 @@ const horizonFigure = {
 		const theta = readNumber('hor-theta');
 		const eq = Stars.ofDateByName(this.starName, STAR_EPOCH);
 		const matrix = Frames.equatorialToHorizonMatrix(phi, theta);
-		const toEquatorial = transpose(matrix);
+		const toHorizon = v => matApply(matrix, v);
+		const toEquatorial = v => matApply(transpose(matrix), v);
+		const inHorizonFrame = this.view === HORIZON_VIEW;
 
 		this.state = {
 			phi: phi,
@@ -372,7 +392,9 @@ const horizonFigure = {
 			eq: eq,
 			hor: Frames.equatorialToHorizontal(eq.ra, eq.dec, phi, theta),
 			angle: Frames.eclipticHorizonAngle(EPS_TODAY, phi, theta),
-			toEquatorial: v => matApply(toEquatorial, v)
+			// the maps from each frame into the frame of the drawing
+			fromEq: inHorizonFrame ? toHorizon : sameVector,
+			fromHor: inHorizonFrame ? sameVector : toEquatorial
 		};
 
 		this.showReadout();
@@ -403,25 +425,27 @@ const horizonFigure = {
 		this.drawStar();
 	},
 
-	/* The fixed sky: equator, pole, vernal point, ecliptic. */
+	/* The sky: equator, pole, vernal point, ecliptic. */
 	drawSky() {
 		const s = this.sphere;
+		const { fromEq } = this.state;
+		const gamma = fromEq([1, 0, 0]);
 		const yEcl = [0, cos(EPS_TODAY), sin(EPS_TODAY)];
 
-		s.circle([1, 0, 0], [0, 1, 0], { color: COL.earth, width: 2 });
-		s.axis([0, 0, AXIS_LENGTH], 'P', { color: COL.earth, labelColor: COL.earth });
-		s.circle([1, 0, 0], yEcl, { color: COL.sun, width: 1.5, dash: [8, 5] });
-		s.point([1, 0, 0], { color: COL.ink, radius: 4 });
-		s.label('γ', [1, 0, 0], { color: COL.ink, dx: 6, dy: 16 });
+		s.circle(gamma, fromEq([0, 1, 0]), { color: COL.earth, width: 2 });
+		s.axis(fromEq([0, 0, AXIS_LENGTH]), 'P', { color: COL.earth, labelColor: COL.earth });
+		s.circle(gamma, fromEq(yEcl), { color: COL.sun, width: 1.5, dash: [8, 5] });
+		s.point(gamma, { color: COL.ink, radius: 4 });
+		s.label('γ', gamma, { color: COL.ink, dx: 6, dy: 16 });
 	},
 
 	/* The observer's frame: horizon, cardinal points, zenith, meridian. */
 	drawGround() {
 		const s = this.sphere;
-		const { toEquatorial } = this.state;
-		const south = toEquatorial([1, 0, 0]);
-		const east = toEquatorial([0, 1, 0]);
-		const zenith = toEquatorial([0, 0, 1]);
+		const { fromHor } = this.state;
+		const south = fromHor([1, 0, 0]);
+		const east = fromHor([0, 1, 0]);
+		const zenith = fromHor([0, 0, 1]);
 
 		s.fillPlane(south, east, { color: COL.deferent, alpha: 0.14 });
 		s.circle(south, east, { color: COL.deferent, width: 2 });
@@ -440,16 +464,16 @@ const horizonFigure = {
 		s.labelAway('Z', zenith, { x: s.cx, y: s.cy }, COL.deferent);
 	},
 
-	/* The star and its two addresses: (H, delta) from the meridian along
-	   the equator, (A, a) from the north point along the horizon. */
+	/* The star and its two sets of coordinates: (H, delta) from the
+	   meridian along the equator, (A, a) from the north point along the
+	   horizon. */
 	drawStar() {
 		const s = this.sphere;
-		const { theta, eq, hor, toEquatorial } = this.state;
-		const meridianPoint = fromLonLat(theta, 0);
-		const westward = fromLonLat(theta - 90, 0);
-		const hourAxes = [meridianPoint, westward, [0, 0, 1]];
-		const horizonAxes = [toEquatorial([-1, 0, 0]), toEquatorial([0, 1, 0]), toEquatorial([0, 0, 1])];
-		const starPoint = fromLonLat(eq.ra, eq.dec);
+		const { theta, eq, hor, fromEq, fromHor } = this.state;
+		const meridianPoint = fromEq(fromLonLat(theta, 0));
+		const hourAxes = [meridianPoint, fromEq(fromLonLat(theta - 90, 0)), fromEq([0, 0, 1])];
+		const horizonAxes = [fromHor([-1, 0, 0]), fromHor([0, 1, 0]), fromHor([0, 0, 1])];
+		const starPoint = fromEq(fromLonLat(eq.ra, eq.dec));
 
 		s.point(meridianPoint, { color: COL.earth, radius: 3.5 });
 		drawCoordinatePath(s, hourAxes, hor.H, eq.dec, ['H', 'δ'], COL.earth);
