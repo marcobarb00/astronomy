@@ -1,0 +1,2212 @@
+PREDICTING THE SKY - GOLDEN VALUES (tools/check/golden.js)
+Regenerate with: node tools/check/golden.js --write
+
+=== 3. TIME AND SIDEREAL TIME (input: calendar date in UT) ===
+
+range start: -2999-1-1
+  JD(UT)                         625673.500000000
+  calendarDate(JD)               -2999  1  1.000000000
+  julianDay gregorian / julian   625697.500000000  625673.500000000
+  MJD, centuries                 -1774327.000000000  -49.989637234771
+  weekday, day of year, leap     Monday  1  false
+  decimalYear                    -2999.000000000
+  jdFromDecimalYear(decimalYear) 625673.500000000
+  Delta T (s)                    74292.835200
+  JD(TT), utFromTt(JD(TT))       625674.359870778  625673.500000841
+  GMST Time.gmst (deg)           75.998117089
+  GMST Clock.gmst (deg)          75.025459409
+  GAST (deg)                     75.999634061
+  LST at 12.4964 E, -74.0 E      88.494517089  1.025459409
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         -3.115109682
+  formatDate                     "1 Jan 3000 BC"  "1 Jan 3000 BC 00:00"  "1 Jan -2999"
+  Ephem.inRange                  true
+
+Thales eclipse: -584-5-28
+  JD(UT)                         1507899.500000000
+  calendarDate(JD)               -584  5  28.000000000
+  julianDay gregorian / julian   1507905.500000000  1507899.500000000
+  MJD, centuries                 -892101.000000000  -25.835605749487
+  weekday, day of year, leap     Wednesday  149  true
+  decimalYear                    -583.595628415
+  jdFromDecimalYear(decimalYear) 1507899.500000000
+  Delta T (s)                    18467.270224
+  JD(TT), utFromTt(JD(TT))       1507899.713741553  1507899.500000104
+  GMST Time.gmst (deg)           239.018214405
+  GMST Clock.gmst (deg)          238.758831978
+  GAST (deg)                     239.014288579
+  LST at 12.4964 E, -74.0 E      251.514614405  164.758831978
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         9.175244434
+  formatDate                     "28 May 585 BC"  "28 May 585 BC 00:00"  "28 May -584"
+  Ephem.inRange                  true
+
+Ptolemy: 139-7-20.5
+  JD(UT)                         1772028.000000000
+  calendarDate(JD)               139  7  20.500000000
+  julianDay gregorian / julian   1772029.000000000  1772028.000000000
+  MJD, centuries                 -627972.500000000  -18.604161533196
+  weekday, day of year, leap     Sunday  201  false
+  decimalYear                    139.549315068
+  jdFromDecimalYear(decimalYear) 1772028.000000000
+  Delta T (s)                    9217.113862
+  JD(TT), utFromTt(JD(TT))       1772028.106679559  1772028.000000032
+  GMST Time.gmst (deg)           116.453654826
+  GMST Clock.gmst (deg)          116.319219112
+  GAST (deg)                     116.449718006
+  LST at 12.4964 E, -74.0 E      128.950054826  42.319219112
+  local mean time at 12.4964 E (h) 12.833093333
+  equation of time (min)         -2.371197698
+  formatDate                     "20 Jul 139"  "20 Jul 139 12:00"  "20 Jul 139"
+  Ephem.inRange                  true
+
+last Julian day: 1582-10-4
+  JD(UT)                         2299159.500000000
+  calendarDate(JD)               1582  10  4.000000000
+  julianDay gregorian / julian   2299149.500000000  2299159.500000000
+  MJD, centuries                 -100841.000000000  -4.172087611225
+  weekday, day of year, leap     Thursday  277  false
+  decimalYear                    1582.777464789
+  jdFromDecimalYear(decimalYear) 2299159.500000000
+  Delta T (s)                    129.120230
+  JD(TT), utFromTt(JD(TT))       2299159.501494447  2299159.500000000
+  GMST Time.gmst (deg)           22.100636952
+  GMST Clock.gmst (deg)          22.093882591
+  GAST (deg)                     22.104704093
+  LST at 12.4964 E, -74.0 E      34.597036952  308.093882591
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         13.698775272
+  formatDate                     "4 Oct 1582"  "4 Oct 1582 00:00"  "4 Oct 1582"
+  Ephem.inRange                  true
+
+first Gregorian day: 1582-10-15
+  JD(UT)                         2299160.500000000
+  calendarDate(JD)               1582  10  15.000000000
+  julianDay gregorian / julian   2299160.500000000  2299170.500000000
+  MJD, centuries                 -100840.000000000  -4.172060232717
+  weekday, day of year, leap     Friday  288  false
+  decimalYear                    1582.780281690
+  jdFromDecimalYear(decimalYear) 2299160.500000000
+  Delta T (s)                    129.118584
+  JD(TT), utFromTt(JD(TT))       2299160.501494428  2299160.500000000
+  GMST Time.gmst (deg)           23.086284228
+  GMST Clock.gmst (deg)          23.079529956
+  GAST (deg)                     23.090351133
+  LST at 12.4964 E, -74.0 E      35.582684228  309.079529956
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         13.919602802
+  formatDate                     "15 Oct 1582"  "15 Oct 1582 00:00"  "15 Oct 1582"
+  Ephem.inRange                  true
+
+Sputnik (Meeus 7.a): 1957-10-4.81
+  JD(UT)                         2436116.310000000
+  calendarDate(JD)               1957  10  4.810000000
+  julianDay gregorian / julian   2436116.310000000  2436129.310000000
+  MJD, centuries                 36115.810000000  -0.422414510609
+  weekday, day of year, leap     Friday  277  false
+  decimalYear                    1957.758383562
+  jdFromDecimalYear(decimalYear) 2436116.310000000
+  Delta T (s)                    32.152677
+  JD(TT), utFromTt(JD(TT))       2436116.310372137  2436116.310000000
+  GMST Time.gmst (deg)           304.813023808
+  GMST Clock.gmst (deg)          304.812954586
+  GAST (deg)                     304.815919174
+  LST at 12.4964 E, -74.0 E      317.309423808  230.812954586
+  local mean time at 12.4964 E (h) 20.273093335
+  equation of time (min)         11.314038954
+  formatDate                     "4 Oct 1957"  "4 Oct 1957 19:26"  "4 Oct 1957"
+  Ephem.inRange                  true
+
+Meeus 12.a: 1987-4-10
+  JD(UT)                         2446895.500000000
+  calendarDate(JD)               1987  4  10.000000000
+  julianDay gregorian / julian   2446895.500000000  2446908.500000000
+  MJD, centuries                 46895.000000000  -0.127296372348
+  weekday, day of year, leap     Friday  100  false
+  decimalYear                    1987.271232877
+  jdFromDecimalYear(decimalYear) 2446895.500000000
+  Delta T (s)                    55.437206
+  JD(TT), utFromTt(JD(TT))       2446895.500641634  2446895.500000000
+  GMST Time.gmst (deg)           197.693195091
+  GMST Clock.gmst (deg)          197.693188805
+  GAST (deg)                     197.692210658
+  LST at 12.4964 E, -74.0 E      210.189595091  123.693188805
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         -1.600699348
+  formatDate                     "10 Apr 1987"  "10 Apr 1987 00:00"  "10 Apr 1987"
+  Ephem.inRange                  true
+
+Meeus 47.a: 1992-4-12
+  JD(UT)                         2448724.500000000
+  calendarDate(JD)               1992  4  12.000000000
+  julianDay gregorian / julian   2448724.500000000  2448737.500000000
+  MJD, centuries                 48724.000000000  -0.077221081451
+  weekday, day of year, leap     Sunday  103  true
+  decimalYear                    1992.278688525
+  jdFromDecimalYear(decimalYear) 2448724.500000000
+  Delta T (s)                    58.547952
+  JD(TT), utFromTt(JD(TT))       2448724.500677638  2448724.500000000
+  GMST Time.gmst (deg)           200.442224062
+  GMST Clock.gmst (deg)          200.442221749
+  GAST (deg)                     200.446424782
+  LST at 12.4964 E, -74.0 E      212.938624062  126.442221749
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         -0.861033221
+  formatDate                     "12 Apr 1992"  "12 Apr 1992 00:00"  "12 Apr 1992"
+  Ephem.inRange                  true
+
+Meeus 25.a: 1992-10-13
+  JD(UT)                         2448908.500000000
+  calendarDate(JD)               1992  10  13.000000000
+  julianDay gregorian / julian   2448908.500000000  2448921.500000000
+  MJD, centuries                 48908.000000000  -0.072183436003
+  weekday, day of year, leap     Tuesday  287  true
+  decimalYear                    1992.781420765
+  jdFromDecimalYear(decimalYear) 2448908.500000000
+  Delta T (s)                    58.954231
+  JD(TT), utFromTt(JD(TT))       2448908.500682340  2448908.500000000
+  GMST Time.gmst (deg)           21.801339168
+  GMST Clock.gmst (deg)          21.801337146
+  GAST (deg)                     21.805424253
+  LST at 12.4964 E, -74.0 E      34.297739168  307.801337146
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         13.709371209
+  formatDate                     "13 Oct 1992"  "13 Oct 1992 00:00"  "13 Oct 1992"
+  Ephem.inRange                  true
+
+J2000.0: 2000-1-1.5
+  JD(UT)                         2451545.000000000
+  calendarDate(JD)               2000  1  1.500000000
+  julianDay gregorian / julian   2451545.000000000  2451558.000000000
+  MJD, centuries                 51544.500000000  0.000000000000
+  weekday, day of year, leap     Saturday  1  true
+  decimalYear                    2000.001366120
+  jdFromDecimalYear(decimalYear) 2451545.000000000
+  Delta T (s)                    63.860457
+  JD(TT), utFromTt(JD(TT))       2451545.000739126  2451545.000000000
+  GMST Time.gmst (deg)           280.460618370
+  GMST Clock.gmst (deg)          280.460618370
+  GAST (deg)                     280.457042351
+  LST at 12.4964 E, -74.0 E      292.957018370  206.460618370
+  local mean time at 12.4964 E (h) 12.833093333
+  equation of time (min)         -3.296195918
+  formatDate                     "1 Jan 2000"  "1 Jan 2000 12:00"  "1 Jan 2000"
+  Ephem.inRange                  true
+
+2026 January 1: 2026-1-1
+  JD(UT)                         2461041.500000000
+  calendarDate(JD)               2026  1  1.000000000
+  julianDay gregorian / julian   2461041.500000000  2461054.500000000
+  MJD, centuries                 61041.000000000  0.260000000000
+  weekday, day of year, leap     Thursday  1  false
+  decimalYear                    2026.000000000
+  jdFromDecimalYear(decimalYear) 2461041.500000000
+  Delta T (s)                    75.074584
+  JD(TT), utFromTt(JD(TT))       2461041.500868919  2461041.500000000
+  GMST Time.gmst (deg)           100.660858567
+  GMST Clock.gmst (deg)          100.660832343
+  GAST (deg)                     100.662251285
+  LST at 12.4964 E, -74.0 E      113.157258567  26.660832343
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         -3.341636538
+  formatDate                     "1 Jan 2026"  "1 Jan 2026 00:00"  "1 Jan 2026"
+  Ephem.inRange                  true
+
+2026 June solstice: 2026-6-21.5
+  JD(UT)                         2461213.000000000
+  calendarDate(JD)               2026  6  21.500000000
+  julianDay gregorian / julian   2461213.000000000  2461226.000000000
+  MJD, centuries                 61212.500000000  0.264695414100
+  weekday, day of year, leap     Sunday  172  false
+  decimalYear                    2026.469863014
+  jdFromDecimalYear(decimalYear) 2461213.000000000
+  Delta T (s)                    75.363749
+  JD(TT), utFromTt(JD(TT))       2461213.000872266  2461213.000000000
+  GMST Time.gmst (deg)           89.699382842
+  GMST Clock.gmst (deg)          89.699355662
+  GAST (deg)                     89.701344658
+  LST at 12.4964 E, -74.0 E      102.195782842  15.699355662
+  local mean time at 12.4964 E (h) 12.833093333
+  equation of time (min)         -1.839994723
+  formatDate                     "21 Jun 2026"  "21 Jun 2026 12:00"  "21 Jun 2026"
+  Ephem.inRange                  true
+
+range end: 3000-12-31
+  JD(UT)                         2817151.500000000
+  calendarDate(JD)               3000  12  31.000000000
+  julianDay gregorian / julian   2817151.500000000  2817172.500000000
+  MJD, centuries                 417151.000000000  10.009760438056
+  weekday, day of year, leap     Wednesday  365  false
+  decimalYear                    3000.997260274
+  jdFromDecimalYear(decimalYear) 2817151.500000000
+  Delta T (s)                    4443.214492
+  JD(TT), utFromTt(JD(TT))       2817151.551426094  2817151.499999987
+  GMST Time.gmst (deg)           99.583285034
+  GMST Clock.gmst (deg)          99.544441879
+  GAST (deg)                     99.585262978
+  LST at 12.4964 E, -74.0 E      112.079685034  25.544441879
+  local mean time at 12.4964 E (h) 0.833093333
+  equation of time (min)         -0.458968659
+  formatDate                     "31 Dec 3000"  "31 Dec 3000 00:00"  "31 Dec 3000"
+  Ephem.inRange                  false
+
+=== 4. THE REFERENCE SKY (input: the same dates, converted to TT) ===
+
+range start: JD(TT) 625674.359870778
+  mean / true obliquity          24.020919247  24.023082203
+  nutation dpsi, deps (deg)      0.001660830320  0.002162955498
+  Sun mean longitude             256.606057720
+  Sun apparent                   lon 258.442728930  lat 0.002660145  dist 0.990640307
+  Sun geometric                  lon 258.446813486  lat 0.002660145  dist 0.990640307
+  Sun ra, dec                    257.380633812  -23.503691949
+  Moon apparent                  lon 256.269596170  lat -4.911873176  dist 404166.306821032
+  Moon geometric                 lon 256.267935339  lat -4.911873176  dist 404166.306821032
+  mercury                        lon 253.026014724  lat -1.923920131  dist 1.387230257
+  mercury geometric              lon 253.038628020  lat -1.924073203  dist 1.387236917
+  mercury heliocentric           lon 239.906952698  lat -6.472250257  dist 0.413607085
+  venus                          lon 230.435287099  lat 0.639960360  dist 1.434072735
+  venus geometric                lon 230.443816009  lat 0.639580673  dist 1.434179991
+  venus heliocentric             lon 190.702962089  lat 1.256951500  dist 0.727707374
+  mars                           lon 324.437605910  lat -0.348434748  dist 1.687416478
+  mars geometric                 lon 324.442052321  lat -0.348272227  dist 1.687349906
+  mars heliocentric              lon 359.611588870  lat -0.375706741  dist 1.571153519
+  jupiter                        lon 178.470980704  lat 1.367338456  dist 5.408109866
+  jupiter geometric              lon 178.472823615  lat 1.367430977  dist 5.408144813
+  jupiter heliocentric           lon 167.915455754  lat 1.388074510  dist 5.325831244
+  saturn                         lon 97.940276563  lat 1.302799945  dist 8.666187175
+  saturn geometric               lon 97.935048515  lat 1.302919912  dist 8.666216410
+  saturn heliocentric            lon 95.962916879  lat 1.175210599  dist 9.605571176
+  uranus                         lon 61.208061057  lat 0.203769484  dist 17.500508524
+  uranus geometric               lon 61.202235619  lat 0.203782865  dist 17.500490669
+  uranus heliocentric            lon 62.114333459  lat 0.193163713  dist 18.448931453
+  neptune                        lon 115.536484513  lat 1.370414822  dist 29.458319875
+  neptune geometric              lon 115.531326336  lat 1.370530809  dist 29.458333454
+  neptune heliocentric           lon 114.399683165  lat 1.334379932  dist 30.254290165
+  ecliptic pole (J2000 eq.)      [0.001430919281, -0.408420032793, 0.912792982709]
+  equator pole (J2000 eq.)       [-0.378971357035, -0.240766013482, 0.893539275745]
+
+Thales eclipse: JD(TT) 1507899.713741553
+  mean / true obliquity          23.765628127  23.766985294
+  nutation dpsi, deps (deg)      -0.004289619496  0.001357167535
+  Sun mean longitude             59.180363206
+  Sun apparent                   lon 59.157679613  lat 0.002008491  dist 1.017706931
+  Sun geometric                  lon 59.167561817  lat 0.002008491  dist 1.017706931
+  Sun ra, dec                    56.876907972  20.246263616
+  Moon apparent                  lon 50.670235455  lat -0.510557791  dist 358656.225157032
+  Moon geometric                 lon 50.674525075  lat -0.510557791  dist 358656.225157032
+  mercury                        lon 74.572604558  lat -1.960740756  dist 0.602037414
+  mercury geometric              lon 74.576214612  lat -1.961666962  dist 0.601993538
+  mercury heliocentric           lon 219.103998574  lat -2.536536845  dist 0.466427531
+  venus                          lon 15.970915862  lat -2.397872727  dist 0.952450494
+  venus geometric                lon 15.981234148  lat -2.397904294  dist 0.952556100
+  venus heliocentric             lon 302.735705241  lat -3.139024079  dist 0.728461895
+  mars                           lon 84.705613265  lat 1.161004363  dist 2.519399009
+  mars geometric                 lon 84.719029888  lat 1.161024411  dist 2.519352626
+  mars heliocentric              lon 100.054574607  lat 1.760414435  dist 1.660543976
+  jupiter                        lon 71.938167452  lat -0.003192351  dist 6.223632546
+  jupiter geometric              lon 71.950391070  lat -0.003129256  dist 6.223632664
+  jupiter heliocentric           lon 74.415157761  lat -0.004109897  dist 5.235992935
+  saturn                         lon 122.832437226  lat 1.493718098  dist 9.862571732
+  saturn geometric               lon 122.841067504  lat 1.493658196  dist 9.862561022
+  saturn heliocentric            lon 128.378941226  lat 1.557762712  dist 9.455481889
+  uranus                         lon 7.282615876  lat -0.629226151  dist 20.351821675
+  uranus geometric               lon 7.291621323  lat -0.629264320  dist 20.351822949
+  uranus heliocentric            lon 4.967037075  lat -0.648878515  dist 19.739806650
+  neptune                        lon 24.526024441  lat -1.921433614  dist 30.642771795
+  neptune geometric              lon 24.535965319  lat -1.921533187  dist 30.642783750
+  neptune heliocentric           lon 23.423662765  lat -1.975204907  dist 29.811487108
+  ecliptic pole (J2000 eq.)      [0.000117644675, -0.403259540905, 0.915085640161]
+  equator pole (J2000 eq.)       [-0.236129432921, -0.070304785516, 0.969174972872]
+
+Ptolemy: JD(TT) 1772028.106679559
+  mean / true obliquity          23.677600260  23.676728524
+  nutation dpsi, deps (deg)      -0.004298655456  -0.000871735458
+  Sun mean longitude             116.538451653
+  Sun apparent                   lon 115.130376628  lat 0.001638926  dist 1.012385553
+  Sun geometric                  lon 115.140297263  lat 0.001638926  dist 1.012385553
+  Sun ra, dec                    117.121595958  21.320857867
+  Moon apparent                  lon 189.683395872  lat 5.211445500  dist 402547.090866092
+  Moon geometric                 lon 189.687694527  lat 5.211445500  dist 402547.090866092
+  mercury                        lon 102.277722399  lat 0.870580206  dist 1.196511091
+  mercury geometric              lon 102.294994140  lat 0.871679421  dist 1.196684777
+  mercury heliocentric           lon 55.242232903  lat 3.382984101  dist 0.308021366
+  venus                          lon 117.792787489  lat 1.231067960  dist 1.727169737
+  venus geometric                lon 117.809433591  lat 1.231262242  dist 1.727156676
+  venus heliocentric             lon 121.579425140  lat 2.960672912  dist 0.717980619
+  mars                           lon 239.047388740  lat -4.121979714  dist 0.550293667
+  mars geometric                 lon 239.052500647  lat -4.121942638  dist 0.550263372
+  mars heliocentric              lon 276.083991283  lat -1.625213938  dist 1.395607913
+  jupiter                        lon 78.450520793  lat -0.216126021  dist 5.955582605
+  jupiter geometric              lon 78.461761130  lat -0.216076909  dist 5.955624648
+  jupiter heliocentric           lon 71.756454384  lat -0.248793647  dist 5.179124158
+  saturn                         lon 323.656848319  lat -1.928880009  dist 8.667261468
+  saturn geometric               lon 323.658011358  lat -1.929024546  dist 8.667258459
+  saturn heliocentric            lon 320.761210179  lat -1.747434259  dist 9.568570026
+  uranus                         lon 240.311315268  lat 0.027731227  dist 18.673825791
+  uranus geometric               lon 240.313726509  lat 0.027711568  dist 18.673827483
+  uranus heliocentric            lon 242.774397754  lat 0.026761477  dist 19.274788199
+  neptune                        lon 172.180315026  lat 1.690371326  dist 30.842618438
+  neptune geometric              lon 172.188761951  lat 1.690250317  dist 30.842605098
+  neptune heliocentric           lon 173.795887364  lat 1.720240778  dist 30.304091706
+  ecliptic pole (J2000 eq.)      [-0.000047059907, -0.401710311816, 0.915766795186]
+  equator pole (J2000 eq.)       [-0.175349397843, -0.037017059253, 0.983810106677]
+
+last Julian day: JD(TT) 2299159.501494447
+  mean / true obliquity          23.493497914  23.493833596
+  nutation dpsi, deps (deg)      0.004434770818  0.000335682502
+  Sun mean longitude             202.107410821
+  Sun apparent                   lon 200.237755991  lat -0.000198419  dist 0.995493114
+  Sun geometric                  lon 200.239038599  lat -0.000198419  dist 0.995493114
+  Sun ra, dec                    198.681065844  -7.926516538
+  Moon apparent                  lon 50.533905211  lat 3.442041527  dist 360049.866046593
+  Moon geometric                 lon 50.529470440  lat 3.442041527  dist 360049.866046593
+  mercury                        lon 193.741617919  lat 1.459751321  dist 1.364207463
+  mercury geometric              lon 193.750729752  lat 1.459083923  dist 1.364310797
+  mercury heliocentric           lon 177.042265302  lat 5.074281839  dist 0.392810447
+  venus                          lon 165.921036466  lat 1.272661478  dist 1.270026834
+  venus geometric                lon 165.925486980  lat 1.272915389  dist 1.270143339
+  venus heliocentric             lon 114.500702914  lat 2.251300564  dist 0.718369495
+  mars                           lon 105.770521461  lat 0.843129913  dist 1.083580212
+  mars geometric                 lon 105.768751255  lat 0.843309605  dist 1.083642624
+  mars heliocentric              lon 65.246563229  lat 0.598358827  dist 1.527557272
+  jupiter                        lon 312.339070835  lat -1.062806902  dist 4.560563748
+  jupiter geometric              lon 312.335096670  lat -1.062757945  dist 4.560519383
+  jupiter heliocentric           lon 322.923520325  lat -0.965360608  dist 5.020385155
+  saturn                         lon 334.737063039  lat -2.041738676  dist 8.936997665
+  saturn geometric               lon 334.730491085  lat -2.041648156  dist 8.936961156
+  saturn heliocentric            lon 338.948455594  lat -1.888690436  dist 9.660331532
+  uranus                         lon 319.541465120  lat -0.743937951  dist 19.496751011
+  uranus geometric               lon 319.535559547  lat -0.743879007  dist 19.496741120
+  uranus heliocentric            lon 322.023327401  lat -0.725052971  dist 20.002674445
+  neptune                        lon 110.429543453  lat -0.579430922  dist 29.952112430
+  neptune geometric              lon 110.426075370  lat -0.579457224  dist 29.952135006
+  neptune heliocentric           lon 108.522192427  lat -0.579193615  dist 29.965425670
+  ecliptic pole (J2000 eq.)      [-0.000068488795, -0.398649278022, 0.917103455692]
+  equator pole (J2000 eq.)       [-0.040504874494, -0.001889400627, 0.999177554445]
+
+first Gregorian day: JD(TT) 2299160.501494428
+  mean / true obliquity          23.493497559  23.493814875
+  nutation dpsi, deps (deg)      0.004434512737  0.000317316514
+  Sun mean longitude             203.093058093
+  Sun apparent                   lon 201.232098034  lat -0.000237930  dist 0.995216457
+  Sun geometric                  lon 201.233382490  lat -0.000237930  dist 0.995216457
+  Sun ra, dec                    199.611505998  -8.301011023
+  Moon apparent                  lon 65.348505703  lat 2.385002283  dist 364215.666882470
+  Moon geometric                 lon 65.344071190  lat 2.385002283  dist 364215.666882470
+  mercury                        lon 195.457558591  lat 1.372723064  dist 1.374654155
+  mercury geometric              lon 195.466723996  lat 1.372014577  dist 1.374749546
+  mercury heliocentric           lon 180.876988843  lat 4.740654003  dist 0.398338887
+  venus                          lon 167.132910100  lat 1.306590011  dist 1.275928643
+  venus geometric                lon 167.137412132  lat 1.306835469  dist 1.276045037
+  venus heliocentric             lon 116.124803879  lat 2.322187440  dist 0.718344158
+  mars                           lon 106.193793823  lat 0.871963379  dist 1.076352323
+  mars geometric                 lon 106.191970347  lat 0.872143895  dist 1.076414165
+  mars heliocentric              lon 65.765087131  lat 0.614191994  dist 1.528848592
+  jupiter                        lon 312.358147425  lat -1.060952112  dist 4.575033552
+  jupiter geometric              lon 312.354263073  lat -1.060902639  dist 4.574988808
+  jupiter heliocentric           lon 323.012700966  lat -0.966774312  dist 5.020131177
+  saturn                         lon 334.696368667  lat -2.039971548  dist 8.948902024
+  saturn geometric               lon 334.689870843  lat -2.039878657  dist 8.948865104
+  saturn heliocentric            lon 338.981074636  lat -1.889623686  dist 9.660026493
+  uranus                         lon 319.528744885  lat -0.743415165  dist 19.511932064
+  uranus geometric               lon 319.522927263  lat -0.743355645  dist 19.511921988
+  uranus heliocentric            lon 322.034149564  lat -0.725102337  dist 20.002750044
+  neptune                        lon 110.434993545  lat -0.579583886  dist 29.934972481
+  neptune geometric              lon 110.431427448  lat -0.579610197  dist 29.934995038
+  neptune heliocentric           lon 108.528251877  lat -0.579013165  dist 29.965451580
+  ecliptic pole (J2000 eq.)      [-0.000068488454, -0.398649272275, 0.917103458190]
+  equator pole (J2000 eq.)       [-0.040504609368, -0.001889375843, 0.999177565240]
+
+Sputnik (Meeus 7.a): JD(TT) 2436116.310372137
+  mean / true obliquity          23.444783541  23.443033540
+  nutation dpsi, deps (deg)      0.003155863140  -0.001750001709
+  Sun mean longitude             193.219309237
+  Sun apparent                   lon 191.299375309  lat 0.000285765  dist 0.999960962
+  Sun geometric                  lon 191.301911279  lat 0.000285765  dist 0.999960962
+  Sun ra, dec                    190.387976564  -4.470500729
+  Moon apparent                  lon 326.614118993  lat 5.014951853  dist 405399.839598356
+  Moon geometric                 lon 326.610963130  lat 5.014951853  dist 405399.839598356
+  mercury                        lon 177.211935954  lat 1.914288771  dist 1.188890845
+  mercury geometric              lon 177.220202935  lat 1.914419679  dist 1.189074089
+  mercury heliocentric           lon 129.146496976  lat 6.925159107  dist 0.329411610
+  venus                          lon 233.973995373  lat -1.791206254  dist 1.000010265
+  venus geometric                lon 233.977500533  lat -1.791553029  dist 0.999902417
+  venus heliocentric             lon 302.679855969  lat -2.460838997  dist 0.728175607
+  mars                           lon 186.887214501  lat 0.818411702  dist 2.639875544
+  mars geometric                 lon 186.893984436  lat 0.818317761  dist 2.639875130
+  mars heliocentric              lon 184.215187466  lat 1.313256969  dist 1.644831659
+  jupiter                        lon 191.946275668  lat 1.099080959  dist 6.454171284
+  jupiter geometric              lon 191.951192034  lat 1.099079595  dist 6.454171096
+  jupiter heliocentric           lon 192.070251310  lat 1.300491568  dist 5.454503677
+  saturn                         lon 249.982777147  lat 1.479479813  dist 10.529161856
+  saturn geometric               lon 249.984407566  lat 1.479299753  dist 10.529140106
+  saturn heliocentric            lon 254.864289623  lat 1.550439641  dist 10.045949945
+  uranus                         lon 130.693336885  lat 0.611526457  dist 18.989786139
+  uranus geometric               lon 130.694237630  lat 0.611589799  dist 18.989793143
+  uranus heliocentric            lon 127.997622800  lat 0.627103992  dist 18.519558938
+  neptune                        lon 211.620483253  lat 1.699597249  dist 31.266051665
+  neptune geometric              lon 211.623730393  lat 1.699546637  dist 31.266046441
+  neptune heliocentric           lon 212.280073612  lat 1.751962104  dist 30.330739603
+  ecliptic pole (J2000 eq.)      [-0.000008431523, -0.397864962362, 0.917443988292]
+  equator pole (J2000 eq.)       [-0.004104730573, -0.000019330847, 0.999991575371]
+
+Meeus 12.a: JD(TT) 2446895.500641634
+  mean / true obliquity          23.440946291  23.443576291
+  nutation dpsi, deps (deg)      -0.001073006802  0.002630000083
+  Sun mean longitude             17.699693236
+  Sun apparent                   lon 19.601526633  lat -0.000100175  dist 1.001711869
+  Sun geometric                  lon 19.608281524  lat -0.000100175  dist 1.001711869
+  Sun ra, dec                    18.093165340  7.669946929
+  Moon apparent                  lon 150.276858010  lat 3.485000168  dist 395995.738741450
+  Moon geometric                 lon 150.277931017  lat 3.485000168  dist 395995.738741450
+  mercury                        lon 355.673831823  lat -2.513359961  dist 1.099589218
+  mercury geometric              lon 355.684305006  lat -2.513499533  dist 1.099715934
+  mercury heliocentric           lon 289.936739978  lat -6.177750348  dist 0.448142064
+  venus                          lon 344.758293189  lat -1.153080042  dist 1.271494846
+  venus geometric                lon 344.768183384  lat -1.153356320  dist 1.271610971
+  venus heliocentric             lon 292.898230057  lat -2.014845936  dist 0.727958108
+  mars                           lon 62.868197643  lat 0.858813961  dist 2.138644116
+  mars geometric                 lon 62.877528121  lat 0.858898318  dist 2.138584517
+  mars heliocentric              lon 88.858036104  lat 1.171789376  dist 1.567676145
+  jupiter                        lon 9.336849214  lat -1.082956227  dist 5.933955593
+  jupiter geometric              lon 9.346149962  lat -1.082974761  dist 5.933963886
+  jupiter heliocentric           lon 7.280262153  lat -1.297815715  dist 4.951704295
+  saturn                         lon 261.065433275  lat 1.601073548  dist 9.529797197
+  saturn geometric               lon 261.065612765  lat 1.601149538  dist 9.529827501
+  saturn heliocentric            lon 256.039105458  lat 1.518736485  dist 10.046891088
+  uranus                         lon 266.625862240  lat -0.136753503  dist 18.758008170
+  uranus geometric               lon 266.626098980  lat -0.136783190  dist 18.758048571
+  uranus heliocentric            lon 263.868920594  lat -0.133829112  dist 19.171353982
+  neptune                        lon 278.006765896  lat 1.036097291  dist 30.025149106
+  neptune geometric              lon 278.007820861  lat 1.036171693  dist 30.025162948
+  neptune heliocentric           lon 276.148170286  lat 1.028728350  dist 30.242483357
+  ecliptic pole (J2000 eq.)      [-0.000002576229, -0.397803478150, 0.917470649539]
+  equator pole (J2000 eq.)       [-0.001236919103, -0.000001744256, 0.999999235014]
+
+Meeus 47.a: JD(TT) 2448724.500677638
+  mean / true obliquity          23.440295184  23.440634977
+  nutation dpsi, deps (deg)      0.004578577183  0.000339793312
+  Sun mean longitude             20.448747248
+  Sun apparent                   lon 22.344622286  lat -0.000336614  dist 1.002491836
+  Sun geometric                  lon 22.345721172  lat -0.000336614  dist 1.002491836
+  Sun ra, dec                    20.662487973  8.698118457
+  Moon apparent                  lon 133.176911953  lat -3.229783821  dist 368409.007202568
+  Moon geometric                 lon 133.172333376  lat -3.229783821  dist 368409.007202568
+  mercury                        lon 359.066599505  lat -0.838351603  dist 0.686736129
+  mercury geometric              lon 359.062954909  lat -0.839210231  dist 0.686809753
+  mercury heliocentric           lon 238.487162932  lat -1.251341674  dist 0.460358283
+  venus                          lon 5.794547741  lat -1.512960570  dist 1.629262172
+  venus geometric                lon 5.801570235  lat -1.512958190  dist 1.629335905
+  venus heliocentric             lon 342.655710506  lat -3.389558825  dist 0.727508040
+  mars                           lon 341.554222552  lat -1.289380068  dist 1.985261760
+  mars geometric                 lon 341.558521598  lat -1.289424137  dist 1.985338830
+  mars heliocentric              lon 313.445483073  lat -1.840952965  dist 1.390492182
+  jupiter                        lon 155.108035614  lat 1.334556885  dist 4.684248286
+  jupiter geometric              lon 155.101915425  lat 1.334493595  dist 4.684226764
+  jupiter heliocentric           lon 162.916246783  lat 1.154456279  dist 5.414900494
+  saturn                         lon 316.573230897  lat -0.732556337  dist 10.312833107
+  saturn geometric               lon 316.572832309  lat -0.732693226  dist 10.312850854
+  saturn heliocentric            lon 311.297248973  lat -0.759867331  dist 9.943622734
+  uranus                         lon 287.986023835  lat -0.401557817  dist 19.396912573
+  uranus geometric               lon 287.982380158  lat -0.401611839  dist 19.396953766
+  uranus heliocentric            lon 285.043819649  lat -0.399495554  dist 19.498860683
+  neptune                        lon 288.946993449  lat 0.740749071  dist 30.124336080
+  neptune geometric              lon 288.943204960  lat 0.740792934  dist 30.124349838
+  neptune heliocentric           lon 287.044140161  lat 0.738937875  dist 30.200427669
+  ecliptic pole (J2000 eq.)      [-0.000001566441, -0.397793049303, 0.917475171285]
+  equator pole (J2000 eq.)       [-0.000750337895, -0.000000638034, 0.999999718496]
+
+Meeus 25.a: JD(TT) 2448908.500682340
+  mean / true obliquity          23.440229682  23.440136921
+  nutation dpsi, deps (deg)      0.004452524631  -0.000092760353
+  Sun mean longitude             201.807865913
+  Sun apparent                   lon 199.906751373  lat 0.000343480  dist 0.997625104
+  Sun geometric                  lon 199.908004008  lat 0.000343480  dist 0.997625104
+  Sun ra, dec                    198.378889896  -7.783970770
+  Moon apparent                  lon 34.303304822  lat 3.823891312  dist 393371.085421985
+  Moon geometric                 lon 34.298852298  lat 3.823891312  dist 393371.085421985
+  mercury                        lon 218.268551709  lat -1.363663761  dist 1.290538943
+  mercury geometric              lon 218.274882679  lat -1.364499508  dist 1.290424127
+  mercury heliocentric           lon 260.758362166  lat -3.777892001  dist 0.466460123
+  venus                          lon 231.797820561  lat -0.676341772  dist 1.348222480
+  venus geometric                lon 231.802853323  lat -0.676730942  dist 1.348109532
+  venus heliocentric             lon 278.256757291  lat -1.254747070  dist 0.727399059
+  mars                           lon 105.703204508  lat 0.670049697  dist 1.058073469
+  mars geometric                 lon 105.701439698  lat 0.670225190  dist 1.058136081
+  mars heliocentric              lon 64.369517578  lat 0.470497340  dist 1.506572989
+  jupiter                        lon 180.442334555  lat 1.079788504  dist 6.372733649
+  jupiter geometric              lon 180.445607736  lat 1.079835791  dist 6.372753824
+  jupiter heliocentric           lon 176.943268203  lat 1.264373124  dist 5.442488444
+  saturn                         lon 311.619323914  lat -1.034547103  dist 9.493549238
+  saturn geometric               lon 311.614607464  lat -1.034524704  dist 9.493509947
+  saturn heliocentric            lon 316.984373827  lat -0.991488198  dist 9.905886721
+  uranus                         lon 284.224396023  lat -0.421774728  dist 19.603484542
+  uranus geometric               lon 284.221879951  lat -0.421747888  dist 19.603481264
+  uranus heliocentric            lon 287.135595501  lat -0.423354730  dist 19.529887054
+  neptune                        lon 286.255276124  lat 0.707109242  dist 30.243114732
+  neptune geometric              lon 286.252314847  lat 0.707010187  dist 30.243092426
+  neptune heliocentric           lon 288.141912107  lat 0.708103733  dist 30.195905544
+  ecliptic pole (J2000 eq.)      [-0.000001464593, -0.397792000206, 0.917475626145]
+  equator pole (J2000 eq.)       [-0.000701387638, -0.000000556908, 0.999999754028]
+
+J2000.0: JD(TT) 2451545.000739126
+  mean / true obliquity          23.439291111  23.437690725
+  nutation dpsi, deps (deg)      -0.003897597273  -0.001600386189
+  Sun mean longitude             280.467185217
+  Sun apparent                   lon 280.372235034  lat 0.000695364  dist 0.983302231
+  Sun geometric                  lon 280.381920893  lat 0.000695364  dist 0.983302231
+  Sun ra, dec                    281.281939878  -23.031719528
+  Moon apparent                  lon 223.323698559  lat 5.171148463  dist 402446.863478695
+  Moon geometric                 lon 223.327596156  lat 5.171148463  dist 402446.863478695
+  mercury                        lon 271.891880103  lat -0.994336936  dist 1.415442474
+  mercury geometric              lon 271.908498890  lat -0.995134017  dist 1.415501338
+  mercury heliocentric           lon 253.786600274  lat -3.022418029  dist 0.466474272
+  venus                          lon 241.568167786  lat 2.068657194  dist 1.137546313
+  venus geometric                lon 241.580006800  lat 2.068472524  dist 1.137660933
+  venus heliocentric             lon 182.606321261  lat 3.267521328  dist 0.720209803
+  mars                           lon 327.949500682  lat -1.071166794  dist 1.849964315
+  mars geometric                 lon 327.961687194  lat -1.071033741  dist 1.849884324
+  mars heliocentric              lon 359.424750175  lat -1.424752695  dist 1.391161542
+  jupiter                        lon 25.399058459  lat -1.253284662  dist 4.620530683
+  jupiter geometric              lon 25.404032661  lat -1.253147171  dist 4.620494030
+  jupiter heliocentric           lon 36.429402139  lat -1.165865120  dist 4.966938845
+  saturn                         lon 40.047474154  lat -2.457983027  dist 8.641990668
+  saturn geometric               lon 40.050411021  lat -2.457744168  dist 8.641952374
+  saturn heliocentric            lon 45.402049697  lat -2.316681348  dist 9.168142905
+  uranus                         lon 314.855204435  lat -0.659098127  dist 20.703281993
+  uranus geometric               lon 314.865128834  lat -0.659068687  dist 20.703282267
+  uranus heliocentric            lon 316.468278490  lat -0.685687606  dist 19.900598308
+  neptune                        lon 303.172896503  lat 0.235692773  dist 31.030835035
+  neptune geometric              lon 303.183167727  lat 0.235651895  dist 31.030823028
+  neptune heliocentric           lon 303.907910825  lat 0.242700679  dist 30.126779157
+  ecliptic pole (J2000 eq.)      [0.000000000000, -0.397776969108, 0.917482143067]
+  equator pole (J2000 eq.)       [0.000000000197, 0.000000000005, 1.000000000000]
+
+2026 January 1: JD(TT) 2461041.500868919
+  mean / true obliquity          23.435910446  23.438155484
+  nutation dpsi, deps (deg)      0.001517965488  0.002245038381
+  Sun mean longitude             280.667488870
+  Sun apparent                   lon 280.572197399  lat 0.000754536  dist 0.983273116
+  Sun geometric                  lon 280.576467867  lat 0.000754536  dist 0.983273116
+  Sun ra, dec                    281.498572422  -23.016408517
+  Moon apparent                  lon 66.717706675  lat 5.049282932  dist 361026.958495386
+  Moon geometric                 lon 66.716188709  lat 5.049282932  dist 361026.958495386
+  mercury                        lon 268.653571614  lat -0.569350226  dist 1.377491584
+  mercury geometric              lon 268.664192386  lat -0.570226813  dist 1.377580624
+  mercury heliocentric           lon 242.625199585  lat -1.700100058  dist 0.462547920
+  venus                          lon 279.209203144  lat -0.505406598  dist 1.709851135
+  venus geometric                lon 279.220113782  lat -0.505775896  dist 1.709858134
+  venus heliocentric             lon 277.385912418  lat -1.190114310  dist 0.727323375
+  mars                           lon 282.675381191  lat -0.890068744  dist 2.410991391
+  mars geometric                 lon 282.684533442  lat -0.890156292  dist 2.410971722
+  mars heliocentric              lon 284.135365086  lat -1.502456057  dist 1.429022348
+  jupiter                        lon 111.358956432  lat 0.243522637  dist 4.241528672
+  jupiter geometric              lon 111.354234602  lat 0.243582430  dist 4.241544130
+  jupiter heliocentric           lon 109.331985960  lat 0.198134728  dist 5.210710236
+  saturn                         lon 356.094047484  lat -2.264867477  dist 9.724126199
+  saturn geometric               lon 356.095809224  lat -2.264683386  dist 9.724077627
+  saturn heliocentric            lon 1.836203206  lat -2.311853440  dist 9.526097187
+  uranus                         lon 58.041223381  lat -0.195784455  dist 18.764551313
+  uranus geometric               lon 58.036719071  lat -0.195754504  dist 18.764518651
+  uranus heliocentric            lon 59.990397949  lat -0.188406029  dist 19.500333709
+  neptune                        lon 359.470219028  lat -1.331596765  dist 30.054044004
+  neptune geometric              lon 359.470865434  lat -1.331486641  dist 30.054022811
+  neptune heliocentric           lon 1.321824562  lat -1.339255851  dist 29.880260717
+  ecliptic pole (J2000 eq.)      [0.000005356584, -0.397722846833, 0.917505606020]
+  equator pole (J2000 eq.)       [0.002526157518, -0.000007376152, 0.999996809232]
+
+2026 June solstice: JD(TT) 2461213.000872266
+  mean / true obliquity          23.435849394  23.437980369
+  nutation dpsi, deps (deg)      0.002138239652  0.002130975142
+  Sun mean longitude             89.706015173
+  Sun apparent                   lon 90.148870541  lat -0.000687823  dist 1.016265873
+  Sun geometric                  lon 90.152332815  lat -0.000687823  dist 1.016265873
+  Sun ra, dec                    90.162257370  23.437208701
+  Moon apparent                  lon 175.216993801  lat -2.016729323  dist 386061.912106329
+  Moon geometric                 lon 175.214855561  lat -2.016729323  dist 386061.912106329
+  mercury                        lon 113.706442359  lat -0.105540642  dist 0.730681782
+  mercury geometric              lon 113.706864459  lat -0.106485204  dist 0.730589969
+  mercury heliocentric           lon 230.039067721  lat -0.170140706  dist 0.453143059
+  venus                          lon 129.330263861  lat 1.983766050  dist 1.113955289
+  venus geometric                lon 129.335536459  lat 1.983680321  dist 1.113839251
+  venus heliocentric             lon 192.457637913  lat 3.066850489  dist 0.720874457
+  mars                           lon 54.735326412  lat -0.414892170  dist 2.133042108
+  mars geometric                 lon 54.742073187  lat -0.414753570  dist 2.133128782
+  mars heliocentric              lon 30.452435258  lat -0.617515927  dist 1.431595714
+  jupiter                        lon 118.156804203  lat 0.430995550  dist 6.147745121
+  jupiter geometric              lon 118.162060993  lat 0.431028777  dist 6.147733513
+  jupiter heliocentric           lon 123.356029363  lat 0.502744126  dist 5.272181114
+  saturn                         lon 13.622870306  lat -2.348325022  dist 9.657926543
+  saturn geometric               lon 13.623916218  lat -2.348562558  dist 9.657942055
+  saturn heliocentric            lon 7.630239850  lat -2.394344137  dist 9.473087687
+  uranus                         lon 63.292657714  lat -0.155586412  dist 20.372259153
+  uranus geometric               lon 63.296806660  lat -0.155576258  dist 20.372249633
+  uranus heliocentric            lon 61.945747441  lat -0.162741448  dist 19.471006078
+  neptune                        lon 4.312660618  lat -1.357249433  dist 29.933321744
+  neptune geometric              lon 4.311995407  lat -1.357401480  dist 29.933336851
+  neptune heliocentric           lon 2.367282378  lat -1.359945410  dist 29.876839627
+  ecliptic pole (J2000 eq.)      [0.000005454489, -0.397721869694, 0.917506029592]
+  equator pole (J2000 eq.)       [0.002571774895, -0.000007644366, 0.999996692952]
+
+range end: JD(TT) 2817151.551426094
+  mean / true obliquity          23.309688869  23.307183214
+  nutation dpsi, deps (deg)      0.002153692679  -0.002505655189
+  Sun mean longitude             279.629039944
+  Sun apparent                   lon 278.958977500  lat 0.004570348  dist 0.984678274
+  Sun geometric                  lon 278.962603981  lat 0.004570348  dist 0.984678274
+  Sun ra, dec                    279.740041754  -23.001819639
+  Moon apparent                  lon 69.166828753  lat -3.446941483  dist 367930.312072714
+  Moon geometric                 lon 69.164675061  lat -3.446941483  dist 367930.312072714
+  mercury                        lon 281.118301327  lat -1.605280944  dist 1.445038955
+  mercury geometric              lon 281.129312440  lat -1.605906602  dist 1.445012128
+  mercury heliocentric           lon 285.751484803  lat -5.019345736  dist 0.463751124
+  venus                          lon 256.918201956  lat 1.033478182  dist 1.533184451
+  venus geometric                lon 256.927117939  lat 1.033149104  dist 1.533277169
+  venus heliocentric             lon 226.149476281  lat 2.186757093  dist 0.722485961
+  mars                           lon 74.657700396  lat 2.654034099  dist 0.571983989
+  mars geometric                 lon 74.654831313  lat 2.654092873  dist 0.571976033
+  mars heliocentric              lon 90.082776043  lat 0.992933293  dist 1.523878879
+  jupiter                        lon 199.305564141  lat 1.189062996  dist 5.534674592
+  jupiter geometric              lon 199.306751712  lat 1.189181963  dist 5.534719827
+  jupiter heliocentric           lon 189.056526537  lat 1.207995336  dist 5.444808606
+  saturn                         lon 47.600072136  lat -2.507419382  dist 8.626168932
+  saturn geometric               lon 47.596216736  lat -2.507200253  dist 8.626132709
+  saturn heliocentric            lon 52.358616173  lat -2.332859812  dist 9.272317585
+  uranus                         lon 301.183077867  lat -0.511973711  dist 20.436101537
+  uranus geometric               lon 301.187564404  lat -0.511967420  dist 20.436112514
+  uranus heliocentric            lon 302.280444955  lat -0.536001669  dist 19.528180921
+  neptune                        lon 342.340146051  lat -0.597040410  dist 30.433947210
+  neptune geometric              lon 342.341651812  lat -0.597015429  dist 30.433926151
+  neptune heliocentric           lon 344.022906342  lat -0.605687120  dist 30.005646314
+  ecliptic pole (J2000 eq.)      [0.000296910495, -0.395716778913, 0.918372551164]
+  equator pole (J2000 eq.)       [0.096089691946, -0.010822318769, 0.995313844231]
+
+Kepler's equation (M, e -> E)
+  M 0, e 0.2                     0.000000000000
+  M 5, e 0.0167                  5.084804818249
+  M 90, e 0.2056                 101.541808246997
+  M 179.9, e 0.0934              179.908542158746
+  M -120, e 0.0485               -122.347617019975
+
+Refraction (deg) at true / apparent altitude
+  h -2                           0.000000000000  0.000000000000
+  h -1                           0.646580620881  0.830262105990
+  h -0.6                         0.578299011641  0.721289679695
+  h 0                            0.483032123074  0.574625562388
+  h 0.5                          0.416731814803  0.479228502844
+  h 1                            0.362398113249  0.405485376386
+  h 5                            0.161235443402  0.164719070570
+  h 10                           0.090128013386  0.089858424460
+  h 30                           0.029099750246  0.028621835559
+  h 45                           0.016878460981  0.016580799464
+  h 89.9                         0.000000000000  0.000006539587
+
+=== 5. STARS OF DATE (Stars.ofDate, ra and dec in degrees) ===
+  Polaris                        mag 2.02  size 5.485714
+                                 J2000 37.954560670 89.264108970  2026.0 46.489647639 89.371460017  -584 344.474686747 75.046177381  3000 180.458033294 84.948843520
+  Kochab                         mag 2.08  size 5.442857
+                                 J2000 222.676357498 74.155503937  2026.0 222.664178931 74.049164759  -584 253.287409113 83.077461364  3000 223.713254557 70.092528432
+  Dubhe                          mag 1.79  size 5.650000
+                                 J2000 165.931964674 61.751034688  2026.0 166.327434248 61.610265748  -584 110.177757741 72.629444287  3000 179.862447923 56.240646681
+  Capella                        mag 0.08  size 6.871429
+                                 J2000 79.172327944 45.997991470  2026.0 79.653609990 46.021498329  -584 35.081813624 38.475381475  3000 97.798142559 46.025800377
+  Deneb                          mag 1.25  size 6.035714
+                                 J2000 310.357979753 45.280338807  2026.0 310.579751570 45.374294263  -584 288.509199882 38.224714984  3000 318.950531325 49.180543410
+  Vega                           mag 0.03  size 6.907143
+                                 J2000 279.234734787 38.783688956  2026.0 279.454905325 38.809262424  -584 257.573638676 39.020566762  3000 287.716527016 40.159317619
+  Arcturus                       mag -0.05  size 6.964286
+                                 J2000 213.915300295 19.182409162  2026.0 214.211983590 19.048055168  -584 184.199304582 34.078973006  3000 225.410479135 14.347072313
+  Aldebaran                      mag 0.86  size 6.314286
+                                 J2000 68.980162790 16.509302351  2026.0 69.353924895 16.559411129  -584 33.509496011 7.667804592  3000 83.518011141 17.775744150
+  Altair                         mag 0.76  size 6.385714
+                                 J2000 297.695827296 8.868321196  2026.0 298.012823516 8.938735538  -584 266.050499490 5.707252052  3000 309.850838526 12.063980812
+  Betelgeuse                     mag 0.42  size 6.628571
+                                 J2000 88.792938991 7.407063995  2026.0 89.145083312 7.409747812  -584 54.532803424 2.871161433  3000 102.352368918 6.872086352
+  Mintaka                        mag 2.41  size 5.207143
+                                 J2000 83.001667056 -0.299095107  2026.0 83.334069826 -0.281883671  -584 50.702224948 -5.946656817  3000 95.835561545 -0.241995809
+  Rigel                          mag 0.13  size 6.835714
+                                 J2000 78.634467067 -8.201638365  2026.0 78.947175459 -8.173500556  -584 48.203170605 -14.628340913  3000 90.723950259 -7.686044527
+  Spica                          mag 0.97  size 6.235714
+                                 J2000 201.298247362 -11.161319485  2026.0 201.641580001 -11.296235938  -584 168.228509990 3.076093188  3000 214.777559825 -16.064417331
+  Sirius                         mag -1.46  size 7.971429
+                                 J2000 101.287155333 -16.716115861  2026.0 101.573495726 -16.753629644  -584 72.834968427 -16.540557274  3000 112.276829794 -18.649377644
+  Antares                        mag 0.91  size 6.278571
+                                 J2000 247.351915420 -26.432002612  2026.0 247.751523655 -26.487437781  -584 210.063476019 -16.956618338  3000 262.958306716 -27.861336443
+  Canopus                        mag -0.74  size 7.457143
+                                 J2000 95.987957829 -52.695661384  2026.0 96.132365563 -52.710776187  -584 81.955098686 -52.994365196  3000 101.545886814 -53.535933099
+  Achernar                       mag 0.46  size 6.600000
+                                 J2000 24.428522833 -57.236752806  2026.0 24.669597597 -57.105374933  -584 356.668878824 -71.254717758  3000 33.518370562 -52.394634031
+  α Centauri                     mag -0.1  size 7.000000
+                                 J2000 219.902083333 -60.833972222  2026.0 220.349141351 -60.939721828  -584 183.858104562 -48.194488480  3000 238.669141436 -64.329424935
+  Acrux                          mag 0.67  size 6.450000
+                                 J2000 186.649563401 -63.099092858  2026.0 187.016167738 -63.242910955  -584 156.772445952 -48.969358401  3000 202.598102883 -68.469917050
+  σ Octantis                     mag 5.42  size 3.057143
+                                 J2000 317.195264876 -88.956499536  2026.0 322.409979487 -88.845800431  -584 167.363808505 -76.221298933  3000 0.940441842 -83.581681510
+
+The stars of the blue plates at 2026.0 (as plate.js places them)
+  alf CMa                        101.573495726  -16.753629644  mag -1.46
+  alf Lyr                        279.454905325  38.809262424  mag 0.03
+  alf Aur                        79.653609990  46.021498329  mag 0.08
+  bet Ori                        78.947175459  -8.173500556  mag 0.13
+  alf Ori                        89.145083312  7.409747812  mag 0.42
+  alf Tau                        69.353924895  16.559411129  mag 0.86
+  bet Gem                        116.725797661  27.961228033  mag 1.14
+  alf Cyg                        310.579751570  45.374294263  mag 1.25
+  alf Gem                        114.063230182  31.828694825  mag 1.58
+  gam Ori                        81.631786121  6.371109006  mag 1.64
+  bet Tau                        81.984442459  28.626893233  mag 1.65
+  eps Ori                        84.383523177  -1.187346227  mag 1.69
+  eps UMa                        193.791428016  55.819113073  mag 1.77
+  zet Ori                        85.517966039  -1.930836639  mag 1.77
+  alf UMa                        166.327434248  61.610265748  mag 1.79
+  alf Per                        51.548302807  49.951456581  mag 1.79
+  eta UMa                        207.140651062  49.184210547  mag 1.86
+  alf UMa A                      166.327385945  61.610260820  mag 1.87
+  alf Gem A                      114.063060700  31.828667451  mag 1.9
+  bet Aur                        90.359202271  44.947119696  mag 1.9
+  zet Ori A                      85.517973905  -1.930832000  mag 1.9
+  gam Gem                        99.803155858  16.374704840  mag 1.92
+  bet CMa                        95.961357048  -17.970598556  mag 1.97
+  alf Ari                        32.161334897  23.584122008  mag 2.01
+  alf UMi                        46.489647639  89.371460017  mag 2.02
+  bet And                        17.799171270  35.757697651  mag 2.05
+  alf And                        2.434373700  29.233876360  mag 2.06
+  kap Ori                        87.247637183  -9.662276553  mag 2.06
+  bet UMi                        222.664178931  74.049164759  mag 2.08
+  gam01 And                      31.376739550  42.453207373  mag 2.1
+  bet Per                        47.467790229  41.053872956  mag 2.12
+  zet01 UMa                      201.242025358  54.790173368  mag 2.22
+  alf Cas                        10.499931637  56.679500970  mag 2.23
+  gam Cyg                        305.790531227  40.341081568  mag 2.23
+  gam Dra                        269.302703975  51.486780390  mag 2.23
+  alf CrB                        233.947361857  26.628590025  mag 2.24
+  bet Cas                        2.645512360  59.293086516  mag 2.27
+  bet UMa                        165.848296174  56.242440845  mag 2.37
+  gam Cas                        14.574981658  60.856917849  mag 2.39
+  del Ori                        83.334069826  -0.281883671  mag 2.41
+  bet Peg                        346.259631906  28.224278402  mag 2.42
+  gam UMa                        178.796839600  53.550141772  mag 2.44
+  eps Boo                        221.530652003  26.965785857  mag 2.45
+  alf Cep                        319.799541961  62.696356351  mag 2.46
+  eps Cyg                        311.816150617  34.068818312  mag 2.48
+  alf Cet                        45.910441879  4.190197745  mag 2.53
+  del Leo                        168.871897911  20.380846615  mag 2.53
+  alf Lep                        83.469526776  -17.805461172  mag 2.57
+  tet Aur                        90.373724342  37.211665346  mag 2.62
+  bet Ari                        29.020556183  20.934019330  mag 2.65
+  del Cas                        21.885125472  60.369435913  mag 2.68
+  iot Aur                        74.672778297  33.204739223  mag 2.69
+  eta Dra                        246.087276659  61.455850988  mag 2.74
+  bet Her                        247.834715257  21.434570054  mag 2.77
+  iot Ori                        84.176500269  -5.894816911  mag 2.77
+  bet Eri                        77.282360128  -5.054749256  mag 2.79
+  zet Her                        250.566872904  31.556739997  mag 2.8
+  bet Dra                        262.755419462  52.283042164  mag 2.81
+  zet Per                        58.943274014  31.958678348  mag 2.85
+  mu. Gem                        96.133326380  22.497815329  mag 2.87
+  eta Tau                        57.258884627  24.183511242  mag 2.87
+  del Cyg                        296.446763039  45.195390454  mag 2.87
+  zet Her A                      250.568481298  31.556137037  mag 2.88
+  alf02 CVn                      194.310006679  38.178431501  mag 2.88
+  eps Per                        59.901798274  40.083090581  mag 2.89
+  gam Per                        46.674235005  53.606145587  mag 2.93
+  gam Eri                        59.811019632  -13.436212033  mag 2.94
+  eta Peg                        341.056172288  30.357852048  mag 2.95
+  eps Leo                        146.830523617  23.653275159  mag 2.98
+  eps Gem                        101.382682483  25.102969537  mag 2.98
+  eps Aur                        75.960070788  43.858972764  mag 2.99
+  alf Gem B                      114.064050855  31.828880964  mag 3
+  bet Tri                        32.775061374  35.108974987  mag 3
+  gam UMi                        230.176977647  71.741461428  mag 3.002
+  del Per                        56.197068688  47.868338264  mag 3.01
+  psi UMa                        167.778831717  44.356925844  mag 3.01
+  gam Boo                        218.281048792  38.195522857  mag 3.02
+  zet Tau                        84.800074890  21.156004277  mag 3.03
+  mu. UMa                        155.967035316  41.367748950  mag 3.05
+  del Dra                        288.138564477  67.707269719  mag 3.07
+  bet01 Cyg                      292.942579456  28.015710309  mag 3.08
+  iot UMa A                      135.243844916  47.937892836  mag 3.13
+  del Her                        259.025220407  24.810192159  mag 3.13
+  alf Lyn                        140.657905335  34.281058014  mag 3.14
+  iot UMa                        135.243831142  47.937887123  mag 3.14
+  zet Dra                        257.216863648  65.682833133  mag 3.17
+  tet UMa                        143.645320392  51.557163002  mag 3.18
+  eta Aur                        77.085748531  41.266890632  mag 3.18
+  pi. Her                        258.988463249  36.781257108  mag 3.18
+  pi.03 Ori                      72.813469539  7.004552556  mag 3.19
+  bet01 Cyg A                    292.942562409  28.015799686  mag 3.2
+  zet Cyg                        318.511063442  30.334761325  mag 3.21
+  gam Cep                        355.109871579  77.777782482  mag 3.21
+  bet Cep                        322.246260003  70.675152322  mag 3.23
+  gam Lyr                        284.979186720  32.726683232  mag 3.25
+  del And                        10.181367244  31.002738837  mag 3.28
+  eta Gem                        94.111834911  22.496846203  mag 3.28
+  iot Dra                        231.377978861  58.875705240  mag 3.29
+  mu. Lep                        78.525213123  -16.176425788  mag 3.29
+  del UMa                        184.175414630  56.888292489  mag 3.32
+  eta Ori                        81.446396195  -2.375238109  mag 3.35
+  zet Cep                        332.940088984  58.330065138  mag 3.35
+  ksi Gem                        101.687060894  12.865341933  mag 3.36
+  eps Cas                        29.073960404  63.796757522  mag 3.37
+  rho Per                        46.713156920  38.939135419  mag 3.39
+  lam Tau                        60.531094894  12.561853109  mag 3.41
+  eta Cep                        311.453535649  61.940390340  mag 3.41
+  tet02 Tau                      67.537561142  15.926460872  mag 3.41
+  zet Leo                        154.532903354  23.286777770  mag 3.41
+  mu.01 Her                      266.869458840  27.706900397  mag 3.42
+  alf Tri                        28.642913292  29.704385907  mag 3.42
+  bet Lyr                        282.760075821  33.394314507  mag 3.42
+  omi UMa                        128.100761088  60.628612723  mag 3.42
+  eta Cas                        12.673815763  57.952513343  mag 3.44
+  lam UMa                        154.663564331  42.783451267  mag 3.45
+  eta Cet                        17.474491786  -10.045086863  mag 3.45
+  lam Ori A                      84.142860746  9.949360006  mag 3.47
+  gam Cet                        41.162689734  3.344006664  mag 3.47
+  mu. Peg                        342.815269889  24.739435570  mag 3.48
+  nu. UMa                        169.969307466  32.952058270  mag 3.49
+  del Boo                        229.137862569  33.219082986  mag 3.49
+  eta Her                        250.947167264  38.874125399  mag 3.5
+  tau Cet                        26.319070044  -15.801394541  mag 3.5
+  bet Boo                        225.731412956  40.289099268  mag 3.52
+  zet Lep                        87.033709112  -14.814095651  mag 3.525
+  del Gem                        110.418392831  21.932160042  mag 3.53
+  eps Tau                        67.534652318  19.235922229  mag 3.53
+  del Eri                        56.123985104  -9.677012879  mag 3.54
+  iot Cep                        342.653218701  66.337570450  mag 3.54
+  gam Cet A                      41.162661117  3.344004045  mag 3.54
+  kap UMa                        136.347071713  47.051785012  mag 3.55
+  ups Per                        24.900802962  48.758899019  mag 3.57
+  kap Gem                        116.503512692  24.333481998  mag 3.57
+  chi Dra                        275.146309131  72.743470994  mag 3.58
+  eta Ori A                      81.446400736  -2.375221556  mag 3.59
+  tet Cet                        21.330962746  -8.049744335  mag 3.59
+  rho Boo                        218.237523154  30.258398710  mag 3.59
+  tau Ori                        79.717571823  -6.818249989  mag 3.59
+  41 Ari                         42.880321085  27.366055057  mag 3.594
+  omi Tau                        51.554027081  9.118673003  mag 3.6
+  tet Gem                        103.625122737  33.927343682  mag 3.6
+  eta Psc                        23.219828651  15.478995866  mag 3.62
+  omi And                        345.780788152  42.466179302  mag 3.62
+  27 Tau                         57.678449629  24.130882968  mag 3.63
+  gam Tau                        65.319157045  15.688333546  mag 3.65
+  lam Ori                        84.142843353  9.949353422  mag 3.66
+  zet Cas                        9.608783217  54.039626051  mag 3.66
+  h UMa                          143.387408161  62.946252664  mag 3.67
+  bet CrB                        232.225302910  29.017431815  mag 3.68
+  pi.04 Ori                      73.148272537  5.647487557  mag 3.68
+  alf Dra                        211.273680879  64.252135402  mag 3.68
+  17 Tau                         56.606263636  24.193074180  mag 3.7
+  ksi Her                        269.693949023  29.246652825  mag 3.7
+  zet Cet                        28.186224714  -10.207561472  mag 3.72
+  eta Lep                        89.397511313  -14.164799337  mag 3.72
+  chi UMa                        176.853405086  47.635114785  mag 3.72
+  del Aur                        90.417234645  54.283324868  mag 3.72
+  tau Cyg                        318.958101096  38.157233997  mag 3.73
+  ksi Cyg                        316.469569077  44.032591732  mag 3.73
+  eps Eri                        53.539411651  -9.371779113  mag 3.73
+  pi.05 Ori                      73.902006775  2.481224267  mag 3.73
+  zet Ori B                      85.518155874  -1.931478760  mag 3.73
+  bet Mon                        97.519801072  -7.051626950  mag 3.74
+  del Cep                        337.535441587  58.548856166  mag 3.75
+  ksi Dra                        268.494867791  56.869271233  mag 3.75
+  ksi Tau                        52.145543243  9.821600400  mag 3.75
+  zet Aur                        76.075160380  41.111080109  mag 3.75
+  iot Cyg                        292.590197221  51.786112354  mag 3.755
+  kap Cyg                        289.425712490  53.417308498  mag 3.76
+  del Tau                        66.109508867  17.601362695  mag 3.76
+  alf Lac                        338.092060768  50.416779102  mag 3.77
+  iot Peg                        332.055883002  25.472982709  mag 3.77
+  iot Gem                        111.834628019  27.744104489  mag 3.79
+  zet Gem                        106.412380626  20.529861026  mag 3.79
+  eta Per                        43.153374319  56.001399155  mag 3.79
+  ksi UMa                        169.890636903  31.382603527  mag 3.79
+  sig Ori                        85.013152599  -2.587090756  mag 3.79
+  nu. Per                        56.742532711  42.658390449  mag 3.8
+  iot Her                        265.049948265  45.993639376  mag 3.8
+  31 Cyg                         303.612668574  46.821257282  mag 3.8
+  ups UMa                        148.203940791  58.914926967  mag 3.81
+  kap Per                        47.815521071  44.954062100  mag 3.81
+  lam And                        354.711318877  46.599190089  mag 3.82
+  omi Her                        272.139349159  28.767634654  mag 3.827
+  46 LMi                         163.689651332  34.074093917  mag 3.83
+  tet01 Tau                      67.515936505  16.017647300  mag 3.84
+  109 Her                        276.201694729  21.783287642  mag 3.84
+  lam Dra                        173.229518535  69.187267066  mag 3.85
+  l Eri                          69.843082024  -14.254907234  mag 3.87
+  tau Her                        245.130915885  46.252547877  mag 3.87
+  eta Eri                        44.424843818  -8.796078970  mag 3.87
+  20 Tau                         56.844846199  24.446982165  mag 3.87
+  mu. And                        14.551539134  38.639795246  mag 3.87
+  eta Cyg                        299.320515396  35.153828207  mag 3.88
+  mu. Leo                        148.559219382  25.883308188  mag 3.88
+  tet Her                        269.286358763  37.248502378  mag 3.88
+  zet02 UMa                      201.245173225  54.786595364  mag 3.88
+  nu. Tau                        61.135599301  6.059525110  mag 3.883
+  l Eri A                        69.843114044  -14.254962703  mag 3.89
+  kap Dra                        188.644560592  69.645165639  mag 3.89
+  eps Dra                        297.017853451  70.334002109  mag 3.91
+  omi Per                        56.489097072  32.368514998  mag 3.91
+  nu.02 CMa                      99.454667074  -19.279809417  mag 3.91
+  38 Lyn                         140.113433577  36.690949721  mag 3.92
+  eps Her                        255.321338496  30.889618129  mag 3.92
+  nu. Eri                        69.405023492  -3.301198218  mag 3.928
+  lam Peg                        341.946608673  23.703075578  mag 3.93
+  50 Cas                         31.428039623  72.545335460  mag 3.938
+  nu. Cyg                        314.536083300  41.268378924  mag 3.94
+  nu. Aur                        88.323348750  39.153331364  mag 3.95
+  tau Per                        44.029565303  52.866919685  mag 3.96
+  10 UMa                         135.579335195  41.677961673  mag 3.96
+  gam Mon                        94.031083165  -6.284688480  mag 3.96
+  omi02 Cyg                      304.068973701  47.795081955  mag 3.98
+  gam Tri                        34.717269708  33.966065316  mag 4
+  tet Dra                        240.595070732  58.496459778  mag 4
+  mu. Eri                        71.701114544  -3.208919468  mag 4
+  13 Lyr                         284.031598335  43.981529669  mag 4
+  g UMa                          201.565720961  54.853118399  mag 4.01
+  41 Cyg                         307.614656453  30.456625207  mag 4.01
+  iot Cnc                        132.066232176  28.662970881  mag 4.018
+  bet Cam                        76.435565068  60.476799785  mag 4.02
+  rho Cyg                        323.740274409  45.707690576  mag 4.02
+  omi01 Eri                      63.284208983  -6.771562254  mag 4.026
+  c Per                          62.639944228  47.779325867  mag 4.03
+  gam CrB A                      235.958905900  26.214671463  mag 4.05
+  tet Boo                        216.520391280  51.731371098  mag 4.05
+  ups Gem                        114.380372637  26.835690625  mag 4.06
+  zet And                        12.180636653  24.408170609  mag 4.06
+  ksi Per                        60.164846021  35.863519931  mag 4.06
+  phi Per                        26.326573066  50.818586175  mag 4.06
+  omi02 Ori                      74.458925897  13.553368440  mag 4.06
+  del Cet                        40.204498607  0.439303312  mag 4.07
+  tet CMa                        103.849579462  -12.073008227  mag 4.08
+  mu. Cep                        326.076157153  58.899978448  mag 4.08
+  phi02 Ori                      84.584042715  9.302576213  mag 4.09
+  ups And                        24.583635381  41.534521525  mag 4.1
+  f Tau                          53.078115663  13.023983708  mag 4.1
+  alf Psc A                      30.848767062  2.888229510  mag 4.11
+  tet Per                        41.497712324  49.336580422  mag 4.11
+  e Ori                          81.300221296  -7.786095970  mag 4.12
+  tet CrB                        233.494720528  31.272694917  mag 4.13
+  eps CrB                        239.666250031  26.804048315  mag 4.13
+  kap Peg                        326.456260305  25.765570810  mag 4.135
+  kap And                        355.424345963  44.478040478  mag 4.14
+  nu. Gem                        97.626663373  20.193312294  mag 4.14
+  1 Gem                          91.425381670  23.259386824  mag 4.15
+  1 Lac                          334.276608901  37.878974541  mag 4.15
+  kap Cas                        8.624833019  63.074940279  mag 4.16
+  mu. Per                        64.204321431  48.472737242  mag 4.16
+  rho Her                        261.145106713  37.123439661  mag 4.17
+  rho Gem                        112.695256928  31.730583924  mag 4.18
+  lam Boo                        214.342707742  45.969771119  mag 4.18
+  23 Tau                         56.968714638  24.027313938  mag 4.18
+  pi.02 Cyg                      326.939240354  49.430687577  mag 4.18
+  110 Her                        281.695396899  20.572880341  mag 4.19
+  sig Her                        248.735609793  42.384590945  mag 4.196
+  32 Ori                         83.044195057  5.965859259  mag 4.2
+  kap01 Tau                      66.730807761  22.351177298  mag 4.201
+  bet LMi                        157.344596627  36.573025098  mag 4.21
+  eps UMi                        250.850293043  81.990564432  mag 4.212
+  phi Dra                        275.095328174  71.351067579  mag 4.22
+  tet Cep                        307.503233610  63.082022046  mag 4.22
+  2 UMi                          18.214562850  86.394899575  mag 4.225
+  52 Cyg                         311.684201047  30.815886873  mag 4.23
+  psi Per                        54.587499101  48.276788619  mag 4.23
+  5 UMi                          216.875572498  75.580366287  mag 4.235
+  pi. Cet                        41.340261445  -13.749932305  mag 4.236
+  sig Cyg                        319.609719436  39.504685472  mag 4.24
+  chi Cyg                        297.891254215  32.981181352  mag 4.24
+  phi And                        17.756051059  47.379693856  mag 4.25
+  ksi UMa A                      169.890509040  31.382475546  mag 4.25
+  pi. Aur                        90.466377042  45.936108347  mag 4.25
+  88 Tau                         69.271382564  10.212175865  mag 4.25
+  bet Com                        198.271145750  27.746992859  mag 4.25
+  31 Lyn                         126.151550530  43.102469913  mag 4.25
+  bet CVn                        188.742969999  41.216471380  mag 4.25
+  tau Tau                        70.952349736  23.004480936  mag 4.258
+  mu. Cet                        41.587915154  10.222394944  mag 4.26
+  58 Per                         69.624684810  41.315626530  mag 4.26
+  omi Psc                        26.692580647  9.287646362  mag 4.26
+  phi Her                        242.397562863  44.867881640  mag 4.27
+  lam Eri                        77.598024391  -8.722632530  mag 4.27
+  c Tau                          69.903514135  12.560891218  mag 4.27
+  33 Cyg                         303.500119973  56.648042001  mag 4.271
+  zet UMi                        235.796233283  77.713344547  mag 4.274
+  mu. Tau                        64.237284308  8.955507109  mag 4.279
+  eps Psc                        16.073962736  8.029516689  mag 4.28
+  ups Tau                        66.966927832  22.870328563  mag 4.282
+  nu. Cep                        326.549896104  61.241426496  mag 4.29
+  lam Per                        62.133228541  50.419194705  mag 4.29
+  iot And                        354.854936679  43.412183108  mag 4.29
+  alf Cam                        74.163319713  66.383015221  mag 4.29
+  lam Lep                        80.193648952  -13.151781106  mag 4.29
+  sig Gem                        116.233314411  28.818332129  mag 4.29
+  ksi Cep                        331.136302089  64.755279560  mag 4.29
+  pi. Peg                        332.786272222  33.306625574  mag 4.29
+  phi And A                      17.755993048  47.379707973  mag 4.294
+  del03 Tau                      66.749414494  17.985253339  mag 4.298
+  q Tau                          56.690359210  24.546825909  mag 4.3
+  10 Tau                         54.550616845  0.482475225  mag 4.3
+  tet CrB A                      233.494728982  31.272728809  mag 4.3
+  54 Eri                         70.395143430  -19.623266840  mag 4.3
+  mu. Ori A                      90.953630412  9.645083034  mag 4.3
+  ksi02 Cet                      37.386231023  8.575293404  mag 4.3
+  del02 Lyr                      283.853621310  36.933013391  mag 4.3
+  eps Mon                        96.287175200  4.580135885  mag 4.31
+  lam Leo                        143.299819975  22.851949865  mag 4.31
+  54 Leo                         164.254054123  24.610419426  mag 4.32
+  tet Cas                        18.175981136  55.287430651  mag 4.33
+  119 Tau                        83.434645335  18.611229748  mag 4.33
+  del UMi                        260.992043165  86.566762971  mag 4.336
+  kap Lyr                        275.193412399  36.077659824  mag 4.34
+  gam Com                        187.057597629  28.124145686  mag 4.34
+  102 Her                        272.467674285  20.820392481  mag 4.347
+  kap Aur                        94.258715914  29.485963075  mag 4.35
+  ksi01 Cet                      33.595425771  8.967496536  mag 4.35
+  15 Lyn                         104.880104091  58.385388755  mag 4.35
+  pi.02 Ori                      73.007856489  8.942693719  mag 4.35
+  pi. And                        9.569280370  33.862116200  mag 4.36
+  sig Per                        53.105203020  48.082711053  mag 4.36
+  zet01 Lyr                      281.417134571  37.633640738  mag 4.36
+  5 Lac                          337.654737008  47.840607204  mag 4.37
+  del Ari                        48.280397496  19.823303178  mag 4.37
+  37 Tau                         61.559282896  22.150864339  mag 4.37
+  tet Lyr                        289.317760702  38.181385035  mag 4.38
+  eps And                        9.984067036  29.452546525  mag 4.38
+  iot CMa                        104.324273512  -17.089672139  mag 4.385
+  nu. Ori                        92.264331134  14.763072129  mag 4.397
+  eta Lyr                        288.660859036  39.192004307  mag 4.398
+  b Leo                          165.928489132  20.039836459  mag 4.398
+  eps Mon A                      96.286581567  4.577519792  mag 4.398
+  ome Eri                        73.543425089  -5.411126099  mag 4.4
+  ups Peg                        351.670283531  23.547514611  mag 4.4
+  chi01 Ori                      88.981100332  20.278514228  mag 4.4
+  kap Cep                        301.991121357  77.788530107  mag 4.4
+  phi01 Ori                      84.062381376  9.504987931  mag 4.41
+  nu. Her                        269.874536480  30.188672287  mag 4.41
+  pi. Cep                        347.182951390  75.528327039  mag 4.41
+  lam Her                        262.947546367  26.092664232  mag 4.41
+  pi. Eri                        56.843258247  -12.021673787  mag 4.42
+  tau Gem                        108.197939214  30.200105751  mag 4.42
+  eta And                        14.650179138  23.557466699  mag 4.42
+  ups Cyg                        319.747151904  35.007102865  mag 4.42
+  omi02 Eri                      64.117342705  -7.614042768  mag 4.43
+  nu.03 CMa                      99.758605269  -18.261722628  mag 4.43
+  7 Cam                          74.844929946  53.790636450  mag 4.433
+  2 Lyn                          95.478722277  58.998058853  mag 4.434
+  bet Lac                        336.146964147  52.359943917  mag 4.44
+  kap Lep                        78.608306459  -12.912343805  mag 4.44
+  39 Cyg                         306.224891402  32.275407415  mag 4.44
+  nu. Psc                        25.696914091  5.618245658  mag 4.44
+  alf Vul                        292.446934001  24.719083937  mag 4.45
+  iot Lep                        78.378188346  -11.839850879  mag 4.45
+  ksi Cep A                      331.136189338  64.755260324  mag 4.45
+  32 Eri                         58.899934276  -2.879621732  mag 4.45
+  tau Dra                        288.758344622  73.402896106  mag 4.45
+  pi.06 Ori                      74.974441354  1.751899875  mag 4.459
+  tau01 Eri                      41.579303420  -18.463753934  mag 4.46
+  kap Leo                        141.540775919  26.068939801  mag 4.46
+  11 Lac                         340.414899294  44.412630909  mag 4.46
+  32 Ori A                       83.044226528  5.965828069  mag 4.46
+  26 UMa                         144.147357338  51.934228787  mag 4.463
+  18 Mon                         102.304124182  2.381634156  mag 4.47
+  sig Boo                        218.953043841  29.633297553  mag 4.47
+  54 Leo A                       164.254098265  24.610435305  mag 4.477
+  ksi Ori                        93.354702912  14.200617978  mag 4.48
+  tet Cyg                        294.284862067  50.282333838  mag 4.48
+  f UMa                          137.672555063  51.497789332  mag 4.48
+  71 Tau                         66.957580904  15.675230776  mag 4.48
+  rho Ori                        78.663125643  2.890137754  mag 4.48
+  21 LMi                         152.238756218  35.116844549  mag 4.49
+  30 Gem                         101.363492610  13.199556144  mag 4.49
+  tau Aur                        87.744221867  39.187155618  mag 4.5
+  omi Cas                        11.546717549  48.426206040  mag 4.5
+  rho Dra                        300.731290715  67.947845445  mag 4.5
+  kap02 Boo                      213.603484611  51.669185862  mag 4.5
+  13 Mon                         98.577463274  7.311784709  mag 4.5
+  2 Peg                          322.781826636  23.753903275  mag 4.509
+  ups Cep                        311.499098790  57.673770819  mag 4.51
+  rho Her A                      261.145064949  37.123390776  mag 4.51
+  39 Ari                         42.366160844  29.353485646  mag 4.51
+  6 Lac                          337.903604268  43.257311096  mag 4.511
+  tau Psc                        18.274932877  30.227024787  mag 4.511
+  f02 Cyg                        316.874614413  47.753836603  mag 4.514
+  7 And                          348.437267888  49.548624227  mag 4.52
+  gam02 Ari                      28.740582169  19.420276204  mag 4.52
+  23 Vul                         304.211709392  27.895385808  mag 4.52
+  93 Leo                         177.331034174  20.074337574  mag 4.52
+  sig And                        4.923435267  36.929160830  mag 4.52
+  17 Per                         43.281211076  35.165002933  mag 4.53
+  nu. And                        12.814527831  41.220009791  mag 4.53
+  2 Lac                          335.526065960  46.668177282  mag 4.54
+  48 Cas                         31.035174206  71.031346922  mag 4.54
+  lam Cyg                        312.105768643  36.587461578  mag 4.54
+  psi Boo                        226.390101708  26.847524493  mag 4.55
+  psi01 Dra A                    265.371003576  72.135371044  mag 4.55
+  136 Tau                        88.740709230  27.615887941  mag 4.552
+  phi UMa                        148.464382552  53.941396682  mag 4.557
+  31 Vul                         313.310423319  27.195564469  mag 4.568
+  d UMa                          144.183462230  69.713947621  mag 4.57
+  4 Lac                          336.393877082  49.608861625  mag 4.58
+  psi01 Dra                      265.372672893  72.141247388  mag 4.58
+  tau Peg                        350.482034060  23.883015805  mag 4.58
+  gam01 Ari                      28.740616508  19.422303962  mag 4.589
+  pi. Dra                        290.198996572  65.764768607  mag 4.59
+  rho Cas                        358.924105245  57.644064463  mag 4.59
+  ome Ori                        85.139971496  4.134165115  mag 4.59
+  c Ori                          84.167450657  -4.823254209  mag 4.59
+  b Per                          65.052423852  50.356712534  mag 4.594
+  113 Her                        283.961515763  22.679671335  mag 4.6
+  10 LMi                         143.951898941  36.280663084  mag 4.6
+  bet Mon A                      97.519806452  -7.051629407  mag 4.6
+  ksi Psc                        28.726197960  3.314842708  mag 4.604
+  gam Cam                        58.287032671  71.408793510  mag 4.604
+  ome Per                        48.244542135  39.708398090  mag 4.607
+  pi. Cep A                      347.182899545  75.528340911  mag 4.61
+  iot Cas A                      37.811706639  67.517202617  mag 4.61
+  21 Lyn                         112.167033735  49.157133925  mag 4.61
+  pi.02 UMa                      130.614595097  64.234446068  mag 4.61
+  tet And                        4.614523452  38.825832609  mag 4.61
+  psi02 Ori                      82.050198051  3.116108177  mag 4.611
+  iot Tau                        76.163211122  21.624755497  mag 4.615
+  chi Her                        238.393844270  42.379973989  mag 4.62
+  ups02 Cas                      14.558442588  59.320944424  mag 4.622
+  48 Cas A                       31.035673787  71.031504558  mag 4.63
+  chi02 Ori                      91.366130744  20.135469265  mag 4.63
+  ups Ori                        83.297480718  -7.284286985  mag 4.63
+  9 Lac                          339.611877321  51.679925880  mag 4.63
+  eps Ari                        45.176127312  21.442758968  mag 4.63
+  del CrB                        237.671383049  25.990231358  mag 4.63
+  72 Leo                         169.145641632  22.953398576  mag 4.63
+  47 Cyg                         308.728802916  35.341119750  mag 4.636
+  omi Dra                        282.895986081  59.420728956  mag 4.636
+  13 Vul                         298.641767269  24.148950318  mag 4.64
+  tau UMa                        138.258090233  63.405611966  mag 4.64
+  pi.01 Ori                      74.082239585  10.190036042  mag 4.648
+  e Her                          259.642153601  37.265627890  mag 4.65
+  rho Tau                        68.831849225  14.896950514  mag 4.65
+  15 Vul                         300.543014701  27.826866648  mag 4.651
+  gam Cnc                        131.196601036  21.373240864  mag 4.652
+  chi Psc                        18.214143461  21.172199342  mag 4.658
+  psi Peg                        359.772071963  25.285908569  mag 4.66
+  pi.01 Cyg                      325.754989387  51.309085042  mag 4.66
+  phi Psc                        18.791741068  24.720715983  mag 4.66
+  83 UMa                         205.430237449  54.550710856  mag 4.66
+  i Dra                          208.048012319  64.595423462  mag 4.66
+  11 Ori                         76.514339353  15.438086204  mag 4.661
+  tet Lep                        91.833252911  -14.939420736  mag 4.663
+  ome UMa                        163.866400484  43.050878144  mag 4.664
+  sig02 Tau                      70.191355513  15.967318624  mag 4.665
+  35 Ari                         41.246211934  27.816210918  mag 4.67
+  phi Cyg                        295.101015378  30.214688939  mag 4.673
+  37 LMi                         160.044206470  31.840403126  mag 4.677
+  15 Mon                         100.602322427  9.869556715  mag 4.68
+  chi Cet                        27.715742772  -10.558764344  mag 4.68
+  sig Dra                        293.075999581  69.705385213  mag 4.68
+  chi Cas                        23.913311631  59.364453628  mag 4.681
+  41 Com                         197.106093818  27.485784930  mag 4.69
+  pi. Tau                        67.019623571  14.770497260  mag 4.69
+  f Per                          64.166451324  40.547037913  mag 4.691
+  20 CVn                         199.676186037  40.436328806  mag 4.698
+  mu.01 Cyg                      326.326695771  28.861150731  mag 4.7
+  lam Cet                        45.278070010  9.009427226  mag 4.7
+  32 Eri A                       58.899936696  -2.879618464  mag 4.7
+  24 CVn                         203.878371469  48.883687528  mag 4.7
+  pi. Per                        45.108516540  39.764950611  mag 4.7
+  ups Her                        240.902436023  45.965651808  mag 4.709
+  65 And                         36.843473352  50.394684581  mag 4.71
+  lam Aur                        80.243421144  40.119342218  mag 4.71
+  31 Ori                         82.763676969  -1.073778560  mag 4.71
+  e Gem                          104.027487111  13.142582155  mag 4.715
+  30 LMi                         156.849161059  33.662790764  mag 4.718
+  8 Cyg                          293.184683983  34.509647867  mag 4.72
+  omi Ori                        73.501580151  14.291794284  mag 4.721
+  v Eri                          52.977490243  -4.987625181  mag 4.725
+  psi Cas                        21.951890161  68.264667696  mag 4.727
+  9 Cep                          324.654443257  62.199844760  mag 4.73
+  tau CrB                        242.480805347  36.426129069  mag 4.73
+  34 Per                         52.810098505  49.596694303  mag 4.735
+  o Ori                          80.772816434  -0.358834513  mag 4.74
+  56 Peg                         347.095565736  25.609035410  mag 4.74
+  ups Aur                        88.203837224  37.310334818  mag 4.74
+  ups Psc                        20.225615420  27.399945713  mag 4.748
+  sig Cet                        38.330236612  -15.131569409  mag 4.75
+  psi01 Aur                      96.724796295  49.271553357  mag 4.75
+  f01 Cyg                        315.177845230  47.623430964  mag 4.75
+  56 Ori                         88.447928996  1.859425264  mag 4.75
+  iot Boo                        214.271311028  51.248100980  mag 4.75
+  lam Cyg A                      312.105729987  36.587474457  mag 4.76
+  rho UMa                        136.212928447  67.525760266  mag 4.76
+  d Dra                          278.255900594  57.066184078  mag 4.761
+  5 CVn                          186.319972387  51.418436461  mag 4.761
+  lam Ari                        29.845936304  23.721736721  mag 4.766
+  k Per                          46.878527548  56.805611664  mag 4.766
+  17 Mon                         102.185526538  8.007053341  mag 4.77
+  57 Cyg                         313.541649408  44.486777693  mag 4.77
+  1 Vul                          289.333845595  21.437974554  mag 4.77
+  ome Dra                        264.200691882  68.745712203  mag 4.77
+  64 Eri                         75.284594783  -12.500914297  mag 4.77
+  ksi UMa B                      169.891204860  31.382312423  mag 4.77
+  23 Com                         189.036193943  22.486364450  mag 4.773
+  2 Aur                          73.594616855  36.744567064  mag 4.779
+  psi Eri                        75.675316390  -7.137719187  mag 4.78
+  rho Ser                        238.102052834  20.901264127  mag 4.78
+  24 Cep                         332.575056914  72.469627962  mag 4.786
+  34 Boo                         221.141407124  26.418501239  mag 4.79
+  omi Peg                        340.745200672  29.443926128  mag 4.79
+  chi Aur                        83.605639522  32.208649215  mag 4.79
+  A Boo                          214.773844201  35.390518852  mag 4.796
+  27 Lyn                         122.600353139  51.429169345  mag 4.797
+  55 UMa                         170.135346140  38.042524267  mag 4.8
+  chi Peg                        3.988081405  20.351128474  mag 4.8
+  d Ori                          85.035965584  -7.200267164  mag 4.8
+  u Her                          259.571909039  33.073567005  mag 4.8
+  del02 Tau                      66.399660871  17.502272684  mag 4.8
+  zet Eri                        49.274660708  -8.724660264  mag 4.8
+  eps Boo B                      221.530427281  26.966559405  mag 4.801
+  e UMa                          139.510729431  53.912594836  mag 4.805
+  4 UMi                          212.196726469  77.425279161  mag 4.805
+  ome Boo                        225.812018615  24.906641983  mag 4.81
+  ksi Cas                        10.882224484  50.654712054  mag 4.81
+  32 Peg                         335.631377651  28.462255689  mag 4.81
+  12 Com                         185.952281997  25.702098578  mag 4.81
+  d Per                          65.860613202  46.558359329  mag 4.812
+  sig02 UMa                      138.161060172  67.026022568  mag 4.813
+  ups Dra                        283.517601576  71.331440638  mag 4.814
+  pi. Ser                        240.853889741  22.733820585  mag 4.817
+  30 Cyg                         303.529610132  46.895400764  mag 4.819
+  139 Tau                        89.902132062  25.954652060  mag 4.82
+  kap CrB                        238.053232153  35.578018680  mag 4.82
+  P Cyg                          304.686400565  38.115002264  mag 4.82
+  ups01 Cas                      14.141494025  59.112846469  mag 4.82
+  58 And                         32.516745943  37.981087959  mag 4.82
+  psi02 Aur                      100.296211733  42.463178880  mag 4.82
+  29 Vul                         309.920994721  21.293820097  mag 4.82
+  15 Ori                         77.797484284  15.628211801  mag 4.82
+  mu. Aur                        78.802955748  38.512610110  mag 4.821
+  52 Her                         252.499927917  45.939200275  mag 4.823
+  42 Dra                         276.514776878  65.579690206  mag 4.823
+  52 Her A                       252.499928424  45.939206192  mag 4.826
+  b And                          33.716385249  44.352221855  mag 4.826
+  ome And                        22.306282465  45.539982625  mag 4.83
+  d Boo                          212.896103934  24.969511759  mag 4.83
+  95 Her A                       270.652606784  21.597360794  mag 4.83
+  126 Tau                        85.699827779  16.545358615  mag 4.836
+  1 Cas                          346.930499354  59.560652179  mag 4.84
+  mu. Psc                        22.887637470  6.276999893  mag 4.84
+  g Dra                          250.276343749  64.540027031  mag 4.842
+  ksi CrB                        245.777769628  30.833096804  mag 4.849
+  kap01 Cet                      50.182099110  3.463888516  mag 4.85
+  8 And                          349.739347524  49.157701570  mag 4.86
+  7 Com                          184.413745000  23.801020429  mag 4.86
+  55 Cyg                         312.456243907  46.211613494  mag 4.86
+  alf UMa B                      166.327401670  61.609628225  mag 4.86
+  rho Cet                        36.801836193  -12.174414398  mag 4.866
+  1 Aur                          72.916517243  37.531609975  mag 4.867
+  o Tau                          82.299612159  21.956793805  mag 4.868
+  ksi And                        20.970965538  45.664166491  mag 4.868
+  zet Ari                        49.100409757  21.139036174  mag 4.869
+  omi Cep A                      349.926324539  68.253963242  mag 4.87
+  eps Cet                        40.205694556  -11.763115327  mag 4.87
+  nu. Cet                        39.310605852  5.705339608  mag 4.871
+  132 Tau                        87.653178984  24.573790467  mag 4.873
+  tau Cas                        357.085580674  58.796932136  mag 4.873
+  134 Tau                        87.752643135  12.657323762  mag 4.875
+  h Dra                          254.044260955  65.095332473  mag 4.88
+  10 Lac                         340.108113433  39.186206925  mag 4.88
+  37 Com                         195.378993542  30.645314351  mag 4.88
+  63 Aur                         108.359983383  39.275513970  mag 4.886
+  15 Cyg                         296.303721191  37.418486507  mag 4.887
+  eta Ori B                      81.446901443  -2.375114881  mag 4.89
+  nu. Cas                        12.580307504  51.109471321  mag 4.891
+  psi10 Aur                      104.877930572  45.057482724  mag 4.893
+  45 Eri                         68.302528660  0.009833256  mag 4.896
+  omi Gem                        115.214520323  34.522369615  mag 4.9
+  39 Eri                         63.908349953  -10.193448608  mag 4.9
+  42 Her                         249.863745356  48.878496779  mag 4.9
+  b Ori                          85.955762408  1.485156090  mag 4.9
+  46 Cet                         21.724787156  -14.464309929  mag 4.907
+  30 Vul                         311.500231648  25.364931871  mag 4.91
+  35 Com                         193.643707369  21.103980371  mag 4.91
+  72 Cyg                         323.960102280  38.651626298  mag 4.91
+  e Boo                          207.735810316  21.135937423  mag 4.91
+  ome02 Tau                      64.697201109  20.640463982  mag 4.914
+  f01 Ori                        93.388617853  16.122195891  mag 4.92
+  12 Per                         40.975101246  40.302223186  mag 4.92
+  54 Per                         65.526285377  34.627122024  mag 4.929
+  lam Lyr                        285.248752354  32.183351773  mag 4.93
+  78 UMa                         195.459274566  56.226756689  mag 4.93
+  c Boo                          227.110942306  24.769239878  mag 4.93
+  17 Lep                         91.536631502  -16.487979105  mag 4.93
+  b02 Cyg                        302.598292827  36.917437557  mag 4.93
+  24 Per                         45.170286914  35.285581135  mag 4.93
+  ome01 Cyg                      307.716120922  49.039960779  mag 4.936
+  chi Gem                        121.277683150  27.719299396  mag 4.937
+  15 Lac                         343.303053644  43.451118187  mag 4.938
+  31 Com                         193.240661860  27.399672104  mag 4.94
+  tau And                        25.531536704  40.707700971  mag 4.94
+  l Per                          50.798828598  43.421552873  mag 4.946
+  22 Cyg                         299.198137412  38.557053086  mag 4.946
+  6 Dra                          188.955048096  69.878719575  mag 4.946
+  24 Lyn                         116.298072601  58.646473858  mag 4.947
+  n Tau                          80.210313234  22.121058754  mag 4.948
+  pi. Cas                        11.229669077  47.166335415  mag 4.949
+  15 Dra                         246.986124491  68.711811120  mag 4.949
+  25 CVn A                       204.653407287  36.163370569  mag 4.95
+  47 Tau A                       63.839225910  9.327820933  mag 4.95
+  14 Com                         186.924507680  27.124421950  mag 4.95
+  4 Dra                          187.809063274  69.057295729  mag 4.95
+  eta UMi                        244.194413888  75.694315303  mag 4.95
+  phi Tau                        65.489398835  27.410700942  mag 4.951
+  iot Tri                        33.471947990  30.423628227  mag 4.952
+  4 Cas                          351.501200641  62.425824171  mag 4.955
+  16 Com                         187.071322424  26.681948080  mag 4.959
+  ksi Aur                        89.256777948  55.709624633  mag 4.96
+  psi01 Ori                      81.524555370  1.868200579  mag 4.96
+  106 Her                        275.349771010  21.974014440  mag 4.96
+  12 Vul                         298.047070930  22.677679340  mag 4.96
+  78 Peg                         356.326100788  29.505573464  mag 4.96
+  phi Gem                        118.771118278  26.696334616  mag 4.963
+  psi And                        356.832891291  46.564717183  mag 4.966
+  ome Cas                        29.515440017  68.811439105  mag 4.968
+  75 Tau                         67.482340194  16.415671493  mag 4.969
+  104 Her                        273.220397375  31.413349851  mag 4.97
+  iot CrB                        240.621313942  29.779718860  mag 4.971
+  o Per                          56.008276542  34.046342676  mag 4.972
+  psi07 Aur                      103.150285177  41.747873396  mag 4.975
+  2 Cyg                          291.287977623  29.673664958  mag 4.977
+  14 Ari                         32.727274968  26.061676534  mag 4.977
+  nu.02 Boo                      233.178613959  40.812268558  mag 4.978
+  7 CrB A                        235.089457931  36.552671284  mag 4.979
+  phi Cas                        20.434620225  58.367416172  mag 4.98
+  eta CrB                        231.069860230  30.195376110  mag 4.98
+  tet UMi                        232.673909333  77.261835484  mag 4.982
+  36 Dra                         273.511770613  64.406369591  mag 4.987
+  b03 Cyg                        303.877031222  36.887232963  mag 4.99
+  eps01 Lyr A                    281.300208273  39.698676434  mag 4.991
+  sig Aur                        81.605608544  37.406950864  mag 4.996
+  28 Tau                         57.684809590  24.214152192  mag 5.09
+
+=== 6a. THE TURNING SKY (models/diurnal.js) ===
+  rates                          360.985647366290  15.041068640262  23.934469591898
+  hourAngle(10, 350), (350, 10)  20.000000000  -20.000000000
+  hourAngle(180, 0), (0, 180)    -180.000000000  -180.000000000
+  dec, phi: class (h0 = 0, -34', -50'), H0 for each h0, a_max, a_min, a at H = 0 45 90 180
+  -90, -90                       circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  90.000000000  90.000000000  90.000000000 90.000000000 90.000000000 90.000000000  1.000000000000
+  -90, -41.9                     circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  41.900000000  41.900000000  41.900000000 41.900000000 41.900000000 41.900000000  1.000000000000
+  -90, 0                         rises/circumpolar/circumpolar  0.000000000 180.000000000 180.000000000  0.000000000  0.000000000  0.000000000 0.000000000 0.000000000 0.000000000  0.000000000000
+  -90, 41.9                      never/never/never  0.000000000 0.000000000 0.000000000  -41.900000000  -41.900000000  -41.900000000 -41.900000000 -41.900000000 -41.900000000  0.000000000000
+  -90, 66.56                     never/never/never  0.000000000 0.000000000 0.000000000  -66.560000000  -66.560000000  -66.560000000 -66.560000000 -66.560000000 -66.560000000  0.000000000000
+  -90, 90                        never/never/never  0.000000000 0.000000000 0.000000000  -90.000000000  -90.000000000  -90.000000000 -90.000000000 -90.000000000 -90.000000000  0.000000000000
+  -60, -90                       circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  60.000000000  60.000000000  60.000000000 60.000000000 60.000000000 60.000000000  1.000000000000
+  -60, -41.9                     circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  71.900000000  11.900000000  71.900000000 57.300323196 35.335273343 11.900000000  1.000000000000
+  -60, 0                         rises/rises/rises  90.000000000 91.133388772 91.666843015  30.000000000  -30.000000000  30.000000000 20.704811055 0.000000000 -30.000000000  0.500000000000
+  -60, 41.9                      never/never/never  0.000000000 0.000000000 0.000000000  -11.900000000  -71.900000000  -11.900000000 -18.373255564 -35.335273343 -71.900000000  0.000000000000
+  -60, 66.56                     never/never/never  0.000000000 0.000000000 0.000000000  -36.560000000  -83.440000000  -36.560000000 -40.837736240 -52.613575777 -83.440000000  0.000000000000
+  -60, 90                        never/never/never  0.000000000 0.000000000 0.000000000  -60.000000000  -60.000000000  -60.000000000 -60.000000000 -60.000000000 -60.000000000  0.000000000000
+  -23.44, -90                    circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  23.440000000  23.440000000  23.440000000 23.440000000 23.440000000 23.440000000  1.000000000000
+  -23.44, -41.9                  rises/rises/rises  112.893416563 113.797210359 114.224668597  71.540000000  -24.660000000  71.540000000 48.463326094 15.405942920 -24.660000000  0.627185647570
+  -23.44, 0                      rises/rises/rises  90.000000000 90.617637626 90.908293864  66.560000000  -66.560000000  66.560000000 40.447747721 0.000000000 -66.560000000  0.500000000000
+  -23.44, 41.9                   rises/rises/rises  67.106583437 68.004396033 68.424897220  24.660000000  -71.540000000  24.660000000 12.545755916 -15.405942920 -71.540000000  0.372814352430
+  -23.44, 66.56                  rises/rises/rises  0.000000000 13.368987389 16.229576352  0.000000000  -46.880000000  0.000000000 -6.136348252 -21.405235664 -46.880000000  0.000000000000
+  -23.44, 90                     never/never/never  0.000000000 0.000000000 0.000000000  -23.440000000  -23.440000000  -23.440000000 -23.440000000 -23.440000000 -23.440000000  0.000000000000
+  -0.5, -90                      circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  0.500000000  0.500000000  0.500000000 0.500000000 0.500000000 0.500000000  1.000000000000
+  -0.5, -41.9                    rises/rises/rises  90.448640315 91.210072207 91.568437625  48.600000000  -47.600000000  48.600000000 32.148506848 0.333913930 -47.600000000  0.502492446196
+  -0.5, 0                        rises/rises/rises  90.000000000 90.566688245 90.833365068  89.500000000  -89.500000000  89.500000000 44.997818394 0.000000000 -89.500000000  0.500000000000
+  -0.5, 41.9                     rises/rises/rises  89.551359685 90.312712342 90.670985621  47.600000000  -48.600000000  47.600000000 31.363101507 -0.333913930 -48.600000000  0.497507553804
+  -0.5, 66.56                    rises/rises/rises  88.846670558 90.271323057 90.941712310  22.940000000  -23.940000000  22.940000000 15.858458158 -0.458737649 -23.940000000  0.493592614209
+  -0.5, 90                       never/circumpolar/circumpolar  0.000000000 180.000000000 180.000000000  -0.500000000  -0.500000000  -0.500000000 -0.500000000 -0.500000000 -0.500000000  0.000000000000
+  0, -90                         rises/circumpolar/circumpolar  0.000000000 180.000000000 180.000000000  0.000000000  0.000000000  0.000000000 0.000000000 0.000000000 0.000000000  0.000000000000
+  0, -41.9                       rises/rises/rises  90.000000000 90.761339935 91.119634640  48.100000000  -48.100000000  48.100000000 31.756321568 0.000000000 -48.100000000  0.500000000000
+  0, 0                           rises/rises/rises  90.000000000 90.566666667 90.833333333  90.000000000  -90.000000000  90.000000000 45.000000000 0.000000000 -90.000000000  0.500000000000
+  0, 41.9                        rises/rises/rises  90.000000000 90.761339935 91.119634640  48.100000000  -48.100000000  48.100000000 31.756321568 0.000000000 -48.100000000  0.500000000000
+  0, 66.56                       rises/rises/rises  90.000000000 91.424666157 92.095308702  23.440000000  -23.440000000  23.440000000 16.336551335 0.000000000 -23.440000000  0.500000000000
+  0, 90                          rises/circumpolar/circumpolar  0.000000000 180.000000000 180.000000000  0.000000000  0.000000000  0.000000000 0.000000000 0.000000000 0.000000000  0.000000000000
+  16.5, -90                      never/never/never  0.000000000 0.000000000 0.000000000  -16.500000000  -16.500000000  -16.500000000 -16.500000000 -16.500000000 -16.500000000  0.000000000000
+  16.5, -41.9                    rises/rises/rises  74.586862612 75.408902920 75.794651783  31.600000000  -64.600000000  31.600000000 18.358372237 -10.933800294 -64.600000000  0.414371458956
+  16.5, 0                        rises/rises/rises  90.000000000 90.591005229 90.869126783  73.500000000  -73.500000000  73.500000000 42.686612677 0.000000000 -73.500000000  0.500000000000
+  16.5, 41.9                     rises/rises/rises  105.413137388 106.238442453 106.627988186  64.600000000  -31.600000000  64.600000000 43.972174431 10.933800294 -31.600000000  0.585628541044
+  16.5, 66.56                    rises/rises/rises  133.094211670 135.164204464 136.164577775  39.940000000  -6.940000000  39.940000000 32.023928927 15.104336825 -6.940000000  0.739412287057
+  16.5, 90                       circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  16.500000000  16.500000000  16.500000000 16.500000000 16.500000000 16.500000000  1.000000000000
+  38.78, -90                     never/never/never  0.000000000 0.000000000 0.000000000  -38.780000000  -38.780000000  -38.780000000 -38.780000000 -38.780000000 -38.780000000  0.000000000000
+  38.78, -41.9                   rises/rises/rises  43.871912652 45.263610576 45.906978393  9.320000000  -86.880000000  9.320000000 -0.458257978 -24.726342082 -86.880000000  0.243732848066
+  38.78, 0                       rises/rises/rises  90.000000000 90.726916556 91.069008018  51.220000000  -51.220000000  51.220000000 33.451422595 0.000000000 -51.220000000  0.500000000000
+  38.78, 41.9                    rises/rises/rises  136.128087348 137.555880132 138.241325927  86.880000000  -9.320000000  86.880000000 55.952266576 24.726342082 -9.320000000  0.756267151934
+  38.78, 66.56                   circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  62.220000000  15.340000000  62.220000000 52.553169833 35.074778433 15.340000000  1.000000000000
+  38.78, 90                      circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  38.780000000  38.780000000  38.780000000 38.780000000 38.780000000 38.780000000  1.000000000000
+  60, -90                        never/never/never  0.000000000 0.000000000 0.000000000  -60.000000000  -60.000000000  -60.000000000 -60.000000000 -60.000000000 -60.000000000  0.000000000000
+  60, -41.9                      never/never/never  0.000000000 0.000000000 0.000000000  -11.900000000  -71.900000000  -11.900000000 -18.373255564 -35.335273343 -71.900000000  0.000000000000
+  60, 0                          rises/rises/rises  90.000000000 91.133388772 91.666843015  30.000000000  -30.000000000  30.000000000 20.704811055 0.000000000 -30.000000000  0.500000000000
+  60, 41.9                       circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  71.900000000  11.900000000  71.900000000 57.300323196 35.335273343 11.900000000  1.000000000000
+  60, 66.56                      circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  83.440000000  36.560000000  83.440000000 69.260154630 52.613575777 36.560000000  1.000000000000
+  60, 90                         circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  60.000000000  60.000000000  60.000000000 60.000000000 60.000000000 60.000000000  1.000000000000
+  89.26, -90                     never/never/never  0.000000000 0.000000000 0.000000000  -89.260000000  -89.260000000  -89.260000000 -89.260000000 -89.260000000 -89.260000000  0.000000000000
+  89.26, -41.9                   never/never/never  0.000000000 0.000000000 0.000000000  -41.160000000  -42.640000000  -41.160000000 -41.374621765 -41.895712511 -42.640000000  0.000000000000
+  89.26, 0                       rises/rises/circumpolar  90.000000000 139.975950604 180.000000000  0.740000000  -0.740000000  0.740000000 0.523251744 0.000000000 -0.740000000  0.500000000000
+  89.26, 41.9                    circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  42.640000000  41.160000000  42.640000000 42.421090117 41.895712511 41.160000000  1.000000000000
+  89.26, 66.56                   circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  67.300000000  65.820000000  67.300000000 67.077622627 66.548980764 65.820000000  1.000000000000
+  89.26, 90                      circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  89.260000000  89.260000000  89.260000000 89.260000000 89.260000000 89.260000000  1.000000000000
+  90, -90                        never/never/never  0.000000000 0.000000000 0.000000000  -90.000000000  -90.000000000  -90.000000000 -90.000000000 -90.000000000 -90.000000000  0.000000000000
+  90, -41.9                      never/never/never  0.000000000 0.000000000 0.000000000  -41.900000000  -41.900000000  -41.900000000 -41.900000000 -41.900000000 -41.900000000  0.000000000000
+  90, 0                          rises/circumpolar/circumpolar  0.000000000 180.000000000 180.000000000  0.000000000  0.000000000  0.000000000 0.000000000 0.000000000 0.000000000  0.000000000000
+  90, 41.9                       circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  41.900000000  41.900000000  41.900000000 41.900000000 41.900000000 41.900000000  1.000000000000
+  90, 66.56                      circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  66.560000000  66.560000000  66.560000000 66.560000000 66.560000000 66.560000000  1.000000000000
+  90, 90                         circumpolar/circumpolar/circumpolar  180.000000000 180.000000000 180.000000000  90.000000000  90.000000000  90.000000000 90.000000000 90.000000000 90.000000000  1.000000000000
+  starInSky(38.78, 30)           [0.675115856907, -0.389778321720, 0.626331732926]
+  zenithInSky(41.9)              [0.744311546231, 0.000000000000, 0.667832555471]
+  equatorialToHorizon(41.9, 38.94) [0.519443205620, 0.419736915558, -0.744311546231] [-0.628506220787, 0.777804557991, 0.000000000000] [0.578928913224, 0.467804437010, 0.667832555471]
+
+=== 6b. FRAMES (models/frames.js) ===
+  Ptolemy, 11:83 obliquity       23.855555555556  23.855421686747
+  Ptolemy right ascensions       0.000000000 9.166666667 18.416666667 27.833333333 37.500000000 47.466666667 57.733333333 68.300000000 79.083333333 90.000000000
+  Ptolemy's declination table against eclipticPoint (lon, table, computed)
+  lon 1                          0.404444444  0.404415102
+  lon 2                          0.808611111  0.808727154
+  lon 3                          1.212777778  1.212833091
+  lon 5                          2.020000000  2.020014199
+  lon 10                         4.027222222  4.027136175
+  lon 15                         6.008611111  6.008429321
+  lon 20                         7.950833333  7.950874083
+  lon 25                         9.841388889  9.841341176
+  lon 30                         11.666388889  11.666582765
+  lon 35                         13.413055556  13.413248009
+  lon 40                         15.067777778  15.067929382
+  lon 45                         16.616944444  16.617245769
+  lon 50                         18.048055556  18.047967272
+  lon 55                         19.348888889  19.347184616
+  lon 60                         20.502500000  20.502522911
+  lon 65                         21.503055556  21.502395186
+  lon 70                         22.336388889  22.336285855
+  lon 75                         22.994722222  22.995048735
+  lon 80                         23.471111111  23.471199220
+  lon 85                         23.759444444  23.759177027
+  lon 90                         23.855555556  23.855555556
+  ecliptic -> equatorial -> ecliptic (lon, lat, eps: ra, dec, back lon, back lat, reduction)
+  0, -5, 23.8556                 2.026464869  -4.571888043  0.000000000  -5.000000000  0.000000000
+  0, 0, 23.8556                  0.000000000  0.000000000  0.000000000  0.000000000  0.000000000
+  0, 5, 23.8556                  357.973535131  4.571888043  360.000000000  5.000000000  0.000000000
+  45, -5, 23.8556                43.967922593  11.839961825  45.000000000  -5.000000000  -2.554963393
+  45, 0, 23.8556                 42.445036607  16.617245769  45.000000000  0.000000000  -2.554963393
+  45, 5, 23.8556                 40.844348779  21.382871250  45.000000000  5.000000000  -2.554963393
+  90, -5, 23.8556                90.000000000  18.855555556  90.000000000  -5.000000000  0.000000000
+  90, 0, 23.8556                 90.000000000  23.855555556  90.000000000  0.000000000  0.000000000
+  90, 5, 23.8556                 90.000000000  28.855555556  90.000000000  5.000000000  0.000000000
+  135, -5, 23.8556               136.032077407  11.839961825  135.000000000  -5.000000000  2.554963393
+  135, 0, 23.8556                137.554963393  16.617245769  135.000000000  0.000000000  2.554963393
+  135, 5, 23.8556                139.155651221  21.382871250  135.000000000  5.000000000  2.554963393
+  180, -5, 23.8556               177.973535131  -4.571888043  180.000000000  -5.000000000  0.000000000
+  180, 0, 23.8556                180.000000000  0.000000000  180.000000000  0.000000000  0.000000000
+  180, 5, 23.8556                182.026464869  4.571888043  180.000000000  5.000000000  0.000000000
+  225, -5, 23.8556               220.844348779  -21.382871250  225.000000000  -5.000000000  -2.554963393
+  225, 0, 23.8556                222.445036607  -16.617245769  225.000000000  0.000000000  -2.554963393
+  225, 5, 23.8556                223.967922593  -11.839961825  225.000000000  5.000000000  -2.554963393
+  270, -5, 23.8556               270.000000000  -28.855555556  270.000000000  -5.000000000  0.000000000
+  270, 0, 23.8556                270.000000000  -23.855555556  270.000000000  0.000000000  0.000000000
+  270, 5, 23.8556                270.000000000  -18.855555556  270.000000000  5.000000000  0.000000000
+  315, -5, 23.8556               319.155651221  -21.382871250  315.000000000  -5.000000000  2.554963393
+  315, 0, 23.8556                317.554963393  -16.617245769  315.000000000  0.000000000  2.554963393
+  315, 5, 23.8556                316.032077407  -11.839961825  315.000000000  5.000000000  2.554963393
+  0, -5, 23.4333                 1.992667912  -4.586693906  0.000000000  -5.000000000  0.000000000
+  0, 0, 23.4333                  0.000000000  0.000000000  0.000000000  0.000000000  0.000000000
+  0, 5, 23.4333                  358.007332088  4.586693906  0.000000000  5.000000000  0.000000000
+  45, -5, 23.4333                44.030784246  11.546664321  45.000000000  -5.000000000  -2.462889906
+  45, 0, 23.4333                 42.537110094  16.332044280  45.000000000  0.000000000  -2.462889906
+  45, 5, 23.4333                 40.968408997  21.106388723  45.000000000  5.000000000  -2.462889906
+  90, -5, 23.4333                90.000000000  18.433333333  90.000000000  -5.000000000  0.000000000
+  90, 0, 23.4333                 90.000000000  23.433333333  90.000000000  0.000000000  0.000000000
+  90, 5, 23.4333                 90.000000000  28.433333333  90.000000000  5.000000000  0.000000000
+  135, -5, 23.4333               135.969215754  11.546664321  135.000000000  -5.000000000  2.462889906
+  135, 0, 23.4333                137.462889906  16.332044280  135.000000000  0.000000000  2.462889906
+  135, 5, 23.4333                139.031591003  21.106388723  135.000000000  5.000000000  2.462889906
+  180, -5, 23.4333               178.007332088  -4.586693906  180.000000000  -5.000000000  0.000000000
+  180, 0, 23.4333                180.000000000  0.000000000  180.000000000  0.000000000  0.000000000
+  180, 5, 23.4333                181.992667912  4.586693906  180.000000000  5.000000000  0.000000000
+  225, -5, 23.4333               220.968408997  -21.106388723  225.000000000  -5.000000000  -2.462889906
+  225, 0, 23.4333                222.537110094  -16.332044280  225.000000000  0.000000000  -2.462889906
+  225, 5, 23.4333                224.030784246  -11.546664321  225.000000000  5.000000000  -2.462889906
+  270, -5, 23.4333               270.000000000  -28.433333333  270.000000000  -5.000000000  0.000000000
+  270, 0, 23.4333                270.000000000  -23.433333333  270.000000000  0.000000000  0.000000000
+  270, 5, 23.4333                270.000000000  -18.433333333  270.000000000  5.000000000  0.000000000
+  315, -5, 23.4333               319.031591003  -21.106388723  315.000000000  -5.000000000  2.462889906
+  315, 0, 23.4333                317.462889906  -16.332044280  315.000000000  0.000000000  2.462889906
+  315, 5, 23.4333                315.969215754  -11.546664321  315.000000000  5.000000000  2.462889906
+  0, -5, 23.4300                 1.992400656  -4.586809804  0.000000000  -5.000000000  0.000000000
+  0, 0, 23.4300                  0.000000000  0.000000000  0.000000000  0.000000000  0.000000000
+  0, 5, 23.4300                  358.007599344  4.586809804  0.000000000  5.000000000  0.000000000
+  45, -5, 23.4300                44.031273811  11.544347495  45.000000000  -5.000000000  -2.462170248
+  45, 0, 23.4300                 42.537829752  16.329790706  45.000000000  0.000000000  -2.462170248
+  45, 5, 23.4300                 40.969380450  21.104203226  45.000000000  5.000000000  -2.462170248
+  90, -5, 23.4300                90.000000000  18.430000000  90.000000000  -5.000000000  0.000000000
+  90, 0, 23.4300                 90.000000000  23.430000000  90.000000000  0.000000000  0.000000000
+  90, 5, 23.4300                 90.000000000  28.430000000  90.000000000  5.000000000  0.000000000
+  135, -5, 23.4300               135.968726189  11.544347495  135.000000000  -5.000000000  2.462170248
+  135, 0, 23.4300                137.462170248  16.329790706  135.000000000  0.000000000  2.462170248
+  135, 5, 23.4300                139.030619550  21.104203226  135.000000000  5.000000000  2.462170248
+  180, -5, 23.4300               178.007599344  -4.586809804  180.000000000  -5.000000000  0.000000000
+  180, 0, 23.4300                180.000000000  0.000000000  180.000000000  0.000000000  0.000000000
+  180, 5, 23.4300                181.992400656  4.586809804  180.000000000  5.000000000  0.000000000
+  225, -5, 23.4300               220.969380450  -21.104203226  225.000000000  -5.000000000  -2.462170248
+  225, 0, 23.4300                222.537829752  -16.329790706  225.000000000  0.000000000  -2.462170248
+  225, 5, 23.4300                224.031273811  -11.544347495  225.000000000  5.000000000  -2.462170248
+  270, -5, 23.4300               270.000000000  -28.430000000  270.000000000  -5.000000000  0.000000000
+  270, 0, 23.4300                270.000000000  -23.430000000  270.000000000  0.000000000  0.000000000
+  270, 5, 23.4300                270.000000000  -18.430000000  270.000000000  5.000000000  0.000000000
+  315, -5, 23.4300               319.030619550  -21.104203226  315.000000000  -5.000000000  2.462170248
+  315, 0, 23.4300                317.462170248  -16.329790706  315.000000000  0.000000000  2.462170248
+  315, 5, 23.4300                315.968726189  -11.544347495  315.000000000  5.000000000  2.462170248
+  equatorial -> horizontal -> equatorial (ra, dec, phi, theta: A, a, H, back ra, back dec)
+  68.98, 16.51, 41.9, 38.94      125.532799569  53.857580396  -30.040000000  68.980000000  16.510000000
+  68.98, 16.51, -33.9, 200       260.959686880  -42.905954095  131.020000000  68.980000000  16.510000000
+  68.98, 16.51, 0, 0             72.383611356  20.114962157  -68.980000000  68.980000000  16.510000000
+  68.98, 16.51, 89, 123.4        234.665934611  17.090103377  54.420000000  68.980000000  16.510000000
+  279.23, 38.78, 41.9, 38.94     316.926208810  7.510927855  119.710000000  279.230000000  38.780000000
+  279.23, 38.78, -33.9, 200      51.870906497  -13.204230959  -79.230000000  279.230000000  38.780000000
+  279.23, 38.78, 0, 0            309.145080199  7.183028151  80.770000000  279.230000000  38.780000000
+  279.23, 38.78, 89, 123.4       23.848386166  37.866512378  -155.830000000  279.230000000  38.780000000
+  101.29, -16.72, 41.9, 38.94    121.060138948  7.971285917  -62.350000000  101.290000000  -16.720000000
+  101.29, -16.72, -33.9, 200     251.340840480  2.297192318  98.710000000  101.290000000  -16.720000000
+  101.29, -16.72, 0, 0           107.031010215  -10.806808654  -101.290000000  101.290000000  -16.720000000
+  101.29, -16.72, 89, 123.4      202.000501946  -15.793174073  22.110000000  101.290000000  -16.720000000
+  37.95, 89.26, 41.9, 38.94      359.982619842  42.639888236  0.990000000  37.950000000  89.260000000
+  37.95, 89.26, -33.9, 200       359.722934178  -34.603671687  162.050000000  37.950000000  89.260000000
+  37.95, 89.26, 0, 0             0.455096178  0.583519177  -37.950000000  37.950000000  89.260000000
+  37.95, 89.26, 89, 123.4        321.912309330  88.804116324  85.450000000  37.950000000  89.260000000
+  95.99, -52.7, 41.9, 38.94      147.949574426  -16.613671823  -57.050000000  95.990000000  -52.700000000
+  95.99, -52.7, -33.9, 200       218.390505010  18.778165538  104.010000000  95.990000000  -52.700000000
+  95.99, -52.7, 0, 0             142.851100555  -3.625681171  -95.990000000  95.990000000  -52.700000000
+  95.99, -52.7, 89, 123.4        206.821219832  -51.809894896  27.410000000  95.990000000  -52.700000000
+  fromHorizontal(120, 30)        [0.433012701892, 0.750000000000, 0.500000000000]
+  toHorizontal([0.3, -0.4, 0.5]) 233.130102354  45.000000000
+  eclipticPole(23.44)            [0.000000000000, -0.397788507398, 0.917477140523]
+  ecliptic-horizon 41.9, 0       37.788758296  52.211241704
+  ecliptic-horizon 41.9, 90      18.466666667  71.533333333
+  ecliptic-horizon 41.9, 270     65.333333333  24.666666667
+  ecliptic-horizon -33.9, 180    -30.780079979  59.219920021
+  ecliptic-horizon 66.56, 90     43.126666667  46.873333333
+  ecliptic-horizon 0, 0          0.000000000  90.000000000
+
+=== 6c. THE MEAN SUN AND THE CLOCKS (models/mean-sun.js, models/clock.js) ===
+  MeanSun.MODERN                 280.466460000  0.985647360164  2451545.000000000
+  year length (days)             365.242189600
+  Clock constants                280.460618370  360.985647366290  23.934469591898  -0.833333333333
+  mean Sun, range start          255.042485822  255.042485822  -23.252794534
+  mean Sun, Thales eclipse       58.770454106  58.770454106  20.204194204
+  mean Sun, Ptolemy              116.329223255  116.329223255  21.075724495
+  mean Sun, last Julian day      202.100657687  202.100657687  -8.626558864
+  mean Sun, first Gregorian day  203.086305048  203.086305048  -8.993650228
+  mean Sun, Sputnik (Meeus 7.a)  193.218890707  193.218890707  -5.220162584
+  mean Sun, Meeus 12.a           17.699058916  17.699058916  6.946553311
+  mean Sun, Meeus 47.a           20.448080657  20.448080657  7.988641046
+  mean Sun, Meeus 25.a           201.807194927  201.807194927  -8.498176663
+  mean Sun, J2000.0              280.466460000  280.466460000  -23.026559599
+  mean Sun, 2026 January 1       280.666615800  280.666615800  -23.007373623
+  mean Sun, 2026 June solstice   89.705138068  89.705138068  23.435522416
+  mean Sun, range end            279.548043899  279.548043899  -22.964510793
+  sunDay (jd0, phi, lon): noon, rise, set, hours, H0, dec, kind
+  2026-1-21, -70, 0              2461062.000000000  NaN  NaN  24.000000000  180.000000000  -19.960205959  polar day
+  2026-1-21, -70, 12.4964        2461061.965287778  NaN  NaN  24.000000000  180.000000000  -19.967631349  polar day
+  2026-1-21, -41.9, 0            2461062.000000000  2461061.693658713  2461062.306341287  14.704381766  110.282863244  -19.960205959  rises
+  2026-1-21, -41.9, 12.4964      2461061.965287778  2461061.658923991  2461062.271651565  14.705461780  110.290963351  -19.967631349  rises
+  2026-1-21, 0, 0                2461062.000000000  2461061.747537236  2461062.252462764  12.118212670  90.886595026  -19.960205959  rises
+  2026-1-21, 0, 12.4964          2461061.965287778  2461061.712824898  2461062.217750657  12.118218236  90.886636768  -19.967631349  rises
+  2026-1-21, 41.9, 0             2461062.000000000  2461061.799341170  2461062.200658830  9.631623847  72.237178850  -19.960205959  rises
+  2026-1-21, 41.9, 12.4964       2461061.965287778  2461061.764650782  2461062.165924774  9.630575796  72.229318471  -19.967631349  rises
+  2026-1-21, 60, 0               2461062.000000000  2461061.852039951  2461062.147960049  7.102082324  53.265617430  -19.960205959  rises
+  2026-1-21, 60, 12.4964         2461061.965287778  2461061.817377906  2461062.113197649  7.099673842  53.247553817  -19.967631349  rises
+  2026-1-21, 66.5, 0             2461062.000000000  2461061.896648510  2461062.103351490  4.960871513  37.206536349  -19.960205959  rises
+  2026-1-21, 66.5, 12.4964       2461061.965287778  2461061.862024639  2461062.068550916  4.956630656  37.174729923  -19.967631349  rises
+  2026-1-21, 70, 0               2461062.000000000  2461061.950800312  2461062.049199688  2.361585040  17.711887799  -19.960205959  rises
+  2026-1-21, 70, 12.4964         2461061.965287778  2461061.916298261  2461062.014277294  2.351496777  17.636225825  -19.967631349  rises
+  2026-1-21, 89, 0               2461062.000000000  NaN  NaN  0.000000000  0.000000000  -19.960205959  polar night
+  2026-1-21, 89, 12.4964         2461061.965287778  NaN  NaN  0.000000000  0.000000000  -19.967631349  polar night
+  2026-2-21, -70, 0              2461093.000000000  2461092.652376092  2461093.347623908  16.685947607  125.144607051  -10.965276539  rises
+  2026-2-21, -70, 12.4964        2461092.965287778  2461092.617545625  2461093.313029930  16.691623311  125.187174834  -10.977447595  rises
+  2026-2-21, -41.9, 0            2461093.000000000  2461092.718968007  2461093.281031993  13.489535670  101.171517524  -10.965276539  rises
+  2026-2-21, -41.9, 12.4964      2461092.965287778  2461092.684223568  2461093.246351987  13.491082047  101.183115356  -10.977447595  rises
+  2026-2-21, 0, 0                2461093.000000000  2461092.747642134  2461093.252357866  12.113177582  90.848831865  -10.965276539  rises
+  2026-2-21, 0, 12.4964          2461092.965287778  2461092.712929814  2461093.217645741  12.113182243  90.848866824  -10.977447595  rises
+  2026-2-21, 41.9, 0             2461093.000000000  2461092.774598089  2461093.225401911  10.819291726  81.144687943  -10.965276539  rises
+  2026-2-21, 41.9, 12.4964       2461092.965287778  2461092.739917589  2461093.190657966  10.817769030  81.133267723  -10.977447595  rises
+  2026-2-21, 60, 0               2461093.000000000  2461092.799488460  2461093.200511540  9.624553931  72.184154486  -10.965276539  rises
+  2026-2-21, 60, 12.4964         2461092.965287778  2461092.764839857  2461093.165735698  9.621500203  72.161251522  -10.977447595  rises
+  2026-2-21, 66.5, 0             2461093.000000000  2461092.816964539  2461093.183035461  8.785702124  65.892765929  -10.965276539  rises
+  2026-2-21, 66.5, 12.4964       2461092.965287778  2461092.782340446  2461093.148235109  8.781471920  65.861039397  -10.977447595  rises
+  2026-2-21, 70, 0               2461093.000000000  2461092.831321545  2461093.168678455  8.096565838  60.724243782  -10.965276539  rises
+  2026-2-21, 70, 12.4964         2461092.965287778  2461092.796719510  2461093.133856045  8.091276847  60.684576350  -10.977447595  rises
+  2026-2-21, 89, 0               2461093.000000000  NaN  NaN  0.000000000  0.000000000  -10.965276539  polar night
+  2026-2-21, 89, 12.4964         2461092.965287778  NaN  NaN  0.000000000  0.000000000  -10.977447595  polar night
+  2026-3-21, -70, 0              2461121.000000000  2461120.740270915  2461121.259729085  12.466996071  93.502470534  -0.387191532  rises
+  2026-3-21, -70, 12.4964        2461120.965287778  2461120.705454641  2461121.225120914  12.471990547  93.539929099  -0.400797504  rises
+  2026-3-21, -41.9, 0            2461121.000000000  2461120.745924551  2461121.254075449  12.195621555  91.467161662  -0.387191532  rises
+  2026-3-21, -41.9, 12.4964      2461120.965287778  2461120.711178400  2461121.219397156  12.197250139  91.479376046  -0.400797504  rises
+  2026-3-21, 0, 0                2461121.000000000  2461120.747685133  2461121.252314867  12.111113648  90.833352363  -0.387191532  rises
+  2026-3-21, 0, 12.4964          2461120.965287778  2461120.712972906  2461121.217602649  12.111113830  90.833353724  -0.400797504  rises
+  2026-3-21, 41.9, 0             2461121.000000000  2461120.747855000  2461121.252145000  12.102959992  90.772199944  -0.387191532  rises
+  2026-3-21, 41.9, 12.4964       2461120.965287778  2461120.713176688  2461121.217398867  12.101332288  90.759992163  -0.400797504  rises
+  2026-3-21, 60, 0               2461121.000000000  2461120.747233193  2461121.252766807  12.132806736  90.996050517  -0.387191532  rises
+  2026-3-21, 60, 12.4964         2461120.965287778  2461120.712586437  2461121.217989118  12.129664322  90.972482411  -0.400797504  rises
+  2026-3-21, 66.5, 0             2461121.000000000  2461120.746668229  2461121.253331771  12.159925009  91.199437566  -0.387191532  rises
+  2026-3-21, 66.5, 12.4964       2461120.965287778  2461120.712042941  2461121.218532614  12.155752163  91.168141225  -0.400797504  rises
+  2026-3-21, 70, 0               2461121.000000000  2461120.746186698  2461121.253813302  12.183038474  91.372788554  -0.387191532  rises
+  2026-3-21, 70, 12.4964         2461120.965287778  2461120.711578338  2461121.218997217  12.178053096  91.335398222  -0.400797504  rises
+  2026-3-21, 89, 0               2461121.000000000  2461120.676387223  2461121.323612777  15.533413293  116.500599694  -0.387191532  rises
+  2026-3-21, 89, 12.4964         2461120.965287778  2461120.644085316  2461121.286490240  15.417718181  115.632886360  -0.400797504  rises
+  2026-4-21, -70, 0              2461152.000000000  2461151.834582285  2461152.165417715  7.940050340  59.550377547  11.323020098  rises
+  2026-4-21, -70, 12.4964        2461151.965287778  2461151.799759282  2461152.130816273  7.945367798  59.590258481  11.310949426  rises
+  2026-4-21, -41.9, 0            2461152.000000000  2461151.775531978  2461152.224468022  10.774465065  80.808487984  11.323020098  rises
+  2026-4-21, -41.9, 12.4964      2461151.965287778  2461151.740788195  2461152.189787360  10.775979962  80.819849715  11.310949426  rises
+  2026-4-21, 0, 0                2461152.000000000  2461151.747639231  2461152.252360769  12.113316885  90.849876635  11.323020098  rises
+  2026-4-21, 0, 12.4964          2461151.965287778  2461151.712927109  2461152.217648447  12.113312107  90.849840801  11.310949426  rises
+  2026-4-21, 41.9, 0             2461152.000000000  2461151.718019351  2461152.281980649  13.535071163  101.513033719  11.323020098  rises
+  2026-4-21, 41.9, 12.4964       2461151.965287778  2461151.683339196  2461152.247236359  13.533531916  101.501489368  11.310949426  rises
+  2026-4-21, 60, 0               2461152.000000000  2461151.688566003  2461152.311433997  14.948831861  112.116238956  11.323020098  rises
+  2026-4-21, 60, 12.4964         2461151.965287778  2461151.653919188  2461152.276656367  14.945692297  112.092692227  11.310949426  rises
+  2026-4-21, 66.5, 0             2461152.000000000  2461151.667086696  2461152.332913304  15.979838609  119.848789567  11.323020098  rises
+  2026-4-21, 66.5, 12.4964       2461151.965287778  2461151.632467214  2461152.298108342  15.975387076  119.815403073  11.310949426  rises
+  2026-4-21, 70, 0               2461152.000000000  2461151.648869719  2461152.351130281  16.854253463  126.406900976  11.323020098  rises
+  2026-4-21, 70, 12.4964         2461151.965287778  2461151.614276872  2461152.316298683  16.848523445  126.363925839  11.310949426  rises
+  2026-4-21, 89, 0               2461152.000000000  NaN  NaN  24.000000000  180.000000000  11.323020098  polar day
+  2026-4-21, 89, 12.4964         2461151.965287778  NaN  NaN  24.000000000  180.000000000  11.310949426  polar day
+  2026-5-21, -70, 0              2461182.000000000  2461181.950947715  2461182.049052285  2.354509701  17.658822758  19.965417004  rises
+  2026-5-21, -70, 12.4964        2461181.965287778  2461181.916025527  2461182.014550028  2.364588006  17.734410042  19.957989574  rises
+  2026-5-21, -41.9, 0            2461182.000000000  2461181.799356493  2461182.200643507  9.630888353  72.231662647  19.965417004  rises
+  2026-5-21, -41.9, 12.4964      2461181.965287778  2461181.764622431  2461182.165953124  9.631936649  72.239524868  19.957989574  rises
+  2026-5-21, 0, 0                2461182.000000000  2461181.747537155  2461182.252462845  12.118216576  90.886624318  19.965417004  rises
+  2026-5-21, 0, 12.4964          2461181.965287778  2461181.712825048  2461182.217750507  12.118211009  90.886582570  19.957989574  rises
+  2026-5-21, 41.9, 0             2461182.000000000  2461181.693642923  2461182.306357077  14.705139689  110.288547670  19.965417004  rises
+  2026-5-21, 41.9, 12.4964       2461181.965287778  2461181.658953206  2461182.271622349  14.704059426  110.280445698  19.957989574  rises
+  2026-5-21, 60, 0               2461182.000000000  2461181.635240195  2461182.364759805  17.508470633  131.313529746  19.965417004  rises
+  2026-5-21, 60, 12.4964         2461181.965287778  2461181.600582127  2461182.329993429  17.505871248  131.294034360  19.957989574  rises
+  2026-5-21, 66.5, 0             2461182.000000000  2461181.580657620  2461182.419342380  20.128434255  150.963256913  19.965417004  rises
+  2026-5-21, 66.5, 12.4964       2461181.965287778  2461181.546056583  2461182.384518972  20.123097328  150.923229959  19.957989574  rises
+  2026-5-21, 70, 0               2461182.000000000  NaN  NaN  24.000000000  180.000000000  19.965417004  polar day
+  2026-5-21, 70, 12.4964         2461181.965287778  NaN  NaN  24.000000000  180.000000000  19.957989574  polar day
+  2026-5-21, 89, 0               2461182.000000000  NaN  NaN  24.000000000  180.000000000  19.965417004  polar day
+  2026-5-21, 89, 12.4964         2461181.965287778  NaN  NaN  24.000000000  180.000000000  19.957989574  polar day
+  2026-6-21, -70, 0              2461213.000000000  NaN  NaN  0.000000000  0.000000000  23.435522416  polar night
+  2026-6-21, -70, 12.4964        2461212.965287778  NaN  NaN  0.000000000  0.000000000  23.435441898  polar night
+  2026-6-21, -41.9, 0            2461213.000000000  2461212.809916709  2461213.190083291  9.123997975  68.429984811  23.435522416  rises
+  2026-6-21, -41.9, 12.4964      2461212.965287778  2461212.775204232  2461213.155371323  9.124010173  68.430076294  23.435441898  rises
+  2026-6-21, 0, 0                2461213.000000000  2461212.747477047  2461213.252522953  12.121101745  90.908263090  23.435522416  rises
+  2026-6-21, 0, 12.4964          2461212.965287778  2461212.712764826  2461213.217810729  12.121101671  90.908262536  23.435441898  rises
+  2026-6-21, 41.9, 0             2461213.000000000  2461212.682723917  2461213.317276083  15.229251997  114.219389981  23.435522416  rises
+  2026-6-21, 41.9, 12.4964       2461212.965287778  2461212.648011958  2461213.282563597  15.229239342  114.219295063  23.435441898  rises
+  2026-6-21, 60, 0               2461213.000000000  2461212.606971167  2461213.393028833  18.865383997  141.490379977  23.435522416  rises
+  2026-6-21, 60, 12.4964         2461212.965287778  2461212.572259688  2461213.358315867  18.865348284  141.490112131  23.435441898  rises
+  2026-6-21, 66.5, 0             2461213.000000000  NaN  NaN  24.000000000  180.000000000  23.435522416  polar day
+  2026-6-21, 66.5, 12.4964       2461212.965287778  NaN  NaN  24.000000000  180.000000000  23.435441898  polar day
+  2026-6-21, 70, 0               2461213.000000000  NaN  NaN  24.000000000  180.000000000  23.435522416  polar day
+  2026-6-21, 70, 12.4964         2461212.965287778  NaN  NaN  24.000000000  180.000000000  23.435441898  polar day
+  2026-6-21, 89, 0               2461213.000000000  NaN  NaN  24.000000000  180.000000000  23.435522416  polar day
+  2026-6-21, 89, 12.4964         2461212.965287778  NaN  NaN  24.000000000  180.000000000  23.435441898  polar day
+  2026-7-21, -70, 0              2461243.000000000  2461242.961541375  2461243.038458625  1.846014016  13.845105120  20.299318396  rises
+  2026-7-21, -70, 12.4964        2461242.965287778  2461242.927085728  2461243.003489827  1.833698373  13.752737797  20.306409691  rises
+  2026-7-21, -41.9, 0            2461243.000000000  2461242.800341376  2461243.199658624  9.583613965  71.877104741  20.299318396  rises
+  2026-7-21, -41.9, 12.4964      2461242.965287778  2461242.765650136  2461243.164925419  9.582606795  71.869550962  20.306409691  rises
+  2026-7-21, 0, 0                2461243.000000000  2461242.747531887  2461243.252468113  12.118469420  90.888520651  20.299318396  rises
+  2026-7-21, 0, 12.4964          2461242.965287778  2461242.712819552  2461243.217756004  12.118474845  90.888561340  20.306409691  rises
+  2026-7-21, 41.9, 0             2461243.000000000  2461242.692627688  2461243.307372312  14.753870978  110.654032337  20.299318396  rises
+  2026-7-21, 41.9, 12.4964       2461242.965287778  2461242.657893830  2461243.272681726  14.754909514  110.661821358  20.306409691  rises
+  2026-7-21, 60, 0               2461243.000000000  2461242.632783146  2461243.367216854  17.626409002  132.198067519  20.299318396  rises
+  2026-7-21, 60, 12.4964         2461242.965287778  2461242.598018253  2461243.332557302  17.628937193  132.217028945  20.306409691  rises
+  2026-7-21, 66.5, 0             2461243.000000000  2461242.575493135  2461243.424506865  20.376329540  152.822471549  20.299318396  rises
+  2026-7-21, 66.5, 12.4964       2461242.965287778  2461242.540667452  2461243.389908103  20.381775606  152.863317048  20.306409691  rises
+  2026-7-21, 70, 0               2461243.000000000  NaN  NaN  24.000000000  180.000000000  20.299318396  polar day
+  2026-7-21, 70, 12.4964         2461242.965287778  NaN  NaN  24.000000000  180.000000000  20.306409691  polar day
+  2026-7-21, 89, 0               2461243.000000000  NaN  NaN  24.000000000  180.000000000  20.299318396  polar day
+  2026-7-21, 89, 12.4964         2461242.965287778  NaN  NaN  24.000000000  180.000000000  20.306409691  polar day
+  2026-8-21, -70, 0              2461274.000000000  2461273.836489365  2461274.163510635  7.848510497  58.863828724  11.529883823  rises
+  2026-8-21, -70, 12.4964        2461273.965287778  2461273.801888320  2461274.128687236  7.843173990  58.823804928  11.541888682  rises
+  2026-8-21, -41.9, 0            2461274.000000000  2461273.776073403  2461274.223926597  10.748476636  80.613574771  11.529883823  rises
+  2026-8-21, -41.9, 12.4964      2461273.965287778  2461273.741392634  2461274.189182921  10.746966904  80.602251783  11.541888682  rises
+  2026-8-21, 0, 0                2461274.000000000  2461273.747637508  2461274.252362492  12.113399612  90.850497088  11.529883823  rises
+  2026-8-21, 0, 12.4964          2461273.965287778  2461273.712925185  2461274.217650371  12.113404462  90.850533463  11.541888682  rises
+  2026-8-21, 41.9, 0             2461274.000000000  2461273.717469133  2461274.282530867  13.561481614  101.711112104  11.529883823  rises
+  2026-8-21, 41.9, 12.4964       2461273.965287778  2461273.682724942  2461274.247850613  13.563016112  101.722620840  11.541888682  rises
+  2026-8-21, 60, 0               2461274.000000000  2461273.687442454  2461274.312557546  15.002762233  112.520716751  11.529883823  rises
+  2026-8-21, 60, 12.4964         2461273.965287778  2461273.652664875  2461274.277910680  15.005899307  112.544244803  11.541888682  rises
+  2026-8-21, 66.5, 0             2461274.000000000  2461273.665491187  2461274.334508813  16.056423036  120.423172771  11.529883823  rises
+  2026-8-21, 66.5, 12.4964       2461273.965287778  2461273.630686011  2461274.299889544  16.060884796  120.456635970  11.541888682  rises
+  2026-8-21, 70, 0               2461274.000000000  2461273.646811829  2461274.353188171  16.953032199  127.147741495  11.529883823  rises
+  2026-8-21, 70, 12.4964         2461273.965287778  2461273.611979469  2461274.318596086  16.958798792  127.190990942  11.541888682  rises
+  2026-8-21, 89, 0               2461274.000000000  NaN  NaN  24.000000000  180.000000000  11.529883823  polar day
+  2026-8-21, 89, 12.4964         2461273.965287778  NaN  NaN  24.000000000  180.000000000  11.541888682  polar day
+  2026-9-21, -70, 0              2461305.000000000  2461304.742058553  2461305.257941447  12.381189435  92.858920764  -0.153343234  rises
+  2026-9-21, -70, 12.4964        2461304.965287778  2461304.707450313  2461305.223125242  12.376198267  92.821487000  -0.139735823  rises
+  2026-9-21, -41.9, 0            2461305.000000000  2461304.746507623  2461305.253492377  12.167634084  91.257255630  -0.153343234  rises
+  2026-9-21, -41.9, 12.4964      2461304.965287778  2461304.711829326  2461305.218746230  12.166005697  91.245042727  -0.139735823  rises
+  2026-9-21, 0, 0                2461305.000000000  2461304.747685177  2461305.252314823  12.111111509  90.833336318  -0.153343234  rises
+  2026-9-21, 0, 12.4964          2461304.965287778  2461304.712972956  2461305.217602599  12.111111442  90.833335812  -0.139735823  rises
+  2026-9-21, 41.9, 0             2461305.000000000  2461304.747272144  2461305.252727856  12.130937084  90.982028130  -0.153343234  rises
+  2026-9-21, 41.9, 12.4964       2461304.965287778  2461304.712526004  2461305.218049551  12.132565144  90.994238578  -0.139735823  rises
+  2026-9-21, 60, 0               2461305.000000000  2461304.746107904  2461305.253892096  12.186820616  91.401154621  -0.153343234  rises
+  2026-9-21, 60, 12.4964         2461304.965287778  2461304.711330195  2461305.219245360  12.189963955  91.424729659  -0.139735823  rises
+  2026-9-21, 66.5, 0             2461305.000000000  2461304.745173881  2461305.254826119  12.231653727  91.737402953  -0.153343234  rises
+  2026-9-21, 66.5, 12.4964       2461304.965287778  2461304.710374690  2461305.220200865  12.235828193  91.768711446  -0.139735823  rises
+  2026-9-21, 70, 0               2461305.000000000  2461304.744401294  2461305.255598706  12.268737877  92.015534080  -0.153343234  rises
+  2026-9-21, 70, 12.4964         2461304.965287778  2461304.709585160  2461305.220990396  12.273725663  92.052942476  -0.139735823  rises
+  2026-9-21, 89, 0               2461305.000000000  2461304.630985275  2461305.369014725  17.712706796  132.845300968  -0.153343234  rises
+  2026-9-21, 89, 12.4964         2461304.965287778  2461304.593293628  2461305.337281927  17.855719195  133.917893960  -0.139735823  rises
+  2026-10-21, -70, 0             2461335.000000000  2461334.647564263  2461335.352435737  16.916915390  126.876865427  -11.454515876  rises
+  2026-10-21, -70, 12.4964       2461334.965287778  2461334.612971869  2461335.317603686  16.911163626  126.833727196  -11.442484566  rises
+  2026-10-21, -41.9, 0           2461335.000000000  2461334.717669741  2461335.282330259  13.551852453  101.638893397  -11.454515876  rises
+  2026-10-21, -41.9, 12.4964     2461334.965287778  2461334.682989527  2461335.247586029  13.550316041  101.627370307  -11.442484566  rises
+  2026-10-21, 0, 0               2461335.000000000  2461334.747638140  2461335.252361860  12.113369286  90.850269646  -11.454515876  rises
+  2026-10-21, 0, 12.4964         2461334.965287778  2461334.712926018  2461335.217649537  12.113364465  90.850233486  -11.442484566  rises
+  2026-10-21, 41.9, 0            2461335.000000000  2461334.775876021  2461335.224123979  10.757951001  80.684632510  -11.454515876  rises
+  2026-10-21, 41.9, 12.4964      2461334.965287778  2461334.741132302  2461335.189443253  10.759462813  80.695971096  -11.442484566  rises
+  2026-10-21, 60, 0              2461335.000000000  2461334.802056386  2461335.197943614  9.501293473  71.259701048  -11.454515876  rises
+  2026-10-21, 60, 12.4964        2461334.965287778  2461334.767280747  2461335.163294808  9.504337483  71.282531123  -11.442484566  rises
+  2026-10-21, 66.5, 0            2461335.000000000  2461334.820530379  2461335.179469621  8.614541807  64.609063555  -11.454515876  rises
+  2026-10-21, 66.5, 12.4964      2461334.965287778  2461334.785729878  2461335.144845678  8.618779192  64.640843939  -11.442484566  rises
+  2026-10-21, 70, 0              2461335.000000000  2461334.835792656  2461335.164207344  7.881952530  59.114643977  -11.454515876  rises
+  2026-10-21, 70, 12.4964        2461334.965287778  2461334.800969417  2461335.129606138  7.887281320  59.154609898  -11.442484566  rises
+  2026-10-21, 89, 0              2461335.000000000  NaN  NaN  0.000000000  0.000000000  -11.454515876  polar night
+  2026-10-21, 89, 12.4964        2461334.965287778  NaN  NaN  0.000000000  0.000000000  -11.442484566  polar night
+  2026-11-21, -70, 0             2461366.000000000  NaN  NaN  24.000000000  180.000000000  -20.254651551  polar day
+  2026-11-21, -70, 12.4964       2461365.965287778  NaN  NaN  24.000000000  180.000000000  -20.247507788  polar day
+  2026-11-21, -41.9, 0           2461366.000000000  2461365.692763898  2461366.307236102  14.747332884  110.604996629  -20.254651551  rises
+  2026-11-21, -41.9, 12.4964     2461365.965287778  2461365.658073449  2461366.272502106  14.746287772  110.597158288  -20.247507788  rises
+  2026-11-21, 0, 0               2461366.000000000  2461365.747532598  2461366.252467402  12.118435301  90.888264755  -20.254651551  rises
+  2026-11-21, 0, 12.4964         2461365.965287778  2461365.712820489  2461366.217755066  12.118429852  90.888223892  -20.247507788  rises
+  2026-11-21, 41.9, 0            2461366.000000000  2461365.800209273  2461366.199790727  9.589954902  71.924661764  -20.254651551  rises
+  2026-11-21, 41.9, 12.4964      2461365.965287778  2461365.765475933  2461366.165099622  9.590968547  71.932264103  -20.247507788  rises
+  2026-11-21, 60, 0              2461366.000000000  2461365.854042438  2461366.145957562  7.005962976  52.544722318  -20.254651551  rises
+  2026-11-21, 60, 12.4964        2461365.965287778  2461365.819281317  2461366.111294238  7.008310122  52.562325911  -20.247507788  rises
+  2026-11-21, 66.5, 0            2461366.000000000  2461365.900209754  2461366.099790246  4.789931803  35.924488525  -20.254651551  rises
+  2026-11-21, 66.5, 12.4964      2461365.965287778  2461365.865409678  2461366.065165877  4.794148781  35.956115858  -20.247507788  rises
+  2026-11-21, 70, 0              2461366.000000000  2461365.959962799  2461366.040037201  1.921785655  14.413392412  -20.254651551  rises
+  2026-11-21, 70, 12.4964        2461365.965287778  2461365.925003809  2461366.005571746  1.933630492  14.502228687  -20.247507788  rises
+  2026-11-21, 89, 0              2461366.000000000  NaN  NaN  0.000000000  0.000000000  -20.254651551  polar night
+  2026-11-21, 89, 12.4964        2461365.965287778  NaN  NaN  0.000000000  0.000000000  -20.247507788  polar night
+  2026-12-21, -70, 0             2461396.000000000  NaN  NaN  24.000000000  180.000000000  -23.435760359  polar day
+  2026-12-21, -70, 12.4964       2461395.965287778  NaN  NaN  24.000000000  180.000000000  -23.435776513  polar day
+  2026-12-21, -41.9, 0           2461396.000000000  2461395.682723138  2461396.317276862  15.229289397  114.219670476  -23.435760359  rises
+  2026-12-21, -41.9, 12.4964     2461395.965287778  2461395.648010862  2461396.282564693  15.229291936  114.219689519  -23.435776513  rises
+  2026-12-21, 0, 0               2461396.000000000  2461395.747477042  2461396.252522958  12.121101963  90.908264725  -23.435760359  rises
+  2026-12-21, 0, 12.4964         2461395.965287778  2461395.712764820  2461396.217810736  12.121101978  90.908264836  -23.435776513  rises
+  2026-12-21, 41.9, 0            2461396.000000000  2461395.809917460  2461396.190082540  9.123961929  68.429714465  -23.435760359  rises
+  2026-12-21, 41.9, 12.4964      2461395.965287778  2461395.775205289  2461396.155370267  9.123959481  68.429696111  -23.435776513  rises
+  2026-12-21, 60, 0              2461396.000000000  2461395.877724230  2461396.122275770  5.869236947  44.019277106  -23.435760359  rises
+  2026-12-21, 60, 12.4964        2461395.965287778  2461395.843012140  2461396.087563416  5.869230612  44.019229593  -23.435776513  rises
+  2026-12-21, 66.5, 0            2461396.000000000  2461395.953257807  2461396.046742193  2.243625292  16.827189691  -23.435760359  rises
+  2026-12-21, 66.5, 12.4964      2461395.965287778  2461395.918546005  2461396.012029551  2.243605092  16.827038194  -23.435776513  rises
+  2026-12-21, 70, 0              2461396.000000000  NaN  NaN  0.000000000  0.000000000  -23.435760359  polar night
+  2026-12-21, 70, 12.4964        2461395.965287778  NaN  NaN  0.000000000  0.000000000  -23.435776513  polar night
+  2026-12-21, 89, 0              2461396.000000000  NaN  NaN  0.000000000  0.000000000  -23.435760359  polar night
+  2026-12-21, 89, 12.4964        2461395.965287778  NaN  NaN  0.000000000  0.000000000  -23.435776513  polar night
+  transits of a right ascension within a day (ra, jd0, lon)
+  0, 2461041.5                   2461042.183802166  |  2461042.218419609
+  0, 2461305.5                   2461306.460237244  |  2461306.494854686
+  68.98, 2461041.5               2461042.374890096  |  2461042.409507539
+  68.98, 2461305.5               2461305.654055607  |  2461306.685942616
+  101.29, 2461041.5              2461042.464395040  |  2461042.499012482
+  101.29, 2461305.5              2461305.743560550  |  2461306.775447560
+  279.23, 2461041.5              2461041.960053658  |  2461042.991940667
+  279.23, 2461305.5              2461306.236488735  |  2461306.271106178
+  359.99, 2461041.5              2461042.183774464  |  2461042.218391907
+  359.99, 2461305.5              2461306.460209541  |  2461306.494826984
+  hourAngle(2026-01-01 19h, 12.4964, 68.98) -30.042463548
+  fromLocalMeanTime(2026-01-01, 12, 12.4964) 2461041.965287778
+
+=== 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
+  x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
+  x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
+  x = -0.001                     "0°00'" "0h00m" "-0h00m03.6s" "-0h00m04s" "0d00h" "+0.0" "−0.001" "+0.0′" "0;00 (0.001°)" "-0;00,04 (0.001°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "-0.001" "-0.001" "\\alpha=0°00'"  359.999000000  -0.001000000
+  x = 0                          "0°00'" "0h00m" "0h00m00.0s" "0h00m00s" "0d00h" "+0.0" "+0.000" "+0.0′" "0;00 (0.000°)" "0;00,00 (0.000°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "+0.000" "0.000" "\\alpha=0°00'"  0.000000000  0.000000000
+  x = 0.0083                     "0°00'" "0h00m" "0h00m29.9s" "0h00m30s" "0d00h" "+0.0" "+0.008" "+0.0′" "0;00 (0.008°)" "0;00,30 (0.008°)" "0\\,\\text{h}\\,00\\,\\text{min}" "0\\,\\text{d}\\,00\\,\\text{h}" "+0.008" "0.008" "\\alpha=0°00'"  0.008300000  0.008300000
+  x = 0.99999                    "1°00'" "1h00m" "1h00m00.0s" "1h00m00s" "1d00h" "+1.0" "+1.000" "+1.0′" "1;00 (1.000°)" "1;00,00 (1.000°)" "1\\,\\text{h}\\,00\\,\\text{min}" "1\\,\\text{d}\\,00\\,\\text{h}" "+1.000" "1.000" "\\alpha=1°00'"  0.999990000  0.999990000
+  x = 1.5                        "1°30'" "1h30m" "1h30m00.0s" "1h30m00s" "1d12h" "+1.5" "+1.500" "+1.5′" "1;30 (1.500°)" "1;30,00 (1.500°)" "1\\,\\text{h}\\,30\\,\\text{min}" "1\\,\\text{d}\\,12\\,\\text{h}" "+1.500" "1.500" "\\alpha=1°30'"  1.500000000  1.500000000
+  x = 23.99999                   "24°00'" "24h00m" "24h00m00.0s" "24h00m00s" "24d00h" "+24.0" "+24.000" "+24.0′" "24;00 (24.000°)" "24;00,00 (24.000°)" "24\\,\\text{h}\\,00\\,\\text{min}" "24\\,\\text{d}\\,00\\,\\text{h}" "+24.000" "24.000" "\\alpha=24°00'"  23.999990000  23.999990000
+  x = 59.99                      "59°59'" "59h59m" "59h59m24.0s" "59h59m24s" "60d00h" "+60.0" "+59.990" "+60.0′" "59;59 (59.990°)" "59;59,24 (59.990°)" "59\\,\\text{h}\\,59\\,\\text{min}" "60\\,\\text{d}\\,00\\,\\text{h}" "+59.990" "59.990" "\\alpha=59°59'"  59.990000000  59.990000000
+  x = 61.25                      "61°15'" "61h15m" "61h15m00.0s" "61h15m00s" "61d06h" "+61.3" "+61.250" "+61.2′" "61;15 (61.250°)" "61;15,00 (61.250°)" "61\\,\\text{h}\\,15\\,\\text{min}" "61\\,\\text{d}\\,06\\,\\text{h}" "+61.250" "61.250" "\\alpha=61°15'"  61.250000000  61.250000000
+  x = 359.9999                   "360°00'" "360h00m" "359h59m59.6s" "360h00m00s" "360d00h" "+360.0" "+360.000" "+360.0′" "360;00 (360.000°)" "360;00,00 (360.000°)" "360\\,\\text{h}\\,00\\,\\text{min}" "360\\,\\text{d}\\,00\\,\\text{h}" "+360.000" "360.000" "\\alpha=360°00'"  359.999900000  -0.000100000
+  texLinear                      "\\mathbf s=0.500\\,\\mathbf a-0.250\\,\\mathbf b+0.125\\,\\mathbf c"
+  formatYear                     "585 BC" "1 BC" "1" "2026"  "-584"
+  withAlpha                      "rgba(162, 59, 46, 0.4)"  "rgba(29, 42, 68, 1)"
+  textColor                      bg:#f3eee2 card:#f7f3ea ink:#1d2a44 muted:#5b6475 line:#c9bc9c accent:#7a5718 earth:#2f5687 planet:#8d2f24 sun:#7a5718 deferent:#3e6346 epicycle:#5e4a87 earthText:#2f5687 planetText:#8d2f24 sunText:#7a5718 deferentText:#3e6346 epicycleText:#5e4a87 plate:#1f3a6b plateInk:#eef3fb plateSoft:#c9d5ea plateAccent:#f2c96b
+  starSize -1.5 0 2 5.5 7        8.000000 6.928571 5.500000 3.000000 3.000000
+  starPath(10, 20, 5)            "M10.0 15.0 L11.4 18.6 L15.0 20.0 L11.4 21.4 L10.0 25.0 L8.6 21.4 L5.0 20.0 L8.6 18.6 Z"
+  labelFont                      "italic 500 21px \"Cormorant Garamond\", Georgia, serif" "600 17px \"Cormorant SC\", Georgia, serif" "italic 500 21px \"Cormorant Garamond\", Georgia, serif" "italic 500 21px \"Cormorant Garamond\", Georgia, serif" "italic 500 21px \"Cormorant Garamond\", Georgia, serif"  "600 17px \"Cormorant SC\", Georgia, serif"
+  niceTicks(min, max, count)
+  -15, 15, 6                     -15 -10 -5 0 5 10 15
+  0, 365, 5                      0 100 200 300
+  -90, 90, 4                     -50 0 50
+  0.1, 0.7, 6                    0.1 0.2 0.3 0.4 0.5 0.6 0.7
+  1990.3, 2010.8, 7              1992 1994 1996 1998 2000 2002 2004 2006 2008 2010
+  -3000, 3000, 8                 -3000 -2000 -1000 0 1000 2000 3000
+  5, 5, 3                        5
+  timeTicks(min, max, count)
+  2026, 2027, 6                  2026.000000:Jan 2026 2026.161644:Mar 2026.328767:May 2026.495890:Jul 2026.665753:Sep 2026.832877:Nov 2027.000000:Jan 2027
+  2026.2, 2026.9, 12             2026.246575:Apr 2026.328767:May 2026.413699:Jun 2026.495890:Jul 2026.580822:Aug 2026.665753:Sep 2026.747945:Oct 2026.832877:Nov
+  1990, 2010, 6                  1990.000000:1990 1995.000000:1995 2000.000000:2000 2005.000000:2005 2010.000000:2010
+  -600, 600, 6                   -600.000000:601 BC -400.000000:401 BC -200.000000:201 BC 0.000000:1 BC 200.000000:200 400.000000:400 600.000000:600
+  niceCeiling                    0.500000 1.000000 2.000000 2.500000 5.000000 10.000000 20.000000 1000.000000
+  runningExtreme                 [3,4,4,5,9,9,9,6]
+  stripTex                       "λmodel (Hipparchus)"
+  stripTex                       "mean Sun λ̄"
+  stripTex                       "Hipparchus' year, Y = 365 1/4 - 1/300 d"
+  stripTex                       "Δλ of ε0, δ☉"
+  fixed and fixedAngle (never "-0.0"; an angle in [0, 360) never "360.0")
+  x = -0.04                      "0.0" "-0.04" "0.0" "-0.04"
+  x = -0.05                      "-0.1" "-0.05" "-0.1" "-0.05"
+  x = -0.051                     "-0.1" "-0.05" "-0.1" "-0.05"
+  x = 0                          "0.0" "0.00" "0.0" "0.00"
+  x = 0.04                       "0.0" "0.04" "0.0" "0.04"
+  x = 12.345                     "12.3" "12.35" "12.3" "12.35"
+  x = 359.94                     "359.9" "359.94" "359.9" "359.94"
+  x = 359.95                     "359.9" "359.95" "359.9" "359.95"
+  x = 359.999                    "360.0" "360.00" "0.0" "0.00"
+  x = -12.5                      "-12.5" "-12.50" "-12.5" "-12.50"
+
+=== 8a. PAGE 1.1 (act1-stage/01-turning-sky/page.js) ===
+  formatAngle                    "−16.7°" "0.0°" "0.0°" "41.9°" "90.0°"
+  seenHorizonDepth()             -0.573875490609
+  TEST_HALF_TURN, TEST_EPOCH     11.967234795949  2461041.500000000
+  CLASS_TEXT                     "{\"circumpolar\":\"\\\\text{never sets}\",\"rises\":\"\\\\text{rises and sets}\",\"never\":\"\\\\text{never rises}\"}"
+  splitByHorizon                 "[{\"above\":true,\"points\":[[0,0,1]]},{\"above\":false,\"points\":[[0,0,1],[0,0,-1],[0,0,-2]]},{\"above\":true,\"points\":[[0,0,-2],[0,0,3]]}]"
+  dailyCircle(38.78, R)[7]       [0.034259688215, -0.214874931907, 0.976040489632]
+
+=== 8b. PAGE 1.2 (act1-stage/02-frames/page.js) ===
+  EPS_TODAY                      23.435910446294
+  formatDegrees                  "−5.47°" "0.00°" "12.35°"
+  texDegrees                     "0.00^\\circ" "-5.47^\\circ" "360.00^\\circ"
+  texAngle360                    "0.00^\\circ" "5.47^\\circ" "359.99^\\circ" "0.00^\\circ"
+  formatAngle                    "−33.9°" "0.0°" "0.0°" "41.9°" "360.0°"
+  texHours                       "0^\\text{h}00^\\text{m}" "4^\\text{h}36^\\text{m}" "0^\\text{h}00^\\text{m}" "23^\\text{h}00^\\text{m}"
+  texDms                         "23^\\circ 51' 20''" "-0^\\circ 30' 00''" "20^\\circ 30' 09''"
+  texVector                      "\\mathbf s = (0.1235,\\ 0.0000,\\ 1.0000)"
+  formatDay                      "1 Jan" "1 Feb" "21 May" "31 Dec"
+  starOfDate(Aldebaran)          69.353924895  16.559411129
+  nutationErrors(2026), every 30 days: day, deps, dDec, dRA (arcsec)
+  day 0                          8.082161942  7.919979935  -0.684331195
+  day 30                         8.422679865  6.102425545  -1.823308760
+  day 60                         8.968119505  2.643380645  -1.094985864
+  day 90                         9.067767735  -1.633142443  0.696364828
+  day 120                        8.504879678  -5.263489612  1.792213165
+  day 150                        7.749006313  -7.180802697  1.169990676
+  day 180                        7.476936717  -7.385204675  -0.499938679
+  day 210                        7.857924634  -6.083271950  -1.669227992
+  day 240                        8.373674197  -3.205933774  -1.283872200
+  day 270                        8.368755293  0.654846368  0.282972423
+  day 300                        7.734583009  4.134236014  1.514629303
+  day 330                        7.000020030  6.225163125  1.234061652
+  day 360                        6.760714325  6.727349976  -0.289363169
+  largest |deps|, |dDec|, |dRA|  9.136165233  7.919979935  1.868104399
+
+=== 8c. PAGE 1.3 (act1-stage/03-clocks/page.js) ===
+  YEAR_START, EPS_YEAR           2461041.500000000  23.435910446294
+  MONTH_STARTS                   0:Jan 31:Feb 59:Mar 90:Apr 120:May 151:Jun 181:Jul 212:Aug 243:Sep 273:Oct 304:Nov 334:Dec
+  JUNE_SOLSTICE_DAY              171
+  dayText                        "1 Jan 2026" "1 Mar 2026" "31 Dec 2026"
+  formatAngle                    "−16.7°" "0.0°" "41.9°"
+  formatLongitude                "74.01° W" "0.00°" "0.00°" "12.50° E" "180.00° E"
+  clockText                      "23:30" "00:00" "13:00" "00:00" "01:15"
+  texDuration                    "0\\,\\text{h}\\,00\\,\\text{min}" "10\\,\\text{h}\\,00\\,\\text{min}" "15\\,\\text{h}\\,15\\,\\text{min}"
+  texClock                       "\\text{19:05}"
+  texMinutes                     "-16.4\\,\\text{min}" "0.0\\,\\text{min}" "0.0\\,\\text{min}" "+0.1\\,\\text{min}" "+22.9\\,\\text{min}"
+  texHms                         "0^\\text{h}00^\\text{m}00^\\text{s}" "2^\\text{h}35^\\text{m}46^\\text{s}" "0^\\text{h}00^\\text{m}00^\\text{s}" "23^\\text{h}56^\\text{m}00^\\text{s}"
+  nightTicks 8, 4                12:00 15:00 18:00 21:00 00:00 03:00 06:00 09:00 12:00  |  12:00 18:00 00:00 06:00 12:00
+  calendar dusk, dawn (day 171, 41.9) 19.614625999  4.385490543
+  calendar dusk, dawn (day 171, 66.5) 36.000000000  0.000000000
+  calendar dusk, dawn (day 171, -60) 14.934665127  9.065044125
+  Figure 6, every 30 days: real noon, and rise / set at 41.9 and 65
+  day 0                          2461042.002487237  2461041.810945105  2461042.194130512  2461041.921081248  2461042.084089912
+  day 30                         2461072.009329427  2461071.801152604  2461072.217834904  2461071.868460991  2461072.150862979
+  day 60                         2461102.008419327  2461101.773322118  2461102.243972020  2461101.796208926  2461102.221638231
+  day 90                         2461132.002689958  2461131.738223963  2461132.267670982  2461131.719861801  2461132.286859683
+  day 120                        2461161.997999503  2461161.705831223  2461162.290659599  2461161.643063641  2461162.354684961
+  day 150                        2461191.998420357  2461191.686008288  2461192.311109914  2461191.570515212  2461192.428262868
+  day 180                        2461222.002584289  2461221.686135375  2461222.318904120  2461221.550150433  2461222.453676078
+  day 210                        2461252.004493649  2461251.702514641  2461252.306040213  2461251.618370549  2461252.388729224
+  day 240                        2461282.000648823  2461281.723931971  2461282.276852989  2461281.687255296  2461282.312564163
+  day 270                        2461311.993497726  2461311.745526724  2461312.240988616  2461311.750235162  2461312.235634550
+  day 300                        2461341.988734702  2461341.769062863  2461342.208016608  2461341.815852450  2461342.160801684
+  day 330                        2461371.991389367  2461371.794182933  2461372.188381753  2461371.887078902  2461372.095278460
+  day 360                        2461402.000723425  2461401.810213754  2461402.191285885  2461401.924237050  2461402.077312184
+
+=== 9. tools/numbers/1.1-turning-sky.js ===
+
+=== One turn of the sky ===
+rate 360.98564736629 deg/day = 15.0411 deg per clock hour
+one turn = 23h56m04.09s, 3.93 min short of 24 h
+check with Time.gmst: 23h56m04.09s
+Polaris from the pole now: 0.63 deg
+
+=== Fit: Kochab from Alexandria ===
+Kochab dec of 2026.0 = 74.0492
+altitudes above N: upper 47.151 -> seen 47.166 (+0.94'), lower 15.249 -> seen 15.309 (+3.62')
+fit: phi = 31.238 (+2.3'), dec = 74.071 (+1.3')
+Ptolemy, Alexandria 30;58 = 30.967: -14' from 31°12'
+
+=== Refraction ===
+true altitude  0: R = 28.98'
+true altitude  5: R = 9.67'
+true altitude 10: R = 5.41'
+true altitude 20: R = 2.74'
+true altitude 45: R = 1.01'
+a star on the apparent horizon is 34.43' below the true one
+Figure 5 scale: deepest model - real = -34.43' -> fixed range [-40', +5']
+
+=== Rising earlier, setting later (stars of 2026.0) ===
+Sirius   at rome   : 3.3 min earlier; up 9h53m -> 10h00m
+Mintaka  at rome   : 3.1 min earlier; up 11h56m -> 12h02m
+Vega     at rome   : 5.8 min earlier; up 18h07m -> 18h18m
+Antares  at rome   : 3.8 min earlier; up 8h26m -> 8h34m
+Mintaka  at london : 3.7 min earlier; up 11h55m -> 12h03m
+Canopus  at rhodes : 14.2 min earlier; up 2h19m -> 2h47m
+
+=== Exercise 1: which stars never set, which never rise (J2000) ===
+rhodes (36): never sets above dec 54.0; Dubhe circumpolar (max 64.25, min 7.75); Capella rises (max 80.00, min -8.00); Deneb rises (max 80.72, min -8.72); Vega rises (max 87.22, min -15.22); Canopus rises (max 1.30, min -73.30)
+rome (41.9): never sets above dec 48.1; Dubhe circumpolar (max 70.15, min 13.65); Capella rises (max 85.90, min -2.10); Deneb rises (max 86.62, min -2.82); Vega rises (max 86.88, min -9.32); Canopus never (max -4.60, min -79.20)
+london (51.5): never sets above dec 38.5; Dubhe circumpolar (max 79.75, min 23.25); Capella circumpolar (max 84.50, min 7.50); Deneb circumpolar (max 83.78, min 6.78); Vega circumpolar (max 77.28, min 0.28); Canopus never (max -14.20, min -88.80)
+Capella never sets north of 44.00, Vega north of 51.22
+Canopus rises south of 37.30
+
+=== Exercise 2: fraction of the day above the horizon ===
+Sirius from alexandria: -tan(phi) tan(dec) = 0.1819, H0 = 79.52, f = 0.442, up 10h34m of clock time
+Sirius from rome: -tan(phi) tan(dec) = 0.2695, H0 = 74.37, f = 0.413, up 9h53m of clock time
+Sirius from london: -tan(phi) tan(dec) = 0.3776, H0 = 67.82, f = 0.377, up 9h01m of clock time
+Rhodes: -tan 36 tan(23;51,20) = -0.3213, H0 = 108.741, longest day = 14.4988 h, shortest = 9.5012 h
+inverse: a 14.5 h day gives phi = 36.01
+
+=== Exercise 3: the equinox day at Greenwich, 20 March 2026 ===
+centre on the geometric horizon      rise 6:08:14, set 18:07:41, day 11h59m27.53s
+with refraction (-34')               rise 6:04:36, set 18:11:20, day 12h06m44.16s
+upper limb with refraction (-50')    rise 6:02:53, set 18:13:03, day 12h10m09.66s
+split: Sun's own motion -0.5 min, refraction +7.3 min, radius +3.4 min, total +10.2 min
+climb at sunrise: 15 cos(phi) = 9.34 deg/h; 50' takes 5.4 min at each end
+estimate 2 x 0.833 deg / (15 cos phi deg/h) = 10.7 min
+
+=== Polaris and the pole ===
+Hipparchus, 130 BC : Polaris 12.47 deg from the pole
+Ptolemy, AD 137    : Polaris 11.01 deg from the pole
+now                : Polaris 0.63 deg from the pole
+closest: 27.6' around 2102
+
+=== 9. tools/numbers/1.2-frames.js ===
+
+=== Observation: Aldebaran ===
+  17:00 UT: A = 97.0, a = 32.8
+  18:00 UT: A = 109.1, a = 43.7
+  19:00 UT: A = 125.0, a = 53.7
+  20:00 UT: A = 147.9, a = 61.4
+  21:00 UT: A = 179.3, a = 64.7
+instant: 2026-01-01 19:00 UT, local sidereal time theta = 38.94 deg = 2h36m
+horizon:    A = 125.01, a = 53.67  (H = -30.41)
+equatorial: alpha = 69.354 (4h37m), delta = 16.559
+ecliptic:   lambda = 70.153, beta = -5.465   (eps of date 23.4359)
+Ptolemy (AD 137): lambda = 42.667, beta = -5.167
+real sky AD 137:  lambda = 43.852, beta = -5.598  -> Ptolemy off by -71' in lambda, 26' in beta
+1889 years: lambda grew 26.30 deg, beta changed 7.9'
+           alpha grew 26.30 deg, delta changed 5.75 deg
+
+=== Model: the matrices against the formulas ===
+eps(2026.0) = 23.4359 = 23°26'09"
+ecliptic pole K: (0.0000, -0.3977, 0.9175) -> alpha = 270.00, delta = 66.564 (= 90 - eps)
+2000 random directions: matrices, formulas, inverses and Ephem agree within 1.5e-9"
+
+=== Model: the Sun along the ecliptic (Figure 2) ===
+mean motion: 360 / 365.2422 = 0.9856 deg/day; reference Sun over 2026: 359.75 deg in 365 days
+21 May 2026, 0h TT: lambda = 59.98, beta = -1.7"
+
+=== Fit: the obliquity from two noon shadows (Alexandria, 2026) ===
+highest noon Sun 82.240 on 2026-06-21 00:00, lowest 35.388 on 2026-12-21 00:00
+refraction lifts them by 0.14' and 1.42'
+fit: eps = 23.4260 (-0.59' from the mean 23.4358), phi = 31.1864 (-0.82' from 31.2)
+
+=== Ptolemy and the others ===
+Ptolemy: 2 eps = 47°42'40" -> eps = 23°51'20" = 23.8556
+ratio 11/83: 2 eps = 47°42'39" -> eps = 23°51'20" = 23.8554
+Ptolemy's bounds: 47°40' < 2 eps < 47°45' -> 23.8333 < eps < 23.8750
+Eratosthenes (c. 230 BC)   true mean eps = 23.7229 = 23°43'22"; Ptolemy's value is 8.0' larger
+Hipparchus (c. 135 BC)     true mean eps = 23.7113 = 23°42'41"; Ptolemy's value is 8.7' larger
+Ptolemy (AD 137)           true mean eps = 23.6779 = 23°40'40"; Ptolemy's value is 10.7' larger
+Copernicus (c. 1525)       true mean eps = 23.5009 = 23°30'03"; Ptolemy's value is 21.3' larger
+today                      true mean eps = 23.4358 = 23°26'09"; Ptolemy's value is 25.2' larger
+Copernicus (De Rev. II 2): "not more than 23°29'" = 23.4833
+
+=== The origin: the March equinox 2026 ===
+reference Sun at lambda = 0: 2026-03-20 14:31 UT; delta there = 0.2"
+
+=== Test 1: Ptolemy's table of inclination (Almagest I 15) against sin d = sin e sin l ===
+90 entries: median |table - formula| = 1.0", 90% within 3.0", largest 9.0"
+  lambda 27: table 10°34'57", formula 10°34'48" (9.0")
+  lambda 51: table 18°19'15", formula 18°19'07" (7.5")
+  lambda 55: table 19°20'56", formula 19°20'50" (6.1")
+  lambda 81: table 23°32'30", formula 23°32'38" (-8.4")
+  lambda 30: table 11°39'59", formula 11°40'00" = 11.6666
+  lambda 60: table 20°30'09", formula 20°30'09" = 20.5025
+
+=== Test 1b: Ptolemy's right ascensions (Almagest I 16) against tan a = cos e tan l ===
+  lambda 10: Ptolemy 9°10', formula 9°09'39" (0.35')
+  lambda 20: Ptolemy 18°25', formula 18°24'41" (0.32')
+  lambda 30: Ptolemy 27°50', formula 27°50'07" (-0.11')
+  lambda 40: Ptolemy 37°30', formula 37°30'11" (-0.19')
+  lambda 50: Ptolemy 47°28', formula 47°27'51" (0.15')
+  lambda 60: Ptolemy 57°44', formula 57°44'11" (-0.19')
+  lambda 70: Ptolemy 68°18', formula 68°17'56" (0.06')
+  lambda 80: Ptolemy 79°05', formula 79°05'15" (-0.24')
+  lambda 90: Ptolemy 90°00', formula 90°00'00" (0.00')
+largest difference 0.35' (Ptolemy rounds to minutes)
+
+=== Test 1c: the table on the page, Ptolemy against the real Sun of AD 137 ===
+lambda | Ptolemy delta        | real delta | d delta | Ptolemy alpha     | real alpha | d alpha
+    10 | 4°01'38" (4.027) |      4.000 |     1.6' | 9°10' (9.167) |      9.173 |   -0.4'  [137-04-01 06:13]
+    20 | 7°57'03" (7.951) |      7.895 |     3.3' | 18°25' (18.417) |     18.434 |   -1.1'  [137-04-11 14:20]
+    30 | 11°39'59" (11.666) |     11.584 |     4.9' | 27°50' (27.833) |     27.867 |   -2.0'  [137-04-21 23:43]
+    40 | 15°04'04" (15.068) |     14.960 |     6.4' | 37°30' (37.500) |     37.541 |   -2.4'  [137-05-02 10:08]
+    50 | 18°02'53" (18.048) |     17.917 |     7.8' | 47°28' (47.467) |     47.503 |   -2.2'  [137-05-12 21:14]
+    60 | 20°30'09" (20.503) |     20.353 |     9.0' | 57°44' (57.733) |     57.772 |   -2.3'  [137-05-23 09:00]
+    70 | 22°20'11" (22.336) |     22.171 |     9.9' | 68°18' (68.300) |     68.326 |   -1.5'  [137-06-02 21:03]
+    80 | 23°28'16" (23.471) |     23.297 |    10.5' | 79°05' (79.083) |     79.102 |   -1.1'  [137-06-13 09:02]
+    90 | 23°51'20" (23.856) |     23.678 |    10.7' | 90°00' (90.000) |     90.000 |    0.0'  [137-06-23 20:55]
+
+=== Test 2 (Figure 4): the nutation error over 2026 ===
+nutation in obliquity d eps over 2026: 6.68" (day 357) to 9.14" (day 77)
+largest |d delta| = 7.92" (day 0, lambda 281), largest |d alpha| = 1.87" (day 35, lambda 316)
+June solstice (day 171): d delta = -7.66", -d eps = -7.66"
+December solstice (day 355): d delta = 6.72", +d eps = 6.72"
+Figure 4 scale: every value within 9.14" -> fixed range [-12", +12"]
+
+=== Residual: an old obliquity used today ===
+the mean obliquity of AD 137 used in 2026: max |d delta| = 14.46'
+
+=== Exercise 1: equatorial -> ecliptic, Aldebaran of 2026.0 ===
+alpha = 69.3539, delta = 16.5594, eps = 23.4359
+s_eq = (0.3380, 0.8970, 0.2850), s_ecl = R_x(-eps) s_eq = (0.3380, 0.9363, -0.0952)
+sin beta = -0.09525 -> beta = -5.465
+lambda = atan2(0.93632, 0.33797) = 70.153
+
+=== Exercise 2: the Sun at lambda = 60 ===
+reference Sun at lambda = 60: 2026-05-21 00:23 UT; eps of date = 23.4359
+sin delta = sin eps sin 60 = 0.34444 -> delta = 20.147 = 20°08'51"
+tan alpha = cos eps tan 60 = 1.58917 -> alpha = 57.819 = 3h51m (alpha - lambda = -2.181 = -130.8')
+reference Sun then: alpha = 57.819, delta = 20.149, beta = -1.73"; model - real: 1.2", -5.0"
+with Ptolemy's eps: delta = 20.5025 = 20°30'09" (table I 15: 20°30'09"), alpha = 57.7365 = 57°44'11" (I 16: 57°44')
+
+=== Exercise 3: the ecliptic against the horizon at Rome ===
+phi = 41.9: 90 - phi - eps = 24.66, 90 - phi + eps = 71.54
+  scan: least 24.66 at theta = 270.00 (rising point lambda = 360.0), greatest 71.54 at theta = 90.00 (rising point lambda = 180.0)
+phi = 31.2: 90 - phi - eps = 35.36, 90 - phi + eps = 82.24
+  scan: least 35.36 at theta = 270.00 (rising point lambda = 360.0), greatest 82.24 at theta = 90.00 (rising point lambda = 180.0)
+March equinox: sunset at Rome 17:22 UT, theta = 91.3, ecliptic at 71.5 deg to the horizon, rising point lambda = 181.0
+September equinox: sunset at Rome 17:06 UT, theta = 271.5, ecliptic at 24.7 deg to the horizon, rising point lambda = 2.7
+
+=== Residual: the obliquity changes ===
+eps fell 46.8" in the last century; 14.5' since AD 137
+nutation in obliquity: up to 9.2" (Ephem.nutation, 18.6-year period)
+
+=== 9. tools/numbers/1.3-clocks.js ===
+
+=== Observation: the stars' day ===
+one turn of the sky = 23h56m04.09s of mean solar time
+a star crosses the meridian 0h03m55.91s earlier each day: 1h58m in 30 days
+Betelgeuse crosses Rome's meridian at 0:00 local mean time on the night of 20 Dec 2026
+Betelgeuse crosses Rome's meridian at 22:00 local mean time on the night of 19 Jan 2026
+Betelgeuse crosses Rome's meridian at 20:00 local mean time on the night of 18 Feb 2026
+
+=== Observation: the Sun's day (true noon to noon, Greenwich, 2026) ===
+shortest 23h59m38.6s (ending 18 Sep 2026), longest 24h00m29.8s (ending 23 Dec 2026)
+mean of the 366 days: 24h00m00.06s
+Ptolemy III 9: 0;59 time-degrees = 0°59'00" = 0.9833 deg; one time-degree = 4 min, so 3.93 min
+
+=== Model: the two days ===
+mean Sun n = 0.98564736 deg/day, Y = 360/n = 365.24219 days
+sidereal day = 24 h x Y/(Y+1) = 23h56m04.091s; turns in a year Y+1 = 366.24219
+ratio of the rates (Y+1)/Y = 1.00273791
+
+=== Model: sidereal time and longitude (page 1.2's observation of Aldebaran) ===
+1 Jan 2026 19:00 UT: theta_G = 26.44 deg, Rome theta = 38.94 deg (page 1.2 used 38.94; apparent 38.94)
+theta in hours at Rome: 2h35m45s; Aldebaran's H = -30.42 deg
+
+=== Model: mean time and the sidereal clock ===
+rate 360.98564736629 = 360 + 0.98564736629; n = 0.98564736016
+theta_G at J2000.0 = 280.46061837 deg = 18h41m50.55s; mean Sun L0 = 280.46646: difference 21.0" = 1.40 s of time
+worked example (Figure 2), 20 Apr 2026 20:00 UT: d = 9606.3333 = 9606 + 0.3333; H_m = 15 x 8 = 120; 360 d = 9606 turns + 120.0000 deg
+  alpha_m = L0 + n d (the clock's L0 and n) = 28.92; theta_G = H_m + alpha_m = 148.92; the clock formula gives 148.92
+Sun's geometric L0 minus the clock's L0 = 21.03": aberration 20.49" (the Sun's motion in the 499.0 s of light-time: 20.49"), remainder 0.54"
+light-time 499.0 s = 8.3 min
+linear clock minus full Meeus 12.4 in 2026: -6.3 ms
+Rome: local mean time = UT + 0h49m59s; CET = UT + 1 h, so local mean noon at Rome is 12:10:01 CET
+
+=== Model: Julian Date ===
+JD 0 = {"year":-4712,"month":1,"day":1.5} in the Julian calendar (4713 BC), a Monday
+J2000.0 = 2000 Jan 1, 12h = JD 2451545; 2026 Jan 1, 0h UT = JD 2461041.5
+1582 Oct 4 (Julian) = JD 2299159.5 -> next day 1582 Oct 15 (Gregorian) = JD 2299160.5
+Nabonassar 1, Thoth 1, noon (-746 Feb 26) = JD 1448638; Hadrian 17, Athyr 7, 14h (132 Sep 25) = JD 1769539.0833
+difference 320901.0833 d; Ptolemy's 879 x 365 + 66 d + 2 h = 320901.0833 d
+879 Egyptian years = 320835 days = 878.40 Julian years
+
+=== Model: the length of the day (uniform Sun, h0 = -50') ===
+alexandria (31.2): March equinox 12h04m, June solstice 14h11m, December solstice 10h07m
+rome       (41.9): March equinox 12h03m, June solstice 15h14m, December solstice 9h07m
+london     (51.5): March equinox 12h03m, June solstice 16h38m, December solstice 7h50m
+mean obliquity 2026 = 23.4359; polar day somewhere in the year north of 90 - eps + h0 = 65.73, polar night north of 90 - eps - h0 = 67.40
+at the equator: 12h07m at the equinox, 12h07m at the solstice
+Ptolemy's longest day at Rhodes (14h30m with h0 = 0) with h0 = -50': 14h39m
+Tromso (69.65 N): 66 days without sunset, 50 without sunrise in 2026 (model)
+
+=== Fit: the year and the rate ===
+Ptolemy's year 365;14,48 = 365.24667 d, 6.4 min longer than 365.24219
+his daily motion 0;59,8,17,13,12,31 = 0°59'08.29" = 0.985635 deg (360 / his year = 0.985635)
+sidereal day from his year: 23h56m04.093s; modern 23h56m04.091s: 2.9 ms
+his mean Sun falls behind by 0.44 deg per century
+
+=== Fit: the longitude from a timed transit of Vega ===
+Vega of date: ra 279.4601 deg (18h37m50.43s), dec 38.810
+crosses Rome's meridian on 15 Aug 2026 at 20:10:52 UT, timed to the second 20:10:52
+theta_G then = 266.9626 deg, so lon = ra - theta_G = 12.4975 deg (true 12.4964)
+1 s of time = 15" of longitude = 345 m at latitude 41.9
+
+=== Test: the stars ===
+|apparent sidereal time - the linear clock| in 2026 <= 0.66 s
+
+=== Test: the Sun in 2026 (model - real, minutes); scale of Figure 6 ===
+noon: from -14.2 (11 Feb 2026) to +16.5 (3 Nov 2026)
+phi  31.2: day length [-3.5, 0.0], sunrise [-13.4, 18.0], sunset [-15.4, 15.3]
+phi  41.9: day length [-5.3, 0.0], sunrise [-13.0, 18.8], sunset [-16.1, 14.7]
+phi  51.5: day length [-7.5, 0.0], sunrise [-12.5, 19.9], sunset [-16.9, 13.9]
+phi    60: day length [-10.4, 0.2], sunrise [-11.8, 21.4], sunset [-18.1, 12.7]
+phi    65: day length [-13.1, 0.6], sunrise [-11.0, 22.9], sunset [-19.2, 11.3]
+phi   -65: day length [-1.3, 13.6], sunrise [-17.7, 9.0], sunset [-8.9, 21.5]
+northern hemisphere: the model's day is at most 0.6 min too long (at 65)
+Figure 6 (|phi| <= 65, every 2.5 deg): every error within [-19.2, 22.9] min -> fixed range [-25, 25]
+
+=== Test: why the day length is wrong (5 April 2026, London) ===
+longitude: mean 13.81, real 15.72 (1.91 deg ahead); declination: model 5.45, real 6.19
+London: model day 13h05m57s, real 13h13m24s
+
+=== Exercise 1: sidereal days in a year; the Moon's day ===
+Y = 365.24219 solar days hold 366.24219 sidereal days; sidereal day 23h56m04.091s
+Ptolemy: one turn = 360 / (360 + 0.985635) mean days = 23h56m04.093s
+the Moon: 1 / (1 - 1/29.530589) = 1.035050 d = 24h50m28s, 50.5 min later each day
+
+=== Exercise 2: Sirius at Rome on New Year's Eve 2026 ===
+31 Dec 2026, 0h UT: JD 2461405.5, d = 9860.5
+Sirius of date: ra 101.5845 deg = 6h46m20.27s, dec -16.755
+theta_G at 0h UT on 31 Dec = 99.4365 deg = 6h37m44.75s
+alpha - lon - theta_G0 = 349.6516 deg; / 360.9856 deg per day = 23.24646 h
+transit 23:14:47 UT = 0:14:47 CET = 0:04:46 local mean time
+altitude at transit = 90 - |phi - dec| = 31.3 deg
+Sirius crosses at local mean midnight on the night of 1 Jan 2026 (-0h00m09s)
+UT days of 2026 with two transits of Sirius at Rome: 20 Dec 2026
+
+=== Exercise 3: the earliest sunset and the latest sunrise at Rome ===
+real: earliest sunset 8 Dec 2026 16:38:44 CET; latest sunrise 4 Jan 2027 7:37:53 CET; shortest day 21 Dec 2026 (9h07m37s)
+model, on the solstice: sunrise 7:36:18 CET, sunset 16:43:44 CET, day 9h07m26s
+  8 Dec 2026: real noon 12:01:53 CET, sunrise 7:24:50, sunset 16:38:44, day 9h13m54s
+  21 Dec 2026: real noon 12:08:04 CET, sunrise 7:34:15, sunset 16:41:53, day 9h07m37s
+  4 Jan 2027: real noon 12:14:51 CET, sunrise 7:37:53, sunset 16:51:59, day 9h14m06s
+real noon moves 29.8 s later each day at the solstice
+
+=== Residual: Delta T ===
+now (polynomial)    : Delta T = 75 s = 0h01m15s, the sky turns 0.3 deg in that time
+Ptolemy, AD 132     : Delta T = 9289 s = 2h34m49s, the sky turns 38.8 deg in that time
+Nabonassar, 747 BC  : Delta T = 21050 s = 5h50m50s, the sky turns 87.9 deg in that time
+measured now: TT - UTC = 32.184 + 37 (leap seconds since 2017) = 69.184 s, and |UT1 - UTC| < 0.9 s
+the day lengthens by 1.75 ms a century; in AD 132 it was 29.6 ms shorter than 86400 s, in 2026 3.6 ms longer (parabola)
+from 132 to 1820: 616542 days, mean shortfall 14.8 ms, accumulated 9118 s = 2h31m58s (parabola: 9098 s)
+
+=== Residual: the right ascensions of stars drift ===
+Vega    : ra 2000.0 -> 2026.0 changed by 52.8 s of time
+Sirius  : ra 2000.0 -> 2026.0 changed by 68.7 s of time
+Polaris : ra 2000.0 -> 2026.0 changed by 2048.4 s of time

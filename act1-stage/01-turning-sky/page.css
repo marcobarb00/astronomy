@@ -1,0 +1,39 @@
+/* ==========================================================================
+   PAGE 1.1 · THE TURNING SKY - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. Figure 4: two panels with their controls underneath
+	 3. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here are short ("41.9°", "23h56m"). */
+figure.fig {
+	--ctl-output: 5em;
+}
+
+/* ==========================================================================
+   2. FIGURE 4: TWO PANELS WITH THEIR CONTROLS UNDERNEATH
+   The panels themselves are in shared/theme.css (section 8).
+   ========================================================================== */
+
+/* "declination δ" needs a wider label column than the shared 90 px. */
+.panel-controls .ctl {
+	grid-template-columns: 118px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* ==========================================================================
+   3. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	/* "declination δ" still needs more than the shared 74 px label column */
+	.panel-controls .ctl {
+		grid-template-columns: 104px minmax(0, 1fr) var(--ctl-output);
+	}
+}

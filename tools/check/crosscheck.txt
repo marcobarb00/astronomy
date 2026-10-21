@@ -1,0 +1,61 @@
+PREDICTING THE SKY - CROSS-CHECK OF THE REFERENCE SKY (tools/check/crosscheck.js)
+Apparent geocentric ecliptic longitude: shared/ephemeris.js minus astronomy-engine 2.1.19.
+Expected: our error against JPL DE441 (ephemeris.js header) + 1' (astronomy-engine).
+
+=== 1800 - 2050, every 5 days ===
+  body        largest      RMS   expected  on              
+  sun          0.65'     0.21'     1.70'  21 Apr 2026     within
+  moon        -0.32'     0.08'     1.30'  9 Nov 1813      within
+  mercury      1.01'     0.23'     2.10'  18 Apr 1978     within
+  venus        2.62'     0.35'     3.60'  22 Mar 2025     within
+  mars        -6.50'     1.12'     7.30'  16 Jun 2001     within
+  jupiter     13.79'     3.98'    15.00'  1 Oct 1868      within
+  saturn     -23.46'     9.50'    25.00'  14 Sep 1877     within
+
+=== 500 BC - 2500 AD, every 73 days ===
+  body        largest      RMS   expected  on              
+  sun         -1.09'     0.27'     1.80'  5 Mar 460 BC    within
+  moon       -23.40'     7.94'     2.70'  26 Dec 474 BC   LARGER: investigate
+  mercury     -2.82'     0.42'     2.10'  28 Jul 456 BC   LARGER: investigate
+  venus       -5.44'     0.59'     4.70'  17 Jan 270 BC   LARGER: investigate
+  mars         8.78'     1.04'     9.80'  22 Aug 1198     within
+  jupiter    -14.30'     4.27'    15.00'  16 Jul 2281     within
+  saturn     -40.96'    10.35'    26.00'  1 Jan 498 BC    LARGER: investigate
+
+=== 3000 BC - 3000 AD, every 73 days ===
+  body        largest      RMS   expected  on              
+  sun         -1.63'     0.49'     2.10'  14 Dec 2929 BC  within
+  moon      -113.37'    35.11'    12.00'  6 Aug 2990 BC   LARGER: investigate
+  mercury    -10.14'     1.44'     2.50'  31 Jul 2969 BC  LARGER: investigate
+  venus      -11.44'     1.19'     4.70'  27 Dec 2394 BC  LARGER: investigate
+  mars       -39.55'     2.65'    10.90'  20 Jul 2922 BC  LARGER: investigate
+  jupiter    -45.68'     9.23'    18.00'  15 Jul 2902 BC  LARGER: investigate
+  saturn    -109.11'    23.50'    33.00'  24 Dec 2384 BC  LARGER: investigate
+
+=== On the dates of golden.js (ours - astronomy-engine, arcmin) ===
+  date                      sun     moon  mercury    venus     mars  jupiter   saturn
+  Thales eclipse          -0.10   -25.39    -0.48    -0.35     0.22     7.49   -20.58
+  Ptolemy                  0.13    -9.12    -0.22     0.50    -2.36     1.09    -5.20
+  Sputnik                  0.01    -0.02     0.01    -0.15    -0.30    -0.78     3.89
+  Meeus 47.a               0.26     0.04     0.28     0.11    -0.33    -3.97   -12.08
+  J2000.0                  0.22    -0.01     0.18     0.18    -0.86     8.69   -20.92
+  2026 January 1           0.22     0.06     0.14     0.12    -0.78     0.13    -4.26
+  2026 June solstice       0.38    -0.03     0.38    -0.01    -1.19     0.24    -5.03
+
+=== Against JPL Horizons, DE441 (the values of shared/tests.js; same instant in TT) ===
+  body     date              ephemeris.js  astronomy-engine   (error, arcmin)
+  sun      200 BC Jan 1           -0.35'             0.36'
+  sun      137 AD Jan 1            0.13'             0.24'
+  sun      J2000                   0.20'            -0.02'
+  moon     200 BC Jan 1            1.02'            18.74'
+  moon     137 AD Jan 1            0.46'            11.62'
+  moon     J2000                  -0.00'             0.01'
+  mars     200 BC Jan 1            0.17'             0.29'
+  mars     137 AD Jan 1           -1.60'            -0.48'
+  mars     J2000                  -0.83'             0.04'
+  jupiter  200 BC Jan 1            7.96'             1.78'
+  jupiter  137 AD Jan 1           -2.89'             0.11'
+  jupiter  J2000                   8.76'             0.07'
+  saturn   200 BC Jan 1          -14.68'            -5.64'
+  saturn   137 AD Jan 1            0.69'             1.26'
+  saturn   J2000                 -20.89'             0.03'
