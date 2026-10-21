@@ -8,7 +8,6 @@
 	 3. Phone width
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONTROLS
    ========================================================================== */
@@ -18,60 +17,21 @@ figure.fig {
 	--ctl-output: 5em;
 }
 
-/* The star buttons keep one width, so the row does not reflow when the
-   active one changes. */
-.star-choice button {
-	min-width: 5.6em;
-}
-
-/* The play button keeps its width between "Play" and "Pause". */
-button.play {
-	min-width: 7.5em;
-}
-
-
 /* ==========================================================================
-   2. FIGURE 3: TWO PANELS WITH THEIR CONTROLS UNDERNEATH
+   2. FIGURE 4: TWO PANELS WITH THEIR CONTROLS UNDERNEATH
+   The panels themselves are in shared/theme.css (section 8).
    ========================================================================== */
-
-.panels,
-.panel-controls {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-	gap: 20px;
-	align-items: start;
-}
-
-.panel-controls {
-	margin-top: 10px;
-}
 
 /* "declination δ" needs a wider label column than the shared 90 px. */
 .panel-controls .ctl {
 	grid-template-columns: 118px minmax(0, 1fr) var(--ctl-output);
 }
 
-/* "(a) altitude through one turn" above each panel, in small caps. */
-.panel-title {
-	margin: 0 0 4px;
-	font-family: var(--font-label);
-	font-size: 16px;
-	font-weight: 600;
-	letter-spacing: 0.1em;
-	color: var(--muted);
-}
-
-
 /* ==========================================================================
    3. PHONE WIDTH
    ========================================================================== */
 
 @media (max-width: 800px) {
-	.panels,
-	.panel-controls {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
 	/* "declination δ" still needs more than the shared 74 px label column */
 	.panel-controls .ctl {
 		grid-template-columns: 104px minmax(0, 1fr) var(--ctl-output);

@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - BLUE PLATES (plate.js)
    Static charts of the sky in the style of a cyanotype star atlas: white
@@ -29,7 +30,6 @@
    ========================================================================== */
 
 const Plate = (function () {
-
 	/* ======================================================================
 	   1. SVG HELPERS
 	   ====================================================================== */
@@ -71,13 +71,16 @@ const Plate = (function () {
 	function newSvg(container, width, height, label) {
 		container.replaceChildren();
 
-		return svgEl('svg', {
-			viewBox: `0 0 ${width} ${height}`,
-			role: 'img',
-			'aria-label': label
-		}, container);
+		return svgEl(
+			'svg',
+			{
+				viewBox: `0 0 ${width} ${height}`,
+				role: 'img',
+				'aria-label': label
+			},
+			container
+		);
 	}
-
 
 	/* ======================================================================
 	   2. STARS AND CONSTELLATION FIGURES
@@ -94,52 +97,102 @@ const Plate = (function () {
 	const STAR_SCALE = 0.85;
 
 	/* Every plate star at its position of 2026.0, by SIMBAD identifier. */
-	const STARS = new Map(PLATE_STARS.map(star => {
-		const position = Stars.ofDate(star, EPOCH);
+	const STARS = new Map(
+		PLATE_STARS.map(star => {
+			const position = Stars.ofDate(star, EPOCH);
 
-		return [star.id, { id: star.id, mag: star.mag, ra: position.ra, dec: position.dec }];
-	}));
+			return [star.id, { id: star.id, mag: star.mag, ra: position.ra, dec: position.dec }];
+		})
+	);
 
 	/* The usual constellation figures: lines between stars (SIMBAD
 	   identifiers), and where the name goes (ra, dec of 2026, chosen clear
 	   of the lines and of the star names). */
 	const FIGURES = {
 		'URSA MAJOR': {
-			lines: [['alf UMa', 'bet UMa'], ['bet UMa', 'gam UMa'], ['gam UMa', 'del UMa'], ['del UMa', 'alf UMa'],
-				['del UMa', 'eps UMa'], ['eps UMa', 'zet01 UMa'], ['zet01 UMa', 'eta UMa']],
+			lines: [
+				['alf UMa', 'bet UMa'],
+				['bet UMa', 'gam UMa'],
+				['gam UMa', 'del UMa'],
+				['del UMa', 'alf UMa'],
+				['del UMa', 'eps UMa'],
+				['eps UMa', 'zet01 UMa'],
+				['zet01 UMa', 'eta UMa']
+			],
 			name: [188, 43]
 		},
 		'URSA MINOR': {
-			lines: [['alf UMi', 'del UMi'], ['del UMi', 'eps UMi'], ['eps UMi', 'zet UMi'], ['zet UMi', 'bet UMi'],
-				['bet UMi', 'gam UMi'], ['gam UMi', 'eta UMi'], ['eta UMi', 'zet UMi']],
+			lines: [
+				['alf UMi', 'del UMi'],
+				['del UMi', 'eps UMi'],
+				['eps UMi', 'zet UMi'],
+				['zet UMi', 'bet UMi'],
+				['bet UMi', 'gam UMi'],
+				['gam UMi', 'eta UMi'],
+				['eta UMi', 'zet UMi']
+			],
 			name: [264, 61]
 		},
 		'CASSIOPEIA': {
-			lines: [['eps Cas', 'del Cas'], ['del Cas', 'gam Cas'], ['gam Cas', 'alf Cas'], ['alf Cas', 'bet Cas']],
+			lines: [
+				['eps Cas', 'del Cas'],
+				['del Cas', 'gam Cas'],
+				['gam Cas', 'alf Cas'],
+				['alf Cas', 'bet Cas']
+			],
 			name: [16, 51]
 		},
 		'CEPHEUS': {
-			lines: [['alf Cep', 'bet Cep'], ['bet Cep', 'gam Cep'], ['gam Cep', 'iot Cep'], ['iot Cep', 'zet Cep'],
-				['zet Cep', 'alf Cep']],
+			lines: [
+				['alf Cep', 'bet Cep'],
+				['bet Cep', 'gam Cep'],
+				['gam Cep', 'iot Cep'],
+				['iot Cep', 'zet Cep'],
+				['zet Cep', 'alf Cep']
+			],
 			name: [350, 69]
 		},
 		'CYGNUS': {
-			lines: [['alf Cyg', 'gam Cyg'], ['gam Cyg', 'eta Cyg'], ['eta Cyg', 'bet01 Cyg'], ['del Cyg', 'gam Cyg'],
-				['gam Cyg', 'eps Cyg']],
+			lines: [
+				['alf Cyg', 'gam Cyg'],
+				['gam Cyg', 'eta Cyg'],
+				['eta Cyg', 'bet01 Cyg'],
+				['del Cyg', 'gam Cyg'],
+				['gam Cyg', 'eps Cyg']
+			],
 			name: [318, 36]
 		},
 		'TAURUS': {
-			lines: [['lam Tau', 'gam Tau'], ['gam Tau', 'del Tau'], ['del Tau', 'eps Tau'], ['gam Tau', 'tet02 Tau'],
-				['tet02 Tau', 'alf Tau'], ['eps Tau', 'bet Tau'], ['alf Tau', 'zet Tau']],
+			lines: [
+				['lam Tau', 'gam Tau'],
+				['gam Tau', 'del Tau'],
+				['del Tau', 'eps Tau'],
+				['gam Tau', 'tet02 Tau'],
+				['tet02 Tau', 'alf Tau'],
+				['eps Tau', 'bet Tau'],
+				['alf Tau', 'zet Tau']
+			],
 			name: [62, 11]
 		},
 		'ARIES': {
-			lines: [['gam02 Ari', 'bet Ari'], ['bet Ari', 'alf Ari'], ['alf Ari', '41 Ari']],
+			lines: [
+				['gam02 Ari', 'bet Ari'],
+				['bet Ari', 'alf Ari'],
+				['alf Ari', '41 Ari']
+			],
 			name: [36, 27]
 		},
 		'ORION': {
-			lines: [['lam Ori', 'alf Ori'], ['lam Ori', 'gam Ori'], ['alf Ori', 'zet Ori'], ['gam Ori', 'del Ori'],
-				['del Ori', 'eps Ori'], ['eps Ori', 'zet Ori'], ['zet Ori', 'kap Ori'], ['del Ori', 'bet Ori']],
+			lines: [
+				['lam Ori', 'alf Ori'],
+				['lam Ori', 'gam Ori'],
+				['alf Ori', 'zet Ori'],
+				['gam Ori', 'del Ori'],
+				['del Ori', 'eps Ori'],
+				['eps Ori', 'zet Ori'],
+				['zet Ori', 'kap Ori'],
+				['del Ori', 'bet Ori']
+			],
 			name: [71, 1]
 		}
 	};
@@ -199,7 +252,6 @@ const Plate = (function () {
 		});
 	}
 
-
 	/* ======================================================================
 	   3. THE MILKY WAY
 	   Fine stipple spread about the galactic equator (Gaussian in latitude,
@@ -217,7 +269,7 @@ const Plate = (function () {
 		let state = seed;
 
 		return () => {
-			state = (state + 0x6D2B79F5) | 0;
+			state = (state + 0x6d2b79f5) | 0;
 			let t = Math.imul(state ^ (state >>> 15), 1 | state);
 			t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
 
@@ -243,7 +295,7 @@ const Plate = (function () {
 		while (points.length < MILKY_WAY_POINTS) {
 			const l = 360 * random();
 			const b = 4 * Math.sqrt(3) * (random() + random() + random() + random() - 2);
-			const keep = 0.3 + 0.7 * (1 + cos(l)) / 2;
+			const keep = 0.3 + (0.7 * (1 + cos(l))) / 2;
 
 			if (Math.abs(b) < 12 && random() < keep) {
 				points.push(galacticToEquatorial(l, b));
@@ -263,54 +315,70 @@ const Plate = (function () {
 		});
 	}
 
-
 	/* ======================================================================
 	   4. GRADUATED RING AND BORDER
 	   ====================================================================== */
 
-	/* An hour ring between radii r1 and r2 about (cx, cy): 24 segments,
-	   light and dark in turn, hour h centred at angleOf(h) (degrees
-	   clockwise from the top), labelled at radius rLabel. Odd hours are
-	   'minor' labels, left out on a phone (theme.css). */
-	function drawHourRing(svg, cx, cy, r1, r2, rLabel, angleOf) {
-		const ring = svgEl('g', { class: 'ring' }, svg);
+	/* An hour ring about (cx, cy) between the radii inner and outer: 24
+	   segments, light and dark in turn, hour h centred at angleOf(h)
+	   (degrees clockwise from the top), labelled at the radius 'label'.
+	   Odd hours are 'minor' labels, left out on a phone (theme.css). */
+	function drawHourRing(svg, ring, angleOf) {
+		const { cx, cy, inner, outer, label } = ring;
+		const group = svgEl('g', { class: 'ring' }, svg);
 		const point = (angle, r) => ({ x: cx + r * sin(angle), y: cy - r * cos(angle) });
 
 		for (let h = 0; h < 24; h++) {
-			const a0 = angleOf(h) - 7.5;
-			const a1 = angleOf(h) + 7.5;
-			const p0 = point(a0, r1);
-			const p1 = point(a1, r1);
-			const p2 = point(a1, r2);
-			const p3 = point(a0, r2);
+			const at = point(angleOf(h), label);
 
-			// from a0 to a1 is clockwise on the screen (SVG sweep flag 1), and back
-			const d = `M${p0.x} ${p0.y} A${r1} ${r1} 0 0 1 ${p1.x} ${p1.y} ` +
-				`L${p2.x} ${p2.y} A${r2} ${r2} 0 0 0 ${p3.x} ${p3.y} Z`;
-
-			svgEl('path', { d: d, class: (h % 2 === 0) ? 'light' : 'dark' }, ring);
-
-			const at = point(angleOf(h), rLabel);
-
-			svgText(ring, `${h}h`, at.x, at.y + 5, {
+			svgEl(
+				'path',
+				{ d: ringSegment(point, angleOf(h), inner, outer), class: h % 2 === 0 ? 'light' : 'dark' },
+				group
+			);
+			svgText(group, `${h}h`, at.x, at.y + 5, {
 				'text-anchor': 'middle',
-				class: (h % 2 === 0) ? 'hour' : 'hour minor'
+				class: h % 2 === 0 ? 'hour' : 'hour minor'
 			});
 		}
 
-		svgEl('circle', { cx: cx, cy: cy, r: r1, class: 'edge' }, ring);
-		svgEl('circle', { cx: cx, cy: cy, r: r2, class: 'edge' }, ring);
+		svgEl('circle', { cx: cx, cy: cy, r: inner, class: 'edge' }, group);
+		svgEl('circle', { cx: cx, cy: cy, r: outer, class: 'edge' }, group);
+	}
+
+	/* The SVG path of one hour of the ring (15° centred on 'centre'), from
+	   centre - 7.5° to centre + 7.5°, clockwise on the screen along the
+	   inner edge (SVG sweep flag 1), and back along the outer one. */
+	function ringSegment(point, centre, inner, outer) {
+		const p0 = point(centre - 7.5, inner);
+		const p1 = point(centre + 7.5, inner);
+		const p2 = point(centre + 7.5, outer);
+		const p3 = point(centre - 7.5, outer);
+
+		return (
+			`M${p0.x} ${p0.y} A${inner} ${inner} 0 0 1 ${p1.x} ${p1.y} ` +
+			`L${p2.x} ${p2.y} A${outer} ${outer} 0 0 0 ${p3.x} ${p3.y} Z`
+		);
 	}
 
 	/* The border of a rectangular chart, 'band' wide: light and dark bands
-	   every raStep degrees of right ascension (top, bottom) and every decStep
-	   degrees of declination (sides); hours labelled under it, degrees on its
-	   left. */
-	function drawBorder(svg, area, at, band, raStep, decStep) {
-		const { raMin, raMax, decMin, decMax } = area;
+	   every raStep degrees of right ascension (top, bottom) and every
+	   decStep degrees of declination (sides); hours labelled under it,
+	   degrees on its left. at(ra, dec) is the chart's projection. */
+	function drawBorder(svg, area, at, style) {
 		const border = svgEl('g', { class: 'ring' }, svg);
-		const topLeft = at(raMax, decMax);
-		const bottomRight = at(raMin, decMin);
+		const corners = { topLeft: at(area.raMax, area.decMax), bottomRight: at(area.raMin, area.decMin) };
+
+		drawBorderBands(border, area, at, corners, style);
+		drawBorderEdges(border, corners, style.band);
+		drawBorderLabels(border, area, at, style.band);
+	}
+
+	/* The light and dark bands along the four sides. */
+	function drawBorderBands(border, area, at, corners, style) {
+		const { raMin, raMax, decMin, decMax } = area;
+		const { topLeft, bottomRight } = corners;
+		const { band, raStep, decStep } = style;
 		const box = (x, y, w, h, light) => {
 			svgEl('rect', { x: x, y: y, width: w, height: h, class: light ? 'light' : 'dark' }, border);
 		};
@@ -330,21 +398,31 @@ const Plate = (function () {
 			box(topLeft.x - band, y, band, h, i % 2 === 0);
 			box(bottomRight.x, y, band, h, i % 2 === 0);
 		}
+	}
 
-		svgEl('rect', {
-			x: topLeft.x - band,
-			y: topLeft.y - band,
-			width: bottomRight.x - topLeft.x + 2 * band,
-			height: bottomRight.y - topLeft.y + 2 * band,
-			class: 'edge'
-		}, border);
-		svgEl('rect', {
-			x: topLeft.x,
-			y: topLeft.y,
-			width: bottomRight.x - topLeft.x,
-			height: bottomRight.y - topLeft.y,
-			class: 'edge'
-		}, border);
+	/* The outer and inner edges of the border. */
+	function drawBorderEdges(border, corners, band) {
+		const { topLeft, bottomRight } = corners;
+		const width = bottomRight.x - topLeft.x;
+		const height = bottomRight.y - topLeft.y;
+
+		svgEl(
+			'rect',
+			{
+				x: topLeft.x - band,
+				y: topLeft.y - band,
+				width: width + 2 * band,
+				height: height + 2 * band,
+				class: 'edge'
+			},
+			border
+		);
+		svgEl('rect', { x: topLeft.x, y: topLeft.y, width: width, height: height, class: 'edge' }, border);
+	}
+
+	/* Hours under the border, degrees on its left. */
+	function drawBorderLabels(border, area, at, band) {
+		const { raMin, raMax, decMin, decMax } = area;
 
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
@@ -359,7 +437,6 @@ const Plate = (function () {
 			svgText(border, text, q.x - band - 6, q.y + 5, { 'text-anchor': 'end', class: 'hour' });
 		}
 	}
-
 
 	/* ======================================================================
 	   5. READABLE LABELS
@@ -379,7 +456,6 @@ const Plate = (function () {
 		update();
 	}
 
-
 	/* ======================================================================
 	   6. CHARTS: POLAR AND RECTANGULAR
 	   ====================================================================== */
@@ -394,7 +470,7 @@ const Plate = (function () {
 		const c = size / 2;
 		const rimDec = options.rimDec;
 		const svg = newSvg(container, size, size, options.label);
-		const radius = dec => R * (90 - dec) / (90 - rimDec);
+		const radius = dec => (R * (90 - dec)) / (90 - rimDec);
 		const at = (ra, dec) => ({ x: c + radius(dec) * sin(ra), y: c - radius(dec) * cos(ra) });
 		const project = (ra, dec) => (dec >= rimDec ? at(ra, dec) : null);
 
@@ -416,10 +492,14 @@ const Plate = (function () {
 		});
 
 		drawMilkyWay(svgEl('g', { class: 'milky-way' }, svg), project);
-		drawHourRing(svg, c, c, R + 6, R + 20, R + 38, h => 15 * h);
+		drawHourRing(svg, { cx: c, cy: c, inner: R + 6, outer: R + 20, label: R + 38 }, h => 15 * h);
 
-		drawFigures(svgEl('g', { class: 'figure-lines' }, svg), svgEl('g', { class: 'figure-names' }, svg),
-			options.figures, project);
+		drawFigures(
+			svgEl('g', { class: 'figure-lines' }, svg),
+			svgEl('g', { class: 'figure-names' }, svg),
+			options.figures,
+			project
+		);
 		drawStars(svgEl('g', { class: 'stars' }, svg), project);
 		drawStarNames(svgEl('g', { class: 'star-names' }, svg), options.names, at);
 
@@ -471,8 +551,12 @@ const Plate = (function () {
 		}
 
 		drawMilkyWay(svgEl('g', { class: 'milky-way' }, layer), project);
-		drawFigures(svgEl('g', { class: 'figure-lines' }, layer), svgEl('g', { class: 'figure-names' }, layer),
-			options.figures, project);
+		drawFigures(
+			svgEl('g', { class: 'figure-lines' }, layer),
+			svgEl('g', { class: 'figure-names' }, layer),
+			options.figures,
+			project
+		);
 		drawStars(svgEl('g', { class: 'stars' }, layer), project);
 		drawStarNames(svgEl('g', { class: 'star-names' }, layer), options.names, at);
 
@@ -480,12 +564,11 @@ const Plate = (function () {
 			svgText(layer, 'equator', left + width - 8, at(0, 0).y - 6, { class: 'circle-name', 'text-anchor': 'end' });
 		}
 
-		drawBorder(svg, area, at, band, 7.5, 5);
+		drawBorder(svg, area, at, { band: band, raStep: 7.5, decStep: 5 });
 		fitText(svg, width + 2 * left);
 
 		return { svg, layer, at, project };
 	}
-
 
 	/* ======================================================================
 	   7. HIGHLIGHTS
@@ -500,7 +583,11 @@ const Plate = (function () {
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
 	   point given by nameAt [ra, dec, dx, dy]. */
 	function highlightCurve(chart, points, name, nameAt) {
-		svgLine(chart.layer, points.map(p => chart.at(p.ra, p.dec)), { class: 'highlight' });
+		svgLine(
+			chart.layer,
+			points.map(p => chart.at(p.ra, p.dec)),
+			{ class: 'highlight' }
+		);
 
 		const q = chart.at(nameAt[0], nameAt[1]);
 

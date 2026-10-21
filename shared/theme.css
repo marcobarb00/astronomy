@@ -25,62 +25,60 @@
 	16. Phone width
    ========================================================================== */
 
-
 /* ==========================================================================
    1. FONTS AND PALETTE
    Fonts (STYLE.md §3): Spectral for the text, Cormorant Garamond for the
    titles, Cormorant SC for the small-caps labels. Spectral 600 is loaded
-   for <strong> only.
+   for <strong> only. Each page loads them in its <head>, before this
+   file (see templates/page.html): a <link> there starts the download at
+   once, where an @import here would wait for this file first.
    ========================================================================== */
-
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Cormorant+SC:wght@500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 
 /* ==========================================================
    SHARED THEME - STYLE.md §2, keep identical to COL in common.js
    ========================================================== */
 :root {
 	/* Page */
-	--bg:             #f3eee2;   /* parchment, page background          */
-	--card:           #f7f3ea;   /* inside figures and frames           */
-	--ink:            #1d2a44;   /* text, rules, frames, outlines       */
-	--muted:          #5b6475;   /* secondary text                      */
-	--line:           #c9bc9c;   /* light rules and table lines         */
-	--accent:         #7a5718;   /* labels, Play, figure labels, links  */
+	--bg: #f3eee2; /* parchment, page background */
+	--card: #f7f3ea; /* inside figures and frames */
+	--ink: #1d2a44; /* text, rules, frames, outlines */
+	--muted: #5b6475; /* secondary text */
+	--line: #c9bc9c; /* light rules and table lines */
+	--accent: #7a5718; /* labels, Play, figure labels, links */
 
 	/* Figures: line colours (strokes and fills only) */
-	--earth:          #2f5687;   /* celestial equator, Earth            */
-	--planet:         #a23b2e;   /* object of interest                  */
-	--sun:            #b8862b;   /* Sun, ecliptic                       */
-	--deferent:       #4d7a55;   /* horizon, deferent                   */
-	--epicycle:       #6e5a9a;   /* epicycle, Ptolemy's circles         */
+	--earth: #2f5687; /* celestial equator, Earth */
+	--planet: #a23b2e; /* object of interest */
+	--sun: #b8862b; /* Sun, ecliptic */
+	--deferent: #4d7a55; /* horizon, deferent */
+	--epicycle: #6e5a9a; /* epicycle, Ptolemy's circles */
 
 	/* Figures: text colours of the same elements (4.5:1 on --bg) */
-	--earth-text:     #2f5687;
-	--planet-text:    #8d2f24;
-	--sun-text:       #7a5718;
-	--deferent-text:  #3e6346;
-	--epicycle-text:  #5e4a87;
+	--earth-text: #2f5687;
+	--planet-text: #8d2f24;
+	--sun-text: #7a5718;
+	--deferent-text: #3e6346;
+	--epicycle-text: #5e4a87;
 
 	/* The blue plate (static sky charts only, STYLE.md §7) */
-	--plate:          #1f3a6b;
-	--plate-ink:      #eef3fb;
-	--plate-soft:     #c9d5ea;
-	--plate-accent:   #f2c96b;
+	--plate: #1f3a6b;
+	--plate-ink: #eef3fb;
+	--plate-soft: #c9d5ea;
+	--plate-accent: #f2c96b;
 
 	/* Fonts */
-	--font-text:      "Spectral", Georgia, serif;
-	--font-title:     "Cormorant Garamond", Georgia, serif;
-	--font-label:     "Cormorant SC", Georgia, serif;
+	--font-text: "Spectral", Georgia, serif;
+	--font-title: "Cormorant Garamond", Georgia, serif;
+	--font-label: "Cormorant SC", Georgia, serif;
 
 	/* Layout */
-	--page-width:     1320px;    /* container, with 24 px padding       */
-	--toc-width:      220px;     /* the contents column on the left     */
-	--toc-gap:        48px;      /* between the contents and the page   */
-	--text-width:     700px;     /* the text column                     */
-	--margin-gap:     40px;      /* between text and margin columns     */
-	--frame-band:     14px;      /* graduated frame: band thickness     */
+	--page-width: 1320px; /* container, with 24 px padding */
+	--toc-width: 220px; /* the contents column on the left */
+	--toc-gap: 48px; /* between the contents and the page */
+	--text-width: 700px; /* the text column */
+	--margin-gap: 40px; /* between text and margin columns */
+	--frame-band: 14px; /* graduated frame: band thickness */
 }
-
 
 /* ==========================================================================
    2. BASE TYPOGRAPHY
@@ -90,8 +88,12 @@
 	box-sizing: border-box;
 }
 
-html {
-	scroll-behavior: smooth;
+/* The contents scroll smoothly to a section, unless the reader asked the
+   system for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 body {
@@ -118,7 +120,6 @@ strong {
 	letter-spacing: 0.3em;
 	color: var(--accent);
 }
-
 
 /* ==========================================================================
    3. PAGE LAYOUT: CONTAINER, LINK TO THE HUB, HEADER, CONTENTS
@@ -148,10 +149,19 @@ strong {
 		"main";
 }
 
-.page > .site-link { grid-area: link; justify-self: start; }
-.page > .page-head { grid-area: head; }
-.page > .toc       { grid-area: toc; }
-.page > article    { grid-area: main; }
+.page > .site-link {
+	grid-area: link;
+	justify-self: start;
+}
+.page > .page-head {
+	grid-area: head;
+}
+.page > .toc {
+	grid-area: toc;
+}
+.page > article {
+	grid-area: main;
+}
 
 /* The hub has no contents and no article: one plain column. */
 .page.hub {
@@ -276,7 +286,6 @@ h1 {
 	font-weight: 600;
 }
 
-
 /* ==========================================================================
    4. PARAGRAPHS WITH MARGIN NOTES, THE DROP CAP
    A paragraph that has notes is a row: the paragraph, then an <aside>
@@ -316,7 +325,6 @@ h1 {
 	font: 600 74px/0.85 var(--font-title);
 	color: var(--accent);
 }
-
 
 /* ==========================================================================
    5. HEADINGS, PROSE, EQUATIONS, TABLES
@@ -438,7 +446,6 @@ code {
 	padding: 1px 4px;
 }
 
-
 /* ==========================================================================
    6. BOXES AND COLOUR KEYS
    ========================================================================== */
@@ -460,13 +467,24 @@ code {
 
 /* Colour keys: coloured words in the text that match the figures, in
    the text colours (STYLE.md §2). */
-.c-earth    { color: var(--earth-text); }
-.c-planet   { color: var(--planet-text); }
-.c-sun      { color: var(--sun-text); }
-.c-deferent { color: var(--deferent-text); }
-.c-epicycle { color: var(--epicycle-text); }
-.c-muted    { color: var(--muted); }
-
+.c-earth {
+	color: var(--earth-text);
+}
+.c-planet {
+	color: var(--planet-text);
+}
+.c-sun {
+	color: var(--sun-text);
+}
+.c-deferent {
+	color: var(--deferent-text);
+}
+.c-epicycle {
+	color: var(--epicycle-text);
+}
+.c-muted {
+	color: var(--muted);
+}
 
 /* ==========================================================================
    7. FIGURES: THE GRADUATED FRAME, CAPTIONS, KEYS, PHOTOS
@@ -511,8 +529,12 @@ figure.fig {
 	min-height: 0;
 }
 
-.frame-edge.top    { border-bottom: 1px solid var(--ink); }
-.frame-edge.bottom { border-top: 1px solid var(--ink); }
+.frame-edge.top {
+	border-bottom: 1px solid var(--ink);
+}
+.frame-edge.bottom {
+	border-top: 1px solid var(--ink);
+}
 
 .frame-edge.left {
 	flex-direction: column;
@@ -649,7 +671,6 @@ figure.photo img {
 	color: var(--muted);
 }
 
-
 /* ==========================================================================
    8. CONTROLS: SLIDERS, PRESETS, PLAY, READ-OUTS (STYLE.md §8)
    Spectral at 15-16 px, numbers in tabular figures.
@@ -681,14 +702,14 @@ figure.photo img {
 }
 
 /* Sliders: the native range input, in ink. */
-input[type=range] {
+input[type="range"] {
 	width: 100%;
 	margin: 0;
 	accent-color: var(--ink);
 	cursor: pointer;
 }
 
-input[type=range]:focus-visible {
+input[type="range"]:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
@@ -725,7 +746,8 @@ button.small:hover,
 	color: var(--bg);
 }
 
-button:focus-visible {
+button:focus-visible,
+canvas.sphere3d:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
@@ -778,6 +800,42 @@ button.play .icon {
 	flex: none;
 }
 
+/* A play button keeps its width between "Play" and "Pause" (a page with
+   longer labels widens it). */
+button.play {
+	min-width: 7.5em;
+}
+
+/* Star buttons keep one width, so a row does not reflow when the active
+   one changes. */
+.star-choice button {
+	min-width: 5.6em;
+}
+
+/* Two panels side by side, "(a)" and "(b)", each with its small-caps
+   title above and its controls underneath (stacked at phone width,
+   section 16). */
+.panels,
+.panel-controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+.panel-controls {
+	margin-top: 10px;
+}
+
+.panel-title {
+	margin: 0 0 4px;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
 /* Live numbers next to a figure: a small table, ink rules at the top and
    bottom, light rules between the lines. Every line has the same height,
    whatever its sub- and superscripts, and empty lines keep theirs: with the
@@ -806,7 +864,6 @@ button.play .icon {
 .readout .eq .katex-display {
 	margin: 0;
 }
-
 
 /* ==========================================================================
    9. MARGIN NOTES: ORIGINS AND DETOURS (STYLE.md §4.5)
@@ -839,14 +896,24 @@ button.play .icon {
 /* The colour of each origin, from the figure text colours: set on the
    element that carries data-origin, used by its heading (or by itself, in
    the hub's key). */
-[data-origin="babylonian"] { --origin: var(--sun-text); }
-[data-origin="greek"]      { --origin: var(--deferent-text); }
+[data-origin="babylonian"] {
+	--origin: var(--sun-text);
+}
+[data-origin="greek"] {
+	--origin: var(--deferent-text);
+}
 [data-origin="hipparchus"],
 [data-origin="ptolemy"],
 [data-origin="copernicus"],
-[data-origin="kepler"]     { --origin: var(--epicycle-text); }
-[data-origin="debated"]    { --origin: var(--planet-text); }
-[data-origin="modern"]     { --origin: var(--earth-text); }
+[data-origin="kepler"] {
+	--origin: var(--epicycle-text);
+}
+[data-origin="debated"] {
+	--origin: var(--planet-text);
+}
+[data-origin="modern"] {
+	--origin: var(--earth-text);
+}
 
 .note-head {
 	color: var(--origin, inherit);
@@ -915,7 +982,6 @@ button.play .icon {
 	margin-bottom: 6px;
 }
 
-
 /* ==========================================================================
    11. SOURCES AND PREVIOUS / NEXT NAVIGATION
    ========================================================================== */
@@ -973,7 +1039,6 @@ button.play .icon {
 .pager span small {
 	color: var(--muted);
 }
-
 
 /* ==========================================================================
    12. PLOT LEGENDS AND THE ERROR-CURVE WIDGET
@@ -1070,7 +1135,6 @@ button.play .icon {
 	margin-top: 6px;
 }
 
-
 /* ==========================================================================
    13. THE BLUE PLATE (STYLE.md §7)
    A static chart of the sky, drawn by shared/plate.js: white lines and
@@ -1103,7 +1167,9 @@ figure.plate-figure {
 	padding: 28px;
 	background: var(--plate);
 	color: var(--plate-ink);
-	box-shadow: inset 0 0 0 6px var(--plate), inset 0 0 0 7px var(--bg);
+	box-shadow:
+		inset 0 0 0 6px var(--plate),
+		inset 0 0 0 7px var(--bg);
 }
 
 .plate .chart {
@@ -1242,7 +1308,6 @@ figure.plate-figure {
 	fill: var(--plate-accent);
 }
 
-
 /* ==========================================================================
    14. HUB
    The acts in order, each with its pages as tiles; then the key of
@@ -1376,7 +1441,6 @@ dl.origin-key dd {
 	color: var(--muted);
 }
 
-
 /* ==========================================================================
    15. TEST PAGE
    ========================================================================== */
@@ -1436,7 +1500,6 @@ dl.origin-key dd {
 	overflow-x: auto;
 }
 
-
 /* ==========================================================================
    16. PHONE WIDTH
    Below 800 px the margin column wraps under the text (flex rows, no rule
@@ -1444,6 +1507,11 @@ dl.origin-key dd {
    ========================================================================== */
 
 @media (max-width: 800px) {
+	.panels,
+	.panel-controls {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
 	/* A long inline formula may break after a relation or an operator
 	   (KaTeX's own break points), rather than widen the page. Display
 	   equations still scroll. */

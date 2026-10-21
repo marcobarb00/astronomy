@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE TEMPLATE - SCRIPT (page.js)
    Each figure has its own section with three functions:
@@ -12,7 +13,6 @@
 	 2. Figure 2: error curve of a model Sun
 	 3. Page start
    ========================================================================== */
-
 
 /* ==========================================================================
    1. FIGURE 1: THE SUN'S DECLINATION OVER A YEAR
@@ -38,9 +38,7 @@ const declinationFigure = {
 
 	update() {
 		this.eps = readNumber('eps');
-		showLines('declination-readout', [
-			`\\delta_\\text{max} = \\varepsilon = ${this.eps.toFixed(1)}^\\circ`
-		]);
+		showLines('declination-readout', [`\\delta_\\text{max} = \\varepsilon = ${this.eps.toFixed(1)}^\\circ`]);
 		this.plot.redraw();
 	},
 
@@ -49,7 +47,6 @@ const declinationFigure = {
 		this.plot.fn(lambda => asin(sin(this.eps) * sin(lambda)), { color: COL.sun });
 	}
 };
-
 
 /* ==========================================================================
    2. FIGURE 2: ERROR CURVE OF A MODEL SUN
@@ -80,7 +77,6 @@ const errorFigure = {
 	}
 };
 
-
 /* ==========================================================================
    3. PAGE START
    Shared components first (they typeset the prose), then the figures.
@@ -88,6 +84,5 @@ const errorFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	declinationFigure.init();
-	errorFigure.init();
+	startFigures([declinationFigure, errorFigure]);
 });

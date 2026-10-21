@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
    Four figures, each with its own init and draw (and update when it has
@@ -25,7 +26,6 @@
 	 5. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
@@ -41,16 +41,12 @@ const AXIS_LENGTH = 1.25;
 /* Text of an angle with two decimals: "−5.47°". */
 const formatDegrees = value => `${value.toFixed(2).replace('-', '−')}°`;
 
-/* A number with 'digits' decimals, never "-0.00" for a value that rounds
-   to zero. */
-function fixedNoNegativeZero(value, digits) {
-	const text = value.toFixed(digits);
+/* An angle in TeX: "-5.47^\circ" (never "-0.00", fixed in common.js). */
+const texDegrees = (value, digits = 2) => `${fixed(value, digits)}^\\circ`;
 
-	return Number(text) === 0 ? (0).toFixed(digits) : text;
-}
-
-/* The same in TeX: "-5.47^\circ". */
-const texDegrees = (value, digits = 2) => `${fixedNoNegativeZero(value, digits)}^\\circ`;
+/* An angle that lives in [0°, 360°) in TeX: a value that rounds up to
+   360 is written 0 (fixedAngle in common.js). */
+const texAngle360 = (value, digits = 2) => `${fixedAngle(value, digits)}^\\circ`;
 
 /* A right ascension in hours and minutes, for TeX: "4^\text{h}37^\text{m}". */
 function texHours(ra) {
@@ -62,21 +58,15 @@ function texHours(ra) {
 /* An angle in degrees, minutes and seconds, for TeX: "20^\circ 30' 09''". */
 function texDms(value) {
 	const sign = value < 0 ? '-' : '';
-	const totalSeconds = Math.round(Math.abs(value) * 3600);
-	const d = Math.floor(totalSeconds / 3600);
-	const m = Math.floor((totalSeconds - 3600 * d) / 60);
-	const s = totalSeconds - 3600 * d - 60 * m;
+	const { h, m, s } = splitHms(Math.abs(value));
 
-	return `${sign}${d}^\\circ ${pad2(m)}' ${pad2(s)}''`;
+	return `${sign}${h}^\\circ ${pad2(m)}' ${pad2(s)}''`;
 }
 
 /* A unit vector in TeX, with four decimals. */
 function texVector(name, v) {
-	return `${name} = (${v.map(x => fixedNoNegativeZero(x, 4)).join(',\\ ')})`;
+	return `${name} = (${v.map(x => fixed(x, 4)).join(',\\ ')})`;
 }
-
-/* The mean position of date of a star of shared/stars.js. */
-const starOfDate = name => Stars.ofDate(Stars.find(name), STAR_EPOCH);
 
 /* A coordinate path in a frame: along the fundamental circle from the
    origin to the foot of the point (longitude), then up to the point
@@ -98,7 +88,6 @@ function drawCoordinatePath(sphere, axes, lon, lat, names, color) {
 		sphere.labelAway(names[1], latMiddle, foot, color);
 	}
 }
-
 
 /* ==========================================================================
    1. FIGURE 1: THE ZODIAC AROUND TAURUS
@@ -141,7 +130,6 @@ const zodiacFigure = {
 	}
 };
 
-
 /* ==========================================================================
    2. FIGURE 2: ECLIPTIC AND EQUATOR
    Drawn in the equatorial frame with the obliquity of 2026.0: the stars,
@@ -163,14 +151,11 @@ const PLAY_DAYS_PER_SECOND = 15;
 const SUN_ARROW_DEGREES = 20;
 const SUN_ARROW_RADIUS = 1.1;
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /* Day of the year (slider value) -> "21 May". */
 function formatDay(day) {
 	const date = Time.calendarDate(SUN_YEAR_START + Math.floor(day));
 
-	return `${Math.floor(date.day)} ${MONTH_NAMES[date.month - 1]}`;
+	return `${Math.floor(date.day)} ${Time.MONTH_NAMES[date.month - 1]}`;
 }
 
 /* The objects the read-out can follow: the Sun first, then the stars. */
@@ -214,7 +199,7 @@ const eclipticFigure = {
 		let sEcl = sunEcl;
 
 		if (this.chosen !== 'Sun') {
-			const eq = starOfDate(this.chosen);
+			const eq = Stars.ofDateByName(this.chosen, STAR_EPOCH);
 
 			sEq = fromLonLat(eq.ra, eq.dec);
 			sEcl = matApply(Frames.equatorialToEclipticMatrix(EPS_TODAY), sEq);
@@ -230,7 +215,11 @@ const eclipticFigure = {
 			ecl: toLonLat(sEcl),
 			// the ecliptic frame's axes in equatorial components: the columns
 			// of R_x(eps)
-			eclipticAxes: [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map(axis => matApply(toEquatorial, axis))
+			eclipticAxes: [
+				[1, 0, 0],
+				[0, 1, 0],
+				[0, 0, 1]
+			].map(axis => matApply(toEquatorial, axis))
 		};
 
 		this.showReadout();
@@ -239,14 +228,13 @@ const eclipticFigure = {
 
 	showReadout() {
 		const { day, eq, ecl, sEq, sEcl } = this.state;
-		const title = this.chosen === 'Sun' ?
-			`\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` :
-			`\\text{${this.chosen}}`;
+		const title =
+			this.chosen === 'Sun' ? `\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` : `\\text{${this.chosen}}`;
 
 		showLines('ecl-readout', [
 			title,
-			`\\alpha = ${texDegrees(eq.lon)}\\ (${texHours(eq.lon)}),\\quad \\delta = ${texDegrees(eq.lat)}`,
-			`\\lambda = ${texDegrees(ecl.lon)},\\quad \\beta = ${texDegrees(ecl.lat)}`,
+			`\\alpha = ${texAngle360(eq.lon)}\\ (${texHours(eq.lon)}),\\quad \\delta = ${texDegrees(eq.lat)}`,
+			`\\lambda = ${texAngle360(ecl.lon)},\\quad \\beta = ${texDegrees(ecl.lat)}`,
 			texVector('\\mathbf s_\\text{eq}', sEq),
 			texVector('\\mathbf s_\\text{ecl}', sEcl)
 		]);
@@ -254,12 +242,16 @@ const eclipticFigure = {
 
 	draw() {
 		if (!this.state) {
-			return;    // a resize can ask for a drawing before the first update
+			return; // a resize can ask for a drawing before the first update
 		}
 
 		const s = this.sphere;
 		const { eq, ecl, sEq, eclipticAxes } = this.state;
-		const equatorAxes = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+		const equatorAxes = [
+			[1, 0, 0],
+			[0, 1, 0],
+			[0, 0, 1]
+		];
 		const [, yEcl, K] = eclipticAxes;
 
 		s.outline();
@@ -309,7 +301,6 @@ const eclipticFigure = {
 	}
 };
 
-
 /* ==========================================================================
    3. FIGURE 3: EQUATOR AND HORIZON
    Drawn in the equatorial frame, as Figure 3 of page 1.1: the stars, the
@@ -319,7 +310,7 @@ const eclipticFigure = {
 
 /* The observation of section 1: Aldebaran from Rome, 1 January 2026,
    19:00 UT (tools/numbers/1.2-frames.js). */
-const OBSERVATION = { star: 'Aldebaran', phi: 41.9, theta: 38.94 };
+const OBSERVATION = { star: 'Aldebaran', phi: PLACES.rome.lat, theta: 38.94 };
 
 /* Degrees of turn per second when playing (one turn in 24 s). */
 const PLAY_DEGREES_PER_SECOND = 15;
@@ -338,16 +329,15 @@ const horizonFigure = {
 			onDraw: () => this.draw()
 		});
 
-		wireSlider(byId('hor-lat'), () => this.update(), value => `${value.toFixed(1)}°`);
-		wireSlider(byId('hor-theta'), () => this.update(), value => `${value.toFixed(1)}°`);
+		wireSlider(byId('hor-lat'), () => this.update(), formatAngle);
+		wireSlider(byId('hor-theta'), () => this.update(), formatAngle);
 		wirePresets(figure);
 		this.player = wirePlayButton(byId('hor-play'), byId('hor-theta'), PLAY_DEGREES_PER_SECOND);
 
-		buildChoice(byId('hor-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Polaris', 'Canopus'],
-			this.starName, name => {
-				this.starName = name;
-				this.update();
-			});
+		buildChoice(byId('hor-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Polaris', 'Canopus'], this.starName, name => {
+			this.starName = name;
+			this.update();
+		});
 
 		byId('hor-observation').addEventListener('click', () => this.showObservation());
 		this.update();
@@ -357,9 +347,12 @@ const horizonFigure = {
 	showObservation() {
 		this.player.pause();
 		this.starName = OBSERVATION.star;
-		byId('hor-stars').querySelectorAll('button').forEach(button => {
-			button.classList.toggle('active', button.textContent === OBSERVATION.star);
-		});
+		const buttons = [...byId('hor-stars').querySelectorAll('button')];
+
+		markChosen(
+			buttons,
+			buttons.find(button => button.textContent === OBSERVATION.star)
+		);
 		byId('hor-lat').value = OBSERVATION.phi;
 		byId('hor-theta').value = OBSERVATION.theta;
 		byId('hor-lat').dispatchEvent(new Event('input'));
@@ -369,7 +362,7 @@ const horizonFigure = {
 	update() {
 		const phi = readNumber('hor-lat');
 		const theta = readNumber('hor-theta');
-		const eq = starOfDate(this.starName);
+		const eq = Stars.ofDateByName(this.starName, STAR_EPOCH);
 		const matrix = Frames.equatorialToHorizonMatrix(phi, theta);
 		const toEquatorial = transpose(matrix);
 
@@ -390,9 +383,9 @@ const horizonFigure = {
 		const { eq, hor, angle } = this.state;
 
 		showLines('hor-readout', [
-			`\\text{${this.starName}:}\\ \\alpha = ${texDegrees(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
+			`\\text{${this.starName}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
 			`H = \\theta - \\alpha = ${texDegrees(hor.H)}`,
-			`A = ${texDegrees(hor.A)},\\quad a = ${texDegrees(hor.a)}`,
+			`A = ${texAngle360(hor.A)},\\quad a = ${texDegrees(hor.a)}`,
 			`I = ${texDegrees(angle, 1)}`
 		]);
 	},
@@ -434,7 +427,12 @@ const horizonFigure = {
 		s.circle(south, east, { color: COL.deferent, width: 2 });
 		s.circle(south, zenith, { color: COL.muted, width: 1, dash: [2, 4] });
 
-		[['S', south], ['E', east], ['N', negate(south)], ['W', negate(east)]].forEach(([name, point]) => {
+		[
+			['S', south],
+			['E', east],
+			['N', negate(south)],
+			['W', negate(east)]
+		].forEach(([name, point]) => {
 			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
 		});
 
@@ -462,7 +460,6 @@ const horizonFigure = {
 	}
 };
 
-
 /* ==========================================================================
    4. FIGURE 4: THE NUTATION ERROR
    A static figure: no controls. Each day of 2026, the reference Sun's
@@ -475,11 +472,17 @@ const horizonFigure = {
    ========================================================================== */
 
 const NUTATION_YEAR = 2026;
-const NUTATION_Y_RANGE = [-12, 12];     // arcseconds
+const NUTATION_Y_RANGE = [-12, 12]; // arcseconds
 
 /* x ticks at the first of every other month (day of the year 2026). */
 const MONTH_TICKS = [
-	[0, 'Jan'], [59, 'Mar'], [120, 'May'], [181, 'Jul'], [243, 'Sep'], [304, 'Nov'], [365, '']
+	[0, 'Jan'],
+	[59, 'Mar'],
+	[120, 'May'],
+	[181, 'Jul'],
+	[243, 'Sep'],
+	[304, 'Nov'],
+	[365, '']
 ];
 
 /* The errors of each day of the year (arcseconds). */
@@ -529,13 +532,28 @@ const nutationFigure = {
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
-		p.curve(xs, this.days.map(d => d.deps), envelope);
-		p.curve(xs, this.days.map(d => -d.deps), envelope);
-		p.curve(xs, this.days.map(d => d.dDec), { color: COL.planet, width: 2.5 });
-		p.curve(xs, this.days.map(d => d.dRA), { color: COL.epicycle, width: 2.5 });
+		p.curve(
+			xs,
+			this.days.map(d => d.deps),
+			envelope
+		);
+		p.curve(
+			xs,
+			this.days.map(d => -d.deps),
+			envelope
+		);
+		p.curve(
+			xs,
+			this.days.map(d => d.dDec),
+			{ color: COL.planet, width: 2.5 }
+		);
+		p.curve(
+			xs,
+			this.days.map(d => d.dRA),
+			{ color: COL.epicycle, width: 2.5 }
+		);
 	}
 };
-
 
 /* ==========================================================================
    5. PAGE START
@@ -544,8 +562,5 @@ const nutationFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	zodiacFigure.init();
-	eclipticFigure.init();
-	horizonFigure.init();
-	nutationFigure.init();
+	startFigures([zodiacFigure, eclipticFigure, horizonFigure, nutationFigure]);
 });

@@ -1,0 +1,84 @@
+# ============================================================================
+# PREDICTING THE SKY - CHECKS (.github/workflows/check.yml)
+# On every push and pull request: lint, format, type check, the tests of
+# shared/tests.html in Node, the golden values, and the smoke test of every
+# page. A change in the reference numbers (golden.txt, readouts.txt) or a
+# console error fails the build; screenshot differences from the previous
+# commit are only reported (job summary, and the images as an artifact),
+# since fonts and anti-aliasing differ a little between machines.
+# The site itself needs none of this.
+# ============================================================================
+
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install the development tools
+        run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Tests of shared/tests.html
+        run: npm run tests
+
+      - name: Golden values
+        run: node tools/check/golden.js --check
+
+      # Report only: the reference sky against astronomy-engine and JPL.
+      - name: Cross-check of the reference sky (report only)
+        continue-on-error: true
+        run: |
+          {
+            echo '## Cross-check of the reference sky'
+            echo '```'
+            node tools/check/crosscheck.js
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # The commit to compare the screenshots with: the base of a pull
+      # request, or the commit before the push (the parent for a new branch).
+      - name: Smoke test
+        env:
+          BEFORE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            BEFORE=HEAD~1
+          fi
+          node tools/check/smoke.js --ci --against "$BEFORE"
+
+      - name: Keep the screenshots and their differences
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: smoke-test
+          path: |
+            tools/check/out/
+            !tools/check/out/against-source/
+          if-no-files-found: ignore
