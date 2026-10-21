@@ -1,3 +1,5 @@
-tools/
 raw/
 .claude/skills/astronomy-sources/references
+tools/check/out/
+tools/check/baseline/
+node_modules/

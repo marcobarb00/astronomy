@@ -1,0 +1,61 @@
+/* ==========================================================================
+   PAGE 1.3 · CLOCKS - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. Figures 1 and 2: the square views from above the pole
+	 3. The tables of the prose (the panels of Figures 4 and 5: theme.css)
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here are dates and longitudes ("31 Dec 2026", "74.01° W"):
+   one fixed column wide enough for the longest. */
+figure.fig {
+	--ctl-output: 7.2em;
+}
+
+/* A play button keeps its width between "Play a year" and "Pause". */
+button.play {
+	min-width: 9.5em;
+}
+
+/* ==========================================================================
+   2. FIGURES 1 AND 2: THE SQUARE VIEWS FROM ABOVE THE POLE
+   The canvases set their own square size (page.js); centre them.
+   ========================================================================== */
+
+#wheel-canvas,
+#angles-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. THE TABLES OF THE PROSE
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	/* "longitude ℓ" needs a little more than the shared 74px label column */
+	.ctl {
+		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+	}
+}

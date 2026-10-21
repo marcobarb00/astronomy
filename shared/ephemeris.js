@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - REFERENCE EPHEMERIS (ephemeris.js)
    The "reference sky" every model on the site is compared with.
@@ -26,6 +27,7 @@
 	 - Nutation: the short series of Meeus ch. 22 (0.5" in longitude).
 	 - Aberration: Meeus 25.10 (Sun) and 23.2 (planets).
 	 - Equation of time: Meeus 28.1.
+	 - Atmospheric refraction: Meeus 16.3 (Bennett) and 16.4 (Saemundsson).
 
    VALID RANGE
 	 3000 BC to 3000 AD (Ephem.RANGE), the range of Standish's Table 2.
@@ -72,25 +74,24 @@
 	 5. Obliquity, nutation, precession
 	 6. Coordinate transformations
 	 7. Geocentric positions: Sun, Moon, planets
-	 8. Derived quantities: sidereal time, equation of time
+	 8. Derived quantities: sidereal time, equation of time, refraction
 	 9. Export
    ========================================================================== */
 
 const Ephem = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS AND RANGE
 	   ====================================================================== */
 
-	const ARCSEC = 1 / 3600;                  // one arcsecond in degrees
-	const AU_KM = 149597870.7;                // astronomical unit (km)
-	const LIGHT_TIME_PER_AU = 0.0057755183;   // days for light to cross 1 AU
-	const EARTH_MOON_MASS_RATIO = 81.30056;   // M_earth / M_moon
-	const ABERRATION_CONSTANT = 20.49552;     // kappa (arcsec)
+	const ARCSEC = 1 / 3600; // one arcsecond in degrees
+	const AU_KM = 149597870.7; // astronomical unit (km)
+	const LIGHT_TIME_PER_AU = 0.0057755183; // days for light to cross 1 AU
+	const EARTH_MOON_MASS_RATIO = 81.30056; // M_earth / M_moon
+	const ABERRATION_CONSTANT = 20.49552; // kappa (arcsec)
 
 	const RANGE = {
-		start: Time.julianDay(-2999, 1, 1),   // 3000 BC January 1
-		end: Time.julianDay(3000, 12, 31)     // 3000 AD December 31
+		start: Time.julianDay(-2999, 1, 1), // 3000 BC January 1
+		end: Time.julianDay(3000, 12, 31) // 3000 AD December 31
 	};
 
 	const PLANETS = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
@@ -98,7 +99,6 @@ const Ephem = (function () {
 	function inRange(jd) {
 		return jd >= RANGE.start && jd <= RANGE.end;
 	}
-
 
 	/* ======================================================================
 	   2. STANDISH'S KEPLERIAN ELEMENTS
@@ -113,6 +113,7 @@ const Ephem = (function () {
 	   2026-10-17.
 	   ====================================================================== */
 
+	// prettier-ignore
 	const ELEMENTS = {
 		mercury: {
 			at:   [0.38709843, 0.20563661, 7.00559432, 252.25166724, 77.45771895, 48.33961819],
@@ -151,7 +152,6 @@ const Ephem = (function () {
 			extra: { b: -0.00041348, c: 0.68346318, s: -0.10162547, f: 7.67025000 }
 		}
 	};
-
 
 	/* ======================================================================
 	   3. HELIOCENTRIC POSITIONS FROM THE ELEMENTS
@@ -218,7 +218,6 @@ const Ephem = (function () {
 
 		return matApply(orbitToEcliptic, [xp, yp, 0]);
 	}
-
 
 	/* ======================================================================
 	   4. THE MOON (Meeus, Astronomical Algorithms, ch. 47)
@@ -358,29 +357,19 @@ const Ephem = (function () {
 		[2, -2, 0, 1, 107]
 	];
 
-	/* c0 + c1 T + c2 T^2 + ... (T in Julian centuries). */
-	function polyT(T, coefficients) {
-		let result = 0;
-
-		for (let i = coefficients.length - 1; i >= 0; i--) {
-			result = result * T + coefficients[i];
-		}
-
-		return result;
-	}
-
 	/* The Moon's fundamental arguments (deg), Meeus 47.1 - 47.6. */
 	function moonArguments(T) {
+		// prettier-ignore
 		return {
-			Lp: polyT(T, [218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000]),
-			D: polyT(T, [297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000]),
-			M: polyT(T, [357.5291092, 35999.0502909, -0.0001536, 1 / 24490000]),
-			Mp: polyT(T, [134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000]),
-			F: polyT(T, [93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000]),
+			Lp: polynomial(T, [218.3164477, 481267.88123421, -0.0015786, 1 / 538841, -1 / 65194000]),
+			D: polynomial(T, [297.8501921, 445267.1114034, -0.0018819, 1 / 545868, -1 / 113065000]),
+			M: polynomial(T, [357.5291092, 35999.0502909, -0.0001536, 1 / 24490000]),
+			Mp: polynomial(T, [134.9633964, 477198.8675055, 0.0087414, 1 / 69699, -1 / 14712000]),
+			F: polynomial(T, [93.2720950, 483202.0175233, -0.0036539, -1 / 3526000, 1 / 863310000]),
 			A1: 119.75 + 131.849 * T,
 			A2: 53.09 + 479264.290 * T,
 			A3: 313.45 + 481266.484 * T,
-			E: polyT(T, [1, -0.002516, -0.0000074])
+			E: polynomial(T, [1, -0.002516, -0.0000074])
 		};
 	}
 
@@ -396,8 +385,13 @@ const Ephem = (function () {
 		const a = moonArguments(T);
 		let sumL = 3958 * sin(a.A1) + 1962 * sin(a.Lp - a.F) + 318 * sin(a.A2);
 		let sumR = 0;
-		let sumB = -2235 * sin(a.Lp) + 382 * sin(a.A3) + 175 * sin(a.A1 - a.F) +
-			175 * sin(a.A1 + a.F) + 127 * sin(a.Lp - a.Mp) - 115 * sin(a.Lp + a.Mp);
+		let sumB =
+			-2235 * sin(a.Lp) +
+			382 * sin(a.A3) +
+			175 * sin(a.A1 - a.F) +
+			175 * sin(a.A1 + a.F) +
+			127 * sin(a.Lp - a.Mp) -
+			115 * sin(a.Lp + a.Mp);
 
 		MOON_LR.forEach(([d, m, mp, f, cl, cr]) => {
 			const argument = d * a.D + m * a.M + mp * a.Mp + f * a.F;
@@ -420,7 +414,6 @@ const Ephem = (function () {
 		};
 	}
 
-
 	/* ======================================================================
 	   5. OBLIQUITY, NUTATION, PRECESSION
 	   ====================================================================== */
@@ -429,8 +422,10 @@ const Ephem = (function () {
 	   Valid within 0.01" over 1000 years and a few arcseconds over 10000. */
 	function meanObliquity(jdTT) {
 		const U = Time.centuries(jdTT) / 100;
-		const seconds = polyT(U, [21.448, -4680.93, -1.55, 1999.25, -51.38,
-			-249.67, -39.05, 7.12, 27.87, 5.79, 2.45]);
+		const seconds = polynomial(
+			U,
+			[21.448, -4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45]
+		);
 
 		return 23 + 26 / 60 + seconds * ARCSEC;
 	}
@@ -438,11 +433,13 @@ const Ephem = (function () {
 	/* Nutation in longitude and obliquity (deg), Meeus ch. 22 short series. */
 	function nutation(jdTT) {
 		const T = Time.centuries(jdTT);
-		const node = polyT(T, [125.04452, -1934.136261, 0.0020708, 1 / 450000]);
+		const node = polynomial(T, [125.04452, -1934.136261, 0.0020708, 1 / 450000]);
 		const sunL = 280.4665 + 36000.7698 * T;
 		const moonL = 218.3165 + 481267.8813 * T;
+		// prettier-ignore
 		const dpsi = -17.20 * sin(node) - 1.32 * sin(2 * sunL) -
 			0.23 * sin(2 * moonL) + 0.21 * sin(2 * node);
+		// prettier-ignore
 		const deps = 9.20 * cos(node) + 0.57 * cos(2 * sunL) +
 			0.10 * cos(2 * moonL) - 0.09 * cos(2 * node);
 
@@ -466,14 +463,16 @@ const Ephem = (function () {
 	   drift by 1' at 2000 BC and 2.5' at 3000 BC.)
 	   Rows: period (centuries), then cos and sin coefficients (arcsec). */
 
-	const EPS0_LTP = 84381.406 * ARCSEC;       // obliquity at J2000 (deg)
+	const EPS0_LTP = 84381.406 * ARCSEC; // obliquity at J2000 (deg)
 
+	// prettier-ignore
 	const LTP_ECLIPTIC_POLY = [
 		[5851.607687, -0.1189000, -0.00028913, 0.000000101],      // P_A
 		[-1600.886300, 1.1689818, -0.00000020, -0.000000437]      // Q_A
 	];
 
 	// period, cos P_A, cos Q_A, sin P_A, sin Q_A
+	// prettier-ignore
 	const LTP_ECLIPTIC_PERIODIC = [
 		[708.15, -5486.751211, -684.661560, 667.666730, -5523.863691],
 		[2309.00, -17.127623, 2446.283880, -2354.886252, -549.747450],
@@ -485,12 +484,14 @@ const Ephem = (function () {
 		[547.00, 46.140315, 101.135679, -120.972830, 22.885731]
 	];
 
+	// prettier-ignore
 	const LTP_EQUATOR_POLY = [
 		[5453.282155, 0.4252841, -0.00037173, -0.000000152],      // X
 		[-73750.930350, -0.7675452, -0.00018725, 0.000000231]     // Y
 	];
 
 	// period, cos X, cos Y, sin X, sin Y
+	// prettier-ignore
 	const LTP_EQUATOR_PERIODIC = [
 		[256.75, -819.940624, 75004.344875, 81491.287984, 1558.515853],
 		[708.15, -8444.676815, 624.033993, 787.163481, 7774.939698],
@@ -510,11 +511,11 @@ const Ephem = (function () {
 
 	/* The two angles of a pole series at T centuries, in radians. */
 	function poleAngles(T, poly, periodic) {
-		let a = polyT(T, poly[0]);
-		let b = polyT(T, poly[1]);
+		let a = polynomial(T, poly[0]);
+		let b = polynomial(T, poly[1]);
 
 		periodic.forEach(([period, cosA, cosB, sinA, sinB]) => {
-			const angle = TAU * T / period;
+			const angle = (TAU * T) / period;
 
 			a += cosA * Math.cos(angle) + sinA * Math.sin(angle);
 			b += cosB * Math.cos(angle) + sinB * Math.sin(angle);
@@ -587,6 +588,43 @@ const Ephem = (function () {
 		return { lon: p.lon, lat: p.lat };
 	}
 
+	/* Matrix taking J2000 mean equatorial vectors to the mean equator and
+	   equinox of date: its rows are the equinox, the 90° point and the
+	   pole of the equator of date (frame bias neglected, < 0.03"). */
+	function buildEquatorMatrix(jdTT) {
+		const pole = equatorPole(jdTT);
+		const equinox = normalize3(cross3(pole, eclipticPole(jdTT)));
+
+		return [equinox, cross3(pole, equinox), pole];
+	}
+
+	/* Cached as the ecliptic one: precessing a star asks for J2000 and one
+	   other date, and the pages ask for the same date for many stars. */
+	const equatorCache = { j2000: null, jd: null, matrix: null };
+
+	function equatorOfDateMatrix(jdTT) {
+		if (jdTT === Time.J2000) {
+			equatorCache.j2000 = equatorCache.j2000 ?? buildEquatorMatrix(jdTT);
+
+			return equatorCache.j2000;
+		}
+
+		if (equatorCache.jd !== jdTT) {
+			equatorCache.jd = jdTT;
+			equatorCache.matrix = buildEquatorMatrix(jdTT);
+		}
+
+		return equatorCache.matrix;
+	}
+
+	/* Precess equatorial coordinates (deg) from the mean equator and
+	   equinox of jdFrom to those of jdTo: { ra, dec }. */
+	function precessEquatorial(ra, dec, jdFrom, jdTo) {
+		const j2000 = matApply(transpose(equatorOfDateMatrix(jdFrom)), fromLonLat(ra, dec));
+		const p = toLonLat(matApply(equatorOfDateMatrix(jdTo), j2000));
+
+		return { ra: p.lon, dec: p.lat };
+	}
 
 	/* ======================================================================
 	   6. COORDINATE TRANSFORMATIONS
@@ -610,10 +648,9 @@ const Ephem = (function () {
 
 	/* Equatorial coordinates of an ecliptic position of date. Apparent
 	   positions use the true obliquity, geometric ones the mean obliquity. */
-	function equatorial(position, jdTT, apparent = true) {
-		return eclipticToEquatorial(position.lon, position.lat, obliquity(jdTT, apparent));
+	function equatorial(ecliptic, jdTT, apparent = true) {
+		return eclipticToEquatorial(ecliptic.lon, ecliptic.lat, obliquity(jdTT, apparent));
 	}
-
 
 	/* ======================================================================
 	   7. GEOCENTRIC POSITIONS
@@ -623,8 +660,8 @@ const Ephem = (function () {
 	   Earth-Moon barycentre minus the Moon's share of the Earth-Moon vector. */
 	function earthJ2000(jdTT) {
 		const emb = heliocentricJ2000('emb', jdTT);
-		const moon = moonGeometric(jdTT);
-		const moonOfDate = fromLonLat(moon.lon, moon.lat, moon.dist / AU_KM);
+		const moonNow = moonGeometric(jdTT);
+		const moonOfDate = fromLonLat(moonNow.lon, moonNow.lat, moonNow.dist / AU_KM);
 		const moonJ2000 = precessVector(moonOfDate, jdTT, Time.J2000);
 
 		return sub3(emb, scale(moonJ2000, 1 / (1 + EARTH_MOON_MASS_RATIO)));
@@ -641,27 +678,26 @@ const Ephem = (function () {
 	/* The Sun: { lon, lat (deg), dist (au) }. */
 	function sun(jdTT, options = {}) {
 		const { apparent = true } = options;
-		const position = ofDate(negate(earthJ2000(jdTT)), jdTT);
+		const result = ofDate(negate(earthJ2000(jdTT)), jdTT);
 
 		if (apparent) {
-			position.lon = norm360(position.lon +
-				nutation(jdTT).dpsi - 20.4898 * ARCSEC / position.dist);
+			result.lon = norm360(result.lon + nutation(jdTT).dpsi - (20.4898 * ARCSEC) / result.dist);
 		}
 
-		return position;
+		return result;
 	}
 
 	/* The Moon: { lon, lat (deg), dist (km) }. Apparent = with nutation
 	   (the Moon's aberration, 0.7", is neglected as in Meeus). */
 	function moon(jdTT, options = {}) {
 		const { apparent = true } = options;
-		const position = moonGeometric(jdTT);
+		const result = moonGeometric(jdTT);
 
 		if (apparent) {
-			position.lon = norm360(position.lon + nutation(jdTT).dpsi);
+			result.lon = norm360(result.lon + nutation(jdTT).dpsi);
 		}
 
-		return position;
+		return result;
 	}
 
 	/* Annual aberration of a body at (lon, lat) of date, Meeus 23.2.
@@ -711,16 +747,16 @@ const Ephem = (function () {
 			}
 		}
 
-		const position = ofDate(geocentric, jdTT);
+		const result = ofDate(geocentric, jdTT);
 
 		if (apparent) {
-			const ab = aberration(position.lon, position.lat, jdTT);
+			const ab = aberration(result.lon, result.lat, jdTT);
 
-			position.lon = norm360(position.lon + ab.dlon + nutation(jdTT).dpsi);
-			position.lat += ab.dlat;
+			result.lon = norm360(result.lon + ab.dlon + nutation(jdTT).dpsi);
+			result.lat += ab.dlat;
 		}
 
-		return position;
+		return result;
 	}
 
 	/* Any body by name: 'sun', 'moon' or a planet. */
@@ -745,24 +781,26 @@ const Ephem = (function () {
 		return position(body, jdTT, options).lon;
 	}
 
-
 	/* ======================================================================
 	   8. DERIVED QUANTITIES
 	   ====================================================================== */
 
-	/* Greenwich apparent sidereal time (deg) = GMST + nutation in RA. */
+	/* Greenwich apparent sidereal time (deg) = GMST + nutation in RA (the
+	   equation of the equinoxes). GMST takes the clock time, JD(UT); the
+	   nutation and the obliquity take Terrestrial Time, JD(TT). */
 	function apparentSiderealTime(jdUT) {
-		const n = nutation(jdUT);
+		const jdTT = Time.ttFromUt(jdUT);
+		const n = nutation(jdTT);
+		const trueObliquity = meanObliquity(jdTT) + n.deps;
 
-		return norm360(Time.gmst(jdUT) + n.dpsi * cos(obliquity(jdUT)));
+		return norm360(Time.gmst(jdUT) + n.dpsi * cos(trueObliquity));
 	}
 
 	/* The Sun's mean longitude (deg), Meeus 28.2 (tau in Julian millennia). */
 	function sunMeanLongitude(jdTT) {
 		const tau = Time.centuries(jdTT) / 10;
 
-		return norm360(polyT(tau, [280.4664567, 360007.6982779, 0.03032028,
-			1 / 49931, -1 / 15300, -1 / 2000000]));
+		return norm360(polynomial(tau, [280.4664567, 360007.6982779, 0.03032028, 1 / 49931, -1 / 15300, -1 / 2000000]));
 	}
 
 	/* Equation of time in minutes of time, apparent minus mean solar time
@@ -777,6 +815,37 @@ const Ephem = (function () {
 		return norm180(E) * 4;
 	}
 
+	/* ---------- Atmospheric refraction ----------
+	   Standard air (1010 mbar, 10 °C), J. Meeus, Astronomical Algorithms,
+	   ch. 16. The two formulas agree within 4" (checked in tests.html).
+	   Near the horizon the real refraction changes with the weather by
+	   several arcminutes. */
+
+	/* Refraction R (deg) of a star at TRUE (airless) altitude h (deg),
+	   Saemundsson, Meeus 16.4: apparent altitude = h + R. Below the
+	   apparent horizon (h < -0.6°) a star is not seen: returns 0 under
+	   h = -1°, where the formula stops being meaningful. */
+	function refraction(trueAltitude) {
+		if (trueAltitude < -1) {
+			return 0;
+		}
+
+		const R = 1.02 / tan(trueAltitude + 10.3 / (trueAltitude + 5.11));
+
+		return Math.max(0, R) / 60;
+	}
+
+	/* Refraction R (deg) of a star seen at APPARENT altitude h0 (deg),
+	   Bennett, Meeus 16.3: true altitude = h0 - R. */
+	function refractionOfApparent(apparentAltitude) {
+		if (apparentAltitude < -1) {
+			return 0;
+		}
+
+		const R = 1 / tan(apparentAltitude + 7.31 / (apparentAltitude + 4.4));
+
+		return Math.max(0, R) / 60;
+	}
 
 	/* ======================================================================
 	   9. EXPORT
@@ -799,6 +868,7 @@ const Ephem = (function () {
 		obliquity,
 		nutation,
 		precessEcliptic,
+		precessEquatorial,
 		eclipticPole,
 		equatorPole,
 		eclipticToEquatorial,
@@ -806,6 +876,8 @@ const Ephem = (function () {
 		equatorial,
 		apparentSiderealTime,
 		sunMeanLongitude,
-		equationOfTime
+		equationOfTime,
+		refraction,
+		refractionOfApparent
 	};
 })();
