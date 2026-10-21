@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    DEMO OF THE SHARED COMPONENTS - SCRIPT (demo.js)
    Three figures; the chosen date (day of 2026 + time UT) drives the first two:
@@ -13,18 +14,16 @@
 	 4. Page start
    ========================================================================== */
 
-
 /* ==========================================================================
    0. SHARED STATE: THE CHOSEN DATE
    ========================================================================== */
 
 const DEMO_YEAR = 2026;
 
-const MEAN_LONGITUDE_J2000 = 280.46646;    // mean Sun at J2000 (Meeus 25.2), deg
-const TROPICAL_YEAR = 365.24219;           // days
+const TROPICAL_YEAR = 365.24219; // days
 const HIPPARCHUS_YEAR = 365 + 1 / 4 - 1 / 300;
 
-const VEGA = { ra: 279.23, dec: 38.78 };   // J2000, degrees
+const VEGA = { ra: 279.23, dec: 38.78 }; // J2000, degrees
 
 /* JD(UT) of the date and time chosen with the sliders. */
 function chosenJdUT() {
@@ -36,27 +35,12 @@ function formatDay(day) {
 	return Time.formatDate(Time.julianDay(DEMO_YEAR, 1, day));
 }
 
-
 /* ==========================================================================
    1. FIGURE 1: THE SKY ON A DATE
    Drawn in the observer's frame, so the horizon is fixed ground and the
    sky turns above it: x towards the south point, y towards the east
    point, z towards the zenith. The observer is on the Greenwich meridian.
    ========================================================================== */
-
-const HORIZON_POINTS = [
-	['S', [1, 0, 0]],
-	['E', [0, 1, 0]],
-	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
-];
-
-/* Equatorial -> horizon frame for latitude phi and local sidereal time:
-   turn the sky by -LST about the pole (the meridian onto the x axis),
-   then tilt the pole down to altitude phi in the north. */
-function equatorialToHorizon(latitude, lst) {
-	return matMul(rotY(latitude - 90), rotZ(-lst));
-}
 
 const skyFigure = {
 	sphere: null,
@@ -70,7 +54,11 @@ const skyFigure = {
 		});
 
 		wireSlider(byId('day'), () => onDateChange(), formatDay);
-		wireSlider(byId('hour'), () => onDateChange(), hours => hm(hours));
+		wireSlider(
+			byId('hour'),
+			() => onDateChange(),
+			hours => hm(hours)
+		);
 		wireSlider(byId('latitude'), () => this.update());
 		wirePresets(byId('fig-sphere').closest('figure'));
 	},
@@ -84,7 +72,7 @@ const skyFigure = {
 		const sun = Ephem.sun(jdTT);
 		const sunEq = Ephem.equatorial(sun, jdTT);
 		const lst = Time.lst(jdUT, 0);
-		const M = equatorialToHorizon(readNumber('latitude'), lst);
+		const M = Diurnal.equatorialToHorizon(readNumber('latitude'), lst);
 		const toSky = v => matApply(M, v);
 		const eclipticToEquator = rotX(eps);
 
@@ -108,15 +96,15 @@ const skyFigure = {
 
 		showLines('sphere-readout', [
 			`\\text{LST} = ${hmTex(lst / 15)}`,
-			`\\lambda_\\odot = ${sun.lon.toFixed(2)}^\\circ`,
-			`\\alpha_\\odot = ${hmTex(sunEq.ra / 15)},\\quad \\delta_\\odot = ${sunEq.dec.toFixed(2)}^\\circ`,
-			`a_\\odot = ${altitude.toFixed(1)}^\\circ`
+			`\\lambda_\\odot = ${fixedAngle(sun.lon, 2)}^\\circ`,
+			`\\alpha_\\odot = ${hmTex(sunEq.ra / 15)},\\quad \\delta_\\odot = ${fixed(sunEq.dec, 2)}^\\circ`,
+			`a_\\odot = ${fixed(altitude, 1)}^\\circ`
 		]);
 	},
 
 	draw() {
 		if (!this.state) {
-			return;    // a resize can ask for a drawing before the first update
+			return; // a resize can ask for a drawing before the first update
 		}
 
 		const s = this.sphere;
@@ -131,7 +119,7 @@ const skyFigure = {
 		s.axis(scale(st.pole, 1.2), 'P', { color: COL.muted });
 		s.path([ORIGIN, scale(st.pole, -1.2)], { color: COL.muted, width: 1 });
 		s.point(st.vernalPoint, { color: COL.sun, radius: 3 });
-		s.label('γ', st.vernalPoint, { color: COL.sun, dx: -16, dy: 18 });   // below-left: clear of the Sun at the equinox
+		s.label('γ', st.vernalPoint, { color: COL.sun, dx: -16, dy: 18 }); // below-left: clear of the Sun at the equinox
 
 		// Vega and its daily circle
 		s.smallCircle(st.pole, 90 - VEGA.dec, { color: COL.planet, width: 1.5, dash: [5, 4] });
@@ -155,10 +143,9 @@ const skyFigure = {
 		});
 
 		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
-		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });   // left: Vega passes near the zenith
+		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 }); // left: Vega passes near the zenith
 	}
 };
-
 
 /* ==========================================================================
    2. FIGURE 2: THE EQUATION OF TIME
@@ -230,14 +217,13 @@ const eotFigure = {
 	}
 };
 
-
 /* ==========================================================================
    3. FIGURE 3: ERROR CURVE OF THE UNIFORM CIRCLE
    ========================================================================== */
 
 /* The uniform-circle Sun for a year of Y days: JD(TT) -> longitude (deg). */
 function uniformCircle(yearLength) {
-	return jd => norm360(MEAN_LONGITUDE_J2000 + 360 / yearLength * (jd - Time.J2000));
+	return jd => norm360(MeanSun.MODERN.L0 + (360 / yearLength) * (jd - Time.J2000));
 }
 
 const errorFigure = {
@@ -262,8 +248,8 @@ const errorFigure = {
 		});
 
 		this.curve.addGhost({
-			label: 'Hipparchus\' year, $Y = 365\\tfrac14 - \\tfrac1{300}$ d',
-			short: 'Hipparchus\' year',
+			label: "Hipparchus' year, $Y = 365\\tfrac14 - \\tfrac1{300}$ d",
+			short: "Hipparchus' year",
 			color: COL.epicycle,
 			fn: uniformCircle(HIPPARCHUS_YEAR)
 		});
@@ -277,10 +263,13 @@ const errorFigure = {
 			ghostLabel: () => `uniform circle, Y = ${readNumber('year-length').toFixed(4)} d`
 		});
 
-		wireSlider(byId('year-length'), () => this.curve.update(), y => `${y.toFixed(4)} d`);
+		wireSlider(
+			byId('year-length'),
+			() => this.curve.update(),
+			y => `${y.toFixed(4)} d`
+		);
 	}
 };
-
 
 /* ==========================================================================
    4. PAGE START
@@ -294,8 +283,6 @@ function onDateChange() {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	skyFigure.init();
-	eotFigure.init();
-	errorFigure.init();
+	startFigures([skyFigure, eotFigure, errorFigure]);
 	onDateChange();
 });

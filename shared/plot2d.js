@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - 2D PLOTS (plot2d.js)
    Simple 2D plots on a canvas: axes, grid, curves, bands, markers, an HTML
@@ -32,7 +33,6 @@
 	 6. Legend (HTML)
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS
    ========================================================================== */
@@ -41,13 +41,17 @@ const PLOT_FONT = FONT_TICK;
 const PLOT_LABEL_FONT = FONT_AXIS;
 const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 
+/* About one tick label every this many pixels along each axis. */
+const PLOT_TICK_SPACING = { x: 90, y: 45 };
 
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, HOVER
    ========================================================================== */
 
-class Plot2D {
+/** An entry of Plot2D.legend (section 6).
+	@typedef {{ label: string, color: string, mark?: string, ghost?: boolean, hidden?: boolean }} LegendItem */
 
+class Plot2D {
 	/* options: x, y ([min, max]), xLabel, yLabel, xFormat, yFormat,
 	   xTicks, yTicks (function (min, max, count) -> [{ value, label }]),
 	   aspect (height / width), minHeight, maxHeight, onDraw(plot),
@@ -92,18 +96,21 @@ class Plot2D {
 		// tick labels and titles are drawn in web fonts: draw again once
 		// they have loaded
 		whenCanvasFontsReady().then(() => this.redraw());
+
+		// a new pixel ratio (zoom, another screen): a sharper canvas
+		onPixelRatioChange(() => {
+			this.resize();
+			this.redraw();
+		});
 	}
 
 	/* Match the canvas resolution to its displayed size. */
 	resize() {
 		const width = this.canvas.clientWidth || 600;
 		const height = Math.round(clamp(width * this.aspect, this.minHeight, this.maxHeight));
-		const ratio = window.devicePixelRatio || 1;
 
 		this.canvas.style.height = `${height}px`;
-		this.canvas.width = Math.round(width * ratio);
-		this.canvas.height = Math.round(height * ratio);
-		this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		scaleCanvas(this.canvas, this.ctx, width, height);
 
 		this.width = width;
 		this.height = height;
@@ -148,16 +155,22 @@ class Plot2D {
 			this.redraw();
 		};
 
+		this.canvas.dataset.hover = 'true';
 		this.canvas.addEventListener('pointermove', update);
 		this.canvas.addEventListener('pointerdown', update);
 
-		this.canvas.addEventListener('pointerleave', () => {
+		this.canvas.addEventListener('pointerleave', event => {
+			// on a touch screen the finger has lifted: keep the value it
+			// pointed at, until the next touch
+			if (event.pointerType === 'touch') {
+				return;
+			}
+
 			this.cursorX = null;
 			this.onHover(null);
 			this.redraw();
 		});
 	}
-
 
 	/* ======================================================================
 	   3. COORDINATES AND TICKS
@@ -167,26 +180,26 @@ class Plot2D {
 	px(x) {
 		const { left, right } = this.box;
 
-		return left + (x - this.x[0]) / (this.x[1] - this.x[0]) * (right - left);
+		return left + ((x - this.x[0]) / (this.x[1] - this.x[0])) * (right - left);
 	}
 
 	/* Data y -> pixel y. */
 	py(y) {
 		const { top, bottom } = this.box;
 
-		return bottom - (y - this.y[0]) / (this.y[1] - this.y[0]) * (bottom - top);
+		return bottom - ((y - this.y[0]) / (this.y[1] - this.y[0])) * (bottom - top);
 	}
 
 	/* Pixel x -> data x. */
 	fromPx(px) {
 		const { left, right } = this.box;
 
-		return this.x[0] + (px - left) / (right - left) * (this.x[1] - this.x[0]);
+		return this.x[0] + ((px - left) / (right - left)) * (this.x[1] - this.x[0]);
 	}
 
 	/* Ticks along x: the custom tick function, or round numbers. */
 	ticksX() {
-		const count = Math.max(3, Math.floor((this.box.right - this.box.left) / 90));
+		const count = Math.max(3, Math.floor((this.box.right - this.box.left) / PLOT_TICK_SPACING.x));
 
 		if (this.xTicks) {
 			return this.xTicks(this.x[0], this.x[1], count);
@@ -198,7 +211,7 @@ class Plot2D {
 	}
 
 	ticksY() {
-		const count = Math.max(4, Math.floor((this.box.bottom - this.box.top) / 45));
+		const count = Math.max(4, Math.floor((this.box.bottom - this.box.top) / PLOT_TICK_SPACING.y));
 
 		if (this.yTicks) {
 			return this.yTicks(this.y[0], this.y[1], count);
@@ -208,7 +221,6 @@ class Plot2D {
 			return { value, label: this.yFormat(value) };
 		});
 	}
-
 
 	/* ======================================================================
 	   4. FRAME: GRID, AXES, LABELS
@@ -303,7 +315,6 @@ class Plot2D {
 		this.ctx.restore();
 	}
 
-
 	/* ======================================================================
 	   5. MARKS: CURVES, BANDS, MARKERS, LINES, TEXT
 	   Every mark takes a style object: color, width, dash, alpha.
@@ -339,8 +350,10 @@ class Plot2D {
 
 		if (outside) {
 			this.warnedOutside = true;
-			console.warn(`Plot2D "${this.canvas.id}": data outside the y range [${this.y}]; ` +
-				'widen the fixed range to cover every value of the controls.');
+			console.warn(
+				`Plot2D "${this.canvas.id}": data outside the y range [${this.y}]; ` +
+					'widen the fixed range to cover every value of the controls.'
+			);
 		}
 	}
 
@@ -428,16 +441,7 @@ class Plot2D {
 		const { ctx } = this;
 
 		this.checkInside([y], style);
-		ctx.fillStyle = style.color ?? COL.planet;
-		ctx.beginPath();
-		ctx.arc(this.px(x), this.py(y), style.radius ?? 5, 0, TAU);
-		ctx.fill();
-
-		if (style.ring !== false) {
-			ctx.strokeStyle = COL.card;
-			ctx.lineWidth = 1.5;
-			ctx.stroke();
-		}
+		drawDot(ctx, this.px(x), this.py(y), style.radius ?? 5, style.color ?? COL.planet, style.ring !== false);
 	}
 
 	/* Horizontal line across the box at y. */
@@ -479,7 +483,6 @@ class Plot2D {
 		ctx.fillText(label, this.px(x) + (style.dx ?? 4), this.py(y) + (style.dy ?? -4));
 	}
 
-
 	/* ======================================================================
 	   6. LEGEND (HTML)
 	   Built in HTML, not on the canvas, so labels can carry KaTeX ($...$).
@@ -492,6 +495,8 @@ class Plot2D {
 	   its size.
 	   ====================================================================== */
 
+	/** @param {HTMLElement} container
+		@param {LegendItem[]} items */
 	static legend(container, items) {
 		container.classList.add('legend');
 		container.innerHTML = '';
@@ -518,7 +523,6 @@ class Plot2D {
 		}
 	}
 }
-
 
 /* ==========================================================================
    HELPERS

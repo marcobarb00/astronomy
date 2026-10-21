@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - TIME (time.js)
    Julian Date, calendar conversions, Delta T and sidereal time.
@@ -22,28 +23,26 @@
    ========================================================================== */
 
 const Time = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS
 	   ====================================================================== */
 
-	const J2000 = 2451545.0;              // 2000 January 1.5 TT
+	const J2000 = 2451545.0; // 2000 January 1.5 TT
 	const DAYS_PER_CENTURY = 36525;
-	const MJD_OFFSET = 2400000.5;         // MJD = JD - 2400000.5
-	const UNIX_EPOCH_JD = 2440587.5;      // 1970 January 1.0 UT
+	const MJD_OFFSET = 2400000.5; // MJD = JD - 2400000.5
+	const UNIX_EPOCH_JD = 2440587.5; // 1970 January 1.0 UT
 	const GREGORIAN_START_JD = 2299160.5; // 1582 October 15.0
+
+	/* Greenwich mean sidereal time at J2000.0 (deg) and its rate per day of
+	   UT, the linear part of Meeus 12.4: the clock of page 1.3
+	   (models/clock.js), the turn of the sky of page 1.1 (models/diurnal.js). */
+	const GMST_AT_J2000 = 280.46061837;
+	const SIDEREAL_RATE = 360.98564736629;
 	const MS_PER_DAY = 86400000;
 
-	const MONTH_NAMES = [
-		'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-		'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-	];
+	const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-	const WEEKDAY_NAMES = [
-		'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-		'Thursday', 'Friday', 'Saturday'
-	];
-
+	const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 	/* ======================================================================
 	   2. CALENDAR DATE <-> JULIAN DATE
@@ -73,8 +72,7 @@ const Time = (function () {
 			m += 12;
 		}
 
-		const gregorian = (calendar === 'gregorian') ||
-			(calendar === 'auto' && isGregorianDate(year, month, day));
+		const gregorian = calendar === 'gregorian' || (calendar === 'auto' && isGregorianDate(year, month, day));
 		let b = 0;
 
 		if (gregorian) {
@@ -83,9 +81,7 @@ const Time = (function () {
 			b = 2 - a + Math.floor(a / 4);
 		}
 
-		return Math.floor(365.25 * (y + 4716)) +
-			Math.floor(30.6001 * (m + 1)) +
-			day + b - 1524.5;
+		return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524.5;
 	}
 
 	/* Calendar date of a Julian Date (Meeus ch. 7). Returns
@@ -94,8 +90,7 @@ const Time = (function () {
 	function calendarDate(jd, calendar = 'auto') {
 		const z = Math.floor(jd + 0.5);
 		const f = jd + 0.5 - z;
-		const gregorian = (calendar === 'gregorian') ||
-			(calendar === 'auto' && z >= 2299161);
+		const gregorian = calendar === 'gregorian' || (calendar === 'auto' && z >= GREGORIAN_START_JD + 0.5);
 		let a = z;
 
 		if (gregorian) {
@@ -109,8 +104,8 @@ const Time = (function () {
 		const d = Math.floor(365.25 * c);
 		const e = Math.floor((b - d) / 30.6001);
 		const day = b - d - Math.floor(30.6001 * e) + f;
-		const month = (e < 14) ? e - 1 : e - 13;
-		const year = (month > 2) ? c - 4716 : c - 4715;
+		const month = e < 14 ? e - 1 : e - 13;
+		const year = month > 2 ? c - 4716 : c - 4715;
 
 		return { year, month, day };
 	}
@@ -129,7 +124,6 @@ const Time = (function () {
 	function mjd(jd) {
 		return jd - MJD_OFFSET;
 	}
-
 
 	/* ======================================================================
 	   3. CALENDAR HELPERS
@@ -157,9 +151,7 @@ const Time = (function () {
 	function dayOfYear(year, month, day) {
 		const k = isLeapYear(year) ? 1 : 2;
 
-		return Math.floor(275 * month / 9) -
-			k * Math.floor((month + 9) / 12) +
-			Math.floor(day) - 30;
+		return Math.floor((275 * month) / 9) - k * Math.floor((month + 9) / 12) + Math.floor(day) - 30;
 	}
 
 	/* Year with its fraction, e.g. 1992.78 (for axes and Delta T). */
@@ -194,7 +186,6 @@ const Time = (function () {
 		return fromDate(new Date());
 	}
 
-
 	/* ======================================================================
 	   4. DELTA T AND TIME SCALES
 	   Delta T = TT - UT in seconds, from the polynomials of Espenak & Meeus
@@ -204,17 +195,6 @@ const Time = (function () {
 	   antiquity (about +-5 min at -500, +-15 min at -2000).
 	   ====================================================================== */
 
-	/* Evaluate c0 + c1 t + c2 t^2 + ... */
-	function poly(t, coefficients) {
-		let result = 0;
-
-		for (let i = coefficients.length - 1; i >= 0; i--) {
-			result = result * t + coefficients[i];
-		}
-
-		return result;
-	}
-
 	/* The long-term parabola, used before -500 and after 2150. */
 	function deltaTParabola(y) {
 		const u = (y - 1820) / 100;
@@ -223,50 +203,51 @@ const Time = (function () {
 	}
 
 	/* Delta T in seconds for a decimal year y. */
+	// prettier-ignore
 	function deltaT(y) {
 		if (y < -500) {
 			return deltaTParabola(y);
 		}
 		if (y < 500) {
-			return poly(y / 100, [10583.6, -1014.41, 33.78311, -5.952053,
+			return polynomial(y / 100, [10583.6, -1014.41, 33.78311, -5.952053,
 				-0.1798452, 0.022174192, 0.0090316521]);
 		}
 		if (y < 1600) {
-			return poly((y - 1000) / 100, [1574.2, -556.01, 71.23472, 0.319781,
+			return polynomial((y - 1000) / 100, [1574.2, -556.01, 71.23472, 0.319781,
 				-0.8503463, -0.005050998, 0.0083572073]);
 		}
 		if (y < 1700) {
-			return poly(y - 1600, [120, -0.9808, -0.01532, 1 / 7129]);
+			return polynomial(y - 1600, [120, -0.9808, -0.01532, 1 / 7129]);
 		}
 		if (y < 1800) {
-			return poly(y - 1700, [8.83, 0.1603, -0.0059285, 0.00013336, -1 / 1174000]);
+			return polynomial(y - 1700, [8.83, 0.1603, -0.0059285, 0.00013336, -1 / 1174000]);
 		}
 		if (y < 1860) {
-			return poly(y - 1800, [13.72, -0.332447, 0.0068612, 0.0041116,
+			return polynomial(y - 1800, [13.72, -0.332447, 0.0068612, 0.0041116,
 				-0.00037436, 0.0000121272, -0.0000001699, 0.000000000875]);
 		}
 		if (y < 1900) {
-			return poly(y - 1860, [7.62, 0.5737, -0.251754, 0.01680668,
+			return polynomial(y - 1860, [7.62, 0.5737, -0.251754, 0.01680668,
 				-0.0004473624, 1 / 233174]);
 		}
 		if (y < 1920) {
-			return poly(y - 1900, [-2.79, 1.494119, -0.0598939, 0.0061966, -0.000197]);
+			return polynomial(y - 1900, [-2.79, 1.494119, -0.0598939, 0.0061966, -0.000197]);
 		}
 		if (y < 1941) {
-			return poly(y - 1920, [21.20, 0.84493, -0.076100, 0.0020936]);
+			return polynomial(y - 1920, [21.20, 0.84493, -0.076100, 0.0020936]);
 		}
 		if (y < 1961) {
-			return poly(y - 1950, [29.07, 0.407, -1 / 233, 1 / 2547]);
+			return polynomial(y - 1950, [29.07, 0.407, -1 / 233, 1 / 2547]);
 		}
 		if (y < 1986) {
-			return poly(y - 1975, [45.45, 1.067, -1 / 260, -1 / 718]);
+			return polynomial(y - 1975, [45.45, 1.067, -1 / 260, -1 / 718]);
 		}
 		if (y < 2005) {
-			return poly(y - 2000, [63.86, 0.3345, -0.060374, 0.0017275,
+			return polynomial(y - 2000, [63.86, 0.3345, -0.060374, 0.0017275,
 				0.000651814, 0.00002373599]);
 		}
 		if (y < 2050) {
-			return poly(y - 2000, [62.92, 0.32217, 0.005589]);
+			return polynomial(y - 2000, [62.92, 0.32217, 0.005589]);
 		}
 		if (y < 2150) {
 			return deltaTParabola(y) - 0.5628 * (2150 - y);
@@ -285,7 +266,6 @@ const Time = (function () {
 		return jdTT - deltaT(decimalYear(jdTT)) / 86400;
 	}
 
-
 	/* ======================================================================
 	   5. SIDEREAL TIME AND HOUR ANGLE
 	   ====================================================================== */
@@ -293,10 +273,7 @@ const Time = (function () {
 	/* Greenwich mean sidereal time in degrees [0, 360), Meeus 12.4. */
 	function gmst(jdUT) {
 		const t = centuries(jdUT);
-		const theta = 280.46061837 +
-			360.98564736629 * (jdUT - J2000) +
-			0.000387933 * t * t -
-			t * t * t / 38710000;
+		const theta = GMST_AT_J2000 + SIDEREAL_RATE * (jdUT - J2000) + 0.000387933 * t * t - (t * t * t) / 38710000;
 
 		return norm360(theta);
 	}
@@ -310,7 +287,6 @@ const Time = (function () {
 	function hourAngle(lstDegrees, rightAscension) {
 		return norm360(lstDegrees - rightAscension);
 	}
-
 
 	/* ======================================================================
 	   6. FORMATTING
@@ -341,7 +317,6 @@ const Time = (function () {
 		return text;
 	}
 
-
 	/* ======================================================================
 	   7. EXPORT
 	   ====================================================================== */
@@ -349,6 +324,8 @@ const Time = (function () {
 	return {
 		J2000,
 		DAYS_PER_CENTURY,
+		GMST_AT_J2000,
+		SIDEREAL_RATE,
 		MONTH_NAMES,
 		julianDay,
 		julianDayTime,

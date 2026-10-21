@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - 3D SPHERE (sphere3d.js)
    A draggable celestial sphere drawn on a canvas.
@@ -37,25 +38,38 @@
 	 5. Sampling helpers
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS
    ========================================================================== */
 
-const SPHERE_FILL = 0.38;          // sphere radius as a fraction of the canvas size (room for poles and labels)
-const FAR_SIDE_ALPHA = 0.25;       // opacity of path segments behind the sphere
-const FAR_ARROW_ALPHA = 0.35;      // opacity of arrows pointing away from the viewer
-const ARROW_HEAD_SIZE = 9;         // px
+const SPHERE_FILL = 0.38; // sphere radius as a fraction of the canvas size (room for poles and labels)
+const FAR_SIDE_ALPHA = 0.25; // opacity of path segments behind the sphere
+const FAR_ARROW_ALPHA = 0.35; // opacity of arrows pointing away from the viewer
+const ARROW_HEAD_SIZE = 9; // px
 const DRAG_DEGREES_PER_PX = 0.5;
-const LABEL_FONT = FONT_NAME;      // for pages that write on a canvas themselves
+const KEY_DEGREES = 5; // one press of an arrow key turns the view by this
+const FAR_ARROW_DEPTH = 0.05; // an arrow is faded once its middle is this far behind
 
+/* labelAway: the gap between a point and its label, and the label's
+   height above its baseline and its half-height (px, at the label fonts). */
+const LABEL_AWAY_GAP = 12;
+const LABEL_ASCENT = 13;
+const LABEL_HALF_HEIGHT = 5;
+const LABEL_FONT = FONT_NAME; // for pages that write on a canvas themselves
+
+/* The cardinal points in the horizon frame (x south, y east, z zenith). */
+const HORIZON_POINTS = [
+	['S', [1, 0, 0]],
+	['E', [0, 1, 0]],
+	['N', [-1, 0, 0]],
+	['W', [0, -1, 0]]
+];
 
 /* ==========================================================================
    2. CONSTRUCTION, SIZING, DRAGGING
    ========================================================================== */
 
 class Sphere3D {
-
 	/* options: yaw, pitch (deg), aspect (height / width), onDraw(sphere). */
 	constructor(canvas, options = {}) {
 		this.canvas = canvas;
@@ -71,6 +85,7 @@ class Sphere3D {
 
 		this.resize();
 		this.wireDrag();
+		this.wireKeys();
 
 		// Follow the width of the parent element (height follows the aspect).
 		this.observer = new ResizeObserver(() => {
@@ -85,18 +100,21 @@ class Sphere3D {
 
 		// labels are drawn in web fonts: draw again once they have loaded
 		whenCanvasFontsReady().then(() => this.redraw());
+
+		// a new pixel ratio (zoom, another screen): a sharper canvas
+		onPixelRatioChange(() => {
+			this.resize();
+			this.redraw();
+		});
 	}
 
 	/* Match the canvas resolution to its displayed size. */
 	resize() {
 		const width = this.canvas.clientWidth || 400;
 		const height = Math.round(width * this.aspect);
-		const ratio = window.devicePixelRatio || 1;
 
 		this.canvas.style.height = `${height}px`;
-		this.canvas.width = Math.round(width * ratio);
-		this.canvas.height = Math.round(height * ratio);
-		this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		scaleCanvas(this.canvas, this.ctx, width, height);
 
 		this.width = width;
 		this.height = height;
@@ -141,6 +159,35 @@ class Sphere3D {
 		});
 	}
 
+	/* The arrow keys turn the view as dragging does (right / down = a drag
+	   to the right / down), once the canvas has the keyboard focus. */
+	wireKeys() {
+		const turns = {
+			ArrowLeft: [-KEY_DEGREES, 0],
+			ArrowRight: [KEY_DEGREES, 0],
+			ArrowUp: [0, -KEY_DEGREES],
+			ArrowDown: [0, KEY_DEGREES]
+		};
+
+		this.canvas.tabIndex = 0;
+
+		if (!this.canvas.hasAttribute('aria-label')) {
+			this.canvas.setAttribute('aria-label', 'A sphere you can turn: drag it, or use the arrow keys.');
+		}
+
+		this.canvas.addEventListener('keydown', event => {
+			const turn = turns[event.key];
+
+			if (!turn) {
+				return;
+			}
+
+			event.preventDefault(); // the keys turn the sphere, not the page
+			this.view.yaw += turn[0];
+			this.view.pitch = clamp(this.view.pitch + turn[1], -89, 89);
+			this.redraw();
+		});
+	}
 
 	/* ======================================================================
 	   3. PROJECTION
@@ -167,7 +214,6 @@ class Sphere3D {
 	isFront(point) {
 		return this.project(point).d <= 0;
 	}
-
 
 	/* ======================================================================
 	   4. DRAWING PRIMITIVES
@@ -275,17 +321,7 @@ class Sphere3D {
 		const isFar = q.d > 0 && !style.always;
 
 		ctx.globalAlpha = isFar ? FAR_ARROW_ALPHA : 1;
-		ctx.fillStyle = style.color ?? COL.planet;
-		ctx.beginPath();
-		ctx.arc(q.x, q.y, style.radius ?? 5, 0, TAU);
-		ctx.fill();
-
-		if (style.ring) {
-			ctx.strokeStyle = COL.card;
-			ctx.lineWidth = 1.5;
-			ctx.stroke();
-		}
-
+		drawDot(ctx, q.x, q.y, style.radius ?? 5, style.color ?? COL.planet, Boolean(style.ring));
 		ctx.globalAlpha = 1;
 	}
 
@@ -313,7 +349,7 @@ class Sphere3D {
 		const shaftEnd = backOff(b, angle, 0.6 * ARROW_HEAD_SIZE);
 		const headLeft = backOff(b, angle - 0.4, ARROW_HEAD_SIZE);
 		const headRight = backOff(b, angle + 0.4, ARROW_HEAD_SIZE);
-		const isFar = (a.d + b.d) / 2 > 0.05;
+		const isFar = (a.d + b.d) / 2 > FAR_ARROW_DEPTH;
 		const color = style.color ?? COL.ink;
 
 		ctx.globalAlpha = isFar ? FAR_ARROW_ALPHA : 1;
@@ -344,13 +380,30 @@ class Sphere3D {
 		this.label(text, tip, { color: style.labelColor ?? COL.ink, dx: 6, dy: -4 });
 	}
 
+	/* The observer's ground, for a sphere drawn in the horizon frame (x
+	   towards the south point, y east, z towards the zenith): the shaded
+	   horizon plane and its circle, the meridian (dotted), the cardinal
+	   points N, E, S, W and the zenith Z. */
+	ground() {
+		this.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
+		this.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
+		this.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
+
+		HORIZON_POINTS.forEach(([name, point]) => {
+			this.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
+		});
+
+		this.point([0, 0, 1], { color: COL.deferent, radius: 4 });
+		this.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });
+	}
+
 	/* Text next to a 3D point. style: color (a line colour is drawn in its
 	   text colour), dx, dy, font, kind ('name' or 'symbol', see labelFont). */
 	label(text, p, style = {}) {
 		const { ctx } = this;
 		const q = this.project(p);
 
-		ctx.globalAlpha = (q.d > 0 && !style.always) ? 0.5 : 1;
+		ctx.globalAlpha = q.d > 0 && !style.always ? 0.5 : 1;
 		ctx.fillStyle = textColor(style.color ?? COL.ink);
 		ctx.font = style.font ?? labelFont(text, style.kind);
 		ctx.textAlign = 'left';
@@ -368,7 +421,7 @@ class Sphere3D {
 	   (a 3D point or a screen position { x, y }), so two nearby labels
 	   never overlap. */
 	labelAway(text, point, awayFrom, color) {
-		const gap = 12;
+		const gap = LABEL_AWAY_GAP;
 		const q = this.project(point);
 		const r = Array.isArray(awayFrom) ? this.project(awayFrom) : awayFrom;
 		const length = Math.hypot(q.x - r.x, q.y - r.y) || 1;
@@ -382,12 +435,11 @@ class Sphere3D {
 		// left-aligned text on its baseline: shift it so its box sits on the far side
 		this.label(text, point, {
 			color: color,
-			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - (1 - Math.abs(ux)) * width / 2,
-			dy: gap * uy + (uy > 0 ? 13 : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * 5
+			dx: gap * ux - (ux < 0 ? width : 0) * Math.abs(ux) - ((1 - Math.abs(ux)) * width) / 2,
+			dy: gap * uy + (uy > 0 ? LABEL_ASCENT : 0) * Math.abs(uy) + (1 - Math.abs(uy)) * LABEL_HALF_HEIGHT
 		});
 	}
 }
-
 
 /* ==========================================================================
    5. SAMPLING HELPERS
@@ -420,7 +472,7 @@ function sampleArc(a, b, angle, radius = 1, steps = 40) {
 	const points = [];
 
 	for (let i = 0; i <= steps; i++) {
-		points.push(arcPoint(a, b, angle * i / steps, radius));
+		points.push(arcPoint(a, b, (angle * i) / steps, radius));
 	}
 
 	return points;

@@ -5,11 +5,9 @@
    TABLE OF CONTENTS
 	 1. Controls
 	 2. Figures 1 and 2: the square views from above the pole
-	 3. Figures 3 and 4: panels with their controls underneath
-	 4. The tables of the prose
-	 5. Phone width
+	 3. The tables of the prose (the panels of Figures 4 and 5: theme.css)
+	 4. Phone width
    ========================================================================== */
-
 
 /* ==========================================================================
    1. CONTROLS
@@ -21,17 +19,10 @@ figure.fig {
 	--ctl-output: 7.2em;
 }
 
-/* The star buttons keep one width, so the row does not reflow when the
-   active one changes. */
-.star-choice button {
-	min-width: 5.6em;
-}
-
 /* A play button keeps its width between "Play a year" and "Pause". */
 button.play {
 	min-width: 9.5em;
 }
-
 
 /* ==========================================================================
    2. FIGURES 1 AND 2: THE SQUARE VIEWS FROM ABOVE THE POLE
@@ -44,36 +35,8 @@ button.play {
 	margin: 0 auto;
 }
 
-
 /* ==========================================================================
-   3. FIGURES 3 AND 4: PANELS WITH THEIR CONTROLS UNDERNEATH
-   ========================================================================== */
-
-.panels,
-.panel-controls {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-	gap: 20px;
-	align-items: start;
-}
-
-.panel-controls {
-	margin-top: 10px;
-}
-
-/* "(a) the day through 2026 at latitude φ" above each panel, in small caps. */
-.panel-title {
-	margin: 0 0 4px;
-	font-family: var(--font-label);
-	font-size: 16px;
-	font-weight: 600;
-	letter-spacing: 0.1em;
-	color: var(--muted);
-}
-
-
-/* ==========================================================================
-   4. THE TABLES OF THE PROSE
+   3. THE TABLES OF THE PROSE
    ========================================================================== */
 
 table.prose-table {
@@ -86,17 +49,11 @@ table.prose-table td:first-child {
 	text-align: left;
 }
 
-
 /* ==========================================================================
-   5. PHONE WIDTH
+   4. PHONE WIDTH
    ========================================================================== */
 
 @media (max-width: 800px) {
-	.panels,
-	.panel-controls {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
 	/* "longitude ℓ" needs a little more than the shared 74px label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);

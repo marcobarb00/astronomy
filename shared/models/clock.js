@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE CLOCKS (models/clock.js)
    The model of page 1.3: the sky turns uniformly with respect to mean
@@ -41,7 +42,6 @@
    ========================================================================== */
 
 const Clock = (function () {
-
 	/* ======================================================================
 	   1. CONSTANTS
 	   ====================================================================== */
@@ -49,12 +49,12 @@ const Clock = (function () {
 	/* Greenwich mean sidereal time at J2000.0 (deg) and its rate per day
 	   of UT, Meeus 12.4 (linear part). The rate is 360° + n, with n the
 	   mean Sun's daily motion (models/mean-sun.js). */
-	const THETA0 = 280.46061837;
-	const RATE = 360.98564736629;
+	const THETA0 = Time.GMST_AT_J2000;
+	const RATE = Time.SIDEREAL_RATE;
 
 	/* One turn of the sky (a sidereal day) in hours of mean solar time:
 	   23 h 56 min 04.09 s. */
-	const SIDEREAL_DAY_HOURS = 24 * 360 / RATE;
+	const SIDEREAL_DAY_HOURS = (24 * 360) / RATE;
 
 	/* The Sun's hour angle grows 15° per hour of mean solar time. */
 	const SUN_DEGREES_PER_HOUR = 15;
@@ -66,7 +66,6 @@ const Clock = (function () {
 
 	/* The model Sun's longitude. */
 	const meanLongitude = MeanSun.make(MeanSun.MODERN);
-
 
 	/* ======================================================================
 	   2. SIDEREAL TIME AND HOUR ANGLE
@@ -84,11 +83,10 @@ const Clock = (function () {
 		return norm360(gmst(jdUT) + lon);
 	}
 
-	/* Hour angle H = theta - alpha (deg, in (-180, 180]). */
+	/* Hour angle H = theta - alpha (deg, in [-180, 180)). */
 	function hourAngle(jdUT, lon, ra) {
 		return norm180(lst(jdUT, lon) - ra);
 	}
-
 
 	/* ======================================================================
 	   3. LOCAL MEAN TIME
@@ -100,14 +98,13 @@ const Clock = (function () {
 	function localMeanTime(jdUT, lon) {
 		const ut = (jdUT + 0.5 - Math.floor(jdUT + 0.5)) * 24;
 
-		return ((ut + lon / 15) % 24 + 24) % 24;
+		return (((ut + lon / 15) % 24) + 24) % 24;
 	}
 
 	/* JD(UT) of a local mean time (hours) on the date whose 0h UT is jd0. */
 	function fromLocalMeanTime(jd0, hours, lon) {
 		return jd0 + (hours - lon / 15) / 24;
 	}
-
 
 	/* ======================================================================
 	   4. TRANSITS OF A STAR
@@ -118,15 +115,7 @@ const Clock = (function () {
 	/* JD(UT) of every upper transit of right ascension ra within the UT
 	   day [jd0, jd0 + 1). Usually one; on one day a year, two. */
 	function transits(ra, jd0, lon) {
-		const first = norm360(ra - lon - gmst(jd0)) / RATE;
-		const turn = 360 / RATE;
-		const list = [];
-
-		for (let t = first; t < 1; t += turn) {
-			list.push(jd0 + t);
-		}
-
-		return list;
+		return transitsBetween(ra, jd0, 1, lon);
 	}
 
 	/* JD(UT) of the transits within any window [start, start + length),
@@ -142,7 +131,6 @@ const Clock = (function () {
 
 		return list;
 	}
-
 
 	/* ======================================================================
 	   5. THE MODEL SUN: NOON, SUNRISE, SUNSET, LENGTH OF THE DAY
@@ -180,13 +168,12 @@ const Clock = (function () {
 			noon: noon,
 			rise: sets ? noon - halfDay : NaN,
 			set: sets ? noon + halfDay : NaN,
-			hours: 2 * H0 / SUN_DEGREES_PER_HOUR,
+			hours: (2 * H0) / SUN_DEGREES_PER_HOUR,
 			H0: H0,
 			dec: dec,
 			kind: kind
 		};
 	}
-
 
 	/* ======================================================================
 	   6. EXPORT

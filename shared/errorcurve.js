@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - THE ERROR CURVE (errorcurve.js)
    The running thread of the site (STRUCTURE.md §7.3): a plot of
@@ -33,13 +34,12 @@
 	 6. Time axis and read-out
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONSTANTS
    ========================================================================== */
 
 const ERROR_MAX_SAMPLES_PER_COLUMN = 48;
-const ERROR_DEGREES_THRESHOLD = 600;    // arcmin: above this, 'auto' switches to degrees
+const ERROR_DEGREES_THRESHOLD = 600; // arcmin: above this, 'auto' switches to degrees
 const GHOST_ALPHA = 0.4;
 
 /* Default sampling step (days) per body: short enough to follow its error. */
@@ -73,15 +73,13 @@ const ERROR_PERIOD_TEXT = {
 
 /* Shown in the read-out line while the pointer is away from the plot, so
    the dashed pointer line never goes unexplained (CLAUDE.md). */
-const ERROR_READOUT_HINT = 'Point at the plot to read each curve\'s error on a date (dashed line).';
-
+const ERROR_READOUT_HINT = "Point at the plot to read each curve's error on a date (dashed line).";
 
 /* ==========================================================================
    2. CONSTRUCTION AND DOM
    ========================================================================== */
 
 class ErrorCurve {
-
 	/* options: body | reference, start, end (JD TT), spans
 	   ([{ label, years, yMax, units }] centred on the current range),
 	   resolution (days), period (days, the error's main period: sets the
@@ -102,7 +100,7 @@ class ErrorCurve {
 		this.units = options.units ?? 'auto';
 		this.yMax = options.yMax ?? null;
 		this.span = null;
-		this.rescale = true;      // choose the scale at the next update
+		this.rescale = true; // choose the scale at the next update
 		this.models = [];
 		this.ghosts = [];
 		this.cache = null;
@@ -113,8 +111,6 @@ class ErrorCurve {
 	/* Tools row (spans, ghost buttons), plot, legend, hover read-out. */
 	buildDom(options) {
 		const tools = makeEl('div', 'errorcurve-tools');
-		const spanButtons = makeEl('div', 'presets');
-		const ghostButtons = makeEl('div', 'presets');
 		const wrapper = makeEl('div');
 		const canvas = makeEl('canvas');
 
@@ -125,32 +121,9 @@ class ErrorCurve {
 		this.readout = makeEl('div', 'errorcurve-readout');
 		this.readout.textContent = ERROR_READOUT_HINT;
 		this.bandNote = makeEl('div', 'errorcurve-note');
+		this.spanButtons = this.buildSpanButtons();
 
-		const initialYears = (this.end - this.start) / 365.25;
-
-		this.spans.forEach(span => {
-			const button = makeEl('button', '', span.label);
-
-			button.type = 'button';
-			button.addEventListener('click', () => this.chooseSpan(span, button));
-			spanButtons.appendChild(button);
-
-			// the preset that matches the initial range starts active
-			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
-				this.span = span;
-				button.classList.add('active');
-			}
-		});
-
-		this.pinButton = makeEl('button', '', 'Keep as ghost');
-		this.clearButton = makeEl('button', '', 'Clear ghosts');
-		this.pinButton.type = 'button';
-		this.clearButton.type = 'button';
-		this.pinButton.addEventListener('click', () => this.pinGhost());
-		this.clearButton.addEventListener('click', () => this.clearGhosts());
-		ghostButtons.append(this.pinButton, this.clearButton);
-
-		tools.append(spanButtons, ghostButtons);
+		tools.append(this.spanButtons, this.buildGhostButtons());
 		wrapper.appendChild(canvas);
 		this.container.append(tools, wrapper, this.legendBox, this.bandNote, this.readout);
 
@@ -165,8 +138,48 @@ class ErrorCurve {
 			onDraw: () => this.draw(),
 			onHover: x => this.showReadout(x)
 		});
+	}
 
-		this.spanButtons = spanButtons;
+	/* One button per span preset; the one that matches the initial range
+	   starts active. */
+	buildSpanButtons() {
+		const box = makeEl('div', 'presets');
+		const initialYears = (this.end - this.start) / 365.25;
+
+		let active = null;
+		const buttons = this.spans.map(span => {
+			const button = makeEl('button', '', span.label);
+
+			button.type = 'button';
+			button.addEventListener('click', () => this.chooseSpan(span, button));
+			box.appendChild(button);
+
+			if (!this.span && Math.abs(span.years - initialYears) < 0.02 * span.years) {
+				this.span = span;
+				active = button;
+			}
+
+			return button;
+		});
+
+		markChosen(buttons, active);
+
+		return box;
+	}
+
+	/* "Keep as ghost" and "Clear ghosts". */
+	buildGhostButtons() {
+		const box = makeEl('div', 'presets');
+
+		this.pinButton = makeEl('button', '', 'Keep as ghost');
+		this.clearButton = makeEl('button', '', 'Clear ghosts');
+		this.pinButton.type = 'button';
+		this.clearButton.type = 'button';
+		this.pinButton.addEventListener('click', () => this.pinGhost());
+		this.clearButton.addEventListener('click', () => this.clearGhosts());
+		box.append(this.pinButton, this.clearButton);
+
+		return box;
 	}
 
 	startYear() {
@@ -176,7 +189,6 @@ class ErrorCurve {
 	endYear() {
 		return Time.decimalYear(this.end);
 	}
-
 
 	/* ======================================================================
 	   3. MODELS AND GHOSTS
@@ -239,13 +251,11 @@ class ErrorCurve {
 	/* Span presets keep the centre of the current range. */
 	chooseSpan(span, button) {
 		const centre = (this.start + this.end) / 2;
-		const halfDays = span.years * 365.25 / 2;
+		const halfDays = (span.years * 365.25) / 2;
 
 		this.span = span;
 
-		this.spanButtons.querySelectorAll('button').forEach(b => {
-			b.classList.toggle('active', b === button);
-		});
+		markChosen([...this.spanButtons.querySelectorAll('button')], button);
 
 		this.setRange(centre - halfDays, centre + halfDays);
 	}
@@ -256,7 +266,6 @@ class ErrorCurve {
 		this.updateLegend();
 		this.plot.redraw();
 	}
-
 
 	/* ======================================================================
 	   4. SAMPLING
@@ -366,8 +375,7 @@ class ErrorCurve {
 		const units = this.span?.units ?? this.units;
 		const fixedHalf = this.span?.yMax ?? this.yMax;
 
-		this.inDegrees = units === 'deg' ||
-			(units === 'auto' && largest > ERROR_DEGREES_THRESHOLD);
+		this.inDegrees = units === 'deg' || (units === 'auto' && largest > ERROR_DEGREES_THRESHOLD);
 		this.unitFactor = this.inDegrees ? 1 / 60 : 1;
 		this.half = fixedHalf ?? niceCeiling(largest * this.unitFactor * 1.08);
 
@@ -380,11 +388,12 @@ class ErrorCurve {
 	checkScale(largest) {
 		if (largest * this.unitFactor > this.half && !this.warnedScale) {
 			this.warnedScale = true;
-			console.warn(`ErrorCurve "${this.container.id}": a curve leaves the scale ` +
-				`(±${this.half}); set yMax to cover every value of the sliders.`);
+			console.warn(
+				`ErrorCurve "${this.container.id}": a curve leaves the scale ` +
+					`(±${this.half}); set yMax to cover every value of the sliders.`
+			);
 		}
 	}
-
 
 	/* ======================================================================
 	   5. DRAWING
@@ -398,9 +407,9 @@ class ErrorCurve {
 		(this.curves ?? []).forEach(({ entry, sample, ghost }) => {
 			const f = this.unitFactor;
 			const scaleAll = values => values.map(v => v * f);
-			const style = ghost ?
-				{ color: entry.color ?? COL.muted, width: 1.5, alpha: GHOST_ALPHA, dash: [5, 4] } :
-				{ color: entry.color ?? COL.planet, width: 2.2 };
+			const style = ghost
+				? { color: entry.color ?? COL.muted, width: 1.5, alpha: GHOST_ALPHA, dash: [5, 4] }
+				: { color: entry.color ?? COL.planet, width: 2.2 };
 
 			if (sample.isBand) {
 				plot.band(sample.xs, scaleAll(sample.lows), scaleAll(sample.highs), {
@@ -437,6 +446,7 @@ class ErrorCurve {
 	   like its curve (a line, or a band over long spans), and the shading
 	   of the dates outside the reference's range when it is visible. */
 	updateLegend() {
+		/** @type {LegendItem[]} */
 		const items = (this.curves ?? []).map(({ entry, sample, ghost }) => {
 			return {
 				label: entry.label,
@@ -478,11 +488,9 @@ class ErrorCurve {
 	   not change size when the reader changes the span (CLAUDE.md). */
 	canLeaveRange() {
 		const centre = (this.start + this.end) / 2;
-		const reaches = halfDays => centre - halfDays < Ephem.RANGE.start ||
-			centre + halfDays > Ephem.RANGE.end;
+		const reaches = halfDays => centre - halfDays < Ephem.RANGE.start || centre + halfDays > Ephem.RANGE.end;
 
-		return reaches((this.end - this.start) / 2) ||
-			this.spans.some(span => reaches(span.years * 365.25 / 2));
+		return reaches((this.end - this.start) / 2) || this.spans.some(span => reaches((span.years * 365.25) / 2));
 	}
 
 	/* The note that explains the bands. It is always shown, whether or not
@@ -490,10 +498,10 @@ class ErrorCurve {
 	updateBandNote() {
 		const window = ERROR_PERIOD_TEXT[this.body] ?? `${Math.round(this.period)} days`;
 
-		this.bandNote.textContent = 'Over long spans, where one pixel covers more than ' +
+		this.bandNote.textContent =
+			'Over long spans, where one pixel covers more than ' +
 			`${this.resolution} days, each curve is drawn as a band, from its smallest to its largest error within ${window}.`;
 	}
-
 
 	/* ======================================================================
 	   6. READ-OUT
@@ -518,7 +526,6 @@ class ErrorCurve {
 		this.readout.textContent = `${Time.formatDate(jd)} · ${parts.join(' · ')}`;
 	}
 }
-
 
 /* ==========================================================================
    HELPERS
@@ -585,7 +592,58 @@ function timeTicks(min, max, count) {
 	return ticks;
 }
 
-/* Plain text of a label that may contain $...$ TeX. */
+/* The TeX commands of a label that have a plain-text form. */
+const TEX_SYMBOLS = {
+	alpha: 'α',
+	beta: 'β',
+	gamma: 'γ',
+	delta: 'δ',
+	epsilon: 'ε',
+	varepsilon: 'ε',
+	eta: 'η',
+	theta: 'θ',
+	kappa: 'κ',
+	lambda: 'λ',
+	mu: 'μ',
+	nu: 'ν',
+	pi: 'π',
+	rho: 'ρ',
+	sigma: 'σ',
+	tau: 'τ',
+	phi: 'φ',
+	varphi: 'φ',
+	omega: 'ω',
+	Delta: 'Δ',
+	Lambda: 'Λ',
+	Omega: 'Ω',
+	odot: '☉',
+	circ: '°',
+	prime: '′'
+};
+
+/* Plain text of a label that may contain $...$ TeX, for the hover
+   read-out: "$\bar\lambda$" -> "λ̄", "$\lambda_\text{model}$" ->
+   "λmodel", "$Y = 365\tfrac14$" -> "Y = 365 1/4". Text outside the
+   dollars is kept as it is. */
 function stripTex(label) {
-	return label.replace(/\$([^$]*)\$/g, '$1').replace(/\\[a-zA-Z]+/g, '').replace(/[{}]/g, '');
+	return label.replace(/\$([^$]*)\$/g, (match, tex) => texToText(tex));
+}
+
+/* The plain text of one TeX formula. */
+function texToText(tex) {
+	const group = '(\\{[^{}]*\\}|\\\\[a-zA-Z]+|[^\\s\\\\{}])';
+	const unbrace = text => text.replace(/^\{|\}$/g, '');
+
+	return tex
+		.replace(/\\(?:text|mathrm|mathit|mathbf)\{([^{}]*)\}/g, '$1')
+		.replace(new RegExp(`\\\\[td]?frac\\s*${group}\\s*${group}`, 'g'), (match, top, bottom) => {
+			return ` ${unbrace(top)}/${unbrace(bottom)}`;
+		})
+		.replace(/\\([a-zA-Z]+)/g, (match, name) => TEX_SYMBOLS[name] ?? (name === 'bar' ? '\\bar' : ''))
+		.replace(new RegExp(`\\\\bar\\s*${group}`, 'g'), (match, base) => `${unbrace(base)}̄`)
+		.replace(new RegExp(`[_^]${group}`, 'g'), (match, script) => unbrace(script))
+		.replace(/\\[,;!]|~/g, ' ')
+		.replace(/[{}\\]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
 }

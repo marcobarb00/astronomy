@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - SHARED LIBRARY (common.js)
    Loaded by every page, before any other shared script.
@@ -6,7 +7,7 @@
 
    TABLE OF CONTENTS
 	 1. Constants and shared palette
-	 2. Angles                (trigonometry in degrees, wrapping)
+	 2. Angles and numbers    (trigonometry in degrees, wrapping, polynomials, roots)
 	 3. Vectors and matrices  (3D vectors, spherical <-> cartesian, rotations)
 	 4. Formatting helpers    (degrees, sexagesimal, hours, days, TeX)
 	 5. Colour helpers        (translucent versions, text colours)
@@ -14,7 +15,6 @@
 	 7. DOM and KaTeX helpers
 	 8. UI wiring helpers     (sliders, presets, choice buttons, play button)
    ========================================================================== */
-
 
 /* ==========================================================================
    1. CONSTANTS AND SHARED PALETTE
@@ -26,32 +26,32 @@
    least 4.5:1 on the page background. */
 const COL = {
 	// page
-	bg:           '#f3eee2',   // parchment
-	card:         '#f7f3ea',   // inside figures and frames
-	ink:          '#1d2a44',   // text, rules, frames, outlines
-	muted:        '#5b6475',   // secondary text
-	line:         '#c9bc9c',   // light rules, grid lines
-	accent:       '#7a5718',   // labels, Play, links
+	bg: '#f3eee2', // parchment
+	card: '#f7f3ea', // inside figures and frames
+	ink: '#1d2a44', // text, rules, frames, outlines
+	muted: '#5b6475', // secondary text
+	line: '#c9bc9c', // light rules, grid lines
+	accent: '#7a5718', // labels, Play, links
 
 	// figures: line colours
-	earth:        '#2f5687',   // celestial equator, Earth
-	planet:       '#a23b2e',   // object of interest
-	sun:          '#b8862b',   // Sun, ecliptic
-	deferent:     '#4d7a55',   // horizon, deferent
-	epicycle:     '#6e5a9a',   // epicycle, Ptolemy's circles
+	earth: '#2f5687', // celestial equator, Earth
+	planet: '#a23b2e', // object of interest
+	sun: '#b8862b', // Sun, ecliptic
+	deferent: '#4d7a55', // horizon, deferent
+	epicycle: '#6e5a9a', // epicycle, Ptolemy's circles
 
 	// figures: text colours of the same elements
-	earthText:    '#2f5687',
-	planetText:   '#8d2f24',
-	sunText:      '#7a5718',
+	earthText: '#2f5687',
+	planetText: '#8d2f24',
+	sunText: '#7a5718',
 	deferentText: '#3e6346',
 	epicycleText: '#5e4a87',
 
 	// the blue plate (static sky charts only, STYLE.md §7)
-	plate:        '#1f3a6b',
-	plateInk:     '#eef3fb',
-	plateSoft:    '#c9d5ea',
-	plateAccent:  '#f2c96b'
+	plate: '#1f3a6b',
+	plateInk: '#eef3fb',
+	plateSoft: '#c9d5ea',
+	plateAccent: '#f2c96b'
 };
 
 const TAU = 2 * Math.PI;
@@ -64,6 +64,11 @@ const EPS = 23 + 26 / 60;
 
 const ORIGIN = [0, 0, 0];
 
+/* The observers the pages come back to (degrees; longitude positive
+   east): Rome is the default place of Act I. */
+const PLACES = {
+	rome: { lat: 41.9, lon: 12.4964 }
+};
 
 /* ==========================================================================
    2. ANGLES
@@ -95,6 +100,40 @@ const norm360 = x => ((x % 360) + 360) % 360;
 /* Angle in [-180, 180): the signed difference of two longitudes. */
 const norm180 = x => norm360(x + 180) - 180;
 
+/* ---------- Numbers ---------- */
+
+/* c0 + c1 t + c2 t^2 + ... (Horner's scheme). */
+function polynomial(t, coefficients) {
+	let result = 0;
+
+	for (let i = coefficients.length - 1; i >= 0; i--) {
+		result = result * t + coefficients[i];
+	}
+
+	return result;
+}
+
+/* A root of f in [a, b] by 'steps' halvings, NaN when f has the same sign
+   at both ends (no root to find there). */
+function bisect(f, a, b, steps = 40) {
+	const signA = Math.sign(f(a));
+
+	if (signA !== 0 && signA === Math.sign(f(b))) {
+		return NaN;
+	}
+
+	for (let i = 0; i < steps; i++) {
+		const middle = (a + b) / 2;
+
+		if (Math.sign(f(middle)) === signA) {
+			a = middle;
+		} else {
+			b = middle;
+		}
+	}
+
+	return (a + b) / 2;
+}
 
 /* ==========================================================================
    3. VECTORS AND MATRICES
@@ -110,11 +149,7 @@ const dot3 = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const length3 = v => Math.sqrt(dot3(v, v));
 
 function cross3(a, b) {
-	return [
-		a[1] * b[2] - a[2] * b[1],
-		a[2] * b[0] - a[0] * b[2],
-		a[0] * b[1] - a[1] * b[0]
-	];
+	return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 }
 
 function normalize3(v) {
@@ -132,11 +167,7 @@ function lin2(a, b, x, y) {
 
 /* Unit vector (times r) with longitude lon and latitude lat in the base frame. */
 function fromLonLat(lon, lat, r = 1) {
-	return [
-		r * cos(lat) * cos(lon),
-		r * cos(lat) * sin(lon),
-		r * sin(lat)
-	];
+	return [r * cos(lat) * cos(lon), r * cos(lat) * sin(lon), r * sin(lat)];
 }
 
 /* Inverse of fromLonLat: { lon in [0, 360), lat, r }. */
@@ -196,9 +227,11 @@ function matApply(m, v) {
 /* Product of two or more matrices, left to right: matMul(A, B, C) = A B C. */
 function matMul(...matrices) {
 	return matrices.reduce((a, b) => {
-		return a.map(row => [0, 1, 2].map(j => {
-			return row[0] * b[0][j] + row[1] * b[1][j] + row[2] * b[2][j];
-		}));
+		return a.map(row =>
+			[0, 1, 2].map(j => {
+				return row[0] * b[0][j] + row[1] * b[1][j] + row[2] * b[2][j];
+			})
+		);
 	});
 }
 
@@ -206,13 +239,43 @@ function transpose(m) {
 	return [0, 1, 2].map(i => [m[0][i], m[1][i], m[2][i]]);
 }
 
-
 /* ==========================================================================
    4. FORMATTING HELPERS
    ========================================================================== */
 
 const pad2 = n => String(n).padStart(2, '0');
-const fmt3 = x => x.toFixed(3);
+
+/* x with 'digits' decimals, as toFixed, but never "-0.0": a value that
+   rounds to zero is written without a sign. */
+function fixed(x, digits = 1) {
+	const text = x.toFixed(digits);
+
+	return Number(text) === 0 ? (0).toFixed(digits) : text;
+}
+
+/* An angle that lives in [0°, 360°) (a right ascension, a longitude, an
+   azimuth, a sidereal time) with 'digits' decimals: a value that rounds
+   up to 360 is written 0, as the angle it is. */
+function fixedAngle(degrees, digits = 1) {
+	const text = fixed(degrees, digits);
+
+	return Number(text) >= 360 ? fixed(Number(text) - 360, digits) : text;
+}
+
+const fmt3 = x => fixed(x, 3);
+
+/* An angle with one decimal and a true minus sign, for a slider: "−16.7°". */
+const formatAngle = value => `${fixed(value, 1).replace('-', '−')}°`;
+
+/* A value (hours or degrees) as whole units, minutes and seconds, the
+   seconds rounded to 'digits' decimals with the carry: { h, m, s }. */
+function splitHms(value, digits = 0) {
+	const total = Number((value * 3600).toFixed(digits));
+	const h = Math.floor(total / 3600);
+	const m = Math.floor((total - h * 3600) / 60);
+
+	return { h, m, s: total - h * 3600 - m * 60 };
+}
 
 /* Split a value into whole units and a rounded remainder in 1/base units.
    Handles the carry (e.g. 59.9 min -> next unit). */
@@ -228,10 +291,10 @@ function splitWithCarry(value, base) {
 	return { whole, rest };
 }
 
-/* Degrees -> "D°MM'" */
+/* Degrees -> "D°MM'" (no sign on a value that rounds to 0°00'). */
 function dms(degrees) {
-	const sign = degrees < 0 ? '-' : '';
 	const { whole, rest } = splitWithCarry(Math.abs(degrees), 60);
+	const sign = degrees < 0 && whole + rest > 0 ? '-' : '';
 
 	return `${sign}${whole}°${pad2(rest)}'`;
 }
@@ -243,13 +306,11 @@ function hm(hours) {
 	return `${whole}h${pad2(rest)}m`;
 }
 
-/* Hours -> "13h14m05.2s" (seconds with 'digits' decimals). */
+/* Hours -> "13h14m05.2s" (seconds with 'digits' decimals; no sign on a
+   value that rounds to zero). */
 function hms(hours, digits = 1) {
-	const sign = hours < 0 ? '-' : '';
-	const totalSeconds = Number((Math.abs(hours) * 3600).toFixed(digits));
-	const h = Math.floor(totalSeconds / 3600);
-	const m = Math.floor((totalSeconds - h * 3600) / 60);
-	const s = totalSeconds - h * 3600 - m * 60;
+	const { h, m, s } = splitHms(Math.abs(hours), digits);
+	const sign = hours < 0 && h + m + s > 0 ? '-' : '';
 	const secondsText = s.toFixed(digits).padStart(digits > 0 ? digits + 3 : 2, '0');
 
 	return `${sign}${h}h${pad2(m)}m${secondsText}s`;
@@ -262,11 +323,13 @@ function dh(days) {
 	return `${whole}d${pad2(rest)}h`;
 }
 
-/* Signed number with a fixed number of decimals: "+0.50" / "−0.50". */
+/* Signed number with a fixed number of decimals: "+0.50" / "−0.50"
+   (a value that rounds to zero is "+0.00"). */
 function signed(x, digits = 1) {
-	const sign = x < 0 ? '−' : '+';
+	const text = Math.abs(x).toFixed(digits);
+	const sign = x < 0 && Number(text) !== 0 ? '−' : '+';
 
-	return sign + Math.abs(x).toFixed(digits);
+	return sign + text;
 }
 
 /* An angle in degrees shown in arcminutes: "+12.3′". */
@@ -278,8 +341,8 @@ function arcmin(degrees, digits = 1) {
    value: sexagesimal(2.4833) -> "2;29 (2.483°)". 'places' = sexagesimal
    places after the semicolon. */
 function sexagesimal(degrees, places = 1) {
-	const sign = degrees < 0 ? '-' : '';
 	let units = Math.round(Math.abs(degrees) * Math.pow(60, places));
+	const sign = degrees < 0 && units > 0 ? '-' : '';
 	const digits = [];
 
 	for (let i = 0; i < places; i++) {
@@ -305,8 +368,12 @@ function dhTex(days) {
 
 /* ---------- TeX fragments for live read-outs ---------- */
 
-/* Signed number with three decimals: "+0.500" / "-0.500". */
-const signed3 = x => (x < 0 ? '-' : '+') + Math.abs(x).toFixed(3);
+/* Signed number with three decimals: "+0.500" / "-0.500" (and "+0.000"). */
+function signed3(x) {
+	const text = Math.abs(x).toFixed(3);
+
+	return (x < 0 && Number(text) !== 0 ? '-' : '+') + text;
+}
 
 /* "\alpha=12°30'" */
 const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
@@ -314,14 +381,13 @@ const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
 /* "lhs=c0\,\mathbf a+c1\,\mathbf b+c2\,\mathbf c" from [[coefficient, axisName], ...] */
 function texLinear(lhs, terms) {
 	const pieces = terms.map(([coefficient, axisName], i) => {
-		const number = (i === 0) ? fmt3(coefficient) : signed3(coefficient);
+		const number = i === 0 ? fmt3(coefficient) : signed3(coefficient);
 
 		return `${number}\\,\\mathbf ${axisName}`;
 	});
 
 	return `${lhs}=${pieces.join('')}`;
 }
-
 
 /* ==========================================================================
    5. COLOUR HELPERS
@@ -353,7 +419,6 @@ function textColor(color) {
 	return TEXT_COLOURS[color] ?? color;
 }
 
-
 /* ==========================================================================
    6. DRAWING HELPERS
    ========================================================================== */
@@ -368,8 +433,8 @@ const STAR_WAIST = 0.28;
    STAR_SIZE_BRIGHT at STAR_MAG_BRIGHT to STAR_SIZE_FAINT at
    STAR_MAG_FAINT, and clamped there. The chosen star of a figure is drawn
    at STAR_SIZE_CHOSEN, larger than any background star. */
-const STAR_MAG_BRIGHT = -1.5;     // Sirius is -1.46
-const STAR_MAG_FAINT = 5.5;       // sigma Octantis is 5.42
+const STAR_MAG_BRIGHT = -1.5; // Sirius is -1.46
+const STAR_MAG_FAINT = 5.5; // sigma Octantis is 5.42
 const STAR_SIZE_BRIGHT = 8;
 const STAR_SIZE_FAINT = 3;
 const STAR_SIZE_CHOSEN = 9;
@@ -386,20 +451,52 @@ function starCorners(x, y, s) {
 	const w = STAR_WAIST * s;
 
 	return [
-		[x, y - s], [x + w, y - w], [x + s, y], [x + w, y + w],
-		[x, y + s], [x - w, y + w], [x - s, y], [x - w, y - w]
+		[x, y - s],
+		[x + w, y - w],
+		[x + s, y],
+		[x + w, y + w],
+		[x, y + s],
+		[x - w, y + w],
+		[x - s, y],
+		[x - w, y - w]
 	];
 }
 
 /* The same star as an SVG path ("M x y L ... Z"). */
 function starPath(x, y, s) {
 	const parts = starCorners(x, y, s).map((p, i) => {
-		const command = (i === 0) ? 'M' : 'L';
+		const command = i === 0 ? 'M' : 'L';
 
 		return `${command}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
 	});
 
 	return parts.join(' ') + ' Z';
+}
+
+/* A dot (a point that is not a star) of the given radius and colour,
+   with a thin ring in the card colour when 'ring' (so it stands out from
+   a line under it). */
+function drawDot(ctx, x, y, radius, color, ring = true) {
+	ctx.fillStyle = color;
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, TAU);
+	ctx.fill();
+
+	if (ring) {
+		ctx.strokeStyle = COL.card;
+		ctx.lineWidth = 1.5;
+		ctx.stroke();
+	}
+}
+
+/* Give a canvas a bitmap of width x height CSS pixels at the device pixel
+   ratio, and scale its context so the drawing is in CSS pixels. */
+function scaleCanvas(canvas, ctx, width, height) {
+	const ratio = window.devicePixelRatio || 1;
+
+	canvas.width = Math.round(width * ratio);
+	canvas.height = Math.round(height * ratio);
+	ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 /* Fill a four-pointed star on a canvas with the current fillStyle.
@@ -456,21 +553,23 @@ let canvasFontsPromise = null;
 
 function whenCanvasFontsReady() {
 	if (canvasFontsPromise === null) {
-		const fonts = (typeof document !== 'undefined') ? document.fonts : null;
+		const fonts = typeof document !== 'undefined' ? document.fonts : null;
 
-		canvasFontsPromise = fonts ?
-			Promise.all([FONT_NAME, FONT_SYMBOL, FONT_TICK, FONT_AXIS].map(font => fonts.load(font))).catch(() => {}) :
-			Promise.resolve();
+		canvasFontsPromise = fonts
+			? Promise.all([FONT_NAME, FONT_SYMBOL, FONT_TICK, FONT_AXIS].map(font => fonts.load(font))).catch(() => {})
+			: Promise.resolve();
 	}
 
 	return canvasFontsPromise;
 }
 
-
 /* ==========================================================================
    7. DOM AND KATEX HELPERS
    ========================================================================== */
 
+/** The element with this id. Typed `any`: the pages look up sliders,
+	buttons, canvases and plain blocks alike.
+	@type {(id: string) => any} */
 const byId = id => document.getElementById(id);
 const readNumber = id => Number(byId(id).value);
 
@@ -489,19 +588,34 @@ function makeEl(tag, className = '', html = '') {
 
 /* Typeset one TeX string into an element (display style by default). */
 function renderTex(element, source, displayMode = true) {
+	// KaTeX did not load (a CDN failure): the TeX source, as plain text
+	if (typeof katex === 'undefined') {
+		element.textContent = source;
+		return;
+	}
+
 	katex.render(source, element, { throwOnError: false, displayMode: displayMode });
 }
 
-/* Typeset every element that carries a data-tex attribute. */
+/** Typeset every element that carries a data-tex attribute.
+   @param {ParentNode} [root] */
 function renderStaticMath(root = document) {
-	root.querySelectorAll('[data-tex]').forEach(element => {
+	root.querySelectorAll('[data-tex]').forEach((/** @type {HTMLElement} */ element) => {
 		renderTex(element, element.dataset.tex);
 	});
 }
 
-/* Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
-   then any data-tex element. Needs KaTeX's auto-render extension. */
+/** Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
+   then any data-tex element. Needs KaTeX's auto-render extension.
+   @param {HTMLElement} [root] */
 function renderMath(root = document.body) {
+	// without the auto-render extension (a CDN failure) the prose keeps
+	// its $...$ source; the read-outs still get their text
+	if (typeof renderMathInElement !== 'function') {
+		renderStaticMath(root);
+		return;
+	}
+
 	renderMathInElement(root, {
 		delimiters: [
 			{ left: '$$', right: '$$', display: true },
@@ -544,7 +658,6 @@ function showLines(containerId, lines) {
 	}
 }
 
-
 /* ==========================================================================
    8. UI WIRING HELPERS
    Generic behaviour shared by every figure. Each helper receives a callback
@@ -560,7 +673,7 @@ function formatSliderValue(input, formatter) {
 		return formatter(value);
 	}
 
-	const text = Number.isInteger(value) ? value : value.toFixed(1);
+	const text = Number.isInteger(value) ? value : fixed(value, 1);
 
 	return text + (input.dataset.unit ?? '°');
 }
@@ -602,10 +715,10 @@ function applyPreset(button) {
 
 /* Press and hold on a step button: one step at once, then, after a
    pause, repeated steps that speed up (milliseconds). */
-const STEP_HOLD_DELAY = 400;       // before the first repeat
-const STEP_REPEAT_START = 150;     // first interval between repeats
-const STEP_REPEAT_FASTEST = 25;    // shortest interval (40 steps per second)
-const STEP_REPEAT_FACTOR = 0.85;   // each interval is this times the previous
+const STEP_HOLD_DELAY = 400; // before the first repeat
+const STEP_REPEAT_START = 150; // first interval between repeats
+const STEP_REPEAT_FASTEST = 25; // shortest interval (40 steps per second)
+const STEP_REPEAT_FACTOR = 0.85; // each interval is this times the previous
 
 /* A step button repeats while held (mouse, pen or finger). The click that
    follows a press is ignored, so a short press is still exactly one step;
@@ -642,12 +755,12 @@ function wireStepButton(button) {
 
 	button.addEventListener('pointercancel', () => {
 		stop();
-		pressed = false;      // no click follows a cancelled press
+		pressed = false; // no click follows a cancelled press
 	});
 
 	button.addEventListener('click', () => {
 		if (pressed) {
-			pressed = false;  // already stepped on pointerdown
+			pressed = false; // already stepped on pointerdown
 			return;
 		}
 
@@ -658,10 +771,11 @@ function wireStepButton(button) {
 	button.addEventListener('contextmenu', event => event.preventDefault());
 }
 
-/* Wire every button inside root that drives a slider: presets set a value,
-   step buttons (data-step) step it and repeat while held. */
+/** Wire every button inside root that drives a slider: presets set a value,
+   step buttons (data-step) step it and repeat while held.
+   @param {ParentNode} [root] */
 function wirePresets(root = document) {
-	root.querySelectorAll('button[data-target]').forEach(button => {
+	root.querySelectorAll('button[data-target]').forEach((/** @type {HTMLButtonElement} */ button) => {
 		if (button.dataset.step !== undefined) {
 			wireStepButton(button);
 		} else {
@@ -670,19 +784,45 @@ function wirePresets(root = document) {
 	});
 }
 
+/* Start each figure of a page (its init()), one at a time: a figure that
+   fails reports it in the console and does not stop the others. */
+function startFigures(figures) {
+	figures.forEach(figure => {
+		try {
+			figure.init();
+		} catch (error) {
+			console.error('A figure could not start:', error);
+		}
+	});
+}
+
 /* A row of buttons, one per name (e.g. a star); the chosen one is marked
    active. onChoose(name) runs when another one is picked. */
 function buildChoice(container, names, chosen, onChoose) {
-	names.forEach(name => {
-		const button = makeEl('button', name === chosen ? 'active' : '', name);
+	const buttons = names.map(name => {
+		const button = makeEl('button', '', name);
 
 		button.type = 'button';
 		button.addEventListener('click', () => {
-			container.querySelectorAll('button').forEach(other => other.classList.remove('active'));
-			button.classList.add('active');
+			markChosen(buttons, button);
 			onChoose(name);
 		});
 		container.appendChild(button);
+
+		return button;
+	});
+
+	markChosen(buttons, buttons[names.indexOf(chosen)]);
+}
+
+/* Mark 'chosen' as the active button of its row: the class that shows it,
+   and aria-pressed, so that a screen reader says which one is chosen. */
+function markChosen(buttons, chosen) {
+	buttons.forEach(button => {
+		const on = button === chosen;
+
+		button.classList.toggle('active', on);
+		button.setAttribute('aria-pressed', on ? 'true' : 'false');
 	});
 }
 
@@ -694,57 +834,89 @@ function buildChoice(container, names, chosen, onChoose) {
    by the small amount of each frame. options: playLabel, pauseLabel (the
    two texts of the button), onPlay (called when it starts, e.g. to pause
    another player of the same figure). The button shows a small play or
-   pause icon (inline SVG, STYLE.md §8) before its label. Returns { pause }. */
-const PLAY_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+   pause icon (inline SVG, STYLE.md §8) before its label. While its figure
+   is off the screen it stops drawing, and goes on from the same position
+   when the figure comes back. Returns { pause }. */
+const PLAY_ICON =
+	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 L11 6 L2 11 Z" fill="currentColor"></path></svg>';
-const PAUSE_ICON = '<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
+const PAUSE_ICON =
+	'<svg class="icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">' +
 	'<path d="M2 1 H5 V11 H2 Z M7 1 H10 V11 H7 Z" fill="currentColor"></path></svg>';
+
+/* A frame longer than this (seconds) is not played through: the tab was
+   in the background, or the page stalled. The player moves on by this
+   much at most, instead of jumping ahead. */
+const PLAY_MAX_FRAME_SECONDS = 0.25;
+
+/* A value past max brought back into [min, max], whole turns at a time. */
+function wrapIntoRange(value, min, max) {
+	if (value <= max) {
+		return value;
+	}
+
+	return min + ((value - min) % (max - min));
+}
 
 function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	const playLabel = options.playLabel ?? 'Play';
 	const pauseLabel = options.pauseLabel ?? 'Pause';
 	let playing = false;
+	let looping = false; // a frame loop is running (at most one at a time)
+	let visible = true; // the figure is on the screen
 	let lastTime = null;
 	let position = 0;
 
-	const advance = now => {
-		if (!playing) {
+	// one frame: move on by the time since the last one
+	const step = now => {
+		if (!playing || !visible) {
+			looping = false; // paused, or suspended while off the screen
 			return;
 		}
 
 		if (lastTime !== null) {
-			const min = Number(slider.min);
-			const max = Number(slider.max);
+			const seconds = Math.min((now - lastTime) / 1000, PLAY_MAX_FRAME_SECONDS);
 
-			position += (now - lastTime) / 1000 * unitsPerSecond;
-
-			if (position > max) {
-				position = min + (position - max);
-			}
-
+			position = wrapIntoRange(position + seconds * unitsPerSecond, Number(slider.min), Number(slider.max));
 			slider.value = position;
 			slider.dispatchEvent(new Event('input'));
 		}
 
 		lastTime = now;
-		requestAnimationFrame(advance);
+		requestAnimationFrame(step);
+	};
+
+	const startLoop = () => {
+		if (!looping) {
+			looping = true;
+			lastTime = null;
+			requestAnimationFrame(step);
+		}
 	};
 
 	const setPlaying = on => {
 		playing = on;
-		lastTime = null;
 		position = Number(slider.value);
-		button.innerHTML = on ? `${PAUSE_ICON}<span>${pauseLabel}</span>` : `${PLAY_ICON}<span>${playLabel}</span>`;
-		button.setAttribute('aria-pressed', on ? 'true' : 'false');
+		showPlayState(button, on, on ? pauseLabel : playLabel);
 
 		if (on) {
 			if (options.onPlay) {
 				options.onPlay();
 			}
 
-			requestAnimationFrame(advance);
+			startLoop();
 		}
 	};
+
+	// off the screen a player stops drawing; back on it, it goes on from
+	// the same position, still playing
+	whenOffScreen(slider.closest('figure') ?? slider, onScreen => {
+		visible = onScreen;
+
+		if (visible && playing) {
+			startLoop();
+		}
+	});
 
 	button.addEventListener('click', () => setPlaying(!playing));
 	slider.addEventListener('pointerdown', () => setPlaying(false));
@@ -752,4 +924,42 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	setPlaying(false);
 
 	return { pause: () => setPlaying(false) };
+}
+
+/* Call onChange(true / false) when 'element' comes onto or leaves the
+   screen (nothing in a browser without IntersectionObserver). */
+function whenOffScreen(element, onChange) {
+	if (typeof IntersectionObserver === 'undefined') {
+		return;
+	}
+
+	new IntersectionObserver(entries => {
+		onChange(entries[entries.length - 1].isIntersecting);
+	}).observe(element);
+}
+
+/* Call 'callback' whenever the device pixel ratio changes (the browser
+   zooms, the window moves to another screen): a canvas must then be
+   sized and drawn again at the new resolution. */
+function onPixelRatioChange(callback) {
+	if (typeof window === 'undefined' || !window.matchMedia) {
+		return;
+	}
+
+	const query = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+
+	query.addEventListener(
+		'change',
+		() => {
+			callback();
+			onPixelRatioChange(callback);
+		},
+		{ once: true }
+	);
+}
+
+/* The icon and label of a play button, and its pressed state. */
+function showPlayState(button, playing, label) {
+	button.innerHTML = `${playing ? PAUSE_ICON : PLAY_ICON}<span>${label}</span>`;
+	button.setAttribute('aria-pressed', playing ? 'true' : 'false');
 }
