@@ -1,24 +1,26 @@
+// @ts-check
 /* ==========================================================================
    PAGE 1.1 · THE TURNING SKY - SCRIPT (page.js)
-   Four figures, each with its own init / update / draw:
-	 1. the observer's sky        (3D, horizon frame: the ground never moves)
-	 2. the sky seen from outside (3D, equatorial frame: the stars never move)
-	 3. the day of a star         (2D: altitude through a turn, and the map of
+   Five figures, each with its own init (and update / draw when it moves):
+	 1. the sky around the pole   (a blue plate: a static chart of the stars)
+	 2. the observer's sky        (3D, horizon frame: the ground never moves)
+	 3. the sky seen from outside (3D, equatorial frame: the stars never move)
+	 4. the day of a star         (2D: altitude through a turn, and the map of
 								   the three classes over latitude and declination)
-	 4. the model against the sky (2D: altitude error from refraction)
+	 5. the model against the sky (2D: altitude error from refraction)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
-   sphere3d.js, plot2d.js, components.js.
+   plate-stars.js, plate.js, sphere3d.js, plot2d.js, components.js.
    Every number quoted in the prose comes from tools/numbers/1.1-turning-sky.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
-	 1. Figure 1: the observer's sky
-	 2. Figure 2: the sky seen from outside
-	 3. Figure 3: the day of a star
-	 4. Figure 4: the model against the sky
-	 5. Page start
+	 1. Figure 1: the sky around the pole
+	 2. Figure 2: the observer's sky
+	 3. Figure 3: the sky seen from outside
+	 4. Figure 4: the day of a star
+	 5. Figure 5: the model against the sky
+	 6. Page start
    ========================================================================== */
-
 
 /* ==========================================================================
    0. HELPERS SHARED BY THE FIGURES
@@ -27,11 +29,12 @@
 /* The time sliders run at one hour of sky per second when playing. */
 const PLAY_HOURS_PER_SECOND = 1;
 
-/* Epoch of the real sky in Figure 4 (stars carried to it). */
+/* Epoch of the real sky in Figure 5 (stars carried to it). */
 const TEST_EPOCH = Time.julianDay(2026, 1, 1);
 
-/* Text of a declination or latitude: "−16.7°" (one decimal). */
-const formatAngle = value => `${value.toFixed(1).replace('-', '−')}°`;
+/* The style of a background star (STYLE.md §5): ink at 55% opacity,
+   sized by its V magnitude. */
+const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(star.mag) });
 
 /* Text of a class from Diurnal.classify, for KaTeX. */
 const CLASS_TEXT = {
@@ -68,19 +71,41 @@ function dailyCircle(dec, matrix) {
 	return sampleParametric(ra => matApply(matrix, fromLonLat(ra, dec)), 2);
 }
 
+/* ==========================================================================
+   1. FIGURE 1: THE SKY AROUND THE POLE
+   A blue plate (shared/plate.js): the stars of 2026 around the north
+   celestial pole, as seen from the ground. Highlighted: the circle of
+   declination 90° - 41.9°, inside which the stars never set at Rome.
+   ========================================================================== */
+
+/* Rome's latitude, as in the prose and the presets. */
+const ROME_LATITUDE = PLACES.rome.lat;
+
+const poleFigure = {
+	init() {
+		const chart = Plate.polar(byId('plate-pole'), {
+			rimDec: 25,
+			figures: ['URSA MAJOR', 'URSA MINOR', 'CASSIOPEIA', 'CEPHEUS', 'CYGNUS'],
+			names: [
+				['alf UMi', 'Polaris', 8, 4],
+				['bet UMi', 'Kochab', -58, 4],
+				['alf UMa', 'Dubhe', 9, 4],
+				['alf Aur', 'Capella', 9, 4],
+				['alf Lyr', 'Vega', 10, 4],
+				['alf Cyg', 'Deneb', 9, 16]
+			],
+			label: 'Chart of the northern sky around the celestial pole, with a dashed circle around the stars that never set at Rome.'
+		});
+
+		Plate.highlightCircle(chart, 90 - ROME_LATITUDE);
+	}
+};
 
 /* ==========================================================================
-   1. FIGURE 1: THE OBSERVER'S SKY
+   2. FIGURE 2: THE OBSERVER'S SKY
    Drawn in the horizon frame (x south, y east, z zenith): time and latitude
    turn the sky, never the ground. Stars at their J2000 positions.
    ========================================================================== */
-
-const HORIZON_POINTS = [
-	['S', [1, 0, 0]],
-	['E', [0, 1, 0]],
-	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
-];
 
 const skyFigure = {
 	sphere: null,
@@ -101,12 +126,15 @@ const skyFigure = {
 		wirePresets(figure);
 		wirePlayButton(byId('sky-play'), byId('sky-time'), PLAY_HOURS_PER_SECOND);
 
-		buildChoice(byId('sky-stars'),
+		buildChoice(
+			byId('sky-stars'),
 			['Polaris', 'Dubhe', 'Vega', 'Mintaka', 'Sirius', 'Antares', 'Canopus', 'Acrux'],
-			this.star.name, name => {
+			this.star.name,
+			name => {
 				this.star = Stars.find(name);
 				this.update();
-			});
+			}
+		);
 
 		this.update();
 	},
@@ -135,16 +163,16 @@ const skyFigure = {
 
 		showLines('sky-readout', [
 			`\\text{${this.star.name}}:\\ ${CLASS_TEXT[Diurnal.classify(dec, phi)]}`,
-			`\\delta = ${dec.toFixed(1)}^\\circ,\\quad H = ${H.toFixed(1)}^\\circ`,
-			`a = ${a.toFixed(1)}^\\circ`,
-			`a_\\text{max} = ${Diurnal.upperCulmination(dec, phi).toFixed(1)}^\\circ,\\quad ` +
-				`a_\\text{min} = ${Diurnal.lowerCulmination(dec, phi).toFixed(1)}^\\circ`
+			`\\delta = ${fixed(dec, 1)}^\\circ,\\quad H = ${fixed(H, 1)}^\\circ`,
+			`a = ${fixed(a, 1)}^\\circ`,
+			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
+				`a_\\text{min} = ${fixed(Diurnal.lowerCulmination(dec, phi), 1)}^\\circ`
 		]);
 	},
 
 	draw() {
 		if (!this.state) {
-			return;    // a resize can ask for a drawing before the first update
+			return; // a resize can ask for a drawing before the first update
 		}
 
 		const s = this.sphere;
@@ -152,16 +180,16 @@ const skyFigure = {
 		const toSky = v => matApply(matrix, v);
 
 		s.outline();
-		this.drawGround();
+		s.ground();
 
 		// the equator and Ptolemy's two circles
 		s.circle(toSky([1, 0, 0]), toSky([0, 1, 0]), { color: COL.earth, width: 2 });
 		this.drawPtolemyCircles(pole);
 
-		// the other bright stars
+		// the other bright stars, sized by brightness
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(toSky(fromLonLat(star.ra, star.dec)), { color: COL.muted, radius: 2.5 });
+				s.star(toSky(fromLonLat(star.ra, star.dec)), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -172,29 +200,13 @@ const skyFigure = {
 		s.axis(scale(pole, -1.25), 'P′', { color: COL.muted, labelColor: COL.muted });
 	},
 
-	/* The ground: horizon, cardinal points, zenith, meridian. */
-	drawGround() {
-		const s = this.sphere;
-
-		s.fillPlane([1, 0, 0], [0, 1, 0], { color: COL.deferent, alpha: 0.14 });
-		s.circle([1, 0, 0], [0, 1, 0], { color: COL.deferent, width: 2 });
-		s.circle([1, 0, 0], [0, 0, 1], { color: COL.muted, width: 1, dash: [2, 4] });
-
-		HORIZON_POINTS.forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, dx: -5, dy: 5 });
-		});
-
-		s.point([0, 0, 1], { color: COL.deferent, radius: 4 });
-		s.label('Z', [0, 0, 1], { color: COL.deferent, dx: -18, dy: 4 });
-	},
-
 	/* Around the raised pole, the circle of radius |phi| holds the stars
 	   that never set; around the other pole, the stars that never rise. */
 	drawPtolemyCircles(pole) {
 		const radius = Math.abs(this.state.phi);
 
 		if (radius < 0.5) {
-			return;    // at the equator both circles shrink to the poles
+			return; // at the equator both circles shrink to the poles
 		}
 
 		const raised = this.state.phi > 0 ? pole : negate(pole);
@@ -217,14 +229,13 @@ const skyFigure = {
 			});
 		});
 
-		s.point(point, { color: COL.planet, radius: 6, ring: true });
+		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
 
-
 /* ==========================================================================
-   2. FIGURE 2: THE SKY SEEN FROM OUTSIDE
+   3. FIGURE 3: THE SKY SEEN FROM OUTSIDE
    Drawn in the equatorial frame: the stars never move; the observer's
    zenith and horizon turn eastward about the axis.
    ========================================================================== */
@@ -276,8 +287,8 @@ const outsideFigure = {
 
 		showLines('out-readout', [
 			`\\text{${this.star.name}}`,
-			`\\angle(\\hat{\\mathbf z}, \\mathbf s) = ${angle.toFixed(1)}^\\circ`,
-			`a = 90^\\circ - ${angle.toFixed(1)}^\\circ = ${(90 - angle).toFixed(1)}^\\circ`
+			`\\angle(\\hat{\\mathbf z}, \\mathbf s) = ${fixed(angle, 1)}^\\circ`,
+			`a = 90^\\circ - ${fixed(angle, 1)}^\\circ = ${fixed(90 - angle, 1)}^\\circ`
 		]);
 	},
 
@@ -298,7 +309,7 @@ const outsideFigure = {
 
 		Stars.LIST.forEach(star => {
 			if (star !== this.star) {
-				s.point(fromLonLat(star.ra, star.dec), { color: COL.muted, radius: 2.5 });
+				s.star(fromLonLat(star.ra, star.dec), BACKGROUND_STAR(star));
 			}
 		});
 
@@ -330,7 +341,7 @@ const outsideFigure = {
 		const b = s.project(starPoint);
 
 		s.arc(zenith, toward, angle, { color: COL.planet, width: 2.5 });
-		s.point(starPoint, { color: COL.planet, radius: 6, ring: true });
+		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 
 		// the star's label beyond the star, Z's label beyond the zenith
 		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
@@ -345,9 +356,8 @@ const outsideFigure = {
 	}
 };
 
-
 /* ==========================================================================
-   3. FIGURE 3: THE DAY OF A STAR
+   4. FIGURE 4: THE DAY OF A STAR
    (a) altitude against hour angle for the chosen declination and latitude;
    (b) the plane of latitude and declination, split into the three classes,
 	   with lines of equal fraction of the turn above the horizon.
@@ -422,9 +432,9 @@ const dayFigure = {
 		const f = H0 / 180;
 		const lines = [
 			CLASS_TEXT[Diurnal.classify(dec, phi)],
-			`a_\\text{max} = ${Diurnal.upperCulmination(dec, phi).toFixed(1)}^\\circ,\\quad ` +
-				`a_\\text{min} = ${Diurnal.lowerCulmination(dec, phi).toFixed(1)}^\\circ`,
-			`H_0 = ${H0.toFixed(1)}^\\circ,\\quad f = ${f.toFixed(3)}`,
+			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
+				`a_\\text{min} = ${fixed(Diurnal.lowerCulmination(dec, phi), 1)}^\\circ`,
+			`H_0 = ${fixed(H0, 1)}^\\circ,\\quad f = ${fixed(f, 3)}`,
 			`\\text{up } ${hmTex(f * Diurnal.TURN_HOURS)}\\ \\text{of each turn}`
 		];
 
@@ -447,7 +457,12 @@ const dayFigure = {
 		}
 
 		p.frame();
-		p.band(xs, xs.map(() => 0), above, { color: COL.planet, alpha: 0.18 });
+		p.band(
+			xs,
+			xs.map(() => 0),
+			above,
+			{ color: COL.planet, alpha: 0.18 }
+		);
 		p.hline(0, { color: COL.deferent, width: 2 });
 		p.curve(xs, altitudes, { color: COL.planet });
 
@@ -481,10 +496,30 @@ const dayFigure = {
 		const sunBand = { color: COL.sun, alpha: 0.3 };
 		const mutedBand = { color: COL.muted, alpha: 0.25 };
 
-		p.band(north, north.map(phi => 90 - phi), north.map(() => 90), sunBand);
-		p.band(south, south.map(() => -90), south.map(phi => -90 - phi), sunBand);
-		p.band(north, north.map(() => -90), north.map(phi => phi - 90), mutedBand);
-		p.band(south, south.map(phi => phi + 90), south.map(() => 90), mutedBand);
+		p.band(
+			north,
+			north.map(phi => 90 - phi),
+			north.map(() => 90),
+			sunBand
+		);
+		p.band(
+			south,
+			south.map(() => -90),
+			south.map(phi => -90 - phi),
+			sunBand
+		);
+		p.band(
+			north,
+			north.map(() => -90),
+			north.map(phi => phi - 90),
+			mutedBand
+		);
+		p.band(
+			south,
+			south.map(phi => phi + 90),
+			south.map(() => 90),
+			mutedBand
+		);
 
 		p.text('never sets', 30, 72, { color: COL.ink });
 		p.text('never rises', 30, -86, { color: COL.ink });
@@ -518,16 +553,15 @@ const dayFigure = {
 	}
 };
 
-
 /* ==========================================================================
-   4. FIGURE 4: THE MODEL AGAINST THE SKY
+   5. FIGURE 5: THE MODEL AGAINST THE SKY
    Over one turn, the model's altitude minus the real one. The model's
    star is fitted on the night (its position of TEST_EPOCH); the real sky
    adds refraction. Fixed scale: the deepest value is -34.4' (a star on
    the seen horizon), computed in tools/numbers/1.1-turning-sky.js.
    ========================================================================== */
 
-const TEST_Y_RANGE = [-40, 5];         // arcminutes
+const TEST_Y_RANGE = [-40, 5]; // arcminutes
 const TEST_HALF_TURN = Diurnal.TURN_HOURS / 2;
 
 /* True altitude (deg) of a star seen exactly on the horizon: t = -R(t). */
@@ -552,7 +586,7 @@ const testFigure = {
 		this.plot = new Plot2D(byId('test-plot'), {
 			x: [-12, 12],
 			y: TEST_Y_RANGE,
-			xLabel: 'clock time from the star\'s highest point (h)',
+			xLabel: "clock time from the star's highest point (h)",
 			yLabel: 'Δa (arcmin)',
 			aspect: 0.62,
 			xTicks: () => [-12, -9, -6, -3, 0, 3, 6, 9, 12].map(value => ({ value, label: String(value) })),
@@ -562,12 +596,15 @@ const testFigure = {
 		wireSlider(byId('test-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
 
-		buildChoice(byId('test-stars'),
+		buildChoice(
+			byId('test-stars'),
 			['Sirius', 'Mintaka', 'Vega', 'Antares', 'Capella', 'Canopus'],
-			this.star.name, name => {
+			this.star.name,
+			name => {
 				this.star = Stars.find(name);
 				this.update();
-			});
+			}
+		);
 
 		this.update();
 	},
@@ -584,8 +621,8 @@ const testFigure = {
 	showReadout() {
 		const model = Diurnal.classify(this.dec, this.phi);
 		const real = Diurnal.classify(this.dec, this.phi, this.depth);
-		const upModel = 2 * this.modelH0 / Diurnal.DEGREES_PER_HOUR;
-		const upReal = 2 * this.realH0 / Diurnal.DEGREES_PER_HOUR;
+		const upModel = (2 * this.modelH0) / Diurnal.DEGREES_PER_HOUR;
+		const upReal = (2 * this.realH0) / Diurnal.DEGREES_PER_HOUR;
 		const lowest = Diurnal.lowerCulmination(this.dec, this.phi);
 
 		// always four lines (data-lines): the star, the model, the real sky,
@@ -600,13 +637,13 @@ const testFigure = {
 		let difference = '';
 
 		if (model === 'rises' && real === 'rises') {
-			difference = `\\Delta t = ${((upReal - upModel) / 2 * 60).toFixed(1)}\\ \\text{min}`;
+			difference = `\\Delta t = ${fixed(((upReal - upModel) / 2) * 60, 1)}\\ \\text{min}`;
 		} else if (model === 'circumpolar') {
-			difference = `\\text{lowest point lifted by } ${(Ephem.refraction(lowest) * 60).toFixed(1)}'`;
+			difference = `\\text{lowest point lifted by } ${fixed(Ephem.refraction(lowest) * 60, 1)}'`;
 		}
 
 		const lines = [
-			`\\text{${this.star.name}},\\ \\delta = ${this.dec.toFixed(2)}^\\circ`,
+			`\\text{${this.star.name}},\\ \\delta = ${fixed(this.dec, 2)}^\\circ`,
 			`\\text{up, model: } ${upText(model, upModel)}`,
 			`\\text{up, real: } ${upText(real, upReal)}`
 		];
@@ -650,16 +687,12 @@ const testFigure = {
 	}
 };
 
-
 /* ==========================================================================
-   5. PAGE START
+   6. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	skyFigure.init();
-	outsideFigure.init();
-	dayFigure.init();
-	testFigure.init();
+	startFigures([poleFigure, skyFigure, outsideFigure, dayFigure, testFigure]);
 });

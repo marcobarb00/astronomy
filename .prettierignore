@@ -1,0 +1,22 @@
+# Prettier formats the JavaScript and the CSS only (npm run format).
+# Never the HTML: it would rewrap the prose and the KaTeX.
+# Tables copied from a source (Standish, Meeus, ERFA, SIMBAD) carry a
+# `// prettier-ignore`, so they keep the digits as printed.
+*.html
+*.md
+*.json
+*.mjs
+*.svg
+*.txt
+*.csv
+*.sh
+*.py
+*.yml
+*.yaml
+
+# Not ours to format: the earlier pages, generated data, outputs.
+archive/
+shared/plate-stars.js
+node_modules/
+tools/check/out/
+.claude/

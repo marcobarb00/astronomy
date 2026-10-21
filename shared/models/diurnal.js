@@ -1,8 +1,9 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE TURNING SKY (models/diurnal.js)
    The model of page 1.1: the sky is a rigid celestial sphere turning
    uniformly about the polar axis, seen by an observer at latitude phi.
-   Needs common.js. Touches no DOM, so it can be loaded in Node.
+   Needs common.js and time.js. Touches no DOM, so it can be loaded in Node.
 
    This model predicts altitudes and rising times, not a longitude, so it
    exports plain functions instead of make() (see README.md).
@@ -26,7 +27,6 @@
    ========================================================================== */
 
 const Diurnal = (function () {
-
 	/* ======================================================================
 	   1. ROTATION RATE
 	   The sky turns 360.98564736629° per day of clock time (UT), the rate
@@ -34,10 +34,9 @@ const Diurnal = (function () {
 	   23 h 56 min 04.09 s.
 	   ====================================================================== */
 
-	const DEGREES_PER_DAY = 360.98564736629;
+	const DEGREES_PER_DAY = Time.SIDEREAL_RATE;
 	const DEGREES_PER_HOUR = DEGREES_PER_DAY / 24;
 	const TURN_HOURS = 360 / DEGREES_PER_HOUR;
-
 
 	/* ======================================================================
 	   2. FRAMES
@@ -63,12 +62,11 @@ const Diurnal = (function () {
 		return [cos(phi), 0, sin(phi)];
 	}
 
-	/* Hour angle (deg, in (-180, 180]) of right ascension ra when the sky
+	/* Hour angle (deg, in [-180, 180)) of right ascension ra when the sky
 	   has turned by theta. */
 	function hourAngle(theta, ra) {
 		return norm180(theta - ra);
 	}
-
 
 	/* ======================================================================
 	   3. ALTITUDE, CULMINATIONS, RISING
@@ -111,7 +109,7 @@ const Diurnal = (function () {
 		const denominator = cos(phi) * cos(dec);
 
 		if (Math.abs(denominator) < 1e-12) {
-			return classify(dec, phi, h0) === 'circumpolar' ? 180 : 0;    // at a pole
+			return classify(dec, phi, h0) === 'circumpolar' ? 180 : 0; // at a pole
 		}
 
 		const c = (sin(h0) - sin(phi) * sin(dec)) / denominator;
@@ -131,7 +129,6 @@ const Diurnal = (function () {
 	function fractionAbove(dec, phi, h0 = 0) {
 		return risingHourAngle(dec, phi, h0) / 180;
 	}
-
 
 	/* ======================================================================
 	   4. EXPORT

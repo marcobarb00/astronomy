@@ -20,6 +20,11 @@
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
 		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
 	<!-- Shared theme -->
 	<link rel="stylesheet" href="../shared/theme.css">
 
@@ -27,9 +32,12 @@
 	<script defer src="../shared/common.js"></script>
 	<script defer src="../shared/time.js"></script>
 	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/models/diurnal.js"></script>
+	<script defer src="../shared/models/mean-sun.js"></script>
 	<script defer src="../shared/sphere3d.js"></script>
 	<script defer src="../shared/plot2d.js"></script>
 	<script defer src="../shared/errorcurve.js"></script>
+	<script defer src="../shared/site-map.js"></script>
 	<script defer src="../shared/components.js"></script>
 	<script defer src="demo.js"></script>
 </head>
@@ -37,16 +45,16 @@
 <body>
 <div class="page">
 
-	<nav class="toc" aria-label="Contents"></nav>
+	<!-- Page header written by hand (the demo is not in the site map) -->
+	<header class="page-head">
+		<p class="act-line">Templates · demo</p>
+		<h1>The shared components at work</h1>
+		<p class="subtitle">Do the sphere, the plots, the reference sky and the error curve fit together?</p>
+	</header>
 
 	<article>
-		<header class="page-head">
-			<p class="page-number">Templates · demo</p>
-			<h1>The shared components at work</h1>
-			<p class="question">Do the sphere, the plots, the reference sky and the error curve fit together?</p>
-		</header>
 
-		<p>
+		<p class="lead">
 			Everything on this page comes from <code>shared/</code>: the Sun's
 			position from the reference ephemeris, clock and sidereal time from
 			<code>time.js</code>, a draggable sphere, a 2D plot and the error-curve
@@ -69,48 +77,58 @@
 			each day.
 		</p>
 
-		<p>
-			A star never sets when its declination is $\delta > 90^\circ - \varphi$:
-			try Vega at different latitudes.
-			<span class="badge" data-origin="greek"></span>
-		</p>
+		<div class="row">
+			<p>
+				A star never sets when its declination is $\delta > 90^\circ - \varphi$:
+				try Vega at different latitudes.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
 
 		<figure class="fig">
-			<div class="fig-row">
-				<div>
-					<canvas id="fig-sphere"></canvas>
-				</div>
-				<div>
-					<div class="ctl stepper">
-						<label for="day">date</label>
-						<input id="day" type="range" min="1" max="365" step="1" value="80">
-						<output></output>
-						<span class="stepper-buttons">
-							<button type="button" class="stepper-btn" data-target="day" data-step="-1"
-								aria-label="previous day">‹ previous day</button>
-							<button type="button" class="stepper-btn" data-target="day" data-step="1"
-								aria-label="next day">next day ›</button>
-						</span>
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="fig-sphere"></canvas>
 					</div>
-					<div class="ctl">
-						<label for="hour">time (UT)</label>
-						<input id="hour" type="range" min="0" max="24" step="0.25" value="12">
-						<output></output>
+					<div>
+						<div class="ctl stepper">
+							<label for="day">date</label>
+							<input id="day" type="range" min="1" max="365" step="1" value="80">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="ctl">
+							<label for="hour">time (UT)</label>
+							<input id="hour" type="range" min="0" max="24" step="0.25" value="12">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="latitude">latitude φ</label>
+							<input id="latitude" type="range" min="-90" max="90" step="1" value="45">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="day" data-value="80">equinox</button>
+							<button type="button" data-target="day" data-value="172">solstice</button>
+							<button type="button" data-target="latitude" data-value="90">pole</button>
+							<button type="button" data-target="latitude" data-value="0">equator</button>
+						</div>
+						<div class="readout" id="sphere-readout" data-lines="4"></div>
 					</div>
-					<div class="ctl">
-						<label for="latitude">latitude φ</label>
-						<input id="latitude" type="range" min="-90" max="90" step="1" value="45">
-						<output></output>
-					</div>
-					<div class="presets">
-						<button type="button" data-target="day" data-value="80">equinox</button>
-						<button type="button" data-target="day" data-value="172">solstice</button>
-						<button type="button" data-target="latitude" data-value="90">pole</button>
-						<button type="button" data-target="latitude" data-value="0">equator</button>
-					</div>
-					<div class="readout" id="sphere-readout" data-lines="4"></div>
 				</div>
 			</div>
+			<figcaption>
+				Drag the sphere to turn the view; lines behind it are faded. The date
+				and time also move the dot on the next figure.
+			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
@@ -145,10 +163,6 @@
 					</dl>
 				</div>
 			</div>
-			<figcaption>
-				Drag the sphere to turn the view; lines behind it are faded. The date
-				and time also move the dot on the next figure.
-			</figcaption>
 		</figure>
 
 		<!-- ================================ PLOT ================================ -->
@@ -161,11 +175,13 @@
 		</p>
 
 		<figure class="fig">
-			<div>
-				<canvas id="fig-eot"></canvas>
+			<div class="frame">
+				<div>
+					<canvas id="fig-eot"></canvas>
+				</div>
+				<div id="eot-legend"></div>
+				<div class="readout" id="eot-readout">&nbsp;</div>
 			</div>
-			<div id="eot-legend"></div>
-			<div class="readout" id="eot-readout">&nbsp;</div>
 			<figcaption>
 				Positive values: the sundial is ahead of the clock. The dot is the
 				date chosen above. Under the pointer, a dashed line marks the day
@@ -184,28 +200,33 @@
 
 		$$\lambda_\text{model} = \bar\lambda_0 + \frac{360^\circ}{Y}\,(t - t_0)$$
 
-		<p>
-			The curve shows its error $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
-			against the reference Sun. The ghost uses Hipparchus' year,
-			$Y = 365\tfrac14 - \tfrac1{300}$ days.
-			<span class="badge" data-origin="hipparchus"></span>
-		</p>
+		<div class="row">
+			<p>
+				The curve shows its error $\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$
+				against the reference Sun. The ghost uses Hipparchus' year,
+				$Y = 365\tfrac14 - \tfrac1{300}$ days.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note detour" data-topic="aberration"></div>
+			</aside>
+		</div>
 
 		<figure class="fig">
-			<div class="ctl">
-				<label for="year-length">year Y</label>
-				<input id="year-length" type="range" min="365.20" max="365.30" step="0.0005" value="365.2422">
-				<output></output>
+			<div class="frame">
+				<div class="ctl">
+					<label for="year-length">year Y</label>
+					<input id="year-length" type="range" min="365.20" max="365.30" step="0.0005" value="365.2422">
+					<output></output>
+				</div>
+				<div id="fig-error"></div>
 			</div>
-			<div id="fig-error"></div>
 			<figcaption>
 				Change the length of the year and press <em>Keep as ghost</em> to
 				compare; pressing it again replaces the kept curve. Each span has a
 				fixed scale that holds every value of the slider.
 			</figcaption>
 		</figure>
-
-		<aside class="detour" data-topic="aberration"></aside>
 
 		<!-- ============================== EXERCISE ============================== -->
 		<h2 id="exercise">Exercise</h2>
