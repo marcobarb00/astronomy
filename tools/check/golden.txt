@@ -1807,6 +1807,52 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   hourAngle(2026-01-01 19h, 12.4964, 68.98) -30.042463548
   fromLocalMeanTime(2026-01-01, 12, 12.4964) 2461041.965287778
 
+=== 6d. THE SOLAR ECCENTRIC (models/solar-eccentric.js, MeanSun.PTOLEMY) ===
+  MeanSun.PTOLEMY                330.750000000  0.985635278442  1448637.916888889  ut
+  SolarEccentric.PTOLEMY         0.041666666667  65.500000000
+  SolarEccentric.FIT_2026        280.458970000  0.033473000000  103.732000000
+  equationOfCentre, first order, distance (M, e)
+  M = 0, e = 0.0000              0.000000000  0.000000000  1.000000000
+  M = 0, e = 0.0417              0.000000000  0.000000000  1.041666667
+  M = 0, e = 0.1000              0.000000000  0.000000000  1.100000000
+  M = 30, e = 0.0000             0.000000000  0.000000000  1.000000000
+  M = 30, e = 0.0417             -1.151934386  -1.193662073  1.036293826
+  M = 30, e = 0.1000             -2.634606019  -2.864788976  1.087752307
+  M = 90, e = 0.0000             0.000000000  0.000000000  1.000000000
+  M = 90, e = 0.0417             -2.385944030  -2.387324146  1.000867679
+  M = 90, e = 0.1000             -5.710593137  -5.729577951  1.004987562
+  M = 92.388, e = 0.0000         0.000000000  0.000000000  1.000000000
+  M = 92.388, e = 0.0417         -2.388015463  -2.385250943  0.999131579
+  M = 92.388, e = 0.1000         -5.729381102  -5.724602263  1.000833013
+  M = 180, e = 0.0000            0.000000000  0.000000000  1.000000000
+  M = 180, e = 0.0417            0.000000000  0.000000000  0.958333333
+  M = 180, e = 0.1000            0.000000000  0.000000000  0.900000000
+  M = 250, e = 0.0000            0.000000000  0.000000000  1.000000000
+  M = 250, e = 0.0417            2.274587017  2.243350884  0.986526448
+  M = 250, e = 0.1000            5.557216244  5.384042121  0.970358682
+  M = 359, e = 0.0000            0.000000000  0.000000000  1.000000000
+  M = 359, e = 0.0417            0.039998206  0.041664551  1.041660574
+  M = 359, e = 0.1000            0.090905658  0.099994923  1.099986154
+  greatestEquation(1/24)         2.388015463  92.388015463
+  fitSeasons(spring, summer, Y): x, y, e, apogee, the four lengths, mean longitude at the equinox
+  94.5, 92.5                     0.017201732  0.037636076  0.041380838  65.437023145  94.500000000 92.500000000 88.123335000 90.123335000  357.843102307
+  92.7391, 93.6629               -0.007945886  0.032515328  0.033472133  103.732434723  92.739100000 93.662900000 89.881995000 88.958195000  358.136680486
+  91.31, 91.31                   0.000000000  -0.000009419  0.000009419  270.000000000  91.310000000 91.310000000 91.311095000 91.311095000  0.000539642
+  96, 90                         0.051585469  0.029059208  0.059207248  29.393499940  96.000000000 90.000000000 86.621095000 92.621095000  358.334795605
+  models, range start            254.086310860  268.056079441  267.140292711
+  models, Thales eclipse         60.086772654  61.032266719  60.846299431
+  models, Ptolemy                115.916931190  113.543832195  115.319465535
+  models, last Julian day        200.187113300  192.929801010  194.825917854
+  models, first Gregorian day    201.176771241  193.941361737  195.811553151
+  models, Sputnik (Meeus 7.a)    191.294916401  182.156508849  184.290582950
+  models, Meeus 12.a             19.599734713  10.593966066  8.640254356
+  models, Meeus 47.a             22.337208852  13.254989731  11.367143140
+  models, Meeus 25.a             199.892566690  190.774658737  192.724029738
+  models, J2000.0                280.345685810  272.432775595  271.351385382
+  models, 2026 January 1         280.552761696  272.521359347  271.436679179
+  models, 2026 June solstice     90.148098956  79.880210857  80.473126134
+  models, range end              279.395537889  266.834422129  265.965854302
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -1922,6 +1968,15 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   day 300                        2461341.988734702  2461341.769062863  2461342.208016608  2461341.815852450  2461342.160801684
   day 330                        2461371.991389367  2461371.794182933  2461372.188381753  2461371.887078902  2461372.095278460
   day 360                        2461402.000723425  2461401.810213754  2461402.191285885  2461401.924237050  2461402.077312184
+
+=== 8d. PAGE 2.1 (act2-sun/01-uneven-year/page.js) ===
+  YEAR_START, YEAR_LENGTH        2461041.500000000  365.242189600144
+  dayText                        "1 Jan" "1 Mar" "3 Apr" "31 Dec"
+  texSigned                      "-1.23^\\circ" "+0.00^\\circ" "+0.00^\\circ" "+1.92^\\circ"
+  texDays                        "88.12\\,\\text{d}" "92.50\\,\\text{d}" "93.66\\,\\text{d}"
+  reachCircle                    0.991471735 1.032467999 1.007471735 0.967467999 1.033470049
+  monthTicks 12, 4               Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  |  Jan Mar May Jul Sep Nov
+  fixed ranges                   [56,62]  [-6,6]  [-0.1,0.1]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -2210,3 +2265,156 @@ from 132 to 1820: 616542 days, mean shortfall 14.8 ms, accumulated 9118 s = 2h31
 Vega    : ra 2000.0 -> 2026.0 changed by 52.8 s of time
 Sirius  : ra 2000.0 -> 2026.0 changed by 68.7 s of time
 Polaris : ra 2000.0 -> 2026.0 changed by 2048.4 s of time
+
+=== 9. tools/numbers/2.1-uneven-year.js ===
+
+=== Observation: the seasons of 2026 (reference Sun) ===
+2026:
+   spring  starts 20 Mar 2026 14:32 TT, lasts 92.739 d
+   summer  starts 21 Jun 2026 08:17 TT, lasts 93.663 d
+   autumn  starts 23 Sep 2026 00:11 TT, lasts 89.859 d
+   winter  starts 21 Dec 2026 20:48 TT, lasts 88.980 d
+   spring + summer = 186.40 d, autumn + winter = 178.84 d
+   in UT: 20 Mar 2026 14:31; 21 Jun 2026 08:15; 23 Sep 2026 00:10; 21 Dec 2026 20:47
+   a uniform Sun: every season 91.31 d; the half from March to September is 7.56 d longer
+
+=== Observation: the Sun's daily motion in 2026 (Figure 1) ===
+slowest 57.19' a day on 3 Jul 2026, fastest 61.16' on 1 Jan 2027
+first days of 2026: 61.14, 61.14, 61.14, 61.14, 61.14
+mean n = 59.14'; swing +3.4% / -3.3%
+Figure 1 range: 57.19' to 61.16' (axis 56' to 62')
+
+=== Observation: the seasons of Hipparchus' and Ptolemy's time ===
+141 BC:
+   spring  starts 23 Mar 141 BC 21:37 TT, lasts 94.014 d
+   summer  starts 25 Jun 141 BC 21:58 TT, lasts 92.341 d
+   autumn  starts 26 Sep 141 BC 06:09 TT, lasts 88.649 d
+   winter  starts 23 Dec 141 BC 21:43 TT, lasts 90.241 d
+   spring + summer = 186.36 d, autumn + winter = 178.89 d
+AD 140:
+   spring  starts 21 Mar 140 16:50 TT, lasts 93.898 d
+   summer  starts 23 Jun 140 14:23 TT, lasts 92.555 d
+   autumn  starts 24 Sep 140 03:43 TT, lasts 88.757 d
+   winter  starts 21 Dec 140 21:53 TT, lasts 90.032 d
+   spring + summer = 186.45 d, autumn + winter = 178.79 d
+
+=== Model: the equation of centre ===
+e = 0.04167: greatest q = 2.3880° (2°23'17") at M = 92.388° (92°23'17"); e in degrees 2.3873°; e^2/2 = 2.98'; |q + e sin M| <= 3.04'
+e = 0.03347: greatest q = 1.9182° (1°55'06") at M = 91.918° (91°55'06"); e in degrees 1.9179°; e^2/2 = 1.93'; |q + e sin M| <= 1.96'
+e = 0.10000: greatest q = 5.7392° (5°44'21") at M = 95.739° (95°44'21"); e in degrees 5.7296°; e^2/2 = 17.19'; |q + e sin M| <= 18.04'
+Ptolemy III 5, M = 30°, e = 2;30/60: q = -1°09'07" (his 1;9); seen from the Earth 28°50'53" (his 28;51)
+
+=== Model: the seasons of the 2026 eccentric (Figure 2 default) ===
+FIT_2026: 92.74, 93.66, 89.88, 88.96 d
+with e = 0.1: 95.59, 98.35, 87.03, 84.27 d
+
+=== Fit: Hipparchus' numbers (Almagest III 4) ===
+mean motion in 94 1/2 d: 93°08'33" (Ptolemy 93;9); in 92 1/2 d: 91°10'17" (91;11)
+Hipparchus' seasons, Ptolemy's year: spring 94.5000 d, summer 92.5000 d, year 365.24667 d
+   arcs a1 = 93.1425° (93°08'33"), a2 = 91.1713° (91°10'17"); a1 + a2 - 180° = 4.3138°
+   asin y = 2.1569°, asin x = 0.9856°; y = 0.03764 (2;15,29 on 60), x = 0.01720 (1;01,56 on 60)
+   e = 0.04138 = 1/24.17 (2;28,58 on a radius of 60); apogee 65.437° (65°26'13"), 24.56° before the summer solstice
+   autumn 88.123 d, winter 90.123 d (arcs 86.857°, 88.829°)
+   greatest q 2°22'18" at M = 92°22'18"; mean longitude at the spring equinox 357.8431°
+Hipparchus' seasons, modern year (Figure 3 preset): spring 94.5000 d, summer 92.5000 d, year 365.24219 d
+   arcs a1 = 93.1437° (93°08'37"), a2 = 91.1724° (91°10'21"); a1 + a2 - 180° = 4.3161°
+   asin y = 2.1580°, asin x = 0.9856°; y = 0.03766 (2;15,34 on 60), x = 0.01720 (1;01,56 on 60)
+   e = 0.04140 = 1/24.16 (2;29,02 on a radius of 60); apogee 65.448° (65°26'53"), 24.55° before the summer solstice
+   autumn 88.121 d, winter 90.121 d (arcs 86.856°, 88.828°)
+   greatest q 2°22'22" at M = 92°22'22"; mean longitude at the spring equinox 357.8420°
+Ptolemy's chords: EX = 2;16, ZX = 1;2 (x 60 on a diameter of 120: halve), EZ = 2;29 1/2 -> 1 : 24, apogee 24;30 before the solstice
+greatest q for 1/24: 2°23'17" at 92°23'17" (2;23 at 92;23)
+
+=== Fit: sensitivity to the timing ===
+one hour from summer to spring: apogee -0.90°, e 0.00030
+one hour added to spring: apogee -0.24°, e 0.00048
+
+=== Fit: the real seasons of 141 BC through the same method (Figure 3 preset) ===
+141 BC: spring 94.0142 d, summer 92.3412 d, year 365.24219 d
+   arcs a1 = 92.6649° (92°39'54"), a2 = 91.0159° (91°00'57"); a1 + a2 - 180° = 3.6807°
+   asin y = 1.8404°, asin x = 0.8245°; y = 0.03211 (1;55,37 on 60), x = 0.01439 (0;51,48 on 60)
+   e = 0.03519 = 1/28.42 (2;06,41 on a radius of 60); apogee 65.864° (65°51'52"), 24.14° before the summer solstice
+   autumn 88.607 d, winter 90.280 d (arcs 87.335°, 88.984°)
+   greatest q 2°01'00" at M = 92°01'00"; mean longitude at the spring equinox 358.1596°
+Hipparchus' spring + summer is 0.64 d too long; his e is 18% too large
+
+=== Fit: 2026 (Figure 3 preset, and the model of the page) ===
+2026: spring 92.7391 d, summer 93.6629 d, year 365.24219 d
+   arcs a1 = 91.4081° (91°24'29"), a2 = 92.3186° (92°19'07"); a1 + a2 - 180° = 3.7267°
+   asin y = 1.8633°, asin x = -0.4553°; y = 0.03252 (1;57,03 on 60), x = -0.00795 (-0;28,36 on 60)
+   e = 0.03347 = 1/29.88 (2;00,30 on a radius of 60); apogee 103.732° (103°43'54"), -13.73° before the summer solstice
+   autumn 89.882 d, winter 88.958 d (arcs 88.592°, 87.681°)
+   greatest q 1°55'06" at M = 91°55'06"; mean longitude at the spring equinox 358.1367°
+   real autumn 89.859 d, winter 88.980 d: predicted - real 0.55 h, -0.52 h
+   spring equinox 9575.1057 d after J2000; L0 = 358.1367° - n x that = 280.45897°
+   Meeus 25.2: 280.46646°, ours - Meeus = -0.45'
+   FIT_2026 in solar-eccentric.js: L0 280.45897, e 0.033473, apogee 103.732
+   rounded here:                   L0 280.45897, e 0.033473, apogee 103.732
+Kepler, 2026: e_K = 0.01672, 2 e_K = 0.03344; our e / 2 e_K = 1.0009
+   the Sun's apogee of date 103.38°; ours 0.35° further
+
+=== Test: Figure 4, 2026 ===
+uniform circle (MeanSun.MODERN): -114.73' (3 Apr 2026) to 115.23' (5 Oct 2026), RMS 81.28'
+eccentric (FIT_2026): -1.69' (19 Nov 2026) to 0.97' (6 Aug 2026), RMS 0.77'
+
+=== Test: the day of page 1.3, with the eccentric Sun (2026, meridian of Greenwich) ===
+phi = 41.9°: largest error of the day, mean Sun 5.3 min, eccentric Sun 0.2 min
+phi = 51.5°: largest error of the day, mean Sun 7.5 min, eccentric Sun 0.2 min
+phi = 65°: largest error of the day, mean Sun 13.1 min, eccentric Sun 0.3 min
+
+=== Test: Ptolemy's Sun (Almagest III 7-8), Figure 5 ===
+epoch JD(UT) 1448637.9169 = 26 Feb 747 BC 10:00 UT (noon at Alexandria); Delta T 5.85 h
+Ptolemy's eccentric, AD 140: -1.52° (12 Aug 140) to -0.66° (31 Jan 140), RMS 1.15°
+Ptolemy's mean Sun, AD 140: -3.10° (3 Mar 140) to 0.89° (4 Sep 140), RMS 1.79°
+at his equinox of 25 Sep 132, 14h at Alexandria, his model gives 180.006°, the real Sun 181.399°
+   the real equinox: 24 Sep 132 04:21 Alexandria mean time, 33.6 h earlier
+    861 BC: 2.50° to 3.46°, mean 2.98°
+    201 BC: -0.07° to 0.69°, mean 0.31°
+       140: -1.52° to -0.66°, mean -1.09°
+       500: -3.14° to -2.06°, mean -2.60°
+      1000: -5.44° to -3.98°, mean -4.71°
+      1140: -6.10° to -4.53°, mean -5.31°
+      1500: -7.81° to -5.94°, mean -6.87°
+      2026: -10.35° to -8.02°, mean -9.19°
+his mean Sun falls behind by 0.441° a century
+
+=== Residual: our eccentric over longer spans, Figure 6 ===
+2026: -1.69' (19 Nov 2026) to 0.97' (6 Aug 2026), RMS 0.77'
+1976-2076: -3.10' (2 Dec 1976) to 2.71' (25 Jul 1981), RMS 1.04'
+1526-2526: -19.28' (17 Dec 1526) to 17.25' (2 Jul 1534), RMS 7.09'
+eccentric - ellipse: (e^2/2 - 5/4 (e/2)^2) sin 2M, amplitude 0.72'
+
+=== Residual: the monthly ripple (the Earth about the Earth-Moon barycentre) ===
+the Sun seen from the Earth minus from the barycentre: at most 6.8" in 2026
+
+=== Residual: the apogee moves (each year fitted by the same method) ===
+ 141 BC: spring 94.01 d, summer 92.34 d -> e = 0.0352, apogee 65.86°
+    140: spring 93.90 d, summer 92.56 d -> e = 0.0349, apogee 70.69°
+    880: spring 93.51 d, summer 93.07 d -> e = 0.0343, apogee 83.63°
+   1250: spring 93.29 d, summer 93.29 d -> e = 0.0340, apogee 90.10°
+   1515: spring 93.11 d, summer 93.43 d -> e = 0.0338, apogee 94.74°
+   2026: spring 92.74 d, summer 93.66 d -> e = 0.0335, apogee 103.73°
+al-Battani (De Rev. III 16): spring 93d35dm = 93.583 d, apogee 7°43' before the solstice = 82.28°
+Copernicus 1515: e = 1/31 = 0.0323, apogee 6 2/3° after the solstice = 96.67°
+precession in longitude around 2026: 1.397° a century; the perihelion's own motion (Standish): 0.318° a century (T = 0.26)
+rate since 141 BC: 1.75° a century
+
+=== Residual: the distance ===
+real Sun 2026: 0.98325 to 1.01671 au, apparent diameter 31.46' to 32.53'
+eccentric, e = 0.0335, mean distance 1 au: 30.95' to 33.10'
+
+=== Exercise 1: Hipparchus' Sun (see section 6) ===
+e = 0.0414, apogee 65.44°, autumn 88.12 d, winter 90.12 d (Ptolemy 88 1/8, 90 1/8)
+141 BC real: e = 0.0352, apogee 65.86°
+
+=== Exercise 2: the greatest equation (see section 5) ===
+
+=== Exercise 3: Ptolemy's observations of AD 139-140 (Almagest III 1) ===
+autumn equinox 139: real 24 Sep 139 21:17; Ptolemy 26 Sep, 1 h after sunrise (about 07h)
+spring equinox 140: real 21 Mar 140 16:16; Ptolemy 22 Mar, 1 h after noon (13h)
+summer solstice 140: real 23 Jun 140 13:49; Ptolemy 25 Jun, 2 h after midnight (02h)
+AD 140 real: spring 93.90, summer 92.56 -> apogee 70.69°, e 0.0349
+
+=== Scales ===
+Figure 2: e up to 0.1 -> |q| up to 5.74° (axis +-6°)
+Figure 3: spring and summer from 90 to 96 d -> e up to 0.0806 (zoom panel +-0.1)

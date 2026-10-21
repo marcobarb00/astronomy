@@ -171,25 +171,40 @@ The first anomaly and the simplest complete model.
   $\lambda = \bar\lambda + q$; fitting the eccentricity $e$ and the apogee
   $\lambda_A$ from two season lengths (Hipparchus' method); $q$ to first order,
   $q \approx -e\sin M$ with $M$ measured from the apogee, so the greatest
-  equation of centre is about $e$ radians. (Kepler's ellipse gives
-  $2e_\text{K}$: the eccentric's offset is twice the ellipse's eccentricity,
-  a point picked up again on page 4.2.)
-- **Figures:** the eccentric with the four seasons; $q(t)$ over a year.
-  **First appearance of the error curve:** uniform circle versus eccentric
-  versus the reference Sun.
-- **When building:** start from `MeanSun` (`shared/models/mean-sun.js`,
-  page 1.3): the uniform circle is `MeanSun.make()`, and Ptolemy's mean Sun
-  (epoch Nabonassar, *Almagest* III 7) is a second parameter set for it.
-  Page 1.3 found the model Sun's day up to 13 min too short at 65°: link back.
-- **When building:** rewrite the last paragraph of page 1.1's Test ("The site
-  has no longitude to test yet…", marked `TODO(2.1)` in
-  `act1-stage/01-turning-sky/index.html`): say that the error curve starts
-  here and link to this page.
-- **Exercises:** the worked exercise "Hipparchus' Sun from two numbers"
-  (fit $e \approx 0.041$, $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and
-  $92\tfrac12$ days; predict autumn and winter).
-- **Hands over:** the model drifts slowly over centuries (page 2.3); first,
-  a consequence we can see every day.
+  equation of centre is about $e$ radians (exactly $\arcsin e$). (Kepler's
+  ellipse gives $2e_\text{K}$: the eccentric's offset is twice the ellipse's
+  eccentricity, a point picked up again on page 4.2.)
+- **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
+  from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
+  eccentric between the lines from the Earth to the equinoxes and solstices.
+- **Figures:** the real Sun's daily motion through 2026 (static); the
+  eccentric with its four seasons beside $q(t)$ over a year (date and $e$);
+  Hipparchus' construction, the seasons to scale and the centre magnified
+  (spring and summer, with presets). **First appearance of the error curve:**
+  the uniform circle (ghost) against the eccentric fitted to 2026; Ptolemy's
+  Sun in AD 140 and over 2,000 years; the eccentric's residual over 1, 100
+  and 1,000 years. A photo: Peurbach's woodcut of the Sun's eccentric orbs.
+- **Fit:** $e$ and $\lambda_A$ from spring and summer (Hipparchus'
+  $94\tfrac12$ and $92\tfrac12$ days, *Almagest* III 4; the reference
+  seasons of 2026, which give $e = 2e_\text{K}$ within 0.1%); the mean
+  longitude at epoch $L_0$ from the timed spring equinox (page 1.3 used
+  Meeus' value without deriving it).
+- **Test:** the eccentric against the reference Sun (within 1.7′ in 2026,
+  against 115′ for the uniform circle); page 1.3's day at 65° now within
+  0.3 min; Ptolemy's own Sun 1.1° behind in AD 140 (his equinoxes a day
+  late), 9.2° by 2026.
+- **Exercises:** "Hipparchus' Sun from two numbers" (fit $e \approx 0.041$,
+  $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and $92\tfrac12$ days;
+  predict autumn and winter); derive $q$ to second order and its greatest
+  value $\arcsin e$ (Ptolemy's 2;23° at 92;23°); Ptolemy's fixed apogee
+  against the real seasons of AD 140 (break the model).
+- **Code:** `models/solar-eccentric.js` (`SolarEccentric.make()`, the
+  parameter sets `PTOLEMY` and `FIT_2026`, `fitSeasons`); `MeanSun.PTOLEMY`,
+  whose days are days of UT.
+- **Hands over:** the apogee moves, about 1.75° a century relative to γ, so
+  the model drifts slowly over centuries (page 2.3); the eccentric's distance
+  varies twice as much as the real one (pages 3.2, 4.4); first, a consequence
+  we can see every day.
 
 #### 2.2 · The equation of time
 
@@ -216,7 +231,9 @@ The first anomaly and the simplest complete model.
   apogee; why the model of 2.1 drifts over centuries.
 - **Figures:** the equator sliding over a fixed ecliptic; the longitude shift
   of several stars as a function of date; the error curve of 2.1 over 2,000
-  years with and without a moving apogee.
+  years with and without a moving apogee (`SolarEccentric`, page 2.1, with an
+  apogee that moves; page 2.1 found 1.75° a century from the seasons, of
+  which 1.40° is precession).
 - **Exercises:** recover the precession rate from two dated longitudes;
   the length of the tropical year given the sidereal year and the rate.
 - **Detour:** nutation.
@@ -388,8 +405,9 @@ once on the page.
 | γ | the vernal point, origin of $\alpha$ and $\lambda$ (♈ in older books) |
 | P, K, Z | north celestial pole, north ecliptic pole, zenith |
 | $\bar\lambda$ | mean longitude |
-| $M$ | mean anomaly, measured from the apogee |
-| $q$ | equation of centre ($\lambda = \bar\lambda + q$) |
+| $\lambda_A$ | longitude of the apogee |
+| $M$ | mean anomaly, measured from the apogee, $M = \bar\lambda - \lambda_A$ (Fitzpatrick counts it from the perigee) |
+| $q$ | equation of centre ($\lambda = \bar\lambda + q$), negative from the apogee to the perigee |
 | $e$ | eccentricity, as a fraction of the deferent radius |
 | $R,\ r$ | deferent radius, epicycle radius |
 | $\Delta\lambda$ | model minus reference, in arcminutes |
@@ -401,7 +419,9 @@ decimal value; other sexagesimal quantities, such as ratios on a radius of 60,
 keep the source's notation ($2;30$), also with their decimal value.
 
 The sign convention for $q$ and the anomalies is fixed on page 2.1 and used
-everywhere afterwards.
+everywhere afterwards: $M$ counts from the apogee, and $q$ is negative while
+the body goes from the apogee to the perigee, as in Ptolemy, who subtracts
+the equation there (*Almagest* III 8).
 
 ---
 
@@ -480,7 +500,10 @@ solar eccentric, the lunar epicycle, the planetary equant) live in
 model that does not predict a longitude (the turning sky, `models/diurnal.js`;
 the frames, `models/frames.js`; the clocks, `models/clock.js`) exports plain
 functions instead of `make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
-is the first model with `make()`.
+is the first model with `make()`, and the solar eccentric
+(`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
+A parameter set whose days are turns of the Earth, as every ancient one is,
+says so with `clock: 'ut'`.
 
 ## 9. Repository layout
 

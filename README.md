@@ -17,6 +17,7 @@ and style rules are in [`CLAUDE.md`](CLAUDE.md).
 | `act1-stage/01-turning-sky/` | Page 1.1 · The turning sky. |
 | `act1-stage/02-frames/` | Page 1.2 · Frames. |
 | `act1-stage/03-clocks/` | Page 1.3 · Clocks. |
+| `act2-sun/01-uneven-year/` | Page 2.1 · The uneven year. |
 | `templates/page.html` | The page template, with every shared component once. |
 | `templates/demo.html` | A demo of the sphere, plot, error curve and exercise working together. |
 | `archive/` | The earlier pages, kept for reference and not linked from the site. |
