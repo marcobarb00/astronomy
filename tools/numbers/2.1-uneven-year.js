@@ -1,24 +1,25 @@
 /* ==========================================================================
    NUMBERS FOR PAGE 2.1 "THE UNEVEN YEAR" (tools/numbers/2.1-uneven-year.js)
    Loads the site's shared code (common, time, ephemeris and the models
-   diurnal.js, frames.js, mean-sun.js, clock.js) in a Node vm context and
-   prints every number quoted on the page, in page order.
+   diurnal.js, frames.js, mean-sun.js, clock.js, solar-eccentric.js) in a
+   Node vm context and prints every number quoted on the page, in page
+   order.
 
    Run from the repository root:  node tools/numbers/2.1-uneven-year.js
-   (about 20 seconds: section 7 scans a year of sunrises at three latitudes)
+   (about a minute: section 7 times a year of sunrises at three latitudes,
+   section 8 finds the seasons of nine years)
 
    TABLE OF CONTENTS
 	 1. Loading the shared code
-	 2. Formatting
-	 3. The eccentric (draft of shared/models/solar-eccentric.js)
-	 4. The reference Sun's equinoxes and solstices
-	 5. Observation: unequal seasons, the Sun's uneven daily motion
-	 6. Model: the equation of centre and its greatest value
-	 7. Fit: Hipparchus' method, on his numbers and on 2026
-	 8. Test: the error curves (our eccentric, Ptolemy's Sun)
-	 9. Test: the day of page 1.3 with the eccentric Sun
-	10. Residual: the apogee moves, the distance
-	11. Exercises
+	 2. Formatting and searching
+	 3. The reference Sun's equinoxes and solstices
+	 4. Observation: unequal seasons, the Sun's uneven daily motion
+	 5. Model: the equation of centre and its greatest value
+	 6. Fit: Hipparchus' method, on his numbers and on 2026
+	 7. Test: the error curves; the day of page 1.3
+	 8. Residual: the apogee moves; the distance
+	 9. Exercises
+	10. The scales of the figures
    ========================================================================== */
 
 const { loadFiles } = require('../check/load.js');
@@ -34,24 +35,19 @@ const shared = loadFiles([
 	'shared/models/diurnal.js',
 	'shared/models/frames.js',
 	'shared/models/mean-sun.js',
-	'shared/models/clock.js'
+	'shared/models/clock.js',
+	'shared/models/solar-eccentric.js'
 ]);
-const { norm180, norm360, Time, Ephem, Diurnal, Frames, MeanSun, Clock } = shared;
+const { norm180, norm360, asin, R2D, Time, Ephem, Diurnal, Frames, MeanSun, Clock, SolarEccentric } = shared;
 
 /* ==========================================================================
-   2. FORMATTING
+   2. FORMATTING AND SEARCHING
    ========================================================================== */
-
-const D2R = Math.PI / 180;
-const R2D = 180 / Math.PI;
-const sind = x => Math.sin(x * D2R);
-const cosd = x => Math.cos(x * D2R);
-const asind = x => Math.asin(x) * R2D;
 
 /* The sexagesimal value d;m,s,... of the sources -> decimal. */
 const fromSexagesimal = (...parts) => parts.reduce((sum, part, i) => sum + part / Math.pow(60, i), 0);
 
-/* Degrees -> "2°23'15"" (absolute value, sign in front). */
+/* Degrees -> "2°23'15"" (sign in front). */
 function dms(degrees, digits = 0) {
 	const sign = degrees < 0 ? '-' : '';
 	const total = Number((Math.abs(degrees) * 3600).toFixed(digits));
@@ -62,82 +58,25 @@ function dms(degrees, digits = 0) {
 	return `${sign}${d}°${String(m).padStart(2, '0')}'${s.toFixed(digits).padStart(digits ? digits + 3 : 2, '0')}"`;
 }
 
-/* JD -> "20 Mar 2026 14:46" (UT or TT as given). */
+/* A number in the sexagesimal notation of the sources: 2.4827 -> "2;28,58". */
+function sexagesimal(value, places = 2) {
+	let units = Math.round(Math.abs(value) * Math.pow(60, places));
+	const parts = [];
+
+	for (let i = 0; i < places; i++) {
+		parts.unshift(String(units % 60).padStart(2, '0'));
+		units = Math.floor(units / 60);
+	}
+
+	return `${value < 0 ? '-' : ''}${units};${parts.join(',')}`;
+}
+
 const when = jd => Time.formatDate(jd, { time: true });
 const date = jd => Time.formatDate(jd);
 const title = text => console.log(`\n=== ${text} ===`);
 const f = (x, digits) => x.toFixed(digits);
 
-/* ==========================================================================
-   3. THE ECCENTRIC
-   The Sun moves uniformly on a circle of radius 1 whose centre C is at
-   distance e from the Earth O, towards the apogee at longitude lambdaA.
-   M = lambdaBar - lambdaA is the mean anomaly (from the apogee); seen
-   from O the Sun is at lambda = lambdaBar + q with
-	   q = -atan2(e sin M, 1 + e cos M).
-   This section moves to shared/models/solar-eccentric.js when the page is
-   built; the script will then load it instead.
-   ========================================================================== */
-
-function equationOfCentre(M, e) {
-	return -Math.atan2(e * sind(M), 1 + e * cosd(M)) * R2D;
-}
-
-/* Distance Earth - Sun, in units of the eccentric's radius. */
-function distance(M, e) {
-	return Math.sqrt(1 + 2 * e * cosd(M) + e * e);
-}
-
-/* parameters { L0, n, epoch (JD), e, apogee }, and an optional clock
-   'ut' (true: the days are counted in UT, as Ptolemy's were) -> jdTT => lambda. */
-function makeEccentric(p) {
-	return jdTT => {
-		const t = p.ut ? Time.utFromTt(jdTT) : jdTT;
-		const meanLongitude = p.L0 + p.n * (t - p.epoch);
-
-		return norm360(meanLongitude + equationOfCentre(meanLongitude - p.apogee, p.e));
-	};
-}
-
-/* Hipparchus' method (Almagest III 4): from the lengths of spring T1 and
-   summer T2 (days) and the year Y, the centre C = (x, y) of the eccentric
-   in units of its radius (x towards gamma, y towards the summer solstice),
-   e, the apogee, and the two other seasons. The angles at C of the four
-   cardinal points: gamma at -asin y, the summer solstice at 90 + asin x,
-   the autumnal point at 180 + asin y, the winter solstice at 270 - asin x. */
-function fitSeasons(T1, T2, Y) {
-	const a1 = (360 * T1) / Y;
-	const a2 = (360 * T2) / Y;
-	const sy = (a1 + a2 - 180) / 2; // asin y
-	const sx = (a1 - a2) / 2; // asin x
-	const x = sind(sx);
-	const y = sind(sy);
-	const a3 = 90 - sx - sy;
-	const a4 = 90 + sx - sy;
-
-	return {
-		a1,
-		a2,
-		a3,
-		a4,
-		sx,
-		sy,
-		x,
-		y,
-		e: Math.hypot(x, y),
-		apogee: norm360(Math.atan2(y, x) * R2D),
-		T3: (a3 * Y) / 360,
-		T4: (a4 * Y) / 360,
-		lambdaBarAtEquinox: norm360(-sy) // the mean longitude when the Sun is at gamma
-	};
-}
-
-/* ==========================================================================
-   4. THE REFERENCE SUN'S EQUINOXES AND SOLSTICES
-   The moment (JD(TT)) when the apparent longitude of date reaches
-   'target', within a few days of 'guess', by bisection.
-   ========================================================================== */
-
+/* Root of fn in [a, b] by bisection (fn(a) and fn(b) of opposite signs). */
 function bisect(fn, a, b, steps = 50) {
 	const signA = Math.sign(fn(a));
 
@@ -154,10 +93,15 @@ function bisect(fn, a, b, steps = 50) {
 	return (a + b) / 2;
 }
 
+/* ==========================================================================
+   3. THE REFERENCE SUN'S EQUINOXES AND SOLSTICES
+   The apparent longitude of date, as every error curve of the site uses.
+   ========================================================================== */
+
 const sunLongitude = jd => Ephem.longitude('sun', jd);
 
-/* The first moment after 'from' (JD(TT)) when the apparent longitude of
-   date reaches 'target': scan day by day for the crossing, then bisect. */
+/* The first moment after 'from' (JD(TT)) when the Sun's longitude
+   reaches 'target': scan day by day for the crossing, then bisect. */
 function sunReaches(target, from) {
 	const behind = jd => norm180(sunLongitude(jd) - target);
 	let jd = from;
@@ -170,57 +114,66 @@ function sunReaches(target, from) {
 }
 
 /* The four seasons starting with the first spring equinox after 'from'
-   (JD): the moments of the equinoxes and solstices and the four lengths. */
+   (JD(TT)): the moments of the equinoxes and solstices, and the lengths. */
 function seasons(from) {
-	const t0 = sunReaches(0, from);
-	const t90 = sunReaches(90, t0);
-	const t180 = sunReaches(180, t90);
-	const t270 = sunReaches(270, t180);
-	const t360 = sunReaches(0, t270);
+	const times = [sunReaches(0, from)];
 
-	return {
-		times: [t0, t90, t180, t270, t360],
-		lengths: [t90 - t0, t180 - t90, t270 - t180, t360 - t270]
-	};
+	[90, 180, 270, 0].forEach(target => times.push(sunReaches(target, times[times.length - 1])));
+
+	return { times, lengths: [0, 1, 2, 3].map(i => times[i + 1] - times[i]) };
 }
 
 const SEASON_NAMES = ['spring', 'summer', 'autumn', 'winter'];
 
 function printSeasons(label, s) {
+	console.log(`${label}:`);
+	s.times
+		.slice(0, 4)
+		.forEach((t, i) =>
+			console.log(`   ${SEASON_NAMES[i].padEnd(7)} starts ${when(t)} TT, lasts ${f(s.lengths[i], 3)} d`)
+		);
 	console.log(
-		`${label}: ` +
-			s.times
-				.slice(0, 4)
-				.map((t, i) => `${SEASON_NAMES[i]} starts ${when(t)} TT`)
-				.join('; ')
+		`   spring + summer = ${f(s.lengths[0] + s.lengths[1], 2)} d, autumn + winter = ${f(s.lengths[2] + s.lengths[3], 2)} d`
 	);
-	console.log(`   lengths (d): ${s.lengths.map(x => f(x, 2)).join(', ')}; spring + summer = ${f(s.lengths[0] + s.lengths[1], 2)}`);
 }
 
+/* The year of the page, and the modern year (Meeus 25.2, page 1.3). */
+const Y2026 = Time.julianDay(2026, 1, 1);
+const Y2027 = Time.julianDay(2027, 1, 1);
+const YEAR = MeanSun.yearLength();
+const N_MODERN = MeanSun.MODERN.n;
+
+/* Ptolemy's year (Almagest III 1) and daily motion (III 2). */
+const Y_PTOLEMY = fromSexagesimal(365, 14, 48);
+const N_PTOLEMY = MeanSun.PTOLEMY.n;
+
 /* ==========================================================================
-   5. OBSERVATION
+   4. OBSERVATION
    ========================================================================== */
 
-title('Observation: the seasons of 2026 (reference Sun, apparent longitude of date)');
-const Y2026 = Time.julianDay(2026, 1, 1);
+title('Observation: the seasons of 2026 (reference Sun)');
 const s2026 = seasons(Time.julianDay(2026, 3, 1));
 printSeasons('2026', s2026);
-const yearReal = s2026.times[4] - s2026.times[0];
-console.log(`   equinox to equinox: ${f(yearReal, 4)} d`);
 console.log(
-	`   in UT: spring equinox ${when(Time.utFromTt(s2026.times[0]))}, autumn equinox ${when(Time.utFromTt(s2026.times[2]))}`
+	`   in UT: ${s2026.times
+		.slice(0, 4)
+		.map(t => when(Time.utFromTt(t)))
+		.join('; ')}`
 );
 console.log(
-	`   summer half (spring equinox to autumn equinox) ${f(s2026.times[2] - s2026.times[0], 2)} d, winter half ${f(s2026.times[4] - s2026.times[2], 2)} d`
+	`   a uniform Sun: every season ${f(YEAR / 4, 2)} d; the half from March to September is ${f(s2026.lengths[0] + s2026.lengths[1] - s2026.lengths[2] - s2026.lengths[3], 2)} d longer`
 );
 
-title("Observation: the Sun's daily motion in 2026");
+title("Observation: the Sun's daily motion in 2026 (Figure 1)");
 let slowest = { motion: 99 };
 let fastest = { motion: 0 };
+const motions = [];
 
-for (let d = 0; d < 365; d++) {
+for (let d = 0; d <= 365; d++) {
 	const jd = Y2026 + d;
-	const motion = norm180(sunLongitude(jd + 1) - sunLongitude(jd)) * 60;
+	const motion = norm180(sunLongitude(jd + 0.5) - sunLongitude(jd - 0.5)) * 60;
+
+	motions.push(motion);
 
 	if (motion < slowest.motion) {
 		slowest = { motion, jd };
@@ -232,267 +185,222 @@ for (let d = 0; d < 365; d++) {
 }
 
 console.log(
-	`slowest ${f(slowest.motion, 2)}'/day (from ${date(slowest.jd)}), fastest ${f(fastest.motion, 2)}'/day (from ${date(fastest.jd)})`
+	`slowest ${f(slowest.motion, 2)}' a day on ${date(slowest.jd)}, fastest ${f(fastest.motion, 2)}' on ${date(fastest.jd)}`
 );
-console.log(`mean motion n = ${f(MeanSun.MODERN.n * 60, 3)}'/day; ratio fastest / slowest = ${f(fastest.motion / slowest.motion, 4)}`);
 console.log(
-	`relative swing (fastest - slowest) / (2 n) = ${f((fastest.motion - slowest.motion) / (2 * MeanSun.MODERN.n * 60), 4)}`
+	`first days of 2026: ${motions
+		.slice(0, 5)
+		.map(m => f(m, 2))
+		.join(', ')}`
 );
+console.log(
+	`mean n = ${f(N_MODERN * 60, 2)}'; swing +${f((fastest.motion / (N_MODERN * 60) - 1) * 100, 1)}% / ${f((slowest.motion / (N_MODERN * 60) - 1) * 100, 1)}%`
+);
+console.log(`Figure 1 range: ${f(slowest.motion, 2)}' to ${f(fastest.motion, 2)}' (axis 56' to 62')`);
 
-title("Observation: Hipparchus' seasons (Almagest III 4) and the real ones of his time");
-const sHipparchus = seasons(Time.julianDay(-140, 3, 1));
-printSeasons('141 BC (Julian calendar)', sHipparchus);
-const sPtolemy = seasons(Time.julianDay(140, 3, 1));
-printSeasons('AD 140', sPtolemy);
+title("Observation: the seasons of Hipparchus' and Ptolemy's time");
+const s141BC = seasons(Time.julianDay(-140, 3, 1));
+printSeasons('141 BC', s141BC);
+const sAD140 = seasons(Time.julianDay(140, 3, 1));
+printSeasons('AD 140', sAD140);
 
 /* ==========================================================================
-   6. MODEL
+   5. MODEL
    ========================================================================== */
 
 title('Model: the equation of centre');
-[1 / 24, 0.0334, 0.1].forEach(e => {
-	const Mmax = 90 + asind(e);
+[1 / 24, SolarEccentric.FIT_2026.e, 0.1].forEach(e => {
+	const g = SolarEccentric.greatestEquation(e);
+	let worst = 0;
+
+	for (let M = 0; M < 360; M += 0.25) {
+		worst = Math.max(
+			worst,
+			Math.abs(SolarEccentric.equationOfCentre(M, e) - SolarEccentric.equationOfCentreFirstOrder(M, e))
+		);
+	}
 
 	console.log(
-		`e = ${f(e, 4)}: greatest q = ${f(asind(e), 4)}° = ${dms(asind(e))} at M = ${f(Mmax, 3)}° (${dms(Mmax)}); ` +
-			`first order e rad = ${f(e * R2D, 4)}°; second-order term e^2/2 = ${f(((e * e) / 2) * R2D * 60, 2)}'`
+		`e = ${f(e, 5)}: greatest q = ${f(g.q, 4)}° (${dms(g.q)}) at M = ${f(g.M, 3)}° (${dms(g.M)}); ` +
+			`e in degrees ${f(e * R2D, 4)}°; e^2/2 = ${f(((e * e) / 2) * R2D * 60, 2)}'; |q + e sin M| <= ${f(worst * 60, 2)}'`
 	);
 });
+const qAt30 = SolarEccentric.equationOfCentre(30, 2.5 / 60);
+console.log(
+	`Ptolemy III 5, M = 30°, e = 2;30/60: q = ${dms(qAt30)} (his 1;9); seen from the Earth ${dms(30 + qAt30)} (his 28;51)`
+);
 
-const e2026Preview = 0.0334;
-let worstFirstOrder = 0;
-
-for (let M = 0; M < 360; M += 0.5) {
-	worstFirstOrder = Math.max(worstFirstOrder, Math.abs(equationOfCentre(M, e2026Preview) + e2026Preview * sind(M) * R2D));
-}
-
-console.log(`|q - (-e sin M)| at most ${f(worstFirstOrder * 60, 2)}' for e = ${e2026Preview}`);
-
-/* Ptolemy's table III 6 at M = 30°: equation 1;9 (his worked example III 5). */
-console.log(`Ptolemy's III 5 example, M = 30°, e = 2;30/60: q = ${dms(equationOfCentre(30, fromSexagesimal(0, 2, 30)))} (his 1;9), lambda - apogee = ${dms(30 + equationOfCentre(30, fromSexagesimal(0, 2, 30)))} (his 28;51)`);
+title('Model: the seasons of the 2026 eccentric (Figure 2 default)');
+const fit2026Lengths = SolarEccentric.seasonLengths(SolarEccentric.FIT_2026.e, SolarEccentric.FIT_2026.apogee, YEAR);
+console.log(`FIT_2026: ${fit2026Lengths.map(x => f(x, 2)).join(', ')} d`);
+console.log(
+	`with e = 0.1: ${SolarEccentric.seasonLengths(0.1, SolarEccentric.FIT_2026.apogee, YEAR)
+		.map(x => f(x, 2))
+		.join(', ')} d`
+);
 
 /* ==========================================================================
-   7. FIT: HIPPARCHUS' METHOD
+   6. FIT
    ========================================================================== */
 
-function printFit(label, T1, T2, Y) {
-	const r = fitSeasons(T1, T2, Y);
+function printFit(label, spring, summer, Y) {
+	const r = SolarEccentric.fitSeasons(spring, summer, Y);
 
-	console.log(`${label}: T1 = ${f(T1, 4)}, T2 = ${f(T2, 4)}, Y = ${f(Y, 5)}`);
+	console.log(`${label}: spring ${f(spring, 4)} d, summer ${f(summer, 4)} d, year ${f(Y, 5)} d`);
 	console.log(
-		`   arcs a1 = ${f(r.a1, 4)}° (${dms(r.a1)}), a2 = ${f(r.a2, 4)}° (${dms(r.a2)}), a1 + a2 - 180 = ${f(r.a1 + r.a2 - 180, 4)}°`
+		`   arcs a1 = ${f(r.arcs[0], 4)}° (${dms(r.arcs[0])}), a2 = ${f(r.arcs[1], 4)}° (${dms(r.arcs[1])}); a1 + a2 - 180° = ${f(r.arcs[0] + r.arcs[1] - 180, 4)}°`
 	);
 	console.log(
-		`   asin y = ${f(r.sy, 4)}°, asin x = ${f(r.sx, 4)}°; y = ${f(r.y, 5)}, x = ${f(r.x, 5)}`
+		`   asin y = ${f(asin(r.y), 4)}°, asin x = ${f(asin(r.x), 4)}°; y = ${f(r.y, 5)} (${sexagesimal(60 * r.y)} on 60), x = ${f(r.x, 5)} (${sexagesimal(60 * r.x)} on 60)`
 	);
 	console.log(
-		`   e = ${f(r.e, 5)} (1/${f(1 / r.e, 2)}; on a radius of 60: ${dms(60 * r.e).replace('°', ';').replace("'", ',').replace('"', '')}), apogee = ${f(r.apogee, 3)}° (${dms(r.apogee)}), ${f(90 - r.apogee, 3)}° before the summer solstice`
+		`   e = ${f(r.e, 5)} = 1/${f(1 / r.e, 2)} (${sexagesimal(60 * r.e)} on a radius of 60); apogee ${f(r.apogee, 3)}° (${dms(r.apogee)}), ${f(90 - r.apogee, 2)}° before the summer solstice`
 	);
-	console.log(`   predicted autumn ${f(r.T3, 3)} d, winter ${f(r.T4, 3)} d (arcs ${f(r.a3, 3)}°, ${f(r.a4, 3)}°)`);
-	console.log(`   greatest equation ${dms(asind(r.e))} at M = ${dms(90 + asind(r.e))}`);
+	console.log(
+		`   autumn ${f(r.lengths[2], 3)} d, winter ${f(r.lengths[3], 3)} d (arcs ${f(r.arcs[2], 3)}°, ${f(r.arcs[3], 3)}°)`
+	);
+	console.log(
+		`   greatest q ${dms(SolarEccentric.greatestEquation(r.e).q)} at M = ${dms(SolarEccentric.greatestEquation(r.e).M)}; mean longitude at the spring equinox ${f(r.meanLongitudeAtEquinox, 4)}°`
+	);
 
 	return r;
 }
 
 title("Fit: Hipparchus' numbers (Almagest III 4)");
-const Y_HIPPARCHUS = 365.25 - 1 / 300;
-const Y_PTOLEMY = fromSexagesimal(365, 14, 48);
-const N_PTOLEMY = fromSexagesimal(0, 59, 8, 17, 13, 12, 31);
-console.log(`Ptolemy: in 94.5 d the mean motion is ${dms(94.5 * N_PTOLEMY)} (his 93;9), in 92.5 d ${dms(92.5 * N_PTOLEMY)} (his 91;11)`);
-const fitH = printFit("Hipparchus' 94 1/2 and 92 1/2 days, Ptolemy's year", 94.5, 92.5, Y_PTOLEMY);
-printFit("the same with the year 365 1/4", 94.5, 92.5, 365.25);
-printFit("the same with Hipparchus' year 365 1/4 - 1/300", 94.5, 92.5, Y_HIPPARCHUS);
-console.log(`Ptolemy's rounded values: e = 2;30/60 = ${f(1 / 24, 5)} (1:24), apogee 65;30°, greatest equation 2;23° = ${dms(asind(1 / 24))}`);
-console.log(`Toomer's note: precise intervals 94 d 13 h and 92 d 11 h:`);
-printFit('   ', 94 + 13 / 24, 92 + 11 / 24, Y_PTOLEMY);
+console.log(
+	`mean motion in 94 1/2 d: ${dms(94.5 * N_PTOLEMY)} (Ptolemy 93;9); in 92 1/2 d: ${dms(92.5 * N_PTOLEMY)} (91;11)`
+);
+const fitHipparchus = printFit("Hipparchus' seasons, Ptolemy's year", 94.5, 92.5, Y_PTOLEMY);
+printFit("Hipparchus' seasons, modern year (Figure 3 preset)", 94.5, 92.5, YEAR);
+console.log(
+	"Ptolemy's chords: EX = 2;16, ZX = 1;2 (x 60 on a diameter of 120: halve), EZ = 2;29 1/2 -> 1 : 24, apogee 24;30 before the solstice"
+);
+console.log(
+	`greatest q for 1/24: ${dms(SolarEccentric.greatestEquation(1 / 24).q)} at ${dms(SolarEccentric.greatestEquation(1 / 24).M)} (2;23 at 92;23)`
+);
 
-title('Fit: sensitivity to the timing (one hour moved from summer to spring)');
+title('Fit: sensitivity to the timing');
 {
-	const base = fitSeasons(94.5, 92.5, Y_PTOLEMY);
-	const moved = fitSeasons(94.5 + 1 / 24, 92.5 - 1 / 24, Y_PTOLEMY);
+	const base = SolarEccentric.fitSeasons(94.5, 92.5, YEAR);
+	const moved = SolarEccentric.fitSeasons(94.5 + 1 / 24, 92.5 - 1 / 24, YEAR);
+	const longer = SolarEccentric.fitSeasons(94.5 + 1 / 24, 92.5, YEAR);
 
-	console.log(`apogee ${f(base.apogee, 2)}° -> ${f(moved.apogee, 2)}° (${f(moved.apogee - base.apogee, 2)}°), e ${f(base.e, 5)} -> ${f(moved.e, 5)}`);
-	const longer = fitSeasons(94.5 + 1 / 24, 92.5, Y_PTOLEMY);
-	console.log(`one hour added to spring only: apogee ${f(longer.apogee - base.apogee, 2)}°, e ${f(longer.e - base.e, 5)}`);
+	console.log(
+		`one hour from summer to spring: apogee ${f(moved.apogee - base.apogee, 2)}°, e ${f(moved.e - base.e, 5)}`
+	);
+	console.log(`one hour added to spring: apogee ${f(longer.apogee - base.apogee, 2)}°, e ${f(longer.e - base.e, 5)}`);
 }
 
-title("Fit: the real seasons of Hipparchus' time (141 BC) through his method");
-printFit('141 BC, reference Sun', sHipparchus.lengths[0], sHipparchus.lengths[1], 360 / MeanSun.MODERN.n);
-
-title('Fit: 2026');
-const fit2026 = printFit('2026 seasons, modern year', s2026.lengths[0], s2026.lengths[1], 360 / MeanSun.MODERN.n);
-console.log(`   real autumn ${f(s2026.lengths[2], 3)} d, winter ${f(s2026.lengths[3], 3)} d: errors ${f((fit2026.T3 - s2026.lengths[2]) * 24, 2)} h, ${f((fit2026.T4 - s2026.lengths[3]) * 24, 2)} h`);
-
-/* The mean longitude at the spring equinox, then L0 at J2000 (TT). */
-const equinox2026 = s2026.times[0];
-const nModern = MeanSun.MODERN.n;
-const L0fit = norm360(fit2026.lambdaBarAtEquinox - nModern * (equinox2026 - Time.J2000));
+title('Fit: the real seasons of 141 BC through the same method (Figure 3 preset)');
+const fit141BC = printFit('141 BC', s141BC.lengths[0], s141BC.lengths[1], YEAR);
 console.log(
-	`   mean longitude at the spring equinox: ${f(fit2026.lambdaBarAtEquinox, 4)}° (= -asin y); L0 at J2000 = ${f(L0fit, 4)}° ` +
-		`(Meeus 25.2: ${MeanSun.MODERN.L0}°, difference ${f((L0fit - MeanSun.MODERN.L0) * 60, 2)}')`
+	`Hipparchus' spring + summer is ${f(187 - s141BC.lengths[0] - s141BC.lengths[1], 2)} d too long; his e is ${f((fitHipparchus.e / fit141BC.e - 1) * 100, 0)}% too large`
+);
+
+title('Fit: 2026 (Figure 3 preset, and the model of the page)');
+const fit2026 = printFit('2026', s2026.lengths[0], s2026.lengths[1], YEAR);
+console.log(
+	`   real autumn ${f(s2026.lengths[2], 3)} d, winter ${f(s2026.lengths[3], 3)} d: predicted - real ${f((fit2026.lengths[2] - s2026.lengths[2]) * 24, 2)} h, ${f((fit2026.lengths[3] - s2026.lengths[3]) * 24, 2)} h`
+);
+const L0fit = norm360(fit2026.meanLongitudeAtEquinox - N_MODERN * (s2026.times[0] - Time.J2000));
+console.log(
+	`   spring equinox ${f(s2026.times[0] - Time.J2000, 4)} d after J2000; L0 = ${f(fit2026.meanLongitudeAtEquinox, 4)}° - n x that = ${f(L0fit, 5)}°`
+);
+console.log(`   Meeus 25.2: ${MeanSun.MODERN.L0}°, ours - Meeus = ${f((L0fit - MeanSun.MODERN.L0) * 60, 2)}'`);
+console.log(
+	`   FIT_2026 in solar-eccentric.js: L0 ${SolarEccentric.FIT_2026.L0}, e ${SolarEccentric.FIT_2026.e}, apogee ${SolarEccentric.FIT_2026.apogee}`
+);
+console.log(
+	`   rounded here:                   L0 ${f(L0fit, 5)}, e ${f(fit2026.e, 6)}, apogee ${f(fit2026.apogee, 3)}`
 );
 
 /* Kepler's ellipse, for comparison: Standish's Earth-Moon barycentre
-   (Ephem), eccentricity and perihelion of date. */
-const T2026 = Time.centuries(Time.julianDay(2026, 7, 2));
+   (shared/ephemeris.js, Table 2a), eccentricity and perihelion of date.
+   The Sun's apogee is the Earth's perihelion. */
+const MID_2026 = Time.julianDay(2026, 7, 2);
+const T2026 = Time.centuries(MID_2026);
 const eKepler = 0.01673163 - 0.00003661 * T2026;
-const perihelionJ2000 = 102.93005885 + 0.3179526 * T2026;
-const perihelionOfDate = Ephem.precessEcliptic(perihelionJ2000, 0, Time.J2000, Time.julianDay(2026, 7, 2)).lon;
+const perihelion = Ephem.precessEcliptic(102.93005885 + 0.3179526 * T2026, 0, Time.J2000, MID_2026).lon;
 console.log(
-	`Kepler (Standish, 2026): e = ${f(eKepler, 5)}, 2e = ${f(2 * eKepler, 5)}; the Sun's apogee = the Earth's perihelion = ${f(perihelionOfDate, 3)}° of date`
+	`Kepler, 2026: e_K = ${f(eKepler, 5)}, 2 e_K = ${f(2 * eKepler, 5)}; our e / 2 e_K = ${f(fit2026.e / (2 * eKepler), 4)}`
 );
-console.log(`   fitted e / 2e_K = ${f(fit2026.e / (2 * eKepler), 4)}; apogee fitted - Kepler = ${f(fit2026.apogee - perihelionOfDate, 3)}°`);
-
-/* The 2026 eccentric, the model of the page. */
-const ECC2026 = {
-	L0: L0fit,
-	n: nModern,
-	epoch: Time.J2000,
-	e: fit2026.e,
-	apogee: fit2026.apogee
-};
-console.log(`ECCENTRIC_2026 = { L0: ${f(L0fit, 4)}, n: ${nModern}, epoch: J2000, e: ${f(fit2026.e, 5)}, apogee: ${f(fit2026.apogee, 3)} }`);
+console.log(`   the Sun's apogee of date ${f(perihelion, 2)}°; ours ${f(fit2026.apogee - perihelion, 2)}° further`);
 
 /* ==========================================================================
-   8. TEST: THE ERROR CURVES
+   7. TEST
    ========================================================================== */
 
-/* Largest and smallest model - reference (arcmin) and the RMS, sampled
-   every 'step' days from start to end (JD TT). */
+/* Model - reference (arcmin) every 'step' days from start to end (JD TT):
+   the smallest and largest, with their dates, and the RMS. */
 function errorStats(model, start, end, step = 1) {
-	let low = Infinity;
-	let high = -Infinity;
+	let low = { value: Infinity };
+	let high = { value: -Infinity };
 	let sumSquares = 0;
 	let count = 0;
-	let lowAt = null;
-	let highAt = null;
 
 	for (let jd = start; jd <= end; jd += step) {
-		const delta = norm180(model(jd) - sunLongitude(jd)) * 60;
+		const value = norm180(model(jd) - sunLongitude(jd)) * 60;
 
-		if (delta < low) {
-			low = delta;
-			lowAt = jd;
+		if (value < low.value) {
+			low = { value, jd };
 		}
 
-		if (delta > high) {
-			high = delta;
-			highAt = jd;
+		if (value > high.value) {
+			high = { value, jd };
 		}
 
-		sumSquares += delta * delta;
+		sumSquares += value * value;
 		count++;
 	}
 
-	return { low, high, lowAt, highAt, rms: Math.sqrt(sumSquares / count) };
+	return { low, high, rms: Math.sqrt(sumSquares / count) };
 }
 
-function printStats(label, s) {
+function printStats(label, s, unit = 'arcmin') {
+	const k = unit === 'deg' ? 1 / 60 : 1;
+	const sign = unit === 'deg' ? '°' : "'";
+
 	console.log(
-		`${label}: ${f(s.low, 2)}' (${date(s.lowAt)}) to ${f(s.high, 2)}' (${date(s.highAt)}), RMS ${f(s.rms, 2)}'`
+		`${label}: ${f(s.low.value * k, 2)}${sign} (${date(s.low.jd)}) to ${f(s.high.value * k, 2)}${sign} (${date(s.high.jd)}), RMS ${f(s.rms * k, 2)}${sign}`
 	);
 }
 
-title('Test: 2026');
+title('Test: Figure 4, 2026');
 const meanSun = MeanSun.make();
-const ecc2026 = makeEccentric(ECC2026);
-const Y2027 = Time.julianDay(2027, 1, 1);
+const ours = SolarEccentric.make(SolarEccentric.FIT_2026);
 printStats('uniform circle (MeanSun.MODERN)', errorStats(meanSun, Y2026, Y2027, 0.25));
-printStats('eccentric (2026 fit)', errorStats(ecc2026, Y2026, Y2027, 0.25));
+printStats('eccentric (FIT_2026)', errorStats(ours, Y2026, Y2027, 0.25));
 
-/* The same eccentric with the Kepler second-order term, to split the
-   residual: what the eccentric's own shape leaves, and what is left. */
-const keplerQ = (M, e) => -(2 * e * sind(M)) * R2D + (5 / 4) * e * e * sind(2 * M) * R2D;
-const kepler2026 = jd => {
-	const lb = ECC2026.L0 + ECC2026.n * (jd - ECC2026.epoch);
+title('Test: the day of page 1.3, with the eccentric Sun (2026, meridian of Greenwich)');
 
-	return norm360(lb + keplerQ(lb - ECC2026.apogee, ECC2026.e / 2));
-};
-printStats('   (Kepler q with e_K = e/2, same L0 and apogee)', errorStats(kepler2026, Y2026, Y2027, 0.25));
-console.log(
-	`   eccentric minus Kepler: second-order term (e^2/2 - 5/4 e_K^2) sin 2M, amplitude ${f(((ECC2026.e ** 2) / 2 - (5 / 4) * (ECC2026.e / 2) ** 2) * R2D * 60, 2)}'`
-);
-
-title('Test: our eccentric over longer spans (fixed apogee)');
-[
-	['1976-2076', 1976, 2076],
-	['1526-2526', 1526, 2526]
-].forEach(([label, from, to]) => {
-	printStats(`eccentric ${label}`, errorStats(ecc2026, Time.julianDay(from, 1, 1), Time.julianDay(to, 1, 1), 2));
-	printStats(`uniform   ${label}`, errorStats(meanSun, Time.julianDay(from, 1, 1), Time.julianDay(to, 1, 1), 2));
-});
-
-title("Test: Ptolemy's Sun (Almagest III 7-8)");
-/* Epoch: Nabonassar 1, Thoth 1, noon at Alexandria (local mean time,
-   longitude 29.92° E), mean longitude Pisces 0;45 = 330;45°; days counted
-   in UT. */
-const ALEXANDRIA_LON = 29.92;
-const NABONASSAR_NOON_GREENWICH = 1448638.0; // page 1.3
-const PTOLEMY_EPOCH = NABONASSAR_NOON_GREENWICH - ALEXANDRIA_LON / 360;
-const PTOLEMY = {
-	L0: 330.75,
-	n: N_PTOLEMY,
-	epoch: PTOLEMY_EPOCH,
-	e: fromSexagesimal(0, 2, 30),
-	apogee: 65.5,
-	ut: true
-};
-console.log(`epoch JD(UT) ${f(PTOLEMY_EPOCH, 4)} = ${when(PTOLEMY_EPOCH)} UT; Delta T then ${f(Time.deltaT(Time.decimalYear(PTOLEMY_EPOCH)) / 3600, 2)} h`);
-const ptolemySun = makeEccentric(PTOLEMY);
-const ptolemyMean = makeEccentric(Object.assign({}, PTOLEMY, { e: 0 }));
-const y140 = Time.julianDay(140, 1, 1);
-const y141 = Time.julianDay(141, 1, 1);
-printStats("Ptolemy's eccentric, AD 140", errorStats(ptolemySun, y140, y141, 0.25));
-printStats("Ptolemy's mean Sun, AD 140", errorStats(ptolemyMean, y140, y141, 0.25));
-
-/* Check: Ptolemy's autumn equinox of AD 132 (III 7): his model puts the
-   Sun at 180° at 2 h after noon, Athyr 7 = 25 Sep 132. */
-const ptolemyEquinox132 = Time.ttFromUt(1769539.0833 - ALEXANDRIA_LON / 360);
-console.log(`his model at his autumn equinox of 25 Sep 132, 14 h Alexandria: lambda = ${f(ptolemySun(ptolemyEquinox132), 3)}°`);
-console.log(`   real Sun then: ${f(sunLongitude(ptolemyEquinox132), 3)}°; real equinox ${when(Time.utFromTt(sunReaches(180, ptolemyEquinox132 - 5)) + ALEXANDRIA_LON / 360)} Alexandria mean time`);
-
-[-200, 140, 500, 1000, 1500, 2026].forEach(year => {
-	const a = Time.julianDay(year, 1, 1);
-	const stats = errorStats(ptolemySun, a, a + 365.25, 1);
-
-	console.log(`   Ptolemy's Sun in ${Time.formatYear(year)}: mean error ${f((stats.low + stats.high) / 2 / 60, 2)}°, range ${f(stats.low / 60, 2)}° to ${f(stats.high / 60, 2)}°`);
-});
-console.log(`   his mean Sun falls behind by ${f((nModern - N_PTOLEMY) * 36525, 3)}° a century (page 1.3)`);
-
-/* ==========================================================================
-   9. TEST: THE DAY OF PAGE 1.3 WITH THE ECCENTRIC SUN
-   The model day: 2 H0 / 15° from the declination at local noon, h0 = -50'
-   (Clock.sunDay with the eccentric's longitude). The real day: sunrise to
-   sunset of the reference Sun, as in tools/numbers/1.3-clocks.js.
-   ========================================================================== */
-
-title('Test: the length of the day with the eccentric Sun (2026, Greenwich meridian)');
-
-function realDayLength(jd0, phi) {
-	const altitude = jdUT => {
+/* The reference Sun's day: its noon (hour angle 0), then sunrise and
+   sunset with h0 = -50' (page 1.3), in hours. */
+function realDayHours(jd0, phi) {
+	const sunNow = jdUT => {
 		const jdTT = Time.ttFromUt(jdUT);
 		const eq = Ephem.equatorial(Ephem.sun(jdTT), jdTT);
 
-		return Diurnal.altitude(eq.dec, norm180(Ephem.apparentSiderealTime(jdUT) - eq.ra), phi) - Clock.SUN_HORIZON;
+		return { dec: eq.dec, H: norm180(Ephem.apparentSiderealTime(jdUT) - eq.ra) };
 	};
-	const hourAngle = jdUT => {
-		const jdTT = Time.ttFromUt(jdUT);
-		const eq = Ephem.equatorial(Ephem.sun(jdTT), jdTT);
+	const above = jdUT => {
+		const s = sunNow(jdUT);
 
-		return norm180(Ephem.apparentSiderealTime(jdUT) - eq.ra);
+		return Diurnal.altitude(s.dec, s.H, phi) - Clock.SUN_HORIZON;
 	};
-	const noon = bisect(hourAngle, jd0 + 0.47, jd0 + 0.53, 30);
+	const noon = bisect(jd => sunNow(jd).H, jd0 + 0.47, jd0 + 0.53, 30);
 
-	if (altitude(noon) < 0 || altitude(noon - 0.5) > 0) {
+	if (above(noon) < 0 || above(noon - 0.5) > 0) {
 		return NaN;
 	}
 
-	return (bisect(altitude, noon, noon + 0.5, 30) - bisect(altitude, noon - 0.5, noon, 30)) * 24;
+	return (bisect(above, noon, noon + 0.5, 30) - bisect(above, noon - 0.5, noon, 30)) * 24;
 }
 
-function modelDayLength(jd0, phi, longitude) {
-	const noonUT = jd0 + 0.5;
-	const jdTT = Time.ttFromUt(noonUT);
+/* A model Sun's day as on page 1.3: the declination at mean noon, from
+   its longitude, gives the rising hour angle H0 (Clock.sunDay with
+   another longitude). */
+function modelDayHours(jd0, phi, longitude) {
+	const jdTT = Time.ttFromUt(jd0 + 0.5);
 	const dec = Frames.eclipticPoint(longitude(jdTT), Ephem.meanObliquity(jdTT)).dec;
 
 	return (2 * Diurnal.risingHourAngle(dec, phi, Clock.SUN_HORIZON)) / 15;
@@ -500,86 +408,171 @@ function modelDayLength(jd0, phi, longitude) {
 
 [41.9, 51.5, 65].forEach(phi => {
 	let worstMean = 0;
-	let worstEcc = 0;
+	let worstOurs = 0;
 
-	for (let d = 0; d < 365; d += 1) {
-		const jd0 = Y2026 + d;
-		const real = realDayLength(jd0, phi);
+	for (let d = 0; d < 365; d++) {
+		const real = realDayHours(Y2026 + d, phi);
 
-		if (Number.isNaN(real)) {
-			continue;
+		if (!Number.isNaN(real)) {
+			worstMean = Math.max(worstMean, Math.abs(modelDayHours(Y2026 + d, phi, meanSun) - real) * 60);
+			worstOurs = Math.max(worstOurs, Math.abs(modelDayHours(Y2026 + d, phi, ours) - real) * 60);
 		}
-
-		const mean = modelDayLength(jd0, phi, meanSun);
-		const ecc = modelDayLength(jd0, phi, ecc2026);
-
-		worstMean = Math.max(worstMean, Math.abs(mean - real) * 60);
-		worstEcc = Math.max(worstEcc, Math.abs(ecc - real) * 60);
 	}
 
-	console.log(`phi = ${phi}°: largest error of the day, mean Sun ${f(worstMean, 1)} min, eccentric Sun ${f(worstEcc, 1)} min`);
+	console.log(
+		`phi = ${phi}°: largest error of the day, mean Sun ${f(worstMean, 1)} min, eccentric Sun ${f(worstOurs, 1)} min`
+	);
 });
 
+title("Test: Ptolemy's Sun (Almagest III 7-8), Figure 5");
+const ptolemy = SolarEccentric.make(SolarEccentric.PTOLEMY);
+const ptolemyMean = MeanSun.make(MeanSun.PTOLEMY);
+console.log(
+	`epoch JD(UT) ${f(MeanSun.PTOLEMY.epoch, 4)} = ${when(MeanSun.PTOLEMY.epoch)} UT (noon at Alexandria); Delta T ${f(Time.deltaT(Time.decimalYear(MeanSun.PTOLEMY.epoch)) / 3600, 2)} h`
+);
+const Y140 = Time.julianDay(140, 1, 1);
+printStats("Ptolemy's eccentric, AD 140", errorStats(ptolemy, Y140, Y140 + 365.25, 0.25), 'deg');
+printStats("Ptolemy's mean Sun, AD 140", errorStats(ptolemyMean, Y140, Y140 + 365.25, 0.25), 'deg');
+
+/* His autumn equinox of AD 132, 2 equinoctial hours after noon (III 7):
+   1769539.0833 is that moment on the meridian of Greenwich (page 1.3). */
+const ALEXANDRIA = 29.92;
+const atAlexandria = jdTT => Time.utFromTt(jdTT) + ALEXANDRIA / 360;
+const equinox132 = Time.ttFromUt(1769539.0833 - ALEXANDRIA / 360);
+const realEquinox132 = sunReaches(180, equinox132 - 5);
+console.log(
+	`at his equinox of 25 Sep 132, 14h at Alexandria, his model gives ${f(ptolemy(equinox132), 3)}°, the real Sun ${f(sunLongitude(equinox132), 3)}°`
+);
+console.log(
+	`   the real equinox: ${when(atAlexandria(realEquinox132))} Alexandria mean time, ${f((equinox132 - realEquinox132) * 24, 1)} h earlier`
+);
+
+[-860, -200, 140, 500, 1000, 1140, 1500, 2026].forEach(year => {
+	const start = Time.julianDay(year, 1, 1);
+	const s = errorStats(ptolemy, start, start + 365.25, 1);
+
+	console.log(
+		`   ${Time.formatYear(year).padStart(7)}: ${f(s.low.value / 60, 2)}° to ${f(s.high.value / 60, 2)}°, mean ${f((s.low.value + s.high.value) / 120, 2)}°`
+	);
+});
+console.log(`his mean Sun falls behind by ${f((N_MODERN - N_PTOLEMY) * 36525, 3)}° a century`);
+
 /* ==========================================================================
-   10. RESIDUAL
+   8. RESIDUAL
    ========================================================================== */
 
-title('Residual: the apogee moves');
-[-140, 140, 880, 1000, 1200, 1250, 1300, 1515, 2026].forEach(year => {
+title('Residual: our eccentric over longer spans, Figure 6');
+printStats('2026', errorStats(ours, Y2026, Y2027, 0.25));
+[
+	[1976, 2076],
+	[1526, 2526]
+].forEach(([from, to]) => {
+	printStats(`${from}-${to}`, errorStats(ours, Time.julianDay(from, 1, 1), Time.julianDay(to, 1, 1), 2));
+});
+
+/* The part of the 2026 residual that is the eccentric's shape: Kepler's
+   q to second order, -2 e_K sin M + 5/4 e_K^2 sin 2M, with e_K = e / 2,
+   differs from the eccentric's -e sin M + e^2 / 2 sin 2M by
+   (e^2 / 2 - 5/4 e_K^2) sin 2M. */
+const eOurs = SolarEccentric.FIT_2026.e;
+console.log(
+	`eccentric - ellipse: (e^2/2 - 5/4 (e/2)^2) sin 2M, amplitude ${f(((eOurs * eOurs) / 2 - (5 / 4) * (eOurs / 2) ** 2) * R2D * 60, 2)}'`
+);
+
+title('Residual: the monthly ripple (the Earth about the Earth-Moon barycentre)');
+{
+	let largest = 0;
+
+	for (let jd = Y2026; jd < Y2027; jd += 0.25) {
+		const emb = shared.toLonLat(shared.negate(Ephem.heliocentricJ2000('emb', jd)));
+		const fromBarycentre = Ephem.precessEcliptic(emb.lon, emb.lat, Time.J2000, jd).lon;
+		const fromEarth = Ephem.sun(jd, { apparent: false }).lon;
+
+		largest = Math.max(largest, Math.abs(norm180(fromEarth - fromBarycentre)) * 3600);
+	}
+
+	console.log(`the Sun seen from the Earth minus from the barycentre: at most ${f(largest, 1)}" in 2026`);
+}
+
+title('Residual: the apogee moves (each year fitted by the same method)');
+[-140, 140, 880, 1250, 1515, 2026].forEach(year => {
 	const s = seasons(Time.julianDay(year, 3, 1));
-	const r = fitSeasons(s.lengths[0], s.lengths[1], 360 / nModern);
+	const r = SolarEccentric.fitSeasons(s.lengths[0], s.lengths[1], YEAR);
 
 	console.log(
 		`${Time.formatYear(year).padStart(7)}: spring ${f(s.lengths[0], 2)} d, summer ${f(s.lengths[1], 2)} d -> e = ${f(r.e, 4)}, apogee ${f(r.apogee, 2)}°`
 	);
 });
+console.log(
+	`al-Battani (De Rev. III 16): spring 93d35dm = ${f(93 + 35 / 60, 3)} d, apogee 7°43' before the solstice = ${f(90 - 7 - 43 / 60, 2)}°`
+);
+console.log(`Copernicus 1515: e = 1/31 = ${f(1 / 31, 4)}, apogee 6 2/3° after the solstice = ${f(96 + 2 / 3, 2)}°`);
+{
+	const T = Time.centuries(Time.julianDay(2026, 1, 1));
+	const lonAt = jd => Ephem.precessEcliptic(0, 0, Time.J2000, jd).lon;
+	const precession = norm180(lonAt(Time.julianDay(2076, 1, 1)) - lonAt(Time.julianDay(1976, 1, 1)));
+
+	console.log(
+		`precession in longitude around 2026: ${f(precession, 3)}° a century; the perihelion's own motion (Standish): ${f(0.3179526, 3)}° a century (T = ${f(T, 2)})`
+	);
+}
+console.log(
+	`rate since 141 BC: ${f(((SolarEccentric.FIT_2026.apogee - fit141BC.apogee) / (2026 + 140)) * 100, 2)}° a century`
+);
 
 title('Residual: the distance');
-console.log(
-	`eccentric (e = ${f(fit2026.e, 4)}): distance from ${f(1 - fit2026.e, 4)} to ${f(1 + fit2026.e, 4)}, ` +
-		`apparent diameter varies by +-${f(fit2026.e * 100, 1)}%`
-);
 const dists = [];
 
 for (let d = 0; d < 365; d++) {
 	dists.push(Ephem.sun(Y2026 + d).dist);
 }
 
-const dMin = Math.min(...dists);
-const dMax = Math.max(...dists);
+const near = Math.min(...dists);
+const far = Math.max(...dists);
+const diameterAt1au = 1919.26 / 60; // arcmin, the Sun's apparent diameter at 1 au (Meeus)
 console.log(
-	`real Sun 2026: ${f(dMin, 5)} to ${f(dMax, 5)} au, +-${f(((dMax - dMin) / (dMax + dMin)) * 100, 2)}%; ` +
-		`apparent diameter ${f((1919.26 / dMax / 60), 2)}' to ${f((1919.26 / dMin / 60), 2)}'`
+	`real Sun 2026: ${f(near, 5)} to ${f(far, 5)} au, apparent diameter ${f(diameterAt1au / far, 2)}' to ${f(diameterAt1au / near, 2)}'`
 );
-const sunEcc = (1919.26 / 60) / 1; // diameter at 1 au, arcmin
 console.log(
-	`eccentric with the same mean distance: ${f(sunEcc / (1 + fit2026.e), 2)}' to ${f(sunEcc / (1 - fit2026.e), 2)}'`
+	`eccentric, e = ${f(eOurs, 4)}, mean distance 1 au: ${f(diameterAt1au / (1 + eOurs), 2)}' to ${f(diameterAt1au / (1 - eOurs), 2)}'`
 );
 
 /* ==========================================================================
-   11. EXERCISES
+   9. EXERCISES
    ========================================================================== */
 
-title("Exercise 1: Hipparchus' Sun from two numbers (see section 7)");
-console.log(`e = ${f(fitH.e, 4)}, apogee ${f(fitH.apogee, 2)}°, autumn ${f(fitH.T3, 2)} d, winter ${f(fitH.T4, 2)} d`);
-console.log(`Ptolemy III 4: 88 1/8 = 88.125, 90 1/8 = 90.125`);
+title("Exercise 1: Hipparchus' Sun (see section 6)");
+console.log(
+	`e = ${f(fitHipparchus.e, 4)}, apogee ${f(fitHipparchus.apogee, 2)}°, autumn ${f(fitHipparchus.lengths[2], 2)} d, winter ${f(fitHipparchus.lengths[3], 2)} d (Ptolemy 88 1/8, 90 1/8)`
+);
+console.log(`141 BC real: e = ${f(fit141BC.e, 4)}, apogee ${f(fit141BC.apogee, 2)}°`);
 
-title('Exercise 2: the greatest equation');
-console.log(`Ptolemy: e = 1/24 -> ${dms(asind(1 / 24))} at M = ${dms(90 + asind(1 / 24))} (his 2;23 at 92;23)`);
-console.log(`2026: e = ${f(fit2026.e, 5)} -> ${dms(asind(fit2026.e))} = ${f(asind(fit2026.e), 4)}° at M = ${f(90 + asind(fit2026.e), 3)}°`);
+title('Exercise 2: the greatest equation (see section 5)');
 
-title("Exercise 3: Ptolemy's observations of AD 139-140 (Almagest III 1, III 4)");
-/* His times are local (Alexandria) apparent times; equation of time
-   aside, compare with the real moments in Alexandria mean time. */
-const alexandria = jdTT => Time.utFromTt(jdTT) + ALEXANDRIA_LON / 360;
-const realAutumn139 = sunReaches(180, Time.julianDay(139, 9, 15));
-const realSpring140 = sunReaches(0, Time.julianDay(140, 3, 10));
-const realSummer140 = sunReaches(90, Time.julianDay(140, 6, 10));
-console.log(`autumn equinox 139: real ${when(alexandria(realAutumn139))} Alexandria; Ptolemy: 26 Sep, about 1 h after sunrise`);
-console.log(`spring equinox 140: real ${when(alexandria(realSpring140))}; Ptolemy: 22 Mar, about 1 h after noon`);
-console.log(`summer solstice 140: real ${when(alexandria(realSummer140))}; Ptolemy: 25 Jun, about 2 h after midnight`);
-console.log(`real spring 140: ${f(realSummer140 - realSpring140, 2)} d (Ptolemy 94 1/2 less 1/24)`);
-const realHipparchusSpring = sunReaches(0, Time.julianDay(-145, 3, 10));
-const realHipparchusAutumn = sunReaches(180, Time.julianDay(-146, 9, 15));
-console.log(`Hipparchus' spring equinox of 146 BC: real ${when(alexandria(realHipparchusSpring) - ALEXANDRIA_LON / 360 + 28.2 / 360)} Rhodes mean time; his: 24 Mar, dawn`);
-console.log(`Hipparchus' autumn equinox of 147 BC: real ${when(alexandria(realHipparchusAutumn) - ALEXANDRIA_LON / 360 + 28.2 / 360)} Rhodes mean time; his: 26/27 Sep, midnight`);
+title("Exercise 3: Ptolemy's observations of AD 139-140 (Almagest III 1)");
+const real139 = sunReaches(180, Time.julianDay(139, 9, 15));
+const real140s = sunReaches(0, Time.julianDay(140, 3, 10));
+const real140ss = sunReaches(90, Time.julianDay(140, 6, 10));
+console.log(`autumn equinox 139: real ${when(atAlexandria(real139))}; Ptolemy 26 Sep, 1 h after sunrise (about 07h)`);
+console.log(`spring equinox 140: real ${when(atAlexandria(real140s))}; Ptolemy 22 Mar, 1 h after noon (13h)`);
+console.log(`summer solstice 140: real ${when(atAlexandria(real140ss))}; Ptolemy 25 Jun, 2 h after midnight (02h)`);
+const sAD140fit = SolarEccentric.fitSeasons(sAD140.lengths[0], sAD140.lengths[1], YEAR);
+console.log(
+	`AD 140 real: spring ${f(sAD140.lengths[0], 2)}, summer ${f(sAD140.lengths[1], 2)} -> apogee ${f(sAD140fit.apogee, 2)}°, e ${f(sAD140fit.e, 4)}`
+);
+
+/* ==========================================================================
+   10. THE SCALES OF THE FIGURES
+   ========================================================================== */
+
+title('Scales');
+console.log(`Figure 2: e up to 0.1 -> |q| up to ${f(SolarEccentric.greatestEquation(0.1).q, 2)}° (axis +-6°)`);
+let largestE = 0;
+
+for (let a = 90; a <= 96; a += 0.5) {
+	for (let b = 90; b <= 96; b += 0.5) {
+		largestE = Math.max(largestE, SolarEccentric.fitSeasons(a, b, YEAR).e);
+	}
+}
+
+console.log(`Figure 3: spring and summer from 90 to 96 d -> e up to ${f(largestE, 4)} (zoom panel +-0.1)`);
