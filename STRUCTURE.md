@@ -98,8 +98,9 @@ The language needed to state any prediction.
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** a blue plate of the zodiac around Aldebaran, with the
   equatorial grid and the ecliptic; one fixed direction shown in two
-  frames at once; the axes rotate, the point does not (ecliptic and equator; equator and horizon, both
-  drawn in the equatorial frame). A table of Ptolemy's declinations and right
+  frames at once; the axes rotate, the point does not (ecliptic and equator,
+  drawn in the equatorial frame; equator and horizon, drawn in the horizon
+  frame, with buttons to redraw it in the equatorial frame). A table of Ptolemy's declinations and right
   ascensions against the real Sun of AD 137.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
   $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
