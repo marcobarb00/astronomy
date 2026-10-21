@@ -8,7 +8,6 @@
 	 3. Phone width
    ========================================================================== */
 
-
 /* ==========================================================================
    1. CONTROLS
    ========================================================================== */
@@ -17,18 +16,6 @@
 figure.fig {
 	--ctl-output: 5.5em;
 }
-
-/* The star buttons keep one width, so the row does not reflow when the
-   active one changes. */
-.star-choice button {
-	min-width: 5.6em;
-}
-
-/* The play button keeps its width between "play" and "pause". */
-button.play {
-	min-width: 6.5em;
-}
-
 
 /* ==========================================================================
    2. THE TABLES OF THE PROSE
@@ -49,7 +36,7 @@ table.prose-table td:first-child {
 /* Difference columns (Ptolemy − real): in the colour of the errors in the
    figures, on a faint band, so they stand apart from the values. */
 table.prose-table .diff {
-	color: var(--planet);
+	color: var(--planet-text);
 	font-weight: 600;
 	background: color-mix(in srgb, var(--planet) 8%, var(--card));
 }
@@ -60,12 +47,11 @@ table.prose-table thead tr + tr th:first-child {
 	text-align: center;
 }
 
-
 /* ==========================================================================
    3. PHONE WIDTH
    ========================================================================== */
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
 	/* "obliquity ε" needs a little more than the shared 74px label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);

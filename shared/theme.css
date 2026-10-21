@@ -1,49 +1,84 @@
 /* ==========================================================================
    PREDICTING THE SKY - SHARED THEME (theme.css)
-   One stylesheet for the whole site. Pages may add CSS for their own
-   figures, never new colours: every colour below is a :root variable or a
-   tint of one (color-mix with the card or background colour).
+   One stylesheet for the whole site, in the star-atlas style of STYLE.md:
+   navy ink on parchment, engraved-plate typography, one frame, one rule
+   style. Pages may add CSS for their own figures, never new colours: every
+   colour below is a :root variable or a tint of one (color-mix with the
+   card or background colour).
 
    TABLE OF CONTENTS
-	 1. Palette (fixed, shared with COL in common.js)
+	 1. Fonts and palette (fixed, shared with COL in common.js)
 	 2. Base typography
-	 3. Site bar and page header
-	 4. Article layout and sticky table of contents
-	 5. Prose, equations, tables
-	 6. Cards, boxes, colour keys
-	 7. Figures, controls and figure keys (and photos)
-	 8. Origin badges
-	 9. Exercises
-	10. Detour cards
+	 3. Page layout: container, link to the hub, header, contents
+	 4. Paragraphs with margin notes, the drop cap
+	 5. Headings, prose, equations, tables
+	 6. Boxes and colour keys
+	 7. Figures: the graduated frame, captions, keys, photos
+	 8. Controls: sliders, presets, play, read-outs
+	 9. Margin notes: origins and detours
+	10. Exercises
 	11. Sources and previous / next navigation
 	12. Plot legends and the error-curve widget
-	13. Hub
-	14. Test page
-	15. Phone width
+	13. The blue plate (static charts of the sky)
+	14. Hub
+	15. Test page
+	16. Phone width
    ========================================================================== */
 
-
 /* ==========================================================================
-   1. PALETTE
+   1. FONTS AND PALETTE
+   Fonts (STYLE.md §3): Spectral for the text, Cormorant Garamond for the
+   titles, Cormorant SC for the small-caps labels. Spectral 600 is loaded
+   for <strong> only. Each page loads them in its <head>, before this
+   file (see templates/page.html): a <link> there starts the download at
+   once, where an @import here would wait for this file first.
    ========================================================================== */
 
 /* ==========================================================
-   SHARED THEME - keep identical across all simulations
+   SHARED THEME - STYLE.md §2, keep identical to COL in common.js
    ========================================================== */
 :root {
-	--bg:       #f6f4ef;   /* page background             */
-	--card:     #ffffff;   /* card / panel background     */
-	--ink:      #2f3440;   /* main text                   */
-	--muted:    #7b8190;   /* secondary text, grid lines  */
-	--line:     #e2ded4;   /* borders                     */
-	--earth:    #6f9bd1;   /* earth / equator             */
-	--planet:   #d77a7a;   /* planet / object of interest */
-	--sun:      #e6b450;   /* sun / ecliptic              */
-	--deferent: #8fbf9f;   /* deferent                    */
-	--epicycle: #a58bd0;   /* epicycle                    */
-	--radius:   14px;
-}
+	/* Page */
+	--bg: #f3eee2; /* parchment, page background */
+	--card: #f7f3ea; /* inside figures and frames */
+	--ink: #1d2a44; /* text, rules, frames, outlines */
+	--muted: #5b6475; /* secondary text */
+	--line: #c9bc9c; /* light rules and table lines */
+	--accent: #7a5718; /* labels, Play, figure labels, links */
 
+	/* Figures: line colours (strokes and fills only) */
+	--earth: #2f5687; /* celestial equator, Earth */
+	--planet: #a23b2e; /* object of interest */
+	--sun: #b8862b; /* Sun, ecliptic */
+	--deferent: #4d7a55; /* horizon, deferent */
+	--epicycle: #6e5a9a; /* epicycle, Ptolemy's circles */
+
+	/* Figures: text colours of the same elements (4.5:1 on --bg) */
+	--earth-text: #2f5687;
+	--planet-text: #8d2f24;
+	--sun-text: #7a5718;
+	--deferent-text: #3e6346;
+	--epicycle-text: #5e4a87;
+
+	/* The blue plate (static sky charts only, STYLE.md §7) */
+	--plate: #1f3a6b;
+	--plate-ink: #eef3fb;
+	--plate-soft: #c9d5ea;
+	--plate-accent: #f2c96b;
+
+	/* Fonts */
+	--font-text: "Spectral", Georgia, serif;
+	--font-title: "Cormorant Garamond", Georgia, serif;
+	--font-label: "Cormorant SC", Georgia, serif;
+
+	/* Layout */
+	--page-width: 1320px; /* container, with 24 px padding */
+	--toc-width: 220px; /* the contents column on the left */
+	--toc-gap: 48px; /* between the contents and the page */
+	--text-width: 700px; /* the text column */
+	--margin-gap: 40px; /* between text and margin columns */
+	--frame-band: 14px; /* graduated frame: band thickness */
+}
 
 /* ==========================================================================
    2. BASE TYPOGRAPHY
@@ -53,219 +88,308 @@
 	box-sizing: border-box;
 }
 
-html {
-	scroll-behavior: smooth;
+/* The contents scroll smoothly to a section, unless the reader asked the
+   system for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 body {
 	margin: 0;
 	background: var(--bg);
 	color: var(--ink);
-	font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+	font: 18px/1.7 var(--font-text);
 }
 
 a {
-	color: color-mix(in srgb, var(--earth) 70%, var(--ink));
+	color: var(--accent);
 	text-underline-offset: 2px;
 }
 
-h1,
-h2,
-h3 {
-	line-height: 1.25;
+strong {
+	font-weight: 600;
 }
 
-h1 {
-	font-size: 2rem;
-	margin: 0 0 6px;
+/* A small-caps label: the act line above a title. */
+.act-line {
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	color: var(--accent);
 }
-
-h2 {
-	font-size: 1.4rem;
-	margin: 48px 0 12px;
-	scroll-margin-top: 16px;
-}
-
-h3 {
-	font-size: 1.1rem;
-	margin: 28px 0 8px;
-	scroll-margin-top: 16px;
-}
-
-.note {
-	color: var(--muted);
-	font-size: .9rem;
-}
-
-.sub {
-	color: var(--muted);
-	margin: 0 0 18px;
-}
-
 
 /* ==========================================================================
-   3. SITE BAR AND PAGE HEADER
+   3. PAGE LAYOUT: CONTAINER, LINK TO THE HUB, HEADER, CONTENTS
+   STYLE.md §4.1: the contents in a column on the left, which follows the
+   reader down the page (sticky); to their right the header and the
+   article, about 1012 px wide: the text keeps to 700 px, the margin notes
+   sit to its right, and figures use the whole width. Below 1100 px there
+   is no room for the contents column: they move under the header and
+   stay there.
+	 <div class="page"> a.site-link, nav.toc, header.page-head, article
    ========================================================================== */
 
-/* Thin bar at the top of every page with the way back to the hub. */
-.site-bar {
-	max-width: 1180px;
+.page,
+.single {
+	max-width: var(--page-width);
 	margin: 0 auto;
-	padding: 14px 20px 0;
-	font-size: .9rem;
+	padding: 48px 24px 96px;
 }
 
-.site-bar a {
-	color: var(--muted);
-	text-decoration: none;
-}
-
-.site-bar a:hover {
-	color: var(--ink);
-}
-
-/* The page title block: "Act II · 2.1", title, guiding question. */
-.page-head {
-	margin: 8px 0 28px;
-}
-
-.page-number {
-	color: var(--muted);
-	font-size: .85rem;
-	letter-spacing: .06em;
-	text-transform: uppercase;
-	margin: 0 0 4px;
-}
-
-.question {
-	font-size: 1.2rem;
-	font-style: italic;
-	color: color-mix(in srgb, var(--ink) 75%, var(--muted));
-	margin: 4px 0 0;
-}
-
-
-/* ==========================================================================
-   4. ARTICLE LAYOUT AND STICKY TABLE OF CONTENTS
-   ========================================================================== */
-
-/* Two columns: the contents on the left, the article on the right. */
 .page {
 	display: grid;
-	grid-template-columns: 210px minmax(0, 1fr);
-	gap: 44px;
-	max-width: 1180px;
-	margin: 0 auto;
-	padding: 12px 20px 80px;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		"link"
+		"head"
+		"toc"
+		"main";
 }
 
-/* Plain pages (hub, tests) use a single centred column. */
-.single {
-	max-width: 980px;
-	margin: 0 auto;
-	padding: 12px 20px 80px;
+.page > .site-link {
+	grid-area: link;
+	justify-self: start;
+}
+.page > .page-head {
+	grid-area: head;
+}
+.page > .toc {
+	grid-area: toc;
+}
+.page > article {
+	grid-area: main;
+}
+
+/* The hub has no contents and no article: one plain column. */
+.page.hub {
+	display: block;
+	max-width: calc(var(--page-width) - var(--toc-width) - var(--toc-gap));
+}
+
+@media (min-width: 1100px) {
+	.page {
+		grid-template-columns: var(--toc-width) minmax(0, 1fr);
+		column-gap: var(--toc-gap);
+		grid-template-areas:
+			"link link"
+			"toc  head"
+			"toc  main";
+	}
+
+	/* The contents follow the reader: sticky in their column, which runs
+	   down the whole page; a long list scrolls inside the window. */
+	.page > .toc {
+		position: sticky;
+		top: 32px;
+		align-self: start;
+		max-height: calc(100vh - 64px);
+		overflow-y: auto;
+		margin-top: 44px;
+	}
 }
 
 article {
 	min-width: 0;
-	max-width: 900px;
 }
 
-.toc {
-	position: sticky;
-	top: 20px;
-	align-self: start;
-	max-height: calc(100vh - 40px);
-	overflow-y: auto;
-	font-size: .9rem;
+/* "Predicting the Sky" above the header: the way back to the hub. */
+.site-link {
+	font-family: var(--font-label);
+	font-size: 17px;
+	letter-spacing: 0.1em;
+	color: var(--ink);
+	text-decoration: none;
 }
 
-.toc summary {
-	font-weight: 600;
+.site-link:hover {
+	color: var(--accent);
+}
+
+/* The header: the titles, then a double rule (two 1 px ink lines 3 px
+   apart, drawn as two background lines). */
+.page-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 18px var(--margin-gap);
+	align-items: flex-end;
+	margin: 36px 0;
+	padding-bottom: 36px;
+	background:
+		linear-gradient(var(--ink), var(--ink)) left bottom / 100% 1px no-repeat,
+		linear-gradient(var(--ink), var(--ink)) left calc(100% - 4px) / 100% 1px no-repeat;
+}
+
+.page-head .titles {
+	flex: 999 1 520px;
+	max-width: var(--text-width);
+}
+
+.page-head .act-line {
+	margin: 0;
+}
+
+h1 {
+	margin: 6px 0 0;
+	font: 600 clamp(42px, 10vw, 68px)/1.02 var(--font-title);
+}
+
+.subtitle {
+	margin: 8px 0 0;
+	font: italic 500 24px/1.4 var(--font-title);
 	color: var(--muted);
-	cursor: pointer;
-	list-style: none;
-	margin-bottom: 8px;
 }
 
-.toc summary::-webkit-details-marker {
-	display: none;
+/* The table of contents, in small caps, with an ink rule on its left. */
+.toc {
+	margin-bottom: 36px;
+	padding-left: 14px;
+	border-left: 1px solid var(--ink);
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	line-height: 1.35;
 }
 
 .toc ol {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border-left: 2px solid var(--line);
 }
 
-.toc li a {
-	display: block;
-	padding: 4px 0 4px 12px;
-	margin-left: -2px;
-	border-left: 2px solid transparent;
-	color: var(--muted);
+.toc li + li {
+	margin-top: 6px;
+}
+
+/* Number and title side by side: a long title wraps under itself. */
+.toc a {
+	display: flex;
+	color: var(--ink);
 	text-decoration: none;
 }
 
-.toc li a:hover {
-	color: var(--ink);
+.toc a:hover {
+	color: var(--accent);
 }
 
-/* The section currently in view (set by the scroll-spy in components.js). */
-.toc li a.active {
-	color: var(--ink);
-	border-left-color: var(--earth);
+.toc .toc-number {
+	flex: none;
+	width: 1.2em;
+}
+
+/* The section in view (set by the scroll-spy in components.js). */
+.toc a.current {
+	color: var(--accent);
 	font-weight: 600;
 }
 
-
 /* ==========================================================================
-   5. PROSE, EQUATIONS, TABLES
+   4. PARAGRAPHS WITH MARGIN NOTES, THE DROP CAP
+   A paragraph that has notes is a row: the paragraph, then an <aside>
+   with its notes, aligned to the top of the paragraph. Below about 800 px
+   there is no room for both, and the aside wraps under the paragraph.
    ========================================================================== */
 
-/* Text keeps a readable measure; figures use the whole column. */
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px var(--margin-gap);
+	margin: 1em 0;
+}
+
+.row > p,
+.row > .text {
+	flex: 999 1 520px;
+	max-width: var(--text-width);
+	margin: 0;
+}
+
+.row > aside {
+	flex: 1 1 200px;
+	align-self: flex-start;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+/* The first paragraph of a page opens with a drop cap, three lines tall. */
+.lead {
+	font-size: 20px;
+}
+
+.lead::first-letter {
+	float: left;
+	padding: 6px 10px 0 0;
+	font: 600 74px/0.85 var(--font-title);
+	color: var(--accent);
+}
+
+/* ==========================================================================
+   5. HEADINGS, PROSE, EQUATIONS, TABLES
+   ========================================================================== */
+
+/* Text keeps to the text column; figures and rows use the whole width. */
 article > p,
 article > ul,
 article > ol,
 article > h2,
 article > h3,
+article > details.fold,
 article section > p,
 article section > ul,
 article section > ol {
-	max-width: 70ch;
+	max-width: var(--text-width);
 }
 
-/* Kicker above each section title: "1 · Observation". */
+h2 {
+	margin: 56px 0 14px;
+	font: 600 34px/1.2 var(--font-title);
+	scroll-margin-top: 16px;
+}
+
+h3 {
+	margin: 32px 0 8px;
+	font: italic 600 26px/1.3 var(--font-title);
+	scroll-margin-top: 16px;
+}
+
+/* Step label above each section title: "1 · Observation". */
 .step {
 	display: block;
-	color: var(--muted);
-	font-size: .8rem;
-	font-weight: 600;
-	letter-spacing: .08em;
-	text-transform: uppercase;
-	margin-bottom: 2px;
+	margin-bottom: 4px;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	color: var(--accent);
 }
 
 /* Long routine algebra may be folded (STRUCTURE.md §2). */
 details.fold {
 	margin: 12px 0;
-	max-width: 70ch;
 }
 
 details.fold > summary {
 	cursor: pointer;
-	color: var(--muted);
+	font-family: var(--font-label);
+	letter-spacing: 0.1em;
+	color: var(--accent);
 }
 
-/* Equations never wrap; any overflow scrolls quietly. */
+/* Equations never wrap; any overflow scrolls quietly. Display equations
+   are centred in the text column (STYLE.md §4.6). */
 .eq {
 	display: block;
 	margin: 6px 0;
 }
 
+/* Positioned, so that the box also clips KaTeX's hidden, absolutely
+   positioned MathML, which would otherwise widen the page on a phone. */
 .eq,
 .katex-display {
+	position: relative;
 	overflow-x: auto;
 	overflow-y: hidden;
 	scrollbar-width: none;
@@ -276,9 +400,11 @@ details.fold > summary {
 	display: none;
 }
 
+/* KaTeX's auto-render puts a display equation inside a <span>, so it is
+   kept to the text column here rather than by an article > selector. */
 .katex-display {
-	margin: .6em 0;
-	max-width: 70ch;
+	max-width: var(--text-width);
+	margin: 0.8em 0;
 }
 
 .katex {
@@ -286,11 +412,15 @@ details.fold > summary {
 	font-size: 1.05em;
 }
 
+/* Tables: ink rules at the top and bottom and under the header, light
+   rules between the rows. */
 table {
 	border-collapse: collapse;
 	width: 100%;
-	font-size: .88rem;
+	font-size: 16px;
 	font-variant-numeric: tabular-nums;
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
 }
 
 /* Headers and cells are centered so the columns line up under their titles. */
@@ -301,121 +431,154 @@ td {
 	text-align: center;
 }
 
+th {
+	font-weight: 500;
+	border-bottom: 1px solid var(--ink);
+}
+
 tr.hl td {
-	background: color-mix(in srgb, var(--sun) 15%, var(--card));
+	background: color-mix(in srgb, var(--sun) 16%, var(--card));
 }
 
 code {
-	font-size: .9em;
-	background: color-mix(in srgb, var(--line) 50%, var(--card));
+	font-size: 0.85em;
+	background: color-mix(in srgb, var(--line) 35%, var(--card));
 	padding: 1px 4px;
-	border-radius: 4px;
 }
-
 
 /* ==========================================================================
-   6. CARDS, BOXES, COLOUR KEYS
+   6. BOXES AND COLOUR KEYS
    ========================================================================== */
 
-.card {
-	background: var(--card);
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	padding: 16px;
-	margin-bottom: 16px;
-	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
-}
-
-/* Highlighted remark (key result, definition). */
+/* Highlighted remark (key result, definition): on the card colour,
+   between two ink rules. */
 .box {
-	background: color-mix(in srgb, var(--sun) 10%, var(--card));
-	border-left: 4px solid var(--sun);
-	padding: 10px 14px;
-	border-radius: 8px;
-	margin: 14px 0;
-	max-width: 70ch;
+	max-width: var(--text-width);
+	margin: 18px 0;
+	padding: 6px 16px;
+	background: var(--card);
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
 }
 
 .box.warn {
-	background: color-mix(in srgb, var(--planet) 10%, var(--card));
-	border-left-color: var(--planet);
+	border-color: var(--planet);
 }
 
-/* Colour keys: coloured words in the text that match the figures. */
-.c-earth    { color: var(--earth); }
-.c-planet   { color: var(--planet); }
-.c-sun      { color: var(--sun); }
-.c-deferent { color: var(--deferent); }
-.c-epicycle { color: var(--epicycle); }
-.c-muted    { color: var(--muted); }
-
+/* Colour keys: coloured words in the text that match the figures, in
+   the text colours (STYLE.md §2). */
+.c-earth {
+	color: var(--earth-text);
+}
+.c-planet {
+	color: var(--planet-text);
+}
+.c-sun {
+	color: var(--sun-text);
+}
+.c-deferent {
+	color: var(--deferent-text);
+}
+.c-epicycle {
+	color: var(--epicycle-text);
+}
+.c-muted {
+	color: var(--muted);
+}
 
 /* ==========================================================================
-   7. FIGURES, CONTROLS AND FIGURE KEYS
+   7. FIGURES: THE GRADUATED FRAME, CAPTIONS, KEYS, PHOTOS
+   A figure is its frame (canvas and controls), then the caption, then the
+   keys (CLAUDE.md), all across the whole width.
    ========================================================================== */
 
 figure.fig {
+	margin: 44px 0;
+	padding: 0;
+}
+
+/* The graduated frame (STYLE.md §6). components.js (GraduatedFrame) puts
+   the content in .frame-body and adds the corners and the edges, each in
+   its grid area; it also counts the bands of each edge. */
+.frame {
+	display: grid;
+	grid-template-columns: var(--frame-band) minmax(0, 1fr) var(--frame-band);
+	grid-template-rows: var(--frame-band) auto var(--frame-band);
+	grid-template-areas:
+		"tl   top    tr"
+		"left body   right"
+		"bl   bottom br";
+	border: 1px solid var(--ink);
 	background: var(--card);
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	padding: 16px;
-	margin: 22px 0;
-	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
+}
+
+.frame-body {
+	grid-area: body;
+	min-width: 0;
+	padding: 24px;
+}
+
+.frame-corner {
+	background: var(--ink);
+}
+
+/* An edge is a strip of bands; a 1 px ink line separates it from the body. */
+.frame-edge {
+	display: flex;
+	min-width: 0;
+	min-height: 0;
+}
+
+.frame-edge.top {
+	border-bottom: 1px solid var(--ink);
+}
+.frame-edge.bottom {
+	border-top: 1px solid var(--ink);
+}
+
+.frame-edge.left {
+	flex-direction: column;
+	border-right: 1px solid var(--ink);
+}
+
+.frame-edge.right {
+	flex-direction: column;
+	border-left: 1px solid var(--ink);
+}
+
+.frame-edge .band {
+	flex: 1 1 0;
+	min-width: 0;
+	min-height: 0;
+}
+
+.frame-edge .band.dark {
+	background: var(--ink);
 }
 
 /* Visual and controls side by side; stacked on narrow screens. */
 .fig-row {
 	display: grid;
 	grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-	gap: 20px;
+	gap: 28px;
 	align-items: start;
 }
 
+/* The caption under the frame: "Figure 1." then what to do and notice. */
 figcaption {
-	color: var(--muted);
-	font-size: .9rem;
-	margin-top: 12px;
-	max-width: 80ch;
+	max-width: var(--text-width);
+	padding-top: 14px;
+	font-size: 16px;
+	line-height: 1.55;
 }
 
-/* A photo (public domain or CC0 only, CLAUDE.md): an image with a
-   caption saying what to notice, and a credit line. It is as wide as the
-   paragraphs (70ch, border included), never wider.
-	 <figure class="photo"><img ...><figcaption> ...
-		 <span class="credit">author, year, source, licence</span>
-	 </figcaption></figure> */
-figure.photo {
-	background: var(--card);
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	padding: 12px;
-	margin: 22px 0;
-	max-width: 70ch;
-	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
-}
-
-figure.photo img {
-	display: block;
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-
-figure.photo figcaption {
-	margin-top: 10px;
-}
-
-.credit {
-	display: block;
-	margin-top: 4px;
-	font-size: .8rem;
-}
-
-/* "Figure 3." label inserted by components.js. */
+/* "Figure 3." label inserted by components.js; "Photo." in the HTML. */
 .fig-label {
-	color: var(--ink);
+	margin-right: 6px;
+	font-family: var(--font-label);
 	font-weight: 600;
-	margin-right: 4px;
+	letter-spacing: 0.2em;
+	color: var(--accent);
 }
 
 canvas {
@@ -439,172 +602,6 @@ canvas.plot2d {
 	touch-action: pan-y;
 }
 
-/* One slider row: label, slider, value. The value column has a FIXED
-   width: if it followed its text ("1 Jan" / "21 Mar"), the track would
-   resize while dragging and the thumb would jump under the pointer.
-   A figure with longer values sets --ctl-output on the figure. */
-.ctl {
-	--ctl-output: 7em;
-	display: grid;
-	grid-template-columns: 90px minmax(0, 1fr) var(--ctl-output);
-	gap: 8px;
-	align-items: center;
-	margin: 6px 0;
-}
-
-/* A slider with previous / next buttons on a second line, centred under
-   the row, so the track keeps the length of the other rows.
-	 <div class="ctl stepper"> label, input, output,
-		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */
-.stepper-buttons {
-	grid-column: 1 / -1;
-	justify-self: center;
-	display: flex;
-	gap: 6px;
-	margin-top: -2px;
-}
-
-.stepper-btn {
-	padding: 2px 10px;
-	border: 1px solid var(--line);
-	border-radius: 999px;
-	background: var(--bg);
-	color: var(--ink);
-	font: inherit;
-	font-size: .85rem;
-	cursor: pointer;
-
-	/* held down to repeat: no text selection, callout or double-tap zoom */
-	user-select: none;
-	-webkit-user-select: none;
-	-webkit-touch-callout: none;
-	touch-action: manipulation;
-}
-
-.stepper-btn:active {
-	border-color: var(--earth);
-}
-
-.stepper-btn:hover {
-	border-color: var(--muted);
-}
-
-.ctl label {
-	color: var(--muted);
-	font-size: .9rem;
-}
-
-.ctl output {
-	overflow: hidden;
-	text-align: right;
-	white-space: nowrap;
-	font-variant-numeric: tabular-nums;
-	font-size: 1rem;
-}
-
-/* Sliders drawn with the palette (the browser default picks its own
-   contrasting track colour). */
-input[type=range] {
-	width: 100%;
-	height: 20px;
-	margin: 0;
-	background: transparent;
-	-webkit-appearance: none;
-	appearance: none;
-	cursor: pointer;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-	height: 4px;
-	border-radius: 2px;
-	background: var(--line);
-}
-
-input[type=range]::-moz-range-track {
-	height: 4px;
-	border-radius: 2px;
-	background: var(--line);
-}
-
-input[type=range]::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	width: 16px;
-	height: 16px;
-	margin-top: -6px;
-	border-radius: 50%;
-	background: var(--earth);
-	border: 2px solid var(--card);
-	box-shadow: 0 0 0 1px var(--earth);
-}
-
-input[type=range]::-moz-range-thumb {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
-	background: var(--earth);
-	border: 2px solid var(--card);
-	box-shadow: 0 0 0 1px var(--earth);
-}
-
-input[type=range]:focus-visible {
-	outline: 2px solid color-mix(in srgb, var(--earth) 50%, var(--card));
-	outline-offset: 2px;
-}
-
-/* Small buttons: presets, span choice, "keep as ghost". */
-.presets {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 6px;
-	margin: 8px 0;
-}
-
-.presets button,
-button.small {
-	border: 1px solid var(--line);
-	background: var(--bg);
-	color: var(--ink);
-	border-radius: 8px;
-	padding: 4px 10px;
-	cursor: pointer;
-	font: inherit;
-	font-size: .85rem;
-}
-
-.presets button:hover,
-button.small:hover {
-	border-color: var(--muted);
-}
-
-.presets button.active {
-	background: var(--earth);
-	border-color: var(--earth);
-	color: var(--card);
-}
-
-/* Live numbers next to a figure, about the size of the body text. */
-.readout {
-	font-size: 1rem;
-	font-variant-numeric: tabular-nums;
-	margin-top: 8px;
-}
-
-/* Every line of a read-out has the same height, whatever its sub- and
-   superscripts, and empty lines keep theirs: with the fixed number of lines
-   of showLines (data-lines), the read-out never changes size. */
-.readout .eq {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 2.6rem;
-	margin: 0;
-}
-
-.readout .eq .katex-display {
-	margin: 0;
-}
-
-
 /* Figure key: one line per element of a figure, instead of a paragraph
    of explanations (CLAUDE.md). A figure may have several keys ("In the
    figure", "Read-out"); they sit side by side when there is room.
@@ -615,7 +612,7 @@ button.small:hover {
 .keys {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	gap: 12px 32px;
+	gap: 12px var(--margin-gap);
 	margin-top: 14px;
 	padding-top: 12px;
 	border-top: 1px solid var(--line);
@@ -623,11 +620,11 @@ button.small:hover {
 
 .key-title {
 	margin: 0 0 6px;
-	color: var(--muted);
-	font-size: .8rem;
+	font-family: var(--font-label);
+	font-size: 15px;
 	font-weight: 600;
-	letter-spacing: .06em;
-	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--muted);
 }
 
 dl.key {
@@ -635,12 +632,12 @@ dl.key {
 	grid-template-columns: max-content minmax(0, 1fr);
 	gap: 5px 12px;
 	margin: 0;
-	font-size: .95rem;
-	line-height: 1.45;
+	font-size: 15px;
+	line-height: 1.5;
 }
 
 dl.key dt {
-	font-weight: 600;
+	font-weight: 500;
 	white-space: nowrap;
 }
 
@@ -648,84 +645,333 @@ dl.key dd {
 	margin: 0;
 }
 
+/* A photo (public domain or CC0 only, CLAUDE.md): an image with a thin
+   ink border, and under it a caption saying what to notice, with a credit
+   line. It is as wide as the paragraphs, never wider.
+	 <figure class="photo"><img ...><figcaption> ...
+		 <span class="credit">author, year, source, licence</span>
+	 </figcaption></figure> */
+figure.photo {
+	max-width: var(--text-width);
+	margin: 36px 0;
+	padding: 0;
+}
+
+figure.photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 1px solid var(--ink);
+}
+
+.credit {
+	display: block;
+	margin-top: 4px;
+	font-size: 14px;
+	color: var(--muted);
+}
 
 /* ==========================================================================
-   8. ORIGIN BADGES (STRUCTURE.md §7.1)
-   Each origin takes one palette colour through --badge.
+   8. CONTROLS: SLIDERS, PRESETS, PLAY, READ-OUTS (STYLE.md §8)
+   Spectral at 15-16 px, numbers in tabular figures.
    ========================================================================== */
 
-.badge {
-	--badge: var(--muted);
-	display: inline-block;
-	padding: 1px 9px;
-	border-radius: 999px;
-	font-size: .78rem;
-	font-weight: 600;
-	letter-spacing: .02em;
-	line-height: 1.5;
-	vertical-align: .1em;
+/* One slider row: label, slider, value. The value column has a FIXED
+   width: if it followed its text ("1 Jan" / "21 Mar"), the track would
+   resize while dragging and the thumb would jump under the pointer.
+   A figure with longer values sets --ctl-output on the figure. */
+.ctl {
+	--ctl-output: 7em;
+	display: grid;
+	grid-template-columns: 90px minmax(0, 1fr) var(--ctl-output);
+	gap: 8px;
+	align-items: center;
+	margin: 8px 0;
+	font-size: 16px;
+}
+
+.ctl label {
+	color: var(--ink);
+}
+
+.ctl output {
+	overflow: hidden;
+	text-align: right;
 	white-space: nowrap;
-	color: color-mix(in srgb, var(--badge) 60%, var(--ink));
-	background: color-mix(in srgb, var(--badge) 16%, var(--card));
-	border: 1px solid color-mix(in srgb, var(--badge) 45%, var(--card));
+	font-variant-numeric: tabular-nums;
 }
 
-.badge[data-origin="babylonian"] { --badge: var(--sun); }
-.badge[data-origin="greek"]      { --badge: var(--deferent); }
-.badge[data-origin="hipparchus"],
-.badge[data-origin="ptolemy"],
-.badge[data-origin="copernicus"],
-.badge[data-origin="kepler"]     { --badge: var(--epicycle); }
-.badge[data-origin="modern"]     { --badge: var(--earth); }
-
-.badge[data-origin="debated"] {
-	--badge: var(--planet);
-	border-style: dashed;
+/* Sliders: the native range input, in ink. */
+input[type="range"] {
+	width: 100%;
+	margin: 0;
+	accent-color: var(--ink);
+	cursor: pointer;
 }
 
+input[type="range"]:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* Preset buttons: rectangles with an ink border; the active one filled. */
+.presets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 10px 0;
+}
+
+.presets button,
+button.small,
+.stepper-btn {
+	min-height: 40px;
+	padding: 6px 12px;
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	background: transparent;
+	color: var(--ink);
+	font: 15px/1.2 var(--font-text);
+	cursor: pointer;
+}
+
+.presets button:hover,
+button.small:hover,
+.stepper-btn:hover {
+	box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.presets button.active {
+	background: var(--ink);
+	color: var(--bg);
+}
+
+button:focus-visible,
+canvas.sphere3d:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* A slider with previous / next buttons on a second line, centred under
+   the row, so the track keeps the length of the other rows.
+	 <div class="ctl stepper"> label, input, output,
+		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */
+.stepper-buttons {
+	grid-column: 1 / -1;
+	justify-self: center;
+	display: flex;
+	gap: 8px;
+}
+
+.stepper-btn {
+	/* held down to repeat: no text selection, callout or double-tap zoom */
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	touch-action: manipulation;
+}
+
+.stepper-btn:active {
+	background: var(--ink);
+	color: var(--bg);
+}
+
+/* Play: filled with the accent colour, a small triangle icon (common.js). */
+.presets button.play,
+button.play {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 8px 20px;
+	border: none;
+	background: var(--accent);
+	color: var(--card);
+	font: 16px/1.2 var(--font-text);
+}
+
+.presets button.play:hover,
+button.play:hover {
+	box-shadow: none;
+	background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+button.play .icon {
+	flex: none;
+}
+
+/* A play button keeps its width between "Play" and "Pause" (a page with
+   longer labels widens it). */
+button.play {
+	min-width: 7.5em;
+}
+
+/* Star buttons keep one width, so a row does not reflow when the active
+   one changes. */
+.star-choice button {
+	min-width: 5.6em;
+}
+
+/* Two panels side by side, "(a)" and "(b)", each with its small-caps
+   title above and its controls underneath (stacked at phone width,
+   section 16). */
+.panels,
+.panel-controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+
+.panel-controls {
+	margin-top: 10px;
+}
+
+.panel-title {
+	margin: 0 0 4px;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
+/* Live numbers next to a figure: a small table, ink rules at the top and
+   bottom, light rules between the lines. Every line has the same height,
+   whatever its sub- and superscripts, and empty lines keep theirs: with the
+   fixed number of lines of showLines (data-lines), the read-out never
+   changes size. */
+.readout {
+	margin-top: 12px;
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
+	font-size: 16px;
+	font-variant-numeric: tabular-nums;
+}
+
+.readout .eq {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 2.6rem;
+	margin: 0;
+}
+
+.readout .eq + .eq {
+	border-top: 1px solid var(--line);
+}
+
+.readout .eq .katex-display {
+	margin: 0;
+}
 
 /* ==========================================================================
-   9. EXERCISES (STRUCTURE.md §7.2)
+   9. MARGIN NOTES: ORIGINS AND DETOURS (STYLE.md §4.5)
+   In the margin column of a row (section 4). A small-caps heading under a
+   rule: ink for an origin, dashed accent for a detour.
+	 <aside>
+		 <div class="note" data-origin="greek"></div>
+		 <div class="note detour" data-topic="nutation"></div>
+	 </aside>
+   ========================================================================== */
+
+.note {
+	padding-top: 6px;
+	border-top: 1px solid var(--ink);
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.note + .note {
+	margin-top: 16px;
+}
+
+.note-head {
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+}
+
+/* The colour of each origin, from the figure text colours: set on the
+   element that carries data-origin, used by its heading (or by itself, in
+   the hub's key). */
+[data-origin="babylonian"] {
+	--origin: var(--sun-text);
+}
+[data-origin="greek"] {
+	--origin: var(--deferent-text);
+}
+[data-origin="hipparchus"],
+[data-origin="ptolemy"],
+[data-origin="copernicus"],
+[data-origin="kepler"] {
+	--origin: var(--epicycle-text);
+}
+[data-origin="debated"] {
+	--origin: var(--planet-text);
+}
+[data-origin="modern"] {
+	--origin: var(--earth-text);
+}
+
+.note-head {
+	color: var(--origin, inherit);
+}
+
+.note.detour {
+	border-top: 1px dashed var(--accent);
+}
+
+.note.detour .note-head {
+	color: var(--accent);
+}
+
+/* ==========================================================================
+   10. EXERCISES (STRUCTURE.md §7.2)
    ========================================================================== */
 
 .exercise {
-	background: var(--card);
-	border: 1px solid var(--line);
-	border-left: 4px solid var(--epicycle);
-	border-radius: var(--radius);
-	padding: 14px 18px;
-	margin: 18px 0;
-	max-width: 76ch;
+	max-width: var(--text-width);
+	margin: 28px 0;
+	padding-top: 10px;
+	border-top: 1px solid var(--ink);
 }
 
 /* "Exercise 2 · Derive", built by components.js. */
 .exercise-head {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: baseline;
-	gap: 10px;
-	margin-bottom: 6px;
-	font-weight: 600;
+	gap: 4px 14px;
+	margin-bottom: 4px;
+}
+
+.exercise-number {
+	font: 600 24px/1.2 var(--font-title);
 }
 
 .exercise-kind {
-	color: color-mix(in srgb, var(--epicycle) 60%, var(--ink));
-	font-size: .8rem;
+	font-family: var(--font-label);
+	font-size: 15px;
 	font-weight: 600;
-	letter-spacing: .06em;
-	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--accent);
 }
 
 .exercise details {
-	border-top: 1px solid var(--line);
-	padding: 8px 0 2px;
 	margin-top: 8px;
+	padding: 6px 0 2px;
+	border-top: 1px solid var(--line);
 }
 
 .exercise summary {
 	cursor: pointer;
-	color: var(--muted);
+	font-family: var(--font-label);
+	font-size: 16px;
 	font-weight: 600;
-	font-size: .92rem;
+	letter-spacing: 0.15em;
+	color: var(--accent);
 }
 
 .exercise summary:hover {
@@ -736,40 +982,14 @@ dl.key dd {
 	margin-bottom: 6px;
 }
 
-
-/* ==========================================================================
-   10. DETOUR CARDS (STRUCTURE.md §7.4)
-   ========================================================================== */
-
-.detour {
-	display: block;
-	max-width: 70ch;
-	margin: 16px 0;
-	padding: 10px 14px;
-	border: 1px dashed var(--line);
-	border-radius: 10px;
-	background: color-mix(in srgb, var(--bg) 60%, var(--card));
-	color: var(--muted);
-	font-size: .92rem;
-}
-
-.detour strong {
-	color: color-mix(in srgb, var(--muted) 60%, var(--ink));
-}
-
-a.detour {
-	text-decoration: none;
-}
-
-a.detour:hover {
-	border-color: var(--muted);
-	color: var(--ink);
-}
-
-
 /* ==========================================================================
    11. SOURCES AND PREVIOUS / NEXT NAVIGATION
    ========================================================================== */
+
+.sources {
+	max-width: var(--text-width);
+	font-size: 16px;
+}
 
 .sources li {
 	margin: 4px 0;
@@ -779,20 +999,19 @@ a.detour:hover {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 14px;
-	margin-top: 48px;
+	margin-top: 56px;
 	padding-top: 20px;
-	border-top: 1px solid var(--line);
+	border-top: 1px solid var(--ink);
 }
 
 .pager a,
 .pager span {
 	display: block;
 	padding: 12px 16px;
-	border: 1px solid var(--line);
-	border-radius: var(--radius);
-	background: var(--card);
-	text-decoration: none;
+	border: 1px solid var(--ink);
 	color: var(--ink);
+	text-decoration: none;
+	font: 600 21px/1.3 var(--font-title);
 }
 
 .pager .next {
@@ -801,22 +1020,25 @@ a.detour:hover {
 }
 
 .pager a:hover {
-	border-color: var(--muted);
+	background: var(--card);
 }
 
 /* A neighbour that is not written yet. */
 .pager span {
 	color: var(--muted);
-	background: transparent;
-	border-style: dashed;
+	border: 1px dashed var(--line);
 }
 
 .pager small {
 	display: block;
-	color: var(--muted);
-	font-size: .8rem;
+	font: 600 14px/1.5 var(--font-label);
+	letter-spacing: 0.15em;
+	color: var(--accent);
 }
 
+.pager span small {
+	color: var(--muted);
+}
 
 /* ==========================================================================
    12. PLOT LEGENDS AND THE ERROR-CURVE WIDGET
@@ -826,7 +1048,7 @@ a.detour:hover {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 4px 16px;
-	font-size: .88rem;
+	font-size: 15px;
 	margin: 8px 0 0;
 }
 
@@ -845,7 +1067,7 @@ a.detour:hover {
 }
 
 .swatch.ghost {
-	opacity: .45;
+	opacity: 0.45;
 	border-top-style: dashed;
 	border-top-width: 2px;
 }
@@ -860,17 +1082,26 @@ a.detour:hover {
 	background: currentColor;
 }
 
+/* A star: the four-pointed mark of STYLE.md §5 (waist at 0.28). */
+.swatch.star {
+	width: 16px;
+	height: 16px;
+	margin: 0 3px;
+	border-top: none;
+	background: currentColor;
+	clip-path: polygon(50% 0, 64% 36%, 100% 50%, 64% 64%, 50% 100%, 36% 64%, 0 50%, 36% 36%);
+}
+
 /* A filled band (a min / max envelope, a shaded region). */
 .swatch.band {
 	height: 12px;
 	border-top: none;
-	border-radius: 2px;
 	background: currentColor;
-	opacity: .45;
+	opacity: 0.45;
 }
 
 .swatch.band.ghost {
-	opacity: .2;
+	opacity: 0.2;
 	border: 1px dashed currentColor;
 }
 
@@ -888,7 +1119,7 @@ a.detour:hover {
 
 .errorcurve-note {
 	color: var(--muted);
-	font-size: .9rem;
+	font-size: 15px;
 	margin-top: 6px;
 }
 
@@ -899,163 +1130,335 @@ a.detour:hover {
 	height: 4.8em;
 	line-height: 1.6;
 	overflow-y: auto;
-	font-size: 1rem;
+	font-size: 16px;
 	font-variant-numeric: tabular-nums;
 	margin-top: 6px;
 }
 
-
 /* ==========================================================================
-   13. HUB
+   13. THE BLUE PLATE (STYLE.md §7)
+   A static chart of the sky, drawn by shared/plate.js: white lines and
+   stars on Prussian blue, a thin parchment line 6 px in from the edge,
+   the title and caption beside the chart, one element highlighted. The
+   keys sit under the plate, as for any figure.
+	 <figure class="plate-figure">
+		 <div class="plate">
+			 <div class="chart" id="..."></div>
+			 <div class="side"><div class="plate-label"></div>
+				 <div class="plate-title"> ... </div><p> ... </p></div>
+		 </div>
+		 <div class="keys"> ... </div>
+	 </figure>
+   Font sizes in the chart are sizes on the screen: plate.js sets --k, the
+   chart units per screen pixel, so a label never shrinks with the chart.
    ========================================================================== */
 
-.hub-head {
-	margin: 24px 0 36px;
+figure.plate-figure {
+	margin: 44px 0;
+	padding: 0;
 }
 
-.hub-head h1 {
-	font-size: 2.4rem;
+.plate {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 28px;
+	align-items: center;
+	justify-content: center;
+	padding: 28px;
+	background: var(--plate);
+	color: var(--plate-ink);
+	box-shadow:
+		inset 0 0 0 6px var(--plate),
+		inset 0 0 0 7px var(--bg);
 }
 
-.hub-head .lead {
-	font-size: 1.15rem;
-	max-width: 62ch;
-	margin: 12px 0 0;
+.plate .chart {
+	flex: 1 1 340px;
+	max-width: 600px;
 }
 
-/* The five acts as a path: a vertical line through numbered acts. */
-.acts {
-	position: relative;
-	padding-left: 28px;
-	border-left: 2px solid var(--line);
-	margin-left: 10px;
+.plate .chart svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* Title and caption on the plate, beside the chart; "Figure n" is set
+   by components.js. */
+.plate .side {
+	flex: 1 1 240px;
+	max-width: 320px;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.plate .plate-label {
+	font-family: var(--font-label);
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	color: var(--plate-accent);
+}
+
+.plate .plate-title {
+	margin: 6px 0 12px;
+	font: 500 28px/1.15 var(--font-title);
+}
+
+.plate .side p {
+	margin: 0 0 12px;
+}
+
+/* The words of the caption that name the highlighted element. */
+.plate .hl {
+	color: var(--plate-accent);
+}
+
+/* ---------- The chart ---------- */
+
+/* Graticule: thin, at low opacity. */
+.plate .grid,
+.plate .grid circle,
+.plate .grid path {
+	fill: none;
+	stroke: var(--plate-ink);
+	stroke-width: 0.6;
+	stroke-opacity: 0.28;
+}
+
+.plate .grid .equator {
+	stroke-opacity: 0.6;
+	stroke-width: 0.9;
+}
+
+.plate .hour,
+.plate .grid-label {
+	fill: var(--plate-soft);
+	stroke: none;
+	font-family: var(--font-text);
+	font-size: calc(14px * var(--k, 1));
+}
+
+/* The graduated ring or border: light and dark segments, ink edges. */
+.plate .ring .light {
+	fill: var(--plate-ink);
+}
+
+.plate .ring .dark {
+	fill: var(--plate);
+}
+
+.plate .ring .edge {
+	fill: none;
+	stroke: var(--plate-ink);
+	stroke-width: 0.8;
+}
+
+/* The Milky Way as fine stipple. */
+.plate .milky-way circle {
+	fill: var(--plate-ink);
+	fill-opacity: 0.22;
+}
+
+/* Constellations: thin lines, names in spaced capitals. */
+.plate .figure-lines path {
+	stroke: var(--plate-ink);
+	stroke-width: 0.9;
+	stroke-opacity: 0.65;
+}
+
+.plate .figure-names text {
+	fill: var(--plate-soft);
+	font-family: var(--font-label);
+	font-size: calc(13px * var(--k, 1));
+	font-weight: 600;
+	letter-spacing: 0.3em;
+}
+
+.plate .stars path {
+	fill: var(--plate-ink);
+}
+
+.plate .star-names text,
+.plate .circle-name {
+	fill: var(--plate-soft);
+	font-family: var(--font-label);
+	font-size: calc(15px * var(--k, 1));
+	font-weight: 600;
+	letter-spacing: 0.06em;
+}
+
+.plate .symbol {
+	fill: var(--plate-ink);
+	font-family: var(--font-title);
+	font-size: calc(20px * var(--k, 1));
+	font-style: italic;
+	font-weight: 500;
+}
+
+/* The one highlighted element. */
+.plate .highlight {
+	fill: none;
+	stroke: var(--plate-accent);
+	stroke-width: 1.8;
+	stroke-dasharray: 7 5;
+}
+
+.plate .highlight-text {
+	fill: var(--plate-accent);
+}
+
+/* ==========================================================================
+   14. HUB
+   The acts in order, each with its pages as tiles; then the key of
+   origins and the sources.
+   ========================================================================== */
+
+.hub-head .titles {
+	max-width: none;
+}
+
+/* The hub and the test page have no article: their paragraphs keep to
+   the text column too. */
+.page > p,
+.single > p {
+	max-width: var(--text-width);
 }
 
 .act {
-	position: relative;
-	margin-bottom: 34px;
+	margin: 48px 0 0;
 }
 
-/* The dot on the path in front of each act. */
-.act::before {
-	content: "";
-	position: absolute;
-	left: -38px;
-	top: 6px;
-	width: 14px;
-	height: 14px;
-	border-radius: 50%;
-	background: var(--card);
-	border: 3px solid var(--act, var(--earth));
+.act-label {
+	margin: 0;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 500;
+	letter-spacing: 0.3em;
+	color: var(--accent);
 }
 
 .act-title {
-	margin: 0;
-	font-size: 1.25rem;
-}
-
-.act-title small {
-	color: var(--muted);
-	font-weight: 400;
-	font-size: .9rem;
-	margin-left: 6px;
+	margin: 2px 0 0;
 }
 
 .act-blurb {
+	max-width: var(--text-width);
+	margin: 4px 0 16px;
 	color: var(--muted);
-	margin: 2px 0 12px;
 }
 
 .tiles {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-	gap: 12px;
+	gap: 14px;
 }
 
 .tile {
 	display: block;
-	padding: 12px 14px;
-	border: 1px solid var(--line);
-	border-top: 3px solid var(--act, var(--earth));
-	border-radius: 12px;
+	padding: 12px 16px 14px;
+	border: 1px solid var(--ink);
 	background: var(--card);
 	color: var(--ink);
 	text-decoration: none;
-	box-shadow: 0 2px 8px rgba(60, 60, 40, .05);
 }
 
 a.tile:hover {
-	border-color: var(--muted);
+	box-shadow: inset 0 0 0 1px var(--ink);
 }
 
 .tile-number {
-	color: var(--muted);
-	font-size: .8rem;
+	font-family: var(--font-label);
+	font-size: 16px;
 	font-weight: 600;
-	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.15em;
+	color: var(--accent);
 }
 
 .tile-title {
 	display: block;
-	font-weight: 600;
 	margin: 2px 0 4px;
+	font: 600 23px/1.2 var(--font-title);
 }
 
 .tile-question {
 	display: block;
+	font-size: 15px;
+	font-style: italic;
+	line-height: 1.45;
 	color: var(--muted);
-	font-size: .88rem;
-	line-height: 1.4;
 }
 
 /* A page that does not exist yet: greyed out, not a link. */
 .tile.unready {
-	opacity: .55;
-	box-shadow: none;
-	border-top-color: var(--line);
+	border: 1px dashed var(--line);
 	background: transparent;
+	color: var(--muted);
+}
+
+.tile.unready .tile-number {
+	color: var(--muted);
 }
 
 .soon {
-	display: inline-block;
-	margin-left: 6px;
-	padding: 0 7px;
-	border: 1px solid var(--line);
-	border-radius: 999px;
-	font-size: .72rem;
-	font-weight: 400;
+	margin-left: 10px;
+	font-family: var(--font-label);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
 	color: var(--muted);
-	vertical-align: .1em;
+}
+
+/* The key of origins: the heading of each margin note and its meaning. */
+.origins {
+	max-width: var(--text-width);
+	margin-top: 56px;
+}
+
+dl.origin-key {
+	margin: 12px 0 0;
+	padding: 4px 0 10px;
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+dl.origin-key dt {
+	margin-top: 8px;
+}
+
+dl.origin-key dd {
+	margin: 0;
 }
 
 .hub-foot {
-	color: var(--muted);
-	font-size: .88rem;
+	max-width: var(--text-width);
 	margin-top: 40px;
 	padding-top: 16px;
 	border-top: 1px solid var(--line);
+	font-size: 15px;
+	color: var(--muted);
 }
 
-
 /* ==========================================================================
-   14. TEST PAGE
+   15. TEST PAGE
    ========================================================================== */
 
 .summary {
 	padding: 12px 16px;
-	border-radius: var(--radius);
 	font-weight: 600;
 	margin: 16px 0 24px;
-	border: 1px solid var(--line);
+	border: 1px solid var(--ink);
 }
 
 .summary.pass {
-	background: color-mix(in srgb, var(--deferent) 18%, var(--card));
+	background: color-mix(in srgb, var(--deferent) 15%, var(--card));
 	border-color: var(--deferent);
 }
 
 .summary.fail {
-	background: color-mix(in srgb, var(--planet) 15%, var(--card));
+	background: color-mix(in srgb, var(--planet) 12%, var(--card));
 	border-color: var(--planet);
 }
 
@@ -1076,17 +1479,17 @@ a.tile:hover {
 }
 
 .verdict {
-	font-weight: 700;
-	font-size: .8rem;
-	letter-spacing: .05em;
+	font-family: var(--font-label);
+	font-weight: 600;
+	letter-spacing: 0.1em;
 }
 
 .verdict.pass {
-	color: color-mix(in srgb, var(--deferent) 55%, var(--ink));
+	color: var(--deferent-text);
 }
 
 .verdict.fail {
-	color: var(--planet);
+	color: var(--planet-text);
 }
 
 /* A wide table scrolls inside its own box. The box is positioned so that it
@@ -1097,66 +1500,74 @@ a.tile:hover {
 	overflow-x: auto;
 }
 
-
 /* ==========================================================================
-   15. PHONE WIDTH
+   16. PHONE WIDTH
+   Below 800 px the margin column wraps under the text (flex rows, no rule
+   needed here); figures stack their visual over their controls.
    ========================================================================== */
 
-@media (max-width: 860px) {
-	body {
-		font-size: 16px;
-	}
-
-	/* The contents move above the article and fold away. */
-	.page {
+@media (max-width: 800px) {
+	.panels,
+	.panel-controls {
 		grid-template-columns: minmax(0, 1fr);
-		gap: 8px;
-		padding: 8px 16px 60px;
 	}
 
+	/* A long inline formula may break after a relation or an operator
+	   (KaTeX's own break points), rather than widen the page. Display
+	   equations still scroll. */
+	:not(.katex-display) > .katex {
+		white-space: normal;
+	}
+
+	article ul,
+	article ol {
+		padding-left: 24px;
+	}
+
+	.page,
 	.single {
-		padding: 8px 16px 60px;
+		padding: 28px 16px 64px;
 	}
 
-	.site-bar {
-		padding: 12px 16px 0;
+	.page-head {
+		margin: 24px 0 28px;
+		padding-bottom: 28px;
 	}
 
-	.toc {
-		position: static;
-		max-height: none;
-		background: var(--card);
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		padding: 10px 14px;
+	.lead {
+		font-size: 18px;
 	}
 
-	.toc summary {
-		margin-bottom: 0;
-	}
-
-	.toc details[open] summary {
-		margin-bottom: 8px;
+	h2 {
+		font-size: 30px;
 	}
 
 	.fig-row {
 		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
 	}
 
-	figure.fig {
-		padding: 12px;
-	}
-
-	h1 {
-		font-size: 1.6rem;
-	}
-
-	.hub-head h1 {
-		font-size: 1.9rem;
+	.frame-body {
+		padding: 14px;
 	}
 
 	.pager {
 		grid-template-columns: 1fr;
+	}
+
+	/* A plate takes the whole width; its chart keeps only the main
+	   labels, at their full size (every other hour, no grid labels). */
+	.plate {
+		padding: 14px;
+	}
+
+	.plate .hour.minor,
+	.plate .grid-label {
+		display: none;
+	}
+
+	.plate .figure-names text {
+		letter-spacing: 0.08em;
 	}
 
 	.pager .next {
@@ -1166,5 +1577,4 @@ a.tile:hover {
 	.ctl {
 		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
 	}
-
 }

@@ -1,3 +1,4 @@
+// @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE MEAN SUN (models/mean-sun.js)
    The Sun moving uniformly along the ecliptic: its longitude grows by the
@@ -18,7 +19,6 @@
    ========================================================================== */
 
 const MeanSun = (function () {
-
 	/* ======================================================================
 	   1. PARAMETER SETS
 	   L0: mean longitude at the epoch (deg); n: daily motion (deg / day);
@@ -36,7 +36,6 @@ const MeanSun = (function () {
 		epoch: 2451545.0
 	};
 
-
 	/* ======================================================================
 	   2. THE MODEL
 	   ====================================================================== */
@@ -52,7 +51,6 @@ const MeanSun = (function () {
 	function yearLength(parameters = MODERN) {
 		return 360 / parameters.n;
 	}
-
 
 	/* ======================================================================
 	   3. EXPORT
