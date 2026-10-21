@@ -401,6 +401,14 @@ Regenerate with: node tools/check/smoke.js --update
   button "Canopus"
     OUTPUT (ecl-day): 2 Jul
     #ecl-readout: \text{Canopus} | \alpha = 96.13^\circ\ (6^\text{h}25^\text{m}),\quad \delta = -52.71^\circ | \lambda = 105.32^\circ,\quad \beta = -75.82^\circ | \mathbf s_\text{eq} = (-0.0647,\ 0.6024,\ -0.7956) | \mathbf s_\text{ecl} = (-0.0647,\ 0.2363,\ -0.9695)
+  button "horizon frame"
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
+  button "equatorial frame"
+    OUTPUT (hor-lat): 0.1°
+    OUTPUT (hor-theta): 180.0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
   button "north pole"
     OUTPUT (hor-lat): 90.0°
     OUTPUT (hor-theta): 180.0°
