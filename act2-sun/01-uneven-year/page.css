@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. Figures 2 and 3: the square drawings of the eccentric
+	 2. Figures 2 to 4: the square drawings, the two error curves
 	 3. The tables of the prose
 	 4. Phone width
    ========================================================================== */
@@ -29,7 +29,7 @@ button.play {
 }
 
 /* ==========================================================================
-   2. FIGURES 2 AND 3: THE SQUARE DRAWINGS OF THE ECCENTRIC
+   2. FIGURES 2 TO 4: THE SQUARE DRAWINGS, THE TWO ERROR CURVES
    The canvases set their own square size (page.js); centre them.
    ========================================================================== */
 
@@ -37,6 +37,12 @@ button.play {
 #fit-canvas {
 	display: block;
 	margin: 0 auto;
+}
+
+/* Figure 4 holds two error curves, one above the other: room before the
+   title of the second. */
+.panel-title.panel-gap {
+	margin-top: 28px;
 }
 
 /* ==========================================================================

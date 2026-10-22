@@ -19,19 +19,21 @@
    ErrorCurve.addModel and ErrorCurve.addGhost expect (README.md).
 
    The fit (page 2.1, section 3; Almagest III 4)
-	 Put x towards the vernal point and y towards the summer solstice, and
-	 let C = (x, y) in units of the radius, so x = e cos lambdaA, y = e
-	 sin lambdaA. Seen from C, the four points where the lines from O
-	 towards the equinoxes and the solstices meet the circle lie at
-		 -asin y,  90° + asin x,  180° + asin y,  270° - asin x,
+	 Put the Earth at the origin, with x towards the vernal point and y
+	 towards the summer solstice, and let C = (h, k) in units of the
+	 radius, so h = e cos lambdaA, k = e sin lambdaA (h < 0 when the
+	 apogee is beyond 90°, as now). Seen from C, the four points where
+	 the axes (the lines from the Earth towards the equinoxes and the
+	 solstices) meet the circle lie at
+		 -asin k,  90° + asin h,  180° + asin k,  270° - asin h,
 	 so the arcs of the four seasons are
-		 a1 = 90° + asin x + asin y   (spring)
-		 a2 = 90° - asin x + asin y   (summer)
-		 a3 = 90° - asin x - asin y   (autumn)
-		 a4 = 90° + asin x - asin y   (winter)
-	 and each lasts a Y / 360° days. Two season lengths give asin y =
-	 (a1 + a2 - 180°) / 2 and asin x = (a1 - a2) / 2, hence e and lambdaA;
-	 and at the spring equinox the mean longitude is -asin y.
+		 a1 = 90° + asin h + asin k   (spring)
+		 a2 = 90° - asin h + asin k   (summer)
+		 a3 = 90° - asin h - asin k   (autumn)
+		 a4 = 90° + asin h - asin k   (winter)
+	 and each lasts a Y / 360° days. Two season lengths give asin k =
+	 (a1 + a2 - 180°) / 2 and asin h = (a1 - a2) / 2, hence e and lambdaA;
+	 and at the spring equinox the mean longitude is -asin k.
 
    TABLE OF CONTENTS
 	 1. Parameter sets
@@ -54,8 +56,8 @@ const SolarEccentric = (function () {
 	   autumn equinox. */
 	const HIPPARCHUS_SEASONS = { spring: 94.5, summer: 92.5 };
 
-	/* Ptolemy, Almagest III 4 and III 7: the eccentricity 2;30 on a radius
-	   of 60 (1 : 24), the apogee at Gemini 5;30 = 65;30°, on his mean Sun
+	/* Ptolemy, Almagest III 4 and III 7: the eccentricity 2;30 parts on a
+	   radius of 60 (1 : 24), the apogee at Gemini 5° 30' = 65.5°, on his mean Sun
 	   (MeanSun.PTOLEMY, epoch Nabonassar, days of UT at Alexandria). */
 	const PTOLEMY = Object.assign({}, MeanSun.PTOLEMY, {
 		e: 2.5 / 60,
@@ -127,12 +129,12 @@ const SolarEccentric = (function () {
 	   ====================================================================== */
 
 	/* The arcs (deg, seen from C) of spring, summer, autumn and winter for
-	   the centre C = (x, y). */
-	function seasonArcs(x, y) {
-		const sx = asin(x);
-		const sy = asin(y);
+	   the centre C = (h, k). */
+	function seasonArcs(h, k) {
+		const sh = asin(h);
+		const sk = asin(k);
 
-		return [90 + sx + sy, 90 - sx + sy, 90 - sx - sy, 90 + sx - sy];
+		return [90 + sh + sk, 90 - sh + sk, 90 - sh - sk, 90 + sh - sk];
 	}
 
 	/* The four season lengths (days) of an eccentric (e, apogee) for a
@@ -142,25 +144,25 @@ const SolarEccentric = (function () {
 	}
 
 	/* Hipparchus' method: from the lengths of spring and summer (days) and
-	   the year Y, the centre { x, y }, e, the apogee, the four arcs and
+	   the year Y, the centre { h, k }, e, the apogee, the four arcs and
 	   season lengths, and the mean longitude at the spring equinox. */
 	function fitSeasons(spring, summer, Y) {
 		const a1 = (360 * spring) / Y;
 		const a2 = (360 * summer) / Y;
-		const sy = (a1 + a2 - 180) / 2;
-		const sx = (a1 - a2) / 2;
-		const x = sin(sx);
-		const y = sin(sy);
-		const arcs = seasonArcs(x, y);
+		const sk = (a1 + a2 - 180) / 2;
+		const sh = (a1 - a2) / 2;
+		const h = sin(sh);
+		const k = sin(sk);
+		const arcs = seasonArcs(h, k);
 
 		return {
-			x,
-			y,
-			e: Math.hypot(x, y),
-			apogee: norm360(atan2d(y, x)),
+			h,
+			k,
+			e: Math.hypot(h, k),
+			apogee: norm360(atan2d(k, h)),
 			arcs,
 			lengths: arcs.map(arc => (arc * Y) / 360),
-			meanLongitudeAtEquinox: norm360(-sy)
+			meanLongitudeAtEquinox: norm360(-sk)
 		};
 	}
 

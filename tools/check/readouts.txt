@@ -727,95 +727,96 @@ Regenerate with: node tools/check/smoke.js --update
 === act2-sun/01-uneven-year/index.html ===
   as loaded
     OUTPUT (ecc-day): 3 Apr
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{3 Apr:}\quad \bar\lambda = 11.34^\circ,\quad M = 267.61^\circ | q = +1.92^\circ,\quad \lambda = \bar\lambda + q = 13.26^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Apr:}\quad \bar\lambda = 11.34^\circ,\quad M = 267.61^\circ | q = +11.39^\circ,\quad \lambda = \bar\lambda + q = 22.73^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
     OUTPUT (fit-spring): 94.50 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | x = 0.0172,\ y = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #ecc-day = 0
     OUTPUT (ecc-day): 1 Jan
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{1 Jan:}\quad \bar\lambda = 280.66^\circ,\quad M = 176.93^\circ | q = -0.11^\circ,\quad \lambda = \bar\lambda + q = 280.55^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{1 Jan:}\quad \bar\lambda = 280.66^\circ,\quad M = 176.93^\circ | q = -0.77^\circ,\quad \lambda = \bar\lambda + q = 279.89^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   slider #ecc-day = 364
     OUTPUT (ecc-day): 31 Dec
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{31 Dec:}\quad \bar\lambda = 279.43^\circ,\quad M = 175.70^\circ | q = -0.15^\circ,\quad \lambda = \bar\lambda + q = 279.29^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{31 Dec:}\quad \bar\lambda = 279.43^\circ,\quad M = 175.70^\circ | q = -1.07^\circ,\quad \lambda = \bar\lambda + q = 278.36^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   slider #ecc-day = 182
     OUTPUT (ecc-day): 2 Jul
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.12^\circ,\quad \lambda = \bar\lambda + q = 100.17^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.61^\circ,\quad \lambda = \bar\lambda + q = 100.66^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   slider #ecc-day + one key step
     OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   slider #ecc-e = 0
     OUTPUT (ecc-day): 3 Jul
     OUTPUT (ecc-e): 0.0000
     #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  slider #ecc-e = 0.2
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   slider #ecc-e = 0.1
     OUTPUT (ecc-day): 3 Jul
     OUTPUT (ecc-e): 0.1000
     #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.59\,\text{d},\quad \text{summer } 98.35\,\text{d} | \text{autumn } 87.03\,\text{d},\quad \text{winter } 84.27\,\text{d}
-  slider #ecc-e = 0.05
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0500
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.13^\circ,\quad \lambda = \bar\lambda + q = 101.16^\circ | \text{spring } 93.45\,\text{d},\quad \text{summer } 94.83\,\text{d} | \text{autumn } 89.18\,\text{d},\quad \text{winter } 87.80\,\text{d}
   slider #ecc-e + one key step
     OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0505
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.13^\circ,\quad \lambda = \bar\lambda + q = 101.16^\circ | \text{spring } 93.47\,\text{d},\quad \text{summer } 94.86\,\text{d} | \text{autumn } 89.15\,\text{d},\quad \text{winter } 87.76\,\text{d}
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
   slider #fit-spring = 90
     OUTPUT (fit-spring): 90.00 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 88.71^\circ,\quad a_2 = 91.17^\circ | x = -0.0215,\ y = -0.0010,\quad e = 0.0215 | \lambda_A = 182.8^\circ,\quad |q|_\text{max} = 1.23^\circ | \text{autumn } 92.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 88.71^\circ,\quad a_2 = 91.17^\circ | h = -0.0215,\ k = -0.0010,\quad e = 0.0215 | \lambda_A = 182.8^\circ,\quad |q|_\text{max} = 1.23^\circ | \text{autumn } 92.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
   slider #fit-spring = 96
     OUTPUT (fit-spring): 96.00 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 94.62^\circ,\quad a_2 = 91.17^\circ | x = 0.0301,\ y = 0.0505,\quad e = 0.0588 | \lambda_A = 59.2^\circ,\quad |q|_\text{max} = 3.37^\circ | \text{autumn } 86.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 94.62^\circ,\quad a_2 = 91.17^\circ | h = 0.0301,\ k = 0.0505,\quad e = 0.0588 | \lambda_A = 59.2^\circ,\quad |q|_\text{max} = 3.37^\circ | \text{autumn } 86.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
   slider #fit-spring = 93
     OUTPUT (fit-spring): 93.00 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 91.67^\circ,\quad a_2 = 91.17^\circ | x = 0.0043,\ y = 0.0248,\quad e = 0.0251 | \lambda_A = 80.1^\circ,\quad |q|_\text{max} = 1.44^\circ | \text{autumn } 89.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 91.67^\circ,\quad a_2 = 91.17^\circ | h = 0.0043,\ k = 0.0248,\quad e = 0.0251 | \lambda_A = 80.1^\circ,\quad |q|_\text{max} = 1.44^\circ | \text{autumn } 89.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
   slider #fit-spring + one key step
     OUTPUT (fit-spring): 93.01 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.17^\circ | x = 0.0044,\ y = 0.0248,\quad e = 0.0252 | \lambda_A = 80.0^\circ,\quad |q|_\text{max} = 1.45^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.17^\circ | h = 0.0044,\ k = 0.0248,\quad e = 0.0252 | \lambda_A = 80.0^\circ,\quad |q|_\text{max} = 1.45^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 90.12\,\text{d}
   slider #fit-summer = 90
     OUTPUT (fit-spring): 93.01 d
     OUTPUT (fit-summer): 90.00 d
-    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 88.71^\circ | x = 0.0259,\ y = 0.0033,\quad e = 0.0261 | \lambda_A = 7.4^\circ,\quad |q|_\text{max} = 1.50^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 92.62\,\text{d}
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 88.71^\circ | h = 0.0259,\ k = 0.0033,\quad e = 0.0261 | \lambda_A = 7.4^\circ,\quad |q|_\text{max} = 1.50^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 92.62\,\text{d}
   slider #fit-summer = 96
     OUTPUT (fit-spring): 93.01 d
     OUTPUT (fit-summer): 96.00 d
-    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 94.62^\circ | x = -0.0257,\ y = 0.0549,\quad e = 0.0606 | \lambda_A = 115.1^\circ,\quad |q|_\text{max} = 3.48^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 86.62\,\text{d}
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 94.62^\circ | h = -0.0257,\ k = 0.0549,\quad e = 0.0606 | \lambda_A = 115.1^\circ,\quad |q|_\text{max} = 3.48^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 86.62\,\text{d}
   slider #fit-summer = 93
     OUTPUT (fit-spring): 93.01 d
     OUTPUT (fit-summer): 93.00 d
-    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.67^\circ | x = 0.0001,\ y = 0.0291,\quad e = 0.0291 | \lambda_A = 89.8^\circ,\quad |q|_\text{max} = 1.67^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.62\,\text{d}
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.67^\circ | h = 0.0001,\ k = 0.0291,\quad e = 0.0291 | \lambda_A = 89.8^\circ,\quad |q|_\text{max} = 1.67^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.62\,\text{d}
   slider #fit-summer + one key step
     OUTPUT (fit-spring): 93.01 d
     OUTPUT (fit-summer): 93.01 d
-    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.68^\circ | x = 0.0000,\ y = 0.0292,\quad e = 0.0292 | \lambda_A = 90.0^\circ,\quad |q|_\text{max} = 1.68^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.61\,\text{d}
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.68^\circ | h = 0.0000,\ k = 0.0292,\quad e = 0.0292 | \lambda_A = 90.0^\circ,\quad |q|_\text{max} = 1.68^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.61\,\text{d}
   button "‹ previous day"
     OUTPUT (ecc-day): 2 Jul
-    OUTPUT (ecc-e): 0.0505
-    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.18^\circ,\quad \lambda = \bar\lambda + q = 100.22^\circ | \text{spring } 93.47\,\text{d},\quad \text{summer } 94.86\,\text{d} | \text{autumn } 89.15\,\text{d},\quad \text{winter } 87.76\,\text{d}
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.34^\circ,\quad \lambda = \bar\lambda + q = 100.38^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
   button "next day ›"
     OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0505
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.13^\circ,\quad \lambda = \bar\lambda + q = 101.16^\circ | \text{spring } 93.47\,\text{d},\quad \text{summer } 94.86\,\text{d} | \text{autumn } 89.15\,\text{d},\quad \text{winter } 87.76\,\text{d}
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
   button "the Sun, 2026"
     OUTPUT (ecc-day): 3 Jul
     OUTPUT (ecc-e): 0.0335
     #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
-  button "0.1"
+  button "exaggerated, 0.2"
     OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.1000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.59\,\text{d},\quad \text{summer } 98.35\,\text{d} | \text{autumn } 87.03\,\text{d},\quad \text{winter } 84.27\,\text{d}
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
   button "no eccentricity"
     OUTPUT (ecc-day): 3 Jul
     OUTPUT (ecc-e): 0.0000
@@ -823,40 +824,26 @@ Regenerate with: node tools/check/smoke.js --update
   button "Hipparchus"
     OUTPUT (fit-spring): 94.50 d
     OUTPUT (fit-summer): 92.50 d
-    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | x = 0.0172,\ y = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
   button "141 BC"
     OUTPUT (fit-spring): 94.01 d
     OUTPUT (fit-summer): 92.34 d
-    #fit-readout: a_1 = 92.66^\circ,\quad a_2 = 91.01^\circ | x = 0.0144,\ y = 0.0321,\quad e = 0.0351 | \lambda_A = 65.9^\circ,\quad |q|_\text{max} = 2.01^\circ | \text{autumn } 88.61\,\text{d},\quad \text{winter } 90.28\,\text{d}
+    #fit-readout: a_1 = 92.66^\circ,\quad a_2 = 91.01^\circ | h = 0.0144,\ k = 0.0321,\quad e = 0.0351 | \lambda_A = 65.9^\circ,\quad |q|_\text{max} = 2.01^\circ | \text{autumn } 88.61\,\text{d},\quad \text{winter } 90.28\,\text{d}
   button "2026"
     OUTPUT (fit-spring): 92.74 d
     OUTPUT (fit-summer): 93.66 d
-    #fit-readout: a_1 = 91.41^\circ,\quad a_2 = 92.32^\circ | x = -0.0079,\ y = 0.0325,\quad e = 0.0334 | \lambda_A = 103.7^\circ,\quad |q|_\text{max} = 1.92^\circ | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+    #fit-readout: a_1 = 91.41^\circ,\quad a_2 = 92.32^\circ | h = -0.0079,\ k = 0.0325,\quad e = 0.0334 | \lambda_A = 103.7^\circ,\quad |q|_\text{max} = 1.92^\circ | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
   button "equal"
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
-    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | x = 0.0000,\ y = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
-  button "Keep as ghost"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "Clear ghosts"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "2,000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "Keep as ghost"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "Clear ghosts"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "1 year"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1,000 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "Keep as ghost"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "Clear ghosts"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
@@ -881,26 +868,42 @@ Regenerate with: node tools/check/smoke.js --update
   hover #fit-plot at 0.3
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
-    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | x = 0.0000,\ y = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   hover #fit-plot at 0.6
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
-    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | x = 0.0000,\ y = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   hover #fit-plot at 0.9
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
-    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | x = 0.0000,\ y = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   hover #fit-plot left
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
-    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | x = 0.0000,\ y = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   hover #error-2026-plot at 0.3
     .errorcurve-readout: 4 Apr 2026 · uniform circle: −114.7′ · eccentric: −0.1′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-2026-plot at 0.6
     .errorcurve-readout: 1 Aug 2026 · uniform circle: +51.6′ · eccentric: +0.9′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-2026-plot at 0.9
     .errorcurve-readout: 28 Nov 2026 · uniform circle: +68.4′ · eccentric: −1.5′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-2026-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-zoom-plot at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 4 Apr 2026 · eccentric: −0.1′
+  hover #error-2026-zoom-plot at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 1 Aug 2026 · eccentric: +0.9′
+  hover #error-2026-zoom-plot at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 28 Nov 2026 · eccentric: −1.5′
+  hover #error-2026-zoom-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-ptolemy-plot at 0.3
     .errorcurve-readout: 18 Sep 347 BC · uniform circle: +169.5′ · Ptolemy's eccentric: +31.5′

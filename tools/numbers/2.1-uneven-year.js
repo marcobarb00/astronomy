@@ -251,7 +251,7 @@ function printFit(label, spring, summer, Y) {
 		`   arcs a1 = ${f(r.arcs[0], 4)}° (${dms(r.arcs[0])}), a2 = ${f(r.arcs[1], 4)}° (${dms(r.arcs[1])}); a1 + a2 - 180° = ${f(r.arcs[0] + r.arcs[1] - 180, 4)}°`
 	);
 	console.log(
-		`   asin y = ${f(asin(r.y), 4)}°, asin x = ${f(asin(r.x), 4)}°; y = ${f(r.y, 5)} (${sexagesimal(60 * r.y)} on 60), x = ${f(r.x, 5)} (${sexagesimal(60 * r.x)} on 60)`
+		`   asin k = ${f(asin(r.k), 4)}°, asin h = ${f(asin(r.h), 4)}°; k = ${f(r.k, 5)} (${sexagesimal(60 * r.k)} on 60), h = ${f(r.h, 5)} (${sexagesimal(60 * r.h)} on 60)`
 	);
 	console.log(
 		`   e = ${f(r.e, 5)} = 1/${f(1 / r.e, 2)} (${sexagesimal(60 * r.e)} on a radius of 60); apogee ${f(r.apogee, 3)}° (${dms(r.apogee)}), ${f(90 - r.apogee, 2)}° before the summer solstice`
@@ -534,7 +534,9 @@ console.log(
 	`real Sun 2026: ${f(near, 5)} to ${f(far, 5)} au, apparent diameter ${f(diameterAt1au / far, 2)}' to ${f(diameterAt1au / near, 2)}'`
 );
 console.log(
-	`eccentric, e = ${f(eOurs, 4)}, mean distance 1 au: ${f(diameterAt1au / (1 + eOurs), 2)}' to ${f(diameterAt1au / (1 - eOurs), 2)}'`
+	`eccentric, e = ${f(eOurs, 4)}: distance 1 -+ ${f(eOurs * 100, 2)}%; with the mean diameter ${f(diameterAt1au, 2)}': ` +
+		`${f(diameterAt1au, 2)}' / ${f(1 + eOurs, 4)} = ${f(diameterAt1au / (1 + eOurs), 2)}' at the apogee, ` +
+		`${f(diameterAt1au, 2)}' / ${f(1 - eOurs, 4)} = ${f(diameterAt1au / (1 - eOurs), 2)}' at the perigee`
 );
 
 /* ==========================================================================
@@ -566,7 +568,14 @@ console.log(
    ========================================================================== */
 
 title('Scales');
-console.log(`Figure 2: e up to 0.1 -> |q| up to ${f(SolarEccentric.greatestEquation(0.1).q, 2)}° (axis +-6°)`);
+console.log(
+	`Figure 2: e up to 0.2 -> |q| up to ${f(SolarEccentric.greatestEquation(0.2).q, 2)}° (axis +-12°); 0.2 / e(2026) = ${f(0.2 / SolarEccentric.FIT_2026.e, 2)}`
+);
+console.log(
+	`Figure 2 at e = 0.2: seasons ${SolarEccentric.seasonLengths(0.2, SolarEccentric.FIT_2026.apogee, YEAR)
+		.map(x => f(x, 2))
+		.join(', ')} d`
+);
 let largestE = 0;
 
 for (let a = 90; a <= 96; a += 0.5) {
@@ -575,4 +584,6 @@ for (let a = 90; a <= 96; a += 0.5) {
 	}
 }
 
-console.log(`Figure 3: spring and summer from 90 to 96 d -> e up to ${f(largestE, 4)} (zoom panel +-0.1)`);
+console.log(
+	`Figure 3: spring and summer from 90 to 96 d -> e up to ${f(largestE, 4)} (zoom panel +-0.1); drawn six times farther out in (a): ${f(6 * largestE, 3)}`
+);

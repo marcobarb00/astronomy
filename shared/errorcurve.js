@@ -19,6 +19,11 @@
 		 freeze: () => frozenFn });     // freeze is used by "Keep as ghost"
 	 curve.update();                    // after a model parameter changes
 
+   A figure whose models have no sliders passes ghostButtons: false: there
+   is nothing new to keep, so "Keep as ghost" and "Clear ghosts" are left
+   out. The note on the bands is shown only when one of the spans is long
+   enough to draw bands.
+
    Every model function takes JD(TT) and returns an ecliptic longitude in
    degrees. Over long spans (a yearly oscillation drawn over centuries) each
    pixel column is sampled several times and the curve is drawn as a band
@@ -71,6 +76,11 @@ const ERROR_PERIOD_TEXT = {
 	moon: 'about one month'
 };
 
+/* The fewest columns a plot has (a phone): a span draws bands when one
+   column covers more than the sampling step, so the note on the bands is
+   shown when the longest span divided by this exceeds the step. */
+const ERROR_NARROWEST_COLUMNS = 200;
+
 /* Shown in the read-out line while the pointer is away from the plot, so
    the dashed pointer line never goes unexplained (CLAUDE.md). */
 const ERROR_READOUT_HINT = "Point at the plot to read each curve's error on a date (dashed line).";
@@ -84,7 +94,8 @@ class ErrorCurve {
 	   ([{ label, years, yMax, units }] centred on the current range),
 	   resolution (days), period (days, the error's main period: sets the
 	   band's window), units ('auto' | 'arcmin' | 'deg'), yMax (fixed
-	   half-range, in the chosen units), xLabel.
+	   half-range, in the chosen units), xLabel, ghostButtons (false: no
+	   "Keep as ghost" and "Clear ghosts", for models without sliders).
 	   Without yMax the vertical scale follows the curves. When a slider
 	   changes a model, give each span (or the widget) a yMax large enough
 	   for every slider value, so the axis does not jump while dragging. */
@@ -99,6 +110,7 @@ class ErrorCurve {
 		this.period = options.period ?? ERROR_PERIOD[this.body] ?? 365.25;
 		this.units = options.units ?? 'auto';
 		this.yMax = options.yMax ?? null;
+		this.ghostButtons = options.ghostButtons ?? true;
 		this.span = null;
 		this.rescale = true; // choose the scale at the next update
 		this.models = [];
@@ -123,9 +135,27 @@ class ErrorCurve {
 		this.bandNote = makeEl('div', 'errorcurve-note');
 		this.spanButtons = this.buildSpanButtons();
 
-		tools.append(this.spanButtons, this.buildGhostButtons());
+		tools.append(this.spanButtons);
+
+		if (this.ghostButtons) {
+			tools.append(this.buildGhostButtons());
+		}
+
 		wrapper.appendChild(canvas);
-		this.container.append(tools, wrapper, this.legendBox, this.bandNote, this.readout);
+
+		// a tools row with no button, and a note on bands that can never be
+		// drawn, are left out (the widget's size still never changes)
+		if (this.spans.length > 0 || this.ghostButtons) {
+			this.container.append(tools);
+		}
+
+		this.container.append(wrapper, this.legendBox);
+
+		if (this.canDrawBands()) {
+			this.container.append(this.bandNote);
+		}
+
+		this.container.append(this.readout);
 
 		this.plot = new Plot2D(canvas, {
 			x: [this.startYear(), this.endYear()],
@@ -457,9 +487,9 @@ class ErrorCurve {
 		});
 
 		// a hidden entry holds the place of each model's kept ghost until
-		// the reader keeps one
+		// the reader keeps one (when the reader can keep one)
 		this.models.forEach(model => {
-			if (!this.ghosts.some(ghost => ghost.keptFrom === model.id)) {
+			if (this.ghostButtons && !this.ghosts.some(ghost => ghost.keptFrom === model.id)) {
 				items.push({
 					label: model.ghostLabel ? model.ghostLabel() : `${model.label} (kept)`,
 					color: model.color,
@@ -479,7 +509,18 @@ class ErrorCurve {
 
 		Plot2D.legend(this.legendBox, items);
 		this.updateBandNote();
-		this.clearButton.disabled = !this.ghosts.some(ghost => ghost.pinned);
+
+		if (this.ghostButtons) {
+			this.clearButton.disabled = !this.ghosts.some(ghost => ghost.pinned);
+		}
+	}
+
+	/* Can a span of this widget (or its first range) draw bands, on the
+	   narrowest plot? */
+	canDrawBands() {
+		const longest = Math.max(this.end - this.start, ...this.spans.map(span => span.years * 365.25));
+
+		return longest / ERROR_NARROWEST_COLUMNS > this.resolution;
 	}
 
 	/* Can the plot reach beyond the dates where the ephemeris is valid, now
