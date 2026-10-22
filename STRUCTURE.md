@@ -174,16 +174,23 @@ The first anomaly and the simplest complete model.
   equation of centre is about $e$ radians (exactly $\arcsin e$). (Kepler's
   ellipse gives $2e_\text{K}$: the eccentric's offset is twice the ellipse's
   eccentricity, a point picked up again on page 4.2.)
+- **Notation:** the centre of the eccentric is $C = (h, k)$, so that $x$
+  and $y$ stay the axes, and $q$ the equation of centre; $h < 0$ today,
+  since the apogee is beyond 90°.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
   eccentric between the lines from the Earth to the equinoxes and solstices.
 - **Figures:** the real Sun's daily motion through 2026 (static); the
-  eccentric with its four seasons beside $q(t)$ over a year (date and $e$);
-  Hipparchus' construction, the seasons to scale and the centre magnified
-  (spring and summer, with presets). **First appearance of the error curve:**
-  the uniform circle (ghost) against the eccentric fitted to 2026; Ptolemy's
-  Sun in AD 140 and over 2,000 years; the eccentric's residual over 1, 100
-  and 1,000 years. A photo: Peurbach's woodcut of the Sun's eccentric orbs.
+  eccentric with its four seasons beside $q(t)$ over a year (date and $e$,
+  starting at the exaggerated $e = 0.2$); Hipparchus' construction, with
+  the centre $C = (h, k)$ drawn six times farther out to show the angles
+  $\arcsin h$, $\arcsin k$ and the arcs $a_1$, $a_2$, and C at its true
+  place magnified (spring and summer, with presets). **First appearance of
+  the error curve:** (a) the uniform circle (ghost) against the eccentric
+  fitted to 2026 and (b) the eccentric alone on a scale a hundred times
+  finer; Ptolemy's Sun in AD 140 and over 2,000 years; the eccentric over
+  100 and 1,000 years. A photo: Peurbach's woodcut of the Sun's eccentric
+  orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer (Hipparchus'
   $94\tfrac12$ and $92\tfrac12$ days, *Almagest* III 4; the reference
   seasons of 2026, which give $e = 2e_\text{K}$ within 0.1%); the mean
@@ -196,7 +203,7 @@ The first anomaly and the simplest complete model.
 - **Exercises:** "Hipparchus' Sun from two numbers" (fit $e \approx 0.041$,
   $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and $92\tfrac12$ days;
   predict autumn and winter); derive $q$ to second order and its greatest
-  value $\arcsin e$ (Ptolemy's 2;23° at 92;23°); Ptolemy's fixed apogee
+  value $\arcsin e$ (Ptolemy's $2^\circ 23'$ at $92^\circ 23'$); Ptolemy's fixed apogee
   against the real seasons of AD 140 (break the model).
 - **Code:** `models/solar-eccentric.js` (`SolarEccentric.make()`, the
   parameter sets `PTOLEMY` and `FIT_2026`, `fitSeasons`); `MeanSun.PTOLEMY`,

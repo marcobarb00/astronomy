@@ -1834,7 +1834,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   M = 359, e = 0.0417            0.039998206  0.041664551  1.041660574
   M = 359, e = 0.1000            0.090905658  0.099994923  1.099986154
   greatestEquation(1/24)         2.388015463  92.388015463
-  fitSeasons(spring, summer, Y): x, y, e, apogee, the four lengths, mean longitude at the equinox
+  fitSeasons(spring, summer, Y): h, k, e, apogee, the four lengths, mean longitude at the equinox
   94.5, 92.5                     0.017201732  0.037636076  0.041380838  65.437023145  94.500000000 92.500000000 88.123335000 90.123335000  357.843102307
   92.7391, 93.6629               -0.007945886  0.032515328  0.033472133  103.732434723  92.739100000 93.662900000 89.881995000 88.958195000  358.136680486
   91.31, 91.31                   0.000000000  -0.000009419  0.000009419  270.000000000  91.310000000 91.310000000 91.311095000 91.311095000  0.000539642
@@ -1976,7 +1976,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   texDays                        "88.12\\,\\text{d}" "92.50\\,\\text{d}" "93.66\\,\\text{d}"
   reachCircle                    0.991471735 1.032467999 1.007471735 0.967467999 1.033470049
   monthTicks 12, 4               Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  |  Jan Mar May Jul Sep Nov
-  fixed ranges                   [56,62]  [-6,6]  [-0.1,0.1]
+  fixed ranges                   [56,62]  [-12,12]  [-0.1,0.1]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -2312,13 +2312,13 @@ with e = 0.1: 95.59, 98.35, 87.03, 84.27 d
 mean motion in 94 1/2 d: 93°08'33" (Ptolemy 93;9); in 92 1/2 d: 91°10'17" (91;11)
 Hipparchus' seasons, Ptolemy's year: spring 94.5000 d, summer 92.5000 d, year 365.24667 d
    arcs a1 = 93.1425° (93°08'33"), a2 = 91.1713° (91°10'17"); a1 + a2 - 180° = 4.3138°
-   asin y = 2.1569°, asin x = 0.9856°; y = 0.03764 (2;15,29 on 60), x = 0.01720 (1;01,56 on 60)
+   asin k = 2.1569°, asin h = 0.9856°; k = 0.03764 (2;15,29 on 60), h = 0.01720 (1;01,56 on 60)
    e = 0.04138 = 1/24.17 (2;28,58 on a radius of 60); apogee 65.437° (65°26'13"), 24.56° before the summer solstice
    autumn 88.123 d, winter 90.123 d (arcs 86.857°, 88.829°)
    greatest q 2°22'18" at M = 92°22'18"; mean longitude at the spring equinox 357.8431°
 Hipparchus' seasons, modern year (Figure 3 preset): spring 94.5000 d, summer 92.5000 d, year 365.24219 d
    arcs a1 = 93.1437° (93°08'37"), a2 = 91.1724° (91°10'21"); a1 + a2 - 180° = 4.3161°
-   asin y = 2.1580°, asin x = 0.9856°; y = 0.03766 (2;15,34 on 60), x = 0.01720 (1;01,56 on 60)
+   asin k = 2.1580°, asin h = 0.9856°; k = 0.03766 (2;15,34 on 60), h = 0.01720 (1;01,56 on 60)
    e = 0.04140 = 1/24.16 (2;29,02 on a radius of 60); apogee 65.448° (65°26'53"), 24.55° before the summer solstice
    autumn 88.121 d, winter 90.121 d (arcs 86.856°, 88.828°)
    greatest q 2°22'22" at M = 92°22'22"; mean longitude at the spring equinox 357.8420°
@@ -2332,7 +2332,7 @@ one hour added to spring: apogee -0.24°, e 0.00048
 === Fit: the real seasons of 141 BC through the same method (Figure 3 preset) ===
 141 BC: spring 94.0142 d, summer 92.3412 d, year 365.24219 d
    arcs a1 = 92.6649° (92°39'54"), a2 = 91.0159° (91°00'57"); a1 + a2 - 180° = 3.6807°
-   asin y = 1.8404°, asin x = 0.8245°; y = 0.03211 (1;55,37 on 60), x = 0.01439 (0;51,48 on 60)
+   asin k = 1.8404°, asin h = 0.8245°; k = 0.03211 (1;55,37 on 60), h = 0.01439 (0;51,48 on 60)
    e = 0.03519 = 1/28.42 (2;06,41 on a radius of 60); apogee 65.864° (65°51'52"), 24.14° before the summer solstice
    autumn 88.607 d, winter 90.280 d (arcs 87.335°, 88.984°)
    greatest q 2°01'00" at M = 92°01'00"; mean longitude at the spring equinox 358.1596°
@@ -2341,7 +2341,7 @@ Hipparchus' spring + summer is 0.64 d too long; his e is 18% too large
 === Fit: 2026 (Figure 3 preset, and the model of the page) ===
 2026: spring 92.7391 d, summer 93.6629 d, year 365.24219 d
    arcs a1 = 91.4081° (91°24'29"), a2 = 92.3186° (92°19'07"); a1 + a2 - 180° = 3.7267°
-   asin y = 1.8633°, asin x = -0.4553°; y = 0.03252 (1;57,03 on 60), x = -0.00795 (-0;28,36 on 60)
+   asin k = 1.8633°, asin h = -0.4553°; k = 0.03252 (1;57,03 on 60), h = -0.00795 (-0;28,36 on 60)
    e = 0.03347 = 1/29.88 (2;00,30 on a radius of 60); apogee 103.732° (103°43'54"), -13.73° before the summer solstice
    autumn 89.882 d, winter 88.958 d (arcs 88.592°, 87.681°)
    greatest q 1°55'06" at M = 91°55'06"; mean longitude at the spring equinox 358.1367°
@@ -2401,7 +2401,7 @@ rate since 141 BC: 1.75° a century
 
 === Residual: the distance ===
 real Sun 2026: 0.98325 to 1.01671 au, apparent diameter 31.46' to 32.53'
-eccentric, e = 0.0335, mean distance 1 au: 30.95' to 33.10'
+eccentric, e = 0.0335: distance 1 -+ 3.35%; with the mean diameter 31.99': 31.99' / 1.0335 = 30.95' at the apogee, 31.99' / 0.9665 = 33.10' at the perigee
 
 === Exercise 1: Hipparchus' Sun (see section 6) ===
 e = 0.0414, apogee 65.44°, autumn 88.12 d, winter 90.12 d (Ptolemy 88 1/8, 90 1/8)
@@ -2416,5 +2416,6 @@ summer solstice 140: real 23 Jun 140 13:49; Ptolemy 25 Jun, 2 h after midnight (
 AD 140 real: spring 93.90, summer 92.56 -> apogee 70.69°, e 0.0349
 
 === Scales ===
-Figure 2: e up to 0.1 -> |q| up to 5.74° (axis +-6°)
-Figure 3: spring and summer from 90 to 96 d -> e up to 0.0806 (zoom panel +-0.1)
+Figure 2: e up to 0.2 -> |q| up to 11.54° (axis +-12°); 0.2 / e(2026) = 5.97
+Figure 2 at e = 0.2: seasons 99.92, 105.44, 82.71, 77.18 d
+Figure 3: spring and summer from 90 to 96 d -> e up to 0.0806 (zoom panel +-0.1); drawn six times farther out in (a): 0.484

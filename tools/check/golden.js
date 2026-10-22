@@ -500,7 +500,7 @@ function solarEccentricSection(c) {
 
 	row('greatestEquation(1/24)', num(greatest.q), num(greatest.M));
 
-	out('  fitSeasons(spring, summer, Y): x, y, e, apogee, the four lengths, mean longitude at the equinox');
+	out('  fitSeasons(spring, summer, Y): h, k, e, apogee, the four lengths, mean longitude at the equinox');
 	[
 		[94.5, 92.5, 365.24667],
 		[92.7391, 93.6629, 365.24219],
@@ -511,8 +511,8 @@ function solarEccentricSection(c) {
 
 		row(
 			`${spring}, ${summer}`,
-			num(r.x),
-			num(r.y),
+			num(r.h),
+			num(r.k),
 			num(r.e),
 			num(r.apogee),
 			r.lengths.map(x => num(x)).join(' '),
