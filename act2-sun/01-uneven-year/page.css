@@ -1,0 +1,72 @@
+/* ==========================================================================
+   PAGE 2.1 · THE UNEVEN YEAR - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. Figures 2 to 4: the square drawings, the two error curves
+	 3. The tables of the prose
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here are short ("31 Dec", "0.0335", "92.50 d"); the
+   labels ("eccentricity e", "summer T2") need a wider first column. */
+figure.fig {
+	--ctl-output: 5.2em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 112px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* A play button keeps its width between "Play a year" and "Pause". */
+button.play {
+	min-width: 9.5em;
+}
+
+/* ==========================================================================
+   2. FIGURES 2 TO 4: THE SQUARE DRAWINGS, THE TWO ERROR CURVES
+   The canvases set their own square size (page.js); centre them.
+   ========================================================================== */
+
+#eccentric-canvas,
+#fit-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* Figure 4 holds two error curves, one above the other: room before the
+   title of the second. */
+.panel-title.panel-gap {
+	margin-top: 28px;
+}
+
+/* ==========================================================================
+   3. THE TABLES OF THE PROSE
+   The seasons of 2026 and the apogee through the centuries: narrow tables,
+   first column left.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 100px minmax(0, 1fr) var(--ctl-output);
+	}
+}

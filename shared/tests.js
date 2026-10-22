@@ -6,7 +6,8 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 1.3 (models/diurnal.js, frames.js, mean-sun.js, clock.js).
+   pages 1.1 to 2.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   solar-eccentric.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -22,7 +23,8 @@
 	11. Internal consistency
 	12. Refraction, stars, the turning sky, frames (Meeus ch. 13, 16, 21; pages 1.1, 1.2)
 	13. The clocks and the mean Sun (Meeus ch. 12, 25; Almagest III 7; page 1.3)
-	14. Run
+	14. The solar eccentric (Almagest III 4-7; page 2.1)
+	15. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1218,7 +1220,144 @@ function testClock() {
 }
 
 /* ==========================================================================
-   14. RUN
+   14. THE SOLAR ECCENTRIC (page 2.1)
+   Ptolemy's own numbers, which he rounds to the minute (of arc, or of a
+   part of 60) or to an eighth of a day.
+   ========================================================================== */
+
+function testSolarEccentric() {
+	group('The solar eccentric · models/solar-eccentric.js (page 2.1)');
+
+	// III 5: with the eccentricity 2;30 on 60 and 30° of mean motion from
+	// the apogee, the equation is 1;9° (subtracted).
+	check({
+		name: 'Equation at M = 30°, e = 2;30/60',
+		source: 'Almagest III 5',
+		expected: -(1 + 9 / 60),
+		computed: SolarEccentric.equationOfCentre(30, 2.5 / 60),
+		tol: 0.5,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// III 4: the greatest equation 2;23° at 92;23° from the apogee.
+	const greatest = SolarEccentric.greatestEquation(1 / 24);
+
+	check({
+		name: 'Greatest equation, e = 1/24',
+		source: 'Almagest III 4',
+		expected: 2 + 23 / 60,
+		computed: greatest.q,
+		tol: 0.5,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	check({
+		name: '… reached at M',
+		source: 'Almagest III 4',
+		expected: 92 + 23 / 60,
+		computed: greatest.M,
+		tol: 0.5,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// III 4: Hipparchus' 94 1/2 and 92 1/2 days give the centres 2;29 1/2
+	// apart (on a radius of 60), the apogee 24;30° before the summer
+	// solstice, and 88 1/8 and 90 1/8 days for autumn and winter.
+	const yearPtolemy = 365 + 14 / 60 + 48 / 3600;
+	const fit = SolarEccentric.fitSeasons(94.5, 92.5, yearPtolemy);
+
+	check({
+		name: "Hipparchus' eccentricity, on 60",
+		source: 'Almagest III 4',
+		expected: 2 + 29.5 / 60,
+		computed: 60 * fit.e,
+		tol: 0.02,
+		unit: 'parts',
+		show: x => x.toFixed(4)
+	});
+
+	check({
+		name: "Hipparchus' apogee",
+		source: 'Almagest III 4',
+		expected: 90 - (24 + 30 / 60),
+		computed: fit.apogee,
+		tol: 0.1,
+		unit: '°',
+		show: showDeg,
+		angle: true
+	});
+
+	check({
+		name: 'Autumn from two seasons',
+		source: 'Almagest III 4',
+		expected: 88.125,
+		computed: fit.lengths[2],
+		tol: 0.01,
+		unit: 'd',
+		show: x => x.toFixed(4) + ' d'
+	});
+
+	check({
+		name: 'Winter from two seasons',
+		source: 'Almagest III 4',
+		expected: 90.125,
+		computed: fit.lengths[3],
+		tol: 0.01,
+		unit: 'd',
+		show: x => x.toFixed(4) + ' d'
+	});
+
+	// The fit is the inverse of the seasons of an eccentric.
+	const lengths = SolarEccentric.seasonLengths(0.0335, 103.7, 365.2422);
+	const back = SolarEccentric.fitSeasons(lengths[0], lengths[1], 365.2422);
+
+	check({
+		name: 'Fit of the seasons of an eccentric: e',
+		source: 'page 2.1',
+		expected: 0.0335,
+		computed: back.e,
+		tol: 1e-9,
+		show: x => x.toFixed(9)
+	});
+
+	check({
+		name: '… and its apogee',
+		source: 'page 2.1',
+		expected: 103.7,
+		computed: back.apogee,
+		tol: 1e-6,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDeg,
+		angle: true
+	});
+
+	// III 7: Ptolemy's model puts the Sun at the autumn equinox at the
+	// moment he observed it, 132 Sep 25, 2 h after noon at Alexandria
+	// (Greenwich JD 1769539.0833, his days counted in UT).
+	const equinox132 = Time.ttFromUt(1769539.0833 - 29.92 / 360);
+
+	check({
+		name: "Ptolemy's Sun at his equinox of AD 132",
+		source: 'Almagest III 7',
+		expected: 180,
+		computed: SolarEccentric.make(SolarEccentric.PTOLEMY)(equinox132),
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+}
+
+/* ==========================================================================
+   15. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1236,5 +1375,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testDiurnal();
 	testFrames();
 	testClock();
+	testSolarEccentric();
 	render();
 });
