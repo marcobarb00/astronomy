@@ -5,7 +5,7 @@
    scripts of tools/numbers/ do, and prints a table of reference values:
    time scales and sidereal time, the equation of time, the Sun, the Moon
    and the planets on a set of dates, the stars of date, the models of
-   pages 1.1 to 1.3, the formatting helpers behind every read-out, and
+   pages 1.1 to 2.1, the formatting helpers behind every read-out, and
    the output of tools/numbers/ (every number quoted in the prose).
 
    Any change of behaviour in the maths shows up as a difference in this
@@ -27,7 +27,7 @@
 	 3. Time and sidereal time
 	 4. The reference sky: Sun, Moon, planets
 	 5. Stars of date
-	 6. The models: turning sky, frames, mean Sun, clocks
+	 6. The models: turning sky, frames, mean Sun, clocks, solar eccentric
 	 7. Display helpers (shared)
 	 8. Page scripts: helpers and precomputed values
 	 9. The numbers scripts (tools/numbers/)
@@ -58,6 +58,7 @@ const SHARED_FILES = [
 	'shared/models/frames.js',
 	'shared/models/mean-sun.js',
 	'shared/models/clock.js',
+	'shared/models/solar-eccentric.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -67,7 +68,8 @@ const SHARED_FILES = [
 const PAGE_FILES = [
 	'act1-stage/01-turning-sky/index.html',
 	'act1-stage/02-frames/index.html',
-	'act1-stage/03-clocks/index.html'
+	'act1-stage/03-clocks/index.html',
+	'act2-sun/01-uneven-year/index.html'
 ];
 
 /* ==========================================================================
@@ -458,6 +460,73 @@ function clockSection(c) {
    The text of every read-out, slider value and axis goes through these.
    ========================================================================== */
 
+function solarEccentricSection(c) {
+	const { Time, MeanSun, SolarEccentric } = c;
+	const models = {
+		'FIT_2026': SolarEccentric.make(SolarEccentric.FIT_2026),
+		'PTOLEMY': SolarEccentric.make(SolarEccentric.PTOLEMY),
+		'MeanSun.PTOLEMY': MeanSun.make(MeanSun.PTOLEMY)
+	};
+
+	title('6d. THE SOLAR ECCENTRIC (models/solar-eccentric.js, MeanSun.PTOLEMY)');
+	row(
+		'MeanSun.PTOLEMY',
+		num(MeanSun.PTOLEMY.L0),
+		num(MeanSun.PTOLEMY.n, 12),
+		num(MeanSun.PTOLEMY.epoch),
+		MeanSun.PTOLEMY.clock
+	);
+	row('SolarEccentric.PTOLEMY', num(SolarEccentric.PTOLEMY.e, 12), num(SolarEccentric.PTOLEMY.apogee));
+	row(
+		'SolarEccentric.FIT_2026',
+		num(SolarEccentric.FIT_2026.L0),
+		num(SolarEccentric.FIT_2026.e, 12),
+		num(SolarEccentric.FIT_2026.apogee)
+	);
+
+	out('  equationOfCentre, first order, distance (M, e)');
+	[0, 30, 90, 92.388, 180, 250, 359].forEach(M => {
+		[0, 1 / 24, 0.1].forEach(e => {
+			row(
+				`M = ${M}, e = ${num(e, 4)}`,
+				num(SolarEccentric.equationOfCentre(M, e)),
+				num(SolarEccentric.equationOfCentreFirstOrder(M, e)),
+				num(SolarEccentric.distance(M, e))
+			);
+		});
+	});
+
+	const greatest = SolarEccentric.greatestEquation(1 / 24);
+
+	row('greatestEquation(1/24)', num(greatest.q), num(greatest.M));
+
+	out('  fitSeasons(spring, summer, Y): h, k, e, apogee, the four lengths, mean longitude at the equinox');
+	[
+		[94.5, 92.5, 365.24667],
+		[92.7391, 93.6629, 365.24219],
+		[91.31, 91.31, 365.24219],
+		[96, 90, 365.24219]
+	].forEach(([spring, summer, Y]) => {
+		const r = SolarEccentric.fitSeasons(spring, summer, Y);
+
+		row(
+			`${spring}, ${summer}`,
+			num(r.h),
+			num(r.k),
+			num(r.e),
+			num(r.apogee),
+			r.lengths.map(x => num(x)).join(' '),
+			num(r.meanLongitudeAtEquinox)
+		);
+	});
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+
+		row(`models, ${label}`, ...Object.values(models).map(model => num(model(jd))));
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -691,6 +760,33 @@ function page13(c) {
 	});
 }
 
+function page21(c) {
+	title('8d. PAGE 2.1 (act2-sun/01-uneven-year/page.js)');
+	row('YEAR_START, YEAR_LENGTH', num(inContext(c, 'YEAR_START')), num(inContext(c, 'YEAR_LENGTH'), 12));
+	row('dayText', [0, 59, 92, 364].map(d => quote(c.dayText(d))).join(' '));
+	row('texSigned', [-1.234, -0.001, 0, 1.915].map(v => quote(c.texSigned(v))).join(' '));
+	row('texDays', [88.123, 92.5, 93.6629].map(v => quote(c.texDays(v))).join(' '));
+	row('reachCircle', [0, 90, 180, 270, 103.7].map(lon => num(c.reachCircle(lon, -0.008, 0.0325))).join(' '));
+	row(
+		'monthTicks 12, 4',
+		c
+			.monthTicks(0, 365, 12)
+			.map(t => t.label)
+			.join(' '),
+		'|',
+		c
+			.monthTicks(0, 365, 4)
+			.map(t => t.label)
+			.join(' ')
+	);
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'MOTION_RANGE')),
+		JSON.stringify(inContext(c, 'ECCENTRIC_Q_RANGE')),
+		JSON.stringify(inContext(c, 'CENTRE_RANGE'))
+	);
+}
+
 /* ==========================================================================
    9. THE NUMBERS SCRIPTS (tools/numbers/)
    Every number quoted in the prose of the pages, as each script prints it.
@@ -733,10 +829,12 @@ function buildTable() {
 	diurnalSection(shared);
 	framesSection(shared);
 	clockSection(shared);
+	solarEccentricSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
 	page13(pages[2]);
+	page21(pages[3]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';
