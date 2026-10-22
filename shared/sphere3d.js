@@ -73,6 +73,7 @@ class Sphere3D {
 	/* options: yaw, pitch (deg), aspect (height / width), onDraw(sphere). */
 	constructor(canvas, options = {}) {
 		this.canvas = canvas;
+		this.labels = new LabelPlacer(); // keeps the labels of one drawing apart
 		this.ctx = canvas.getContext('2d');
 		this.view = {
 			yaw: options.yaw ?? 285,
@@ -126,6 +127,7 @@ class Sphere3D {
 	/* Clear and call the page's drawing function. */
 	redraw() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
+		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.height });
 		this.onDraw(this);
 	}
 
@@ -408,7 +410,13 @@ class Sphere3D {
 		ctx.font = style.font ?? labelFont(text, style.kind);
 		ctx.textAlign = 'left';
 		ctx.textBaseline = 'alphabetic';
-		ctx.fillText(text, q.x + (style.dx ?? 6), q.y + (style.dy ?? -6));
+
+		// the designed place first; elsewhere round the point only if it
+		// would cover an earlier label or leave the canvas (on a phone)
+		const designed = { x: q.x + (style.dx ?? 6), y: q.y + (style.dy ?? -6) };
+		const place = this.labels.choose(ctx, text, [designed, ...LabelPlacer.around(ctx, text, q)]);
+
+		ctx.fillText(text, place.x, place.y);
 		ctx.globalAlpha = 1;
 	}
 
