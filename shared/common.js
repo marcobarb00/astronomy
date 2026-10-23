@@ -529,14 +529,26 @@ function drawStar(ctx, x, y, s, ring = null) {
 
 /* ---------- Square canvases and centred labels ---------- */
 
-/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
-   the device pixel ratio; it follows the column when the page is resized
-   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
-   of the drawing, 'margin' px inside the edge). */
+/* The smallest square canvas (px): narrower than any phone's column. */
+const SQUARE_CANVAS_MIN = 200;
+
+/* The width of an element inside its padding (px). */
+function contentWidth(element) {
+	const style = getComputedStyle(element);
+
+	return element.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+}
+
+/* A square canvas as wide as its column, SQUARE_CANVAS_MIN to maxWidth
+   px, scaled for the device pixel ratio; it follows the column when the
+   page is resized and calls owner.draw(). Sets owner.ctx, width, cx, cy
+   and R (the radius of the drawing, 'margin' px inside the edge). */
 function squareCanvas(owner, canvas, maxWidth, margin) {
-	// at least 240 px: a column measured before the layout is done can
-	// report a few pixels, which would give a negative radius
-	const targetWidth = () => clamp(canvas.parentElement.clientWidth || 400, 240, maxWidth);
+	// the width inside the parent's padding (a canvas set directly in a
+	// figure's frame would otherwise be wider than the frame, and squeezed);
+	// at least SQUARE_CANVAS_MIN px: a column measured before the layout is
+	// done can report a few pixels, which would give a negative radius
+	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 400, SQUARE_CANVAS_MIN, maxWidth);
 
 	const resize = () => {
 		const width = targetWidth();
@@ -570,13 +582,18 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 }
 
 /* A text label centred at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor in common.js). */
-function centredLabel(ctx, text, point, color) {
+   colour of 'color' (labelFont, textColor). With a LabelPlacer, a label
+   that would cover an earlier one or leave the canvas (on a phone) moves
+   next to its point instead. */
+function centredLabel(ctx, text, point, color, labels = null) {
 	ctx.fillStyle = textColor(color);
 	ctx.font = labelFont(text);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
-	ctx.fillText(text, point.x, point.y);
+
+	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
+
+	ctx.fillText(text, place.x, place.y);
 }
 
 /* ---------- Canvas fonts (STYLE.md §3) ----------
