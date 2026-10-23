@@ -29,8 +29,8 @@ voice is the same.
 5. Quotations and historical asides that do no work in the argument.
 6. Figures: captions that describe instead of saying what to do and
    notice; key entries for things a label in the figure already names;
-   keys longer than five entries. Where WRITING.md §7 and CLAUDE.md
-   disagree about keys, follow WRITING.md and mention the conflict once.
+   keys longer than five entries (WRITING.md §7, CLAUDE.md "Rules for
+   every figure").
 7. Voice: "we" for the work done together, "you" for what the reader does
    with the page; "the model" or "the clock" as the subject of sentence
    after sentence.
