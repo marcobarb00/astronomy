@@ -1172,8 +1172,10 @@ figure.plate-figure {
 		inset 0 0 0 7px var(--bg);
 }
 
+/* The chart takes at least 480 px when it can (the width below which it
+   loses its names): on a narrower plate the caption wraps under it. */
 .plate .chart {
-	flex: 1 1 340px;
+	flex: 1 1 480px;
 	max-width: 600px;
 }
 
@@ -1294,6 +1296,16 @@ figure.plate-figure {
 	font-size: calc(20px * var(--k, 1));
 	font-style: italic;
 	font-weight: 500;
+}
+
+/* A chart drawn narrower than 480 px (plate.js, COMPACT_WIDTH) shows no
+   names (on a phone they would crowd it beyond reading) except the star
+   names the page keeps, class 'keep': the star its caption speaks of. The
+   numbers of the ring or border and the pole's P remain. */
+.plate svg.compact .star-names text:not(.keep),
+.plate svg.compact .figure-names,
+.plate svg.compact .circle-name {
+	display: none;
 }
 
 /* The one highlighted element. */
@@ -1556,7 +1568,8 @@ dl.origin-key dd {
 	}
 
 	/* A plate takes the whole width; its chart keeps only the main
-	   labels, at their full size (every other hour, no grid labels). */
+	   labels, at their full size (every other hour, no grid labels). The
+	   names go too on a chart narrower than 480 px, below. */
 	.plate {
 		padding: 14px;
 	}

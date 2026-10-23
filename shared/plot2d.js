@@ -41,6 +41,11 @@ const PLOT_FONT = FONT_TICK;
 const PLOT_LABEL_FONT = FONT_AXIS;
 const PLOT_MARGIN = { left: 56, right: 14, top: 12, bottom: 40 };
 
+/* An x-axis title that does not fit (on a phone) takes two lines of this
+   height (px); it must fit within this distance of each edge. */
+const AXIS_TITLE_LINE = 18;
+const AXIS_TITLE_INSET = 4;
+
 /* About one tick label every this many pixels along each axis. */
 const PLOT_TICK_SPACING = { x: 90, y: 45 };
 
@@ -58,6 +63,7 @@ class Plot2D {
 	   onHover(xValue or null) to enable the hover cursor. */
 	constructor(canvas, options = {}) {
 		this.canvas = canvas;
+		this.labels = new LabelPlacer(); // keeps the text labels of one drawing apart
 		this.ctx = canvas.getContext('2d');
 		this.x = options.x ?? [0, 1];
 		this.y = options.y ?? [0, 1];
@@ -93,9 +99,12 @@ class Plot2D {
 		});
 		this.observer.observe(canvas.parentElement);
 
-		// tick labels and titles are drawn in web fonts: draw again once
-		// they have loaded
-		whenCanvasFontsReady().then(() => this.redraw());
+		// tick labels and titles are drawn in web fonts: once they have
+		// loaded, measure the titles again (one line or two) and draw again
+		whenCanvasFontsReady().then(() => {
+			this.resize();
+			this.redraw();
+		});
 
 		// a new pixel ratio (zoom, another screen): a sharper canvas
 		onPixelRatioChange(() => {
@@ -114,17 +123,51 @@ class Plot2D {
 
 		this.width = width;
 		this.height = height;
+		this.xTitleLines = this.splitTitle(this.xLabel, this.titleRoom(width));
 		this.box = {
 			left: this.margin.left,
 			right: width - this.margin.right,
 			top: this.margin.top,
-			bottom: height - this.margin.bottom
+			bottom: height - this.margin.bottom - (this.xTitleLines.length - 1) * AXIS_TITLE_LINE
 		};
+	}
+
+	/* The width an x-axis title may take: it is centred on the plot box,
+	   so it has the room of the shorter side, to the canvas edge. */
+	titleRoom(width) {
+		const centre = (this.margin.left + width - this.margin.right) / 2;
+
+		return 2 * (Math.min(centre, width - centre) - AXIS_TITLE_INSET);
+	}
+
+	/* The x-axis title as one line, or as two when it is wider than its
+	   room (on a phone), broken at the space nearest its middle; the plot
+	   box then gives up one line of height, so the canvas keeps its size. */
+	splitTitle(title, room) {
+		const ctx = this.ctx;
+
+		ctx.font = PLOT_LABEL_FONT;
+
+		if (!title || ctx.measureText(title).width <= room) {
+			return [title];
+		}
+
+		const middle = title.length / 2;
+		let cut = -1;
+
+		for (let i = 0; i < title.length; i++) {
+			if (title[i] === ' ' && (cut < 0 || Math.abs(i - middle) < Math.abs(cut - middle))) {
+				cut = i;
+			}
+		}
+
+		return cut < 0 ? [title] : [title.slice(0, cut), title.slice(cut + 1)];
 	}
 
 	/* Clear and call the page's drawing function, then the cursor. */
 	redraw() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
+		this.labels.begin({ x0: this.box.left, y0: this.box.top, x1: this.box.right, y1: this.box.bottom });
 		this.onDraw(this);
 
 		if (this.cursorX !== null) {
@@ -291,7 +334,13 @@ class Plot2D {
 		ctx.font = PLOT_LABEL_FONT;
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
-		ctx.fillText(this.xLabel, (box.left + box.right) / 2, this.height - 2);
+
+		// the last line at the bottom edge, any line before it above
+		this.xTitleLines.forEach((line, i) => {
+			const fromBottom = this.xTitleLines.length - 1 - i;
+
+			ctx.fillText(line, (box.left + box.right) / 2, this.height - 2 - fromBottom * AXIS_TITLE_LINE);
+		});
 
 		ctx.save();
 		ctx.translate(12, (box.top + box.bottom) / 2);
@@ -472,7 +521,8 @@ class Plot2D {
 
 	/* Text at data coordinates. style: color (a line colour is drawn in its
 	   text colour), align, baseline, dx, dy, font, kind ('name' or 'symbol',
-	   see labelFont). */
+	   see labelFont), alternatives (other data points [{ x, y }] where the
+	   text may go instead, when its own place is taken: see LabelPlacer). */
 	text(label, x, y, style = {}) {
 		const { ctx } = this;
 
@@ -480,7 +530,27 @@ class Plot2D {
 		ctx.font = style.font ?? labelFont(label, style.kind);
 		ctx.textAlign = style.align ?? 'left';
 		ctx.textBaseline = style.baseline ?? 'bottom';
-		ctx.fillText(label, this.px(x) + (style.dx ?? 4), this.py(y) + (style.dy ?? -4));
+
+		// the designed place first; if it would cover an earlier label or
+		// leave the plot box (on a phone): the page's alternatives, if any
+		// (style.alternatives, data points such as other points of the same
+		// curve), with the same offset; then the designed place moved inside
+		// the box, and one or two lines above or below it, so the label
+		// stays beside what it names
+		const dx = style.dx ?? 4;
+		const dy = style.dy ?? -4;
+		const designed = { x: this.px(x) + dx, y: this.py(y) + dy };
+		const alternatives = (style.alternatives ?? []).map(p => ({ x: this.px(p.x) + dx, y: this.py(p.y) + dy }));
+		const inside = this.labels.clampInside(ctx, label, designed);
+		const box = LabelPlacer.boxOf(ctx, label, 0, 0);
+		const line = box.y1 - box.y0 + 2;
+		const candidates = [designed, ...alternatives, inside];
+
+		[1, -1, 2, -2].forEach(k => candidates.push({ x: inside.x, y: inside.y + k * line }));
+
+		const place = this.labels.choose(ctx, label, candidates);
+
+		ctx.fillText(label, place.x, place.y);
 	}
 
 	/* ======================================================================
