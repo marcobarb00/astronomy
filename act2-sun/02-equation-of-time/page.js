@@ -759,8 +759,11 @@ const centuriesFigure = {
 		const greatest = this.real[values.indexOf(Math.max(...values))];
 		const range = greatest.E - least.E;
 
+		// one value to a line, so that every line fits a phone (the year
+		// is shown beside its slider)
 		showLines('centuries-readout', [
-			`\\text{${yearText(this.year)}:}\\quad ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ,\\quad ${texSigned(greatest.E)}\\,\\text{min at } ${fixed(greatest.lon, 0)}^\\circ`,
+			`\\text{minimum } ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ`,
+			`\\text{maximum } ${texSigned(greatest.E)}\\,\\text{min at } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`,
 			`\\text{range } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{time-degrees}`
 		]);
 	},

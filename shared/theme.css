@@ -378,8 +378,10 @@ details.fold > summary {
 	color: var(--accent);
 }
 
-/* Equations never wrap; any overflow scrolls quietly. Display equations
-   are centred in the text column (STYLE.md §4.6). */
+/* Display equations are centred in the text column (STYLE.md §4.6). An
+   equation is never cut by KaTeX, so the prose's display equations are
+   split by wrapDisplayMath (common.js) into pieces that wrap, below; any
+   overflow left (a single piece wider than a phone) scrolls quietly. */
 .eq {
 	display: block;
 	margin: 6px 0;
@@ -410,6 +412,92 @@ details.fold > summary {
 .katex {
 	white-space: nowrap;
 	font-size: 1.05em;
+}
+
+/* A display equation split by wrapDisplayMath: its groups (the equations
+   set side by side, "a = b, \qquad c = d") sit on one line when they fit
+   and wrap one under the other when they don't; a group still too wide
+   (.eq-chain) breaks before one of its relations. The pieces line up on
+   their baselines, and the gap between groups is about a \qquad. */
+.eq-split,
+.eq-chain {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+}
+
+/* The whole equation is the box that would scroll, so that KaTeX's
+   small overhangs past a piece (a subscript, an accent) are not clipped. */
+.eq-split {
+	position: relative;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: none;
+	column-gap: 2.5em;
+	row-gap: 0.9em;
+	max-width: var(--text-width);
+	margin: 0.8em 0;
+}
+
+.eq-split::-webkit-scrollbar {
+	display: none;
+}
+
+.eq-chain {
+	row-gap: 0.5em;
+}
+
+.eq-chain,
+.eq-piece {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.eq-split .katex-display {
+	overflow: visible;
+	margin: 0;
+}
+
+/* A piece still wider than the column breaks after a binary operator
+   (+, -, \times), at KaTeX's own break points. */
+.eq-split .katex-display > .katex {
+	white-space: normal;
+}
+
+/* An aligned environment (makeAlignedMath): a grid whose left column
+   holds the left sides, set flush right and never broken, and whose right
+   column holds the right sides from the relation on, set flush left, so
+   that the relations line up. The right column may shrink, and a long
+   right side then continues on a second line. */
+.eq-split.eq-aligned {
+	display: grid;
+	grid-template-columns: auto minmax(0, auto);
+	justify-content: center;
+	column-gap: 0;
+	row-gap: 0.35em;
+}
+
+.eq-aligned .eq-left .katex-display > .katex {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.eq-aligned .eq-right .katex-display > .katex {
+	text-align: left;
+}
+
+/* The second line of a long right side is indented, as in print: the
+   first line hangs out by the same amount. Only the line boxes of the
+   formula move; the inside of each part of it (a fraction, a subscript)
+   keeps no indent. */
+.eq-aligned .eq-right .katex-html {
+	padding-left: 1.5em;
+	text-indent: -1.5em;
+}
+
+.eq-aligned .eq-right .katex-html > * {
+	text-indent: 0;
 }
 
 /* Tables: ink rules at the top and bottom and under the header, light
@@ -1526,7 +1614,7 @@ dl.origin-key dd {
 
 	/* A long inline formula may break after a relation or an operator
 	   (KaTeX's own break points), rather than widen the page. Display
-	   equations still scroll. */
+	   equations wrap through .eq-split (above). */
 	:not(.katex-display) > .katex {
 		white-space: normal;
 	}

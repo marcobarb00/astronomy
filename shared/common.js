@@ -809,6 +809,272 @@ function renderStaticMath(root = document) {
 	});
 }
 
+/* --------------------------------------------------------------------------
+   Display equations that fit a phone
+   KaTeX never breaks a display equation, so one that holds several
+   equations side by side ("a = b, \qquad c = d") or a long chain
+   ("a = b = c") would overflow the text column on a phone. The prose's
+   display equations are therefore cut, at the top level of their TeX
+   (outside braces, brackets, environments and \left ... \right), into
+   groups and pieces, each typeset on its own in boxes that wrap
+   (.eq-split and .eq-chain in theme.css):
+	 - a group ends at \qquad, at "\quad" after a comma, and before an
+	   arrow such as \Longrightarrow, which starts the next group;
+	 - inside a group, a piece ends before each relation (=, <, \approx...);
+	 - an aligned environment becomes a grid of its left and right sides,
+	   which keeps the relations lined up.
+   On a wide screen everything sits on one line, as KaTeX would set it;
+   on a narrow one the groups stack, and a group still too wide breaks
+   before one of its relations.
+   -------------------------------------------------------------------------- */
+
+/* Relations before which a group may break. */
+const TEX_BREAK_RELATIONS = ['=', '<', '>', '\\approx', '\\le', '\\leq', '\\ge', '\\geq', '\\equiv'];
+
+/* Arrows that start a new group. */
+const TEX_GROUP_ARROWS = ['\\Longrightarrow', '\\Rightarrow', '\\iff'];
+
+/* Tokens that open or close a level of nesting. */
+const TEX_OPENERS = ['{', '(', '[', '\\left', '\\begin'];
+const TEX_CLOSERS = ['}', ')', ']', '\\right', '\\end'];
+
+/** Cut TeX into tokens (a command such as \qquad or \{, or one character),
+   each with the nesting depth it sits at. 'balanced' is false when the
+   depth does not come back to zero (an interval such as [0, 1)), and the
+   source is then better left whole.
+   @param {string} tex
+   @returns {{ tokens: { text: string, depth: number }[], balanced: boolean }} */
+function tokenizeTex(tex) {
+	const tokens = [];
+	let depth = 0;
+	let balanced = true;
+	let i = 0;
+
+	while (i < tex.length) {
+		let text = tex[i];
+
+		if (text === '\\') {
+			const match = /^\\([A-Za-z]+|[^A-Za-z])/.exec(tex.slice(i));
+			text = match ? match[0] : '\\';
+		}
+
+		// a closer sits at the depth of its opener
+		if (TEX_CLOSERS.includes(text)) {
+			depth--;
+		}
+
+		if (depth < 0) {
+			balanced = false;
+		}
+
+		tokens.push({ text: text, depth: depth });
+
+		if (TEX_OPENERS.includes(text)) {
+			depth++;
+		}
+
+		i += text.length;
+	}
+
+	return { tokens: tokens, balanced: balanced && depth === 0 };
+}
+
+/** The groups of a display equation, each a list of pieces of TeX: the
+   first piece of a group starts it, the others start with a relation.
+   An equation with nothing to split comes back as [[tex]].
+   @param {string} tex
+   @returns {string[][]} */
+function splitDisplayTex(tex) {
+	const { tokens, balanced } = tokenizeTex(tex);
+
+	if (!balanced) {
+		return [[tex.trim()]];
+	}
+
+	/** @type {string[][]} */
+	const groups = [];
+	/** @type {string[]} */
+	let pieces = [];
+	let piece = '';
+
+	// the nearest token at depth 0 that is not a space, before or after i
+	const neighbour = (i, step) => {
+		for (let j = i + step; j >= 0 && j < tokens.length; j += step) {
+			if (tokens[j].depth === 0 && tokens[j].text.trim() !== '') {
+				return tokens[j].text;
+			}
+		}
+
+		return '';
+	};
+
+	const endPiece = () => {
+		if (piece.trim() !== '') {
+			pieces.push(piece.trim());
+		}
+
+		piece = '';
+	};
+
+	const endGroup = () => {
+		endPiece();
+
+		if (pieces.length > 0) {
+			groups.push(pieces);
+		}
+
+		pieces = [];
+	};
+
+	tokens.forEach((token, i) => {
+		const text = token.text;
+
+		if (token.depth > 0) {
+			piece += text;
+		} else if (text === '\\qquad') {
+			endGroup();
+		} else if (text === '\\quad' && neighbour(i, -1) === ',') {
+			endGroup();
+		} else if (text === '\\quad' && TEX_GROUP_ARROWS.includes(neighbour(i, 1))) {
+			// the space before an arrow: the arrow starts the next group
+		} else if (TEX_GROUP_ARROWS.includes(text)) {
+			endGroup();
+			piece = text;
+		} else if (
+			TEX_BREAK_RELATIONS.includes(text) &&
+			piece.trim() !== '' &&
+			!TEX_GROUP_ARROWS.includes(piece.trim())
+		) {
+			endPiece();
+			piece = text;
+		} else {
+			piece += text;
+		}
+	});
+
+	endGroup();
+
+	return groups.length > 0 ? groups : [[tex.trim()]];
+}
+
+/** The rows of an equation that is one aligned environment, each as its
+   left side and its right side (from the & on), with any punctuation
+   after the environment added to the last row; or null for any other
+   equation, or for rows with more than one &.
+   @param {string} tex
+   @returns {string[][] | null} */
+function splitAlignedTex(tex) {
+	const match = /^\s*\\begin\{aligned\}([\s\S]*)\\end\{aligned\}\s*([.,;]?)\s*$/.exec(tex);
+
+	if (!match || match[1].includes('\\begin{aligned}')) {
+		return null;
+	}
+
+	const { tokens, balanced } = tokenizeTex(match[1]);
+
+	if (!balanced) {
+		return null;
+	}
+
+	/** @type {string[][]} */
+	const rows = [];
+	let cells = [''];
+
+	const endRow = () => {
+		if (cells.join('').trim() !== '') {
+			rows.push(cells.map(cell => cell.trim()));
+		}
+
+		cells = [''];
+	};
+
+	tokens.forEach(token => {
+		if (token.depth === 0 && token.text === '\\\\') {
+			endRow();
+		} else if (token.depth === 0 && token.text === '&') {
+			cells.push('');
+		} else {
+			cells[cells.length - 1] += token.text;
+		}
+	});
+
+	endRow();
+
+	if (rows.length === 0 || rows.some(row => row.length !== 2)) {
+		return null;
+	}
+
+	rows[rows.length - 1][1] += match[2];
+
+	return rows;
+}
+
+/** An aligned environment as a grid of typeset cells: the left sides
+   right-aligned in one column, the right sides (from the relation on) in
+   the next, so the relations line up, and a right side too long for a
+   phone continues on a second line after a binary operator.
+   @param {string[][]} rows
+   @returns {HTMLElement} */
+function makeAlignedMath(rows) {
+	const box = makeEl('span', 'eq-split eq-aligned');
+
+	rows.forEach(([left, right]) => {
+		const leftCell = makeEl('span', 'eq-piece eq-left');
+		const rightCell = makeEl('span', 'eq-piece eq-right');
+
+		renderTex(leftCell, left);
+		// "{}" before the relation keeps its spacing on the left
+		renderTex(rightCell, `{}${right}`);
+		box.appendChild(leftCell);
+		box.appendChild(rightCell);
+	});
+
+	return box;
+}
+
+/** Replace a typeset display equation by its groups and pieces, typeset
+   one by one in wrapping boxes, when its source has more than one piece.
+   @param {HTMLElement} display  a .katex-display made by auto-render */
+function wrapDisplayMath(display) {
+	const annotation = display.querySelector('annotation[encoding="application/x-tex"]');
+
+	// read-outs keep their fixed lines (CLAUDE.md), so they are never split
+	if (!annotation || display.closest('.readout, .eq, [data-tex]')) {
+		return;
+	}
+
+	const rows = splitAlignedTex(annotation.textContent);
+
+	if (rows) {
+		display.replaceWith(makeAlignedMath(rows));
+		return;
+	}
+
+	const groups = splitDisplayTex(annotation.textContent);
+
+	if (groups.length === 1 && groups[0].length === 1) {
+		return;
+	}
+
+	const box = makeEl('span', 'eq-split');
+
+	groups.forEach(pieces => {
+		const chain = makeEl('span', 'eq-chain');
+
+		pieces.forEach((piece, index) => {
+			const part = makeEl('span', 'eq-piece');
+
+			// "{}" before a relation keeps its spacing on the left
+			renderTex(part, index > 0 ? `{}${piece}` : piece);
+			chain.appendChild(part);
+		});
+
+		box.appendChild(chain);
+	});
+
+	display.replaceWith(box);
+}
+
 /** Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
    then any data-tex element. Needs KaTeX's auto-render extension.
    @param {HTMLElement} [root] */
@@ -820,6 +1086,10 @@ function renderMath(root = document.body) {
 		return;
 	}
 
+	// the display equations typeset before this call (read-outs, an
+	// earlier call on the same root) are left as they are
+	const typesetBefore = new Set(root.querySelectorAll('.katex-display'));
+
 	renderMathInElement(root, {
 		delimiters: [
 			{ left: '$$', right: '$$', display: true },
@@ -827,6 +1097,12 @@ function renderMath(root = document.body) {
 		],
 		ignoredClasses: ['no-math'],
 		throwOnError: false
+	});
+
+	root.querySelectorAll('.katex-display').forEach((/** @type {HTMLElement} */ display) => {
+		if (!typesetBefore.has(display)) {
+			wrapDisplayMath(display);
+		}
 	});
 
 	renderStaticMath(root);
