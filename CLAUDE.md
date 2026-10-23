@@ -16,6 +16,8 @@ can be hosted on a GitHub page.
   no build step or server).
 - The current state of the project is in this repository: read the existing
   files before writing new ones.
+- `DECISIONS.md` lists the choices already made and why. Read it before
+  proposing a change of direction, and say so if a task contradicts it.
 
 ### Code style
 
