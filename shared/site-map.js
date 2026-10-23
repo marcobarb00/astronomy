@@ -88,7 +88,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.1',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'The uneven year',
 			question: 'Why are the seasons not equal?',
 			path: 'act2-sun/01-uneven-year/index.html'

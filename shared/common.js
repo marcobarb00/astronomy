@@ -527,6 +527,58 @@ function drawStar(ctx, x, y, s, ring = null) {
 	ctx.fill();
 }
 
+/* ---------- Square canvases and centred labels ---------- */
+
+/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
+   the device pixel ratio; it follows the column when the page is resized
+   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
+   of the drawing, 'margin' px inside the edge). */
+function squareCanvas(owner, canvas, maxWidth, margin) {
+	// at least 240 px: a column measured before the layout is done can
+	// report a few pixels, which would give a negative radius
+	const targetWidth = () => clamp(canvas.parentElement.clientWidth || 400, 240, maxWidth);
+
+	const resize = () => {
+		const width = targetWidth();
+
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${width}px`;
+		owner.ctx = canvas.getContext('2d');
+		scaleCanvas(canvas, owner.ctx, width, width);
+		owner.width = width;
+		owner.cx = width / 2;
+		owner.cy = width / 2;
+		owner.R = width / 2 - margin;
+	};
+
+	resize();
+	new ResizeObserver(() => {
+		if (targetWidth() !== owner.width) {
+			resize();
+			owner.draw();
+		}
+	}).observe(canvas.parentElement);
+
+	// labels are drawn in web fonts: draw again once they have loaded
+	whenCanvasFontsReady().then(() => owner.draw());
+
+	// a new pixel ratio (zoom, another screen): a sharper canvas
+	onPixelRatioChange(() => {
+		resize();
+		owner.draw();
+	});
+}
+
+/* A text label centred at a screen point, in the atlas fonts and the text
+   colour of 'color' (labelFont, textColor in common.js). */
+function centredLabel(ctx, text, point, color) {
+	ctx.fillStyle = textColor(color);
+	ctx.font = labelFont(text);
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillText(text, point.x, point.y);
+}
+
 /* ---------- Canvas fonts (STYLE.md §3) ----------
    Labels in figures: names (Vega, meridian, never sets) in Cormorant SC,
    symbols (P, Z, gamma, theta, 90° - a) in Cormorant Garamond italic, as
