@@ -216,18 +216,59 @@ The first anomaly and the simplest complete model.
 #### 2.2 · The equation of time
 
 - **Question:** why does the sundial disagree with the clock?
-- **Learn:** apparent versus mean solar time; the two contributions, from the
-  eccentricity (page 2.1) and from the obliquity (projection of the ecliptic
-  onto the equator); their sum; the analemma.
-- **Figures:** the two components and their sum over a year; the analemma
-  drawn as the Sun's position at mean noon.
+- **Learn:** apparent versus mean solar time; the equation of time $E$,
+  apparent minus mean (positive when the sundial is ahead; page 1.3's noon
+  error was $E$); the true solar day and $E$ as the running sum of its
+  excesses over 24 h; the two contributions, $E = -q + (\lambda - \alpha)$,
+  from the eccentricity (page 2.1) and from the obliquity (the reduction to
+  the equator); the reduction written as an eccentric of eccentricity
+  $e_\varepsilon = \tan^2(\varepsilon/2)$ and argument $2\lambda$, so that
+  page 2.1's results carry over (first order $e_\varepsilon \sin 2\lambda$,
+  greatest value $\arcsin e_\varepsilon$ where $d\alpha/d\lambda = 1$); their
+  sum to first order, $E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda$
+  (radians); the analemma.
+- **Figures:** the true solar day and its running sum, $E$, through 2026
+  (static); a photo of an analemma in the sky (Donatiello, CC0); the
+  reduction to the equator (3D: the uniform Sun on the ecliptic, its hour
+  circle, the mean Sun on the equator; with $\lambda - \alpha$ against
+  $\lambda$; longitude and obliquity, starting at an exaggerated 45°, with
+  a preset for today's); the two
+  components and their sum over 2026; the analemma drawn as the Sun's
+  position at mean noon (date; both causes, eccentricity only, obliquity
+  only); the model against the real $E$ in 2026; the real $E$ against the
+  Sun's longitude in a chosen year, 1000 BC to AD 3000.
 - **When building:** the obliquity part is the reduction to the equator,
   $\alpha - \lambda$, computed by `Frames.reduction` in
   `shared/models/frames.js` (page 1.2 notes the lag in its table of Ptolemy's
   values).
-- **Exercises:** compute the equation of time on a given date and split it
-  into its two parts; find the dates when it vanishes.
+- **Fit:** no new parameter. The equation of time alone gives back those of
+  pages 1.2 and 2.1: its yearly and half-yearly terms (averages over a year)
+  give $e$, $\lambda_A$ and $\varepsilon$ to first order (biased by the cross
+  term $e\,e_\varepsilon$); the exact model fitted by least squares gives
+  $e = 0.0334$ and $\lambda_A = 103.4^\circ$.
+- **Test:** in time, not with the $\Delta\lambda$ widget (the longitude model
+  is page 2.1's): within 6 s of the real $E$ in 2026, against page 1.3's
+  ±16 min; Ptolemy's figures in *Almagest* III 9 (4¾ time-degrees from the
+  anomaly, 4½ from the meridian crossings, $3\tfrac23 + 4\tfrac23 =
+  8\tfrac13$ time-degrees over his intervals) against his own model and
+  against the real Sun of AD 140.
+- **Exercises:** compute the equation of time on a given date (3 November
+  2026) and split it into its two parts; predict the dates when it vanishes
+  with $e = 0$ and with $\varepsilon = 0$, then find the real ones; derive
+  where the reduction is greatest and check Copernicus' limits (16° of
+  Taurus to 14° of Leo cross the meridian in about 93 time-degrees, *De
+  Revolutionibus* III 26).
+- **Code:** `models/equation-of-time.js` (`EquationOfTime`: the two parts and
+  their sum for a solar model and an obliquity, the reduction as an
+  eccentric, the first-order formula, the Sun at mean noon, real noon from
+  mean noon). Pages 3.1 and 3.3 reuse it: Ptolemy converts true into mean
+  solar days for the Moon (III 9), and ancient eclipse times are in
+  apparent time.
 - **Hands over:** the orientation of the whole picture is not fixed either.
+  The shape of $E$ changes over the centuries, because the apogee moves
+  relative to γ: symmetric around 1246, when the apogee passed the summer
+  solstice; Ptolemy's $8\tfrac13$ time-degrees, Copernicus' $7^\circ 48'$
+  (page 2.3).
 
 #### 2.3 · Precession
 
@@ -417,6 +458,8 @@ once on the page.
 | $q$ | equation of centre ($\lambda = \bar\lambda + q$), negative from the apogee to the perigee |
 | $e$ | eccentricity, as a fraction of the deferent radius |
 | $R,\ r$ | deferent radius, epicycle radius |
+| $E$ | equation of time, apparent minus mean solar time ($\bar\lambda - \alpha$, at 4 min per degree), positive when the sundial is ahead of the clock (Meeus' sign) |
+| $e_\varepsilon$ | $\tan^2(\varepsilon/2)$, the "eccentricity" of the reduction to the equator, $\tan(\lambda - \alpha) = e_\varepsilon \sin 2\lambda / (1 + e_\varepsilon \cos 2\lambda)$ (page 2.2) |
 | $\Delta\lambda$ | model minus reference, in arcminutes |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
@@ -505,8 +548,9 @@ Models built on one page and reused later (the turning sky, the frames, the
 solar eccentric, the lunar epicycle, the planetary equant) live in
 `shared/models/` so later pages and the error-curve ghosts can call them. A
 model that does not predict a longitude (the turning sky, `models/diurnal.js`;
-the frames, `models/frames.js`; the clocks, `models/clock.js`) exports plain
-functions instead of `make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
+the frames, `models/frames.js`; the clocks, `models/clock.js`; the equation
+of time, `models/equation-of-time.js`) exports plain functions instead of
+`make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,

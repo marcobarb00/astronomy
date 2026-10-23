@@ -1,8 +1,8 @@
 /* ==========================================================================
    NUMBERS FOR PAGE 2.2 "THE EQUATION OF TIME" (tools/numbers/2.2-equation-of-time.js)
    Loads the site's shared code (common, time, ephemeris and the models
-   diurnal.js, frames.js, mean-sun.js, clock.js, solar-eccentric.js) in a
-   Node vm context and prints every number quoted on the page, in page
+   diurnal.js, frames.js, mean-sun.js, clock.js, solar-eccentric.js,
+   equation-of-time.js) in a Node vm context and prints every number quoted on the page, in page
    order.
 
    Run from the repository root:  node tools/numbers/2.2-equation-of-time.js
@@ -44,10 +44,26 @@ const shared = loadFiles([
 	'shared/models/frames.js',
 	'shared/models/mean-sun.js',
 	'shared/models/clock.js',
-	'shared/models/solar-eccentric.js'
+	'shared/models/solar-eccentric.js',
+	'shared/models/equation-of-time.js'
 ]);
-const { norm180, norm360, asin, atan2d, sin, cos, tan, R2D, Time, Ephem, Frames, MeanSun, Clock, SolarEccentric } =
-	shared;
+const {
+	norm180,
+	norm360,
+	asin,
+	atan2d,
+	sin,
+	cos,
+	tan,
+	R2D,
+	Time,
+	Ephem,
+	Frames,
+	MeanSun,
+	Clock,
+	SolarEccentric,
+	EquationOfTime
+} = shared;
 
 /* ==========================================================================
    2. FORMATTING AND SEARCHING
@@ -126,7 +142,9 @@ const lerpN = (a, b, t) => a + (b - a) * t;
 /* The year of the page. */
 const Y2026 = Time.julianDay(2026, 1, 1);
 const YEAR_DAYS = 365;
-const dayDate = day => date(Y2026 + day);
+/* The date of a day index of 2026 (0 = 1 January; the index counts
+   noons, so a fraction is rounded to the nearest noon). */
+const dayDate = day => date(Y2026 + Math.round(day));
 
 /* Minutes of time per degree of right ascension. */
 const MIN_PER_DEG = 4;
@@ -296,33 +314,32 @@ title('Observation: the Sun at mean noon (12:00 UT at Greenwich), the analemma')
 const FIT = SolarEccentric.FIT_2026;
 
 function modelParts(jdTT, parameters = FIT, eps = Ephem.meanObliquity(jdTT)) {
-	const s = SolarEccentric.state(parameters, jdTT);
-	const R = Frames.reduction(s.lambda, eps);
+	const p = EquationOfTime.parts(parameters, jdTT, eps);
 
 	return {
-		meanLongitude: s.meanLongitude,
-		M: s.M,
-		q: s.q,
-		lambda: s.lambda,
-		R: R,
-		alpha: norm360(s.lambda + R),
-		ecc: -s.q * MIN_PER_DEG,
-		obl: -R * MIN_PER_DEG,
-		E: (-s.q - R) * MIN_PER_DEG
+		meanLongitude: p.meanLongitude,
+		M: p.M,
+		q: p.q,
+		lambda: p.lambda,
+		R: p.alpha - p.lambda - 360 * Math.round((p.alpha - p.lambda) / 360),
+		alpha: p.alpha,
+		ecc: p.eccentricity,
+		obl: p.obliquity,
+		E: p.total
 	};
 }
 
 title('Model: the two amplitudes, to first order');
 const EPS2026 = Ephem.meanObliquity(Time.julianDay(2026, 7, 2));
 const y2026 = tan(EPS2026 / 2) ** 2;
-console.log(`mean obliquity mid-2026 ${f(EPS2026, 4)}°; y = tan^2(eps/2) = ${f(y2026, 5)}`);
+console.log(`mean obliquity mid-2026 ${f(EPS2026, 4)}°; e_eps = tan^2(eps/2) = ${f(y2026, 5)}`);
 console.log(
 	`eccentricity part: e sin M, amplitude e = ${f(FIT.e, 5)} rad = ${f(FIT.e * R2D, 3)}° = ${f(FIT.e * R2D * MIN_PER_DEG, 2)} min`
 );
 console.log(
-	`obliquity part: y sin 2 lambda, amplitude y = ${f(y2026, 5)} rad = ${f(y2026 * R2D, 3)}° = ${f(y2026 * R2D * MIN_PER_DEG, 2)} min`
+	`obliquity part: e_eps sin 2 lambda, amplitude e_eps = ${f(y2026, 5)} rad = ${f(y2026 * R2D, 3)}° = ${f(y2026 * R2D * MIN_PER_DEG, 2)} min`
 );
-console.log(`y / e = ${f(y2026 / FIT.e, 3)}`);
+console.log(`e_eps / e = ${f(y2026 / FIT.e, 3)}`);
 
 title('Model: the reduction is an "eccentric" with eccentricity y and argument 2 lambda');
 {
@@ -379,13 +396,13 @@ for (let day = 0; day <= YEAR_DAYS; day++) {
 	let worst = 0;
 
 	parts2026.forEach(p => {
-		const first = (FIT.e * sin(p.M) * -1 * -1 + y2026 * sin(2 * p.meanLongitude)) * R2D * MIN_PER_DEG;
+		const first = EquationOfTime.firstOrder(p.meanLongitude, FIT.e, FIT.apogee, EPS2026);
 
 		worst = Math.max(worst, Math.abs(first - p.E) * 60);
 	});
 
 	console.log(
-		`first-order E = (e sin M + y sin 2 lambdaBar) differs from the exact model by at most ${f(worst, 1)} s`
+		`first-order E = (e sin M + e_eps sin 2 lambdaBar) differs from the exact model by at most ${f(worst, 1)} s`
 	);
 }
 
@@ -570,6 +587,20 @@ function fitHarmonics(samples) {
 	console.log(
 		`exact model fitted (Gauss-Newton): e = ${f(x[0], 5)}, apogee ${f(x[1], 2)}°, eps = ${f(x[2], 3)}°, constant ${f(x[3] * 60, 2)} s; RMS ${f(Math.sqrt(rmsExact / samples.length) * 60, 2)} s`
 	);
+	// why the exact fit's obliquity is low: the eccentric's second-order
+	// term differs from the ellipse's by (e^2/2 - 5/4 e_K^2) sin 2M in -q
+	// (page 2.1); its part along sin 2 lambdaBar is absorbed by e_eps
+	{
+		const eK = FIT.e / 2;
+		const extra = (FIT.e * FIT.e) / 2 - 1.25 * eK * eK;
+		const along = -extra * cos(2 * FIT.apogee);
+		const dEdEps = tan(EPS2026 / 2) / cos(EPS2026 / 2) ** 2;
+
+		console.log(
+			`   eccentric - ellipse in -q: ${f(extra * R2D * 60, 2)}' sin 2M, of which ${f(along * R2D * 60, 2)}' along sin 2 lambdaBar; ` +
+				`absorbed by e_eps it lowers eps by ${f((along / dEdEps) * R2D * 60, 1)}'`
+		);
+	}
 	console.log(
 		`   cross term e y: the semi-annual wave of the true lambda, y sin 2(lambdaBar + q), has an annual part of amplitude e y = ${f(FIT.e * y2026 * R2D * 4 * 60, 1)} s`
 	);
@@ -579,9 +610,10 @@ function fitHarmonics(samples) {
    7. TEST
    ========================================================================== */
 
-title('Test: the model against the real E, 2026 (Figure 6)');
+title('Test: the model against the real E at 12:00 UT, 2026 (Figure 5)');
 {
-	const errors = parts2026.map((p, day) => (p.E - E2026[day]) * 60);
+	// as the page plots it: the real E of Meeus 28.1 at 12:00 UT
+	const errors = parts2026.map((p, day) => (p.E - ephemE(Time.ttFromUt(Y2026 + day + 0.5))) * 60);
 	const lo = Math.min(...errors);
 	const hi = Math.max(...errors);
 
@@ -674,6 +706,13 @@ const EPS_PT = Frames.PTOLEMY_OBLIQUITY;
 	const solstice = 2 * sum(steps.slice(6, 9));
 	const equinox = 2 * sum(steps.slice(0, 3));
 
+	{
+		const ra = lon => lon + EquationOfTime.reduction(lon, EPS_PT);
+
+		console.log(
+			`with his obliquity the formula gives ${f(ra(120) - ra(60), 3)} time-degrees for the two signs about a solstice, ${f(ra(30) - ra(-30), 3)} about an equinox`
+		);
+	}
 	console.log(
 		`his rising-times (I 16): two signs about a solstice ${dms(solstice)} = 60° + ${f(solstice - 60, 3)}°; about an equinox ${dms(equinox)} = 60° - ${f(60 - equinox, 3)}°`
 	);
@@ -878,12 +917,23 @@ title('Scales');
 	let lo = Infinity;
 	let hi = -Infinity;
 
-	for (let year = -1000; year <= 3000; year += 25) {
+	for (let year = -1000; year <= 3000; year += 10) {
 		const { values } = realYear(year);
 
 		lo = Math.min(lo, ...values);
 		hi = Math.max(hi, ...values);
 	}
 
-	console.log(`real E from 1000 BC to AD 3000 (every 25 years): ${f(lo, 2)} to ${f(hi, 2)} min`);
+	console.log(`real E from 1000 BC to AD 3000 (every 10 years): ${f(lo, 2)} to ${f(hi, 2)} min`);
+	console.log('Figure 6 (residual): axis -20 to +20 min covers it');
+	console.log(
+		`Figure 1: day excess ${f(Math.min(...dayExcess), 1)} to ${f(Math.max(...dayExcess), 1)} s (axis -30 to +35 s); E ${f(Math.min(...E2026), 2)} to ${f(Math.max(...E2026), 2)} min (axis -18 to +18 min)`
+	);
+	const errors = parts2026.map((p, day) => (p.E - ephemE(Time.ttFromUt(Y2026 + day + 0.5))) * 60);
+	console.log(
+		`Figure 5: model - real ${f(Math.min(...errors), 1)} to ${f(Math.max(...errors), 1)} s (axis -8 to +8 s)`
+	);
+	console.log(
+		'Figure 4: hour angle at mean noon within +-4.13° for every preset (axis +-6°), declination +-23.44° (axis +-26°)'
+	);
 }
