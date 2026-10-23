@@ -61,6 +61,25 @@ give it where it's needed.
 - **One precise number per idea.** "About four minutes earlier each night,
   almost two hours over a month" says more than three values to the
   hundredth of a second.
+- **Two or three numbers to a paragraph.** A reader holds only a few
+  numbers in mind at once. A paragraph that strings together an error, its
+  range, the dates of its extremes and a second span reads like a table
+  written out as sentences, and the point is lost among the values. Keep
+  the number that makes the point and say the rest in words ("about
+  seventy times less", "under half a minute"). Leave out what the reader
+  can read from the figure beside the text, or what an earlier paragraph
+  already gave. Put a series of comparable values (several years, two
+  models side by side) in a table, and split a paragraph that has two
+  ideas, each with its own number.
+
+| Too many numbers | Better |
+|---|---|
+| "The uniform circle is wrong by up to 115′, the eccentric by at most 1.7′, between −1.68′ on 19 November and +0.97′ on 6 August, about seventy times less." | "The uniform circle is wrong by up to 115′ and the eccentric by at most 1.7′, about seventy times less." (The dates of the extremes can be read from the figure.) |
+| "Over the century around 2026 it stays between −3.1′ and +2.7′, and over a thousand years it reaches −19′ and +17′." | "It reaches about 3′ within fifty years of 2026, and almost 20′ five centuries away." |
+
+- The limit is for running prose. A worked example that follows one
+  value through a computation, a derivation, and the answers of the
+  exercises keep the numbers each step needs.
 - Every number still comes from a script (CLAUDE.md). Rounding for the
   text is fine; the script keeps the full value.
 
@@ -126,7 +145,8 @@ generated.
 4. "The model / the formula / the clock" as the subject of sentence after
    sentence.
 5. Colon and semicolon chains.
-6. Every number to full precision.
+6. Every number to full precision, or more than three numbers in one
+   paragraph of prose (§4).
 7. A cross-reference in parentheses after every other term.
 8. A second quotation that adds nothing to the first.
 9. Lists of facts attached to a citation, with no link to the argument.
