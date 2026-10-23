@@ -96,11 +96,78 @@ function texHms(degrees) {
 	return `${h % 24}^\\text{h}${pad2(m)}^\\text{m}${pad2(s)}^\\text{s}`;
 }
 
+/* The smallest square canvas (px): narrower than any phone's column. */
+const SQUARE_CANVAS_MIN = 200;
+
+/* The width of an element inside its padding (px). */
+function contentWidth(element) {
+	const style = getComputedStyle(element);
+
+	return element.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+}
+
+/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
+   the device pixel ratio; it follows the column when the page is resized
+   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
+   of the drawing, 'margin' px inside the edge). */
+function squareCanvas(owner, canvas, maxWidth, margin) {
+	// the width inside the parent's padding (a canvas set directly in a
+	// figure's frame would otherwise be wider than the frame, and squeezed);
+	// at least SQUARE_CANVAS_MIN px: a column measured before the layout is
+	// done can report a few pixels, which would give a negative radius
+	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 400, SQUARE_CANVAS_MIN, maxWidth);
+
+	const resize = () => {
+		const width = targetWidth();
+
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${width}px`;
+		owner.ctx = canvas.getContext('2d');
+		scaleCanvas(canvas, owner.ctx, width, width);
+		owner.width = width;
+		owner.cx = width / 2;
+		owner.cy = width / 2;
+		owner.R = width / 2 - margin;
+	};
+
+	resize();
+	new ResizeObserver(() => {
+		if (targetWidth() !== owner.width) {
+			resize();
+			owner.draw();
+		}
+	}).observe(canvas.parentElement);
+
+	// labels are drawn in web fonts: draw again once they have loaded
+	whenCanvasFontsReady().then(() => owner.draw());
+
+	// a new pixel ratio (zoom, another screen): a sharper canvas
+	onPixelRatioChange(() => {
+		resize();
+		owner.draw();
+	});
+}
+
 /* A point on a circle of radius r about (cx, cy), at an angle measured
    clockwise from the top (the meridian), as the figures seen from above P
    draw hour angles. */
 function clockwisePoint(owner, angle, r) {
 	return { x: owner.cx + r * sin(angle), y: owner.cy - r * cos(angle) };
+}
+
+/* A text label centred at a screen point, in the atlas fonts and the text
+   colour of 'color' (labelFont, textColor in common.js). With a
+   LabelPlacer, a label that would cover an earlier one or leave the
+   canvas (on a phone) moves next to its point instead. */
+function centredLabel(ctx, text, point, color, labels = null) {
+	ctx.fillStyle = textColor(color);
+	ctx.font = labelFont(text);
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+
+	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
+
+	ctx.fillText(text, place.x, place.y);
 }
 
 /* ==========================================================================
@@ -118,6 +185,7 @@ const WHEEL_RIM_DEC = -60;
 const WHEEL_NAMES = ['Sirius', 'Betelgeuse', 'Vega', 'Arcturus'];
 
 const wheelFigure = {
+	labels: new LabelPlacer(), // keeps the labels of one drawing apart
 	canvas: null,
 	ctx: null,
 	state: null,
@@ -217,6 +285,7 @@ const wheelFigure = {
 		const ctx = this.ctx;
 
 		ctx.clearRect(0, 0, this.width, this.width);
+		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
 		this.drawCircleOfDeclination(WHEEL_RIM_DEC, { color: COL.line, width: 1.5 });
 		this.drawCircleOfDeclination(0, { color: COL.earth, width: 2 });
 		this.drawEcliptic();
@@ -283,6 +352,7 @@ const wheelFigure = {
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
 		ctx.fillText('meridian', this.cx, this.cy - this.R - 12);
+		this.labels.reserve(LabelPlacer.boxOf(ctx, 'meridian', this.cx, this.cy - this.R - 12));
 	},
 
 	/* The bright stars, as four-pointed stars sized by brightness (STYLE.md
@@ -308,7 +378,7 @@ const wheelFigure = {
 				ctx.textAlign = 'left';
 				ctx.textBaseline = 'middle';
 				ctx.fillStyle = COL.muted;
-				ctx.fillText(name, q.x + size + 4, q.y);
+				this.drawLabel(name, q, size + 4);
 			}
 		});
 	},
@@ -326,8 +396,18 @@ const wheelFigure = {
 			ctx.textAlign = 'left';
 			ctx.textBaseline = 'middle';
 			ctx.fillStyle = COL.ink;
-			ctx.fillText(label, q.x + radius + 4, q.y);
+			this.drawLabel(label, q, radius + 4);
 		}
+	},
+
+	/* A label to the right of point q, 'gap' px away; elsewhere round the
+	   point if it would cover an earlier label or leave the canvas (on a
+	   phone). Font, alignment and colour are set by the caller. */
+	drawLabel(text, q, gap) {
+		const designed = { x: q.x + gap, y: q.y };
+		const place = this.labels.choose(this.ctx, text, [designed, ...LabelPlacer.around(this.ctx, text, q, gap)]);
+
+		this.ctx.fillText(text, place.x, place.y);
 	}
 };
 
@@ -355,6 +435,7 @@ const ANGLES_LABELS = {
 };
 
 const anglesFigure = {
+	labels: new LabelPlacer(), // keeps the labels of one drawing apart
 	init() {
 		const { year, month, day, hour } = ANGLES_MOMENT;
 		const jd = Time.julianDayTime(year, month, day, hour, 0, 0);
@@ -376,6 +457,7 @@ const anglesFigure = {
 		const gammaPoint = clockwisePoint(this, this.theta, ANGLES_RING.equator * R);
 
 		ctx.clearRect(0, 0, this.width, this.width);
+		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
 
 		// the equator and the fixed meridian
 		ctx.strokeStyle = COL.earth;
@@ -420,9 +502,21 @@ const anglesFigure = {
 		this.dot(sunPoint, COL.sun, 7);
 		this.dot(gammaPoint, COL.ink, 4.5);
 		this.dot({ x: this.cx, y: this.cy }, COL.ink, 3.5);
-		centredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink);
-		centredLabel(ctx, 'mean Sun', clockwisePoint(this, this.H - 24, ANGLES_RING.equator * R - 22), COL.ink);
-		centredLabel(ctx, 'γ', clockwisePoint(this, this.theta + 7, ANGLES_RING.equator * R + 14), COL.ink);
+		centredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink, this.labels);
+		centredLabel(
+			ctx,
+			'mean Sun',
+			clockwisePoint(this, this.H - 24, ANGLES_RING.equator * R - 22),
+			COL.ink,
+			this.labels
+		);
+		centredLabel(
+			ctx,
+			'γ',
+			clockwisePoint(this, this.theta + 7, ANGLES_RING.equator * R + 14),
+			COL.ink,
+			this.labels
+		);
 	},
 
 	/* A dashed line from P outwards at an angle (clockwise from the top). */
@@ -451,7 +545,7 @@ const anglesFigure = {
 		ctx.moveTo(this.cx, this.cy);
 		ctx.lineTo(top.x, top.y);
 		ctx.stroke();
-		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent);
+		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
 	},
 
 	/* An arc { from, to, r, color, name, label, anticlockwise }: from
@@ -514,6 +608,13 @@ const anglesFigure = {
 		ctx.fillText(base, x, point.y);
 		ctx.font = smallFont;
 		ctx.fillText(sub, x + baseWidth, point.y + 5);
+
+		// the other labels keep clear of it
+		ctx.font = baseFont;
+
+		const box = LabelPlacer.boxOf(ctx, base, x, point.y);
+
+		this.labels.reserve({ x0: box.x0, y0: box.y0, x1: x + baseWidth + subWidth, y1: box.y1 + 5 });
 	},
 
 	dot(point, color, radius) {
@@ -915,6 +1016,10 @@ const calendarFigure = {
    that line runs off to the poles at the equinoxes. */
 const DAY_LEVELS = [6, 9, 15, 18];
 
+/* Days from the June solstice where a curve's label may go instead (on a
+   phone, when its own place is taken), the nearest first. */
+const CONTOUR_LABEL_SHIFTS = [-20, 20, -40, 40, -60, 60];
+
 /* The lines are searched for between these latitudes (deg), just short
    of the poles, where the day's length has no limit. */
 const CONTOUR_LATITUDE = 89.9;
@@ -1074,8 +1179,14 @@ const dayLengthFigure = {
 	labelContour(xs, ys, text) {
 		const day = JUNE_SOLSTICE_DAY;
 
+		// if the place is taken (on a phone), other days of the same curve,
+		// the nearest to the solstice first
+		const alternatives = CONTOUR_LABEL_SHIFTS.map(shift => day + shift)
+			.filter(d => d >= 0 && d < ys.length && !Number.isNaN(ys[d]))
+			.map(d => ({ x: xs[d], y: ys[d] }));
+
 		if (!Number.isNaN(ys[day])) {
-			this.map.text(text, xs[day], ys[day], { color: COL.earth, dx: 4, dy: -3 });
+			this.map.text(text, xs[day], ys[day], { color: COL.earth, dx: 4, dy: -3, alternatives: alternatives });
 		}
 	}
 };

@@ -615,6 +615,141 @@ function whenCanvasFontsReady() {
 	return canvasFontsPromise;
 }
 
+/* ---------- Labels that keep clear of one another ----------
+   On a phone a figure shrinks but its labels keep their size (13 px or
+   more, CLAUDE.md), so two labels can land on each other or past the edge
+   of the canvas. A LabelPlacer remembers the boxes of the labels already
+   drawn in one drawing (begin() starts a new one) and gives each new label
+   the first of its candidate places that stays inside the bounds and
+   touches no earlier label. A label's designed place comes first, so it
+   moves only where it would collide: on a wide screen, nowhere. Used by
+   Sphere3D.label and Plot2D.text. */
+
+/* Clear space between two labels, and between a point and its label (px). */
+const LABEL_CLEARANCE = 1;
+const LABEL_POINT_GAP = 7;
+
+class LabelPlacer {
+	constructor() {
+		this.boxes = [];
+		this.bounds = null;
+	}
+
+	/* A new drawing: no label yet, labels kept inside 'bounds'
+	   ({ x0, y0, x1, y1 }, canvas pixels). */
+	begin(bounds) {
+		this.boxes = [];
+		this.bounds = bounds;
+	}
+
+	/* The box of 'text' drawn at (x, y) with the context's current font,
+	   alignment and baseline. */
+	static boxOf(ctx, text, x, y) {
+		const m = ctx.measureText(text);
+
+		return {
+			x0: x - m.actualBoundingBoxLeft,
+			x1: x + m.actualBoundingBoxRight,
+			y0: y - m.actualBoundingBoxAscent,
+			y1: y + m.actualBoundingBoxDescent
+		};
+	}
+
+	/* Candidate places all round a point q, 'gap' px away: right, left,
+	   above, below, then the four diagonals; each is the (x, y) to draw at
+	   with the context's current alignment and baseline. */
+	static around(ctx, text, q, gap = LABEL_POINT_GAP) {
+		const box = LabelPlacer.boxOf(ctx, text, 0, 0);
+		const w = box.x1 - box.x0;
+		const h = box.y1 - box.y0;
+		const d = 0.7 * gap;
+		const at = (left, top) => ({ x: left - box.x0, y: top - box.y0 });
+
+		return [
+			at(q.x + gap, q.y - h / 2),
+			at(q.x - gap - w, q.y - h / 2),
+			at(q.x - w / 2, q.y - gap - h),
+			at(q.x - w / 2, q.y + gap),
+			at(q.x + d, q.y - d - h),
+			at(q.x + d, q.y + d),
+			at(q.x - d - w, q.y - d - h),
+			at(q.x - d - w, q.y + d)
+		];
+	}
+
+	/* Keep later labels clear of a box drawn some other way ({ x0, y0, x1,
+	   y1 }, e.g. a label with a subscript). */
+	reserve(box) {
+		this.boxes.push(box);
+	}
+
+	/* The same place moved inside the bounds, if it was past an edge. */
+	clampInside(ctx, text, place) {
+		const box = LabelPlacer.boxOf(ctx, text, place.x, place.y);
+		const { x0, y0, x1, y1 } = this.bounds;
+		const dx = Math.max(0, x0 - box.x0) - Math.max(0, box.x1 - x1);
+		const dy = Math.max(0, y0 - box.y0) - Math.max(0, box.y1 - y1);
+
+		return { x: place.x + dx, y: place.y + dy };
+	}
+
+	/* Is the box inside the bounds? */
+	inside(box) {
+		const { x0, y0, x1, y1 } = this.bounds;
+
+		return box.x0 >= x0 && box.x1 <= x1 && box.y0 >= y0 && box.y1 <= y1;
+	}
+
+	/* The area the box shares with the labels already drawn. */
+	overlap(box) {
+		return this.boxes.reduce((total, other) => {
+			const w = Math.min(box.x1, other.x1) - Math.max(box.x0, other.x0) + LABEL_CLEARANCE;
+			const h = Math.min(box.y1, other.y1) - Math.max(box.y0, other.y0) + LABEL_CLEARANCE;
+
+			return total + (w > 0 && h > 0 ? w * h : 0);
+		}, 0);
+	}
+
+	/* The first candidate inside the bounds and clear of every earlier
+	   label; failing that, the one inside that overlaps least; failing
+	   that, the first one moved inside. The chosen box is remembered.
+	   Without begin() (no bounds), the first candidate is kept as it is. */
+	choose(ctx, text, candidates) {
+		if (!this.bounds) {
+			return candidates[0];
+		}
+
+		let best = null;
+		let bestOverlap = Infinity;
+
+		for (const place of candidates) {
+			const box = LabelPlacer.boxOf(ctx, text, place.x, place.y);
+
+			if (!this.inside(box)) {
+				continue;
+			}
+
+			const shared = this.overlap(box);
+
+			if (shared === 0) {
+				best = place;
+				break;
+			}
+
+			if (shared < bestOverlap) {
+				best = place;
+				bestOverlap = shared;
+			}
+		}
+
+		const chosen = best ?? this.clampInside(ctx, text, candidates[0]);
+
+		this.boxes.push(LabelPlacer.boxOf(ctx, text, chosen.x, chosen.y));
+
+		return chosen;
+	}
+}
+
 /* ==========================================================================
    7. DOM AND KATEX HELPERS
    ========================================================================== */
