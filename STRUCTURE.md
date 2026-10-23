@@ -221,10 +221,14 @@ The first anomaly and the simplest complete model.
   error was $E$); the true solar day and $E$ as the running sum of its
   excesses over 24 h; the two contributions, $E = -q + (\lambda - \alpha)$,
   from the eccentricity (page 2.1) and from the obliquity (the reduction to
-  the equator); the reduction written as an eccentric of eccentricity
-  $e_\varepsilon = \tan^2(\varepsilon/2)$ and argument $2\lambda$, so that
-  page 2.1's results carry over (first order $e_\varepsilon \sin 2\lambda$,
-  greatest value $\arcsin e_\varepsilon$ where $d\alpha/d\lambda = 1$); their
+  the equator); $\tan(\lambda - \alpha)$ has the form of page 2.1's
+  equation of centre, with $e_\varepsilon = \tan^2(\varepsilon/2)$ for $e$
+  and $2\lambda$ for $M$, so page 2.1's results apply (first order
+  $e_\varepsilon \sin 2\lambda$, greatest value $\arcsin e_\varepsilon$);
+  $d\alpha/d\lambda = \cos\varepsilon / \cos^2\delta$, derived from
+  $\cos\delta\cos\alpha = \cos\lambda$ (page 1.2), and the lag greatest where
+  it equals 1; the mean Sun as a reference point moving along the equator;
+  their
   sum to first order, $E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda$
   (radians); the analemma.
 - **Figures:** the true solar day and its running sum, $E$, through 2026
@@ -232,8 +236,7 @@ The first anomaly and the simplest complete model.
   reduction to the equator (3D: the uniform Sun on the ecliptic, its hour
   circle, the mean Sun on the equator; with $\lambda - \alpha$ against
   $\lambda$; longitude and obliquity, starting at an exaggerated 45°, with
-  a preset for today's); the two
-  components and their sum over 2026; the analemma drawn as the Sun's
+  a preset for today's); the two components and their sum over 2026; the analemma drawn as the Sun's
   position at mean noon (date; both causes, eccentricity only, obliquity
   only); the model against the real $E$ in 2026; the real $E$ against the
   Sun's longitude in a chosen year, 1000 BC to AD 3000.
@@ -248,16 +251,14 @@ The first anomaly and the simplest complete model.
   $e = 0.0334$ and $\lambda_A = 103.4^\circ$.
 - **Test:** in time, not with the $\Delta\lambda$ widget (the longitude model
   is page 2.1's): within 6 s of the real $E$ in 2026, against page 1.3's
-  ±16 min; Ptolemy's figures in *Almagest* III 9 (4¾ time-degrees from the
-  anomaly, 4½ from the meridian crossings, $3\tfrac23 + 4\tfrac23 =
-  8\tfrac13$ time-degrees over his intervals) against his own model and
-  against the real Sun of AD 140.
+  ±16 min; Ptolemy's total in *Almagest* III 9 ($3\tfrac23 + 4\tfrac23 =
+  8\tfrac13$ time-degrees, 33⅓ min), which his own model reproduces,
+  against the real 31 min of his time, and why he needed it (the Moon).
+  Keep the numbers in the prose few and rounded.
 - **Exercises:** compute the equation of time on a given date (3 November
   2026) and split it into its two parts; predict the dates when it vanishes
   with $e = 0$ and with $\varepsilon = 0$, then find the real ones; derive
-  where the reduction is greatest and check Copernicus' limits (16° of
-  Taurus to 14° of Leo cross the meridian in about 93 time-degrees, *De
-  Revolutionibus* III 26).
+  where the reduction is greatest, and its greatest value.
 - **Code:** `models/equation-of-time.js` (`EquationOfTime`: the two parts and
   their sum for a solar model and an obliquity, the reduction as an
   eccentric, the first-order formula, the Sun at mean noon, real noon from
@@ -267,8 +268,7 @@ The first anomaly and the simplest complete model.
 - **Hands over:** the orientation of the whole picture is not fixed either.
   The shape of $E$ changes over the centuries, because the apogee moves
   relative to γ: symmetric around 1246, when the apogee passed the summer
-  solstice; Ptolemy's $8\tfrac13$ time-degrees, Copernicus' $7^\circ 48'$
-  (page 2.3).
+  solstice (page 2.3).
 
 #### 2.3 · Precession
 
