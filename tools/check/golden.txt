@@ -1853,6 +1853,29 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   models, 2026 June solstice     90.148098956  79.880210857  80.473126134
   models, range end              279.395537889  266.834422129  265.965854302
 
+=== 6e. THE EQUATION OF TIME (models/equation-of-time.js) ===
+  eps = 0                        0.000000000  0.000000000  45.000000000  0.000000000 0.000000000 0.000000000 0.000000000 0.000000000
+  eps = 23.44                    0.043037206  2.466612133  46.233306066  -0.810534769 -2.466530314 0.000000000 2.466530314 2.181397713
+  eps = 45                       0.171572875  9.879281947  49.939640974  -2.892923890 -9.787273880 0.000000000 9.787273880 9.231520484
+  partsAt(L, e, apogee, eps): eccentricity, obliquity, total (min); firstOrder
+  L = 0                          -7.509170981  0.619069369  -6.890101612  -7.452171201
+  L = 90                         -1.763669692  -0.158565779  -1.922235471  -1.821053531
+  L = 222.76                     6.816518070  9.703341304  16.519859374  16.537421321
+  L = 315                        -4.098643303  -9.832287852  -13.930931155  -13.841567786
+  FIT_2026, range start          9.482763436  2.223664199  -23.202530131  625673.959099004
+  FIT_2026, Thales eclipse       3.672375395  0.905693621  20.583910098  1507899.962761829
+  FIT_2026, Ptolemy              -6.515774320  -1.639758310  21.070268151  1772028.469832893
+  FIT_2026, last Julian day      13.837298799  3.487455777  -8.081346249  2299159.955592009
+  FIT_2026, first Gregorian day  14.075971811  3.546066662  -8.453268034  2299160.955429166
+  FIT_2026, Sputnik (Meeus 7.a)  11.311146805  2.863545633  -4.648596024  2436116.767325174
+  FIT_2026, Meeus 12.a           -1.600884056  -0.368614092  7.841369630  2446895.966301514
+  FIT_2026, Meeus 47.a           -0.859433672  -0.184803159  8.865384920  2448724.965791028
+  FIT_2026, Meeus 25.a           13.736860288  3.462466393  -7.952782536  2448908.955661422
+  FIT_2026, J2000.0              -3.177598191  -0.849758543  -22.998324849  2451545.467638995
+  FIT_2026, 2026 January 1       -3.273084889  -0.873510308  -22.978049643  2461041.967704992
+  FIT_2026, 2026 June solstice   -1.855066289  -0.489278251  23.434518714  2461213.466637091
+  FIT_2026, range end            -2.692500300  -0.734559493  -22.940929652  2817151.967318893
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -1977,6 +2000,14 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   reachCircle                    0.991471735 1.032467999 1.007471735 0.967467999 1.033470049
   monthTicks 12, 4               Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec  |  Jan Mar May Jul Sep Nov
   fixed ranges                   [56,62]  [-12,12]  [-0.1,0.1]
+
+=== 8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js) ===
+  YEAR_START                     2461041.500000000
+  dayText                        "1 Jan" "11 Feb" "3 Nov" "31 Dec"
+  texMinSec                      "-14\\,\\text{min}\\ 12\\,\\text{s}" "0\\,\\text{min}\\ 00\\,\\text{s}" "0\\,\\text{min}\\ 00\\,\\text{s}" "+3\\,\\text{min}\\ 38\\,\\text{s}" "+16\\,\\text{min}\\ 27\\,\\text{s}"
+  texSigned                      "{-14.22}" "{+0.00}" "{+7.79}"
+  yearText                       "141 BC" "AD 140" "1246" "2026"
+  fixed ranges                   [-25,35]  [-18,18]  [-10,10]  [-6,6]  [-26,26]  [-8,8]  [-20,20]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -2419,3 +2450,162 @@ AD 140 real: spring 93.90, summer 92.56 -> apogee 70.69°, e 0.0349
 Figure 2: e up to 0.2 -> |q| up to 11.54° (axis +-12°); 0.2 / e(2026) = 5.97
 Figure 2 at e = 0.2: seasons 99.92, 105.44, 82.71, 77.18 d
 Figure 3: spring and summer from 90 to 96 d -> e up to 0.0806 (zoom panel +-0.1); drawn six times farther out in (a): 0.484
+
+=== 9. tools/numbers/2.2-equation-of-time.js ===
+
+=== Observation: the real noon at Greenwich through 2026 ===
+E from the noons and from Meeus 28.1 (Ephem.equationOfTime) agree within 0.22 s
+   extreme -14 min 12 s on 11 Feb 2026
+   extreme +3 min 38 s on 13 May 2026
+   extreme -6 min 34 s on 26 Jul 2026
+   extreme +16 min 27 s on 3 Nov 2026
+   zero on 15 Apr 2026 (day 104.20)
+   zero on 12 Jun 2026 (day 162.49)
+   zero on 1 Sep 2026 (day 243.00)
+   zero on 25 Dec 2026 (day 357.89)
+   noon at Greenwich: earliest 12 h -16 min 27 s , latest 12 h +14 min 12 s
+   peak to peak 30.66 min = 7.66 time-degrees
+
+=== Observation: the true solar day (noon to noon) through 2026, Figure 1 (a) ===
+longest: day ending 23 Dec 2026, 29.8 s over 24 h; shortest: day ending 18 Sep 2026, -21.4 s
+mean excess over the year 0.057 s (page 1.3: 24 h within a tenth of a second)
+   day of exactly 24 h around 11 Feb 2026
+   day of exactly 24 h around 14 May 2026
+   day of exactly 24 h around 26 Jul 2026
+   day of exactly 24 h around 3 Nov 2026
+   day excess extreme -18.1 s around 28 Mar 2026
+   day excess extreme 13.1 s around 19 Jun 2026
+   day excess extreme -21.4 s around 18 Sep 2026
+   day excess extreme 29.8 s around 23 Dec 2026
+
+=== Observation: the running sum of the excesses is the change of E, Figure 1 (b) ===
+from 11 Feb 2026 to 3 Nov 2026: the days add up to -30.66 min more than 24 h each; E falls from -14.20 to 16.45 min (change 30.66 min)
+longest run of days over 24 h: 74 days; under 24 h: 100 days
+
+=== Observation: the Sun at mean noon (12:00 UT at Greenwich), the analemma ===
+hour angle at mean noon = E/4 degrees: from -3.55° to 4.11°; declination -23.44° to 23.44°
+   the figure eight crosses itself on 12 Apr 2026 and 30 Aug 2026: hour angle -0.17°, declination 8.95°
+
+=== Model: the two amplitudes, to first order ===
+mean obliquity mid-2026 23.4358°; e_eps = tan^2(eps/2) = 0.04302
+eccentricity part: e sin M, amplitude e = 0.03347 rad = 1.918° = 7.67 min
+obliquity part: e_eps sin 2 lambda, amplitude e_eps = 0.04302 rad = 2.465° = 9.86 min
+e_eps / e = 1.285
+
+=== Model: the reduction is an "eccentric" with eccentricity y and argument 2 lambda ===
+alpha - lambda = -atan2(y sin 2l, 1 + y cos 2l): largest difference from Frames.reduction 1.1e-13°
+greatest reduction asin y = 2.4657° (2°27'57") = 9.86 min, at lambda = 45° + asin(y)/2 = 46.233°
+   where d alpha / d lambda = 1: sin^2 lambda = 1/(1 + cos eps), lambda = 46.233°
+   reduction there: -2.4657°, alpha = 43.767°
+   d alpha / d lambda = cos eps / cos^2 delta: at the equinox 0.9175, at the solstice 1.0899
+   second-order term 1/2 y^2 sin 4 lambda: 190.9" = 12.7 s
+   eccentric's second-order term 1/2 e^2 sin 2M: 7.7 s
+
+=== Model: the parts and their sum through 2026 (Figure 4) ===
+ecc: range -7.67 to 7.67 min
+   extreme -7 min 40 s on 3 Apr 2026
+   extreme +7 min 40 s on 6 Oct 2026
+   zero on 4 Jan 2026
+   zero on 5 Jul 2026
+obl: range -9.86 to 9.86 min
+   extreme -9 min 52 s on 2 Feb 2026
+   extreme +9 min 52 s on 6 May 2026
+   extreme -9 min 52 s on 6 Aug 2026
+   extreme +9 min 52 s on 8 Nov 2026
+   zero on 20 Mar 2026
+   zero on 21 Jun 2026
+   zero on 23 Sep 2026
+   zero on 21 Dec 2026
+E: range -14.22 to 16.52 min
+   extreme -14 min 13 s on 11 Feb 2026
+   extreme +3 min 39 s on 14 May 2026
+   extreme -6 min 38 s on 26 Jul 2026
+   extreme +16 min 31 s on 3 Nov 2026
+   zero on 15 Apr 2026
+   zero on 12 Jun 2026
+   zero on 1 Sep 2026
+   zero on 25 Dec 2026
+first-order E = (e sin M + e_eps sin 2 lambdaBar) differs from the exact model by at most 45.2 s
+
+=== Model: the analemma (Figure 5): hour angle at mean noon = E / 4 degrees ===
+both: hour angle -3.55° to 4.13°
+eccentricity: hour angle -1.92° to 1.92°
+obliquity: hour angle -2.47° to 2.47°
+
+=== Fit: e, the apogee and the obliquity from the real E of 2026 ===
+coefficients (min): c -0.007, sin L -1.851, cos L -7.135, sin 2L 9.922, cos 2L -0.038
+annual amplitude 7.371 min -> e = 0.03216 (page 2.1: 0.033473), apogee 104.55° (page 2.1: 103.732°)
+semi-annual amplitude 9.922 min -> y = 0.04329, eps = 23.508° (mean obliquity 23.436°); phase of 2L term -0.22°
+RMS of the fit: 16.5 s
+exact model fitted (Gauss-Newton): e = 0.03343, apogee 103.39°, eps = 23.389°, constant -0.44 s; RMS 0.91 s
+   eccentric - ellipse in -q: 0.72' sin 2M, of which 0.64' along sin 2 lambdaBar; absorbed by e_eps it lowers eps by 3.0'
+   cross term e y: the semi-annual wave of the true lambda, y sin 2(lambdaBar + q), has an annual part of amplitude e y = 19.8 s
+
+=== Test: the model against the real E at 12:00 UT, 2026 (Figure 5) ===
+model - real: -4.8 s (6 Aug 2026) to 6.0 s (20 Nov 2026)
+the uniform Sun of page 1.3 (E = 0): error from -16.45 to 14.20 min
+at J2000 the clock's mean Sun is at 280.46061837°, the eccentric's at 280.45897° (Meeus 25.2: 280.46646°)
+   clock (280.46061837) - FIT_2026.L0 = 5.9" = 0.40 s
+
+=== Test: what part of the error comes from the longitude (eccentric) and what from the rest ===
+the eccentric's longitude error gives up to 7.0 s; the rest (mean Sun, nutation, latitude) up to 1.0 s
+
+=== Test: Ptolemy's numbers (Almagest III 9) with his model ===
+the Moon in 8 1/3 time-degrees = 33 1/3 min: 0.305° (its disc is about 0.5° wide)
+the Moon in 16 2/3 time-degrees = 1 1/9 h: at his 0;32,56 an hour (IV 3) it moves 0.610°
+his E: least -4.807° at true lambda 317.8°, greatest 3.578° at 214.2°: range 8.384 time-degrees = 33.5 min (his 8 1/3 = 33 1/3 min)
+from 315° to 210° (mid-Aquarius to the end of Libra): anomaly part 3.623, meridian part 4.720 time-degrees (his 3 2/3 and 4 2/3)
+his anomaly alone, between the points of mean speed: 2 x 2;23 = 4.776 time-degrees (his 4 3/4)
+with his obliquity the formula gives 64.527 time-degrees for the two signs about a solstice, 55.670 about an equinox
+his rising-times (I 16): two signs about a solstice 64°32'00" = 60° + 4.533°; about an equinox 55°40'00" = 60° - 4.333°
+AD 140: real E from -17.27 to 14.00 min (range 31.26 min = 7.82 time-degrees)
+   Ptolemy's E (with his mean Sun) minus real: -1.96 to 1.78 min; minus a constant it varies by 3.74 min
+his epoch: mean Sun 330;45, true 333.136° (his Pisces 3;8 = 333.133°); his E there -17.57 min
+
+=== Residual: the real E over the centuries (Figure 7), against the sun longitude ===
+ 141 BC: -17.57 to 13.49 min, range 31.07 min = 7.77 time-degrees; extremes -17.6 at 317°, 8.1 at 57°, -2.8 at 129°, 13.5 at 216°
+    140: -17.27 to 14.00 min, range 31.26 min = 7.82 time-degrees; extremes -17.3 at 318°, 7.4 at 58°, -3.1 at 127°, 14.0 at 217°
+   1246: -15.65 to 15.65 min, range 31.30 min = 7.82 time-degrees; extremes -15.6 at 321°, 5.0 at 55°, -5.0 at 125°, 15.7 at 219°
+   1515: -15.17 to 15.97 min, range 31.13 min = 7.78 time-degrees; extremes -15.2 at 322°, 4.5 at 55°, -5.5 at 124°, 16.0 at 220°
+   2026: -14.20 to 16.46 min, range 30.66 min = 7.66 time-degrees; extremes -14.2 at 323°, 3.6 at 53°, -6.6 at 124°, 16.5 at 221°
+   3000: -12.15 to 16.97 min, range 29.13 min = 7.28 time-degrees; extremes -12.2 at 324°, 2.6 at 50°, -8.7 at 122°, 17.0 at 224°
+Copernicus (III 26): 7;48 time-degrees = 31.2 min; Ptolemy 8;20 = 33.3 min
+the fitted apogee passes 90° around 1245
+
+=== Residual: the page's model (fixed apogee) over the centuries ===
+1976-2076: model - real from -11.4 s to 12.7 s
+1526-2526: model - real from -76.1 s to 80.9 s
+
+=== Exercise 1: the equation of time on 3 November 2026, 12:00 UT, step by step ===
+d = 9803.0009 (TT); lambdaBar = L0 + n d = 222.7609°
+M = lambdaBar - lambdaA = 119.0289°; q = -1.7041°; lambda = 221.0568°
+eps = 23.4358°; alpha = 218.6309°; R = alpha - lambda = -2.4258°
+E = -q - R = 1.7041° + 2.4258° = 4.1300° -> 6.82 + 9.70 = 16.52 min (+16 min 31 s)
+real: 16.46 min (+16 min 27 s); real noon at Greenwich 3 Nov 2026 11:44 UT
+first order: e sin M + y sin 2 lambdaBar = 6.71 + 9.83 = 16.54 min
+
+=== Exercise 2: the dates when E vanishes, 2026 (model and real); with e = 0 and with eps = 0 ===
+   model zero 15 Apr 2026; real 15 Apr 2026
+   model zero 12 Jun 2026; real 12 Jun 2026
+   model zero 1 Sep 2026; real 1 Sep 2026
+   model zero 25 Dec 2026; real 25 Dec 2026
+   e = 0 (uniform Sun, obliquity only): zeros 22 Mar 2026, 21 Jun 2026, 21 Sep 2026, 21 Dec 2026
+   eps = 0 (eccentricity only): zeros 4 Jan 2026, 5 Jul 2026
+
+=== Exercise 3: Copernicus' limits (De Rev. III 26) and the greatest reduction ===
+Copernicus 23;28,30: mean-speed point lambda = 46.237° (46°14'14"), alpha there 43.763°; the 87.53° to 133.76° cross in 92.474 time-degrees (excess 4.948); greatest reduction asin(y) = 2.474° = 9.90 min
+Ptolemy 23;51,20: mean-speed point lambda = 46.279° (46°16'44"), alpha there 43.721°; the 87.44° to 133.72° cross in 92.558 time-degrees (excess 5.115); greatest reduction asin(y) = 2.558° = 10.23 min
+2026 mean: mean-speed point lambda = 46.233° (46°13'58"), alpha there 43.767°; the 87.53° to 133.77° cross in 92.466 time-degrees (excess 4.931); greatest reduction asin(y) = 2.466° = 9.86 min
+Copernicus: 88° from 16° Taurus (46°) to 14° Leo (134°) cross in 'about 93 time-degrees', 5 in excess
+   with his obliquity, alpha(134°) - alpha(46°) = 92.948°
+   and 92° from 14° Leo (134°) to 16° Scorpio (226°): 87.052°
+
+=== Scales ===
+eps 23.44°: greatest reduction 2.467°
+eps 30°: greatest reduction 4.117°
+eps 45°: greatest reduction 9.879°
+real E from 1000 BC to AD 3000 (every 10 years): -18.29 to 16.98 min
+Figure 6 (residual): axis -20 to +20 min covers it
+Figure 1: day excess -21.4 to 29.8 s (axis -30 to +35 s); E -14.20 to 16.45 min (axis -18 to +18 min)
+Figure 5: model - real -4.8 to 6.0 s (axis -8 to +8 s)
+Figure 4: hour angle at mean noon within +-4.13° for every preset (axis +-6°), declination +-23.44° (axis +-26°)
