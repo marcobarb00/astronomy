@@ -85,18 +85,16 @@
 
 		<p>
 			At Greenwich in 2026, where the clock keeps Universal Time, the
-			sundial is behind by up to 14 min 12 s on 11 February and ahead by
-			up to 16 min 27 s on 3 November. In between it reaches two smaller
-			extremes, +3 min 38 s on 13 May and −6 min 34 s on 26 July, and the
-			two agree on four days: 15 April, 12 June, 1 September and 25
-			December.
+			sundial is up to 14 minutes behind the clock in mid-February and up
+			to 16½ minutes ahead in early November, with two smaller swings in
+			between, in May and July. The two agree on only four days of the
+			year.
 		</p>
 
 		<p>
 			Single days hardly show it. The <em>true solar day</em>, from one
-			real noon to the next, lasts at most 29.8 s more than 24 hours (the
-			day ending 23 December) and at least 21.4 s less (the day ending 18
-			September). But the short days come in long runs, 100 of
+			real noon to the next, is never more than half a minute longer or
+			shorter than 24 hours. But the short days come in long runs, 100 of
 			them in a row in 2026, and over a run their shortfalls add up, as
 			Figure 1 shows.
 		</p>
@@ -137,12 +135,12 @@
 		</figure>
 
 		<p>
-			From 11 February to 3 November the days fall short of 24 hours by
-			30.66 minutes in all, which is exactly what the sundial gains in
-			that time, from −14.20 to +16.45 minutes. The equation of time is
-			the running sum of the days' differences from 24 hours. Over the
-			whole year these differences cancel, to 0.06 s on average, because
-			the clock is defined as the average of the Sun.
+			From mid-February to early November the days fall short of 24 hours
+			by about half an hour in all, which is exactly what the sundial
+			gains on the clock over those months. The equation of time is the
+			running sum of the days' differences from 24 hours. Over a whole
+			year the differences cancel, because the clock is defined as the
+			Sun's average.
 		</p>
 
 		<div class="row">
@@ -190,10 +188,18 @@
 		<h3>The equation of time</h3>
 
 		<p>
+			The mean Sun of page 1.3 is not a body in the sky but a reference
+			point. It moves along the celestial equator, not along the
+			ecliptic, at a constant rate, and its right ascension is always the
+			Sun's mean longitude, $\alpha_m = \bar\lambda$. Because it moves
+			uniformly along the equator, its hour angle grows by exactly 15° an
+			hour, which is what a clock needs.
+		</p>
+
+		<p>
 			Both kinds of time are hour angles, $H = \theta - \alpha$, so at any
 			moment their difference is the difference of the two right
-			ascensions. The mean Sun's right ascension is the mean longitude,
-			$\alpha_m = \bar\lambda$ (page 1.3), so in degrees
+			ascensions. In degrees,
 		</p>
 
 		$$E = H - H_m = \alpha_m - \alpha = \bar\lambda - \alpha,$$
@@ -230,8 +236,8 @@
 			changed. While the Sun runs ahead of its mean place, $q > 0$, its
 			right ascension grows ahead of the mean Sun's, it reaches the
 			meridian later, and the sundial falls behind. To first order $-q
-			\approx e\sin M$, so this part swings by $e = 0.03347$ radians, or
-			1.918°, either way, which is 7.67 minutes of time.
+			\approx e\sin M$ in radians, so this part swings by about 1.9°
+			either way, or 7.7 minutes of time.
 		</p>
 
 		<h3>The obliquity part</h3>
@@ -258,24 +264,20 @@
 		</div>
 
 		<p>
-			This is the formula of page 2.1 for the equation of centre, $\tan q =
-			-e\sin M / (1 + e\cos M)$, with $e_\varepsilon$ in place of $e$ and
-			$2\lambda$ in place of $M$. The reduction to the equator behaves like
-			an eccentric with eccentricity $e_\varepsilon = 0.04302$, today's,
-			that goes round twice a year, so every result of page 2.1 carries
-			over.
+			The right-hand side has the same form as page 2.1's equation of
+			centre, $\tan q = -e\sin M / (1 + e\cos M)$, with $e_\varepsilon$ in
+			place of $e$ and $2\lambda$ in place of $M$. So the results of page
+			2.1 apply to the lag without new work; for today's obliquity
+			$e_\varepsilon = 0.0430$.
 		</p>
 
 		<div class="row">
 			<p>
 				To first order $\lambda - \alpha \approx e_\varepsilon \sin
-				2\lambda$, which swings by 2.465° either way, 9.86 minutes of
-				time; the second-order term, $-\tfrac12 e_\varepsilon^2 \sin
-				4\lambda$, is worth 12.7 s. The greatest value of $|\lambda -
-				\alpha|$ is $\arcsin e_\varepsilon = 2^\circ 27' 57''$ ($2.466^\circ$),
-				reached where $\cos 2\lambda = -e_\varepsilon$, at $\lambda =
-				46.23^\circ$ and at the same distance from every other equinox
-				and solstice.
+				2\lambda$ in radians, which swings by about 2.5° either way, or 9.9
+				minutes of time. Its greatest value is $\arcsin e_\varepsilon$, about
+				2.47°, reached at $\lambda \approx 46^\circ$ and at the same distance
+				from every other equinox and solstice.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -283,22 +285,40 @@
 		</div>
 
 		<p>
-			Differentiating $\tan\alpha = \cos\varepsilon\tan\lambda$ shows
-			where the lag comes from: $d\alpha/d\lambda = \cos\varepsilon /
-			\cos^2\delta$, so the two angles grow at different speeds. At the equinoxes the ecliptic
-			crosses the equator at a slant, and $\alpha$ grows only 0.918 times
-			as fast as $\lambda$. At the solstices the ecliptic runs parallel to
-			the equator, but at a declination of 23.4°, where the hour circles
-			are closer together, and $\alpha$ grows 1.090 times as fast.
+			The lag comes from a difference of speed between $\alpha$ and
+			$\lambda$. Differentiating $\tan\alpha = \cos\varepsilon\tan\lambda$
+			gives
+		</p>
+
+		$$\frac{d\alpha}{\cos^2\alpha} = \cos\varepsilon\,\frac{d\lambda}{\cos^2\lambda}, \qquad \frac{d\alpha}{d\lambda} = \cos\varepsilon\,\frac{\cos^2\alpha}{\cos^2\lambda}.$$
+
+		<p>
+			For a point of the ecliptic the conversion formulas of page 1.2 give
+			$\cos\delta\cos\alpha = \cos\lambda$, so the ratio of the two
+			squared cosines is $1/\cos^2\delta$, and
+		</p>
+
+		<div class="box">
+			$$\frac{d\alpha}{d\lambda} = \frac{\cos\varepsilon}{\cos^2\delta}.$$
+		</div>
+
+		<p>
+			At the equinoxes $\delta = 0$ and the ratio is $\cos\varepsilon$: the
+			ecliptic crosses the equator at a slant, only part of the Sun's
+			motion is eastward, and $\alpha$ grows about 8% more slowly than
+			$\lambda$. At the solstices $\delta = \varepsilon$ and the ratio is
+			$1/\cos\varepsilon$: the ecliptic runs parallel to the equator, all
+			the motion is eastward, and it happens at a declination of 23.4°,
+			where the hour circles are closer together, so $\alpha$ grows about
+			9% faster.
 		</p>
 
 		<p>
 			So $\alpha$ falls behind $\lambda$ after each equinox and catches up
 			before each solstice. The lag is greatest where the two speeds are
-			equal, $d\alpha/d\lambda = 1$, which gives $\sin^2\lambda = 1/(1 +
-			\cos\varepsilon)$, the same $\lambda = 46.23^\circ$ (Exercise 3).
-			Figure 2 starts with $\varepsilon = 45^\circ$, nearly twice the real
-			tilt, so that the arc can be seen on the sphere.
+			equal, $d\alpha/d\lambda = 1$ (Exercise 3). Figure 2 starts with
+			$\varepsilon = 45^\circ$, nearly twice the real tilt, so that the
+			arc can be seen on the sphere.
 		</p>
 
 		<!-- Figure 2: the reduction to the equator -->
@@ -359,7 +379,7 @@
 						<dt>dashed</dt>
 						<dd>the Sun's hour circle, from P through the Sun to the equator, which it meets at the Sun's right ascension α (small dot)</dd>
 						<dt class="c-earth">mean Sun</dt>
-						<dd>on the equator at right ascension λ, the same angle from γ as the Sun</dd>
+						<dd>the reference point of page 1.3, moving along the equator at a constant rate; its right ascension equals the Sun's longitude λ, since this Sun moves uniformly</dd>
 						<dt class="c-planet">thick arc</dt>
 						<dd>$\lambda - \alpha$, from the foot of the hour circle to the mean Sun</dd>
 					</dl>
@@ -378,20 +398,6 @@
 			</div>
 		</figure>
 
-		<div class="row">
-			<p>
-				Copernicus describes the same thing in the language of his tables.
-				The 88° of the ecliptic from the 16th degree of Taurus to the 14th
-				degree of Leo "cross the meridian in about 93 time-degrees", 5 more
-				than the mean, and the 92° from Leo to Scorpio in 87, 5 fewer
-				(<em>De Revolutionibus</em> III 26 [f. 96v]). His limits, 46° and
-				134°, are the points where the two speeds are equal.
-			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
-		</div>
-
 		<h3>The sum</h3>
 
 		<p>
@@ -402,10 +408,9 @@
 		$$E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda,$$
 
 		<p>
-			a wave with a period of a year and an amplitude of 7.67 minutes,
-			plus a wave with a period of half a year and an amplitude of 9.86
-			minutes. In 2026 this approximation is within 45 s of the exact
-			sum. Figure 3 shows the two parts and how they add.
+			a yearly wave of 7.7 minutes plus a half-yearly wave of 9.9 minutes.
+			In 2026 this approximation is within a minute of the exact sum.
+			Figure 3 shows the two parts and how they add.
 		</p>
 
 		<!-- Figure 3: the two parts and their sum -->
@@ -508,10 +513,9 @@
 		</figure>
 
 		<p>
-			The analemma crosses itself at a declination of 8.95°, where the Sun
-			stands on 12 April and again on 29 August with the same equation of
-			time. In 2026 the real Sun's hour angle at mean noon runs from 3.55°
-			east of the meridian to 4.11° west of it.
+			The analemma crosses itself at a declination of about 9°, where the
+			Sun stands in mid-April and again in late August with the same
+			equation of time.
 		</p>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -551,8 +555,8 @@
 			formula leaves out a cross term: the half-yearly wave depends on the
 			true longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$, and the
 			product of the two waves contains a yearly part of amplitude
-			$e\,e_\varepsilon$, worth 19.8 s, which the fit takes for part of the
-			eccentricity.
+			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part of
+			the eccentricity.
 		</p>
 
 		<details class="fold">
@@ -565,7 +569,7 @@
 				Gauss–Newton iteration: at each step the model is linearised about
 				the current values, the linear least-squares problem is solved for
 				the corrections, and the corrections are applied. It converges in a
-				few steps and leaves residuals of 0.9 s RMS.
+				few steps and leaves residuals of about a second.
 			</p>
 		</details>
 
@@ -603,14 +607,11 @@
 		</div>
 
 		<p>
-			The exact fit recovers the eccentricity of the seasons to 0.1%, and
-			its apogee is the one of Kepler's ellipse, 103.4°, which page 2.1's
-			fit missed by 0.35°. Its obliquity is 2.8′ too small, because the
-			circle is not quite the right shape. At second order the eccentric
-			gets a term in $\sin 2M$ wrong by 0.72′ (page 2.1), and since $2M$
-			is close to $2\bar\lambda$ plus a half turn, the fit takes up most
-			of it by lowering $e_\varepsilon$, which costs about 3′ of
-			obliquity.
+			The exact fit recovers the eccentricity of page 2.1 and the apogee of
+			Kepler's ellipse. Its obliquity is 3′ too small, because the
+			eccentric is not quite the right shape: at second order it gets a
+			half-yearly term slightly wrong (page 2.1), and the fit makes up for
+			it by lowering $e_\varepsilon$.
 		</p>
 
 		<!-- =============================== 4. TEST =============================== -->
@@ -620,8 +621,8 @@
 			Figure 5 compares the model, the eccentric fitted to the seasons of
 			2026 with the mean obliquity, with the real equation of time of the
 			reference sky. Page 1.3's clock had no equation of time at all, so
-			its noon was wrong by the whole of $E$, from −16.45 to +14.20
-			minutes.
+			its noon was wrong by the whole of $E$, up to a quarter of an
+			hour.
 		</p>
 
 		<!-- Figure 5: the model against the real equation of time -->
@@ -667,71 +668,25 @@
 		</figure>
 
 		<p>
-			Through 2026 the model is within 6 s of the real equation of time,
-			from −4.8 s on 6 August to +6.0 s on 20 November. Almost all of it,
-			up to 7.0 s, comes from the error of the eccentric's longitude, the
-			1.7′ of page 2.1, since 1′ of longitude is about 4 s of time. The
-			rest, under 1 s, comes from nutation and the definition of the mean
-			Sun. The small monthly ripples in (b) are the Moon's, as on page 2.1:
-			the Earth swings about the common centre of mass of the Earth and the
-			Moon, and the Sun seen from it moves to and fro by a few
-			arcseconds.
+			Through 2026 the model is never more than 6 s from the real
+			equation of time. Almost all of this comes from the eccentric's
+			error in longitude, under 2′ (page 2.1), since 1′ of longitude is
+			about 4 s of time. The small monthly ripples in (b) are the Moon's,
+			as on page 2.1: the Earth swings about the centre of mass of the
+			Earth and the Moon, and the Sun seen from it moves to and fro.
 		</p>
 
 		<h3>Ptolemy's equation of time</h3>
 
-		<p>
-			Ptolemy computed the two parts with his own Sun and his own tables.
-			He measured them over the intervals where each accumulates most,
-			in time-degrees, the time the equator takes to turn 1°, 4 minutes:
-		</p>
-
-		<div class="table-scroll">
-		<table class="prose-table">
-			<thead>
-				<tr>
-					<th>Accumulated difference</th>
-					<th>Ptolemy (III 9)</th>
-					<th>his model</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>the anomaly, between the points of mean speed</td>
-					<td>4¾</td>
-					<td>4.78</td>
-				</tr>
-				<tr>
-					<td>the meridian crossings, two signs about a solstice</td>
-					<td>4½</td>
-					<td>4.53</td>
-				</tr>
-				<tr>
-					<td>mid-Aquarius to the end of Libra: anomaly</td>
-					<td>3⅔</td>
-					<td>3.62</td>
-				</tr>
-				<tr>
-					<td>… and meridian crossings</td>
-					<td>4⅔</td>
-					<td>4.72</td>
-				</tr>
-				<tr>
-					<td>greatest to least $E$</td>
-					<td>8⅓</td>
-					<td>8.38</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-
 		<div class="row">
 			<p>
-				His second line comes from his table of right ascensions: the two
-				signs on either side of a solstice cross the meridian in $64;32$
-				time-degrees (64.53), 4½ more than their 60° (<em>Almagest</em> I
-				16). Every figure agrees with his own model to a few hundredths of
-				a time-degree.
+				Ptolemy computed the two parts with his own Sun. He measured them
+				in time-degrees, the time the sky takes to turn 1°, which is 4
+				minutes. Between the middle of Aquarius and the end of Libra, where
+				the two parts work in the same direction, he found about 3⅔
+				time-degrees from the Sun's uneven motion and 4⅔ from the meridian
+				crossings, 8⅓ in all, or 33⅓ minutes (<em>Almagest</em> III 9). His
+				own model gives the same.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -739,18 +694,11 @@
 		</div>
 
 		<p>
-			His total is larger than the real one. The real equation of time of
-			AD 140 ran over 31.3 minutes, 7.82 time-degrees, while his
-			8⅓ time-degrees are 33⅓ minutes, because his eccentricity, 1/24, is
-			a fifth too large (page 2.1).
-		</p>
-
-		<p>
-			For the Sun an error of half an hour hardly matters, but in 1⅑ hours, twice his greatest difference,
-			the Moon moves 0.61°, and the Moon's tables are counted in mean solar
-			days. This is why he gives the rule for converting true into mean
-			solar days at the end of his theory of the Sun, just before that of
-			the Moon.
+			The real figure in his time was about 31 minutes; his is larger
+			because his eccentricity is a fifth too large (page 2.1). He needed
+			the correction for the Moon rather than for the Sun. His lunar
+			tables count mean solar days, and in 33 minutes the Moon moves
+			0.3°, more than half the width of its disc.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
@@ -758,8 +706,8 @@
 
 		<p>
 			Our model holds its apogee fixed at its place of 2026. Over the
-			century around 2026 its error grows to −11.4 and +12.7 s, and over a
-			thousand years to −76 and +81 s. The reason is the one page 2.1
+			century around 2026 its error grows to about 13 s, and over a
+			thousand years to more than a minute. The reason is the one page 2.1
 			found for the longitude: the apogee moves relative to γ, by about
 			1.75° a century.
 		</p>
@@ -818,27 +766,13 @@
 		</figure>
 
 		<p>
-			Around 1246 the apogee passed the summer solstice, the perigee the
-			winter solstice, and the curve was symmetric, from −15.65 to +15.65
-			minutes. Before, the deep minimum came first: −17.6 and +13.5
-			minutes in 141 BC. Since then the maximum has taken over: −14.2 and
-			+16.5 minutes in 2026, −12.2 and +17.0 in 3000.
+			Around 1246 the apogee passed the summer solstice, and the curve was
+			symmetric, with extremes of about ±15½ minutes. Before then the
+			February minimum was the deeper: in 141 BC it reached −17½ minutes,
+			against a maximum of +13½. Today the November maximum is the
+			larger, +16½ against −14 minutes, and by the year 3000 it will be
+			+17 against −12.
 		</p>
-
-		<div class="row">
-			<p>
-				Copernicus measured the change. Where Ptolemy found 8⅓
-				time-degrees between the extremes, "at present", with the limits moved to about
-				20° of Aquarius and 10° of Scorpio, the difference "has contracted
-				to 7° 48´ time-degrees. For, these [phenomena] too change in time on
-				account of the mutability of the perigee and the eccentricity" (<em>De
-				Revolutionibus</em> III 26 [f. 97r]). His 7;48 time-degrees are 31.2
-				minutes; the real range in 1515 was 31.1.
-			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
-		</div>
 
 		<p>
 			Most of the apogee's motion belongs to γ, the origin of every
@@ -917,7 +851,7 @@
 				<p>
 					With both, the model and the real Sun agree on the dates: 15
 					April, 12 June, 1 September and 25 December. There are four
-					because the half-yearly wave is the larger, 9.86 against 7.67
+					because the half-yearly wave is the larger, about 10 against 8
 					minutes, so it decides how often the sum changes sign; the yearly
 					wave only moves the zeros.
 				</p>
@@ -926,44 +860,38 @@
 
 		<div class="exercise" data-kind="derive">
 			<p>
-				Show that $|\lambda - \alpha|$ is greatest where $d\alpha/d\lambda =
-				1$, that is, where $\sin^2\lambda = 1/(1 + \cos\varepsilon)$, and
-				that its greatest value is $\arcsin\tan^2(\varepsilon/2)$. Then
-				check Copernicus' limits with his obliquity, $23^\circ 28\tfrac12'$
-				(<em>De Revolutionibus</em> III 2): the 88° from 46° to 134° cross the
-				meridian in about 93 time-degrees, and the 92° from 134° to 226° in
-				about 87.
+				Using $d\alpha/d\lambda = \cos\varepsilon / \cos^2\delta$ and
+				$\sin\delta = \sin\varepsilon\sin\lambda$, show that $|\lambda -
+				\alpha|$ is greatest where $\sin^2\lambda = 1/(1 + \cos\varepsilon)$,
+				and that its greatest value is $\arcsin\tan^2(\varepsilon/2)$. Find
+				both for today's obliquity, $\varepsilon = 23.4358^\circ$, and check
+				them in Figure 2.
 			</p>
 			<details class="hint">
 				<p>
-					For the first part, differentiate $\tan\alpha =
-					\cos\varepsilon\tan\lambda$. For the greatest value, use the
-					result of page 2.1's Exercise 2 with $e_\varepsilon$ and
-					$2\lambda$.
+					The lag is extreme where its derivative, $1 - d\alpha/d\lambda$,
+					vanishes. For the greatest value, use page 2.1's Exercise 2 with
+					$e_\varepsilon$ in place of $e$ and $2\lambda$ in place of $M$.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
-					$\lambda - \alpha$ is extreme where its derivative, $1 -
-					d\alpha/d\lambda$, vanishes. From $\sec^2\alpha\,d\alpha =
-					\cos\varepsilon\sec^2\lambda\,d\lambda$ and $\sec^2\alpha = 1 +
-					\cos^2\varepsilon\tan^2\lambda$,
+					With $\cos^2\delta = 1 - \sin^2\varepsilon\sin^2\lambda$, the
+					condition $d\alpha/d\lambda = 1$ becomes
+					$\sin^2\varepsilon\sin^2\lambda = 1 - \cos\varepsilon$, and since
+					$\sin^2\varepsilon = (1 - \cos\varepsilon)(1 + \cos\varepsilon)$,
 				</p>
-				$$\frac{d\alpha}{d\lambda} = \frac{\cos\varepsilon}{\cos^2\lambda + \cos^2\varepsilon\sin^2\lambda} = 1 \iff (1 - \cos\varepsilon)(\cos\varepsilon\sin^2\lambda - \cos^2\lambda) = 0,$$
+				$$\sin^2\lambda = \frac{1}{1 + \cos\varepsilon}, \qquad \cos 2\lambda = 1 - 2\sin^2\lambda = -\frac{1 - \cos\varepsilon}{1 + \cos\varepsilon} = -e_\varepsilon.$$
 				<p>
-					so $\cos\varepsilon\sin^2\lambda = 1 - \sin^2\lambda$ and
-					$\sin^2\lambda = 1/(1 + \cos\varepsilon)$. Then $\cos 2\lambda = 1
-					- 2\sin^2\lambda = -e_\varepsilon$, the condition of page 2.1's
-					Exercise 2 ($\cos M = -e$) with $2\lambda$ for $M$, so the greatest
-					value is $\arcsin e_\varepsilon$.
+					This is the condition of page 2.1's Exercise 2, $\cos M = -e$, with
+					$2\lambda$ for $M$, so the greatest value is $\arcsin
+					e_\varepsilon$.
 				</p>
 				<p>
-					With $\varepsilon = 23^\circ 28\tfrac12'$ the speeds are equal at
-					$\lambda = 46^\circ 14'$ (46.24°), Copernicus' 16th degree of Taurus,
-					and by symmetry at 133.76°, his 14th degree of Leo. Between 46° and
-					134° the right ascension grows by 92.95°, "about 93", and from 134°
-					to 226° by 87.05°. The greatest reduction is 2.474°, 9.90 minutes;
-					today's is 9.86.
+					For $\varepsilon = 23.4358^\circ$, $e_\varepsilon = 0.04302$, the lag
+					is greatest at $\lambda = 46.23^\circ$, and its greatest value is
+					$2.466^\circ$, or 9.86 minutes of time. In Figure 2, with "today,
+					23.44°", the read-out gives the same.
 				</p>
 			</details>
 		</div>
@@ -972,18 +900,11 @@
 		<h2 id="sources">Sources</h2>
 
 		<ul class="sources">
-			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): III 9 (the
-				inequality of the solar days: its two causes, the accumulated
-				differences of 4¾, 4½, 3⅔ + 4⅔ = 8⅓ time-degrees, the day counted from
-				the meridian, the rule converting true into mean solar days, with
-				Toomer's notes on the rule and on the Moon); I 16 (the rising-times at
-				sphaera recta, 64;32 and 55;40 for two signs); III 4 (the greatest
-				equation, 2;23°); Toomer's note to III 9 for the Moon's hourly motion
-				(IV 3, 0;32,56°).</li>
-			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), III 26
-				[ff. 96r–97v] (the uniform and the apparent day; 88° in 93
-				time-degrees; 8⅓ time-degrees contracted to 7° 48′); III 2 [f. 65v] (the
-				obliquity of his time, 23° 28½′).</li>
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984), III 9 (the
+				two causes of the inequality of the solar days; the accumulated
+				differences of 3⅔ and 4⅔ time-degrees, 8⅓ in all; the rule for
+				converting true into mean solar days), with Toomer's note on the
+				Moon's motion in an hour, 0° 32′ 56″ (IV 3).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 5.4 and Table 5.5 (the
 				mean sun and the equation of time; his first-order formula 5.17 is
 				written with Kepler's eccentricity and with $M$ counted from the

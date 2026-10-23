@@ -657,6 +657,9 @@ title('Test: what part of the error comes from the longitude (eccentric) and wha
 
 title("Test: Ptolemy's numbers (Almagest III 9) with his model");
 console.log(
+	`the Moon in 8 1/3 time-degrees = 33 1/3 min: ${f((32 / 60 + 56 / 3600) * (5 / 9), 3)}° (its disc is about 0.5° wide)`
+);
+console.log(
 	`the Moon in 16 2/3 time-degrees = 1 1/9 h: at his 0;32,56 an hour (IV 3) it moves ${f((32 / 60 + 56 / 3600) * (10 / 9), 3)}°`
 );
 const PT = SolarEccentric.PTOLEMY;

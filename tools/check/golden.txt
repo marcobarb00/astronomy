@@ -2551,6 +2551,7 @@ at J2000 the clock's mean Sun is at 280.46061837°, the eccentric's at 280.45897
 the eccentric's longitude error gives up to 7.0 s; the rest (mean Sun, nutation, latitude) up to 1.0 s
 
 === Test: Ptolemy's numbers (Almagest III 9) with his model ===
+the Moon in 8 1/3 time-degrees = 33 1/3 min: 0.305° (its disc is about 0.5° wide)
 the Moon in 16 2/3 time-degrees = 1 1/9 h: at his 0;32,56 an hour (IV 3) it moves 0.610°
 his E: least -4.807° at true lambda 317.8°, greatest 3.578° at 214.2°: range 8.384 time-degrees = 33.5 min (his 8 1/3 = 33 1/3 min)
 from 315° to 210° (mid-Aquarius to the end of Libra): anomaly part 3.623, meridian part 4.720 time-degrees (his 3 2/3 and 4 2/3)
