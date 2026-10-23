@@ -143,6 +143,17 @@ Display equations centred in the text column. An equation is numbered only
 when the text, an exercise or another page refers to it; the number `(1.1)`
 then sits at the right, in `--muted`.
 
+No equation scrolls sideways, on a phone either. KaTeX never breaks a
+display equation, so `renderMath` (`shared/common.js`) cuts each one at its
+top level and lets the pieces wrap: write several equations in one display
+separated by `\qquad` (or `, \quad`), and a system as one `aligned`
+environment with one `&` per line. On a wide screen they are set as
+written; on a phone the equations stack, a long chain `a = b = c` breaks
+before a relation, and a long right side continues after a `+` or `−`. A
+read-out line is never split (it keeps its fixed lines), so keep it short
+enough for a phone. The smoke test reports any equation wider than its
+column.
+
 ## 5. Stars
 
 Stars are always drawn as **four-pointed stars**, never as dots:

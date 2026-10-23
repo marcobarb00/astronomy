@@ -3,7 +3,8 @@
    A safety net for refactoring: serves the repository on a local port,
    opens every HTML page in Chromium (Playwright) at a desktop and a phone
    width, and fails on any console error or warning, uncaught exception,
-   failed request or broken local link, and checks that each page still
+   failed request, broken local link or equation wider than its column
+   (which would scroll sideways on a phone), and checks that each page still
    starts its figures when the CDN (KaTeX) is unreachable. It saves a
    full-page screenshot
    per page and width, then (desktop only) moves every slider, presses
@@ -285,6 +286,35 @@ async function checkTests(page, problems) {
 	if (summary && !summary.pass) {
 		problems.push(`tests: ${summary.text}`);
 	}
+}
+
+/* Every equation fits its column without scrolling sideways: the prose's
+   display equations (split into wrapping pieces by wrapDisplayMath in
+   shared/common.js) and the lines of the read-outs, as the page first
+   shows them. Checked at both widths; the phone is the one that matters. */
+async function checkEquationsFit(page, problems) {
+	const wide = await page.evaluate(() => {
+		const found = [];
+
+		document.querySelectorAll('.eq-split, .katex-display, .readout .eq').forEach(element => {
+			// a piece of a split equation is judged with its whole equation,
+			// and a read-out line by its .eq box
+			if (!element.classList.contains('eq-split') && element.parentElement.closest('.eq-split, .eq')) {
+				return;
+			}
+
+			if (element.scrollWidth > element.clientWidth + 1) {
+				const tex = element.querySelector('annotation');
+				const source = tex ? tex.textContent.replace(/\s+/g, ' ').trim() : element.textContent;
+
+				found.push(`${element.scrollWidth} px in ${element.clientWidth} px: ${source.slice(0, 70)}`);
+			}
+		});
+
+		return found;
+	});
+
+	wide.forEach(message => problems.push(`equation wider than its column, ${message}`));
 }
 
 /* ==========================================================================
@@ -896,6 +926,7 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 		await openPage(page, site.base + pageFile);
 		await checkTests(page, problems);
 		await checkLinks(page, site.root, site.base, problems);
+		await checkEquationsFit(page, problems);
 
 		fs.mkdirSync(path.join(shotDir, viewportName), { recursive: true });
 		await page.screenshot({ path: path.join(shotDir, name), fullPage: true });
