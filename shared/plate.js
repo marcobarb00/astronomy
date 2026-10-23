@@ -20,8 +20,9 @@
    so a label never falls below 13 px (CLAUDE.md). The labels are then
    large for a narrow chart: placeLabels moves the ones that would
    overlap, or leave the chart, to a free place nearby, and a chart drawn
-   narrower than COMPACT_WIDTH (a phone) shows no names at all, only the
-   numbers of its ring or border and the pole's P.
+   narrower than COMPACT_WIDTH (a phone) shows only the names the page
+   keeps (options.keep: the star its caption speaks of), the numbers of
+   its ring or border and the pole's P.
 
    TABLE OF CONTENTS
 	 1. SVG helpers
@@ -274,11 +275,14 @@ const Plate = (function () {
 	/* Star names: [id, name, dx, dy, anchor] with the offset of the text
 	   from the star; anchor 'end' puts the name to the left of that point
 	   (default 'start'). */
-	function drawStarNames(chart, group, names, at) {
+	function drawStarNames(chart, group, names, at, keep = []) {
 		names.forEach(([id, name, dx, dy, anchor]) => {
 			const star = STARS.get(id);
 			const q = at(star.ra, star.dec);
-			const element = svgText(group, name, q.x + dx, q.y + dy, { 'text-anchor': anchor ?? 'start' });
+			const element = svgText(group, name, q.x + dx, q.y + dy, {
+				'text-anchor': anchor ?? 'start',
+				class: keep.includes(id) ? 'keep' : ''
+			});
 			const gap = STAR_SCALE * starSize(star.mag);
 
 			addLabel(chart, element, LABEL_ORDER.star, (size, k) => aroundPoint(q, size, gap + LABEL_GAP * k));
@@ -527,7 +531,8 @@ const Plate = (function () {
 
 	/* A chart centred on the north celestial pole, as seen from the ground
 	   looking up (right ascension increases clockwise), down to declination
-	   rimDec, with an hour ring. options: rimDec, figures, names, label.
+	   rimDec, with an hour ring. options: rimDec, figures, names, keep (the
+	   ids of the star names still shown on a phone), label.
 	   Returns { svg, at, project, radius, centre }. */
 	function polar(container, options) {
 		const size = 640;
@@ -571,7 +576,7 @@ const Plate = (function () {
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, svg), project);
-		drawStarNames(chart, svgEl('g', { class: 'star-names' }, svg), options.names, at);
+		drawStarNames(chart, svgEl('g', { class: 'star-names' }, svg), options.names, at, options.keep);
 
 		const pole = svgText(svg, 'P', c - 16, c + 18, { class: 'symbol' });
 
@@ -584,7 +589,8 @@ const Plate = (function () {
 	/* A rectangular (equirectangular) chart as seen looking south: north
 	   up, east (greater right ascension) to the left, with a graduated
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
-	   figures, names, label. The equator is drawn, and named at the
+	   figures, names, keep (as for polar), label. The equator is drawn, and
+	   named at the
 	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
 	   highlight in 'layer', clipped to the chart. */
 	function rectangular(container, options) {
@@ -639,7 +645,7 @@ const Plate = (function () {
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, layer), project);
-		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at);
+		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
 
 		if (decMin < 0 && decMax > 0) {
 			const y = at(0, 0).y;
