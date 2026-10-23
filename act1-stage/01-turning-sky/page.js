@@ -86,6 +86,7 @@ const poleFigure = {
 		const chart = Plate.polar(byId('plate-pole'), {
 			rimDec: 25,
 			figures: ['URSA MAJOR', 'URSA MINOR', 'CASSIOPEIA', 'CEPHEUS', 'CYGNUS'],
+			keep: ['alf Aur'], // Capella, named in the caption, stays on a phone
 			names: [
 				['alf UMi', 'Polaris', 8, 4],
 				['bet UMi', 'Kochab', -58, 4],
