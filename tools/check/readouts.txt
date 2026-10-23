@@ -923,6 +923,193 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
+=== act2-sun/02-equation-of-time/index.html ===
+  as loaded
+    OUTPUT (red-lon): 30°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 30^\circ,\quad \alpha = 22.21^\circ | \lambda - \alpha = {+7.79}^\circ = {+31.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+    OUTPUT (ana-day): 3 Nov
+    #analemma-readout: \text{3 Nov:}\quad E = +16\,\text{min}\ 31\,\text{s} | H = {+4.13}^\circ,\quad \delta = {-15.1}^\circ
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  opened 7 hints and answers
+  slider #red-lon = 0
+    OUTPUT (red-lon): 0°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 0^\circ,\quad \alpha = 0.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon = 360
+    OUTPUT (red-lon): 360°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 360^\circ,\quad \alpha = 0.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon = 180
+    OUTPUT (red-lon): 180°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 180^\circ,\quad \alpha = 180.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-eps = 0
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  slider #red-eps = 45
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-eps = 22.5
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22.50°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.30}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0396 | \text{greatest } 2.27^\circ \text{ at } \lambda = 46.1^\circ
+  slider #red-eps + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22.51°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.30}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0396 | \text{greatest } 2.27^\circ \text{ at } \lambda = 46.1^\circ
+  slider #ana-day = 0
+    OUTPUT (ana-day): 1 Jan
+    #analemma-readout: \text{1 Jan:}\quad E = -3\,\text{min}\ 31\,\text{s} | H = {-0.88}^\circ,\quad \delta = {-23.0}^\circ
+  slider #ana-day = 364
+    OUTPUT (ana-day): 31 Dec
+    #analemma-readout: \text{31 Dec:}\quad E = -2\,\text{min}\ 55\,\text{s} | H = {-0.73}^\circ,\quad \delta = {-23.1}^\circ
+  slider #ana-day = 182
+    OUTPUT (ana-day): 2 Jul
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+  slider #ana-day + one key step
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  slider #cent-year = -1000
+    OUTPUT (cent-year): 1001 BC
+    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  slider #cent-year = 3000
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{1001 BC:}\quad {-18.29}\,\text{min at } \lambda = 315^\circ,\quad {+11.75}\,\text{min at } 215^\circ | \text{range } 30.04\,\text{min} = 7.51\ \text{time-degrees}
+  slider #cent-year = 1000
+    OUTPUT (cent-year): 1000
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  slider #cent-year + one key step
+    OUTPUT (cent-year): 1001
+    #centuries-readout: \text{1000:}\quad {-16.05}\,\text{min at } \lambda = 321^\circ,\quad {+15.34}\,\text{min at } 218^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
+  button "today, 23.44°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 23.44°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.33}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0430 | \text{greatest } 2.47^\circ \text{ at } \lambda = 46.2^\circ
+  button "exaggerated, 45°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  button "no tilt"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  button "‹ previous day"
+    OUTPUT (ana-day): 2 Jul
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+  button "next day ›"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  button "both causes"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  button "eccentricity only"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -0\,\text{min}\ 17\,\text{s} | H = {-0.07}^\circ,\quad \delta = {+22.9}^\circ
+  button "obliquity only"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  button "141 BC"
+    OUTPUT (cent-year): 141 BC
+    #centuries-readout: \text{141 BC:}\quad {-17.57}\,\text{min at } \lambda = 317^\circ,\quad {+13.49}\,\text{min at } 216^\circ | \text{range } 31.07\,\text{min} = 7.77\ \text{time-degrees}
+  button "AD 140"
+    OUTPUT (cent-year): AD 140
+    #centuries-readout: \text{AD 140:}\quad {-17.27}\,\text{min at } \lambda = 318^\circ,\quad {+14.00}\,\text{min at } 217^\circ | \text{range } 31.26\,\text{min} = 7.82\ \text{time-degrees}
+  button "1246"
+    OUTPUT (cent-year): 1246
+    #centuries-readout: \text{1246:}\quad {-15.65}\,\text{min at } \lambda = 321^\circ,\quad {+15.65}\,\text{min at } 219^\circ | \text{range } 31.30\,\text{min} = 7.82\ \text{time-degrees}
+  button "1515"
+    OUTPUT (cent-year): 1515
+    #centuries-readout: \text{1515:}\quad {-15.17}\,\text{min at } \lambda = 322^\circ,\quad {+15.97}\,\text{min at } 220^\circ | \text{range } 31.13\,\text{min} = 7.78\ \text{time-degrees}
+  button "2026"
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  button "3000"
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  hover #sundial-day at 0.3
+  hover #sundial-day at 0.6
+  hover #sundial-day at 0.9
+  hover #sundial-day left
+  hover #sundial-equation at 0.3
+  hover #sundial-equation at 0.6
+  hover #sundial-equation at 0.9
+  hover #sundial-equation left
+  hover #reduction-plot at 0.3
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot at 0.6
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot at 0.9
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot left
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #parts-plot at 0.3
+    #parts-readout: \text{5 Apr:}\quad E = -2\,\text{min}\ 42\,\text{s} | -q = {-7.67},\quad \lambda - \alpha = {+4.96}\,\text{min}
+  hover #parts-plot at 0.6
+    #parts-readout: \text{2 Aug:}\quad E = -6\,\text{min}\ 22\,\text{s} | -q = {+3.42},\quad \lambda - \alpha = {-9.79}\,\text{min}
+  hover #parts-plot at 0.9
+    #parts-readout: \text{29 Nov:}\quad E = +11\,\text{min}\ 49\,\text{s} | -q = {+4.56},\quad \lambda - \alpha = {+7.25}\,\text{min}
+  hover #parts-plot left
+    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+  hover #analemma-plot at 0.3
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot at 0.6
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot at 0.9
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot left
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #test-both at 0.3
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+  hover #test-both at 0.6
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+  hover #test-both at 0.9
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+  hover #test-both left
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+  hover #test-error at 0.3
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+  hover #test-error at 0.6
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+  hover #test-error at 0.9
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+  hover #test-error left
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+  hover #centuries-plot at 0.3
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot at 0.6
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot at 0.9
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot left
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  dragged 1 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2303,7 +2490,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 115 tests pass.
+    #summary: All 123 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

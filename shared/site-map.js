@@ -96,7 +96,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.2',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'The equation of time',
 			question: 'Why does the sundial disagree with the clock?',
 			path: 'act2-sun/02-equation-of-time/index.html'

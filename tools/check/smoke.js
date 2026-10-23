@@ -651,11 +651,16 @@ function readoutText(page, selector) {
 }
 
 /* On a touch screen, a plot that answers to the pointer must keep its
-   read-out once the finger lifts (phone width only). */
+   read-out once the finger lifts (phone width only). Consecutive plots
+   are tapped at different places (60% and 40% of the width), so that two
+   panels sharing one read-out and one time axis (page 2.2, Figure 5) are
+   tapped at different dates, and the second tap changes the read-out. */
+const TOUCH_TAP_FRACTIONS = [0.6, 0.4];
+
 async function checkTouchReadouts(page, problems) {
 	const plots = await markAll(page, 'canvas[data-hover]', 'smoke-touch');
 
-	for (const { selector, name } of plots) {
+	for (const [index, { selector, name }] of plots.entries()) {
 		const plot = page.locator(selector);
 
 		if (!(await plot.isVisible())) {
@@ -667,7 +672,9 @@ async function checkTouchReadouts(page, problems) {
 		const before = await readoutText(page, selector);
 		const box = await plot.boundingBox();
 
-		await page.touchscreen.tap(box.x + 0.6 * box.width, box.y + box.height / 2);
+		const fraction = TOUCH_TAP_FRACTIONS[index % TOUCH_TAP_FRACTIONS.length];
+
+		await page.touchscreen.tap(box.x + fraction * box.width, box.y + box.height / 2);
 		await page.waitForTimeout(150);
 
 		const after = await readoutText(page, selector);
