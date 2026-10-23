@@ -96,78 +96,11 @@ function texHms(degrees) {
 	return `${h % 24}^\\text{h}${pad2(m)}^\\text{m}${pad2(s)}^\\text{s}`;
 }
 
-/* The smallest square canvas (px): narrower than any phone's column. */
-const SQUARE_CANVAS_MIN = 200;
-
-/* The width of an element inside its padding (px). */
-function contentWidth(element) {
-	const style = getComputedStyle(element);
-
-	return element.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-}
-
-/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
-   the device pixel ratio; it follows the column when the page is resized
-   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
-   of the drawing, 'margin' px inside the edge). */
-function squareCanvas(owner, canvas, maxWidth, margin) {
-	// the width inside the parent's padding (a canvas set directly in a
-	// figure's frame would otherwise be wider than the frame, and squeezed);
-	// at least SQUARE_CANVAS_MIN px: a column measured before the layout is
-	// done can report a few pixels, which would give a negative radius
-	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 400, SQUARE_CANVAS_MIN, maxWidth);
-
-	const resize = () => {
-		const width = targetWidth();
-
-		canvas.style.width = `${width}px`;
-		canvas.style.height = `${width}px`;
-		owner.ctx = canvas.getContext('2d');
-		scaleCanvas(canvas, owner.ctx, width, width);
-		owner.width = width;
-		owner.cx = width / 2;
-		owner.cy = width / 2;
-		owner.R = width / 2 - margin;
-	};
-
-	resize();
-	new ResizeObserver(() => {
-		if (targetWidth() !== owner.width) {
-			resize();
-			owner.draw();
-		}
-	}).observe(canvas.parentElement);
-
-	// labels are drawn in web fonts: draw again once they have loaded
-	whenCanvasFontsReady().then(() => owner.draw());
-
-	// a new pixel ratio (zoom, another screen): a sharper canvas
-	onPixelRatioChange(() => {
-		resize();
-		owner.draw();
-	});
-}
-
 /* A point on a circle of radius r about (cx, cy), at an angle measured
    clockwise from the top (the meridian), as the figures seen from above P
    draw hour angles. */
 function clockwisePoint(owner, angle, r) {
 	return { x: owner.cx + r * sin(angle), y: owner.cy - r * cos(angle) };
-}
-
-/* A text label centred at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor in common.js). With a
-   LabelPlacer, a label that would cover an earlier one or leave the
-   canvas (on a phone) moves next to its point instead. */
-function centredLabel(ctx, text, point, color, labels = null) {
-	ctx.fillStyle = textColor(color);
-	ctx.font = labelFont(text);
-	ctx.textAlign = 'center';
-	ctx.textBaseline = 'middle';
-
-	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
-
-	ctx.fillText(text, place.x, place.y);
 }
 
 /* ==========================================================================
