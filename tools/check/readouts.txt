@@ -981,16 +981,16 @@ Regenerate with: node tools/check/smoke.js --update
     #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
   slider #cent-year = -1000
     OUTPUT (cent-year): 1001 BC
-    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+    #centuries-readout: \text{1001 BC:}\quad {-18.29}\,\text{min at } \lambda = 315^\circ,\quad {+11.75}\,\text{min at } 215^\circ | \text{range } 30.04\,\text{min} = 7.51\ \text{time-degrees}
   slider #cent-year = 3000
     OUTPUT (cent-year): 3000
-    #centuries-readout: \text{1001 BC:}\quad {-18.29}\,\text{min at } \lambda = 315^\circ,\quad {+11.75}\,\text{min at } 215^\circ | \text{range } 30.04\,\text{min} = 7.51\ \text{time-degrees}
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
   slider #cent-year = 1000
     OUTPUT (cent-year): 1000
-    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+    #centuries-readout: \text{1000:}\quad {-16.05}\,\text{min at } \lambda = 321^\circ,\quad {+15.34}\,\text{min at } 218^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
   slider #cent-year + one key step
     OUTPUT (cent-year): 1001
-    #centuries-readout: \text{1000:}\quad {-16.05}\,\text{min at } \lambda = 321^\circ,\quad {+15.34}\,\text{min at } 218^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
+    #centuries-readout: \text{1001:}\quad {-16.06}\,\text{min at } \lambda = 320^\circ,\quad {+15.33}\,\text{min at } 219^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
   button "today, 23.44°"
     OUTPUT (red-lon): 181°
     OUTPUT (red-eps): 23.44°
@@ -1035,7 +1035,7 @@ Regenerate with: node tools/check/smoke.js --update
     #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
   button "3000"
     OUTPUT (cent-year): 3000
-    #centuries-readout: \text{2026:}\quad {-14.20}\,\text{min at } \lambda = 323^\circ,\quad {+16.46}\,\text{min at } 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+    #centuries-readout: \text{3000:}\quad {-12.15}\,\text{min at } \lambda = 324^\circ,\quad {+16.97}\,\text{min at } 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
   hover #sundial-day at 0.3
   hover #sundial-day at 0.6
   hover #sundial-day at 0.9

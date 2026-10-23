@@ -692,14 +692,14 @@ const testFigure = {
    model, whose apogee is fixed at its place of 2026, dashed. From 1000 BC
    to AD 3000 the real E stays within -18.29 and +16.98 min: fixed scale
    +-20 min. Moving the slider recomputes a year of the reference Sun
-   (about 60 ms), at most once per frame.
+   (about 60 ms) at once, so the read-out always shows the slider's year
+   (the browser sends a slider's events at most once per frame).
    ========================================================================== */
 
 const CENTURIES_RANGE = [-20, 20];
 
 const centuriesFigure = {
 	plot: null,
-	pending: false,
 	year: null,
 	real: null,
 
@@ -719,7 +719,7 @@ const centuriesFigure = {
 			onDraw: p => this.draw(p)
 		});
 
-		wireSlider(byId('cent-year'), () => this.schedule(), yearText);
+		wireSlider(byId('cent-year'), () => this.update(), yearText);
 		wirePresets(figure);
 
 		this.update();
@@ -733,19 +733,6 @@ const centuriesFigure = {
 	/* Points sorted by longitude, so the curve runs from 0° to 360°. */
 	sortByLongitude(points) {
 		return points.slice().sort((a, b) => a.lon - b.lon);
-	},
-
-	/* Recompute at the next frame, once however many slider events come. */
-	schedule() {
-		if (this.pending) {
-			return;
-		}
-
-		this.pending = true;
-		requestAnimationFrame(() => {
-			this.pending = false;
-			this.update();
-		});
 	},
 
 	update() {
