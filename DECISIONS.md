@@ -88,9 +88,10 @@ section.
   Historical claims cite book and chapter; disputed ones get the
   "Debated" origin. → WRITING.md §5, STRUCTURE.md §7.1
 - **Figure keys are short: what a label in the figure can't say, three to
-  five entries.** → WRITING.md §7. *Open:* CLAUDE.md still says every
-  element is explained in the key, one line each; the two need
-  reconciling (see Open questions).
+  five entries.** Things are named by labels in the figure; the caption
+  says what to do and notice. Replaced, on 2026-10-23, the earlier rule
+  of one key line for every element, which made keys of nine entries. →
+  WRITING.md §7, CLAUDE.md "Rules for every figure"
 
 ## Code
 
@@ -142,13 +143,13 @@ section.
 
 ## Open questions
 
-- **Figure keys:** align CLAUDE.md "Rules for every figure" with
-  WRITING.md §7 (short keys, labels in the figure).
-- **The reference sky before about 500 BC and 1 AD.** `crosscheck.txt`
-  shows the Moon up to 23′ off astronomy-engine around 500 BC (expected
-  2.7′), and Mercury, Venus and Saturn also beyond what is expected. Acts
-  III and IV compare models with ancient observations, so this must be
-  understood before Act III.
+- **JPL checks of the reference sky in antiquity.** Against JPL Horizons
+  our Moon is within 1′ at 200 BC and 137 AD; the large differences in
+  `crosscheck.txt` around 500 BC are astronomy-engine's (crosscheck.js
+  header). But there are no JPL values for Mercury and Venus, and none
+  before 200 BC. Acts III and IV use ancient observations (eclipses back
+  to the 8th century BC), so add Horizons values for every body at a few
+  dates between 750 BC and 200 BC before Act III.
 - **Sources in cloud sessions.** The `astronomy-sources` chapter files are
   not in the repository, so cloud sessions cannot read them. Options: a
   private repository for the sources, or attaching the needed chapters to
