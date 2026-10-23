@@ -17,9 +17,11 @@
 
    Every plate shows the sky of 2026.0. Text sizes in theme.css are sizes
    on the screen: fitText keeps them so whatever the width of the chart,
-   so a label never falls below 13 px (CLAUDE.md). On a phone the labels
-   are then large for the chart: placeLabels moves the ones that would
-   overlap, or leave the chart, to a free place nearby.
+   so a label never falls below 13 px (CLAUDE.md). The labels are then
+   large for a narrow chart: placeLabels moves the ones that would
+   overlap, or leave the chart, to a free place nearby, and a chart drawn
+   narrower than COMPACT_WIDTH (a phone) shows no names at all, only the
+   numbers of its ring or border and the pole's P.
 
    TABLE OF CONTENTS
 	 1. SVG helpers
@@ -488,11 +490,16 @@ const Plate = (function () {
 	   units per screen pixel (at least 1), multiplies every font size.
 	   ====================================================================== */
 
+	/* Below this width on the screen (px), a chart shows no names. */
+	const COMPACT_WIDTH = 480;
+
 	function fitText(chart, viewBoxWidth) {
 		const svg = chart.svg;
 		let current = null;
 
-		// a new --k means new label sizes: place the labels again
+		// a new --k means new label sizes: place the labels again. A chart
+		// drawn narrower than COMPACT_WIDTH (a phone) is 'compact': it shows
+		// no names, which would crowd it beyond reading (theme.css §13)
 		const update = () => {
 			const width = svg.getBoundingClientRect().width || viewBoxWidth;
 			const k = Math.max(1, viewBoxWidth / width).toFixed(3);
@@ -500,6 +507,7 @@ const Plate = (function () {
 			if (k !== current) {
 				current = k;
 				svg.style.setProperty('--k', k);
+				svg.classList.toggle('compact', width < COMPACT_WIDTH);
 				placeLabels(chart);
 			}
 		};
@@ -702,7 +710,7 @@ const Plate = (function () {
 	   gives each the first place that stays inside the chart and clear of
 	   every label placed before it; failing that, the place inside that
 	   overlaps least. A constellation's name, the least needed, is left out
-	   instead when no place is clear (on the narrowest phones; the keys say
+	   instead when no place is clear (on a narrow screen; the keys say
 	   so). Where nothing collides, as on a wide screen, every label keeps
 	   its designed place.
 	   ====================================================================== */
