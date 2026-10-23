@@ -232,7 +232,9 @@ pages 1.1 and 1.2 have one each):
   other way, as seen from outside the sphere). A rectangular chart is seen
   looking south: north up, east to the left.
 - Text on a chart keeps its size on the screen, at least 13 px, whatever
-  the width of the chart; on a phone the minor labels are left out.
+  the width of the chart. On a chart drawn narrower than 480 px (a phone)
+  the names are left out (stars, constellations, circles): only the
+  numbers of the ring or border and the pole's P remain.
 - Built by `shared/plate.js` (`Plate.polar`, `Plate.rectangular`, the
   highlights) and styled by `shared/theme.css` §13: a page never draws its
   own.
