@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 2.2 · THE EQUATION OF TIME
+     Act II, the Sun. The sundial and the clock disagree by up to a quarter
+     of an hour; the difference, the equation of time E, is the sum of the
+     eccentricity part (page 2.1) and the obliquity part (the reduction to
+     the equator, page 1.2); the analemma; the parameters of pages 1.2 and
+     2.1 recovered from E alone; the model within 6 s of the real E; how E
+     changes over the centuries.
+     Numbers: tools/numbers/2.2-equation-of-time.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>2.2 · The equation of time · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/equation-of-time.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			The clock of page 1.3 puts noon at 12:00 every day, but the real Sun
+			crossed the meridian up to 14 minutes later than that in February and
+			16½ minutes earlier in November. Page 2.1 found one of the causes, the
+			Sun's uneven motion along the ecliptic, and named the other, the tilt
+			of the ecliptic to the equator.
+		</p>
+
+		<p>
+			Putting the two together gives the <em>equation of time</em>, the
+			correction that makes a sundial agree with a clock. With the
+			eccentric of page 2.1 and the obliquity of page 1.2, and nothing
+			else, it comes out right to within a few seconds.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The sundial and the clock</h2>
+
+		<p>
+			A sundial shows <em>apparent solar time</em>, the hour angle of the
+			real Sun, and reads 12:00 when the Sun crosses the meridian. A clock
+			shows <em>mean solar time</em>, the hour angle of the mean Sun of page
+			1.3. We call the difference, sundial minus clock, the equation of
+			time $E$. It is positive when the sundial is ahead.
+		</p>
+
+		<p>
+			At Greenwich in 2026, where the clock keeps Universal Time, the
+			sundial is up to 14 minutes behind the clock in mid-February and up
+			to 16½ minutes ahead in early November, with two smaller swings in
+			between, in May and July. The two agree on only four days of the
+			year.
+		</p>
+
+		<p>
+			Single days hardly show it. The <em>true solar day</em>, from one
+			real noon to the next, is never more than half a minute longer or
+			shorter than 24 hours. But the short days come in long runs, 100 of
+			them in a row in 2026, and over a run their shortfalls add up, as
+			Figure 1 shows.
+		</p>
+
+		<!-- Figure 1: the true solar day and its running sum (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the true solar day</p>
+						<canvas id="sundial-day"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the sundial minus the clock</p>
+						<canvas id="sundial-equation"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two panels date by date: where the days in (a) are
+				shorter than 24 hours, the sundial in (b) gains on the clock, and
+				where they are longer, it loses. The curve in (b) turns on the four
+				days that last exactly 24 hours.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-sun">curve (a)</dt>
+						<dd>the length of the day ending on each date, from one real noon at Greenwich to the next, minus 24 hours</dd>
+						<dt class="c-planet">curve (b)</dt>
+						<dd>the equation of time $E$, how far the sundial is ahead of the clock at noon</dd>
+						<dt class="c-muted">dotted</dt>
+						<dd>the four days of exactly 24 hours</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			From mid-February to early November the days fall short of 24 hours
+			by about half an hour in all, which is exactly what the sundial
+			gains on the clock over those months. The equation of time is the
+			running sum of the days' differences from 24 hours. Over a whole
+			year the differences cancel, because the clock is defined as the
+			Sun's average.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy makes the same observation: the difference between a true
+				and a mean solar day does not cause "a perceptible difference" for a
+				single day, "but the accumulated difference over a number of solar
+				days is quite noticeable" (<em>Almagest</em> III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			A camera can record the equation of time as well. Photographed at
+			the same clock time on days spread over a year, the Sun traces a
+			figure eight called the <em>analemma</em>. Its height is the Sun's
+			declination, and its spread from side to side is the equation of
+			time.
+		</p>
+
+		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/analemma-donatiello-2016.jpg" width="800" height="600" loading="lazy"
+				alt="A blue sky above bare trees and a road, crossed diagonally by a long figure eight of white dots, a small loop at the top left and a larger one at the bottom right.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				An analemma photographed in southern Italy: each white dot is the
+				Sun on one day, the days spread over a year and combined into one
+				picture. Notice that the two loops are unequal. The upper one, the
+				summer Sun, is the smaller, and the lower one, the winter Sun, is
+				the larger, an asymmetry that Figure 4 explains. The figure leans,
+				which shows that the pictures were taken away from noon: at noon
+				the analemma stands upright, as in Figure 4.
+				<span class="credit">Giuseppe Donatiello, 2016,
+					<a href="https://commons.wikimedia.org/wiki/File:Analemma_A14_2016_(25907420783).jpg">Wikimedia Commons</a>,
+					CC0 (public domain).</span>
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Two causes of the uneven solar day</h2>
+
+		<h3>The equation of time</h3>
+
+		<p>
+			The mean Sun of page 1.3 is not a body in the sky but a reference
+			point. It moves along the celestial equator, not along the
+			ecliptic, at a constant rate, and its right ascension is always the
+			Sun's mean longitude, $\alpha_m = \bar\lambda$. Because it moves
+			uniformly along the equator, its hour angle grows by exactly 15° an
+			hour, which is what a clock needs.
+		</p>
+
+		<p>
+			Both kinds of time are hour angles, $H = \theta - \alpha$, so at any
+			moment their difference is the difference of the two right
+			ascensions. In degrees,
+		</p>
+
+		$$E = H - H_m = \alpha_m - \alpha = \bar\lambda - \alpha,$$
+
+		<p>
+			and in time 1° is 4 minutes, since the sky turns 360° in 24 hours.
+			We want to split this difference into the effect of the Sun's
+			uneven speed, which page 2.1 modelled, and the effect of the tilt.
+			Adding and subtracting the true longitude $\lambda$ does it:
+		</p>
+
+		<div class="box">
+			$$E = (\bar\lambda - \lambda) + (\lambda - \alpha) = -q + (\lambda - \alpha).$$
+		</div>
+
+		<div class="row">
+			<p>
+				Ptolemy names the same two causes: the extra stretch of the
+				equator that crosses the meridian each day "cannot be a constant,
+				for two reasons: firstly, because of the sun's apparent anomaly;
+				and secondly, because equal sections of the ecliptic do not cross
+				either the horizon or the meridian in equal times" (<em>Almagest</em>
+				III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>The eccentricity part</h3>
+
+		<p>
+			The first part is page 2.1's equation of centre with its sign
+			changed. While the Sun runs ahead of its mean place, $q > 0$, its
+			right ascension grows ahead of the mean Sun's, it reaches the
+			meridian later, and the sundial falls behind. To first order $-q
+			\approx e\sin M$ in radians, so this part swings by about 1.9°
+			either way, or 7.7 minutes of time.
+		</p>
+
+		<h3>The obliquity part</h3>
+
+		<p>
+			The second part would remain even for a Sun moving uniformly along
+			the ecliptic. Its right ascension follows from $\tan\alpha =
+			\cos\varepsilon\tan\lambda$ (page 1.2), and page 1.2's table showed
+			$\alpha$ lagging behind $\lambda$ in the first quadrant. To see how
+			the lag depends on $\lambda$, we write the tangent of the difference:
+		</p>
+
+		$$\tan(\lambda - \alpha) = \frac{\tan\lambda - \tan\alpha}{1 + \tan\lambda\tan\alpha} = \frac{(1 - \cos\varepsilon)\sin\lambda\cos\lambda}{\cos^2\lambda + \cos\varepsilon\sin^2\lambda}.$$
+
+		<p>
+			With $\sin\lambda\cos\lambda = \tfrac12\sin 2\lambda$, $\cos^2\lambda =
+			\tfrac12(1 + \cos 2\lambda)$ and $\sin^2\lambda = \tfrac12(1 - \cos
+			2\lambda)$, and dividing above and below by $\tfrac12(1 +
+			\cos\varepsilon)$,
+		</p>
+
+		<div class="box">
+			$$\tan(\lambda - \alpha) = \frac{e_\varepsilon \sin 2\lambda}{1 + e_\varepsilon \cos 2\lambda}, \qquad e_\varepsilon = \frac{1 - \cos\varepsilon}{1 + \cos\varepsilon} = \tan^2\frac{\varepsilon}{2}.$$
+		</div>
+
+		<p>
+			The right-hand side has the same form as page 2.1's equation of
+			centre, $\tan q = -e\sin M / (1 + e\cos M)$, with $e_\varepsilon$ in
+			place of $e$ and $2\lambda$ in place of $M$. So the results of page
+			2.1 apply to the lag without new work; for today's obliquity
+			$e_\varepsilon = 0.0430$.
+		</p>
+
+		<div class="row">
+			<p>
+				To first order $\lambda - \alpha \approx e_\varepsilon \sin
+				2\lambda$ in radians, which swings by about 2.5° either way, or 9.9
+				minutes of time. Its greatest value is $\arcsin e_\varepsilon$, about
+				2.47°, reached at $\lambda \approx 46^\circ$ and at the same distance
+				from every other equinox and solstice.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			The lag comes from a difference of speed between $\alpha$ and
+			$\lambda$. Differentiating $\tan\alpha = \cos\varepsilon\tan\lambda$
+			gives
+		</p>
+
+		$$\frac{d\alpha}{\cos^2\alpha} = \cos\varepsilon\,\frac{d\lambda}{\cos^2\lambda}, \qquad \frac{d\alpha}{d\lambda} = \cos\varepsilon\,\frac{\cos^2\alpha}{\cos^2\lambda}.$$
+
+		<p>
+			For a point of the ecliptic the conversion formulas of page 1.2 give
+			$\cos\delta\cos\alpha = \cos\lambda$, so the ratio of the two
+			squared cosines is $1/\cos^2\delta$, and
+		</p>
+
+		<div class="box">
+			$$\frac{d\alpha}{d\lambda} = \frac{\cos\varepsilon}{\cos^2\delta}.$$
+		</div>
+
+		<p>
+			At the equinoxes $\delta = 0$ and the ratio is $\cos\varepsilon$: the
+			ecliptic crosses the equator at a slant, only part of the Sun's
+			motion is eastward, and $\alpha$ grows about 8% more slowly than
+			$\lambda$. At the solstices $\delta = \varepsilon$ and the ratio is
+			$1/\cos\varepsilon$: the ecliptic runs parallel to the equator, all
+			the motion is eastward, and it happens at a declination of 23.4°,
+			where the hour circles are closer together, so $\alpha$ grows about
+			9% faster.
+		</p>
+
+		<p>
+			So $\alpha$ falls behind $\lambda$ after each equinox and catches up
+			before each solstice. The lag is greatest where the two speeds are
+			equal, $d\alpha/d\lambda = 1$ (Exercise 3). Figure 2 starts with
+			$\varepsilon = 45^\circ$, nearly twice the real tilt, so that the
+			arc can be seen on the sphere.
+		</p>
+
+		<!-- Figure 2: the reduction to the equator -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the uniform Sun and the mean Sun</p>
+						<canvas id="reduction-sphere"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the lag through the year</p>
+						<canvas id="reduction-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="red-lon">longitude λ</label>
+							<input id="red-lon" type="range" min="0" max="360" step="1" value="30">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="red-play">Play a year</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="red-eps">obliquity ε</label>
+							<input id="red-eps" type="range" min="0" max="45" step="0.01" value="45">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="red-eps" data-value="23.4358">today, 23.44°</button>
+							<button type="button" data-target="red-eps" data-value="45">exaggerated, 45°</button>
+							<button type="button" data-target="red-eps" data-value="0">no tilt</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="reduction-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Play a year and watch the two Suns, which start together at γ: the
+				foot of the Sun's hour circle falls behind the mean Sun until about
+				halfway to the solstice, catches up at the solstice, and runs ahead
+				in the next quadrant. Then press "today, 23.44°": the arc shrinks to under
+				2.5°, and in (b) the dashed first-order curve almost merges with the
+				exact one. Drag the sphere to turn the view.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-earth">equator</dt>
+						<dd>the celestial equator, with its pole P</dd>
+						<dt class="c-sun">ecliptic</dt>
+						<dd>tilted by ε; the Sun moves along it uniformly, at longitude λ</dd>
+						<dt>dashed</dt>
+						<dd>the Sun's hour circle, from P through the Sun to the equator, which it meets at the Sun's right ascension α (small dot)</dd>
+						<dt class="c-earth">mean Sun</dt>
+						<dd>the reference point of page 1.3, moving along the equator at a constant rate; its right ascension equals the Sun's longitude λ, since this Sun moves uniformly</dd>
+						<dt class="c-planet">thick arc</dt>
+						<dd>$\lambda - \alpha$, from the foot of the hour circle to the mean Sun</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>$\lambda - \alpha$, exact; the dot is the chosen λ</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the first-order approximation, $e_\varepsilon \sin 2\lambda$</dd>
+						<dt>grey lines</dt>
+						<dd>the solstices and the autumn equinox, λ = 90°, 180° and 270°</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>The sum</h3>
+
+		<p>
+			Adding the two parts, to first order in $e$ and $e_\varepsilon$ and
+			in radians, gives:
+		</p>
+
+		$$E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda,$$
+
+		<p>
+			a yearly wave of 7.7 minutes plus a half-yearly wave of 9.9 minutes.
+			In 2026 this approximation is within a minute of the exact sum.
+			Figure 3 shows the two parts and how they add.
+		</p>
+
+		<!-- Figure 3: the two parts and their sum -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="parts-plot"></canvas>
+				<div class="readout" id="parts-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Point at the plot to read a date. Notice where the two waves meet:
+				in February and November they add, and $E$ reaches its two large
+				extremes; in May and July they nearly cancel, and $E$ makes only
+				small ones.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">eccentricity</dt>
+						<dd>$-q$, the eccentric of page 2.1 fitted to 2026; zero at the perigee in early January and at the apogee in early July</dd>
+						<dt class="c-earth">obliquity</dt>
+						<dd>$\lambda - \alpha$; zero at the equinoxes and the solstices</dd>
+						<dt class="c-planet">sum</dt>
+						<dd>the equation of time $E$, at 12:00 UT each day</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			The half-yearly wave is the larger, so $E$ has two maxima and two
+			minima. The yearly wave makes them unequal: it deepens the
+			February minimum and the November maximum, where it has the same
+			sign as the half-yearly wave, and it reduces the other two. The four
+			zeros of $E$ fall where the two waves cancel.
+		</p>
+
+		<h3>The analemma</h3>
+
+		<p>
+			At mean noon the mean Sun is on the meridian, $H_m = 0$, so the real
+			Sun's hour angle is $H = E$, which in degrees is $E$ divided by 4
+			minutes. Plotted against the Sun's declination through a year, this
+			hour angle traces the analemma of the photograph, as it would look
+			at noon, upright.
+		</p>
+
+		<!-- Figure 4: the analemma -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="analemma-plot"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="ana-day">date</label>
+							<input id="ana-day" type="range" min="0" max="364" step="1" value="306">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="ana-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="ana-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="ana-play">Play a year</button>
+						</div>
+						<div class="presets" id="analemma-modes"></div>
+						<div class="readout" id="analemma-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play a year and follow the Sun round the figure eight. Then choose
+				"obliquity only": the figure becomes symmetric, with equal loops,
+				because the half-yearly wave takes the same values in summer and in
+				winter. Choose "eccentricity only": a single tilted oval, east of
+				the meridian in spring and west of it in autumn. Their sum gives
+				the unequal loops of the photograph.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-sun">curve</dt>
+						<dd>the Sun at 12:00 UT at Greenwich on each day of 2026, as the chosen causes place it; the large dot is the date. The hour angle is drawn on a scale about four times larger than the declination</dd>
+						<dt class="c-sun">faint dashed</dt>
+						<dd>both causes, for comparison</dd>
+						<dt>dots</dt>
+						<dd>the first day of each month</dd>
+						<dt class="c-muted">dotted</dt>
+						<dd>the meridian, where a sundial reads noon</dd>
+						<dt class="c-earth">line</dt>
+						<dd>the celestial equator, δ = 0</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			The analemma crosses itself at a declination of about 9°, where the
+			Sun stands in mid-April and again in late August with the same
+			equation of time.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>Eccentricity, apogee and obliquity from the equation of time</h2>
+
+		<p>
+			The model has no parameter of its own: $e$ and $\lambda_A$ come from
+			the seasons (page 2.1), $\varepsilon$ from the noon Sun at the
+			solstices (page 1.2). We can turn the argument round. A clock and a
+			sundial, compared through one year, measure $E$, and $E$ carries the
+			same three parameters, so it should give them back.
+		</p>
+
+		<div class="row">
+			<p>
+				Using the equation of E to first order from before, applying the sine of difference of angle identity with $M = \bar\lambda - \lambda_A$,
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$E \approx (e\cos\lambda_A)\sin\bar\lambda - (e\sin\lambda_A)\cos\bar\lambda + e_\varepsilon\sin 2\bar\lambda.$$
+
+		<p>
+			Over a whole year the functions $\sin\bar\lambda$, $\cos\bar\lambda$,
+			$\sin 2\bar\lambda$ and $\cos 2\bar\lambda$ are orthogonal, so each
+			coefficient is an average, for instance $e\cos\lambda_A =
+			2\,\langle E \sin\bar\lambda\rangle$. The two yearly coefficients
+			give $e$ and $\lambda_A$, and the half-yearly one gives
+			$e_\varepsilon$, hence $\varepsilon = 2\arctan\sqrt{e_\varepsilon}$.
+		</p>
+
+		<p>
+			Applied to the real $E$ of 2026, the averages give the first column
+			of the table. They are close, but not exact, because the first-order
+			formula leaves out a cross term: the half-yearly wave depends on the
+			true longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$, and the
+			product of the two waves contains a yearly part of amplitude
+			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part of
+			the eccentricity.
+		</p>
+
+		<details class="fold">
+			<summary>The exact fit</summary>
+			<p>
+				The second column fits the exact model, $E = -q + (\lambda - \alpha)$
+				plus a constant, to the 365 daily values by least squares. The
+				model is not linear in $e$, $\lambda_A$ and $\varepsilon$, so the
+				fit starts from the first-order values and improves them by
+				Gauss–Newton iteration: at each step the model is linearised about
+				the current values, the linear least-squares problem is solved for
+				the corrections, and the corrections are applied. It converges in a
+				few steps and leaves residuals of about a second.
+			</p>
+		</details>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>from $E$, first order</th>
+					<th>from $E$, exact</th>
+					<th>earlier pages</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$e$</td>
+					<td>0.0322</td>
+					<td>0.0334</td>
+					<td>0.0335 (2.1)</td>
+				</tr>
+				<tr>
+					<td>$\lambda_A$</td>
+					<td>$104.6^\circ$</td>
+					<td>$103.4^\circ$</td>
+					<td>$103.7^\circ$ (2.1)</td>
+				</tr>
+				<tr>
+					<td>$\varepsilon$</td>
+					<td>$23.51^\circ$</td>
+					<td>$23.39^\circ$</td>
+					<td>$23.44^\circ$ (1.2)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The exact fit recovers the eccentricity of page 2.1 and the apogee of
+			Kepler's ellipse. Its obliquity is 3′ too small, because the
+			eccentric is not quite the right shape: at second order it gets a
+			half-yearly term slightly wrong (page 2.1), and the fit makes up for
+			it by lowering $e_\varepsilon$.
+		</p>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The equation of time against the real Sun</h2>
+
+		<p>
+			Figure 5 compares the model, the eccentric fitted to the seasons of
+			2026 with the mean obliquity, with the real equation of time of the
+			reference sky. Page 1.3's clock had no equation of time at all, so
+			its noon was wrong by the whole of $E$, up to a quarter of an
+			hour.
+		</p>
+
+		<!-- Figure 5: the model against the real equation of time -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the model and the real Sun</p>
+						<canvas id="test-both"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) model minus real</p>
+						<canvas id="test-error"></canvas>
+					</div>
+				</div>
+				<div class="readout" id="test-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Point at either plot to read a date in both. In (a) the model's
+				curve stays inside the broad band of the real one all year; (b)
+				magnifies the difference about a hundred times.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-muted">broad band</dt>
+						<dd>the real equation of time, from the reference sky</dd>
+						<dt class="c-planet">curve</dt>
+						<dd>the model, $-q + (\lambda - \alpha)$</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>model minus real, in seconds of time</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the date under the pointer, in both panels</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Through 2026 the model is never more than 6 s from the real
+			equation of time. Almost all of this comes from the eccentric's
+			error in longitude, under 2′ (page 2.1), since 1′ of longitude is
+			about 4 s of time. The small monthly ripples in (b) are the Moon's,
+			as on page 2.1: the Earth swings about the centre of mass of the
+			Earth and the Moon, and the Sun seen from it moves to and fro.
+		</p>
+
+		<h3>Ptolemy's equation of time</h3>
+
+		<div class="row">
+			<p>
+				Ptolemy computed the two parts with his own Sun. He measured them
+				in time-degrees, the time the sky takes to turn 1°, which is 4
+				minutes. Between the middle of Aquarius and the end of Libra, where
+				the two parts work in the same direction, he found about 3⅔
+				time-degrees from the Sun's uneven motion and 4⅔ from the meridian
+				crossings, 8⅓ in all, or 33⅓ minutes (<em>Almagest</em> III 9). His
+				own model gives the same.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			The real figure in his time was about 31 minutes; his is larger
+			because his eccentricity is a fifth too large (page 2.1). He needed
+			the correction for the Moon rather than for the Sun. His lunar
+			tables count mean solar days, and in 33 minutes the Moon moves
+			0.3°, more than half the width of its disc.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>The equation of time over the centuries</h2>
+
+		<p>
+			Our model holds its apogee fixed at its place of 2026. Over the
+			century around 2026 its error grows to about 13 s, and over a
+			thousand years to more than a minute. The reason is the one page 2.1
+			found for the longitude: the apogee moves relative to γ, by about
+			1.75° a century.
+		</p>
+
+		<p>
+			The real equation of time changes with it. Its half-yearly wave is
+			tied to the equinoxes and solstices, but its yearly wave is tied to
+			the apogee, so as the apogee moves the two waves meet at other
+			places, and the curve changes shape, as Figure 6 shows.
+		</p>
+
+		<!-- Figure 6: the equation of time over the centuries -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="centuries-plot"></canvas>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="cent-year">year</label>
+							<input id="cent-year" type="range" min="-1000" max="3000" step="1" value="2026">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="presets">
+							<button type="button" data-target="cent-year" data-value="-140">141 BC</button>
+							<button type="button" data-target="cent-year" data-value="140">AD 140</button>
+							<button type="button" data-target="cent-year" data-value="1246">1246</button>
+							<button type="button" data-target="cent-year" data-value="1515">1515</button>
+							<button type="button" data-target="cent-year" data-value="2026">2026</button>
+							<button type="button" data-target="cent-year" data-value="3000">3000</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="centuries-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Move the year and watch the two minima and the two maxima trade
+				depth. In 141 BC the minimum after the winter solstice is the deep
+				one; in 1246 the curve is symmetric, its extremes equal and
+				opposite; by 3000 the late-autumn maximum dominates.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-planet">curve</dt>
+						<dd>the real equation of time at noon on each day of the chosen year, against the Sun's longitude λ</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>the model of this page, with the apogee of 2026</dd>
+						<dt>grey lines</dt>
+						<dd>the summer solstice, the autumn equinox and the winter solstice, λ = 90°, 180° and 270°</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Around 1246 the apogee passed the summer solstice, and the curve was
+			symmetric, with extremes of about ±15½ minutes. Before then the
+			February minimum was the deeper: in 141 BC it reached −17½ minutes,
+			against a maximum of +13½. Today the November maximum is the
+			larger, +16½ against −14 minutes, and by the year 3000 it will be
+			+17 against −12.
+		</p>
+
+		<p>
+			Most of the apogee's motion belongs to γ, the origin of every
+			longitude, which slides westward along the ecliptic. The whole
+			frame we have used since page 1.2 is turning slowly, and page 2.3
+			measures how fast.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Compute the equation of time at 12:00 UT on 3 November 2026 from the
+				eccentric of page 2.1 ($L_0 = 280.45897^\circ$, $n = 0.98564736^\circ$
+				a day, $e = 0.033473$, $\lambda_A = 103.732^\circ$) and the mean
+				obliquity $\varepsilon = 23.4358^\circ$, and split it into its two
+				parts. Check with Figures 3 and 4.
+			</p>
+			<details class="hint">
+				<p>
+					Find $d$ (in TT, 69 s later than UT), then $\bar\lambda$, $M$, $q$
+					and $\lambda$ as on page 2.1, then $\alpha$ from $\tan\alpha =
+					\cos\varepsilon\tan\lambda$ in the quadrant of $\lambda$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					At 12:00 UT, $d = 9803.0009$ days, so $\bar\lambda = L_0 + n\,d =
+					222.7609^\circ$ and $M = \bar\lambda - \lambda_A = 119.0289^\circ$.
+					The equation of centre is $q = -1.7041^\circ$, so $\lambda =
+					221.0568^\circ$, and $\alpha = 218.6309^\circ$, so $\lambda -
+					\alpha = 2.4258^\circ$.
+				</p>
+				<p>
+					Then $E = -q + (\lambda - \alpha) = 1.7041^\circ + 2.4258^\circ =
+					4.1300^\circ$, which is $6.82 + 9.70 = 16.52$ minutes, or +16 min
+					31 s. Both parts are positive in early November, which is why $E$
+					is greatest then. The first-order formula gives $6.71 + 9.83 =
+					16.54$ minutes.
+				</p>
+				<p>
+					The real equation of time is +16 min 27 s, so the model is 4 s
+					too large. The real Sun crosses the meridian of Greenwich 16 min
+					27 s before 12:00 UT.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				Before looking at Figure 4, predict on which dates $E$ would vanish
+				if the Sun moved uniformly ($e = 0$), and on which dates if the
+				ecliptic were not tilted ($\varepsilon = 0$). Then find the real
+				dates, and explain why there are four.
+			</p>
+			<details class="hint">
+				<p>
+					Each part vanishes where its sine does: $\sin 2\lambda = 0$ for
+					one, $\sin M = 0$ for the other. In Figure 4, $E = 0$ where the
+					curve crosses the meridian.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With $e = 0$ only the half-yearly wave is left, $E =
+					\lambda - \alpha$, which vanishes four times, when the uniform Sun
+					is at an equinox or a solstice: 22 March, 21 June, 21 September
+					and 21 December 2026 ("obliquity only" in Figure 4).
+				</p>
+				<p>
+					With $\varepsilon = 0$ only the yearly wave is left, $E = -q$,
+					which vanishes twice, at the perigee and the apogee: 4 January and
+					5 July ("eccentricity only").
+				</p>
+				<p>
+					With both, the model and the real Sun agree on the dates: 15
+					April, 12 June, 1 September and 25 December. There are four
+					because the half-yearly wave is the larger, about 10 against 8
+					minutes, so it decides how often the sum changes sign; the yearly
+					wave only moves the zeros.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Using $d\alpha/d\lambda = \cos\varepsilon / \cos^2\delta$ and
+				$\sin\delta = \sin\varepsilon\sin\lambda$, show that $|\lambda -
+				\alpha|$ is greatest where $\sin^2\lambda = 1/(1 + \cos\varepsilon)$,
+				and that its greatest value is $\arcsin\tan^2(\varepsilon/2)$. Find
+				both for today's obliquity, $\varepsilon = 23.4358^\circ$, and check
+				them in Figure 2.
+			</p>
+			<details class="hint">
+				<p>
+					The lag is extreme where its derivative, $1 - d\alpha/d\lambda$,
+					vanishes. For the greatest value, use page 2.1's Exercise 2 with
+					$e_\varepsilon$ in place of $e$ and $2\lambda$ in place of $M$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With $\cos^2\delta = 1 - \sin^2\varepsilon\sin^2\lambda$, the
+					condition $d\alpha/d\lambda = 1$ becomes
+					$\sin^2\varepsilon\sin^2\lambda = 1 - \cos\varepsilon$, and since
+					$\sin^2\varepsilon = (1 - \cos\varepsilon)(1 + \cos\varepsilon)$,
+				</p>
+				$$\sin^2\lambda = \frac{1}{1 + \cos\varepsilon}, \qquad \cos 2\lambda = 1 - 2\sin^2\lambda = -\frac{1 - \cos\varepsilon}{1 + \cos\varepsilon} = -e_\varepsilon.$$
+				<p>
+					This is the condition of page 2.1's Exercise 2, $\cos M = -e$, with
+					$2\lambda$ for $M$, so the greatest value is $\arcsin
+					e_\varepsilon$.
+				</p>
+				<p>
+					For $\varepsilon = 23.4358^\circ$, $e_\varepsilon = 0.04302$, the lag
+					is greatest at $\lambda = 46.23^\circ$, and its greatest value is
+					$2.466^\circ$, or 9.86 minutes of time. In Figure 2, with "today,
+					23.44°", the read-out gives the same.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984), III 9 (the
+				two causes of the inequality of the solar days; the accumulated
+				differences of 3⅔ and 4⅔ time-degrees, 8⅓ in all; the rule for
+				converting true into mean solar days), with Toomer's note on the
+				Moon's motion in an hour, 0° 32′ 56″ (IV 3).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 5.4 and Table 5.5 (the
+				mean sun and the equation of time; his first-order formula 5.17 is
+				written with Kepler's eccentricity and with $M$ counted from the
+				perigee).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 28
+				(the equation of time of the reference sky, and its sign).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
+				the Major Planets</em> (JPL): the reference Sun.</li>
+			<li>Every number on this page: <code>tools/numbers/2.2-equation-of-time.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

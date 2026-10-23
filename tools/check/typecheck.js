@@ -22,6 +22,7 @@ const PAGES = [
 	'act1-stage/02-frames/index.html',
 	'act1-stage/03-clocks/index.html',
 	'act2-sun/01-uneven-year/index.html',
+	'act2-sun/02-equation-of-time/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',
