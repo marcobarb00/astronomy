@@ -18,6 +18,13 @@
    make(parameters) returns jd => longitude (JD(TT) in, degrees out), as
    ErrorCurve.addModel and ErrorCurve.addGhost expect (README.md).
 
+   The moving apogee (page 2.3)
+	 The apogee is fixed relative to the equinoxes unless the parameters
+	 give apogeeRate (deg a Julian century) and apogeeEpoch (JD(TT)):
+		 lambdaA(t) = apogee + apogeeRate (t - apogeeEpoch) / 36525.
+	 Most of the rate is the precession of the equinoxes (page 2.3); the
+	 rest is the slow turn of the Earth's orbit.
+
    The fit (page 2.1, section 3; Almagest III 4)
 	 Put the Earth at the origin, with x towards the vernal point and y
 	 towards the summer solstice, and let C = (h, k) in units of the
@@ -48,7 +55,8 @@ const SolarEccentric = (function () {
 	   1. PARAMETER SETS
 	   Those of models/mean-sun.js (L0, n, epoch, clock), with e (the
 	   distance OC, in units of the radius) and apogee (lambdaA, deg). The
-	   apogee is fixed relative to the equinoxes, as in Ptolemy.
+	   apogee is fixed relative to the equinoxes, as in Ptolemy, unless the
+	   set gives apogeeRate and apogeeEpoch (MOVING_2026, page 2.3).
 	   ====================================================================== */
 
 	/* Hipparchus' two seasons (Almagest III 4): 94 1/2 days from the
@@ -74,6 +82,26 @@ const SolarEccentric = (function () {
 		e: 0.033473,
 		apogee: 103.732
 	});
+
+	/* Page 2.3: FIT_2026 with its apogee moving at the rate that fits
+	   Hipparchus' method applied to the reference seasons of seventeen
+	   years from 1000 BC to AD 3000 (least squares, 1.741° a century),
+	   through its value of 2026 at the spring equinox of 2026, when page
+	   2.1 fitted it (tools/numbers/2.3-precession.js). */
+	const MOVING_2026 = Object.assign({}, FIT_2026, {
+		apogeeRate: 1.741,
+		apogeeEpoch: 2461120.106
+	});
+
+	/* The longitude of the apogee (deg) at JD(TT): fixed, or moving
+	   uniformly when the parameters give apogeeRate and apogeeEpoch. */
+	function apogeeAt(parameters, jd) {
+		if (!parameters.apogeeRate) {
+			return parameters.apogee;
+		}
+
+		return parameters.apogee + (parameters.apogeeRate * (jd - parameters.apogeeEpoch)) / 36525;
+	}
 
 	/* ======================================================================
 	   2. THE EQUATION OF CENTRE
@@ -110,7 +138,9 @@ const SolarEccentric = (function () {
 		return jd => {
 			const meanLongitude = MeanSun.meanLongitude(parameters, jd);
 
-			return norm360(meanLongitude + equationOfCentre(meanLongitude - parameters.apogee, parameters.e));
+			const M = meanLongitude - apogeeAt(parameters, jd);
+
+			return norm360(meanLongitude + equationOfCentre(M, parameters.e));
 		};
 	}
 
@@ -118,7 +148,7 @@ const SolarEccentric = (function () {
 	   (deg; meanLongitude and lambda in [0, 360), M in [0, 360)). */
 	function state(parameters, jd) {
 		const meanLongitude = norm360(MeanSun.meanLongitude(parameters, jd));
-		const M = norm360(meanLongitude - parameters.apogee);
+		const M = norm360(meanLongitude - apogeeAt(parameters, jd));
 		const q = equationOfCentre(M, parameters.e);
 
 		return { meanLongitude, M, q, lambda: norm360(meanLongitude + q) };
@@ -174,6 +204,8 @@ const SolarEccentric = (function () {
 		HIPPARCHUS_SEASONS,
 		PTOLEMY,
 		FIT_2026,
+		MOVING_2026,
+		apogeeAt,
 		equationOfCentre,
 		equationOfCentreFirstOrder,
 		greatestEquation,

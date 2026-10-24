@@ -1110,6 +1110,94 @@ Regenerate with: node tools/check/smoke.js --update
     #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
   dragged 1 spheres
 
+=== act2-sun/03-precession/index.html ===
+  as loaded
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #model-year = -11000
+    OUTPUT (model-year): 11,001 BC
+    #model-readout: \text{11,001 BC: shift } -181.98^\circ | \text{Spica: } \lambda = 22.22^\circ,\ \delta = +6.74^\circ | \text{nearest P: Vega, } 7.7^\circ
+  slider #model-year = 15000
+    OUTPUT (model-year): AD 15,000
+    #model-readout: \text{AD 15,000: shift } +181.25^\circ | \text{Spica: } \lambda = 25.45^\circ,\ \delta = +7.93^\circ | \text{nearest P: Vega, } 8.8^\circ
+  slider #model-year = 2000
+    OUTPUT (model-year): 2000
+    #model-readout: \text{2000: shift } -0.36^\circ | \text{Spica: } \lambda = 203.84^\circ,\ \delta = -11.16^\circ | \text{nearest P: Polaris, } 0.7^\circ
+  slider #model-year + one key step
+    OUTPUT (model-year): 2001
+    #model-readout: \text{2001: shift } -0.35^\circ | \text{Spica: } \lambda = 203.86^\circ,\ \delta = -11.17^\circ | \text{nearest P: Polaris, } 0.7^\circ
+  button "2831 BC"
+    OUTPUT (model-year): 2831 BC
+    #model-readout: \text{2831 BC: shift } -67.84^\circ | \text{Spica: } \lambda = 136.36^\circ,\ \delta = +13.97^\circ | \text{nearest P: Thuban, } 0.2^\circ
+  button "128 BC"
+    OUTPUT (model-year): 128 BC
+    #model-readout: \text{128 BC: shift } -30.08^\circ | \text{Spica: } \lambda = 174.13^\circ,\ \delta = +0.44^\circ | \text{nearest P: Polaris, } 12.4^\circ
+  button "2026"
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
+  button "AD 13,790"
+    OUTPUT (model-year): AD 13,790
+    #model-readout: \text{AD 13,790: shift } +164.35^\circ | \text{Spica: } \lambda = 8.55^\circ,\ \delta = +1.50^\circ | \text{nearest P: Vega, } 4.8^\circ
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "6,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #stars-ecliptic at 0.3
+  hover #stars-ecliptic at 0.6
+  hover #stars-ecliptic at 0.9
+  hover #stars-ecliptic left
+  hover #stars-declination at 0.3
+  hover #stars-declination at 0.6
+  hover #stars-declination at 0.9
+  hover #stars-declination left
+  hover #records-plot at 0.3
+  hover #records-plot at 0.6
+  hover #records-plot at 0.9
+  hover #records-plot left
+  hover #error-spica-plot at 0.3
+    .errorcurve-readout: 19 Feb 569 · uniform precession: −4.9′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot at 0.6
+    .errorcurve-readout: 31 Jul 2523 · uniform precession: −0.1′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot at 0.9
+    .errorcurve-readout: 9 Jan 4478 · uniform precession: −9.2′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 10 Sep 1540 · fixed apogee: +4.3′ · moving apogee: +0.8′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 7 Mar 2192 · fixed apogee: +3.3′ · moving apogee: +0.6′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 3 Sep 2843 · fixed apogee: −19.2′ · moving apogee: −1.4′
+  hover #error-sun-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #ptolemy-plot at 0.3
+  hover #ptolemy-plot at 0.6
+  hover #ptolemy-plot at 0.9
+  hover #ptolemy-plot left
+  dragged 1 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2490,7 +2578,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 123 tests pass.
+    #summary: All 130 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

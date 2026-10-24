@@ -28,7 +28,7 @@
 	 4. The reference sky: Sun, Moon, planets
 	 5. Stars of date
 	 6. The models: turning sky, frames, mean Sun, clocks, solar eccentric,
-	    equation of time
+	    equation of time, precession
 	 7. Display helpers (shared)
 	 8. Page scripts: helpers and precomputed values
 	 9. The numbers scripts (tools/numbers/)
@@ -61,6 +61,7 @@ const SHARED_FILES = [
 	'shared/models/clock.js',
 	'shared/models/solar-eccentric.js',
 	'shared/models/equation-of-time.js',
+	'shared/models/precession.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -72,7 +73,8 @@ const PAGE_FILES = [
 	'act1-stage/02-frames/index.html',
 	'act1-stage/03-clocks/index.html',
 	'act2-sun/01-uneven-year/index.html',
-	'act2-sun/02-equation-of-time/index.html'
+	'act2-sun/02-equation-of-time/index.html',
+	'act2-sun/03-precession/index.html'
 ];
 
 /* ==========================================================================
@@ -573,6 +575,44 @@ function equationOfTimeSection(c) {
 	});
 }
 
+function precessionSection(c) {
+	const { Time, Precession, SolarEccentric } = c;
+	const moving = SolarEccentric.make(SolarEccentric.MOVING_2026);
+
+	title('6f. PRECESSION AND THE MOVING APOGEE (models/precession.js, SolarEccentric.MOVING_2026)');
+	['MODERN', 'PTOLEMY'].forEach(name => {
+		const p = Precession[name];
+
+		row(name, num(p.rate, 12), num(p.epoch), num(p.obliquity), num(Precession.period(p)));
+	});
+	row('MOVING_2026', num(SolarEccentric.MOVING_2026.apogeeRate), num(SolarEccentric.MOVING_2026.apogeeEpoch));
+	row('siderealYear(365.24219)', num(Precession.siderealYear(365.24219, Precession.MODERN.rate)));
+	row(
+		'declinationRate',
+		[0, 90, 176, 270]
+			.map(lon => num(Precession.declinationRate(Precession.MODERN.rate, 23.44, lon, -2, 0)))
+			.join(' ')
+	);
+	out('  records: who, star, jd, lon');
+	Precession.RECORDS.forEach(r => row(`${r.who}, ${r.star}`, num(r.jd), num(r.lon), String(r.ptolemy)));
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const q = Precession.equatorial(Precession.MODERN, 203.8, -2.05, jd);
+
+		row(
+			`${label}`,
+			num(Precession.shift(Precession.MODERN, jd)),
+			num(Precession.equinox(Precession.PTOLEMY, jd)),
+			vec(Precession.pole(Precession.MODERN, jd)),
+			num(q.ra),
+			num(q.dec),
+			num(SolarEccentric.apogeeAt(SolarEccentric.MOVING_2026, jd)),
+			num(moving(jd))
+		);
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -833,6 +873,26 @@ function page21(c) {
 	);
 }
 
+function page23(c) {
+	title('8f. PAGE 2.3 (act2-sun/03-precession/page.js)');
+	row('yearText', [-13000, -2830, -127, 0, 137, 2026, 13790].map(y => quote(c.yearText(y))).join(' '));
+	row(
+		'yearTicks 1000',
+		c
+			.yearTicks(-2999, 3000, 1000)
+			.map(t => `${t.value}:${t.label}`)
+			.join(' ')
+	);
+	row('leastSquares', JSON.stringify(c.leastSquares([0, 1, 2], [1, 3, 5])));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'CHANGE_RANGE')),
+		JSON.stringify(inContext(c, 'DECLINATION_RANGE')),
+		JSON.stringify(inContext(c, 'RECORDS_RANGE')),
+		JSON.stringify(inContext(c, 'PTOLEMY_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -896,12 +956,14 @@ function buildTable() {
 	clockSection(shared);
 	solarEccentricSection(shared);
 	equationOfTimeSection(shared);
+	precessionSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
 	page13(pages[2]);
 	page21(pages[3]);
 	page22(pages[4]);
+	page23(pages[5]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';
