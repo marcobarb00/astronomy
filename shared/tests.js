@@ -6,8 +6,8 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 2.2 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
-   solar-eccentric.js, equation-of-time.js).
+   pages 1.1 to 2.3 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   solar-eccentric.js, equation-of-time.js, precession.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -25,7 +25,8 @@
 	13. The clocks and the mean Sun (Meeus ch. 12, 25; Almagest III 7; page 1.3)
 	14. The solar eccentric (Almagest III 4-7; page 2.1)
 	15. The equation of time (Almagest I 16, III 9; De Rev. III 26; Meeus ch. 28; page 2.2)
-	16. Run
+	16. Precession and the moving apogee (Almagest VII 2; page 2.3)
+	17. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1497,7 +1498,124 @@ function testEquationOfTime() {
 }
 
 /* ==========================================================================
-   16. RUN
+   16. PRECESSION AND THE MOVING APOGEE (page 2.3)
+   The uniform model against the reference sky's long-term precession
+   (within 3' of Spica over the thousand years on either side of 2026,
+   tools/numbers/2.3-precession.js); its geometry (the equinox is the
+   direction of P x K); the sidereal year; Ptolemy's rule of 1° in 100
+   years; the moving apogee equal to the fixed one at its epoch.
+   ========================================================================== */
+
+function testPrecessionModel() {
+	group('Precession · models/precession.js, the moving apogee (page 2.3)');
+
+	// the model's Spica against the reference star, 1,000 years before 2026
+	const spica = Stars.find('Spica');
+	const epoch = Precession.MODERN.epoch;
+	const spicaThen = Stars.ofDate(spica, epoch);
+	const spicaLon = Ephem.equatorialToEcliptic(spicaThen.ra, spicaThen.dec, Ephem.meanObliquity(epoch)).lon;
+	const jd1026 = Time.julianDay(1026, 1, 1);
+	const real1026 = Stars.ofDate(spica, jd1026);
+
+	check({
+		name: "Spica's longitude in 1026, uniform model",
+		source: 'Stars.ofDate (Vondrák 2011)',
+		expected: Ephem.equatorialToEcliptic(real1026.ra, real1026.dec, Ephem.meanObliquity(jd1026)).lon,
+		computed: Precession.longitude(Precession.MODERN, spicaLon, jd1026),
+		tol: 3,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+
+	// the equinox of date is the direction of P x K
+	const jd = Time.julianDay(-2000, 1, 1);
+	const node = toLonLat(cross3(Precession.pole(Precession.MODERN, jd), [0, 0, 1]));
+
+	check({
+		name: 'Equinox = direction of P × K, 2001 BC',
+		source: 'page 2.3',
+		expected: Precession.equinox(Precession.MODERN, jd),
+		computed: node.lon,
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg,
+		angle: true
+	});
+
+	// the sidereal year from the tropical year of page 1.3 and the rate,
+	// against the Earth's mean motion in Standish's elements (fixed frame)
+	check({
+		name: 'Sidereal year from 365.24219 d and p',
+		source: 'Standish, Table 2a',
+		expected: 36525 / (35999.37306329 / 360),
+		computed: Precession.siderealYear(MeanSun.yearLength(), Precession.MODERN.rate),
+		tol: 2,
+		unit: 's',
+		scale: 86400,
+		show: days => `${days.toFixed(6)} d`
+	});
+
+	// Almagest VII 2: 2;40° in about 265 years
+	check({
+		name: "Ptolemy's rule over 265 years",
+		source: 'Almagest VII 2',
+		expected: 2 + 40 / 60,
+		computed: Precession.shift(Precession.PTOLEMY, Precession.PTOLEMY.epoch + 265 * 365.25),
+		tol: 2,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// the declination rate against a numerical derivative of the model
+	const before = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch - 3652.5);
+	const after = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch + 3652.5);
+	const now = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch);
+	const eps = Precession.MODERN.obliquity;
+
+	check({
+		name: 'dδ/dt of Spica, formula = derivative',
+		source: 'page 2.3',
+		expected: (after.dec - before.dec) / 20,
+		computed: Precession.declinationRate(Precession.MODERN.rate, eps, spicaLon, -2, now.dec),
+		tol: 0.01,
+		unit: '″/yr',
+		scale: 3600,
+		show: deg => `${(deg * 3600).toFixed(3)}″/yr`
+	});
+
+	// the moving apogee equals the fixed one at its epoch, and moves its rate a century later
+	const moving = SolarEccentric.MOVING_2026;
+
+	check({
+		name: 'Moving apogee at its epoch = FIT_2026',
+		source: 'page 2.3',
+		expected: SolarEccentric.make(SolarEccentric.FIT_2026)(moving.apogeeEpoch),
+		computed: SolarEccentric.make(moving)(moving.apogeeEpoch),
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg,
+		angle: true
+	});
+
+	check({
+		name: 'Moving apogee, one century later',
+		source: 'page 2.3',
+		expected: moving.apogee + moving.apogeeRate,
+		computed: SolarEccentric.apogeeAt(moving, moving.apogeeEpoch + 36525),
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg
+	});
+}
+
+/* ==========================================================================
+   17. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1517,5 +1635,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testClock();
 	testSolarEccentric();
 	testEquationOfTime();
+	testPrecessionModel();
 	render();
 });

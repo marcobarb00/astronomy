@@ -114,7 +114,7 @@ const EquationOfTime = (function () {
 	/* The parts at JD(TT) for a solar model, with the obliquity eps (deg;
 	   by default the mean obliquity of date). */
 	function parts(sun, jdTT, eps = Ephem.meanObliquity(jdTT)) {
-		return partsAt(MeanSun.meanLongitude(sun, jdTT), sun.e, sun.apogee, eps);
+		return partsAt(MeanSun.meanLongitude(sun, jdTT), sun.e, SolarEccentric.apogeeAt(sun, jdTT), eps);
 	}
 
 	/* E (minutes of time) at JD(TT) for a solar model. */

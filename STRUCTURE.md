@@ -273,18 +273,48 @@ The first anomaly and the simplest complete model.
 #### 2.3 · Precession
 
 - **Question:** why do the stars' longitudes grow?
-- **Learn:** Hipparchus' comparison of Spica with older records; the
-  equinoxes moving westward along the ecliptic; tropical versus sidereal
-  year; the pole circling the ecliptic pole; the slow motion of the solar
-  apogee; why the model of 2.1 drifts over centuries.
-- **Figures:** the equator sliding over a fixed ecliptic; the longitude shift
-  of several stars as a function of date; the error curve of 2.1 over 2,000
-  years with and without a moving apogee (`SolarEccentric`, page 2.1, with an
-  apogee that moves; page 2.1 found 1.75° a century from the seasons, of
-  which 1.40° is precession).
-- **Exercises:** recover the precession rate from two dated longitudes;
-  the length of the tropical year given the sidereal year and the rate.
-- **Detour:** nutation.
+- **Learn:** Hipparchus' comparison of Spica with Timocharis (8° and 6°
+  before the autumn equinox, *Almagest* VII 2); the recorded longitudes of
+  Spica from Timocharis to Copernicus; latitudes fixed, declinations
+  changing (VII 3); precession as a turn about the poles of the ecliptic,
+  or the equator turning westward over a fixed ecliptic (Copernicus, III 1),
+  with γ in the direction of $\vec P \times \vec K$; the rate of change of
+  declination, $p\sin\varepsilon\cos\beta\cos\lambda/\cos\delta$; the
+  pole's circle of 25,770 years (Thuban, Polaris, Vega); tropical versus
+  sidereal year, $Y_\text{s} = Y \cdot 360^\circ/(360^\circ - pY)$; the
+  slow motion of the solar apogee; why the model of 2.1 drifts over
+  centuries.
+- **Figures:** six stars of the reference sky over 6,000 years ((a) the
+  change of λ and β, one line each; (b) δ, a curve per star; static); the
+  equator turning over the fixed ecliptic (3D in the ecliptic frame, year
+  slider and play, presets 2831 BC, 128 BC, 2026, AD 13,790); a blue plate
+  of the path of the pole among the northern stars (on trial: Marco decides
+  whether to keep it); Spica's six records with the line fitted to them and
+  Ptolemy's rule (static); the error curves of uniform precession for Spica
+  and of the eccentric with and without a moving apogee over 2,000 years;
+  the thirteen records of Spica, Regulus and β Scorpii minus the real sky,
+  with the error of Ptolemy's Sun (static).
+- **Fit:** Ptolemy's 1° in 100 years from Regulus (VII 2); the rate from
+  Spica's records over 18 centuries (50.6″ a year); $p = 50.29''$ a year
+  from the reference sky around 2026; Copernicus' mean rate (III 6); the
+  apogee's rate, 1.741° a century, from the seasons of seventeen years by
+  Hipparchus' method, of which 1.397° is precession.
+- **Test:** uniform precession within 2.6′ of Spica over 2,000 years; the
+  eccentric with a moving apogee within 6′ over 2,000 years (38.5′ with the
+  apogee fixed), and page 2.2's equation of time within 11 s over 1,000
+  years; Ptolemy's slow rate comes mostly from his Sun: the records he
+  reduced err as his Sun does, and 49.9″ less the 14.9″ a year of his
+  Sun's drift gives 34.9″, near his 36″ (the full cause is debated).
+- **Exercises:** the rate from two records of Regulus (Hipparchus and
+  al-Battani; Hipparchus and Ptolemy); the sidereal year from the
+  tropical year and the rate, and Ptolemy's, nearly right because his
+  errors cancel; Copernicus' uneven precession (break the model).
+- **Code:** `models/precession.js` (`Precession`: `MODERN`, `PTOLEMY`, the
+  records of the three stars); `SolarEccentric.apogeeAt` and
+  `MOVING_2026`; Regulus in `Stars.LIST`, β Scorpii and Thuban in
+  `Stars.MORE`.
+- **Detour:** nutation; Newton (the cause of precession); perturbations
+  (the apogee's own motion).
 - **Hands over:** the Sun is solved to arcminutes. The Moon is next, and it is
   much harder.
 
@@ -461,6 +491,9 @@ once on the page.
 | $E$ | equation of time, apparent minus mean solar time ($\bar\lambda - \alpha$, at 4 min per degree), positive when the sundial is ahead of the clock (Meeus' sign) |
 | $e_\varepsilon$ | $\tan^2(\varepsilon/2)$, the "eccentricity" of the reduction to the equator, $\tan(\lambda - \alpha) = e_\varepsilon \sin 2\lambda / (1 + e_\varepsilon \cos 2\lambda)$ (page 2.2) |
 | $\Delta\lambda$ | model minus reference, in arcminutes |
+| $p$ | the rate of precession in longitude (″ a year), page 2.3 |
+| $Y,\ Y_\text{s}$ | the tropical year (page 1.3) and the sidereal year (page 2.3) |
+| $\dot\lambda_A$ | the motion of the apogee relative to γ (degrees a century), page 2.3 |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -550,7 +583,9 @@ solar eccentric, the lunar epicycle, the planetary equant) live in
 model that does not predict a longitude (the turning sky, `models/diurnal.js`;
 the frames, `models/frames.js`; the clocks, `models/clock.js`; the equation
 of time, `models/equation-of-time.js`) exports plain functions instead of
-`make()`. The mean Sun (`models/mean-sun.js`, page 1.3)
+`make()`. Precession (`models/precession.js`, page 2.3) predicts the
+longitude of a star: its `make(parameters, lon0)` takes the star's longitude
+at the epoch. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,

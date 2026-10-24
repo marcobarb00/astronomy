@@ -1408,6 +1408,18 @@ figure.plate-figure {
 	fill: var(--plate-accent);
 }
 
+/* The ticks across a highlighted path (the pole's path, page 2.3). */
+.plate .highlight-tick {
+	stroke: var(--plate-accent);
+	stroke-width: 1.8;
+}
+
+/* The cross of a point named by a symbol (the ecliptic pole K). */
+.plate .symbol-mark {
+	stroke: var(--plate-ink);
+	stroke-width: 1.4;
+}
+
 /* ==========================================================================
    14. HUB
    The acts in order, each with its pages as tiles; then the key of

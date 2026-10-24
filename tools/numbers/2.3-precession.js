@@ -1,17 +1,13 @@
 /* ==========================================================================
    NUMBERS FOR PAGE 2.3 "PRECESSION" (tools/numbers/2.3-precession.js)
    Loads the site's shared code (common, time, ephemeris, stars and the
-   models mean-sun.js, solar-eccentric.js, equation-of-time.js, frames.js)
+   models mean-sun.js, solar-eccentric.js, equation-of-time.js,
+   precession.js)
    in a Node vm context and prints every number quoted on the page, in
    page order.
 
    Run from the repository root:  node tools/numbers/2.3-precession.js
    (about two minutes: section 6 finds the seasons of seventeen years)
-
-   DRAFT FOR THE PLAN. Until the page is built, the three stars the page
-   adds to shared/stars.js (Regulus, beta1 Scorpii, Thuban) and the moving
-   apogee that it adds to models/solar-eccentric.js are defined here, in
-   section 2. They move to the shared code when the page is built.
 
    TABLE OF CONTENTS
 	 1. Loading the shared code
@@ -44,9 +40,10 @@ const shared = loadFiles([
 	'shared/models/frames.js',
 	'shared/models/mean-sun.js',
 	'shared/models/solar-eccentric.js',
-	'shared/models/equation-of-time.js'
+	'shared/models/equation-of-time.js',
+	'shared/models/precession.js'
 ]);
-const { norm180, norm360, sin, cos, asin, Time, Ephem, Stars, MeanSun, SolarEccentric, EquationOfTime } = shared;
+const { norm180, sin, cos, Time, Ephem, Stars, MeanSun, SolarEccentric, EquationOfTime, Precession } = shared;
 
 /* ==========================================================================
    2. HELPERS
@@ -69,7 +66,7 @@ function dms(degrees) {
 	const m = Math.floor((total - 3600 * d) / 60);
 	const s = total - 3600 * d - 60 * m;
 
-	return `${sign}${d}°${String(m).padStart(2, '0')}'${String(s).padStart(2, '0')}"`;
+	return `${sign}${d}°${String(m).padStart(2, '0')}'${String(s).padStart(2, '0')}" (${sign}${Math.abs(degrees).toFixed(2)}°)`;
 }
 
 /* A length of year (days) -> "365 d 6 h 9 min 10 s". */
@@ -83,17 +80,10 @@ function yearText(days) {
 }
 
 /* ---------- Stars ----------
-   The stars of shared/stars.js, and the three the page adds (SIMBAD,
-   retrieved 2026-10-24, tools/numbers/data/stars-2.3-2026-10-24.csv). */
+   Regulus, beta Scorpii and Thuban were added to shared/stars.js for this
+   page (SIMBAD, retrieved 2026-10-24, tools/numbers/data/). */
 
-// prettier-ignore
-const ADDED_STARS = [
-	{ name: 'Regulus',    id: 'alf Leo',   ra: 152.09296243828146, dec: 11.967208776100023,  pmra: -248.73, pmdec: 5.59,   mag: 1.4 },
-	{ name: 'β Scorpii',  id: 'bet01 Sco', ra: 241.3592999275,     dec: -19.805452782777778, pmra: -5.2,    pmdec: -24.04, mag: 2.62 },
-	{ name: 'Thuban',     id: 'alf Dra',   ra: 211.09732332021125, dec: 64.3758696175675,    pmra: -56.351, pmdec: 12.329, mag: 3.68 }
-];
-
-const star = name => ADDED_STARS.find(s => s.name === name) ?? Stars.find(name);
+const star = name => Stars.find(name);
 
 /* Mean ecliptic coordinates of date and the declination of a star:
    { lon, lat, dec } (deg). The reference sky's stars: proper motion, then
@@ -119,24 +109,6 @@ function rateAt(jd) {
 	const half = 36525 / 2;
 
 	return (norm180(equinoxShift(jd + half) - equinoxShift(jd - half)) * 3600) / 100;
-}
-
-/* ---------- The moving apogee ----------
-   The eccentric of page 2.1 with its apogee moving uniformly relative to
-   the equinox: apogee(t) = apogee + apogeeRate (t - apogeeEpoch), the
-   rate in degrees a Julian century. (To go into solar-eccentric.js.) */
-function apogeeAt(parameters, jd) {
-	const rate = parameters.apogeeRate ?? 0;
-
-	return parameters.apogee + (rate * (jd - (parameters.apogeeEpoch ?? jd))) / 36525;
-}
-
-function makeSun(parameters) {
-	return jd => {
-		const L = MeanSun.meanLongitude(parameters, jd);
-
-		return norm360(L + SolarEccentric.equationOfCentre(L - apogeeAt(parameters, jd), parameters.e));
-	};
 }
 
 /* ---------- The reference Sun's seasons (as in 2.1-uneven-year.js) ---------- */
@@ -215,109 +187,9 @@ function extremes(fn, a, b, step) {
    3. OBSERVATION
    ========================================================================== */
 
-/* The recorded longitudes (deg, from the spring equinox) of Spica, Regulus
-   and beta Scorpii. Ptolemy counts from a solstice or an equinox; the
-   conversions are in the comments. Dates are those of the sources, in
-   astronomical years (-293 = 294 BC), to the day. */
-const RECORDS = [
-	// Almagest VII 3: Timocharis' occultations, as Ptolemy reduced them
-	{
-		who: 'Timocharis',
-		star: 'Spica',
-		jd: Time.julianDay(-293, 3, 9.8),
-		lon: 90 + 82 + 1 / 3,
-		text: '82 1/3 from the summer solstice (VII 3)'
-	},
-	{
-		who: 'Timocharis',
-		star: 'Spica',
-		jd: Time.julianDay(-282, 11, 9.1),
-		lon: 90 + 82.5,
-		text: '82 1/2 from the summer solstice (VII 3)'
-	},
-	{
-		who: 'Timocharis',
-		star: 'β Scorpii',
-		jd: Time.julianDay(-294, 12, 21.1),
-		lon: 180 + 32,
-		text: '32 from the autumn equinox (VII 3)'
-	},
-	// Almagest VII 2 (-128/7); De Rev. III 2 (196 years after Alexander): 29 50' after the summer solstice
-	{
-		who: 'Hipparchus',
-		star: 'Regulus',
-		jd: Time.julianDay(-127, 1, 1),
-		lon: 90 + 29 + 50 / 60,
-		text: '29;50 from the summer solstice (VII 2; De Rev. III 2)'
-	},
-	// Almagest VII 3: Menelaus' occultations, as Ptolemy reduced them
-	{
-		who: 'Menelaus',
-		star: 'Spica',
-		jd: Time.julianDay(98, 1, 11.2),
-		lon: 90 + 86.25,
-		text: '86 1/4 from the summer solstice (VII 3)'
-	},
-	{
-		who: 'Menelaus',
-		star: 'β Scorpii',
-		jd: Time.julianDay(98, 1, 14.2),
-		lon: 180 + 35 + 55 / 60,
-		text: '35;55 from the autumn equinox (VII 3)'
-	},
-	// Almagest VII 2 (Regulus, 139 Feb 23); the catalogue, epoch Antoninus 1 = 137 Jul 20 (VII 5, VIII 1)
-	{
-		who: 'Ptolemy',
-		star: 'Regulus',
-		jd: Time.julianDay(139, 2, 23.8),
-		lon: 90 + 32.5,
-		text: '32 1/2 from the summer solstice (VII 2)'
-	},
-	{
-		who: 'Ptolemy',
-		star: 'Spica',
-		jd: Time.julianDay(137, 7, 20),
-		lon: 150 + 26 + 2 / 3,
-		text: 'Virgo 26 2/3, catalogue (VIII 1)'
-	},
-	{
-		who: 'Ptolemy',
-		star: 'β Scorpii',
-		jd: Time.julianDay(139, 2, 23.8),
-		lon: 180 + 36 + 1 / 3,
-		text: '36 1/3 from the autumn equinox (De Rev. III 2)'
-	},
-	// De Rev. III 2: al-Battani, 1,202 years after Alexander's death (about 880)
-	{
-		who: 'al-Battani',
-		star: 'Regulus',
-		jd: Time.julianDay(880, 1, 1),
-		lon: 90 + 44 + 5 / 60,
-		text: '44;5 from the summer solstice (De Rev. III 2)'
-	},
-	{
-		who: 'al-Battani',
-		star: 'β Scorpii',
-		jd: Time.julianDay(880, 1, 1),
-		lon: 180 + 47 + 50 / 60,
-		text: '47;50 from the autumn equinox (De Rev. III 2)'
-	},
-	// De Rev. III 2: Copernicus at Frombork, Libra 17;14 (1515) and 17;21 (1525)
-	{
-		who: 'Copernicus',
-		star: 'Spica',
-		jd: Time.julianDay(1515, 7, 1),
-		lon: 180 + 17 + 14 / 60,
-		text: 'Libra 17;14 (De Rev. III 2)'
-	},
-	{
-		who: 'Copernicus',
-		star: 'Spica',
-		jd: Time.julianDay(1525, 7, 1),
-		lon: 180 + 17 + 21 / 60,
-		text: 'Libra 17;21 (De Rev. III 2)'
-	}
-];
+/* The recorded longitudes of Spica, Regulus and beta Scorpii, from
+   Timocharis to Copernicus (Precession.RECORDS, with their sources). */
+const RECORDS = Precession.RECORDS;
 
 title('Observation: Hipparchus and Timocharis (Almagest VII 2)');
 console.log('Spica "formerly 8°, now 6°" in advance of the autumn equinox: 172° then 174° (quoted, not computed)');
@@ -334,7 +206,7 @@ RECORDS.filter(r => r.star === 'Spica').forEach(r => {
 	const real = ofDate(star('Spica'), r.jd);
 
 	console.log(
-		`${r.who.padEnd(11)} ${year(Time.calendarDate(r.jd).year).padStart(7)}: recorded ${f(r.lon, 2)}° (${r.text}); real ${f(real.lon, 2)}°, recorded - real ${f(r.lon - real.lon, 2)}°`
+		`${r.who.padEnd(11)} ${year(Time.calendarDate(r.jd).year).padStart(7)}: recorded ${f(r.lon, 2)}° (${dms(r.lon)}, ${r.source}); real ${f(real.lon, 2)}°, recorded - real ${f(r.lon - real.lon, 2)}°`
 	);
 });
 {
@@ -358,7 +230,7 @@ title('Observation: latitude and declination of Spica (Almagest VII 3)');
 console.log(
 	'recorded latitude: 2° south for Timocharis and for Ptolemy (VII 3); Ptolemy: declination 1/2° south (VII 3, De Rev. III 2)'
 );
-[-293, -128, 139, 1525, 2026].forEach(y => {
+[-293, -127, 139, 1525, 2026].forEach(y => {
 	const p = ofDate(star('Spica'), jdOf(y));
 
 	console.log(`${year(y).padStart(7)}: real latitude ${f(p.lat, 2)}°, declination ${f(p.dec, 2)}°`);
@@ -411,7 +283,7 @@ console.log(
 {
 	const mid = ofDate(star('Spica'), jdOf(5));
 	const rate = (P * sin(EPS_2026) * cos(mid.lat) * cos(mid.lon)) / cos(mid.dec);
-	const a = ofDate(star('Spica'), jdOf(-128));
+	const a = ofDate(star('Spica'), jdOf(-127));
 	const b = ofDate(star('Spica'), jdOf(139));
 
 	console.log(
@@ -440,14 +312,15 @@ console.log(`period 360° / p = ${f(360 / P, 0)} years`);
 		return best;
 	};
 
-	/* The uniform model of the page: the star fixed in the ecliptic
-	   frame of 2026, the pole of the equator turning about K at the rate p
-	   with the obliquity of 2026. */
+	/* The uniform model of the page (Precession.MODERN, as Figure 2 draws
+	   it): the star fixed at its place of 2026 in the ecliptic frame of
+	   2026, the pole of the equator turning about K. */
 	const modelFromPole = (name, y) => {
-		const e = ofDate(star(name), J2026);
-		const lam = e.lon + P * (y - 2026);
+		const epoch = Precession.MODERN.epoch;
+		const p = Stars.ofDate(star(name), epoch);
+		const e = Ephem.equatorialToEcliptic(p.ra, p.dec, Precession.MODERN.obliquity);
 
-		return 90 - asin(sin(e.lat) * cos(EPS_2026) + cos(e.lat) * sin(EPS_2026) * sin(lam));
+		return 90 - Precession.equatorial(Precession.MODERN, e.lon, e.lat, jdOf(y)).dec;
 	};
 	const modelClosest = (name, a, b, step) => {
 		let best = { d: Infinity, y: 0 };
@@ -472,10 +345,13 @@ console.log(`period 360° / p = ${f(360 / P, 0)} years`);
 		const model = modelClosest(name, a, b, step);
 
 		console.log(
-			`${name.padEnd(8)} nearest the pole: real ${year(real.y)}, ${f(real.d, 2)}°; uniform model ${year(model.y)}, ${f(model.d, 2)}°`
+			`${name.padEnd(8)} nearest the pole: real ${year(real.y)}, ${f(real.d, 2)}° (${real.y - 2026} years from 2026); uniform model ${year(model.y)}, ${f(model.d, 2)}° (Figure 2's presets)`
 		);
 	});
 	console.log(`Polaris from the pole in 2026: ${f(fromPole('Polaris', J2026), 2)}°`);
+	console.log(
+		`Figure 3: one turn centred on 2026, from ${year(Math.round(2026 - 180 / P))} to ${year(Math.round(2026 + 180 / P))}`
+	);
 }
 
 title('Model: the tropical and the sidereal year');
@@ -493,7 +369,7 @@ console.log(
 	`Thabit ibn Qurra (De Rev. III 13), 365;15,23 d = ${f(fromSexagesimal(365, 15, 23), 5)} d = ${yearText(fromSexagesimal(365, 15, 23))}`
 );
 console.log(
-	`Copernicus (De Rev. III 14), 365;15,24,10 d = ${f(fromSexagesimal(365, 15, 24, 10), 6)} d = ${yearText(fromSexagesimal(365, 15, 24, 10))}`
+	`Copernicus (De Rev. III 14), 365;15,24,10 d = ${f(fromSexagesimal(365, 15, 24, 10), 6)} d = ${yearText(fromSexagesimal(365, 15, 24, 10))}, ${f((fromSexagesimal(365, 15, 24, 10) - Y_SIDEREAL) * 86400, 1)} s longer than ours`
 );
 
 /* ==========================================================================
@@ -510,6 +386,10 @@ title("Fit: Hipparchus' and Ptolemy's rate (Almagest VII 2)");
 		`Regulus: ${f(hip.lon, 3)}° -> ${f(pto.lon, 3)}°, ${dms(moved)} in Ptolemy's 265 years: 1° in ${f(265 / moved, 1)} years, ${f((moved / 265) * 3600, 1)}" a year`
 	);
 	console.log(`Hipparchus: "not less than 1/100 of a degree" a year = ${f(3600 / 100, 1)}" a year`);
+	console.log(
+		`historical values in decimals: 29;50 = ${f(29 + 50 / 60, 2)}°, 44;5 = ${f(44 + 5 / 60, 2)}°, 23;57 = ${f(23 + 57 / 60, 2)}°`
+	);
+	console.log(`an error of 1° over 265 years: ${f(3600 / 265, 1)}" a year`);
 }
 
 title("Fit: the rate from Spica's records");
@@ -537,6 +417,9 @@ title("Fit: the rate from Spica's records");
 
 title('Fit: the rate from the reference sky, around 2026');
 console.log(
+	`Precession.MODERN in precession.js: rate ${f(Precession.MODERN.rate * 3600, 3)}" a year, obliquity ${Precession.MODERN.obliquity}° (here ${f(EPS_2026, 5)}°), epoch ${Time.formatDate(Precession.MODERN.epoch)}`
+);
+console.log(
 	`p = ${f(P * 3600, 3)}" a year = ${f(P * 100, 4)}° a century, 1° in ${f(1 / P, 2)} years; from Spica alone ${f((norm180(ofDate(star('Spica'), J2026 + 36525 / 2).lon - ofDate(star('Spica'), J2026 - 36525 / 2).lon) * 3600) / 100, 3)}" a year`
 );
 {
@@ -544,6 +427,10 @@ console.log(
 
 	console.log(
 		`Copernicus' mean precession, 23;57° in 1,717 Egyptian years: ${f((copernicus * 3600 * DAYS_PER_YEAR) / 365, 2)}" a Julian year; his period 25,816 years (360° / rate = ${f(360 / copernicus, 0)})`
+	);
+	console.log(`   ours minus his: ${f(P * 3600 - (copernicus * 3600 * DAYS_PER_YEAR) / 365, 3)}" a year`);
+	console.log(
+		`   the real mean rate over his records, 294 BC to 1525: ${f(((equinoxShift(jdOf(1525)) - equinoxShift(jdOf(-293))) * 3600) / (1525 + 293), 2)}" a year`
 	);
 }
 
@@ -575,24 +462,21 @@ console.log(
 	`the line at 2026: ${f(apogeeLine.a + apogeeLine.b * 2026, 2)}° (FIT_2026: ${SolarEccentric.FIT_2026.apogee}°)`
 );
 
-/* The eccentric of page 2.1 with a moving apogee, through its value of
-   2026 at the 2026 equinox (when page 2.1 fitted it). */
-const MOVING = Object.assign({}, SolarEccentric.FIT_2026, {
-	apogeeRate: Number(APOGEE_RATE.toFixed(3)),
-	apogeeEpoch: 2461120.1
-});
+/* The eccentric of page 2.1 with a moving apogee (SolarEccentric.
+   MOVING_2026), through its value of 2026 at the 2026 equinox, when page
+   2.1 fitted it. */
+const MOVING = SolarEccentric.MOVING_2026;
 console.log(
-	`MOVING: apogee ${MOVING.apogee}° at JD ${MOVING.apogeeEpoch} (${Time.formatDate(MOVING.apogeeEpoch, { time: true })}), rate ${MOVING.apogeeRate}° a century`
+	`MOVING_2026 in solar-eccentric.js: apogee ${MOVING.apogee}° at JD ${MOVING.apogeeEpoch} (${Time.formatDate(MOVING.apogeeEpoch, { time: true })} TT), rate ${MOVING.apogeeRate}° a century (fitted here: ${f(APOGEE_RATE, 3)})`
 );
 
 /* ==========================================================================
    6. TEST
    ========================================================================== */
 
-title('Test: uniform precession against the real stars, Figure 4 (a)');
+title('Test: uniform precession against the real stars, Figure 5 (a)');
 {
-	const spicaNow = ofDate(star('Spica'), J2026);
-	const model = jd => spicaNow.lon + (P * (jd - J2026)) / DAYS_PER_YEAR;
+	const model = Precession.make(Precession.MODERN, ofDate(star('Spica'), Precession.MODERN.epoch).lon);
 
 	[200, 2000, 6000].forEach(span => {
 		const half = (span / 2) * DAYS_PER_YEAR;
@@ -607,10 +491,10 @@ title('Test: uniform precession against the real stars, Figure 4 (a)');
 	});
 }
 
-title('Test: the Sun with a moving apogee, Figure 4 (b)');
+title('Test: the Sun with a moving apogee, Figure 5 (b)');
 {
 	const fixed = SolarEccentric.make(SolarEccentric.FIT_2026);
-	const moving = makeSun(MOVING);
+	const moving = SolarEccentric.make(MOVING);
 	const middle = Time.julianDay(2026, 7, 2);
 
 	[100, 1000, 2000].forEach(span => {
@@ -634,7 +518,7 @@ title('Test: the equation of time with a moving apogee (page 2.2)');
 		EquationOfTime.partsAt(
 			MeanSun.meanLongitude(parameters, jd),
 			parameters.e,
-			apogeeAt(parameters, jd),
+			SolarEccentric.apogeeAt(parameters, jd),
 			Ephem.meanObliquity(jd)
 		).total;
 
@@ -653,7 +537,7 @@ title('Test: the equation of time with a moving apogee (page 2.2)');
 	});
 }
 
-title("Test: Ptolemy's stars, Figure 5 (records minus real; Ptolemy's Sun minus real)");
+title("Test: Ptolemy's stars, Figure 6 (records minus real; Ptolemy's Sun minus real)");
 const ptolemySun = SolarEccentric.make(SolarEccentric.PTOLEMY);
 
 /* The yearly mean error of Ptolemy's Sun around JD (deg). */
@@ -680,20 +564,42 @@ RECORDS.forEach(r => {
 	const slow = (MeanSun.MODERN.n - MeanSun.PTOLEMY.n) * DAYS_PER_YEAR * 3600;
 
 	console.log(
-		`Ptolemy's mean Sun falls behind by ${f(slow, 1)}" a year; the real rate in his time ${f(rateAt(jdOf(0)), 1)}" a year; minus his Sun's ${f(slow, 1)}": ${f(rateAt(jdOf(0)) - slow, 1)}" a year (his 36")`
+		`Ptolemy's mean motion is slower than today's by ${f(slow, 1)}" a year; the real rate in his time ${f(rateAt(jdOf(0)), 1)}" a year`
+	);
+
+	/* The drift of his Sun's error in his own era, from the yearly mean
+	   errors at Timocharis' first record and at the catalogue's epoch
+	   (Delta T and the longer year of antiquity make it smaller than
+	   the difference of the mean motions). */
+	const first = RECORDS[0];
+	const catalogue = RECORDS.find(r => r.who === 'Ptolemy' && r.star === 'Spica');
+	const drift =
+		((ptolemySunError(first.jd) - ptolemySunError(catalogue.jd)) * 3600) /
+		(Time.decimalYear(catalogue.jd) - Time.decimalYear(first.jd));
+
+	console.log(
+		`his Sun's error drifts by ${f(drift, 1)}" a year from 294 BC to AD 137; the real rate ${f(rateAt(jdOf(0)), 1)}" less this: ${f(rateAt(jdOf(0)) - drift, 1)}" a year (his 36")`
+	);
+	console.log(
+		`Spica's declination: Hipparchus +3/5°, Ptolemy -1/2° (VII 3), a change of 1 1/10°; real change ${f(ofDate(star('Spica'), jdOf(139)).dec - ofDate(star('Spica'), jdOf(-127)).dec, 2)}°; Ptolemy's -1/2° against the real ${f(ofDate(star('Spica'), jdOf(139)).dec, 2)}°, ${f(-0.5 - ofDate(star('Spica'), jdOf(139)).dec, 2)}° short`
 	);
 }
 {
 	/* Ptolemy's catalogue rule (VII 4): add 1° a century to the positions
 	   of AD 137. Spica by that rule, against the real Spica. */
 	const catalogue = RECORDS.find(r => r.who === 'Ptolemy' && r.star === 'Spica');
-	const rule = y => catalogue.lon + (y - 137.55) / 100;
+	const rule = y => Precession.longitude(Precession.PTOLEMY, catalogue.lon, jdOf(y));
 
 	[1515, 2026].forEach(y => {
+		const real = ofDate(star('Spica'), jdOf(y)).lon;
+
 		console.log(
-			`Ptolemy's rule for Spica in ${y}: ${f(rule(y), 2)}°, real ${f(ofDate(star('Spica'), jdOf(y)).lon, 2)}°`
+			`Ptolemy's rule for Spica in ${y}: ${f(rule(y), 2)}°, real ${f(real, 2)}°, short by ${f(real - rule(y), 3)}°`
 		);
 	});
+	console.log(
+		`Ptolemy's year 365;14,48 d is ${f((fromSexagesimal(365, 14, 48) - Y_TROPICAL) * 1440, 2)} min longer than ours (page 2.1)`
+	);
 }
 
 /* ==========================================================================
@@ -701,13 +607,13 @@ RECORDS.forEach(r => {
    ========================================================================== */
 
 title('Residual: the rate changes');
-[-128, 139, 880, 1525, 2026, 3000].forEach(y => {
+[-127, 139, 880, 1525, 2026, 3000].forEach(y => {
 	console.log(`${year(y).padStart(7)}: ${f(rateAt(jdOf(y)), 2)}" a year`);
 });
 
 title('Residual: the obliquity');
 console.log(
-	`Ptolemy 23;51,20 = ${f(fromSexagesimal(23, 51, 20), 4)}°; real ${f(Ephem.meanObliquity(jdOf(-250)), 4)}° (250 BC), ${f(Ephem.meanObliquity(jdOf(139)), 4)}° (AD 139)`
+	`Ptolemy 23;51,20 = ${f(fromSexagesimal(23, 51, 20), 4)}°; real ${f(Ephem.meanObliquity(jdOf(-250)), 4)}° (250 BC), ${f(Ephem.meanObliquity(jdOf(139)), 4)}° (AD 139): ${f((fromSexagesimal(23, 51, 20) - Ephem.meanObliquity(jdOf(139))) * 60, 1)}' too large`
 );
 console.log(
 	`al-Battani 23;35 = ${f(fromSexagesimal(23, 35), 4)}°; real ${f(Ephem.meanObliquity(jdOf(880)), 4)}° (880)`
@@ -725,6 +631,13 @@ title('Residual: the latitudes are not quite fixed');
 	const b = ofDate(star('Spica'), J2026).lat;
 
 	console.log(`Spica's latitude: ${f(a, 3)}° (294 BC) -> ${f(b, 3)}° (2026), ${f((b - a) * 60, 1)}'`);
+
+	// the same without Spica's proper motion: the ecliptic's own turn
+	const still = Object.assign({}, star('Spica'), { pmra: 0, pmdec: 0 });
+	const c = ofDate(still, jdOf(-293)).lat;
+	const d = ofDate(still, J2026).lat;
+
+	console.log(`   without proper motion: ${f((d - c) * 60, 1)}'`);
 }
 
 title('Residual: nutation (Ephem.nutation, Meeus ch. 22)');
@@ -760,7 +673,7 @@ title('Exercise 1: the rate from two records of Regulus');
 		`Hipparchus to al-Battani: ${dms(bat.lon - hip.lon)} in ${span} years: ${f(rate * 3600, 1)}" a year, 1° in ${f(1 / rate, 1)} years`
 	);
 	console.log(
-		`   real: ${f(realHip, 2)}° -> ${f(realBat, 2)}°, ${f(realBat - realHip, 2)}°: ${f(((realBat - realHip) / span) * 3600, 1)}" a year`
+		`   real: ${f(realHip, 2)}° -> ${f(realBat, 2)}°, ${f(realBat - realHip, 2)}°: ${f(((realBat - realHip) / span) * 3600, 1)}" a year; the records are ${f(bat.lon - hip.lon - (realBat - realHip), 2)}° too far apart`
 	);
 	console.log(
 		`Hipparchus to Ptolemy: ${dms(pto.lon - hip.lon)} in 265 years: ${f(((pto.lon - hip.lon) / 265) * 3600, 1)}" a year`
@@ -776,13 +689,22 @@ title('Exercise 2: two years');
 	const ptolemySidereal = ptolemyTropical / (1 - 0.01 / 360);
 
 	console.log(
-		`modern: ${f(Y_TROPICAL, 5)} d and ${f(P * 3600, 2)}" a year -> sidereal ${f(Y_SIDEREAL, 5)} d (see section 4)`
+		`modern: ${f(Y_TROPICAL, 5)} d and ${f(P * 3600, 2)}" a year: pY = ${f(pPerTropicalYear, 6)}° -> sidereal ${f(Y_SIDEREAL, 5)} d (see section 4)`
 	);
 	console.log(
 		`Hipparchus and Ptolemy: tropical 365;14,48 = ${f(ptolemyTropical, 5)} d, 1° a century -> sidereal ${f(ptolemySidereal, 5)} d = ${yearText(ptolemySidereal)}`
 	);
 	console.log(
 		`   errors: tropical ${f((ptolemyTropical - Y_TROPICAL) * 1440, 2)} min too long, sidereal ${f((ptolemySidereal - Y_SIDEREAL) * 86400, 0)} s too long`
+	);
+
+	/* The Sun's motion among the stars is n - p, both per tropical year:
+	   Ptolemy's n is slower than today's, and his p too. */
+	const nSlow = (MeanSun.MODERN.n - MeanSun.PTOLEMY.n) * DAYS_PER_YEAR * 3600;
+	const pSlow = P * 3600 - 36;
+
+	console.log(
+		`   his n slower by ${f(nSlow, 1)}" a year, his p by ${f(pSlow, 1)}": n - p wrong by ${f(nSlow - pSlow, 1)}" a year, ${f(((nSlow - pSlow) / (360 * 3600)) * Y_SIDEREAL * 86400, 0)} s in the sidereal year`
 	);
 }
 
@@ -801,6 +723,9 @@ console.log(
 		`   real ${year(a)} to ${year(b)}: ${f(moved, 2)}° in ${b - a} years, 1° in ${f((b - a) / moved, 1)} years`
 	);
 });
+console.log(
+	`   the real rate from the first interval to the last grows by ${f(((equinoxShift(jdOf(1525)) - equinoxShift(jdOf(880))) / 645 / ((equinoxShift(jdOf(139)) - equinoxShift(jdOf(-293))) / 432) - 1) * 100, 2)}%`
+);
 {
 	const pick = (who, s) => RECORDS.find(r => r.who === who && r.star === s);
 	const pairs = [
@@ -825,13 +750,45 @@ console.log(
    ========================================================================== */
 
 title('Scales');
-console.log(`Figure 2: one turn of the pole in ${f(360 / P, 0)} years; the year slider runs from 13000 BC to AD 13000`);
+console.log(
+	'Figure 1: the changes of longitude and latitude and the declinations above (axes -80° to +20°, -40° to +100°)'
+);
+console.log(
+	`Figure 2: one turn of the pole in ${f(360 / P, 0)} years; the year slider runs from 11,001 BC to AD 15,000, past the presets 2831 BC and AD 13,790`
+);
+{
+	/* Figure 4, 400 BC to AD 1600: the real Spica, Ptolemy's rule and
+	   the line fitted to the records. */
+	const spica = RECORDS.filter(r => r.star === 'Spica');
+	const line = lineFit(
+		spica.map(r => Time.decimalYear(r.jd)),
+		spica.map(r => r.lon)
+	);
+	const catalogue = RECORDS.find(r => r.who === 'Ptolemy' && r.star === 'Spica');
+	let low = Infinity;
+	let high = -Infinity;
+
+	for (let y = -399; y <= 1600; y += 25) {
+		const values = [
+			ofDate(star('Spica'), jdOf(y)).lon,
+			Precession.longitude(Precession.PTOLEMY, catalogue.lon, jdOf(y)),
+			line.a + line.b * y
+		];
+
+		low = Math.min(low, ...values);
+		high = Math.max(high, ...values);
+	}
+
+	console.log(`Figure 4: the three lines from ${f(low, 2)}° to ${f(high, 2)}° (axis 165° to 205°)`);
+}
 {
 	const values = RECORDS.map(r => r.lon - ofDate(star(r.star), r.jd).lon);
 
-	console.log(`Figure 5: records minus real from ${f(Math.min(...values), 2)}° to ${f(Math.max(...values), 2)}°`);
+	console.log(`Figure 6: records minus real from ${f(Math.min(...values), 2)}° to ${f(Math.max(...values), 2)}°`);
 
-	const band = extremes(jd => norm180(ptolemySun(jd) - sunLongitude(jd)), jdOf(-400), jdOf(1600), 5);
+	const band = extremes(jd => norm180(ptolemySun(jd) - sunLongitude(jd)), jdOf(-399), jdOf(310), 5);
 
-	console.log(`   Ptolemy's Sun minus real, 400 BC to AD 1600: ${f(band.low, 2)}° to ${f(band.high, 2)}°`);
+	console.log(
+		`   Ptolemy's Sun minus real, 400 BC to AD 310 (the band): ${f(band.low, 2)}° to ${f(band.high, 2)}° (axis -2.5° to +2°)`
+	);
 }
