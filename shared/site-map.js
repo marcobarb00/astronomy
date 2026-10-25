@@ -104,7 +104,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.3',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'Precession',
 			question: "Why do the stars' longitudes grow?",
 			path: 'act2-sun/03-precession/index.html'

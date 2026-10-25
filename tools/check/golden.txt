@@ -718,6 +718,8 @@ Refraction (deg) at true / apparent altitude
                                  J2000 213.915300295 19.182409162  2026.0 214.211983590 19.048055168  -584 184.199304582 34.078973006  3000 225.410479135 14.347072313
   Aldebaran                      mag 0.86  size 6.314286
                                  J2000 68.980162790 16.509302351  2026.0 69.353924895 16.559411129  -584 33.509496011 7.667804592  3000 83.518011141 17.775744150
+  Regulus                        mag 1.4  size 5.928571
+                                 J2000 152.092962438 11.967208776  2026.0 152.438451374 11.839138716  -584 116.122021835 21.924015853  3000 165.216791214 6.806542466
   Altair                         mag 0.76  size 6.385714
                                  J2000 297.695827296 8.868321196  2026.0 298.012823516 8.938735538  -584 266.050499490 5.707252052  3000 309.850838526 12.063980812
   Betelgeuse                     mag 0.42  size 6.628571
@@ -1876,6 +1878,40 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   FIT_2026, 2026 June solstice   -1.855066289  -0.489278251  23.434518714  2461213.466637091
   FIT_2026, range end            -2.692500300  -0.734559493  -22.940929652  2817151.967318893
 
+=== 6f. PRECESSION AND THE MOVING APOGEE (models/precession.js, SolarEccentric.MOVING_2026) ===
+  MODERN                         0.013970555556  2461041.500000000  23.435910000  25768.481329781
+  PTOLEMY                        0.010000000000  1771297.500000000  23.855555556  36000.000000000
+  MOVING_2026                    1.741000000  2461120.106000000
+  siderealYear(365.24219)        365.256364237
+  declinationRate                0.005553941 0.000000000 -0.005540412 0.000000000
+  records: who, star, jd, lon
+  Timocharis, Spica              1614107.300000000  172.333333333  true
+  Timocharis, Spica              1618369.600000000  172.500000000  true
+  Timocharis, β Scorpii          1614028.600000000  212.000000000  true
+  Hipparchus, Regulus            1674671.500000000  119.833333333  false
+  Menelaus, Spica                1756862.700000000  176.250000000  true
+  Menelaus, β Scorpii            1756865.700000000  215.916666667  true
+  Ptolemy, Regulus               1771881.300000000  122.500000000  true
+  Ptolemy, Spica                 1771297.500000000  176.666666667  true
+  Ptolemy, β Scorpii             1771881.300000000  216.333333333  true
+  al-Battani, Regulus            2042477.500000000  134.083333333  false
+  al-Battani, β Scorpii          2042477.500000000  227.833333333  false
+  Copernicus, Spica              2274592.500000000  197.233333333  false
+  Copernicus, Spica              2278245.500000000  197.350000000  false
+  range start                    -70.201534863  31.365475702  [-0.374213543421, 0.134713841792, 0.917505533907]  135.457054966  14.774898609  16.243634742  256.703796499
+  Thales eclipse                 -36.457010988  7.211444216  [-0.236334764385, 0.319889784759, 0.917505533907]  167.557804558  3.110989190  58.295803558  58.747833466
+  Ptolemy                        -26.354281671  359.980000000  [-0.176557326354, 0.356386175042, 0.917505533907]  176.841590212  -0.865607829  70.885747939  114.986919895
+  last Julian day                -6.191872620  345.547926078  [-0.042897741903, 0.395402805997, 0.917505533907]  195.443189757  -8.804119781  96.011988637  200.233758172
+  first Gregorian day            -6.191834371  345.547898700  [-0.042897477942, 0.395402834634, 0.917505533907]  195.443225479  -8.804134445  96.012036303  201.227863988
+  Sputnik (Meeus 7.a)            -0.953370983  341.798252977  [-0.006617591843, 0.397667955371, 0.917505533907]  200.360619663  -10.786159618  102.540169505  191.293634883
+  Meeus 12.a                     -0.541074549  341.503134839  [-0.003755854325, 0.397705278829, 0.917505533907]  200.749952760  -10.939699169  103.053970184  19.597288926
+  Meeus 47.a                     -0.471116585  341.453059548  [-0.003270254774, 0.397709568258, 0.917505533907]  200.816050190  -10.965712586  103.141151265  22.334163491
+  Meeus 25.a                     -0.464078715  341.448021903  [-0.003221402487, 0.397709966956, 0.917505533907]  200.822700265  -10.968328942  103.149921806  199.894765830
+  J2000.0                        -0.363234444  341.375838467  [-0.002521402646, 0.397715020812, 0.917505533907]  200.917999537  -11.005805492  103.275593168  280.361467474
+  2026 January 1                 0.000000000  341.115838467  [0.000000000000, 0.397723013227, 0.917505533907]  201.261442800  -11.140595356  103.728253168  280.552891251
+  2026 June solstice             0.006559754  341.111143053  [0.000045535034, 0.397723010620, 0.917505533907]  201.267647767  -11.143026692  103.736427884  90.148238487
+  range end                      13.620956985  331.366078029  [0.093662819049, 0.386537024848, 0.917505533907]  214.375732548  -15.923215235  120.702586090  278.825921203
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2008,6 +2044,12 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   texSigned                      "{-14.22}" "{+0.00}" "{+7.79}"
   yearText                       "141 BC" "AD 140" "1246" "2026"
   fixed ranges                   [-25,35]  [-18,18]  [-10,10]  [-6,6]  [-26,26]  [-8,8]  [-20,20]
+
+=== 8f. PAGE 2.3 (act2-sun/03-precession/page.js) ===
+  yearText                       "13,001 BC" "2831 BC" "128 BC" "1 BC" "AD 137" "2026" "AD 13,790"
+  yearTicks 1000                 -2999:3000 BC -1999:2000 BC -999:1000 BC 1000:1000 2000:2000 3000:3000
+  leastSquares                   {"a":1,"b":2}
+  fixed ranges                   [-80,20]  [-40,100]  [165,205]  [-2.5,2]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -2609,3 +2651,189 @@ Figure 6 (residual): axis -20 to +20 min covers it
 Figure 1: day excess -21.4 to 29.8 s (axis -30 to +35 s); E -14.20 to 16.45 min (axis -18 to +18 min)
 Figure 5: model - real -4.8 to 6.0 s (axis -8 to +8 s)
 Figure 4: hour angle at mean noon within +-4.13° for every preset (axis +-6°), declination +-23.44° (axis +-26°)
+
+=== 9. tools/numbers/2.3-precession.js ===
+
+=== Observation: Hipparchus and Timocharis (Almagest VII 2) ===
+Spica "formerly 8°, now 6°" in advance of the autumn equinox: 172° then 174° (quoted, not computed)
+real Spica: 172.00° in 294 BC (Timocharis), 174.11° in 141 BC (Hipparchus): 2.12° in 153 years
+
+=== Observation: Spica's recorded longitudes against the real sky (the table) ===
+Timocharis   294 BC: recorded 172.33° (172°20'00" (172.33°), Almagest VII 3); real 172.00°, recorded - real 0.33°
+Timocharis   283 BC: recorded 172.50° (172°30'00" (172.50°), Almagest VII 3); real 172.16°, recorded - real 0.34°
+Menelaus         98: recorded 176.25° (176°15'00" (176.25°), Almagest VII 3); real 177.41°, recorded - real -1.16°
+Ptolemy         137: recorded 176.67° (176°40'00" (176.67°), Almagest VIII 1); real 177.95°, recorded - real -1.29°
+Copernicus     1515: recorded 197.23° (197°14'00" (197.23°), De Rev. III 2); real 197.09°, recorded - real 0.15°
+Copernicus     1525: recorded 197.35° (197°21'00" (197.35°), De Rev. III 2); real 197.23°, recorded - real 0.12°
+recorded growth from Timocharis (294 BC) to Copernicus (1525): 25.02° in 1818 years
+real Spica from Hipparchus (128 BC) to 2026: 174.29° -> 204.20°, 29.91°, about one sign of 30°
+
+=== Observation: latitude and declination of Spica (Almagest VII 3) ===
+recorded latitude: 2° south for Timocharis and for Ptolemy (VII 3); Ptolemy: declination 1/2° south (VII 3, De Rev. III 2)
+ 294 BC: real latitude -1.91°, declination 1.46°
+ 128 BC: real latitude -1.91°, declination 0.54°
+    139: real latitude -1.93°, declination -0.95°
+   1525: real latitude -2.02°, declination -8.64°
+   2026: real latitude -2.06°, declination -11.30°
+
+=== Observation: Figure 1 (six stars, 3000 BC to AD 3000) ===
+change of longitude since 2026: -70.0° to 13.3°; largest spread between the six stars 0.85°; largest change of latitude 0.64°
+   Aldebaran  declination -5.0° to 17.8°
+   Regulus    declination 6.9° to 24.2°
+   Spica      declination -16.0° to 15.1°
+   Antares    declination -27.8° to -3.9°
+   Vega       declination 38.2° to 44.1°
+   Polaris    declination 62.6° to 89.5°
+
+=== Model: the pole's circle and the change of declination ===
+radius of P's circle about K: the obliquity, 23.4359° (page 1.2)
+d delta / dt = p sin eps cos beta cos lambda / cos delta; for a star on the ecliptic at an equinox: 20.00" a year = 0.556° a century
+Spica around AD 5 (lambda 176.1°): -19.9" a year, -1.48° from 128 BC to AD 139
+   real: 0.54° -> -0.95°, -1.49°; Ptolemy's difference 1 1/10° (VII 3), with his rate 2 2/3° x sin eps x cos lambda = 1.08°
+
+=== Model: the period and the pole stars ===
+period 360° / p = 25769 years
+Polaris  nearest the pole: real 2102, 0.46° (76 years from 2026); uniform model 2102, 0.46° (Figure 2's presets)
+Thuban   nearest the pole: real 2796 BC, 0.10° (-4821 years from 2026); uniform model 2831 BC, 0.20° (Figure 2's presets)
+Vega     nearest the pole: real 13600, 5.70° (11574 years from 2026); uniform model 13790, 4.83° (Figure 2's presets)
+Polaris from the pole in 2026: 0.63°
+Figure 3: one turn centred on 2026, from 10859 BC to 14910
+
+=== Model: the tropical and the sidereal year ===
+Y_s = Y_t / (1 - p Y_t / 360°): 365.24219 d -> 365.25636 d, 20.41 min longer; p / n = 20.41 min
+   tropical 365 d 5 h 48 min 45 s, sidereal 365 d 6 h 9 min 10 s
+   pY = 0.013970°; exact Y_s - Y = pY Y_s / 360° = 20.4108 min; with Y for Y_s: 20.4100 min, 0.048 s less
+   Y_s and Y differ by one part in 25768 (360° / pY = 25769)
+the Earth's mean motion in the reference sky (Standish, fixed J2000 frame), 35999.37306329° a century: sidereal year 365.25636 d
+Thabit ibn Qurra (De Rev. III 13), 365;15,23 d = 365.25639 d = 365 d 6 h 9 min 12 s
+Copernicus (De Rev. III 14), 365;15,24,10 d = 365.256713 d = 365 d 6 h 9 min 40 s, 30.2 s longer than ours
+
+=== Fit: Hipparchus' and Ptolemy's rate (Almagest VII 2) ===
+Regulus: 119.833° -> 122.500°, 2°40'00" (2.67°) in Ptolemy's 265 years: 1° in 99.4 years, 36.2" a year
+Hipparchus: "not less than 1/100 of a degree" a year = 36.0" a year
+historical values in decimals: 29;50 = 29.83°, 44;5 = 44.08°, 23;57 = 23.95°
+an error of 1° over 265 years: 13.6" a year
+
+=== Fit: the rate from Spica's records ===
+Timocharis (294 BC) to Copernicus (1525): 49.5" a year, 1° in 72.7 years
+least squares through the six records: 50.6" a year, 1° in 71.2 years
+an error of 1° spread over the 1818 years: 2.0" a year
+
+=== Fit: the rate from the reference sky, around 2026 ===
+Precession.MODERN in precession.js: rate 50.294" a year, obliquity 23.43591° (here 23.43591°), epoch 1 Jan 2026
+p = 50.294" a year = 1.3970° a century, 1° in 71.58 years; from Spica alone 50.251" a year
+Copernicus' mean precession, 23;57° in 1,717 Egyptian years: 50.25" a Julian year; his period 25,816 years (360° / rate = 25809)
+   ours minus his: 0.044" a year
+   the real mean rate over his records, 294 BC to 1525: 49.99" a year
+
+=== Fit: the apogee's motion (Hipparchus' method on the seasons of seventeen years) ===
+1001 BC: apogee 51.16°, e = 0.03594
+ 751 BC: apogee 55.39°, e = 0.03570
+ 501 BC: apogee 59.68°, e = 0.03547
+ 251 BC: apogee 63.97°, e = 0.03523
+   1 BC: apogee 68.30°, e = 0.03501
+    250: apogee 72.63°, e = 0.03480
+    500: apogee 76.99°, e = 0.03459
+    750: apogee 81.36°, e = 0.03441
+   1000: apogee 85.72°, e = 0.03420
+   1250: apogee 90.10°, e = 0.03404
+   1500: apogee 94.47°, e = 0.03385
+   1750: apogee 98.86°, e = 0.03368
+   2000: apogee 103.22°, e = 0.03351
+   2250: apogee 107.59°, e = 0.03334
+   2500: apogee 111.94°, e = 0.03319
+   2750: apogee 116.31°, e = 0.03302
+   3000: apogee 120.64°, e = 0.03288
+least squares: 1.741° a century relative to the equinox; minus p: 0.344° a century relative to the stars
+Standish's perihelion of the Earth (fixed J2000 frame): 0.318° a century
+the line at 2026: 103.65° (FIT_2026: 103.732°)
+MOVING_2026 in solar-eccentric.js: apogee 103.732° at JD 2461120.106 (20 Mar 2026 14:33 TT), rate 1.741° a century (fitted here: 1.741)
+
+=== Test: uniform precession against the real stars, Figure 5 (a) ===
+Spica, 200 years around 2026: -0.09' to 0.05'
+Spica, 2000 years around 2026: -2.56' to 0.07'
+Spica, 6000 years around 2026: -18.40' to 0.07'
+
+=== Test: the Sun with a moving apogee, Figure 5 (b) ===
+ 100 years: fixed apogee -3.1' to 2.7'; moving apogee -2.0' to 1.5'
+1000 years: fixed apogee -19.3' to 17.3'; moving apogee -3.4' to 1.7'
+2000 years: fixed apogee -38.5' to 33.0'; moving apogee -6.0' to 1.7'
+
+=== Test: the equation of time with a moving apogee (page 2.2) ===
+ 100 years: largest error, fixed apogee 13 s, moving apogee 7 s
+1000 years: largest error, fixed apogee 81 s, moving apogee 11 s
+
+=== Test: Ptolemy's stars, Figure 6 (records minus real; Ptolemy's Sun minus real) ===
+Timocharis  Spica       294 BC: recorded 172.33°, real 172.00°, recorded - real 0.33°; Ptolemy's Sun 0.69°
+Timocharis  Spica       283 BC: recorded 172.50°, real 172.16°, recorded - real 0.34°; Ptolemy's Sun 0.64°
+Timocharis  β Scorpii   295 BC: recorded 212.00°, real 211.32°, recorded - real 0.68°; Ptolemy's Sun 0.69°
+Hipparchus  Regulus     128 BC: recorded 119.83°, real 120.39°, recorded - real -0.56°; Ptolemy's Sun 0.00°
+Menelaus    Spica           98: recorded 176.25°, real 177.41°, recorded - real -1.16°; Ptolemy's Sun -0.94°
+Menelaus    β Scorpii       98: recorded 215.92°, real 216.73°, recorded - real -0.81°; Ptolemy's Sun -0.94°
+Ptolemy     Regulus        139: recorded 122.50°, real 124.06°, recorded - real -1.56°; Ptolemy's Sun -1.10°
+Ptolemy     Spica          137: recorded 176.67°, real 177.95°, recorded - real -1.29°; Ptolemy's Sun -1.10°
+Ptolemy     β Scorpii      139: recorded 216.33°, real 217.30°, recorded - real -0.97°; Ptolemy's Sun -1.10°
+al-Battani  Regulus        880: recorded 134.08°, real 134.29°, recorded - real -0.21°; Ptolemy's Sun -4.23°
+al-Battani  β Scorpii      880: recorded 227.83°, real 227.58°, recorded - real 0.25°; Ptolemy's Sun -4.23°
+Copernicus  Spica         1515: recorded 197.23°, real 197.09°, recorded - real 0.15°; Ptolemy's Sun -6.97°
+Copernicus  Spica         1525: recorded 197.35°, real 197.23°, recorded - real 0.12°; Ptolemy's Sun -7.03°
+Ptolemy's mean motion is slower than today's by 15.9" a year; the real rate in his time 49.9" a year
+his Sun's error drifts by 14.9" a year from 294 BC to AD 137; the real rate 49.9" less this: 34.9" a year (his 36")
+Spica's declination: Hipparchus +3/5°, Ptolemy -1/2° (VII 3), a change of 1 1/10°; real change -1.49°; Ptolemy's -1/2° against the real -0.95°, 0.45° short
+Ptolemy's rule for Spica in 1515: 190.44°, real 197.08°, short by 6.639°
+Ptolemy's rule for Spica in 2026: 195.55°, real 204.20°, short by 8.653°
+Ptolemy's year 365;14,48 d is 6.45 min longer than ours (page 2.1)
+
+=== Residual: the rate changes ===
+ 128 BC: 49.83" a year
+    139: 49.88" a year
+    880: 50.04" a year
+   1525: 50.18" a year
+   2026: 50.29" a year
+   3000: 50.51" a year
+
+=== Residual: the obliquity ===
+Ptolemy 23;51,20 = 23.8556°; real 23.7255° (250 BC), 23.6777° (AD 139): 10.7' too large
+al-Battani 23;35 = 23.5833°; real 23.5841° (880)
+Copernicus 23;28,30 = 23.4750°; real 23.5010° (1525)
+2026: 23.4359° = 23°26'09" (23.44°), changing by -46.8" a century
+
+=== Residual: the latitudes are not quite fixed ===
+Spica's latitude: -1.905° (294 BC) -> -2.056° (2026), -9.1'
+   without proper motion: -7.3'
+
+=== Residual: nutation (Ephem.nutation, Meeus ch. 22) ===
+largest terms: 17.20" in longitude, 9.20" in obliquity, with the Moon's node, period 360° / 1934.136261° a century = 18.61 years
+
+=== Residual: what is left of the Sun's error ===
+the eccentricity fitted by Hipparchus' method: 0.0359 (1000 BC), 0.0335 (2000), 0.0329 (3000)
+Meeus 25.2, the quadratic term of the mean longitude: 0.0003032 T^2 deg = 1.82' at T = +-10 centuries
+
+=== Exercise 1: the rate from two records of Regulus ===
+Hipparchus to al-Battani: 14°15'00" (14.25°) in 1007 years: 50.9" a year, 1° in 70.7 years
+   real: 120.39° -> 134.29°, 13.90°: 49.7" a year; the records are 0.35° too far apart
+Hipparchus to Ptolemy: 2°40'00" (2.67°) in 265 years: 36.2" a year
+   real: 120.39° -> 124.06°, 3.67° in 266.1 years: 49.6" a year; Ptolemy's value -1.56° off, Hipparchus' -0.56°
+
+=== Exercise 2: two years ===
+modern: 365.24219 d and 50.29" a year: pY = 0.013970° -> sidereal 365.25636 d (see section 4)
+Hipparchus and Ptolemy: tropical 365;14,48 = 365.24667 d, 1° a century -> sidereal 365.25681 d = 365 d 6 h 9 min 49 s
+   errors: tropical 6.45 min too long, sidereal 39 s too long
+   his n slower by 15.9" a year, his p by 14.3": n - p wrong by 1.6" a year, 39 s in the sidereal year
+
+=== Exercise 3: Copernicus' uneven precession (De Rev. III 2) ===
+Copernicus: 1° in 100 years (Timocharis to Ptolemy, 432 years), 1° in 65 years (Ptolemy to al-Battani, 741 years), 1° in 71 years (al-Battani to 1525, 645 years)
+   real 294 BC to 139: 5.98° in 432 years, 1° in 72.2 years
+   real 139 to 880: 10.28° in 741 years, 1° in 72.1 years
+   real 880 to 1525: 8.98° in 645 years, 1° in 71.8 years
+   the real rate from the first interval to the last grows by 0.55%
+   records, Spica, Timocharis to Ptolemy: 4°20'00" (4.33°) in 430 years, 1° in 99.3 years
+   records, Regulus, Ptolemy to al-Battani: 11°35'00" (11.58°) in 741 years, 1° in 64.0 years
+   records, β Scorpii, Menelaus to al-Battani: 11°55'00" (11.92°) in 782 years, 1° in 65.6 years
+
+=== Scales ===
+Figure 1: the changes of longitude and latitude and the declinations above (axes -80° to +20°, -40° to +100°)
+Figure 2: one turn of the pole in 25769 years; the year slider runs from 11,001 BC to AD 15,000, past the presets 2831 BC and AD 13,790
+Figure 4: the three lines from 170.13° to 197.93° (axis 165° to 205°)
+Figure 6: records minus real from -1.56° to 0.68°
+   Ptolemy's Sun minus real, 400 BC to AD 310 (the band): -2.27° to 1.50° (axis -2.5° to +2°)

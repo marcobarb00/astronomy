@@ -117,10 +117,16 @@ see, not re-describe everything.
 - **Label things in the figure itself** (P, γ, Vega, N, S) and leave them out
   of the key. A key entry is only for what a label can't say: what a colour
   or line style means, which way an angle is counted, what a band shows.
-- **Aim for three to five key entries.** Never more than seven. Drop
-  entries that restate the caption or the obvious ("circle: the celestial
-  equator" when the circle is labelled; "dashed: the date under the
-  pointer").
+- **Leave out the obvious.** Describe what the reader needs to read the
+  figure, not every mark in it. A curve under a labelled axis, grid lines
+  at labelled ticks, the dot on the chosen date, the line under the
+  pointer, the month names on an analemma: the reader sees what they are
+  without being told. Drop entries that restate the caption, a label or
+  an axis ("circle: the celestial equator" when the circle is labelled;
+  "curve: the Sun's daily motion" under an axis that says so; "dashed: the
+  date under the pointer").
+- **Keep the key short.** One or two entries are often enough, five at
+  most. A figure whose labels say everything has no key.
 - **The caption says what to do and what to notice**, in two or three
   sentences: "Press play and watch the arcs θ and H grow together while α
   stays fixed."

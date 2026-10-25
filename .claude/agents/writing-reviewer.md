@@ -28,9 +28,10 @@ voice is the same.
    §4). Exercise answers keep their exact values: never flag those.
 5. Quotations and historical asides that do no work in the argument.
 6. Figures: captions that describe instead of saying what to do and
-   notice; key entries for things a label in the figure already names;
-   keys longer than five entries (WRITING.md §7, CLAUDE.md "Rules for
-   every figure").
+   notice; key entries for things a label in the figure already names,
+   or for what the reader sees at once (a curve under a labelled axis,
+   grid lines, the dot on the date, the pointer line); keys longer than
+   five entries (WRITING.md §7, CLAUDE.md "Rules for every figure").
 7. Voice: "we" for the work done together, "you" for what the reader does
    with the page; "the model" or "the clock" as the subject of sentence
    after sentence.
