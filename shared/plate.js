@@ -17,7 +17,12 @@
 
    Every plate shows the sky of 2026.0. Text sizes in theme.css are sizes
    on the screen: fitText keeps them so whatever the width of the chart,
-   so a label never falls below 13 px (CLAUDE.md).
+   so a label never falls below 13 px (CLAUDE.md). The labels are then
+   large for a narrow chart: placeLabels moves the ones that would
+   overlap, or leave the chart, to a free place nearby, and a chart drawn
+   narrower than COMPACT_WIDTH (a phone) shows only the names the page
+   keeps (options.keep: the star its caption speaks of), the numbers of
+   its ring or border and the pole's P.
 
    TABLE OF CONTENTS
 	 1. SVG helpers
@@ -26,7 +31,8 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights
+	 7. Highlights (and a symbol)
+	 8. Label placement
    ========================================================================== */
 
 const Plate = (function () {
@@ -217,9 +223,10 @@ const Plate = (function () {
 	}
 
 	/* The lines and names of the given figures. */
-	function drawFigures(linesGroup, namesGroup, names, project) {
+	function drawFigures(chart, linesGroup, namesGroup, names, project) {
 		names.forEach(name => {
 			const figure = FIGURES[name];
+			const ends = [];
 
 			figure.lines.forEach(([a, b]) => {
 				const p = STARS.get(a);
@@ -229,26 +236,56 @@ const Plate = (function () {
 
 				if (pa && qa) {
 					svgLine(linesGroup, [pa, qa]);
+					ends.push(pa, qa);
 				}
 			});
 
 			const at = project(figure.name[0], figure.name[1]);
 
 			if (at) {
-				svgText(namesGroup, name, at.x, at.y, { 'text-anchor': 'middle' });
+				const element = svgText(namesGroup, name, at.x, at.y, { 'text-anchor': 'middle' });
+
+				// other places only beside the figure's own lines, so that
+				// the name never seems to belong to another figure
+				addLabel(chart, element, LABEL_ORDER.figure, (size, k) =>
+					aroundCentre(at, size, k).filter(place => besideFigure(place, size, ends))
+				);
 			}
 		});
+	}
+
+	/* Does a name's box, at a place, touch the area of the figure's lines
+	   (their bounding box), so that it reads as that figure's name? */
+	function besideFigure(place, size, ends) {
+		if (ends.length === 0) {
+			return false;
+		}
+
+		const xs = ends.map(p => p.x);
+		const ys = ends.map(p => p.y);
+
+		return (
+			place.x <= Math.max(...xs) &&
+			place.x + size.w >= Math.min(...xs) &&
+			place.y <= Math.max(...ys) &&
+			place.y + size.h >= Math.min(...ys)
+		);
 	}
 
 	/* Star names: [id, name, dx, dy, anchor] with the offset of the text
 	   from the star; anchor 'end' puts the name to the left of that point
 	   (default 'start'). */
-	function drawStarNames(group, names, at) {
+	function drawStarNames(chart, group, names, at, keep = []) {
 		names.forEach(([id, name, dx, dy, anchor]) => {
 			const star = STARS.get(id);
 			const q = at(star.ra, star.dec);
+			const element = svgText(group, name, q.x + dx, q.y + dy, {
+				'text-anchor': anchor ?? 'start',
+				class: keep.includes(id) ? 'keep' : ''
+			});
+			const gap = STAR_SCALE * starSize(star.mag);
 
-			svgText(group, name, q.x + dx, q.y + dy, { 'text-anchor': anchor ?? 'start' });
+			addLabel(chart, element, LABEL_ORDER.star, (size, k) => aroundPoint(q, size, gap + LABEL_GAP * k));
 		});
 	}
 
@@ -336,8 +373,10 @@ const Plate = (function () {
 				{ d: ringSegment(point, angleOf(h), inner, outer), class: h % 2 === 0 ? 'light' : 'dark' },
 				group
 			);
-			svgText(group, `${h}h`, at.x, at.y + 5, {
+			// centred on its point, whatever the size of the text
+			svgText(group, `${h}h`, at.x, at.y, {
 				'text-anchor': 'middle',
+				'dominant-baseline': 'central',
 				class: h % 2 === 0 ? 'hour' : 'hour minor'
 			});
 		}
@@ -420,21 +459,31 @@ const Plate = (function () {
 		svgEl('rect', { x: topLeft.x, y: topLeft.y, width: width, height: height, class: 'edge' }, border);
 	}
 
-	/* Hours under the border, degrees on its left. */
+	/* Hours under the border, degrees on its left: the hours hang from a
+	   line under the border, the degrees are centred on their line, so a
+	   larger text (on a phone) grows away from the chart. */
 	function drawBorderLabels(border, area, at, band) {
 		const { raMin, raMax, decMin, decMax } = area;
 
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
 
-			svgText(border, `${hours}h`, q.x, q.y + band + 20, { 'text-anchor': 'middle', class: 'hour' });
+			svgText(border, `${hours}h`, q.x, q.y + band + 6, {
+				'text-anchor': 'middle',
+				'dominant-baseline': 'hanging',
+				class: 'hour'
+			});
 		}
 
 		for (let dec = Math.ceil(decMin / 10) * 10; dec <= decMax; dec += 10) {
 			const q = at(raMax, dec);
 			const text = dec > 0 ? `+${dec}°` : `${dec}°`.replace('-', '−');
 
-			svgText(border, text, q.x - band - 6, q.y + 5, { 'text-anchor': 'end', class: 'hour' });
+			svgText(border, text, q.x - band - 6, q.y, {
+				'text-anchor': 'end',
+				'dominant-baseline': 'central',
+				class: 'hour'
+			});
 		}
 	}
 
@@ -445,15 +494,35 @@ const Plate = (function () {
 	   units per screen pixel (at least 1), multiplies every font size.
 	   ====================================================================== */
 
-	function fitText(svg, viewBoxWidth) {
+	/* Below this width on the screen (px), a chart shows no names. */
+	const COMPACT_WIDTH = 480;
+
+	function fitText(chart, viewBoxWidth) {
+		const svg = chart.svg;
+		let current = null;
+
+		// a new --k means new label sizes: place the labels again. A chart
+		// drawn narrower than COMPACT_WIDTH (a phone) is 'compact': it shows
+		// no names, which would crowd it beyond reading (theme.css §13)
 		const update = () => {
 			const width = svg.getBoundingClientRect().width || viewBoxWidth;
+			const k = Math.max(1, viewBoxWidth / width).toFixed(3);
 
-			svg.style.setProperty('--k', Math.max(1, viewBoxWidth / width).toFixed(3));
+			if (k !== current) {
+				current = k;
+				svg.style.setProperty('--k', k);
+				svg.classList.toggle('compact', width < COMPACT_WIDTH);
+				placeLabels(chart);
+			}
 		};
 
 		new ResizeObserver(update).observe(svg);
 		update();
+
+		// the sizes of the labels are final once the web fonts have loaded
+		if (typeof document !== 'undefined' && document.fonts) {
+			document.fonts.ready.then(() => placeLabels(chart));
+		}
 	}
 
 	/* ======================================================================
@@ -462,7 +531,8 @@ const Plate = (function () {
 
 	/* A chart centred on the north celestial pole, as seen from the ground
 	   looking up (right ascension increases clockwise), down to declination
-	   rimDec, with an hour ring. options: rimDec, figures, names, label.
+	   rimDec, with an hour ring. options: rimDec, figures, names, keep (the
+	   ids of the star names still shown on a phone), label.
 	   Returns { svg, at, project, radius, centre }. */
 	function polar(container, options) {
 		const size = 640;
@@ -473,6 +543,10 @@ const Plate = (function () {
 		const radius = dec => (R * (90 - dec)) / (90 - rimDec);
 		const at = (ra, dec) => ({ x: c + radius(dec) * sin(ra), y: c - radius(dec) * cos(ra) });
 		const project = (ra, dec) => (dec >= rimDec ? at(ra, dec) : null);
+
+		// a label stays inside the rim of the chart, clear of the hour ring
+		const inside = box => boxCorners(box).every(p => Math.hypot(p.x - c, p.y - c) <= R - 2);
+		const chart = { svg, at, project, radius, centre: c, inside, labels: [] };
 
 		// graticule: declination every 10°, right ascension every 2 h
 		const grid = svgEl('g', { class: 'grid' }, svg);
@@ -495,31 +569,35 @@ const Plate = (function () {
 		drawHourRing(svg, { cx: c, cy: c, inner: R + 6, outer: R + 20, label: R + 38 }, h => 15 * h);
 
 		drawFigures(
+			chart,
 			svgEl('g', { class: 'figure-lines' }, svg),
 			svgEl('g', { class: 'figure-names' }, svg),
 			options.figures,
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, svg), project);
-		drawStarNames(svgEl('g', { class: 'star-names' }, svg), options.names, at);
+		drawStarNames(chart, svgEl('g', { class: 'star-names' }, svg), options.names, at, options.keep);
 
-		svgText(svg, 'P', c - 16, c + 18, { class: 'symbol' });
-		fitText(svg, size);
+		const pole = svgText(svg, 'P', c - 16, c + 18, { class: 'symbol' });
 
-		return { svg, at, project, radius, centre: c };
+		addLabel(chart, pole, LABEL_ORDER.symbol, (box, k) => aroundPoint({ x: c, y: c }, box, LABEL_GAP * k));
+		fitText(chart, size);
+
+		return chart;
 	}
 
 	/* A rectangular (equirectangular) chart as seen looking south: north
 	   up, east (greater right ascension) to the left, with a graduated
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
-	   figures, names, label. The equator is drawn, and named at the
+	   figures, names, keep (as for polar), label. The equator is drawn, and
+	   named at the
 	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
 	   highlight in 'layer', clipped to the chart. */
 	function rectangular(container, options) {
 		const area = options.area;
 		const { raMin, raMax, decMin, decMax } = area;
 		const scale = 8;
-		const left = 96;
+		const left = 108;
 		const top = 40;
 		const band = 10;
 		const width = (raMax - raMin) * scale;
@@ -527,10 +605,17 @@ const Plate = (function () {
 		const svg = newSvg(container, width + 2 * left, height + top + 70, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
 		const project = (ra, dec) => {
-			const inside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
+			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
 
-			return inside ? at(ra, dec) : null;
+			return isInside ? at(ra, dec) : null;
 		};
+
+		// a label stays inside the chart, clear of the border and its labels
+		const inside = box =>
+			box.x >= left + 2 &&
+			box.y >= top + 2 &&
+			box.x + box.w <= left + width - 2 &&
+			box.y + box.h <= top + height - 2;
 
 		// the chart is clipped to its rectangle (a page may hold two plates:
 		// each clip path gets its own id)
@@ -540,6 +625,7 @@ const Plate = (function () {
 		svgEl('rect', { x: left, y: top, width: width, height: height }, clip);
 
 		const layer = svgEl('g', { 'clip-path': `url(#${clipId})` }, svg);
+		const chart = { svg, layer, at, project, inside, labels: [] };
 		const grid = svgEl('g', { class: 'grid' }, layer);
 
 		for (let ra = Math.ceil(raMin / 15) * 15; ra <= raMax; ra += 15) {
@@ -552,22 +638,39 @@ const Plate = (function () {
 
 		drawMilkyWay(svgEl('g', { class: 'milky-way' }, layer), project);
 		drawFigures(
+			chart,
 			svgEl('g', { class: 'figure-lines' }, layer),
 			svgEl('g', { class: 'figure-names' }, layer),
 			options.figures,
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, layer), project);
-		drawStarNames(svgEl('g', { class: 'star-names' }, layer), options.names, at);
+		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
 
 		if (decMin < 0 && decMax > 0) {
-			svgText(layer, 'equator', left + width - 8, at(0, 0).y - 6, { class: 'circle-name', 'text-anchor': 'end' });
+			const y = at(0, 0).y;
+			const element = svgText(layer, 'equator', left + width - 8, y - 6, {
+				class: 'circle-name',
+				'text-anchor': 'end'
+			});
+
+			// other places: under the line, then further east along it
+			addLabel(chart, element, LABEL_ORDER.circle, (box, k) =>
+				[0, 1, 2].flatMap(step => {
+					const x = left + width - 8 - box.w - step * (box.w + 8);
+
+					return [
+						{ x: x, y: y - LABEL_GAP * k - box.h },
+						{ x: x, y: y + LABEL_GAP * k }
+					];
+				})
+			);
 		}
 
 		drawBorder(svg, area, at, { band: band, raStep: 7.5, decStep: 5 });
-		fitText(svg, width + 2 * left);
+		fitText(chart, width + 2 * left);
 
-		return { svg, layer, at, project };
+		return chart;
 	}
 
 	/* ======================================================================
@@ -583,15 +686,275 @@ const Plate = (function () {
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
 	   point given by nameAt [ra, dec, dx, dy]. */
 	function highlightCurve(chart, points, name, nameAt) {
-		svgLine(
-			chart.layer,
-			points.map(p => chart.at(p.ra, p.dec)),
-			{ class: 'highlight' }
-		);
+		const screen = points.map(p => chart.at(p.ra, p.dec));
+
+		svgLine(chart.layer, screen, { class: 'highlight' });
 
 		const q = chart.at(nameAt[0], nameAt[1]);
+		const element = svgText(chart.layer, name, q.x + nameAt[2], q.y + nameAt[3], {
+			class: 'circle-name highlight-text'
+		});
 
-		svgText(chart.layer, name, q.x + nameAt[2], q.y + nameAt[3], { class: 'circle-name highlight-text' });
+		// other places: under or over the curve, at points along it
+		addLabel(chart, element, LABEL_ORDER.highlight, (box, k) =>
+			screen
+				.filter((p, i) => i % 5 === 0)
+				.flatMap(p => [
+					{ x: p.x - box.w / 2, y: p.y + LABEL_GAP * k },
+					{ x: p.x - box.w / 2, y: p.y - LABEL_GAP * k - box.h }
+				])
+		);
+		placeLabels(chart);
+	}
+
+	/* A path through (ra, dec) points on a polar chart (page 2.3: the path
+	   of the celestial pole around the ecliptic pole), with a short tick
+	   across it at each of 'marks' [{ ra, dec, text }]. A tick points away
+	   from the point 'centre' { ra, dec } that the path goes round, and
+	   its text, if any, goes beside it on that side. */
+	function highlightPath(chart, points, centre, marks = []) {
+		const screen = points.map(p => chart.at(p.ra, p.dec));
+		const c = chart.at(centre.ra, centre.dec);
+		const tickLength = 6;
+
+		svgLine(chart.svg, screen, { class: 'highlight' });
+
+		marks.forEach(mark => {
+			const q = chart.at(mark.ra, mark.dec);
+			const length = Math.hypot(q.x - c.x, q.y - c.y) || 1;
+			const u = { x: (q.x - c.x) / length, y: (q.y - c.y) / length };
+
+			svgLine(
+				chart.svg,
+				[
+					{ x: q.x - tickLength * u.x, y: q.y - tickLength * u.y },
+					{ x: q.x + tickLength * u.x, y: q.y + tickLength * u.y }
+				],
+				{ class: 'highlight-tick' }
+			);
+
+			if (mark.text) {
+				const away = 3 * tickLength;
+				const element = svgText(chart.svg, mark.text, q.x + away * u.x, q.y + away * u.y, {
+					class: 'circle-name highlight-text',
+					'text-anchor': u.x < -0.3 ? 'end' : u.x > 0.3 ? 'start' : 'middle',
+					'dominant-baseline': 'central'
+				});
+
+				addLabel(chart, element, LABEL_ORDER.highlight, (box, k) => aroundPoint(q, box, away + LABEL_GAP * k));
+			}
+		});
+
+		placeLabels(chart);
+	}
+
+	/* A point named by a symbol (e.g. the ecliptic pole K): a small cross
+	   in the ink of the plate and the symbol beside it, kept on a phone as
+	   the pole's P is. */
+	function symbol(chart, ra, dec, text) {
+		const q = chart.at(ra, dec);
+		const arm = 5;
+
+		svgLine(
+			chart.svg,
+			[
+				{ x: q.x - arm, y: q.y },
+				{ x: q.x + arm, y: q.y }
+			],
+			{ class: 'symbol-mark' }
+		);
+		svgLine(
+			chart.svg,
+			[
+				{ x: q.x, y: q.y - arm },
+				{ x: q.x, y: q.y + arm }
+			],
+			{ class: 'symbol-mark' }
+		);
+
+		const element = svgText(chart.svg, text, q.x + 8, q.y - 8, { class: 'symbol' });
+
+		addLabel(chart, element, LABEL_ORDER.symbol, (box, k) => aroundPoint(q, box, 8 + LABEL_GAP * k));
+		placeLabels(chart);
+	}
+
+	/* ======================================================================
+	   8. LABEL PLACEMENT
+	   Each label has its designed place and a list of other places (the
+	   top-left corners of its box, in chart units, for its size on the
+	   screen). placeLabels takes the labels in order (the pole's P, the
+	   highlight, the star names, the equator, the constellation names) and
+	   gives each the first place that stays inside the chart and clear of
+	   every label placed before it; failing that, the place inside that
+	   overlaps least. A constellation's name, the least needed, is left out
+	   instead when no place is clear (on a narrow screen; the keys say
+	   so). Where nothing collides, as on a wide screen, every label keeps
+	   its designed place.
+	   ====================================================================== */
+
+	/* The order in which labels are placed: the earlier keep their place. */
+	const LABEL_ORDER = { symbol: 0, highlight: 1, star: 2, circle: 3, figure: 4 };
+
+	/* Space between a point and its label, and between two labels (chart
+	   units at k = 1; both grow with k, as the labels do). */
+	const LABEL_GAP = 5;
+	const LABEL_CLEAR = 2;
+
+	/* Register a label: its element (drawn at the designed place) and a
+	   function (size of its box { w, h }, k) -> other places [{ x, y }]. */
+	function addLabel(chart, element, order, otherPlaces) {
+		chart.labels.push({
+			element: element,
+			order: order,
+			otherPlaces: otherPlaces,
+			designed: {
+				x: element.getAttribute('x'),
+				y: element.getAttribute('y'),
+				anchor: element.getAttribute('text-anchor') ?? 'start'
+			}
+		});
+	}
+
+	/* Places all round a point, 'gap' away: right, left, above, below, then
+	   the four diagonals; then the same, twice as far. */
+	function aroundPoint(q, box, gap) {
+		return [1, 2].flatMap(ring => {
+			const g = ring * gap;
+			const d = 0.7 * g;
+
+			return [
+				{ x: q.x + g, y: q.y - box.h / 2 },
+				{ x: q.x - g - box.w, y: q.y - box.h / 2 },
+				{ x: q.x - box.w / 2, y: q.y - g - box.h },
+				{ x: q.x - box.w / 2, y: q.y + g },
+				{ x: q.x + d, y: q.y - d - box.h },
+				{ x: q.x + d, y: q.y + d },
+				{ x: q.x - d - box.w, y: q.y - d - box.h },
+				{ x: q.x - d - box.w, y: q.y + d }
+			];
+		});
+	}
+
+	/* Places for a name centred on a point (a constellation's name): moved
+	   up or down by up to three lines, and sideways by up to four thirds of
+	   its width, in steps of a third, the nearest first. */
+	function aroundCentre(c, box, k) {
+		const places = [];
+		const line = box.h + LABEL_CLEAR * k;
+		const steps = [];
+
+		[0, -1, 1, -2, 2, -3, 3].forEach(rows => {
+			[0, -1, 1, -2, 2, -3, 3, -4, 4].forEach(side => {
+				if (rows !== 0 || side !== 0) {
+					steps.push({ rows, side, distance: Math.hypot(rows * line, (side * box.w) / 3) });
+				}
+			});
+		});
+
+		steps
+			.sort((a, b) => a.distance - b.distance)
+			.forEach(({ rows, side }) => {
+				places.push({ x: c.x - box.w / 2 + (side * box.w) / 3, y: c.y - box.h / 2 + rows * line });
+			});
+
+		return places;
+	}
+
+	/* The four corners of a box { x, y, w, h }. */
+	function boxCorners(box) {
+		return [
+			{ x: box.x, y: box.y },
+			{ x: box.x + box.w, y: box.y },
+			{ x: box.x, y: box.y + box.h },
+			{ x: box.x + box.w, y: box.y + box.h }
+		];
+	}
+
+	/* The area two boxes share, counting 'clear' around each as shared. */
+	function sharedArea(a, b, clear) {
+		const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) + clear;
+		const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y) + clear;
+
+		return w > 0 && h > 0 ? w * h : 0;
+	}
+
+	/* Put a text element at a place: its designed place (x, y, anchor), or
+	   the top-left corner of its box. */
+	function putLabel(element, place, origin) {
+		if (place.anchor) {
+			element.setAttribute('x', place.x);
+			element.setAttribute('y', place.y);
+			element.setAttribute('text-anchor', place.anchor);
+		} else {
+			element.setAttribute('x', (place.x - origin.x).toFixed(1));
+			element.setAttribute('y', (place.y - origin.y).toFixed(1));
+			element.setAttribute('text-anchor', 'start');
+		}
+	}
+
+	/* The box of a text element, { x, y, w, h } in chart units. */
+	function boxOf(element) {
+		const b = element.getBBox();
+
+		return { x: b.x, y: b.y, w: b.width, h: b.height };
+	}
+
+	function placeLabels(chart) {
+		const k = Number(chart.svg.style.getPropertyValue('--k')) || 1;
+		const clear = LABEL_CLEAR * k;
+		const placed = [];
+		const labels = [...chart.labels].sort((a, b) => a.order - b.order);
+
+		labels.forEach(label => {
+			const element = label.element;
+
+			if (getComputedStyle(element).display === 'none') {
+				return;
+			}
+
+			// the box at the designed place, and the offset of the box from
+			// the text's own (x, y) when it is anchored at its start
+			putLabel(element, label.designed);
+
+			const designedBox = boxOf(element);
+
+			putLabel(element, { x: 0, y: 0, anchor: 'start' });
+
+			const origin = boxOf(element);
+			const size = { w: origin.w, h: origin.h };
+			const places = [label.designed, ...label.otherPlaces(size, k)];
+			const boxes = [designedBox, ...places.slice(1).map(p => ({ x: p.x, y: p.y, w: size.w, h: size.h }))];
+
+			let best = 0;
+			let bestShared = Infinity;
+
+			for (let i = 0; i < places.length; i++) {
+				if (!chart.inside(boxes[i])) {
+					continue;
+				}
+
+				const shared = placed.reduce((total, other) => total + sharedArea(boxes[i], other, clear), 0);
+
+				if (shared < bestShared) {
+					best = i;
+					bestShared = shared;
+				}
+
+				if (shared === 0) {
+					break;
+				}
+			}
+
+			// a constellation's name with no clear place is left out
+			if (label.order === LABEL_ORDER.figure && bestShared > 0) {
+				element.setAttribute('visibility', 'hidden');
+				return;
+			}
+
+			element.removeAttribute('visibility');
+			putLabel(element, places[best], origin);
+			placed.push(boxes[best]);
+		});
 	}
 
 	return {
@@ -599,6 +962,8 @@ const Plate = (function () {
 		polar,
 		rectangular,
 		highlightCircle,
-		highlightCurve
+		highlightCurve,
+		highlightPath,
+		symbol
 	};
 })();

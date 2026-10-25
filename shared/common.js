@@ -529,14 +529,26 @@ function drawStar(ctx, x, y, s, ring = null) {
 
 /* ---------- Square canvases and centred labels ---------- */
 
-/* A square canvas as wide as its column, 240 to maxWidth px, scaled for
-   the device pixel ratio; it follows the column when the page is resized
-   and calls owner.draw(). Sets owner.ctx, width, cx, cy and R (the radius
-   of the drawing, 'margin' px inside the edge). */
+/* The smallest square canvas (px): narrower than any phone's column. */
+const SQUARE_CANVAS_MIN = 200;
+
+/* The width of an element inside its padding (px). */
+function contentWidth(element) {
+	const style = getComputedStyle(element);
+
+	return element.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+}
+
+/* A square canvas as wide as its column, SQUARE_CANVAS_MIN to maxWidth
+   px, scaled for the device pixel ratio; it follows the column when the
+   page is resized and calls owner.draw(). Sets owner.ctx, width, cx, cy
+   and R (the radius of the drawing, 'margin' px inside the edge). */
 function squareCanvas(owner, canvas, maxWidth, margin) {
-	// at least 240 px: a column measured before the layout is done can
-	// report a few pixels, which would give a negative radius
-	const targetWidth = () => clamp(canvas.parentElement.clientWidth || 400, 240, maxWidth);
+	// the width inside the parent's padding (a canvas set directly in a
+	// figure's frame would otherwise be wider than the frame, and squeezed);
+	// at least SQUARE_CANVAS_MIN px: a column measured before the layout is
+	// done can report a few pixels, which would give a negative radius
+	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 400, SQUARE_CANVAS_MIN, maxWidth);
 
 	const resize = () => {
 		const width = targetWidth();
@@ -570,13 +582,18 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 }
 
 /* A text label centred at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor in common.js). */
-function centredLabel(ctx, text, point, color) {
+   colour of 'color' (labelFont, textColor). With a LabelPlacer, a label
+   that would cover an earlier one or leave the canvas (on a phone) moves
+   next to its point instead. */
+function centredLabel(ctx, text, point, color, labels = null) {
 	ctx.fillStyle = textColor(color);
 	ctx.font = labelFont(text);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
-	ctx.fillText(text, point.x, point.y);
+
+	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
+
+	ctx.fillText(text, place.x, place.y);
 }
 
 /* ---------- Canvas fonts (STYLE.md §3) ----------
@@ -613,6 +630,141 @@ function whenCanvasFontsReady() {
 	}
 
 	return canvasFontsPromise;
+}
+
+/* ---------- Labels that keep clear of one another ----------
+   On a phone a figure shrinks but its labels keep their size (13 px or
+   more, CLAUDE.md), so two labels can land on each other or past the edge
+   of the canvas. A LabelPlacer remembers the boxes of the labels already
+   drawn in one drawing (begin() starts a new one) and gives each new label
+   the first of its candidate places that stays inside the bounds and
+   touches no earlier label. A label's designed place comes first, so it
+   moves only where it would collide: on a wide screen, nowhere. Used by
+   Sphere3D.label and Plot2D.text. */
+
+/* Clear space between two labels, and between a point and its label (px). */
+const LABEL_CLEARANCE = 1;
+const LABEL_POINT_GAP = 7;
+
+class LabelPlacer {
+	constructor() {
+		this.boxes = [];
+		this.bounds = null;
+	}
+
+	/* A new drawing: no label yet, labels kept inside 'bounds'
+	   ({ x0, y0, x1, y1 }, canvas pixels). */
+	begin(bounds) {
+		this.boxes = [];
+		this.bounds = bounds;
+	}
+
+	/* The box of 'text' drawn at (x, y) with the context's current font,
+	   alignment and baseline. */
+	static boxOf(ctx, text, x, y) {
+		const m = ctx.measureText(text);
+
+		return {
+			x0: x - m.actualBoundingBoxLeft,
+			x1: x + m.actualBoundingBoxRight,
+			y0: y - m.actualBoundingBoxAscent,
+			y1: y + m.actualBoundingBoxDescent
+		};
+	}
+
+	/* Candidate places all round a point q, 'gap' px away: right, left,
+	   above, below, then the four diagonals; each is the (x, y) to draw at
+	   with the context's current alignment and baseline. */
+	static around(ctx, text, q, gap = LABEL_POINT_GAP) {
+		const box = LabelPlacer.boxOf(ctx, text, 0, 0);
+		const w = box.x1 - box.x0;
+		const h = box.y1 - box.y0;
+		const d = 0.7 * gap;
+		const at = (left, top) => ({ x: left - box.x0, y: top - box.y0 });
+
+		return [
+			at(q.x + gap, q.y - h / 2),
+			at(q.x - gap - w, q.y - h / 2),
+			at(q.x - w / 2, q.y - gap - h),
+			at(q.x - w / 2, q.y + gap),
+			at(q.x + d, q.y - d - h),
+			at(q.x + d, q.y + d),
+			at(q.x - d - w, q.y - d - h),
+			at(q.x - d - w, q.y + d)
+		];
+	}
+
+	/* Keep later labels clear of a box drawn some other way ({ x0, y0, x1,
+	   y1 }, e.g. a label with a subscript). */
+	reserve(box) {
+		this.boxes.push(box);
+	}
+
+	/* The same place moved inside the bounds, if it was past an edge. */
+	clampInside(ctx, text, place) {
+		const box = LabelPlacer.boxOf(ctx, text, place.x, place.y);
+		const { x0, y0, x1, y1 } = this.bounds;
+		const dx = Math.max(0, x0 - box.x0) - Math.max(0, box.x1 - x1);
+		const dy = Math.max(0, y0 - box.y0) - Math.max(0, box.y1 - y1);
+
+		return { x: place.x + dx, y: place.y + dy };
+	}
+
+	/* Is the box inside the bounds? */
+	inside(box) {
+		const { x0, y0, x1, y1 } = this.bounds;
+
+		return box.x0 >= x0 && box.x1 <= x1 && box.y0 >= y0 && box.y1 <= y1;
+	}
+
+	/* The area the box shares with the labels already drawn. */
+	overlap(box) {
+		return this.boxes.reduce((total, other) => {
+			const w = Math.min(box.x1, other.x1) - Math.max(box.x0, other.x0) + LABEL_CLEARANCE;
+			const h = Math.min(box.y1, other.y1) - Math.max(box.y0, other.y0) + LABEL_CLEARANCE;
+
+			return total + (w > 0 && h > 0 ? w * h : 0);
+		}, 0);
+	}
+
+	/* The first candidate inside the bounds and clear of every earlier
+	   label; failing that, the one inside that overlaps least; failing
+	   that, the first one moved inside. The chosen box is remembered.
+	   Without begin() (no bounds), the first candidate is kept as it is. */
+	choose(ctx, text, candidates) {
+		if (!this.bounds) {
+			return candidates[0];
+		}
+
+		let best = null;
+		let bestOverlap = Infinity;
+
+		for (const place of candidates) {
+			const box = LabelPlacer.boxOf(ctx, text, place.x, place.y);
+
+			if (!this.inside(box)) {
+				continue;
+			}
+
+			const shared = this.overlap(box);
+
+			if (shared === 0) {
+				best = place;
+				break;
+			}
+
+			if (shared < bestOverlap) {
+				best = place;
+				bestOverlap = shared;
+			}
+		}
+
+		const chosen = best ?? this.clampInside(ctx, text, candidates[0]);
+
+		this.boxes.push(LabelPlacer.boxOf(ctx, text, chosen.x, chosen.y));
+
+		return chosen;
+	}
 }
 
 /* ==========================================================================
@@ -657,6 +809,272 @@ function renderStaticMath(root = document) {
 	});
 }
 
+/* --------------------------------------------------------------------------
+   Display equations that fit a phone
+   KaTeX never breaks a display equation, so one that holds several
+   equations side by side ("a = b, \qquad c = d") or a long chain
+   ("a = b = c") would overflow the text column on a phone. The prose's
+   display equations are therefore cut, at the top level of their TeX
+   (outside braces, brackets, environments and \left ... \right), into
+   groups and pieces, each typeset on its own in boxes that wrap
+   (.eq-split and .eq-chain in theme.css):
+	 - a group ends at \qquad, at "\quad" after a comma, and before an
+	   arrow such as \Longrightarrow, which starts the next group;
+	 - inside a group, a piece ends before each relation (=, <, \approx...);
+	 - an aligned environment becomes a grid of its left and right sides,
+	   which keeps the relations lined up.
+   On a wide screen everything sits on one line, as KaTeX would set it;
+   on a narrow one the groups stack, and a group still too wide breaks
+   before one of its relations.
+   -------------------------------------------------------------------------- */
+
+/* Relations before which a group may break. */
+const TEX_BREAK_RELATIONS = ['=', '<', '>', '\\approx', '\\le', '\\leq', '\\ge', '\\geq', '\\equiv'];
+
+/* Arrows that start a new group. */
+const TEX_GROUP_ARROWS = ['\\Longrightarrow', '\\Rightarrow', '\\iff'];
+
+/* Tokens that open or close a level of nesting. */
+const TEX_OPENERS = ['{', '(', '[', '\\left', '\\begin'];
+const TEX_CLOSERS = ['}', ')', ']', '\\right', '\\end'];
+
+/** Cut TeX into tokens (a command such as \qquad or \{, or one character),
+   each with the nesting depth it sits at. 'balanced' is false when the
+   depth does not come back to zero (an interval such as [0, 1)), and the
+   source is then better left whole.
+   @param {string} tex
+   @returns {{ tokens: { text: string, depth: number }[], balanced: boolean }} */
+function tokenizeTex(tex) {
+	const tokens = [];
+	let depth = 0;
+	let balanced = true;
+	let i = 0;
+
+	while (i < tex.length) {
+		let text = tex[i];
+
+		if (text === '\\') {
+			const match = /^\\([A-Za-z]+|[^A-Za-z])/.exec(tex.slice(i));
+			text = match ? match[0] : '\\';
+		}
+
+		// a closer sits at the depth of its opener
+		if (TEX_CLOSERS.includes(text)) {
+			depth--;
+		}
+
+		if (depth < 0) {
+			balanced = false;
+		}
+
+		tokens.push({ text: text, depth: depth });
+
+		if (TEX_OPENERS.includes(text)) {
+			depth++;
+		}
+
+		i += text.length;
+	}
+
+	return { tokens: tokens, balanced: balanced && depth === 0 };
+}
+
+/** The groups of a display equation, each a list of pieces of TeX: the
+   first piece of a group starts it, the others start with a relation.
+   An equation with nothing to split comes back as [[tex]].
+   @param {string} tex
+   @returns {string[][]} */
+function splitDisplayTex(tex) {
+	const { tokens, balanced } = tokenizeTex(tex);
+
+	if (!balanced) {
+		return [[tex.trim()]];
+	}
+
+	/** @type {string[][]} */
+	const groups = [];
+	/** @type {string[]} */
+	let pieces = [];
+	let piece = '';
+
+	// the nearest token at depth 0 that is not a space, before or after i
+	const neighbour = (i, step) => {
+		for (let j = i + step; j >= 0 && j < tokens.length; j += step) {
+			if (tokens[j].depth === 0 && tokens[j].text.trim() !== '') {
+				return tokens[j].text;
+			}
+		}
+
+		return '';
+	};
+
+	const endPiece = () => {
+		if (piece.trim() !== '') {
+			pieces.push(piece.trim());
+		}
+
+		piece = '';
+	};
+
+	const endGroup = () => {
+		endPiece();
+
+		if (pieces.length > 0) {
+			groups.push(pieces);
+		}
+
+		pieces = [];
+	};
+
+	tokens.forEach((token, i) => {
+		const text = token.text;
+
+		if (token.depth > 0) {
+			piece += text;
+		} else if (text === '\\qquad') {
+			endGroup();
+		} else if (text === '\\quad' && neighbour(i, -1) === ',') {
+			endGroup();
+		} else if (text === '\\quad' && TEX_GROUP_ARROWS.includes(neighbour(i, 1))) {
+			// the space before an arrow: the arrow starts the next group
+		} else if (TEX_GROUP_ARROWS.includes(text)) {
+			endGroup();
+			piece = text;
+		} else if (
+			TEX_BREAK_RELATIONS.includes(text) &&
+			piece.trim() !== '' &&
+			!TEX_GROUP_ARROWS.includes(piece.trim())
+		) {
+			endPiece();
+			piece = text;
+		} else {
+			piece += text;
+		}
+	});
+
+	endGroup();
+
+	return groups.length > 0 ? groups : [[tex.trim()]];
+}
+
+/** The rows of an equation that is one aligned environment, each as its
+   left side and its right side (from the & on), with any punctuation
+   after the environment added to the last row; or null for any other
+   equation, or for rows with more than one &.
+   @param {string} tex
+   @returns {string[][] | null} */
+function splitAlignedTex(tex) {
+	const match = /^\s*\\begin\{aligned\}([\s\S]*)\\end\{aligned\}\s*([.,;]?)\s*$/.exec(tex);
+
+	if (!match || match[1].includes('\\begin{aligned}')) {
+		return null;
+	}
+
+	const { tokens, balanced } = tokenizeTex(match[1]);
+
+	if (!balanced) {
+		return null;
+	}
+
+	/** @type {string[][]} */
+	const rows = [];
+	let cells = [''];
+
+	const endRow = () => {
+		if (cells.join('').trim() !== '') {
+			rows.push(cells.map(cell => cell.trim()));
+		}
+
+		cells = [''];
+	};
+
+	tokens.forEach(token => {
+		if (token.depth === 0 && token.text === '\\\\') {
+			endRow();
+		} else if (token.depth === 0 && token.text === '&') {
+			cells.push('');
+		} else {
+			cells[cells.length - 1] += token.text;
+		}
+	});
+
+	endRow();
+
+	if (rows.length === 0 || rows.some(row => row.length !== 2)) {
+		return null;
+	}
+
+	rows[rows.length - 1][1] += match[2];
+
+	return rows;
+}
+
+/** An aligned environment as a grid of typeset cells: the left sides
+   right-aligned in one column, the right sides (from the relation on) in
+   the next, so the relations line up, and a right side too long for a
+   phone continues on a second line after a binary operator.
+   @param {string[][]} rows
+   @returns {HTMLElement} */
+function makeAlignedMath(rows) {
+	const box = makeEl('span', 'eq-split eq-aligned');
+
+	rows.forEach(([left, right]) => {
+		const leftCell = makeEl('span', 'eq-piece eq-left');
+		const rightCell = makeEl('span', 'eq-piece eq-right');
+
+		renderTex(leftCell, left);
+		// "{}" before the relation keeps its spacing on the left
+		renderTex(rightCell, `{}${right}`);
+		box.appendChild(leftCell);
+		box.appendChild(rightCell);
+	});
+
+	return box;
+}
+
+/** Replace a typeset display equation by its groups and pieces, typeset
+   one by one in wrapping boxes, when its source has more than one piece.
+   @param {HTMLElement} display  a .katex-display made by auto-render */
+function wrapDisplayMath(display) {
+	const annotation = display.querySelector('annotation[encoding="application/x-tex"]');
+
+	// read-outs keep their fixed lines (CLAUDE.md), so they are never split
+	if (!annotation || display.closest('.readout, .eq, [data-tex]')) {
+		return;
+	}
+
+	const rows = splitAlignedTex(annotation.textContent);
+
+	if (rows) {
+		display.replaceWith(makeAlignedMath(rows));
+		return;
+	}
+
+	const groups = splitDisplayTex(annotation.textContent);
+
+	if (groups.length === 1 && groups[0].length === 1) {
+		return;
+	}
+
+	const box = makeEl('span', 'eq-split');
+
+	groups.forEach(pieces => {
+		const chain = makeEl('span', 'eq-chain');
+
+		pieces.forEach((piece, index) => {
+			const part = makeEl('span', 'eq-piece');
+
+			// "{}" before a relation keeps its spacing on the left
+			renderTex(part, index > 0 ? `{}${piece}` : piece);
+			chain.appendChild(part);
+		});
+
+		box.appendChild(chain);
+	});
+
+	display.replaceWith(box);
+}
+
 /** Typeset the $...$ (inline) and $$...$$ (display) math in the prose of root,
    then any data-tex element. Needs KaTeX's auto-render extension.
    @param {HTMLElement} [root] */
@@ -668,6 +1086,10 @@ function renderMath(root = document.body) {
 		return;
 	}
 
+	// the display equations typeset before this call (read-outs, an
+	// earlier call on the same root) are left as they are
+	const typesetBefore = new Set(root.querySelectorAll('.katex-display'));
+
 	renderMathInElement(root, {
 		delimiters: [
 			{ left: '$$', right: '$$', display: true },
@@ -675,6 +1097,12 @@ function renderMath(root = document.body) {
 		],
 		ignoredClasses: ['no-math'],
 		throwOnError: false
+	});
+
+	root.querySelectorAll('.katex-display').forEach((/** @type {HTMLElement} */ display) => {
+		if (!typesetBefore.has(display)) {
+			wrapDisplayMath(display);
+		}
 	});
 
 	renderStaticMath(root);
