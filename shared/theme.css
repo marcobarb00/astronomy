@@ -366,9 +366,20 @@ h3 {
 	color: var(--accent);
 }
 
-/* Long routine algebra may be folded (STRUCTURE.md §2). */
+/* Long routine algebra may be folded (STRUCTURE.md §2). Once opened, the
+   fold is boxed so that its text stands apart from the paragraphs around
+   it. The closed fold keeps the same padding and an invisible border, so
+   the summary does not move under the pointer when it is clicked. */
 details.fold {
 	margin: 12px 0;
+	padding: 6px 16px;
+	border: 1px solid transparent;
+}
+
+details.fold[open] {
+	padding-bottom: 2px;
+	border-color: var(--line);
+	background: var(--card);
 }
 
 details.fold > summary {
@@ -376,6 +387,16 @@ details.fold > summary {
 	font-family: var(--font-label);
 	letter-spacing: 0.1em;
 	color: var(--accent);
+}
+
+details.fold > summary:hover {
+	color: var(--ink);
+}
+
+/* A light rule separates the summary from the folded text. */
+details.fold[open] > summary {
+	padding-bottom: 6px;
+	border-bottom: 1px solid var(--line);
 }
 
 /* Display equations are centred in the text column (STYLE.md §4.6). An
