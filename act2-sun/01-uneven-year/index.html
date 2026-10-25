@@ -55,9 +55,9 @@
 		<p class="lead">
 			On page 1.3 we let the Sun move along the ecliptic at a constant
 			rate. That Sun keeps time well on average, but its noon came out
-			wrong by up to a quarter of an hour, and its day too short by up to
-			13 minutes at latitude 65°, because the real Sun runs up to 2°
-			ahead of it in spring and as far behind it in autumn.
+			wrong by up to a quarter of an hour, and the length of its day by
+			several minutes, because the real Sun runs up to 2° ahead of it in
+			spring and as far behind it in autumn.
 		</p>
 
 		<p>
@@ -76,8 +76,9 @@
 			when the Sun's longitude reaches 0°, 90°, 180° and 270°. A Sun moving
 			uniformly would take a quarter of the year, 91.31 days, over each
 			of these quarters. The real Sun of 2026 takes between 89 and almost
-			94 days, as the reference sky shows (times in UT; the seasons are
-			named as in the northern hemisphere, as in the sources):
+			94 days. The table gives its seasons from the reference sky, with
+			the times in UT and the names of the northern hemisphere, which the
+			sources use.
 		</p>
 
 		<div class="table-scroll">
@@ -140,12 +141,8 @@
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-sun">curve</dt>
-						<dd>the arc the real Sun moves along the ecliptic in one day, in arcminutes</dd>
 						<dt class="c-muted">dashed</dt>
-						<dd>its mean daily motion, $n = 59.14'$ (page 1.3)</dd>
-						<dt class="c-muted">lines</dt>
-						<dd>the equinoxes and the solstices, which begin the seasons</dd>
+						<dd>the mean daily motion, $n = 59.14'$ (page 1.3)</dd>
 					</dl>
 				</div>
 			</div>
@@ -173,11 +170,12 @@
 		</div>
 
 		<p>
-			His seasons were not ours. The reference sky gives 94.01 days for
-			the spring of 141 BC and 92.34 days for its summer, close to his
-			values, so that spring was then the longest season, while in 2026
-			summer is. Section 5 comes back to this change, which the model of
-			this page leaves out.
+			The reference sky shows that the seasons of his time were not those
+			of today: it gives 94.01 days for the spring of 141 BC and 92.34
+			days for its summer, close to his values, so spring was then the
+			longest season, where in 2026 summer is. Whatever sets the lengths of the seasons
+			has moved since Hipparchus, and the eccentric fitted to one year
+			cannot follow it.
 		</p>
 
 		<!-- =============================== 2. MODEL =============================== -->
@@ -389,40 +387,26 @@
 				<div class="readout" id="eccentric-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				The figure starts with $e = 0.2$, six times the Sun's. Step through
-				the year, or play it, and watch the Sun run ahead of its mean place
-				from January to early July, while it goes from the perigee to the
-				apogee, and fall behind for the rest of the year. Then press "the
-				Sun, 2026": the angles $M$ and $q$ close up in (a), the seasons
-				become nearly equal, and in (b) the dashed first-order curve merges
-				with the exact one.
+				Step through the year, or play it, and watch the Sun run ahead of
+				its mean place from January to early July, while it goes from the
+				perigee to the apogee, and fall behind for the rest of the year.
+				Then press "the Sun, 2026": the angles $M$ and $q$ close up in
+				(a), the seasons become nearly equal, and in (b) the dashed
+				first-order curve merges with the exact one.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (a)</p>
 					<dl class="key">
-						<dt class="c-deferent">circle</dt>
-						<dd>the eccentric, seen from the north ecliptic pole, centred on $C = (h, k)$; with the apogee at 104°, $h$ is negative and C lies left of the line to 90°. The dotted line through the Earth and C joins the apogee and the perigee</dd>
-						<dt class="c-sun">lines</dt>
-						<dd>from the Earth towards the equinoxes and the solstices, $\lambda = 0^\circ$ (γ), $90^\circ$, $180^\circ$ and $270^\circ$; the four arcs between them are the seasons</dd>
 						<dt class="c-deferent">dashed</dt>
-						<dd>from C to the Sun, at the mean longitude $\bar\lambda$, and from the Earth in the same direction</dd>
-						<dt><span class="c-deferent">$M$</span>, <span class="c-planet">$q$</span></dt>
-						<dd>$M$ at C, from the apogee to the Sun; $q$ at the Earth, from the mean direction to the Sun</dd>
+						<dd>the mean direction $\bar\lambda$, from C to the Sun and parallel to it from the Earth</dd>
 					</dl>
 				</div>
 				<div>
 					<p class="key-title">In panel (b)</p>
 					<dl class="key">
-						<dt class="c-planet">curve</dt>
-						<dd>$q$, exact; the dot is the date</dd>
 						<dt class="c-muted">dashed</dt>
 						<dd>the first-order approximation, $-e \sin M$</dd>
-					</dl>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>seasons</dt>
-						<dd>the time the Sun takes over each arc, with the year of 365.2422 days</dd>
 					</dl>
 				</div>
 			</div>
@@ -562,43 +546,22 @@
 				<div class="readout" id="fit-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Choose a preset, or set the two seasons yourself. In (a), follow
-				the spring arc $a_1$ from the radius towards γ to the radius
+				Choose a preset, or set the two seasons yourself, and follow the
+				spring arc $a_1$ in (a) from the radius towards γ to the radius
 				towards 90°: it is a right angle plus the two small angles
-				$\arcsin k$ and $\arcsin h$. With the preset "2026", $h$ is
-				negative: C moves to the left of the $y$ axis in (b), and in (a)
-				the radius towards 90° leans towards γ, so that $\arcsin h$
-				shortens spring. Compare "Hipparchus" and "141 BC": the apogee
-				agrees within half a degree, the eccentricity does not.
+				$\arcsin k$ and $\arcsin h$. Then compare "Hipparchus" with "141
+				BC": the apogee agrees within half a degree, the eccentricity does
+				not.
 			</figcaption>
 			<div class="keys">
 				<div>
-					<p class="key-title">In panel (a)</p>
+					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-sun">lines</dt>
-						<dd>the axes, from the Earth towards the equinoxes and the solstices, γ, 90°, 180° and 270°</dd>
 						<dt class="c-deferent">dashed</dt>
 						<dd>the parallels to the axes through C</dd>
-						<dt>thin lines</dt>
-						<dd>the radii from C to the four points where the axes meet the circle</dd>
-						<dt><span class="c-planet">$a_1$</span>, <span class="c-epicycle">$a_2$</span></dt>
-						<dd>the arcs of spring and summer, as seen from C</dd>
-						<dt class="c-planet">wedges</dt>
-						<dd>at C, the small angles between each parallel and the radius beside it: $\arcsin k$ next to the parallel to the $x$ axis, $\arcsin h$ next to the parallel to the $y$ axis</dd>
 					</dl>
 				</div>
 				<div>
-					<p class="key-title">In panel (b)</p>
-					<dl class="key">
-						<dt>axes</dt>
-						<dd>$x$ and $y$ in units of the radius, with the Earth at the origin</dd>
-						<dt class="c-deferent">dashed</dt>
-						<dd>the parallels to the axes through C</dd>
-						<dt class="c-planet">$h$, $k$</dt>
-						<dd>the coordinates of C, measured along the axes from the Earth</dd>
-						<dt class="c-muted">line</dt>
-						<dd>from the Earth through C towards the apogee, at the angle $\lambda_A$ from γ</dd>
-					</dl>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
 						<dt>$|q|_\text{max}$</dt>
@@ -630,12 +593,11 @@
 		</div>
 
 		<p>
-			The apogee is the delicate part of the fit. Moving one hour from
-			summer to spring moves it by 0.9° and hardly changes $e$, and Toomer
-			notes that "even as small a change as 1 hour in an interval has an
-			effect of about 1° in the location of the apogee" (note to III 4),
-			while the ancient observations were timed to a quarter of a day at
-			best.
+			Of the two parameters, the apogee depends far more on the timing of
+			the seasons. Moving one hour from summer to spring shifts it by 0.9°
+			and hardly changes $e$, as Toomer also notes for Hipparchus' data
+			(note to III 4), and the ancient observations were timed to a
+			quarter of a day at best.
 		</p>
 
 		<h3>The mean longitude at the epoch</h3>
@@ -673,13 +635,12 @@
 		<h2 id="test"><span class="step">4 · Test</span>The eccentric against the real Sun</h2>
 
 		<p>
-			Figure 4 compares our fitted eccentric with the reference Sun
-			through 2026. As on page 1.1, we plot model minus sky,
+			To see how much the eccentric gains over the uniform Sun of page
+			1.3, we plot the error of each through 2026, model minus sky,
 			$\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$, in
-			arcminutes. The two models differ so much that one scale cannot
-			show both, so panel (a) shows the eccentric beside the uniform Sun
-			of page 1.3, and panel (b) the eccentric alone, on a scale a
-			hundred times finer.
+			arcminutes, as on page 1.1. The two errors differ so much that one
+			scale cannot show both, so Figure 4 (a) shows them together and (b)
+			the eccentric alone, on a scale a hundred times finer.
 		</p>
 
 		<!-- Figure 4: the first error curve, at two scales -->
@@ -715,12 +676,13 @@
 		<h3>Ptolemy's Sun</h3>
 
 		<p>
-			Ptolemy's model has the same shape with his own parameters: the
-			eccentricity and the apogee he took from Hipparchus' seasons, the
-			mean Sun of his epoch, at noon at Alexandria on 26 February 747 BC,
-			and the mean motion of his year. He counted days of the turning
-			Earth, so we convert the reference sky's uniform time to them with
-			$\Delta T$ (page 1.3), almost six hours at his epoch.
+			To judge the eccentric in its own time, we run Ptolemy's version of
+			it. It has the same shape, with the eccentricity and the apogee he
+			took from Hipparchus' seasons, the mean Sun of his epoch, at noon at
+			Alexandria on 26 February 747 BC, and the mean motion of his year.
+			He counted days of the turning Earth, so we convert the reference
+			sky's uniform time to them with $\Delta T$ (page 1.3), almost six
+			hours at his epoch.
 		</p>
 
 		<!-- Figure 5: Ptolemy's Sun against the real Sun -->
@@ -762,11 +724,14 @@
 
 		<p>
 			The part of the error that changes through the year comes from his
-			parameters: his eccentricity is a fifth too large and his apogee
-			was already 5° behind the real one. Over the centuries the error
-			grows because his year is 6.4 minutes too long, so that his mean Sun
-			falls further behind every century, and by 2026 his Sun is 9.2°
-			behind.
+			parameters, since his eccentricity is a fifth too large and his
+			apogee was already 5° behind the real one.
+		</p>
+
+		<p>
+			Over the centuries the error grows because his year is 6.4 minutes
+			too long. His mean Sun falls further behind every century, and by
+			2026 his Sun is 9.2° behind the real one.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
@@ -788,8 +753,8 @@
 		</p>
 
 		<p>
-			Over longer spans the error grows. It reaches about 3′ within fifty
-			years of 2026, and almost 20′ five centuries away.
+			Over longer spans the error grows, to about 3′ within fifty years of
+			2026 and almost 20′ five centuries away.
 		</p>
 
 		<!-- Figure 6: our eccentric over longer spans -->
@@ -904,11 +869,10 @@
 		</div>
 
 		<p>
-			The eccentric also predicts how far away the Sun is, and there it
-			fails. The Sun is farthest at the apogee, $1 + e$ times the radius
-			of the circle from the Earth, and nearest at the perigee, $1 - e$
-			times. With $e = 0.0335$ its distance therefore swings by 3.35%
-			either way from the mean.
+			The eccentric also predicts how far away the Sun is. The Sun is
+			farthest at the apogee, $1 + e$ times the radius of the circle from
+			the Earth, and nearest at the perigee, $1 - e$ times, so with $e =
+			0.0335$ its distance swings by 3.35% either way from the mean.
 		</p>
 
 		<p>
@@ -945,20 +909,19 @@
 		</div>
 
 		<p>
-			The real disc changes by only half as much. The real distance
-			follows Kepler's ellipse and swings by $e_\text{K} = e/2$ either way.
-			The eccentric gets the directions right but doubles the variation of
-			the distance, a fault that returns, much larger, with the Moon on
-			page 3.2.
+			The real disc changes by only half as much, because the real
+			distance follows Kepler's ellipse and swings by $e_\text{K} = e/2$
+			either way. The eccentric gets the directions right but doubles the
+			variation of the distance, a fault that returns, much larger, with
+			the Moon on page 3.2.
 		</p>
 
 		<p>
-			Before following the apogee over the centuries, we take up an effect
-			of the Sun's uneven motion that can be seen every day. A sundial
-			reads the Sun's hour angle, which depends on its right ascension,
-			and the right ascension depends both on the uneven longitude of this
-			page and on the tilt of the ecliptic. Page 2.2 combines the two into
-			the equation of time.
+			The Sun's uneven motion also shows every day, on a sundial. A
+			sundial reads the Sun's hour angle, which depends on its right
+			ascension, and the right ascension depends both on the uneven
+			longitude of this page and on the tilt of the ecliptic. Page 2.2
+			combines the two into the equation of time.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -966,12 +929,13 @@
 
 		<div class="exercise" data-kind="compute">
 			<p>
-				Find Hipparchus' Sun from his two seasons: spring lasts 94½ days
-				and summer 92½ days, with Ptolemy's year of 365;14,48 days
-				(365.24667 days), and find the centre $C = (h, k)$. Compute $e$, $\lambda_A$, the lengths of autumn
-				and winter, and the greatest equation of centre, and compare them
-				with Ptolemy's values. Check with the preset "Hipparchus" of
-				Figure 3, then with "141 BC", the real seasons of his time.
+				Hipparchus' spring lasts 94½ days and his summer 92½ days, with
+				Ptolemy's year of 365;14,48 days (365.24667 days). Find the centre
+				$C = (h, k)$ of his eccentric, then $e$, $\lambda_A$, the lengths
+				of autumn and winter and the greatest equation of centre, and
+				compare them with Ptolemy's values. Check with the preset
+				"Hipparchus" of Figure 3, then with "141 BC", the real seasons of
+				his time.
 			</p>
 			<details class="hint">
 				<p>

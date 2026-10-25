@@ -88,11 +88,15 @@ section.
 - **A quotation or historical aside must do work in the argument.**
   Historical claims cite book and chapter; disputed ones get the
   "Debated" origin. → WRITING.md §5, STRUCTURE.md §7.1
-- **Figure keys are short: what a label in the figure can't say, three to
-  five entries.** Things are named by labels in the figure; the caption
-  says what to do and notice. Replaced, on 2026-10-23, the earlier rule
-  of one key line for every element, which made keys of nine entries. →
-  WRITING.md §7, CLAUDE.md "Rules for every figure"
+- **Figure keys are short: what a label in the figure can't say and the
+  reader can't see at once, five entries at most, often one or two.**
+  Things are named by labels in the figure; the caption says what to do
+  and notice; obvious elements (a curve under a labelled axis, grid lines,
+  the dot on the date, the pointer line) are not described. Replaced, on
+  2026-10-23, the earlier rule of one key line for every element, which
+  made keys of nine entries; on 2026-10-25 Marco dropped the requirement
+  that every element be explained, in favour of these simpler
+  descriptions. → WRITING.md §7, CLAUDE.md "Rules for every figure"
 
 ## Code
 
