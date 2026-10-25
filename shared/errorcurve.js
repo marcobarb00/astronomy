@@ -95,7 +95,11 @@ class ErrorCurve {
 	   resolution (days), period (days, the error's main period: sets the
 	   band's window), units ('auto' | 'arcmin' | 'deg'), yMax (fixed
 	   half-range, in the chosen units), xLabel, ghostButtons (false: no
-	   "Keep as ghost" and "Clear ghosts", for models without sliders).
+	   "Keep as ghost" and "Clear ghosts", for models without sliders),
+	   validRange ({ start, end } in JD: the dates where the reference can
+	   be trusted, shaded outside; Ephem.RANGE by default, null for a
+	   reference valid at every date the plot can show, such as the
+	   precession of a star).
 	   Without yMax the vertical scale follows the curves. When a slider
 	   changes a model, give each span (or the widget) a yMax large enough
 	   for every slider value, so the axis does not jump while dragging. */
@@ -111,6 +115,7 @@ class ErrorCurve {
 		this.units = options.units ?? 'auto';
 		this.yMax = options.yMax ?? null;
 		this.ghostButtons = options.ghostButtons ?? true;
+		this.validRange = options.validRange === undefined ? Ephem.RANGE : options.validRange;
 		this.span = null;
 		this.rescale = true; // choose the scale at the next update
 		this.models = [];
@@ -456,9 +461,13 @@ class ErrorCurve {
 
 	/* Shade the parts of the range outside the ephemeris' valid dates. */
 	markRange() {
+		if (!this.validRange) {
+			return;
+		}
+
 		const plot = this.plot;
-		const first = Time.decimalYear(Ephem.RANGE.start);
-		const last = Time.decimalYear(Ephem.RANGE.end);
+		const first = Time.decimalYear(this.validRange.start);
+		const last = Time.decimalYear(this.validRange.end);
 		const shade = (from, to) => {
 			plot.band([from, to], [plot.y[0], plot.y[0]], [plot.y[1], plot.y[1]], { color: COL.line, alpha: 0.6 });
 		};
@@ -528,8 +537,13 @@ class ErrorCurve {
 	   legend entry for the shading is then always shown, so the widget does
 	   not change size when the reader changes the span (CLAUDE.md). */
 	canLeaveRange() {
+		if (!this.validRange) {
+			return false;
+		}
+
+		const range = this.validRange;
 		const centre = (this.start + this.end) / 2;
-		const reaches = halfDays => centre - halfDays < Ephem.RANGE.start || centre + halfDays > Ephem.RANGE.end;
+		const reaches = halfDays => centre - halfDays < range.start || centre + halfDays > range.end;
 
 		return reaches((this.end - this.start) / 2) || this.spans.some(span => reaches((span.years * 365.25) / 2));
 	}

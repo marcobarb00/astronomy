@@ -10,6 +10,8 @@ shared code in Node, and prints the numbers quoted on the page.
 | `1.2-frames.js` | 1.2 · Frames |
 | `1.3-clocks.js` | 1.3 · Clocks |
 | `2.1-uneven-year.js` | 2.1 · The uneven year |
+| `2.2-equation-of-time.js` | 2.2 · The equation of time |
+| `2.3-precession.js` | 2.3 · Precession |
 
 Run from the repository root, e.g.
 

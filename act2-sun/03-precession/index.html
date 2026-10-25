@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 2.3 · PRECESSION
+     Act II, the Sun. The longitudes of the stars grow while their
+     latitudes stay; the sphere of the stars turns about the poles of the
+     ecliptic, or the equator turns over a fixed ecliptic; the pole's
+     circle and the two years; the rate from the records of Timocharis,
+     Hipparchus, Ptolemy, al-Battani and Copernicus and from the reference
+     sky; the Sun's apogee moves; Ptolemy's slow rate comes from his Sun.
+     Numbers: tools/numbers/2.3-precession.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>2.3 · Precession · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Page 2.2 ended on γ, the origin of every longitude, sliding slowly
+			along the ecliptic. Hipparchus found this motion when he compared
+			the places of a few stars with those recorded a century and a half
+			before him, and it is the reason the eccentric of page 2.1 drifts
+			away from the real Sun over the centuries.
+		</p>
+
+		<p>
+			Once we know how fast γ moves, we can let the Sun's apogee move with
+			it. The eccentric then stays within a few arcminutes of the real Sun
+			over two thousand years, where with its apogee fixed it drifts by
+			more than half a degree.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The longitudes of the stars grow</h2>
+
+		<div class="row">
+			<p>
+				Hipparchus measured the longitudes of a few bright stars near the
+				ecliptic from the Moon, at lunar eclipses, and compared them with
+				those of Timocharis, who had observed at Alexandria about 150 years
+				earlier. Spica, the brightest star of Virgo, was no longer where
+				Timocharis had put it. According to Ptolemy, Hipparchus "computes
+				that the distance by which Spica is in advance of the autumnal
+				[equinoctial] point is about 6° in his own time, but was about 8° in
+				Timocharis' time" (<em>Almagest</em> VII 2).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			"In advance" means to the west, so Spica's longitude had grown from
+			172° to 174° in about 150 years, and the reference sky agrees with
+			both values to within a fraction of a degree.
+		</p>
+
+		<p>
+			Later observers found Spica further east still. The table gives
+			every longitude of Spica that Ptolemy and Copernicus record, from
+			Timocharis to Copernicus' own observations at Frombork, beside the
+			real longitude on the same date. Ptolemy counts eastward from the
+			solstice or equinox that begins the star's quarter of the ecliptic
+			(VII 4), and the table converts his values to longitudes.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Observer</th>
+					<th>Year</th>
+					<th>Recorded $\lambda$</th>
+					<th>Real $\lambda$</th>
+					<th>Source</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Timocharis</td>
+					<td>294 BC</td>
+					<td>$172^\circ 20'$ ($172.33^\circ$)</td>
+					<td>$172.00^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Timocharis</td>
+					<td>283 BC</td>
+					<td>$172^\circ 30'$ ($172.50^\circ$)</td>
+					<td>$172.16^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Menelaus</td>
+					<td>AD 98</td>
+					<td>$176^\circ 15'$ ($176.25^\circ$)</td>
+					<td>$177.41^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Ptolemy</td>
+					<td>AD 137</td>
+					<td>$176^\circ 40'$ ($176.67^\circ$)</td>
+					<td>$177.95^\circ$</td>
+					<td><em>Almagest</em> VIII 1</td>
+				</tr>
+				<tr>
+					<td>Copernicus</td>
+					<td>1515</td>
+					<td>$197^\circ 14'$ ($197.23^\circ$)</td>
+					<td>$197.09^\circ$</td>
+					<td><em>De Rev.</em> III 2</td>
+				</tr>
+				<tr>
+					<td>Copernicus</td>
+					<td>1525</td>
+					<td>$197^\circ 21'$ ($197.35^\circ$)</td>
+					<td>$197.23^\circ$</td>
+					<td><em>De Rev.</em> III 2</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Over the eighteen centuries of the table the recorded longitude grows
+			by 25°. From Hipparchus' time to ours the real Spica has moved almost
+			30°, a whole sign, which is why the signs of the zodiac no longer
+			match the constellations they are named after.
+		</p>
+
+		<div class="row">
+			<p>
+				Hipparchus had first supposed that only the stars near the
+				ecliptic moved. Ptolemy checked the alignments Hipparchus had
+				recorded, of stars inside and far outside the zodiac, and found
+				every one unchanged in his own time (VII 1), so the stars far from
+				the ecliptic must move with Spica and keep their places among the
+				others.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Spica's latitude did not change: it was 2° south of the ecliptic for
+			Timocharis and again for Ptolemy. Its declination did. In Hipparchus'
+			time Spica was north of the equator, and Ptolemy found it half a
+			degree south (VII 3). The real Spica crossed the equator in between,
+			and is now 11.3° south of it.
+		</p>
+
+		<p>
+			To see whether this holds for every star, and over a longer time,
+			Figure 1 follows six stars of the reference sky, from stars near the
+			ecliptic to Polaris near the pole, over six thousand years.
+		</p>
+
+		<!-- Figure 1: six stars over 6,000 years (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) longitude and latitude, change since 2026</p>
+						<canvas id="stars-ecliptic"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) declination</p>
+						<canvas id="stars-declination"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two panels. In (a) the six longitudes rise along one
+				line and the six latitudes stay on zero; in (b) each declination
+				follows a curve of its own, rising for some stars and falling for
+				others.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-planet">red curve</dt>
+						<dd>Spica, the star of the text</dd>
+						<dt class="c-muted">dotted line</dt>
+						<dd>the year 2026</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>The equator turns over the ecliptic</h2>
+
+		<h3>A turn about the poles of the ecliptic</h3>
+
+		<div class="row">
+			<p>
+				Since Spica's latitude had not changed between Timocharis and
+				himself, Hipparchus concluded that the sphere of the stars turns
+				about the poles of the ecliptic, not about the poles of the
+				equator, and Ptolemy confirmed it for almost every star over the
+				longer interval to his own time (VII 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Take the ecliptic frame of page 1.2, with the $x$ axis towards γ and
+			the $z$ axis towards the ecliptic pole K, and let the stars turn
+			eastward about K by the angle $p\,(t - t_0)$, where $p$ is the
+			<em>rate of precession</em>, about 50″ a year (section 3). A turn about the $z$ axis keeps the
+			angle from K and adds to the angle about it, so each star keeps its
+			latitude while its longitude grows uniformly:
+		</p>
+
+		<div class="box">
+			$$\lambda = \lambda_0 + p\,(t - t_0), \qquad \beta = \beta_0.$$
+		</div>
+
+		<div class="row">
+			<p>
+				Only the motion of the stars relative to γ can be observed, so the
+				same model can be read the other way round, as Copernicus did: the
+				stars stay still and the equator turns. "The reason is not that
+				the sphere of the fixed stars moves eastward, but rather that the
+				equator moves westward" (<em>De Revolutionibus</em> III 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				In the stars' frame the ecliptic then stays where it is, and the
+				pole P of the equator, at the angle ε from K and at longitude 90°
+				(page 1.2), turns westward about K: at the time $t$ it is at
+				longitude $90^\circ - p\,(t - t_0)$. The equinox γ lies on both
+				circles, so it is perpendicular to both poles, in the direction of
+				$\vec{P} \times \vec{K}$, at longitude $-p\,(t - t_0)$: at $t_0$,
+				$\vec{P} = (0, \sin\varepsilon, \cos\varepsilon)$ and $\vec{P}
+				\times \vec{K} = (\sin\varepsilon, 0, 0)$, which points to γ and
+				not to the autumn equinox. Counted from
+				this γ, every star's longitude has grown by $p\,(t - t_0)$, as in
+				the first description.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			In this second description the motion is easier to picture, because
+			the stars and the ecliptic stand still and only the equator moves.
+			Figure 2 draws it.
+		</p>
+
+		<!-- Figure 2: the equator turning over the fixed ecliptic (3D) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="model-sphere"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="model-year">year</label>
+							<input id="model-year" type="range" min="-11000" max="15000" step="1" value="2026">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="model-play">Play a turn</button>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="model-year" data-value="-2830">2831 BC</button>
+							<button type="button" data-target="model-year" data-value="-127">128 BC</button>
+							<button type="button" data-target="model-year" data-value="2026">2026</button>
+							<button type="button" data-target="model-year" data-value="13790">AD 13,790</button>
+						</div>
+						<div class="readout" id="model-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play a turn, or choose a year, and watch P circle K while γ slides
+				west along the ecliptic and the arc λ of Spica grows. Then use the
+				presets to see which star lies near P: Thuban in 2831 BC, none in
+				Hipparchus' time, Polaris today and Vega in AD 13,790, the years
+				when this uniform model, with its fixed obliquity, brings P
+				nearest to them. Drag the sphere to turn the view.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-earth">dashed</dt>
+						<dd>the circle that P follows in one turn, at the angle ε from K</dd>
+						<dt class="c-planet">λ</dt>
+						<dd>counted east from γ along the ecliptic</dd>
+						<dt class="c-muted">faint γ</dt>
+						<dd>the equinox of 2026</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>shift</dt>
+						<dd>how far γ has moved since 2026, $p\,(t - 2026)$, west when positive</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Latitude stays, declination changes</h3>
+
+		<p>
+			The declinations change because the equator moves under the stars.
+			For a star at $(\lambda, \beta)$, the conversion formula of page 1.2
+			gives
+		</p>
+
+		$$\sin\delta = \sin\beta\cos\varepsilon + \cos\beta\sin\varepsilon\sin\lambda.$$
+
+		<p>
+			With $\beta$ and ε fixed and $\lambda$ growing at the rate $p$, the
+			derivative of both sides with respect to time is
+		</p>
+
+		$$\cos\delta\,\frac{d\delta}{dt} = p\,\sin\varepsilon\,\cos\beta\,\cos\lambda, \qquad \frac{d\delta}{dt} = \frac{p\,\sin\varepsilon\,\cos\beta\,\cos\lambda}{\cos\delta}.$$
+
+		<p>
+			A star near the spring equinox, where $\cos\lambda = 1$, moves north
+			fastest, by $p\sin\varepsilon$ or 20.0″ a year for a star on the
+			ecliptic. A star near the autumn equinox moves south as fast, and a
+			star near a solstice hardly moves at all.
+		</p>
+
+		<div class="row">
+			<p>
+				This is the pattern Ptolemy found when he compared the
+				declinations of Timocharis, of Hipparchus and of his own time. The
+				stars between the winter and the summer solstice, through the
+				spring equinox, had moved north, the others south, and "the
+				differences are greater for stars near the equinoctial points, and
+				less for stars near the solstices" (VII 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Spica, near the autumn equinox, moved 1.5° south between Hipparchus
+			and Ptolemy, as the formula predicts. Ptolemy found 1⅒° (1.1°), about
+			what his own, slower rate of precession implies.
+		</p>
+
+		<h3>The circle of the pole</h3>
+
+		<p>
+			One turn of P around K takes $360^\circ/p$, about 25,770 years, and as
+			P moves the pole star changes. Polaris is now 0.63° from the pole and
+			will come closest in 2102.
+		</p>
+
+		<p>
+			Five thousand years ago, around 2800 BC, the pole lay within a tenth
+			of a degree of Thuban, a faint star of Draco. In about 11,600 years
+			it will pass near Vega, though never closer than 5.7°. Figure 3
+			draws the path of the pole among the stars of today's sky.
+		</p>
+
+		<!-- Figure 3: the path of the pole, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-pole-path"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">The path of the pole</div>
+					<p>
+						The northern sky of 2026 around the celestial pole, as seen from
+						the ground looking up. The pole P is at the centre only today:
+						in 25,770 years it circles the ecliptic pole K.
+					</p>
+					<p>
+						<span class="hl">Gold curve:</span> the pole of the equator over
+						one full turn, from about 10,900 BC to AD 14,900, marked every
+						thousand years. Find Thuban near 3000 BC and Vega near AD 14,000.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>ring</dt>
+						<dd>right ascension in hours, increasing clockwise as seen from the ground</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
+						<dt>stipple</dt>
+						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Two kinds of year</h3>
+
+		<div class="row">
+			<p>
+				Precession also splits the year in two. The year of page 1.3, the
+				<em>tropical year</em> $Y$, is the time the Sun takes to come back
+				to γ; the <em>sidereal year</em> $Y_\text{s}$ is the time it takes
+				to come back to the same star. Hipparchus was the first to notice
+				that the second is longer, as Copernicus recalls (<em>De
+				Revolutionibus</em> III 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			To compare the two, start the count at a moment when the Sun is at γ
+			and in line with some star. After one tropical year the Sun is back
+			at γ, but γ has moved west by $pY$, the precession of that year, so
+			the Sun is still $pY$ short of its star. It covers that last arc at
+			its speed among the stars, $360^\circ$ in a sidereal year, which
+			takes $pY \cdot Y_\text{s}/360^\circ$, so exactly
+		</p>
+
+		$$Y_\text{s} - Y = \frac{pY}{360^\circ}\,Y_\text{s}, \qquad \frac{Y_\text{s}}{Y} = \frac{360^\circ}{360^\circ - pY}.$$
+
+		<p>
+			The precession of one year is tiny, $pY = 0.013970^\circ$, so
+			$Y_\text{s}$ and $Y$ differ by only one part in 25,770. Putting $Y$
+			for $Y_\text{s}$ on the right of the first formula therefore changes
+			the result by that same small fraction, and gives a simpler formula,
+			correct to first order in $pY/360^\circ$:
+		</p>
+
+		$$Y_\text{s} - Y \approx \frac{pY}{360^\circ}\,Y = \frac{pY}{n},$$
+
+		<p>
+			where $n = 360^\circ/Y$ is the Sun's daily motion of page 1.3: the
+			extra time is the time the Sun takes to cover the precession of one
+			year. It comes to 20.4 minutes, and the approximation changes it by
+			only a twentieth of a second.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy chose the tropical year, "in which the sun, starting from
+				one solstice or equinox or any point on the ecliptic, returns to
+				the same point again", as the most natural definition (III 1).
+				Copernicus, following Thabit ibn Qurra (<em>De Revolutionibus</em>
+				III 13), preferred the sidereal year, whose "precise uniformity
+				... is clearly linked with the sphere of the fixed stars", and
+				found 365 days 6 h 9 min 40 s (<em>De Revolutionibus</em> III 14),
+				30 seconds longer than the real one.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The rate of precession</h2>
+
+		<h3>From two records</h3>
+
+		<div class="row">
+			<p>
+				Ptolemy found the rate from Regulus, the bright star in Leo, by
+				comparing his own longitude of it with Hipparchus', 265 years
+				older. The star had moved 2°40′ (2.67°), and Ptolemy concludes: "From this
+				we find that 1° rearward motion takes place in approximately 100
+				years" (VII 2). Exercise 1 repeats his computation.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Hipparchus had given only a lower bound, "not less than 1/100th of a
+			degree" a year, as Ptolemy quotes him (VII 2). Ptolemy took the bound
+			as the rate, 36″ a year, and built it into his star catalogue: to
+			find a star's longitude at another date, add 1° for every century
+			after the catalogue's epoch, AD 137 (VII 4).
+		</p>
+
+		<h3>From eighteen centuries of records</h3>
+
+		<p>
+			A rate from two records 265 years apart is only as good as the
+			records: an error of 1° in either of them changes it by 14″ a year.
+			Ptolemy knew the remedy, and states it for the length of the year:
+			"the longer the time between the observations compared, the greater
+			the accuracy of the determination" (III 1). Spread over the eighteen
+			centuries from Timocharis to Copernicus, the same error of 1°
+			changes the rate by only 2″ a year.
+		</p>
+
+		<p>
+			So we fit a straight line through all six records of Spica in the
+			table, in Figure 4. Its slope is 50.6″ a year, or 1° in 71.2 years.
+		</p>
+
+		<!-- Figure 4: Spica's records and the fitted rate (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="records-plot"></canvas>
+			</div>
+			<figcaption>
+				Compare the three lines with the six records. The line fitted to
+				all the records follows the real Spica from Timocharis to
+				Copernicus, while Ptolemy's rule, drawn from his own value of AD
+				137, falls further below it every century.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>dots</dt>
+						<dd>the recorded longitudes of the table, named by observer</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>From the reference sky</h3>
+
+		<div class="row">
+			<p>
+				Our model needs one rate, and we take it, as page 2.1 took the
+				eccentric's parameters, from the reference sky around 2026. There
+				γ moves along the ecliptic by $p = 50.29''$ a year, which is
+				1.397° a century, or 1° in 71.6 years. The obliquity keeps its
+				value of 2026 from page 1.2.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernicus, with the same records and a few more, found a mean rate
+				of 23°57′ (23.95°) in 1,717 Egyptian years, or 50.25″ a Julian year
+				(<em>De Revolutionibus</em> III 6). Over the span of his records
+				the real mean rate was 49.99″, so his was a quarter of an arcsecond
+				too fast. He also concluded that the true rate was uneven (section
+				5).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<h3>The moving apogee</h3>
+
+		<p>
+			Page 2.1 estimated the motion of the Sun's apogee from a few years.
+			To give the model a rate that holds over millennia, we fit the
+			apogee by Hipparchus' method every 250 years over four thousand
+			years of the reference sky, and a straight line through the
+			apogees: the apogee moves east relative to γ by 1.741° a century.
+		</p>
+
+		<div class="row">
+			<p>
+				Most of this, 1.397° a century, is the motion of γ itself, which
+				moves west under the apogee as under every star. The remaining
+				third of a degree a century is the apogee's own motion among the
+				stars, a slow turn of the Earth's orbit caused by the pull of the
+				planets.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="perturbations"></div>
+			</aside>
+		</div>
+
+		<p>
+			The eccentric of page 2.1 therefore gets one more parameter. Its
+			apogee moves uniformly at the rate $\dot\lambda_A$ from its value at
+			$t_0$, the spring equinox of 2026, where page 2.1 fitted it:
+		</p>
+
+		<div class="box">
+			$$\lambda_A(t) = \lambda_A(t_0) + \dot\lambda_A\,(t - t_0), \qquad \lambda_A(t_0) = 103.732^\circ, \qquad \dot\lambda_A = 1.741^\circ \text{ a century}.$$
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>Uniform precession against the real sky</h2>
+
+		<p>
+			Two questions decide whether uniform precession is good enough: how
+			long a constant rate keeps the stars in place, and whether the
+			moving apogee stops the eccentric's drift. Figure 5 answers both.
+		</p>
+
+		<!-- Figure 5: the error curves of the two models -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) Spica, uniform precession</p>
+				<div id="error-spica"></div>
+				<p class="panel-title panel-gap">(b) the Sun, the eccentric with a moving apogee</p>
+				<div id="error-sun"></div>
+			</div>
+			<figcaption>
+				Switch the spans and point at the plots. In (a) the error stays
+				under 3′ over two thousand years and grows slowly beyond; in (b)
+				the moving apogee keeps the eccentric close to the real Sun, while
+				the fixed apogee drifts away on either side of 2026.
+			</figcaption>
+		</figure>
+
+		<p>
+			Over the two thousand years around 2026, uniform precession places
+			Spica within 2.6′ of its real longitude, and within 18′ over six
+			thousand years. Away from 2026 the model falls behind the real
+			Spica on both sides, because the real rate grows slowly with time
+			(section 5).
+		</p>
+
+		<p>
+			With its apogee moving, the eccentric now stays within 6′ of the
+			real Sun over the same two thousand years, where with the apogee
+			fixed it drifts by more than half a degree.
+		</p>
+
+		<p>
+			It also repairs the equation of time of page 2.2, whose half-yearly
+			and yearly waves meet at places set by the apogee. Over a thousand
+			years the model's largest error falls from 81 s to 11 s.
+		</p>
+
+		<h3>Ptolemy's rate</h3>
+
+		<div class="row">
+			<p>
+				Ptolemy's rate, 36″ a year, is far below the real 50″. The likely
+				reason is the way he measured the stars: from the Moon, whose
+				place he computed from his own tables of the Sun and the Moon. A
+				star measured that way inherits the error of the tables (Toomer,
+				note to VII 2), and Figure 6 shows it on thirteen records of
+				Spica, Regulus and β Scorpii.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 6: the records minus the real sky, with Ptolemy's Sun (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="ptolemy-plot"></canvas>
+			</div>
+			<figcaption>
+				Compare the records of Timocharis, Menelaus and Ptolemy with the
+				band: each lies near the error of Ptolemy's Sun on its date. The
+				records of Hipparchus, al-Battani and Copernicus, who did not use
+				his tables, stay within about half a degree of the real sky.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-epicycle">dots</dt>
+						<dd>records reduced with Ptolemy's tables</dd>
+						<dt class="c-epicycle">band</dt>
+						<dd>Ptolemy's Sun minus the real Sun, from its smallest to its largest value in each decade</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Because his year is too long (page 2.1), his Sun falls a little
+				further behind the real one every year, by about 15″, and the
+				stars measured from it fall behind with it. This accounts for most
+				of the gap between his 36″ and the real 50″. Whether it is the
+				whole story is debated: Toomer also finds gross errors in
+				Ptolemy's reductions of the older observations (notes to VII 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="debated"></div>
+			</aside>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What uniform precession leaves out</h2>
+
+		<p>
+			The real rate of precession grows slowly: it was 49.8″ a year in
+			Hipparchus' time and is 50.3″ now. A uniform model fitted in 2026
+			therefore falls behind the real sky on either side of it, which is
+			the slow curve of Figure 5 (a).
+		</p>
+
+		<p>
+			Our model also keeps the obliquity fixed, while the real one
+			decreases, today by 47″ a century. Ptolemy's value was already 11′
+			too large for his time, while those of al-Battani and Copernicus are
+			close to the real ones.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Observer</th>
+					<th>Year</th>
+					<th>Obliquity ε</th>
+					<th>Real ε</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Ptolemy (<em>Almagest</em> I 12)</td>
+					<td>AD 139</td>
+					<td>$23^\circ 51' 20''$ ($23.856^\circ$)</td>
+					<td>$23.678^\circ$</td>
+				</tr>
+				<tr>
+					<td>al-Battani (<em>De Rev.</em> III 6)</td>
+					<td>880</td>
+					<td>$23^\circ 35'$ ($23.583^\circ$)</td>
+					<td>$23.584^\circ$</td>
+				</tr>
+				<tr>
+					<td>Copernicus (<em>De Rev.</em> III 2)</td>
+					<td>1525</td>
+					<td>$23^\circ 28\tfrac12'$ ($23.475^\circ$)</td>
+					<td>$23.501^\circ$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernicus took Ptolemy's large obliquity and slow precession for
+				real changes of the sky. He explained them by two slow
+				oscillations of the Earth's axis, one in the obliquity, with a
+				period of 3,434 years, and one in the equinoxes, twice as fast
+				(<em>De Revolutionibus</em> III 3, III 6).
+				Exercise 3 shows where his uneven rate came from.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Even the latitudes change a little. Spica's has changed by 9′ since
+			Timocharis, 7′ of them because the ecliptic itself turns slowly,
+			pulled by the planets, the same turn that lowers the obliquity; the
+			rest is the star's own motion.
+		</p>
+
+		<div class="row">
+			<p>
+				None of these models says why the equator turns. The Earth
+				bulges at the equator, and the Sun and the Moon pull on the bulge
+				as if to bring the equator into the ecliptic. The spinning Earth
+				answers by turning its axis slowly about the pole of the ecliptic,
+				as the axis of a spinning top turns about the vertical. Newton gave
+				the first explanation of this kind.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="newton"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				The Moon's pull also makes the pole wobble about its mean place,
+				by up to 17″ in longitude and 9″ in obliquity, with the 18.6-year
+				period of the Moon's nodes. This <em>nutation</em> is, with the
+				aberration of light, the small difference between the apparent and
+				the mean positions of the reference sky.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
+
+		<p>
+			What is left of the Sun's error, about 6′ at the ends of the two
+			thousand years, comes from what the model holds fixed: the
+			eccentricity decreases slowly, and the mean motion itself changes.
+			About 2′ of it is already there around 2026, the error of the circle
+			itself found on page 2.1.
+		</p>
+
+		<p>
+			A uniform circle, an eccentric and a moving apogee now predict the
+			Sun's longitude within a few arcminutes over two thousand years. The
+			Moon is next, and it is much harder, because its speed along the
+			ecliptic changes far more than the Sun's, and in a more complicated
+			way.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Hipparchus placed Regulus 29°50′ (29.83°) east of the summer
+				solstice in 128 BC, and al-Battani 44°5′ (44.08°) east of it around
+				AD 880 (<em>De Revolutionibus</em> III 2). Find the rate of
+				precession from these two records, in arcseconds a year and in
+				years per degree. Then find Ptolemy's rate from Hipparchus' record
+				and his own, 32½° in AD 139, with his interval of 265 years, and
+				compare both with the real sky. Check with Figure 6.
+			</p>
+			<details class="hint">
+				<p>
+					Both are distances from the summer solstice, so their difference
+					is the motion. From 128 BC to AD 880 there are 1,007 years, since
+					there is no year 0.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Regulus moved $44^\circ 5' - 29^\circ 50' = 14^\circ 15'$
+					($14.25^\circ$) in 1,007 years, which is 50.9″ a year, or 1° in 70.7 years. The real
+					Regulus moved 13.90° in the same interval, 49.7″ a year: the two
+					records together are 0.35° too far apart.
+				</p>
+				<p>
+					From Hipparchus to Ptolemy it moved $2^\circ 40'$ ($2.67^\circ$) in 265 years,
+					36.2″ a year, where the real Regulus moved 3.67° in 266.1 years,
+					49.6″ a year. Ptolemy's record is 1.56° below the real longitude
+					and Hipparchus' 0.56°, so the motion between them comes out a
+					degree short. In Figure 6, Ptolemy's Regulus lies near the band of
+					his Sun, Hipparchus' near zero.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				From the tropical year of page 1.3, 365.24219 days, and $p =
+				50.29''$ a year, find the sidereal year. Then find the sidereal year
+				implied by Ptolemy's tropical year, 365;14,48 days (365.24667 days,
+				<em>Almagest</em> III 1), and his rate of 1° a century. Compare
+				both of Ptolemy's years with the real ones, and explain why one is
+				much better than the other.
+			</p>
+			<details class="hint">
+				<p>
+					Use $Y_\text{s} = Y \cdot 360^\circ/(360^\circ - pY)$, with $pY$
+					the precession of one tropical year in degrees. For the explanation, think
+					of what Ptolemy actually compared: the stars with his Sun.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					In a tropical year γ moves $pY = 0.013970^\circ$, so $Y_\text{s}
+					= 365.24219 \times 360/(360 - 0.013970) = 365.25636$ days, or 365
+					d 6 h 9 min 10 s. It equals the period of the Earth's mean motion
+					in the reference sky's own fixed frame, 365.25636 days.
+				</p>
+				<p>
+					For Ptolemy, $pY = 0.01^\circ$ and $Y_\text{s} = 365.24667 \times
+					360 / 359.99 = 365.25681$ days, or 365 d 6 h 9 min 49 s. His
+					tropical year is 6.45 minutes too long, but his sidereal year
+					only 39 seconds.
+				</p>
+				<p>
+					The Sun moves among the stars by its tropical motion less the
+					precession, $n - p$, per year. Ptolemy's mean motion is slower
+					than today's by 15.9″ a year, and his rate of precession by
+					14.3″, because he measured the stars from his Sun. Their
+					difference, the Sun's motion among the stars, is wrong by only
+					1.6″ a year, which is the 39 seconds of his sidereal year: his
+					two errors nearly cancel in it.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Copernicus found 1° of precession in 100 years from Timocharis to
+				Ptolemy, 1° in 65 years from Ptolemy to al-Battani, and 1° in 71
+				years from al-Battani to his own time, and concluded that the rate
+				changes (<em>De Revolutionibus</em> III 2). In the reference sky
+				the equinox moved 5.98° from 294 BC to AD 139, 10.28° from 139 to
+				880 and 8.98° from 880 to 1525. Find the real rate in each
+				interval, then use Figure 6 to explain the rates Copernicus
+				found.
+			</p>
+			<details class="hint">
+				<p>
+					Divide each interval by the motion of the equinox. In Figure 6,
+					look at the records at the ends of each interval.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The real rates are 1° in 432 / 5.98 = 72.2 years, 741 / 10.28 =
+					72.1 years and 645 / 8.98 = 71.8 years. The real rate grows
+					slowly, but only by about half a percent over these eighteen
+					centuries.
+				</p>
+				<p>
+					The records give other rates. Spica moved $4^\circ 20'$
+					($4.33^\circ$) from Timocharis to Ptolemy's catalogue, 430 years,
+					1° in 99.3 years; Regulus $11^\circ 35'$ ($11.58^\circ$) from
+					Ptolemy to al-Battani, 741 years, 1° in 64.0 years; β Scorpii
+					$11^\circ 55'$ ($11.92^\circ$) from Menelaus to al-Battani, 782
+					years, 1° in 65.6 years.
+				</p>
+				<p>
+					Every record Ptolemy reduced carries his Sun's error, 0.3° to 0.7°
+					too large in Timocharis' time and 0.8° to 1.6° too small in his
+					own and Menelaus'. This shortens the motion up to Ptolemy and
+					lengthens it after him. Al-Battani's and Copernicus' records are
+					within a quarter of a degree, so the last interval is right, and
+					the unevenness Copernicus found comes from the records of the
+					first two.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): I 12 (the
+				obliquity); III 1 (the tropical year as the natural one; long
+				intervals give accurate periods; Hipparchus' Spica from lunar
+				eclipses); VII 1 (the stars keep their configurations; Hipparchus'
+				first hypothesis); VII 2 (Spica 8° and 6° before the autumn equinox;
+				Regulus, 2;40° in 265 years, 1° in 100 years; Hipparchus on the
+				length of the year; Toomer's note on the error of the catalogue);
+				VII 3 (the motion about the poles of the ecliptic; the
+				declinations; the occultations of Timocharis, Agrippa and
+				Menelaus); VII 4 (the catalogue's epoch and its rule of 1° in 100
+				years); VIII 1 (Spica in the catalogue).</li>
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen): III 1
+				(Hipparchus and the two years; the equator moves westward); III 2
+				(the records from Timocharis to al-Battani; Spica in 1515 and
+				1525; the obliquities); III 3–6 (the uneven precession; its mean
+				rate, 23;57° in 1,717 Egyptian years); III 13–14 (the sidereal year,
+				Thabit ibn Qurra's and his own).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, glossary (the precession
+				of the equinoxes, 50.3″ a year).</li>
+			<li>J. Vondrák, N. Capitaine, P. Wallace, <em>New precession expressions,
+				valid for long time intervals</em>, A&amp;A 534, A22 (2011): the
+				precession of the reference sky.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 22
+				(obliquity and nutation) and ch. 25 (the Sun's mean longitude).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
+				the Major Planets</em> (JPL): the Earth's mean motion in a fixed
+				frame.</li>
+			<li>SIMBAD (CDS, Strasbourg): the positions and proper motions of
+				Regulus, β Scorpii and Thuban.</li>
+			<li>Every number on this page: <code>tools/numbers/2.3-precession.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

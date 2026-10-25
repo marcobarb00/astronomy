@@ -6,8 +6,8 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 2.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
-   solar-eccentric.js).
+   pages 1.1 to 2.3 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   solar-eccentric.js, equation-of-time.js, precession.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -24,7 +24,9 @@
 	12. Refraction, stars, the turning sky, frames (Meeus ch. 13, 16, 21; pages 1.1, 1.2)
 	13. The clocks and the mean Sun (Meeus ch. 12, 25; Almagest III 7; page 1.3)
 	14. The solar eccentric (Almagest III 4-7; page 2.1)
-	15. Run
+	15. The equation of time (Almagest I 16, III 9; De Rev. III 26; Meeus ch. 28; page 2.2)
+	16. Precession and the moving apogee (Almagest VII 2; page 2.3)
+	17. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1357,7 +1359,263 @@ function testSolarEccentric() {
 }
 
 /* ==========================================================================
-   15. RUN
+   15. THE EQUATION OF TIME (page 2.2)
+   The reduction written as an eccentric must equal the frames' formula;
+   Ptolemy's and Copernicus' figures for the inequality of the days,
+   which they round to a third or a quarter of a time-degree; Meeus'
+   worked example, with the eccentric fitted to 2026 (within 15 s from
+   1976 to 2076, tools/numbers/2.2-equation-of-time.js).
+   ========================================================================== */
+
+function testEquationOfTime() {
+	group('The equation of time · models/equation-of-time.js (page 2.2)');
+
+	// alpha - lambda as an eccentric of eccentricity tan^2(eps / 2)
+	let worst = 0;
+
+	for (let lon = 0; lon < 360; lon += 7.5) {
+		worst = Math.max(worst, Math.abs(EquationOfTime.reduction(lon, 23.44) - Frames.reduction(lon, 23.44)));
+	}
+
+	check({
+		name: 'Reduction as an eccentric = Frames.reduction',
+		source: 'page 2.2',
+		expected: 0,
+		computed: worst,
+		tol: 1e-6,
+		unit: '″',
+		scale: ARCSEC_PER_DEG,
+		show: showDeg
+	});
+
+	// the greatest reduction is where the equator and the ecliptic points
+	// move at the same rate
+	const greatest = EquationOfTime.greatestReduction(23.44);
+
+	check({
+		name: 'd alpha / d lambda = 1 at the greatest reduction',
+		source: 'page 2.2',
+		expected: 1,
+		computed: EquationOfTime.reductionRate(greatest.lon, 23.44),
+		tol: 1e-9,
+		show: x => x.toFixed(12)
+	});
+
+	// I 16: the two signs on either side of a solstice cross the meridian
+	// in 64;32 time-degrees, with Ptolemy's obliquity
+	const eps = Frames.PTOLEMY_OBLIQUITY;
+	const ra = lon => lon + EquationOfTime.reduction(lon, eps);
+
+	check({
+		name: 'Two signs about a solstice, in time-degrees',
+		source: 'Almagest I 16',
+		expected: 64 + 32 / 60,
+		computed: ra(120) - ra(60),
+		tol: 2,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// III 9: from the middle of Aquarius to the end of Libra, about 3 2/3
+	// time-degrees from the anomaly and 4 2/3 from the meridian crossings,
+	// with Ptolemy's eccentric and obliquity
+	const sun = SolarEccentric.PTOLEMY;
+	const atTrue = target => {
+		const L = bisect(
+			x => norm180(EquationOfTime.partsAt(x, sun.e, sun.apogee, eps).lambda - target),
+			target - 5,
+			target + 5,
+			60
+		);
+
+		return EquationOfTime.partsAt(L, sun.e, sun.apogee, eps);
+	};
+	const from = atTrue(315);
+	const to = atTrue(210);
+
+	check({
+		name: 'Mid-Aquarius to end of Libra: the anomaly',
+		source: 'Almagest III 9',
+		expected: 3 + 2 / 3,
+		computed: (to.eccentricity - from.eccentricity) / 4,
+		tol: 0.1,
+		unit: 'time-degrees',
+		show: x => x.toFixed(3)
+	});
+
+	check({
+		name: '… and the meridian crossings',
+		source: 'Almagest III 9',
+		expected: 4 + 2 / 3,
+		computed: (to.obliquity - from.obliquity) / 4,
+		tol: 0.1,
+		unit: 'time-degrees',
+		show: x => x.toFixed(3)
+	});
+
+	// III 26: with his obliquity of 23;28 1/2, the 88° from 16° of Taurus
+	// to 14° of Leo cross the meridian in about 93 time-degrees
+	const raCopernicus = lon => lon + EquationOfTime.reduction(lon, 23 + 28.5 / 60);
+
+	check({
+		name: '88° from Taurus 16° to Leo 14°, in time-degrees',
+		source: 'De Rev. III 26',
+		expected: 93,
+		computed: raCopernicus(134) - raCopernicus(46),
+		tol: 0.5,
+		unit: '°',
+		show: showDeg
+	});
+
+	// Meeus 28.a: 1992 October 13.0 TD, E = 13 min 42.6 s
+	check({
+		name: 'E with the eccentric fitted to 2026',
+		source: 'Meeus Ex. 28.a',
+		expected: 3.427351 * 4,
+		computed: EquationOfTime.equation(SolarEccentric.FIT_2026, Time.julianDay(1992, 10, 13)),
+		tol: 15,
+		unit: 's',
+		scale: 60,
+		show: minutes => `${minutes.toFixed(4)} min`
+	});
+
+	// the model's real noon is mean noon minus its own E at that moment
+	const jd0 = Time.julianDay(2026, 11, 3);
+	const noon = EquationOfTime.apparentNoon(SolarEccentric.FIT_2026, jd0, 12.5);
+	const meanNoon = jd0 + 0.5 - 12.5 / 360;
+
+	check({
+		name: 'Real noon = mean noon - E',
+		source: 'page 2.2',
+		expected: EquationOfTime.equation(SolarEccentric.FIT_2026, Time.ttFromUt(noon)),
+		computed: (meanNoon - noon) * 1440,
+		tol: 0.01,
+		unit: 's',
+		scale: 60,
+		show: minutes => `${minutes.toFixed(5)} min`
+	});
+}
+
+/* ==========================================================================
+   16. PRECESSION AND THE MOVING APOGEE (page 2.3)
+   The uniform model against the reference sky's long-term precession
+   (within 3' of Spica over the thousand years on either side of 2026,
+   tools/numbers/2.3-precession.js); its geometry (the equinox is the
+   direction of P x K); the sidereal year; Ptolemy's rule of 1° in 100
+   years; the moving apogee equal to the fixed one at its epoch.
+   ========================================================================== */
+
+function testPrecessionModel() {
+	group('Precession · models/precession.js, the moving apogee (page 2.3)');
+
+	// the model's Spica against the reference star, 1,000 years before 2026
+	const spica = Stars.find('Spica');
+	const epoch = Precession.MODERN.epoch;
+	const spicaThen = Stars.ofDate(spica, epoch);
+	const spicaLon = Ephem.equatorialToEcliptic(spicaThen.ra, spicaThen.dec, Ephem.meanObliquity(epoch)).lon;
+	const jd1026 = Time.julianDay(1026, 1, 1);
+	const real1026 = Stars.ofDate(spica, jd1026);
+
+	check({
+		name: "Spica's longitude in 1026, uniform model",
+		source: 'Stars.ofDate (Vondrák 2011)',
+		expected: Ephem.equatorialToEcliptic(real1026.ra, real1026.dec, Ephem.meanObliquity(jd1026)).lon,
+		computed: Precession.longitude(Precession.MODERN, spicaLon, jd1026),
+		tol: 3,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+
+	// the equinox of date is the direction of P x K
+	const jd = Time.julianDay(-2000, 1, 1);
+	const node = toLonLat(cross3(Precession.pole(Precession.MODERN, jd), [0, 0, 1]));
+
+	check({
+		name: 'Equinox = direction of P × K, 2001 BC',
+		source: 'page 2.3',
+		expected: Precession.equinox(Precession.MODERN, jd),
+		computed: node.lon,
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg,
+		angle: true
+	});
+
+	// the sidereal year from the tropical year of page 1.3 and the rate,
+	// against the Earth's mean motion in Standish's elements (fixed frame)
+	check({
+		name: 'Sidereal year from 365.24219 d and p',
+		source: 'Standish, Table 2a',
+		expected: 36525 / (35999.37306329 / 360),
+		computed: Precession.siderealYear(MeanSun.yearLength(), Precession.MODERN.rate),
+		tol: 2,
+		unit: 's',
+		scale: 86400,
+		show: days => `${days.toFixed(6)} d`
+	});
+
+	// Almagest VII 2: 2;40° in about 265 years
+	check({
+		name: "Ptolemy's rule over 265 years",
+		source: 'Almagest VII 2',
+		expected: 2 + 40 / 60,
+		computed: Precession.shift(Precession.PTOLEMY, Precession.PTOLEMY.epoch + 265 * 365.25),
+		tol: 2,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// the declination rate against a numerical derivative of the model
+	const before = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch - 3652.5);
+	const after = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch + 3652.5);
+	const now = Precession.equatorial(Precession.MODERN, spicaLon, -2, epoch);
+	const eps = Precession.MODERN.obliquity;
+
+	check({
+		name: 'dδ/dt of Spica, formula = derivative',
+		source: 'page 2.3',
+		expected: (after.dec - before.dec) / 20,
+		computed: Precession.declinationRate(Precession.MODERN.rate, eps, spicaLon, -2, now.dec),
+		tol: 0.01,
+		unit: '″/yr',
+		scale: 3600,
+		show: deg => `${(deg * 3600).toFixed(3)}″/yr`
+	});
+
+	// the moving apogee equals the fixed one at its epoch, and moves its rate a century later
+	const moving = SolarEccentric.MOVING_2026;
+
+	check({
+		name: 'Moving apogee at its epoch = FIT_2026',
+		source: 'page 2.3',
+		expected: SolarEccentric.make(SolarEccentric.FIT_2026)(moving.apogeeEpoch),
+		computed: SolarEccentric.make(moving)(moving.apogeeEpoch),
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg,
+		angle: true
+	});
+
+	check({
+		name: 'Moving apogee, one century later',
+		source: 'page 2.3',
+		expected: moving.apogee + moving.apogeeRate,
+		computed: SolarEccentric.apogeeAt(moving, moving.apogeeEpoch + 36525),
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg
+	});
+}
+
+/* ==========================================================================
+   17. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1376,5 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	testFrames();
 	testClock();
 	testSolarEccentric();
+	testEquationOfTime();
+	testPrecessionModel();
 	render();
 });
