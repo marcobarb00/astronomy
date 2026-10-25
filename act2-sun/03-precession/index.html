@@ -470,20 +470,31 @@
 		</div>
 
 		<p>
-			During a tropical year γ moves west to meet the Sun by $pY$, the
-			precession of one year (with $p$ and $Y$ in the same unit of time),
-			so the Sun covers only $360^\circ - pY$ among the stars, while in a
-			sidereal year it covers the full $360^\circ$. At the same rate, the
-			two times are in the ratio of the two arcs. To first order in
-			$pY/360^\circ$, the difference is the time the Sun, moving $n$ a day,
-			takes to cover the precession of one year:
+			To compare the two, start the count at a moment when the Sun is at γ
+			and in line with some star. After one tropical year the Sun is back
+			at γ, but γ has moved west by $pY$, the precession of that year, so
+			the Sun is still $pY$ short of its star. It covers that last arc at
+			its speed among the stars, $360^\circ$ in a sidereal year, which
+			takes $pY \cdot Y_\text{s}/360^\circ$, so exactly
 		</p>
 
-		$$\frac{Y_\text{s}}{Y} = \frac{360^\circ}{360^\circ - pY}, \qquad Y_\text{s} - Y \approx \frac{p\,Y}{n}.$$
+		$$Y_\text{s} - Y = \frac{pY}{360^\circ}\,Y_\text{s}, \qquad \frac{Y_\text{s}}{Y} = \frac{360^\circ}{360^\circ - pY}.$$
 
 		<p>
-			With the year of page 1.3 and the rate of section 3, the sidereal
-			year is 20.4 minutes longer than the tropical year.
+			The precession of one year is tiny, $pY = 0.013970^\circ$, so
+			$Y_\text{s}$ and $Y$ differ by only one part in 25,770. Putting $Y$
+			for $Y_\text{s}$ on the right of the first formula therefore changes
+			the result by that same small fraction, and gives a simpler formula,
+			correct to first order in $pY/360^\circ$:
+		</p>
+
+		$$Y_\text{s} - Y \approx \frac{pY}{360^\circ}\,Y = \frac{pY}{n},$$
+
+		<p>
+			where $n = 360^\circ/Y$ is the Sun's daily motion of page 1.3: the
+			extra time is the time the Sun takes to cover the precession of one
+			year. It comes to 20.4 minutes, and the approximation changes it by
+			only a twentieth of a second.
 		</p>
 
 		<div class="row">
@@ -676,34 +687,19 @@
 
 		<h3>Ptolemy's rate</h3>
 
-		<p>
-			Ptolemy's rate, 36″ a year, is far below the real 49.9″ of his time,
-			and by 2026 his rule would put Spica 8.7° short of its real
-			longitude.
-		</p>
-
 		<div class="row">
 			<p>
-				Ptolemy measured the stars from the Moon, whose place he computed
-				from his own tables, which rest on his Sun, and he reduced the
-				occultations of Timocharis and Menelaus with the same tables (VII
-				2, VII 3). Toomer notes that this "explains why the mean error in
-				the longitudes of his star catalogue, about 1°, is the same as the
-				mean error of his lunar and solar positions" (note to VII 2).
+				Ptolemy's rate, 36″ a year, is far below the real 50″. The likely
+				reason is the way he measured the stars: from the Moon, whose
+				place he computed from his own tables of the Sun and the Moon. A
+				star measured that way inherits the error of the tables (Toomer,
+				note to VII 2), and Figure 6 shows it on thirteen records of
+				Spica, Regulus and β Scorpii.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
 			</aside>
 		</div>
-
-		<p>
-			If his tables are the cause, each record reduced with them should be
-			wrong by about as much as his Sun on its date, from +0.7° in
-			Timocharis' time to −1.1° in Ptolemy's own. Figure 6 tests this on
-			thirteen recorded longitudes of Spica, Regulus and β Scorpii, from
-			<em>Almagest</em> VII 2–3 and VIII 1 and <em>De Revolutionibus</em>
-			III 2.
-		</p>
 
 		<!-- Figure 6: the records minus the real sky, with Ptolemy's Sun (static) -->
 		<figure class="fig">
@@ -729,21 +725,14 @@
 			</div>
 		</figure>
 
-		<p>
-			His Sun's error grows because his year is 6.4 minutes too long (page
-			2.1). In his era its error drifts by 14.9″ a year, and every star
-			measured from it drifts with it. The real rate of his time, 49.9″ a
-			year, less these 14.9″, is 34.9″, close to the 36″ he found.
-		</p>
-
 		<div class="row">
 			<p>
-				The Sun need not be the whole story. Spica's declinations,
-				measured on the meridian without the Sun, also changed too
-				little: Ptolemy's "½° south" is 0.45° short of the real Spica of
-				his time. Toomer finds "gross errors" in Ptolemy's reductions of
-				the occultations, and agrees with Britton that the observations he
-				reports "could not have been selected at random" (notes to VII 3).
+				Because his year is too long (page 2.1), his Sun falls a little
+				further behind the real one every year, by about 15″, and the
+				stars measured from it fall behind with it. This accounts for most
+				of the gap between his 36″ and the real 50″. Whether it is the
+				whole story is debated: Toomer also finds gross errors in
+				Ptolemy's reductions of the older observations (notes to VII 3).
 			</p>
 			<aside>
 				<div class="note" data-origin="debated"></div>
@@ -860,9 +849,9 @@
 		<p>
 			A uniform circle, an eccentric and a moving apogee now predict the
 			Sun's longitude within a few arcminutes over two thousand years. The
-			Moon is next, and it is much harder. Its speed varies far more than
-			the Sun's, and Ptolemy found a second inequality in its motion, at
-			the quarters, on top of the first.
+			Moon is next, and it is much harder, because its speed along the
+			ecliptic changes far more than the Sun's, and in a more complicated
+			way.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

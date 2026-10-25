@@ -2702,6 +2702,8 @@ Figure 3: one turn centred on 2026, from 10859 BC to 14910
 === Model: the tropical and the sidereal year ===
 Y_s = Y_t / (1 - p Y_t / 360°): 365.24219 d -> 365.25636 d, 20.41 min longer; p / n = 20.41 min
    tropical 365 d 5 h 48 min 45 s, sidereal 365 d 6 h 9 min 10 s
+   pY = 0.013970°; exact Y_s - Y = pY Y_s / 360° = 20.4108 min; with Y for Y_s: 20.4100 min, 0.048 s less
+   Y_s and Y differ by one part in 25768 (360° / pY = 25769)
 the Earth's mean motion in the reference sky (Standish, fixed J2000 frame), 35999.37306329° a century: sidereal year 365.25636 d
 Thabit ibn Qurra (De Rev. III 13), 365;15,23 d = 365.25639 d = 365 d 6 h 9 min 12 s
 Copernicus (De Rev. III 14), 365;15,24,10 d = 365.256713 d = 365 d 6 h 9 min 40 s, 30.2 s longer than ours
