@@ -31,7 +31,7 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights
+	 7. Highlights (and a symbol)
 	 8. Label placement
    ========================================================================== */
 
@@ -707,6 +707,77 @@ const Plate = (function () {
 		placeLabels(chart);
 	}
 
+	/* A path through (ra, dec) points on a polar chart (page 2.3: the path
+	   of the celestial pole around the ecliptic pole), with a short tick
+	   across it at each of 'marks' [{ ra, dec, text }]. A tick points away
+	   from the point 'centre' { ra, dec } that the path goes round, and
+	   its text, if any, goes beside it on that side. */
+	function highlightPath(chart, points, centre, marks = []) {
+		const screen = points.map(p => chart.at(p.ra, p.dec));
+		const c = chart.at(centre.ra, centre.dec);
+		const tickLength = 6;
+
+		svgLine(chart.svg, screen, { class: 'highlight' });
+
+		marks.forEach(mark => {
+			const q = chart.at(mark.ra, mark.dec);
+			const length = Math.hypot(q.x - c.x, q.y - c.y) || 1;
+			const u = { x: (q.x - c.x) / length, y: (q.y - c.y) / length };
+
+			svgLine(
+				chart.svg,
+				[
+					{ x: q.x - tickLength * u.x, y: q.y - tickLength * u.y },
+					{ x: q.x + tickLength * u.x, y: q.y + tickLength * u.y }
+				],
+				{ class: 'highlight-tick' }
+			);
+
+			if (mark.text) {
+				const away = 3 * tickLength;
+				const element = svgText(chart.svg, mark.text, q.x + away * u.x, q.y + away * u.y, {
+					class: 'circle-name highlight-text',
+					'text-anchor': u.x < -0.3 ? 'end' : u.x > 0.3 ? 'start' : 'middle',
+					'dominant-baseline': 'central'
+				});
+
+				addLabel(chart, element, LABEL_ORDER.highlight, (box, k) => aroundPoint(q, box, away + LABEL_GAP * k));
+			}
+		});
+
+		placeLabels(chart);
+	}
+
+	/* A point named by a symbol (e.g. the ecliptic pole K): a small cross
+	   in the ink of the plate and the symbol beside it, kept on a phone as
+	   the pole's P is. */
+	function symbol(chart, ra, dec, text) {
+		const q = chart.at(ra, dec);
+		const arm = 5;
+
+		svgLine(
+			chart.svg,
+			[
+				{ x: q.x - arm, y: q.y },
+				{ x: q.x + arm, y: q.y }
+			],
+			{ class: 'symbol-mark' }
+		);
+		svgLine(
+			chart.svg,
+			[
+				{ x: q.x, y: q.y - arm },
+				{ x: q.x, y: q.y + arm }
+			],
+			{ class: 'symbol-mark' }
+		);
+
+		const element = svgText(chart.svg, text, q.x + 8, q.y - 8, { class: 'symbol' });
+
+		addLabel(chart, element, LABEL_ORDER.symbol, (box, k) => aroundPoint(q, box, 8 + LABEL_GAP * k));
+		placeLabels(chart);
+	}
+
 	/* ======================================================================
 	   8. LABEL PLACEMENT
 	   Each label has its designed place and a list of other places (the
@@ -891,6 +962,8 @@ const Plate = (function () {
 		polar,
 		rectangular,
 		highlightCircle,
-		highlightCurve
+		highlightCurve,
+		highlightPath,
+		symbol
 	};
 })();

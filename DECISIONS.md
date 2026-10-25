@@ -61,7 +61,8 @@ section.
   are V from SIMBAD (Hipparcos for the plate stars SIMBAD lacks). → STYLE.md §5
 - **Blue plates only for static 2D charts of the sky, at most one per
   page, never for mathematics.** Page 1.1 has the sky around the pole,
-  page 1.2 the zodiac around Taurus. → STYLE.md §7
+  page 1.2 the zodiac around Taurus, page 2.3 the path of the pole (on
+  trial, 2026-10-24: Marco decides whether to keep it). → STYLE.md §7
 - **Origin notes show the heading only** ("Origin · Greek"); the hub
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
@@ -87,11 +88,15 @@ section.
 - **A quotation or historical aside must do work in the argument.**
   Historical claims cite book and chapter; disputed ones get the
   "Debated" origin. → WRITING.md §5, STRUCTURE.md §7.1
-- **Figure keys are short: what a label in the figure can't say, three to
-  five entries.** Things are named by labels in the figure; the caption
-  says what to do and notice. Replaced, on 2026-10-23, the earlier rule
-  of one key line for every element, which made keys of nine entries. →
-  WRITING.md §7, CLAUDE.md "Rules for every figure"
+- **Figure keys are short: what a label in the figure can't say and the
+  reader can't see at once, five entries at most, often one or two.**
+  Things are named by labels in the figure; the caption says what to do
+  and notice; obvious elements (a curve under a labelled axis, grid lines,
+  the dot on the date, the pointer line) are not described. Replaced, on
+  2026-10-23, the earlier rule of one key line for every element, which
+  made keys of nine entries; on 2026-10-25 Marco dropped the requirement
+  that every element be explained, in favour of these simpler
+  descriptions. → WRITING.md §7, CLAUDE.md "Rules for every figure"
 
 ## Code
 
@@ -122,6 +127,14 @@ section.
 - **Shared code over page code.** A helper used twice moves to `shared/`;
   a model reused later goes in `shared/models/`. → CLAUDE.md,
   STRUCTURE.md §8
+- **Two lists of stars.** `Stars.LIST` holds the bright stars that the
+  skies of pages 1.1 and 1.3 draw (Regulus joined it on 2026-10-24, for
+  page 2.3); a fainter star that a page names (β Scorpii, Thuban) goes in
+  `Stars.MORE`, which `Stars.find` also searches, so those skies do not
+  change. → shared/stars.js
+- **The historical records of star longitudes live in the precession
+  model** (`Precession.RECORDS`, with their sources), so the page, its
+  numbers script and later pages read one copy. → shared/models/precession.js
 
 ## Workflow
 
