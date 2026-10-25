@@ -362,6 +362,21 @@ console.log(
 	`Y_s = Y_t / (1 - p Y_t / 360°): ${f(Y_TROPICAL, 5)} d -> ${f(Y_SIDEREAL, 5)} d, ${f((Y_SIDEREAL - Y_TROPICAL) * 1440, 2)} min longer; p / n = ${f((P / MeanSun.MODERN.n) * 1440, 2)} min`
 );
 console.log(`   tropical ${yearText(Y_TROPICAL)}, sidereal ${yearText(Y_SIDEREAL)}`);
+{
+	/* The derivation of the page: after one tropical year the Sun is pY
+	   short of its star, and covers that arc at 360° in Y_s, so
+	   Y_s - Y = pY Y_s / 360° exactly. Replacing Y_s by Y on the right
+	   changes the result by the fraction (Y_s - Y) / Y = pY / (360° - pY). */
+	const exact = (pPerTropicalYear * Y_SIDEREAL) / 360;
+	const approximate = (pPerTropicalYear * Y_TROPICAL) / 360;
+
+	console.log(
+		`   pY = ${f(pPerTropicalYear, 6)}°; exact Y_s - Y = pY Y_s / 360° = ${f(exact * 1440, 4)} min; with Y for Y_s: ${f(approximate * 1440, 4)} min, ${f((exact - approximate) * 86400, 3)} s less`
+	);
+	console.log(
+		`   Y_s and Y differ by one part in ${f(Y_TROPICAL / (Y_SIDEREAL - Y_TROPICAL), 0)} (360° / pY = ${f(360 / pPerTropicalYear, 0)})`
+	);
+}
 console.log(
 	`the Earth's mean motion in the reference sky (Standish, fixed J2000 frame), 35999.37306329° a century: sidereal year ${f(36525 / (35999.37306329 / 360), 5)} d`
 );
