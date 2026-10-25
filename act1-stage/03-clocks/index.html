@@ -89,10 +89,9 @@
 		<p>
 			The interval from one noon to the next, the <em>true solar day</em>,
 			is less regular than the day of the stars. In 2026 it varied from 21
-			s short of 24 hours (the day ending 18 September) to 30 s over (the
-			day ending 23 December), yet its average over the year was 24 hours
-			to within a tenth of a second, because our clocks are defined that
-			way.
+			s short of 24 hours in September to 30 s over in December, yet its
+			average over the year was 24 hours to within a tenth of a second,
+			because our clocks are defined that way.
 		</p>
 
 		<div class="row">
@@ -166,30 +165,29 @@
 			</div>
 			<figcaption>
 				Press "Play a day" and watch everything turn once clockwise
-				about P, under the fixed meridian of Greenwich; the ecliptic
-				turns too, rocking about the centre as K goes round. Then play a
-				year, or step through the days with the time fixed. The Sun
-				stays near the meridian, while the stars, γ and K move about
-				$1^\circ$ further each day, so that by 1 January 2027 the sky
-				has made one turn more than the Sun.
+				about P, under the fixed meridian of Greenwich. Then play a year,
+				or step through the days with the time fixed: the Sun stays near
+				the meridian, while the stars, γ and K move about $1^\circ$
+				further each day, so that by 1 January 2027 the sky has made one
+				turn more than the Sun.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>rim</dt>
-						<dd>declination $-60^\circ$; the view is from outside the sphere, above P</dd>
-						<dt class="c-earth">equator</dt>
+						<dt>view</dt>
+						<dd>from outside the sphere, above P, down to declination $-60^\circ$ at the rim</dd>
+						<dt class="c-earth">blue</dt>
 						<dd>the celestial equator</dd>
-						<dt class="c-sun">ecliptic</dt>
-						<dd>dashed, the Sun's yearly path; it is centred on its own pole K, $23.4^\circ$ from P, so it appears off-centre</dd>
+						<dt class="c-sun">dashed</dt>
+						<dd>the ecliptic, centred on its own pole K, so it appears off-centre</dd>
 					</dl>
 				</div>
 				<div>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
-						<dt>elapsed</dt>
-						<dd>clock time since 1 January 2026, 0 h UT; <em>sky</em> and <em>Sun</em> count the turns each has made about P since then (the Sun's are its meridian crossings)</dd>
+						<dt>elapsed, turns</dt>
+						<dd>counted from 1 January 2026, 0 h UT; the Sun's turns are its meridian crossings</dd>
 					</dl>
 				</div>
 			</div>
@@ -279,7 +277,7 @@
 		<p>
 			Longitudes on this site are positive east. Meeus counts them
 			positive west, and Fitzpatrick writes $\varphi$ for the longitude
-			(and $L$ for the latitude); their formulas have $-\ell$ where ours
+			(and $L$ for the latitude). Their formulas have $-\ell$ where ours
 			have $+\ell$.
 		</p>
 
@@ -287,7 +285,7 @@
 
 		<div class="row">
 			<p>
-				The clocks we live by follow the Sun. The real Sun is a poor
+				The clocks we live by follow the Sun, but the real Sun is a poor
 				timekeeper, since its days are uneven, as we saw in section 1,
 				so astronomers defined a fictitious <em>mean Sun</em> that moves
 				along the equator at a constant rate. Its right ascension is the
@@ -375,9 +373,8 @@
 				<canvas id="angles-canvas"></canvas>
 			</div>
 			<figcaption>
-				The equator at Greenwich on 20 April 2026, 20:00 UT, seen from
-				above P as in Figure 1. Follow the outer arc $\theta_G$ from the
-				meridian to γ: it is the arc $H_m$ to the mean Sun plus the arc
+				Follow the outer arc $\theta_G$ from the meridian to γ on 20 April
+				2026 at 20:00 UT: it is the arc $H_m$ to the mean Sun plus the arc
 				$\alpha_m$ from there to γ, $120^\circ + 28.92^\circ =
 				148.92^\circ$.
 			</figcaption>
@@ -529,8 +526,8 @@
 				</div>
 			</div>
 			<figcaption>
-				The sky at the latitude of Rome on 1 January 2026. Press play
-				and watch the arcs θ and H grow together while α stays fixed.
+				Press play and watch the arcs θ and H grow together while α
+				stays fixed, in the sky of Rome on 1 January 2026.
 				Then move the longitude with the time fixed: going east
 				increases θ by the same angle, and the star stands further west.
 				Drag the sphere to turn the view.
@@ -539,23 +536,14 @@
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-muted">meridian</dt>
-						<dd>dotted, through N, Z and S</dd>
-						<dt class="c-earth">equator</dt>
+						<dt class="c-muted">dotted</dt>
+						<dd>the meridian, through N, Z and S</dd>
+						<dt class="c-earth">blue</dt>
 						<dd>the celestial equator, which crosses the meridian at M</dd>
 						<dt class="c-planet">dashed</dt>
-						<dd>the great circle from P through the star to the equator</dd>
-						<dt><span class="c-epicycle">θ</span>, <span class="c-planet">H</span></dt>
-						<dd>counted westward from M; H is negative before the star crosses</dd>
-						<dt class="c-earth">α</dt>
-						<dd>counted eastward from γ</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>$a$</dt>
-						<dd>the star's altitude</dd>
+						<dd>the star's hour circle, from P to the equator</dd>
+						<dt><span class="c-epicycle">θ</span>, <span class="c-planet">H</span>, <span class="c-earth">α</span></dt>
+						<dd>θ and H counted west from M, α east from γ</dd>
 					</dl>
 				</div>
 			</div>
@@ -684,8 +672,7 @@
 
 		<p>
 			Figure 4 plots the transits through a whole year as a star calendar,
-			together with the hours of night given by the model Sun described
-			next. Each night the transit comes about four minutes earlier, and
+			together with the hours of night. Each night the transit comes about four minutes earlier, and
 			after a year the star is back at the same hour.
 		</p>
 
@@ -714,29 +701,20 @@
 				<div class="readout" id="transit-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Choose a star, then point at the plot to read a night. Each
-				vertical strip is one night, from noon to noon in local mean
-				time. A star is best seen in the months when its transit line
-				crosses the middle of the night band, when the Sun is opposite
-				it in the sky.
+				Choose a star, then point at the plot to read a night. A star is
+				best seen in the months when its transit line crosses the middle
+				of the night band, when the Sun is opposite it in the sky.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-muted">band</dt>
-						<dd>night, when the model Sun's centre is more than 50′ below the horizon</dd>
-						<dt class="c-planet">band</dt>
+						<dt class="c-muted">grey band</dt>
+						<dd>night, with the model Sun's centre more than 50′ below the horizon</dd>
+						<dt class="c-planet">red band</dt>
 						<dd>the hours when the star is above the horizon</dd>
 						<dt class="c-planet">line</dt>
-						<dd>the star's transit, each night of 2026</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>$a$</dt>
-						<dd>the star's altitude at transit, $90^\circ - |\varphi - \delta|$</dd>
+						<dd>the star's transit</dd>
 					</dl>
 				</div>
 			</div>
@@ -773,9 +751,9 @@
 
 		<p>
 			At the equator those 50′ add 7 minutes to the day, which lasts 12 h
-			07 min all year. The table gives the day at three other latitudes.
-			Ptolemy's longest day at Rhodes, $14\tfrac12$ hours with the
-			geometric horizon of page 1.1, becomes 14 h 39 min.
+			07 min all year, and Ptolemy's longest day at Rhodes, $14\tfrac12$
+			hours with the geometric horizon of page 1.1, becomes 14 h 39 min.
+			The table gives the day at three other latitudes.
 		</p>
 
 		<div class="table-scroll">
@@ -855,23 +833,18 @@
 			</div>
 			<figcaption>
 				Move the latitude and watch the curve in (a) flatten towards the
-				equator, and reach 0 h and 24 h beyond the polar circles. Point
-				at (a) to read a date. Panel (b) shows the same function at
-				every latitude, with the southern half repeating the northern
-				half six months later.
+				equator, and reach 0 h and 24 h beyond the polar circles. In (b),
+				notice that the southern half repeats the northern half six
+				months later.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In panel (b)</p>
 					<dl class="key">
-						<dt class="c-sun">band</dt>
+						<dt class="c-sun">gold band</dt>
 						<dd>polar day, when the Sun does not set</dd>
-						<dt class="c-muted">band</dt>
+						<dt class="c-muted">grey band</dt>
 						<dd>polar night, when the Sun does not rise</dd>
-						<dt class="c-earth">lines</dt>
-						<dd>days of 6, 9, 15 and 18 hours</dd>
-						<dt class="c-planet">line</dt>
-						<dd>the chosen latitude, the cut drawn in panel (a)</dd>
 					</dl>
 				</div>
 			</div>
@@ -965,7 +938,8 @@
 		<h3>The Sun</h3>
 
 		<p>
-			Figure 6 compares our model Sun with the reference Sun through 2026.
+			To see how good the uniform Sun is, Figure 6 compares its noon,
+			sunrise and sunset with those of the reference Sun through 2026.
 			The reference Sun's noon is its real meridian crossing, and its
 			sunrise and sunset use the same $h_0 = -50'$ as ours, so the figure
 			measures only the error in the Sun's motion.
@@ -1016,7 +990,7 @@
 					<p class="key-title">Read-out</p>
 					<dl class="key">
 						<dt>day</dt>
-						<dd>model minus real length of the day; until you point at a date, each line gives the range over the year</dd>
+						<dd>model minus real length of the day</dd>
 					</dl>
 				</div>
 			</div>
