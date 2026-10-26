@@ -129,7 +129,8 @@ strong {
    sit to its right, and figures use the whole width. Below 1100 px there
    is no room for the contents column: they move under the header and
    stay there.
-	 <div class="page"> a.site-link, nav.toc, header.page-head, article
+	 <div class="page"> a.site-link, nav.toc, header.page-head, article,
+	 footer.site-foot (added by components.js)
    ========================================================================== */
 
 .page,
@@ -146,7 +147,8 @@ strong {
 		"link"
 		"head"
 		"toc"
-		"main";
+		"main"
+		"foot";
 }
 
 .page > .site-link {
@@ -162,6 +164,9 @@ strong {
 .page > article {
 	grid-area: main;
 }
+.page > .site-foot {
+	grid-area: foot;
+}
 
 /* The hub has no contents and no article: one plain column. */
 .page.hub {
@@ -176,7 +181,8 @@ strong {
 		grid-template-areas:
 			"link link"
 			"toc  head"
-			"toc  main";
+			"toc  main"
+			".    foot";
 	}
 
 	/* The contents follow the reader: sticky in their column, which runs
@@ -1092,7 +1098,7 @@ button.play {
 }
 
 /* ==========================================================================
-   11. SOURCES AND PREVIOUS / NEXT NAVIGATION
+   11. SOURCES, PREVIOUS / NEXT NAVIGATION, FOOTER
    ========================================================================== */
 
 .sources {
@@ -1147,6 +1153,26 @@ button.play {
 
 .pager span small {
 	color: var(--muted);
+}
+
+/* The footer of every page (components.js): copyright and licences, one
+   small muted line under a light rule. */
+.site-foot {
+	max-width: var(--text-width);
+	margin-top: 40px;
+	padding-top: 12px;
+	border-top: 1px solid var(--line);
+	font-size: 14px;
+	color: var(--muted);
+}
+
+.site-foot a {
+	color: inherit;
+	white-space: nowrap; /* never break "CC BY-NC-SA 4.0" at a hyphen */
+}
+
+.site-foot a:hover {
+	color: var(--accent);
 }
 
 /* ==========================================================================
