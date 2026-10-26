@@ -136,18 +136,6 @@ const DAYS = Array.from({ length: DAYS_IN_YEAR + 1 }, (_, i) => i);
 /* The day index under the pointer, or null off the plot. */
 const dayAt = x => (x === null ? null : clamp(Math.round(x), 0, DAYS_IN_YEAR));
 
-/* A straight segment between two canvas points. */
-function segment(ctx, a, b, style) {
-	ctx.strokeStyle = style.color;
-	ctx.lineWidth = style.width ?? 1.5;
-	ctx.setLineDash(style.dash ?? []);
-	ctx.beginPath();
-	ctx.moveTo(a.x, a.y);
-	ctx.lineTo(b.x, b.y);
-	ctx.stroke();
-	ctx.setLineDash([]);
-}
-
 /* ==========================================================================
    1. FIGURE 1: THE SUNDIAL AND THE CLOCK
    Static. (a) The true solar day, from one real noon at Greenwich to the

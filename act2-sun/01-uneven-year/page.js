@@ -78,26 +78,6 @@ const texSigned = (degrees, digits = 2) => `${signed(degrees, digits).replace('â
 /* Days in TeX: "92.74\,\text{d}". */
 const texDays = days => `${fixed(days, 2)}\\,\\text{d}`;
 
-/* A symbol with a subscript ("Î»" and "A"), centred at a canvas point, in
-   the text colour of 'color'. */
-function subscriptLabel(ctx, base, sub, point, color) {
-	const subFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
-
-	ctx.font = FONT_SYMBOL;
-	const baseWidth = ctx.measureText(base).width;
-	ctx.font = subFont;
-	const subWidth = ctx.measureText(sub).width;
-	const left = point.x - (baseWidth + subWidth) / 2;
-
-	ctx.fillStyle = textColor(color);
-	ctx.textAlign = 'left';
-	ctx.textBaseline = 'middle';
-	ctx.font = FONT_SYMBOL;
-	ctx.fillText(base, left, point.y);
-	ctx.font = subFont;
-	ctx.fillText(sub, left + baseWidth, point.y + 5);
-}
-
 /* ==========================================================================
    1. FIGURE 1: THE SUN'S DAILY MOTION
    Static. For each day of 2026, the arc (arcmin) the reference Sun moves
@@ -222,31 +202,6 @@ function reachCircle(lon, h, k) {
 	const along = h * cos(lon) + k * sin(lon);
 
 	return along + Math.sqrt(along * along - h * h - k * k + 1);
-}
-
-/* A straight segment between two canvas points. */
-function segment(ctx, a, b, style) {
-	ctx.strokeStyle = style.color;
-	ctx.lineWidth = style.width ?? 1.5;
-	ctx.setLineDash(style.dash ?? []);
-	ctx.beginPath();
-	ctx.moveTo(a.x, a.y);
-	ctx.lineTo(b.x, b.y);
-	ctx.stroke();
-	ctx.setLineDash([]);
-}
-
-/* A circular arc about a canvas point, from angle 'from' to 'to'
-   (longitudes, anticlockwise on the screen), of radius r px. */
-function screenArc(ctx, centre, r, from, to, style) {
-	const start = -from * D2R;
-	const end = -to * D2R;
-
-	ctx.strokeStyle = style.color;
-	ctx.lineWidth = style.width ?? 2;
-	ctx.beginPath();
-	ctx.arc(centre.x, centre.y, r, start, end, to > from);
-	ctx.stroke();
 }
 
 /* The eccentric, the four lines and the season labels. centre = { h, k };
