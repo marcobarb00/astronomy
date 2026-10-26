@@ -348,12 +348,13 @@ const outsideFigure = {
 		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
 		s.labelAway('Z', zenith, starPoint, COL.deferent);
 
-		// the arc's label off its middle, on the side away from the sphere's centre
+		// the arc's label off its middle, always on the left of the arc
+		// going from Z to the star, so that it turns with the arc and never
+		// jumps across it (CLAUDE.md)
 		const normal = { x: -(b.y - a.y), y: b.x - a.x };
 		const m = s.project(middle);
-		const outward = (m.x - s.cx) * normal.x + (m.y - s.cy) * normal.y > 0 ? 1 : -1;
 
-		s.labelAway('90° − a', middle, { x: m.x - outward * normal.x, y: m.y - outward * normal.y }, COL.planet);
+		s.labelAway('90° − a', middle, { x: m.x + normal.x, y: m.y + normal.y }, COL.planet);
 	}
 };
 

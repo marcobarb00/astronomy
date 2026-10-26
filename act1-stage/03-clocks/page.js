@@ -333,12 +333,14 @@ const wheelFigure = {
 		}
 	},
 
-	/* A label to the right of point q, 'gap' px away; elsewhere round the
-	   point if it would cover an earlier label or leave the canvas (on a
-	   phone). Font, alignment and colour are set by the caller. */
+	/* A label to the right of point q, 'gap' px away; a single symbol goes
+	   elsewhere round the point if it would cover an earlier label or
+	   leave the canvas (on a phone), a name such as Sirius only slides
+	   inside the canvas (LabelPlacer.candidates). Font, alignment and
+	   colour are set by the caller. */
 	drawLabel(text, q, gap) {
 		const designed = { x: q.x + gap, y: q.y };
-		const place = this.labels.choose(this.ctx, text, [designed, ...LabelPlacer.around(this.ctx, text, q, gap)]);
+		const place = this.labels.choose(this.ctx, text, LabelPlacer.candidates(this.ctx, text, designed, q, gap));
 
 		this.ctx.fillText(text, place.x, place.y);
 	}

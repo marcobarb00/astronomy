@@ -425,12 +425,14 @@ const epicycleFigure = {
 		});
 	},
 
-	/* The names: the angles first, then the points and the circles, each
-	   just outside what it names and kept clear of the others. */
+	/* The labels: the angles first, then the points, each just outside
+	   what it names and kept clear of the others. Moving points are named
+	   by single letters (O the Earth, K, L the Moon), never by words,
+	   which would jump from side to side as the points turn (CLAUDE.md);
+	   the panel title names the two circles. */
 	drawLabels(O, K, moon, now, r) {
 		const ctx = this.ctx;
 		const { meanLongitude, M, q } = now;
-		const e = this.state.parameters.e;
 		const mRadius = Math.max(ANGLE_ARC_MIN, M_ARC_RADIUS * r);
 		const qSide = q < 0 ? -1 : 1;
 
@@ -453,29 +455,14 @@ const epicycleFigure = {
 		labelOutside(ctx, 'K', K, 4, kSide, COL.ink, this.labels);
 		labelOutside(
 			ctx,
-			'Moon',
+			'L',
 			moon,
 			8,
 			clearestDirection([meanLongitude - M + 180, lambda + 180]),
 			COL.planet,
 			this.labels
 		);
-		labelOutside(ctx, 'Earth', O, 7, clearestDirection([0, meanLongitude, lambda]), COL.earth, this.labels);
-		labelOutside(
-			ctx,
-			'deferent',
-			O,
-			this.scale,
-			clearestDirection([0, meanLongitude, lambda]),
-			COL.deferent,
-			this.labels
-		);
-
-		// with no epicycle there is nothing to name at K but K itself
-		if (r > 0) {
-			labelOutside(ctx, 'apogee', O, this.scale * (1 + e), meanLongitude, COL.epicycle, this.labels);
-			labelOutside(ctx, 'epicycle', K, r, kSide + norm180(meanLongitude - kSide) / 2, COL.epicycle, this.labels);
-		}
+		labelOutside(ctx, 'O', O, 7, clearestDirection([0, meanLongitude, lambda]), COL.earth, this.labels);
 	},
 
 	/* "new" or "full" above the plot box, over the line of that phase. */
@@ -519,7 +506,7 @@ const epicycleFigure = {
    3. FIGURE 3: THE EPICYCLE AND ITS ECCENTRIC
    One moment of our fit, drawn with r/R = EQUIVALENCE_E so that the two
    constructions can be told apart: the deferent and the epicycle (centre
-   K), the eccentric (centre C) and the parallelogram O K Moon C, with
+   K), the eccentric (centre C) and the parallelogram O K L C, with
    the line of apsides of the eccentric. The slider runs over one turn of that line,
    8.85 years from 1 January 2026.
    ========================================================================== */
@@ -640,46 +627,37 @@ const equivalenceFigure = {
 		segment(this.ctx, near, far, { color: COL.muted, width: 1.2, dash: [2, 4] });
 	},
 
-	/* The names, each just outside what it names: the eccentric bulges
-	   out of the deferent towards its apogee, the deferent out of the
-	   eccentric on the other side. */
+	/* The labels, each just outside what it names: single letters for the
+	   moving points (O the Earth, K, C, L the Moon, A the eccentric's
+	   apogee), never words, which would jump from side to side as the
+	   points turn (CLAUDE.md). The key tells the circles apart by their
+	   centres. */
 	drawLabels(O, K, C, moon, now, e) {
 		const ctx = this.ctx;
 		const { meanLongitude, apogee, M } = now;
-		const r = e * this.scale;
-
 		const lambda = now.lambda;
-		const kSide = clearestDirection([meanLongitude + 180, meanLongitude - M]);
 
 		labelOutside(
 			ctx,
-			'Moon',
+			'L',
 			moon,
 			8,
 			clearestDirection([meanLongitude - M + 180, meanLongitude + 180, lambda + 180]),
 			COL.planet,
 			this.labels
 		);
-		labelOutside(ctx, 'K', K, 4, kSide, COL.ink, this.labels);
+		labelOutside(ctx, 'K', K, 4, clearestDirection([meanLongitude + 180, meanLongitude - M]), COL.ink, this.labels);
 		labelOutside(ctx, 'C', C, 4, clearestDirection([apogee, apogee + 180, meanLongitude]), COL.ink, this.labels);
 		labelOutside(
 			ctx,
-			'Earth',
+			'O',
 			O,
 			7,
 			clearestDirection([meanLongitude, apogee, apogee + 180, lambda]),
 			COL.earth,
 			this.labels
 		);
-		labelOutside(ctx, 'apogee', O, this.scale * (1 + e), apogee, COL.earth, this.labels);
-		labelOutside(ctx, 'epicycle', K, r, kSide + norm180(meanLongitude - kSide) / 2, COL.epicycle, this.labels);
-		// each circle's name on the side where it lies outside the other,
-		// 55° from the line of apsides, away from the epicycle
-		const awayFromK = (a, b) =>
-			Math.abs(norm180(a - meanLongitude)) > Math.abs(norm180(b - meanLongitude)) ? a : b;
-
-		labelOutside(ctx, 'eccentric', C, this.scale, awayFromK(apogee - 55, apogee + 55), COL.earth, this.labels);
-		labelOutside(ctx, 'deferent', O, this.scale, awayFromK(apogee + 125, apogee - 125), COL.deferent, this.labels);
+		labelOutside(ctx, 'A', O, this.scale * (1 + e), apogee, COL.earth, this.labels);
 	}
 };
 

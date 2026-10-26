@@ -74,6 +74,7 @@ class Sphere3D {
 	constructor(canvas, options = {}) {
 		this.canvas = canvas;
 		this.labels = new LabelPlacer(); // keeps the labels of one drawing apart
+		this.pendingLabels = null; // the labels of the drawing under way (redraw)
 		this.ctx = canvas.getContext('2d');
 		this.view = {
 			yaw: options.yaw ?? 285,
@@ -124,11 +125,18 @@ class Sphere3D {
 		this.R = SPHERE_FILL * Math.min(width, height);
 	}
 
-	/* Clear and call the page's drawing function. */
+	/* Clear and call the page's drawing function. Its labels are kept
+	   until the drawing is done, then placed words first and single
+	   symbols after (drawLabels): a word keeps its place (CLAUDE.md), so
+	   it is a symbol that steps aside when the two would meet, whatever
+	   order the page drew them in. */
 	redraw() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.height });
+		this.pendingLabels = [];
 		this.onDraw(this);
+		this.drawLabels(this.pendingLabels);
+		this.pendingLabels = null;
 	}
 
 	/* Drag to rotate (mouse, pen or finger). */
@@ -400,10 +408,29 @@ class Sphere3D {
 	}
 
 	/* Text next to a 3D point. style: color (a line colour is drawn in its
-	   text colour), dx, dy, font, kind ('name' or 'symbol', see labelFont). */
+	   text colour), dx, dy, font, kind ('name' or 'symbol', see labelFont).
+	   During a redraw it is drawn when the drawing is done (redraw). */
 	label(text, p, style = {}) {
-		const { ctx } = this;
 		const q = this.project(p);
+
+		if (this.pendingLabels) {
+			this.pendingLabels.push({ text, q, style });
+		} else {
+			this.drawLabel(text, q, style);
+		}
+	}
+
+	/* The labels of one drawing: the words first, then the symbols. */
+	drawLabels(labels) {
+		const words = labels.filter(l => !LabelPlacer.mayMove(l.text));
+		const symbols = labels.filter(l => LabelPlacer.mayMove(l.text));
+
+		[...words, ...symbols].forEach(l => this.drawLabel(l.text, l.q, l.style));
+	}
+
+	/* A label at the projected point q (see label). */
+	drawLabel(text, q, style) {
+		const { ctx } = this;
 
 		ctx.globalAlpha = q.d > 0 && !style.always ? 0.5 : 1;
 		ctx.fillStyle = textColor(style.color ?? COL.ink);
@@ -411,10 +438,11 @@ class Sphere3D {
 		ctx.textAlign = 'left';
 		ctx.textBaseline = 'alphabetic';
 
-		// the designed place first; elsewhere round the point only if it
-		// would cover an earlier label or leave the canvas (on a phone)
+		// the designed place first; a single symbol goes elsewhere round
+		// the point only if it would cover an earlier label or leave the
+		// canvas (on a phone), a word only slides inside the canvas
 		const designed = { x: q.x + (style.dx ?? 6), y: q.y + (style.dy ?? -6) };
-		const place = this.labels.choose(ctx, text, [designed, ...LabelPlacer.around(ctx, text, q)]);
+		const place = this.labels.choose(ctx, text, LabelPlacer.candidates(ctx, text, designed, q));
 
 		ctx.fillText(text, place.x, place.y);
 		ctx.globalAlpha = 1;
