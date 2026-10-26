@@ -2,7 +2,7 @@
 	"name": "predicting-the-sky",
 	"private": true,
 	"description": "Development tools only (checks, lint, format, type check). The site itself needs none of this: it is plain HTML, CSS and JavaScript.",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"scripts": {
 		"check": "npm run lint && npm run format:check && npm run typecheck && npm run tests && npm run golden && npm run smoke",
 		"lint": "eslint .",
