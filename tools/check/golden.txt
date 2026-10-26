@@ -1912,6 +1912,28 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 June solstice             0.006559754  341.111143053  [0.000045535034, 0.397723010620, 0.917505533907]  201.267647767  -11.143026692  103.736427884  90.148238487
   range end                      13.620956985  331.366078029  [0.093662819049, 0.386537024848, 0.917505533907]  214.375732548  -15.923215235  120.702586090  278.825921203
 
+=== 6g. THE LUNAR EPICYCLE (models/lunar-epicycle.js) ===
+  PTOLEMY                        41.366666667  13.176382215149  268.816666667  13.064982860061  1448637.916888889  0.087500000000  27.554571166  3231.616553926
+  FIT_2026                       218.320909000  13.176396474585  320.013246000  13.064992950185  2451545.000000000  0.084402000000  27.554549886  3231.495609667
+  ECLIPSES_2026                  2460926.256636000 2461102.986269000 2461280.680274000
+  threeEclipses babylon          0.083240586  10.949537641  0.086939934  12.402984602  -0.986078260
+  threeEclipses alexandria       0.082411963  61.837103820  0.087065656  64.626105913  -4.336840518
+  threeEclipses copernicus       0.085614973  73.942526402  0.086054249  74.490821236  -4.634018447
+  dailyMotion PTOLEMY            12.125176698 13.077113466 14.429188791 13.077113466
+  range start                    251.525264133  1.737802647  -0.135241828  251.390022304  249.787461486  256.203060558
+  Thales eclipse                 51.081451185  158.208272386  -1.947149463  49.134301722  252.873178799  49.741663971
+  Ptolemy                        192.917688556  35.198715273  -2.605822833  190.311865723  157.718973283  188.736395304
+  last Julian day                46.555931157  204.530035614  2.173651402  48.729582560  202.025895544  40.560580172
+  first Gregorian day            59.732327632  217.595028564  3.158491302  62.890818934  202.137299068  54.833863171
+  Sputnik (Meeus 7.a)            323.784385539  344.287165414  1.211043756  324.995429295  339.497220125  315.903878839
+  Meeus 12.a                     154.665500418  54.328524116  -3.738940603  150.926559815  100.336976302  141.365289624
+  Meeus 47.a                     134.294652434  190.200630004  0.933915135  135.228567569  304.094022430  124.700561085
+  Meeus 25.a                     38.751603757  74.159332838  -4.537953322  34.213650435  324.592270919  24.432595816
+  J2000.0                        218.320909000  320.013246000  2.916309535  221.237218535  258.307663000  211.886533789
+  2026 January 1                 67.970029895  191.718797430  1.070568644  69.040598539  236.251232465  58.330863130
+  2026 June solstice             167.722025286  272.365088387  4.803701210  172.525726495  255.356936899  162.691578229
+  range end                      74.518594289  126.358287740  -4.092609954  70.425984335  308.160306549  54.008398235
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2050,6 +2072,13 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   yearTicks 1000                 -2999:3000 BC -1999:2000 BC -999:1000 BC 1000:1000 2000:2000 3000:3000
   leastSquares                   {"a":1,"b":2}
   fixed ranges                   [-80,20]  [-40,100]  [165,205]  [-2.5,2]
+
+=== 8g. PAGE 3.1 (act3-moon/01-first-anomaly/page.js) ===
+  YEAR_START                     2461041.500000000
+  dateHourText                   "1 Jan, 00 h" "1 Jan, 06 h" "11 Feb, 12 h" "31 Dec, 23 h"
+  dateYearText                   "1 Jan 2026" "6 Nov 2034"
+  clearestDirection              180.000000000 90.000000000 110.000000000
+  fixed ranges                   [11.5,15.5]  [-18,18]  [-0.12,0.12]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -2837,3 +2866,233 @@ Figure 2: one turn of the pole in 25769 years; the year slider runs from 11,001 
 Figure 4: the three lines from 170.13° to 197.93° (axis 165° to 205°)
 Figure 6: records minus real from -1.56° to 0.68°
    Ptolemy's Sun minus real, 400 BC to AD 310 (the band): -2.27° to 1.50° (axis -2.5° to +2°)
+
+=== 9. tools/numbers/3.1-first-anomaly.js ===
+
+=== Observation: the Moon's daily motion in 2026 (Figure 1) ===
+mean daily motion (Meeus L'): 13.1764°/d
+slowest 11.79°/d on 12 Dec 2026; fastest 15.31°/d on 24 Dec 2026
+swing about the mean: +16.2% / -10.5% (the Sun: 3.4%, page 2.1)
+
+=== Observation: the fastest moments of 2026 against the full Moons ===
+fastest moments of 2026, and the days since the last full Moon:
+   1 Jan 2026  15.05°/d  27.9 d after full Moon
+   30 Jan 2026  14.58°/d  26.6 d after full Moon
+   25 Feb 2026  14.21°/d  23.1 d after full Moon
+   22 Mar 2026  14.49°/d  18.9 d after full Moon
+   19 Apr 2026  14.94°/d  17.2 d after full Moon
+   17 May 2026  15.25°/d  15.8 d after full Moon
+   14 Jun 2026  15.31°/d  14.5 d after full Moon
+   13 Jul 2026  15.12°/d  13.2 d after full Moon
+   10 Aug 2026  14.75°/d  11.8 d after full Moon
+   6 Sep 2026  14.32°/d  9.5 d after full Moon
+   1 Oct 2026  14.28°/d  4.6 d after full Moon
+   28 Oct 2026  14.71°/d  2.3 d after full Moon
+   25 Nov 2026  15.12°/d  1.1 d after full Moon
+   24 Dec 2026  15.31°/d  0.1 d after full Moon
+mean interval between maxima: 27.41 d
+the full Moons of 2026 and the speed at each:
+   3 Jan 2026 10:05 TT  14.88°/d
+   1 Feb 2026 22:11 TT  14.12°/d
+   3 Mar 2026 11:40 TT  13.29°/d
+   2 Apr 2026 02:14 TT  12.60°/d
+   1 May 2026 17:26 TT  12.13°/d
+   31 May 2026 08:48 TT  11.89°/d
+   29 Jun 2026 23:58 TT  11.91°/d
+   29 Jul 2026 14:37 TT  12.21°/d
+   28 Aug 2026 04:20 TT  12.77°/d
+   26 Sep 2026 16:50 TT  13.55°/d
+   26 Oct 2026 04:13 TT  14.38°/d
+   24 Nov 2026 14:55 TT  15.03°/d
+   24 Dec 2026 01:30 TT  15.31°/d
+
+=== Observation: the months (mean motions, Meeus 47) ===
+tropical     27.32158 d  (27 d 7 h 43 min)
+sidereal     27.32166 d  (27 d 7 h 43 min)
+synodic      29.53059 d  (29 d 12 h 44 min)
+anomalistic  27.55455 d  (27 d 13 h 19 min)
+draconitic   27.21222 d  (27 d 5 h 6 min)
+sidereal - tropical = 6.9 s; anomalistic - sidereal = 5.59 h; sidereal - draconitic = 2.63 h
+
+=== Observation: the beat of the speed against the phases ===
+beat 1/(1/anomalistic - 1/synodic) = 411.78 d = 13.944 synodic months
+the fastest moment comes 1.98 d earlier in the cycle of phases each month
+the place of greatest speed turns east once in 8.85 years (relative to γ), 8.85 years (to the stars)
+
+=== Observation: the ancient period relations (Almagest IV 2, IV 3) ===
+Hipparchus' synodic month 29;31,50,8,20 = 29.5305941 d; real 29.5305889 d; difference 0.46 s
+'Periodic': 223 syn = 6585.32 d, 239 anom = 6585.54 d, 242 drac = 6585.36 d (Almagest: 6585 1/3 d)
+251 syn = 7412.178 d, 269 anom = 7412.174 d; difference 5.6 min
+   anomalistic month from 251/269 and Hipparchus' synodic month: 27.55457 d, real 27.55455 d
+5458 syn = 161177.95 d, 5923 drac = 161177.98 d; draconitic from them 27.21222 d, real 27.21222 d
+Ptolemy's daily motions: longitude 13.17638222°, anomaly 13.06498286°; real 13.17639647°, 13.06499295°
+   his tropical month 27.32161 d, anomalistic 27.55457 d (1.8 s too long)
+248 days / 9 = 27.5556 d (the Babylonian table of the Moon's daily motion)
+
+=== Model: Ptolemy's epicycle, 60 : 5;15 (Almagest IV 9, IV 10) ===
+r/R = 0.08750; greatest equation asin(r/R) = 5.020° = 5°01'11" at M = 95.02° (his table: 5;1 at 96°)
+the exact and first-order curves differ by at most 13.7'
+daily motion at the apogee of the epicycle 12.13°/d, at the perigee 14.43°/d
+
+=== Model: the equivalent eccentric ===
+its apogee moves east by n - nM = 0.11140°/d = 3.07° an anomalistic month, 40.7° a year; a turn in 3231 d = 8.85 years
+Ptolemy: n - nM = 0;06,41,02,15,39° = 0.111399°/d, a turn in 8.85 years
+
+=== Fit: the three-eclipse method on the sources ===
+babylon     first order: r/R = 0.08324, M2 = 10.95° (X 0.0817, Y 0.0158)
+            exact: r/R = 0.08694 (5;12,59 on 60), M2 = 12°24'11", q2 = -0°59'10", greatest 4.99° (X 0.0849, Y 0.0187)
+            the source: r/R = 0.08694, M2 = 12°24'00"; greatest 4°59'16"
+alexandria  first order: r/R = 0.08241, M2 = 61.84° (X 0.0389, Y 0.0727)
+            exact: r/R = 0.08707 (5;13,26 on 60), M2 = 64°37'34", q2 = -4°20'13", greatest 4.99° (X 0.0373, Y 0.0787)
+            the source: r/R = 0.08722, M2 = 64°38'00"; greatest 5°00'14"
+copernicus  first order: r/R = 0.08561, M2 = 73.94° (X 0.0237, Y 0.0823)
+            exact: r/R = 0.08605 (5;09,48 on 60), M2 = 74°29'27", q2 = -4°38'02", greatest 4.94° (X 0.0230, Y 0.0829)
+            the source: r/R = 0.08604, M2 = 74°27'00"; greatest 4°56'09"
+
+=== Fit: the lunar eclipses of the reference sky, 2019 - 2030 ===
+   21 Jan 2019 05:17 TT  JD 2458504.720353  lambda 120.860°  beta 0.378°
+   16 Jul 2019 21:39 TT  JD 2458681.402271  lambda 294.069°  beta -0.592°
+   26 May 2021 11:16 TT  JD 2459360.969105  lambda 245.434°  beta 0.490°
+   19 Nov 2021 08:59 TT  JD 2459537.874244  lambda 57.244°  beta -0.412°
+   16 May 2022 04:15 TT  JD 2459715.677350  lambda 235.300°  beta -0.257°
+   8 Nov 2022 11:03 TT  JD 2459891.960610  lambda 46.016°  beta 0.242°
+   14 Mar 2025 06:57 TT  JD 2460748.789511  lambda 173.952°  beta 0.318°
+   7 Sep 2025 18:10 TT  JD 2460926.256636  lambda 345.371°  beta -0.274°
+   3 Mar 2026 11:40 TT  JD 2461102.986269  lambda 162.908°  beta -0.362°
+   28 Aug 2026 04:20 TT  JD 2461280.680274  lambda 334.900°  beta 0.467°
+   6 Jul 2028 18:13 TT  JD 2461959.258840  lambda 285.193°  beta -0.736°
+   31 Dec 2028 16:49 TT  JD 2462137.201001  lambda 100.546°  beta 0.317°
+   26 Jun 2029 03:25 TT  JD 2462313.642040  lambda 274.840°  beta 0.013°
+   20 Dec 2029 22:48 TT  JD 2462491.449821  lambda 89.344°  beta -0.352°
+   15 Jun 2030 18:42 TT  JD 2462668.279416  lambda 264.720°  beta 0.771°
+
+=== Fit: our three eclipses, 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 ===
+moments (TT): 7 Sep 2025 18:10; 3 Mar 2026 11:40; 28 Aug 2026 04:20
+ECLIPSES_2026 = [2460926.256636, 2461102.986269, 2461280.680274]
+true longitudes 345.371°, 162.908°, 334.900°
+anomaly a12 = 148.97°, a23 = 161.57°; true minus mean d12 = 8.877°, d23 = -9.375°
+first order r/R = 0.08378, M2 = 270.82°; exact r/R = 0.08440, M2 = 275.04°, q2 = 4.771°, greatest 4.842° (X 0.0074, Y -0.0841)
+FIT_2026: L0 = 218.320909, M0 = 320.013246, e = 0.084402 (model file: L0 218.320909, M0 320.013246, e 0.084402)
+   against Meeus at J2000: L'0 = 218.3164477, M'0 + 180 = 314.9634; differences 0.27', 5.05°
+
+=== Fit: every three consecutive eclipses, 2019 - 2030 ===
+   21 Jan 2019 .. 26 May 2021: r/R = 0.0803, greatest 4.61°
+   16 Jul 2019 .. 19 Nov 2021: r/R = 0.0881, greatest 5.05°
+   26 May 2021 .. 16 May 2022: r/R = 0.0845, greatest 4.85°
+   19 Nov 2021 .. 8 Nov 2022: r/R = 0.0886, greatest 5.08°
+   16 May 2022 .. 14 Mar 2025: r/R = 0.0930, greatest 5.33°
+   8 Nov 2022 .. 7 Sep 2025: r/R = 0.0895, greatest 5.13°
+   14 Mar 2025 .. 3 Mar 2026: r/R = 0.0815, greatest 4.67°
+   7 Sep 2025 .. 28 Aug 2026: r/R = 0.0844, greatest 4.84°
+   3 Mar 2026 .. 6 Jul 2028: r/R = 0.0896, greatest 5.14°
+   28 Aug 2026 .. 31 Dec 2028: r/R = 0.0899, greatest 5.16°
+   6 Jul 2028 .. 26 Jun 2029: r/R = 0.0856, greatest 4.91°
+   31 Dec 2028 .. 20 Dec 2029: r/R = 0.0844, greatest 4.84°
+   26 Jun 2029 .. 15 Jun 2030: r/R = 0.0882, greatest 5.06°
+range r/R 0.080 .. 0.093; greatest equation 4.6° .. 5.3°
+
+=== Fit: least squares on every new and full Moon of 2026 (a check) ===
+25 new and full Moons: r/R = 0.0867, greatest 4.97°
+
+=== Fit: the exact epicycle by least squares on the same new and full Moons (a check) ===
+exact least squares: r/R = 0.0864, greatest 4.95°, M0 0.24° from Meeus' M' + 180; largest error 21.8', rms 9.6'
+
+=== Fit: the smaller inequalities at new and full Moon (Meeus 47.A, 47.B) ===
+annual equation 0.185116° sin M (the Sun's anomaly) = 11.1'; reduction to the ecliptic 0.114332° sin 2F = 6.9'
+
+=== Fit: the real Moon at new and full Moon (Meeus 47; Fitzpatrick 6.5 - 6.6) ===
+the Moon's eccentricity (Fitzpatrick, Table 6.1): 0.054881 = 0.055
+Kepler: 2 e_K = 2 x 0.0549 = 0.1098, greatest 6.30°; Meeus' term 6.289°
+evection 1.274° sin(2D - M'): at new and full Moon -1.274 sin M', so the amplitude is 6.289 - 1.274 = 5.015°, r/R = 0.0874
+at the quarters 6.289 + 1.274 = 7.563° (Ptolemy, Almagest V 3: about 7 2/3°)
+
+=== Test: our epicycle against the reference Moon, 2026 (Figure 5) ===
+the uniform Moon: largest error 7.85° on 18 Dec 2026
+the epicycle: largest error 3.24° on 10 Jun 2026
+the epicycle at the 25 new and full Moons: largest 39.8', rms 20.3'
+the epicycle at the 25 quarters: largest 2.90°
+at the three fitted eclipses: 0.00, -0.00, 0.00'
+at the eclipse of 14 Mar 2025 (outside the fit): -25.5'
+
+=== Test: our epicycle over 100 and 1,000 years ===
+1976 - 2076: largest 3.60° on 12 Mar 1984
+   new and full Moons of 1526: largest 40.6'
+   new and full Moons of 2526: largest 44.0'
+
+=== Test: Ptolemy's simple Moon (first anomaly only), Figure 6 ===
+at the eclipses of Almagest IV 6 (at the real moments of opposition):
+   721 BC Mar 19: opposition 20 Mar 721 BC 00:20 TT; his Moon 174.48°, real 171.79°, error 161'; his Sun's error 171'
+   720 BC Mar 8: opposition 9 Mar 720 BC 02:41 TT; his Moon 163.64°, real 160.93°, error 163'; his Sun's error 170'
+   720 BC Sep 1: opposition 1 Sep 720 BC 22:49 TT; his Moon 333.10°, real 331.23°, error 112'; his Sun's error 124'
+   AD 133 May 6: opposition 6 May 133 23:16 TT; his Moon 223.18°, real 224.32°, error -69'; his Sun's error -65'
+   AD 134 Oct 20: opposition 20 Oct 134 23:24 TT; his Moon 25.34°, real 26.39°, error -64'; his Sun's error -75'
+   AD 136 Mar 5: opposition 6 Mar 136 03:57 TT; his Moon 163.72°, real 164.76°, error -62'; his Sun's error -43'
+Sep - Oct 134: largest error -3.61°; at the new and full Moons -1.17, -1.06, -1.25, -1.03°
+   1: mean error at the new and full Moons -0.44°; his Sun's at the same moments -0.54°
+   1000: mean error at the new and full Moons -4.78°; his Sun's at the same moments -4.74°
+   2026: mean error at the new and full Moons -10.08°; his Sun's at the same moments -9.22°
+his elongation 12.190746937°/d, real 12.190749114°/d: from 135 to 2026 -1.50°
+check: at the second Babylonian eclipse 164.743° (Virgo 14;44 = 164.733), anomaly 12.406° (12.400)
+
+=== Residual: Hipparchus' sighting of 5 August 127 BC (Almagest V 3) ===
+first anomaly at 257;47: q = +4.98°; predicted Sun - Moon = 88.94°, observed 86.25°: the model is 2.69° short
+Ptolemy: true minus mean 7.67° (7 2/3) instead of about 5
+
+=== Exercise 1: Hipparchus' two ratios (Almagest IV 11) ===
+   eccentric 60 : 6;15: r/R = 0.10417, greatest equation 5°58'45" (5.979°)
+   epicycle 60 : 4;46: r/R = 0.07944, greatest equation 4°33'24" (4.557°)
+   Ptolemy 60 : 5;15: r/R = 0.08750, greatest equation 5°01'11" (5.020°)
+
+=== Exercise 2: the anomalistic month from the beat ===
+the fastest full Moons:
+   8 Feb 2001 15.26°/d
+   27 Feb 2002 15.32°/d  +384.1 d
+   16 Apr 2003 15.23°/d  +413.4 d
+   2 Jul 2004 15.25°/d  +442.6 d
+   21 Jul 2005 15.31°/d  +384.0 d
+   7 Sep 2006 15.20°/d  +413.3 d
+   26 Oct 2007 15.32°/d  +413.4 d
+   12 Dec 2008 15.32°/d  +413.5 d
+   30 Jan 2010 15.27°/d  +413.6 d
+   19 Mar 2011 15.37°/d  +413.5 d
+   6 May 2012 15.23°/d  +413.4 d
+   23 Jun 2013 15.28°/d  +413.3 d
+   10 Aug 2014 15.32°/d  +413.3 d
+   28 Sep 2015 15.23°/d  +413.4 d
+   14 Nov 2016 15.37°/d  +413.5 d
+   2 Jan 2018 15.29°/d  +413.5 d
+   19 Feb 2019 15.27°/d  +413.6 d
+   8 Apr 2020 15.33°/d  +413.4 d
+   27 Apr 2021 15.21°/d  +384.0 d
+   13 Jul 2022 15.27°/d  +442.6 d
+   1 Aug 2023 15.29°/d  +384.0 d
+   17 Oct 2024 15.20°/d  +442.7 d
+   4 Dec 2025 15.32°/d  +413.5 d
+   24 Dec 2026 15.31°/d  +384.1 d
+   10 Feb 2028 15.26°/d  +413.6 d
+   30 Mar 2029 15.36°/d  +413.5 d
+   17 May 2030 15.23°/d  +413.4 d
+   4 Jul 2031 15.28°/d  +413.3 d
+   21 Aug 2032 15.32°/d  +413.3 d
+   8 Oct 2033 15.23°/d  +413.4 d
+   25 Nov 2034 15.38°/d  +413.5 d
+   13 Jan 2036 15.30°/d  +413.5 d
+   2 Mar 2037 15.28°/d  +413.5 d
+   19 Apr 2038 15.34°/d  +413.4 d
+   6 Jun 2039 15.19°/d  +413.3 d
+34 beats in 13997.5 d, from 8 Feb 2001 to 6 Jun 2039: one beat = 411.69 d
+anomalistic month 1/(1/29.530589 + 1/411.69) = 27.5541 d (real 27.5545 d, difference -36 s)
+in one beat: 13.941 synodic months, 14.941 anomalistic months
+from the 'Periodic', 223 x synodic / 239: 27.5536 d
+
+=== Exercise 3: Ptolemy's three Babylonian eclipses (Figure 4, 'Babylon') ===
+a12 = 306.4167°, a23 = 150.4333°, d12 = 3.4000° = 0.05934 rad, d23 = -0.6167° = -0.01076 rad
+rows: 0.8047 X + -0.4063 Y = 0.05934;  -0.4934 X + 1.8698 Y = -0.01076
+first order: X = 0.08173, Y = 0.01581, r/R = 0.0832, M2 = 10.9°, 4.3% short of the exact r/R
+exact: r/R = 0.08694 = 5;12,59 parts in 60 (Ptolemy 5;13), M2 = 12°24'11" (12;24), q2 = -0°59'10" = -0.986° (-0;59)
+the mean Moon at the second eclipse: true Virgo 13;45 (163.75°) - q2 = 164.736° (Ptolemy: Virgo 14;44 = 164.733°)
+
+=== Scales ===
+Figure 1: the daily motion between 11.79 and 15.31°/d
+Figure 2 (b): q for r/R up to 0.3: greatest asin 0.3 = 17.46°
+Figure 4 (b): the largest |X| or |Y| of the four solutions is 0.0849
