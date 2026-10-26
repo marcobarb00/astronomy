@@ -24,6 +24,7 @@ const PAGES = [
 	'act2-sun/01-uneven-year/index.html',
 	'act2-sun/02-equation-of-time/index.html',
 	'act2-sun/03-precession/index.html',
+	'act3-moon/01-first-anomaly/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',

@@ -36,6 +36,7 @@ const SHARED_SCRIPTS = [
 	'shared/models/solar-eccentric.js',
 	'shared/models/equation-of-time.js',
 	'shared/models/precession.js',
+	'shared/models/lunar-epicycle.js',
 	'shared/sphere3d.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js',

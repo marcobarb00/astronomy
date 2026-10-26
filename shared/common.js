@@ -596,6 +596,53 @@ function centredLabel(ctx, text, point, color, labels = null) {
 	ctx.fillText(text, place.x, place.y);
 }
 
+/* ---------- Segments, arcs and subscripts on a canvas ---------- */
+
+/* A straight segment between two canvas points. */
+function segment(ctx, a, b, style) {
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 1.5;
+	ctx.setLineDash(style.dash ?? []);
+	ctx.beginPath();
+	ctx.moveTo(a.x, a.y);
+	ctx.lineTo(b.x, b.y);
+	ctx.stroke();
+	ctx.setLineDash([]);
+}
+
+/* A circular arc about a canvas point, from angle 'from' to 'to'
+   (longitudes, anticlockwise on the screen), of radius r px. */
+function screenArc(ctx, centre, r, from, to, style) {
+	const start = -from * D2R;
+	const end = -to * D2R;
+
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 2;
+	ctx.beginPath();
+	ctx.arc(centre.x, centre.y, r, start, end, to > from);
+	ctx.stroke();
+}
+
+/* A symbol with a subscript ("λ" and "A"), centred at a canvas point, in
+   the text colour of 'color'. */
+function subscriptLabel(ctx, base, sub, point, color) {
+	const subFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
+
+	ctx.font = FONT_SYMBOL;
+	const baseWidth = ctx.measureText(base).width;
+	ctx.font = subFont;
+	const subWidth = ctx.measureText(sub).width;
+	const left = point.x - (baseWidth + subWidth) / 2;
+
+	ctx.fillStyle = textColor(color);
+	ctx.textAlign = 'left';
+	ctx.textBaseline = 'middle';
+	ctx.font = FONT_SYMBOL;
+	ctx.fillText(base, left, point.y);
+	ctx.font = subFont;
+	ctx.fillText(sub, left + baseWidth, point.y + 5);
+}
+
 /* ---------- Canvas fonts (STYLE.md §3) ----------
    Labels in figures: names (Vega, meridian, never sets) in Cormorant SC,
    symbols (P, Z, gamma, theta, 90° - a) in Cormorant Garamond italic, as

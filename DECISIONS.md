@@ -162,9 +162,16 @@ section.
   header). But there are no JPL values for Mercury and Venus, and none
   before 200 BC. Acts III and IV use ancient observations (eclipses back
   to the 8th century BC), so add Horizons values for every body at a few
-  dates between 750 BC and 200 BC before Act III.
+  dates between 750 BC and 200 BC before Act III. On 2026-10-26 (page 3.1)
+  the Horizons API answered every request from a cloud session with a
+  server error, so this is still open: page 3.1 fits and tests its
+  epicycle on 2025 - 2026 and AD 133 - 136, and keeps the errors at
+  Ptolemy's Babylonian eclipses of 721 - 720 BC out of its prose (they are
+  only in its numbers script).
 - **Sources in cloud sessions.** The `astronomy-sources` chapter files are
   not in the repository, so cloud sessions cannot read them. Options: a
   private repository for the sources, or attaching the needed chapters to
-  the session.
+  the session. On 2026-10-26 a session with the `astronomy_reference`
+  repository attached could read every chapter through its copy of the
+  skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
 - **Where page 4.4 gets its yardstick** (see Course).

@@ -1198,6 +1198,151 @@ Regenerate with: node tools/check/smoke.js --update
   hover #ptolemy-plot left
   dragged 1 spheres
 
+=== act3-moon/01-first-anomaly/index.html ===
+  as loaded
+    OUTPUT (epi-day): 1 Jan, 00 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | q = +4.93^\circ,\quad \lambda = \bar\lambda + q = 72.90^\circ | \text{daily motion } 18.47^\circ \text{ (mean } 13.18^\circ)
+    OUTPUT (eq-day): 1 Jan 2026
+    #equivalence-readout: \text{1 Jan 2026:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | \lambda_A = \bar\lambda - M = 236.25^\circ | \text{epicycle: } \lambda = 72.90^\circ | \text{eccentric: } \lambda = 72.90^\circ
+    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694\ (5;13),\ M_2 = 12;24^\circ
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #epi-day = 0
+    OUTPUT (epi-day): 1 Jan, 00 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | q = +4.93^\circ,\quad \lambda = \bar\lambda + q = 72.90^\circ | \text{daily motion } 18.47^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-day = 60
+    OUTPUT (epi-day): 2 Mar, 00 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{2 Mar, 00 h:}\quad \bar\lambda = 138.55^\circ,\quad M = 255.62^\circ | q = +17.43^\circ,\quad \lambda = \bar\lambda + q = 155.99^\circ | \text{daily motion } 12.96^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-day = 30
+    OUTPUT (epi-day): 31 Jan, 00 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{31 Jan, 00 h:}\quad \bar\lambda = 103.26^\circ,\quad M = 223.67^\circ | q = +14.82^\circ,\quad \lambda = \bar\lambda + q = 118.08^\circ | \text{daily motion } 15.71^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-day + one key step
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-e = 0
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-e = 0.3
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-e = 0.15
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.1500
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.70^\circ,\quad \lambda = \bar\lambda + q = 110.62^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+  slider #epi-e + one key step
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.1505
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+  slider #eq-day = 0
+    OUTPUT (eq-day): 1 Jan 2026
+    #equivalence-readout: \text{1 Jan 2026:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | \lambda_A = \bar\lambda - M = 236.25^\circ | \text{epicycle: } \lambda = 72.90^\circ | \text{eccentric: } \lambda = 72.90^\circ
+  slider #eq-day = 3232
+    OUTPUT (eq-day): 7 Nov 2034
+    #equivalence-readout: \text{7 Nov 2034:}\quad \bar\lambda = 174.08^\circ,\quad M = 297.78^\circ | \lambda_A = \bar\lambda - M = 236.31^\circ | \text{epicycle: } \lambda = 187.19^\circ | \text{eccentric: } \lambda = 187.19^\circ
+  slider #eq-day = 1616
+    OUTPUT (eq-day): 5 Jun 2030
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.03^\circ,\quad M = 64.75^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 107.50^\circ | \text{eccentric: } \lambda = 107.50^\circ
+  slider #eq-day + one key step
+    OUTPUT (eq-day): 5 Jun 2030
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+  button "‹ previous day"
+    OUTPUT (epi-day): 30 Jan, 01 h
+    OUTPUT (epi-e): 0.1505
+    #epicycle-readout: \text{30 Jan, 01 h:}\quad \bar\lambda = 90.74^\circ,\quad M = 211.26^\circ | q = +5.12^\circ,\quad \lambda = \bar\lambda + q = 95.87^\circ | \text{daily motion } 14.99^\circ \text{ (mean } 13.18^\circ)
+  button "next day ›"
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.1505
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+  button "Ptolemy, 5;15"
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0875
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +3.73^\circ,\quad \lambda = \bar\lambda + q = 107.65^\circ | \text{daily motion } 13.99^\circ \text{ (mean } 13.18^\circ)
+  button "exaggerated, 0.3"
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.3000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+  button "no epicycle"
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  button "‹ previous day"
+    OUTPUT (eq-day): 4 Jun 2030
+    #equivalence-readout: \text{4 Jun 2030:}\quad \bar\lambda = 108.51^\circ,\quad M = 52.34^\circ | \lambda_A = \bar\lambda - M = 56.17^\circ | \text{epicycle: } \lambda = 97.16^\circ | \text{eccentric: } \lambda = 97.16^\circ
+  button "next day ›"
+    OUTPUT (eq-day): 5 Jun 2030
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+  button "Babylon, 721 BC"
+    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694\ (5;13),\ M_2 = 12;24^\circ
+  button "Alexandria, AD 133"
+    #eclipses-readout: a_{12} = 110.35^\circ,\quad a_{23} = 81.60^\circ | d_{12} = -7.70^\circ,\quad d_{23} = +1.35^\circ | \text{first order: } r/R = 0.08241,\ M_2 = 61.8^\circ | \text{exact: } r/R = 0.08707,\ M_2 = 64.6^\circ | \text{Ptolemy: } 0.08722\ (5;14),\ M_2 = 64;38^\circ
+  button "Copernicus, 1511"
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74;27^\circ
+  button "2025 – 2026"
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #motion-plot at 0.3
+  hover #motion-plot at 0.6
+  hover #motion-plot at 0.9
+  hover #motion-plot left
+  hover #epicycle-plot at 0.3
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  hover #epicycle-plot at 0.6
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  hover #epicycle-plot at 0.9
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  hover #epicycle-plot left
+    OUTPUT (epi-day): 31 Jan, 01 h
+    OUTPUT (epi-e): 0.0000
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+  hover #eclipses-plot at 0.3
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+  hover #eclipses-plot at 0.6
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+  hover #eclipses-plot at 0.9
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+  hover #eclipses-plot left
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+  hover #error-ours-plot at 0.3
+    .errorcurve-readout: 18 Mar 2002 · uniform Moon: +363.2′ · epicycle: +100.5′
+  hover #error-ours-plot at 0.6
+    .errorcurve-readout: 14 Oct 2034 · uniform Moon: −68.7′ · epicycle: −12.0′
+  hover #error-ours-plot at 0.9
+    .errorcurve-readout: 11 May 2067 · uniform Moon: −293.2′ · epicycle: −2.7′
+  hover #error-ours-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-ptolemy-plot at 0.3
+    .errorcurve-readout: 6 Jan 352 BC · Ptolemy's Moon: +60.9′
+  hover #error-ptolemy-plot at 0.6
+    .errorcurve-readout: 26 Jun 300 · Ptolemy's Moon: −4.4′
+  hover #error-ptolemy-plot at 0.9
+    .errorcurve-readout: 16 Dec 951 · Ptolemy's Moon: −270.7′
+  hover #error-ptolemy-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 0 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2578,7 +2723,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 130 tests pass.
+    #summary: All 143 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

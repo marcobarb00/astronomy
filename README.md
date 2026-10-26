@@ -19,6 +19,8 @@ and style rules are in [`CLAUDE.md`](CLAUDE.md).
 | `act1-stage/03-clocks/` | Page 1.3 · Clocks. |
 | `act2-sun/01-uneven-year/` | Page 2.1 · The uneven year. |
 | `act2-sun/02-equation-of-time/` | Page 2.2 · The equation of time. |
+| `act2-sun/03-precession/` | Page 2.3 · Precession. |
+| `act3-moon/01-first-anomaly/` | Page 3.1 · The first anomaly. |
 | `templates/page.html` | The page template, with every shared component once. |
 | `templates/demo.html` | A demo of the sphere, plot, error curve and exercise working together. |
 | `archive/` | The earlier pages, kept for reference and not linked from the site. |
