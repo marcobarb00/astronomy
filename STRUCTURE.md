@@ -323,14 +323,51 @@ The first anomaly and the simplest complete model.
 #### 3.1 · The first anomaly
 
 - **Question:** why does the Moon's speed vary, and with what period?
-- **Learn:** sidereal, synodic, anomalistic and draconitic months; the
-  epicycle model; **the eccentric/epicycle equivalence theorem**, proved here
-  and reused in Act IV; fitting the epicycle radius from eclipses.
-- **Figures:** epicycle and eccentric drawn together, tracing the same point;
-  the equation of anomaly over two months; error curve against the reference
-  Moon.
-- **Exercises:** prove the equivalence; find the anomalistic month from the
-  beat between two periods.
+- **Learn:** the Moon's daily motion, 11.8° to 15.3° in 2026, its peaks
+  drifting through the phases; the tropical, sidereal, synodic,
+  anomalistic and draconitic months, and the beat of the speed against
+  the phases (411.8 days); the period relations of *Almagest* IV 2 (251
+  synodic = 269 anomalistic months), from Babylonian astronomy (Toomer);
+  the epicycle model (IV 6), with the equation of anomaly
+  $q = -\operatorname{atan2}(e\sin M, 1 + e\cos M)$, $e = r/R$, the solar
+  equation of centre of page 2.1; the speed, $n + n_M\,dq/dM$; **the
+  eccentric/epicycle equivalence theorem**, proved by commuting the two
+  vectors (a parallelogram, IV 5), the eccentric's apogee turning at
+  $n - n_M$ (8.85 years), reused in Act IV; the three-eclipse method,
+  linear to first order in $X = e\cos M_2$, $Y = e\sin M_2$, exact by
+  Newton's method.
+- **Figures:** the Moon's daily motion through 2026 with its full Moons
+  (static); the epicycle with $q$ over two months (date and $r/R$,
+  starting at an exaggerated 0.3, with Ptolemy's 5;15 as a preset); the
+  epicycle and its eccentric drawn together, the parallelogram O K Moon C
+  (date, a month or nine years); the three-eclipse method on four sets of
+  eclipses, with the two equations in the plane of $X, Y$; the error curve
+  of our epicycle (uniform Moon as ghost, dots at new and full Moon); the
+  error curve of Ptolemy's simple Moon. A photo: the eclipse of 7 September
+  2025 (Donatiello, CC0).
+- **Fit:** the mean motions from Meeus 47; $e$ and the anomaly from three
+  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5;13
+  and 5;14 (he uses 5;15, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
+  IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
+  consecutive triples of 2019 to 2030 range from 0.080 to 0.093, and a
+  least-squares fit to the 25 new and full Moons of 2026 gives 0.0864.
+- **Test:** in 2026 within 40′ at the 25 new and full Moons, up to 2.9°
+  at the quarters and 3.2° overall (the uniform Moon 7.9°); no growth over
+  a thousand years. Ptolemy's simple Moon is a degree behind at his own
+  eclipses, as his Sun is, and 10° behind by 2026.
+- **Exercises:** prove the equivalence in Ptolemy's general form, and
+  judge Hipparchus' two ratios (IV 11); the anomalistic month from the
+  beat of the fastest full Moons, 2001 to 2039; Ptolemy's Babylonian
+  triple, to first order and exactly.
+- **Code:** `models/lunar-epicycle.js` (`LunarEpicycle`: `make()`,
+  `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
+  `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
+  `ErrorCurve.addMarks` (dots at chosen dates).
+- **Residual:** at the quarters, Hipparchus' sighting of 127 BC (V 3);
+  the evection, which takes 1.27° from the ellipse's 6.29° at new and full
+  Moon and adds it at the quarters; the remaining 40′ at new and full Moon
+  is half the three-eclipse fit (a least-squares epicycle, $e = 0.0864$,
+  stays within 22′) and mostly the annual equation (11′).
 - **Hands over:** the model is good at new and full Moon and bad in between.
 
 #### 3.2 · Evection and the distance problem
@@ -494,6 +531,8 @@ once on the page.
 | $p$ | the rate of precession in longitude (″ a year), page 2.3 |
 | $Y,\ Y_\text{s}$ | the tropical year (page 1.3) and the sidereal year (page 2.3) |
 | $\dot\lambda_A$ | the motion of the apogee relative to γ (degrees a century), page 2.3 |
+| $n_M$ | the daily motion in anomaly (page 3.1); $n$ is then the daily motion in longitude |
+| $q$ (Moon) | the equation of anomaly, $\lambda = \bar\lambda + q$, with $M$ counted from the apogee of the epicycle and $e = r/R$ (page 3.1) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -585,7 +624,8 @@ the frames, `models/frames.js`; the clocks, `models/clock.js`; the equation
 of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
-at the epoch. The mean Sun (`models/mean-sun.js`, page 1.3)
+at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
+reuses the solar equation of centre as its equation of anomaly. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,

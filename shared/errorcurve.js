@@ -17,6 +17,8 @@
 	 // label may hold $...$ TeX; short = plain name for the hover read-out
 	 curve.addModel({ label: 'Eccentric', color: COL.deferent, fn: jd => ...,
 		 freeze: () => frozenFn });     // freeze is used by "Keep as ghost"
+	 curve.addMarks({ label: 'at new and full Moon', color: COL.deferent,
+		 fn: jd => ..., dates: [jd, ...], maxYears: 1 }); // dots on a curve
 	 curve.update();                    // after a model parameter changes
 
    A figure whose models have no sliders passes ghostButtons: false: there
@@ -120,6 +122,7 @@ class ErrorCurve {
 		this.rescale = true; // choose the scale at the next update
 		this.models = [];
 		this.ghosts = [];
+		this.marks = [];
 		this.cache = null;
 
 		this.buildDom(options);
@@ -242,6 +245,15 @@ class ErrorCurve {
 	addGhost(ghost) {
 		this.ghosts.push(Object.assign({ id: `ghost${this.ghosts.length}` }, ghost));
 		this.rescale = true;
+		this.update();
+	}
+
+	/* Dots on chosen dates (JD TT): the error of 'fn' there, e.g. a model
+	   at every new and full Moon. Drawn only while the span is at most
+	   maxYears (default: any span); the legend entry stays whatever the
+	   span, so the widget keeps its size (CLAUDE.md). */
+	addMarks(marks) {
+		this.marks.push(Object.assign({ id: `marks${this.marks.length}` }, marks));
 		this.update();
 	}
 
@@ -456,7 +468,29 @@ class ErrorCurve {
 			}
 		});
 
+		this.marks.forEach(marks => this.drawMarks(marks));
 		this.markRange();
+	}
+
+	/* The dots of one addMarks entry that fall in the range, at their
+	   exact error. */
+	drawMarks(marks) {
+		const years = (this.end - this.start) / 365.25;
+
+		if (marks.maxYears && years > marks.maxYears) {
+			return;
+		}
+
+		marks.dates
+			.filter(jd => jd >= this.start && jd <= this.end)
+			.forEach(jd => {
+				const delta = norm180(marks.fn(jd) - this.reference(jd)) * 60 * this.unitFactor;
+
+				this.plot.marker(Time.decimalYear(jd), delta, {
+					color: marks.color ?? COL.planet,
+					radius: marks.radius ?? 4
+				});
+			});
 	}
 
 	/* Shade the parts of the range outside the ephemeris' valid dates. */
@@ -493,6 +527,10 @@ class ErrorCurve {
 				mark: sample.isBand ? 'band' : 'line',
 				ghost: ghost
 			};
+		});
+
+		this.marks.forEach(marks => {
+			items.push({ label: marks.label, color: marks.color ?? COL.planet, mark: 'dot' });
 		});
 
 		// a hidden entry holds the place of each model's kept ghost until

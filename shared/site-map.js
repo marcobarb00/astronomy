@@ -112,7 +112,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.1',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'The first anomaly',
 			question: "Why does the Moon's speed vary, and with what period?",
 			path: 'act3-moon/01-first-anomaly/index.html'

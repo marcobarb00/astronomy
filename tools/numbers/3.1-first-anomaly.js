@@ -1,27 +1,24 @@
 /* ==========================================================================
    NUMBERS FOR PAGE 3.1 "THE FIRST ANOMALY" (tools/numbers/3.1-first-anomaly.js)
    Loads the site's shared code (common, time, ephemeris and the models
-   mean-sun.js, solar-eccentric.js, precession.js) in a Node vm context and
-   prints every number quoted on the page, in page order.
-
-   DRAFT FOR THE PLAN. The lunar epicycle is written here, in section 3;
-   once the plan is approved it moves to shared/models/lunar-epicycle.js
-   and this script loads it from there.
+   mean-sun.js, solar-eccentric.js, precession.js, lunar-epicycle.js) in a
+   Node vm context and prints every number quoted on the page, in page
+   order.
 
    Run from the repository root:  node tools/numbers/3.1-first-anomaly.js
+   (about a minute: it finds every new and full Moon of forty years)
 
    TABLE OF CONTENTS
 	 1. Loading the shared code
 	 2. Formatting and searching
-	 3. The lunar epicycle (moves to shared/models/lunar-epicycle.js)
-	 4. The reference Moon: syzygies and eclipses
-	 5. Observation: the Moon's uneven motion; the months
-	 6. Model: the epicycle, its equation of anomaly, its eccentric
-	 7. Fit: the three-eclipse method
-	 8. Test: the error curves
-	 9. Residual: the quarters
-	10. Exercises
-	11. The scales of the figures
+	 3. The reference Moon: syzygies and eclipses
+	 4. Observation: the Moon's uneven motion; the months
+	 5. Model: the epicycle, its equation of anomaly, its eccentric
+	 6. Fit: the three-eclipse method
+	 7. Test: the error curves
+	 8. Residual: the quarters
+	 9. Exercises
+	10. The scales of the figures
    ========================================================================== */
 
 const { loadFiles } = require('../check/load.js');
@@ -36,9 +33,11 @@ const shared = loadFiles([
 	'shared/ephemeris.js',
 	'shared/models/mean-sun.js',
 	'shared/models/solar-eccentric.js',
-	'shared/models/precession.js'
+	'shared/models/precession.js',
+	'shared/models/lunar-epicycle.js'
 ]);
-const { norm180, norm360, sin, cos, asin, atan2d, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession } = shared;
+const { norm180, sin, asin, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession, LunarEpicycle } = shared;
+const { MEEUS, PTOLEMY, TRIPLES } = LunarEpicycle;
 
 /* ==========================================================================
    2. FORMATTING AND SEARCHING
@@ -75,6 +74,7 @@ const when = jd => Time.formatDate(jd, { time: true });
 const date = jd => Time.formatDate(jd);
 const title = text => console.log(`\n=== ${text} ===`);
 const f = (x, digits) => x.toFixed(digits);
+const maxAbs = list => Math.max(...list.map(Math.abs));
 
 /* Root of fn in [a, b] by bisection (fn(a) and fn(b) of opposite signs). */
 function bisect(fn, a, b, steps = 50) {
@@ -94,119 +94,7 @@ function bisect(fn, a, b, steps = 50) {
 }
 
 /* ==========================================================================
-   3. THE LUNAR EPICYCLE (moves to shared/models/lunar-epicycle.js)
-   The centre K of the epicycle moves uniformly on the deferent, centred
-   on the Earth, at the mean longitude lambdaBar; the Moon moves on the
-   epicycle, westward near its apogee, by the anomaly M counted from the
-   apogee (the point of the epicycle farthest from the Earth). With
-   e = r / R, the ratio of the radii,
-	   OMoon = R u(lambdaBar) + r u(lambdaBar - M),
-	   q = -atan2(e sin M, 1 + e cos M),   lambda = lambdaBar + q,
-   the equation of centre of page 2.1 with r / R for e.
-   ========================================================================== */
-
-/* The mean motions of the reference Moon: the linear terms of Meeus
-   47.1 (L'), 47.4 (M', from the perigee) and 47.5 (F), deg a day. */
-const MEEUS = {
-	lon: 481267.88123421 / 36525,
-	anomaly: 477198.8675055 / 36525,
-	latitude: 483202.0175233 / 36525,
-	elongation: 445267.1114034 / 36525,
-	L0: 218.3164477,
-	Mp0: 134.9633964
-};
-
-/* Ptolemy, Almagest IV 3 (the corrected daily motions), IV 8 (the epoch,
-   Nabonassar, noon at Alexandria: Taurus 11;22 in longitude, 268;49° from
-   the apogee of the epicycle) and IV 6 / IV 9 (the ratio 60 : 5;15). */
-const PTOLEMY = {
-	L0: 30 + 11 + 22 / 60,
-	n: fromSexagesimal(13, 10, 34, 58, 33, 30, 30),
-	M0: 268 + 49 / 60,
-	nM: fromSexagesimal(13, 3, 53, 56, 17, 51, 59),
-	epoch: MeanSun.PTOLEMY.epoch,
-	clock: 'ut',
-	e: 5.25 / 60
-};
-
-const equationOfAnomaly = SolarEccentric.equationOfCentre;
-
-function daysSinceEpoch(p, jd) {
-	return (p.clock === 'ut' ? Time.utFromTt(jd) : jd) - p.epoch;
-}
-
-/* { meanLongitude, M, q, lambda } of a parameter set at JD(TT). */
-function lunarState(p, jd) {
-	const t = daysSinceEpoch(p, jd);
-	const meanLongitude = norm360(p.L0 + p.n * t);
-	const M = norm360(p.M0 + p.nM * t);
-	const q = equationOfAnomaly(M, p.e);
-
-	return { meanLongitude, M, q, lambda: norm360(meanLongitude + q) };
-}
-
-const lunarModel = p => jd => lunarState(p, jd).lambda;
-const uniformMoon = p => jd => lunarState(p, jd).meanLongitude;
-
-/* The three-eclipse problem. Data: the anomaly covered from the first
-   eclipse to the second (a12) and from the second to the third (a23),
-   and the true motion minus the mean motion over each interval (d12,
-   d23), all in degrees. Unknown: e and the anomaly M2 at the second
-   eclipse. With X = e cos M2, Y = e sin M2, to first order in e,
-	   d12 = -X sin a12 - Y (1 - cos a12),
-	   d23 = -X sin a23 + Y (1 - cos a23)      (d in radians),
-   a linear system; Newton's method then solves the exact equations. */
-function threeEclipses({ a12, a23, d12, d23 }) {
-	const r12 = d12 * D2R;
-	const r23 = d23 * D2R;
-	const A = [
-		[-sin(a12), -(1 - cos(a12))],
-		[-sin(a23), 1 - cos(a23)]
-	];
-	const det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
-	const X1 = (r12 * A[1][1] - A[0][1] * r23) / det;
-	const Y1 = (A[0][0] * r23 - A[1][0] * r12) / det;
-
-	/* The exact residuals for a trial (X, Y), in degrees. */
-	const residual = (X, Y) => {
-		const e = Math.hypot(X, Y);
-		const M2 = atan2d(Y, X);
-		const q = M => equationOfAnomaly(M, e);
-
-		return [q(M2) - q(M2 - a12) - d12, q(M2 + a23) - q(M2) - d23];
-	};
-
-	let X = X1;
-	let Y = Y1;
-
-	for (let i = 0; i < 20; i++) {
-		const h = 1e-7;
-		const r = residual(X, Y);
-		const rx = residual(X + h, Y);
-		const ry = residual(X, Y + h);
-		const J = [
-			[(rx[0] - r[0]) / h, (ry[0] - r[0]) / h],
-			[(rx[1] - r[1]) / h, (ry[1] - r[1]) / h]
-		];
-		const dt = J[0][0] * J[1][1] - J[0][1] * J[1][0];
-
-		X -= (r[0] * J[1][1] - J[0][1] * r[1]) / dt;
-		Y -= (J[0][0] * r[1] - J[1][0] * r[0]) / dt;
-	}
-
-	const e = Math.hypot(X, Y);
-	const M2 = norm360(atan2d(Y, X));
-
-	return {
-		first: { e: Math.hypot(X1, Y1), M2: norm360(atan2d(Y1, X1)) },
-		e,
-		M2,
-		q2: equationOfAnomaly(M2, e)
-	};
-}
-
-/* ==========================================================================
-   4. THE REFERENCE MOON: SYZYGIES AND ECLIPSES
+   3. THE REFERENCE MOON: SYZYGIES AND ECLIPSES
    Apparent longitudes of date, as every error curve of the site uses.
    ========================================================================== */
 
@@ -219,8 +107,8 @@ const moonLat = jd => Ephem.position('moon', jd).lat;
 const moonMotion = jd => norm180(moonLon(jd + 0.5) - moonLon(jd - 0.5));
 
 /* Every moment in [from, to] when the elongation Moon - Sun reaches
-   'target' (0: new Moon, 180: full Moon, 90 / 270: quarters). */
-function syzygies(target, from, to) {
+   'target' (0: new Moon, 180: full Moon, 90 and 270: the quarters). */
+function phases(target, from, to) {
 	const off = jd => norm180(moonLon(jd) - sunLon(jd) - target);
 	const found = [];
 
@@ -237,8 +125,16 @@ const Y2026 = Time.julianDay(2026, 1, 1);
 const Y2027 = Time.julianDay(2027, 1, 1);
 const J2000 = 2451545.0;
 
+/* Every new and full Moon of 2019 - 2030, and the lunar eclipses among
+   the full Moons: the Moon within 0.9° of the ecliptic, about the limit
+   for an eclipse by the umbra. */
+const FULL = phases(180, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
+const NEW = phases(0, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
+const ECLIPSES = FULL.filter(jd => Math.abs(moonLat(jd)) < 0.9);
+const in2026 = list => list.filter(jd => jd >= Y2026 && jd < Y2027);
+
 /* ==========================================================================
-   5. OBSERVATION
+   4. OBSERVATION
    ========================================================================== */
 
 title("Observation: the Moon's daily motion in 2026 (Figure 1)");
@@ -256,21 +152,18 @@ title("Observation: the Moon's daily motion in 2026 (Figure 1)");
 			fastest = { v, jd };
 		}
 	}
-	console.log(`mean daily motion (Meeus L'): ${f(MEEUS.lon, 4)}°/d`);
+	console.log(`mean daily motion (Meeus L'): ${f(MEEUS.n, 4)}°/d`);
 	console.log(
 		`slowest ${f(slowest.v, 2)}°/d on ${date(slowest.jd)}; fastest ${f(fastest.v, 2)}°/d on ${date(fastest.jd)}`
 	);
 	console.log(
-		`swing: ${f((100 * (fastest.v - MEEUS.lon)) / MEEUS.lon, 1)}% / ${f((100 * (slowest.v - MEEUS.lon)) / MEEUS.lon, 1)}% about the mean (the Sun: 3.4%, page 2.1)`
+		`swing about the mean: +${f((100 * (fastest.v - MEEUS.n)) / MEEUS.n, 1)}% / ${f((100 * (slowest.v - MEEUS.n)) / MEEUS.n, 1)}% (the Sun: 3.4%, page 2.1)`
 	);
 }
 
-title('Observation: the fastest moments of 2026 against the phases');
+title('Observation: the fastest moments of 2026 against the full Moons');
 {
-	const full = syzygies(180, Y2026 - 20, Y2027 + 20);
-	const fullIn = full.filter(jd => jd >= Y2026 && jd < Y2027);
-
-	/* Local maxima of the speed, to the day. */
+	const full = phases(180, Y2026 - 40, Y2027);
 	const maxima = [];
 
 	for (let jd = Y2026; jd < Y2027; jd += 0.1) {
@@ -278,31 +171,29 @@ title('Observation: the fastest moments of 2026 against the phases');
 			maxima.push(jd);
 		}
 	}
-	console.log('fastest moments of 2026, with the days since the last full Moon:');
+	console.log('fastest moments of 2026, and the days since the last full Moon:');
 	maxima.forEach(jd => {
 		const lastFull = full.filter(t => t <= jd).pop();
 
 		console.log(`   ${date(jd)}  ${f(moonMotion(jd), 2)}°/d  ${f(jd - lastFull, 1)} d after full Moon`);
 	});
 	console.log(
-		`intervals between maxima: ${maxima
-			.slice(1)
-			.map((jd, i) => f(jd - maxima[i], 1))
-			.join(', ')}`
+		`mean interval between maxima: ${f((maxima[maxima.length - 1] - maxima[0]) / (maxima.length - 1), 2)} d`
 	);
 	console.log('the full Moons of 2026 and the speed at each:');
-	fullIn.forEach(jd => console.log(`   ${when(jd)} TT  ${f(moonMotion(jd), 2)}°/d`));
+	in2026(FULL).forEach(jd => console.log(`   ${when(jd)} TT  ${f(moonMotion(jd), 2)}°/d`));
 }
 
 title('Observation: the months (mean motions, Meeus 47)');
 const p = Precession.MODERN.rate / 365.25; // deg a day
 const nSun = MeanSun.MODERN.n;
+const nF = 483202.0175233 / 36525; // Meeus 47.5, the argument of latitude
 const MONTHS = {
-	tropical: 360 / MEEUS.lon,
-	sidereal: 360 / (MEEUS.lon - p),
-	synodic: 360 / (MEEUS.lon - nSun),
-	anomalistic: 360 / MEEUS.anomaly,
-	draconitic: 360 / MEEUS.latitude
+	tropical: 360 / MEEUS.n,
+	sidereal: 360 / (MEEUS.n - p),
+	synodic: 360 / (MEEUS.n - nSun),
+	anomalistic: 360 / MEEUS.nM,
+	draconitic: 360 / nF
 };
 const dhm = days => {
 	const d = Math.floor(days);
@@ -314,292 +205,265 @@ const dhm = days => {
 };
 
 Object.entries(MONTHS).forEach(([name, days]) => console.log(`${name.padEnd(12)} ${f(days, 5)} d  (${dhm(days)})`));
-console.log(`synodic from the elongation rate D: ${f(360 / MEEUS.elongation, 5)} d`);
 console.log(
-	`anomalistic - sidereal = ${f((MONTHS.anomalistic - MONTHS.sidereal) * 24, 2)} h; sidereal - draconitic = ${f((MONTHS.sidereal - MONTHS.draconitic) * 24, 2)} h`
+	`sidereal - tropical = ${f((MONTHS.sidereal - MONTHS.tropical) * 86400, 1)} s; anomalistic - sidereal = ${f((MONTHS.anomalistic - MONTHS.sidereal) * 24, 2)} h; sidereal - draconitic = ${f((MONTHS.sidereal - MONTHS.draconitic) * 24, 2)} h`
 );
 
 title('Observation: the beat of the speed against the phases');
 const BEAT = 1 / (1 / MONTHS.anomalistic - 1 / MONTHS.synodic);
 
-console.log(`beat 1 / (1/anomalistic - 1/synodic) = ${f(BEAT, 2)} d = ${f(BEAT / MONTHS.synodic, 3)} synodic months`);
+console.log(`beat 1/(1/anomalistic - 1/synodic) = ${f(BEAT, 2)} d = ${f(BEAT / MONTHS.synodic, 3)} synodic months`);
 console.log(
-	`apsidal turn 1 / (1/anomalistic - 1/sidereal)... the apogee: 360 / (n - nM) = ${f(360 / (MEEUS.lon - MEEUS.anomaly) / 365.25, 2)} years (tropical)`
+	`the fastest moment comes ${f(MONTHS.synodic - MONTHS.anomalistic, 2)} d earlier in the cycle of phases each month`
 );
-console.log(`   relative to the stars: ${f(360 / (MEEUS.lon - p - MEEUS.anomaly) / 365.25, 2)} years`);
+console.log(
+	`the place of greatest speed turns east once in ${f(1 / (1 / MONTHS.tropical - 1 / MONTHS.anomalistic) / 365.25, 2)} years (relative to γ), ${f(1 / (1 / MONTHS.sidereal - 1 / MONTHS.anomalistic) / 365.25, 2)} years (to the stars)`
+);
 
-title('Observation: the ancient period relations (Almagest IV 2)');
+title('Observation: the ancient period relations (Almagest IV 2, IV 3)');
 {
 	const synP = fromSexagesimal(29, 31, 50, 8, 20);
 
 	console.log(
-		`Hipparchus' synodic month 29;31,50,8,20 = ${f(synP, 7)} d; real ${f(MONTHS.synodic, 7)} d; diff ${f((synP - MONTHS.synodic) * 86400, 2)} s`
+		`Hipparchus' synodic month 29;31,50,8,20 = ${f(synP, 7)} d; real ${f(MONTHS.synodic, 7)} d; difference ${f((synP - MONTHS.synodic) * 86400, 2)} s`
 	);
 	console.log(
-		`'Periodic': 223 syn = ${f(223 * MONTHS.synodic, 3)} d, 239 anom = ${f(239 * MONTHS.anomalistic, 3)} d, 242 drac = ${f(242 * MONTHS.draconitic, 3)} d (Almagest: 6585 1/3 d)`
+		`'Periodic': 223 syn = ${f(223 * MONTHS.synodic, 2)} d, 239 anom = ${f(239 * MONTHS.anomalistic, 2)} d, 242 drac = ${f(242 * MONTHS.draconitic, 2)} d (Almagest: 6585 1/3 d)`
 	);
 	console.log(
-		`251 syn = ${f(251 * MONTHS.synodic, 3)} d, 269 anom = ${f(269 * MONTHS.anomalistic, 3)} d; difference ${f((251 * MONTHS.synodic - 269 * MONTHS.anomalistic) * 24, 2)} h`
+		`251 syn = ${f(251 * MONTHS.synodic, 3)} d, 269 anom = ${f(269 * MONTHS.anomalistic, 3)} d; difference ${f((251 * MONTHS.synodic - 269 * MONTHS.anomalistic) * 24 * 60, 1)} min`
 	);
 	console.log(
-		`   anomalistic month from 251/269: ${f((251 * synP) / 269, 5)} d (Hipparchus), real ${f(MONTHS.anomalistic, 5)} d`
+		`   anomalistic month from 251/269 and Hipparchus' synodic month: ${f((251 * synP) / 269, 5)} d, real ${f(MONTHS.anomalistic, 5)} d`
 	);
-	console.log(`5458 syn = ${f(5458 * MONTHS.synodic, 2)} d, 5923 drac = ${f(5923 * MONTHS.draconitic, 2)} d`);
-	console.log(`   draconitic from 5458/5923: ${f((5458 * synP) / 5923, 5)} d, real ${f(MONTHS.draconitic, 5)} d`);
 	console.log(
-		`Hipparchus' 126007 d 1 h / 4267 = ${f((126007 + 1 / 24) / 4267, 7)} d; 4573 anom = ${f(4573 * MONTHS.anomalistic, 2)} d vs 4267 syn ${f(4267 * MONTHS.synodic, 2)} d`
+		`5458 syn = ${f(5458 * MONTHS.synodic, 2)} d, 5923 drac = ${f(5923 * MONTHS.draconitic, 2)} d; draconitic from them ${f((5458 * synP) / 5923, 5)} d, real ${f(MONTHS.draconitic, 5)} d`
 	);
-	console.log(`Ptolemy's daily motions: longitude ${f(PTOLEMY.n, 8)}°, anomaly ${f(PTOLEMY.nM, 8)}°`);
-	console.log(`   his months: tropical ${f(360 / PTOLEMY.n, 5)} d, anomalistic ${f(360 / PTOLEMY.nM, 5)} d`);
-	console.log(`   real: n = ${f(MEEUS.lon, 8)}°, nM = ${f(MEEUS.anomaly, 8)}°`);
+	console.log(
+		`Ptolemy's daily motions: longitude ${f(PTOLEMY.n, 8)}°, anomaly ${f(PTOLEMY.nM, 8)}°; real ${f(MEEUS.n, 8)}°, ${f(MEEUS.nM, 8)}°`
+	);
+	console.log(
+		`   his tropical month ${f(360 / PTOLEMY.n, 5)} d, anomalistic ${f(360 / PTOLEMY.nM, 5)} d (${f((360 / PTOLEMY.nM - MONTHS.anomalistic) * 86400, 1)} s too long)`
+	);
+	console.log(`248 days / 9 = ${f(248 / 9, 4)} d (the Babylonian table of the Moon's daily motion)`);
 }
 
 /* ==========================================================================
-   6. MODEL
+   5. MODEL
    ========================================================================== */
 
-title('Model: the epicycle of Ptolemy, 60 : 5;15 (Almagest IV 6, IV 9)');
+title("Model: Ptolemy's epicycle, 60 : 5;15 (Almagest IV 9, IV 10)");
 {
 	const e = PTOLEMY.e;
 	const g = SolarEccentric.greatestEquation(e);
 	let worst = 0;
 
 	for (let M = 0; M < 360; M += 0.01) {
-		worst = Math.max(worst, Math.abs(equationOfAnomaly(M, e) - SolarEccentric.equationOfCentreFirstOrder(M, e)));
+		worst = Math.max(
+			worst,
+			Math.abs(LunarEpicycle.equationOfAnomaly(M, e) - SolarEccentric.equationOfCentreFirstOrder(M, e))
+		);
 	}
 	console.log(
-		`r/R = ${f(e, 5)}; greatest equation asin(r/R) = ${f(g.q, 3)}° = ${dms(g.q)} at M = ${f(g.M, 2)}° (table IV 10: 5;1 at 96°)`
+		`r/R = ${f(e, 5)}; greatest equation asin(r/R) = ${f(g.q, 3)}° = ${dms(g.q)} at M = ${f(g.M, 2)}° (his table: 5;1 at 96°)`
 	);
+	console.log(`the exact and first-order curves differ by at most ${f(worst * 60, 1)}'`);
 	console.log(
-		`first-order -e sin M: greatest ${f(e * R2D, 3)}°; the exact and first-order curves differ by at most ${f(worst * 60, 1)}'`
-	);
-
-	/* The model's daily motion at the apogee and perigee of the epicycle:
-	   n + nM dq/dM, dq/dM = -e (e + cos M) / (1 + 2 e cos M + e^2). */
-	const speed = M => PTOLEMY.n - (PTOLEMY.nM * e * (e + cos(M))) / (1 + 2 * e * cos(M) + e * e);
-
-	console.log(
-		`daily motion at the apogee ${f(speed(0), 2)}°/d, at the perigee ${f(speed(180), 2)}°/d (mean ${f(PTOLEMY.n, 2)})`
+		`daily motion at the apogee of the epicycle ${f(LunarEpicycle.dailyMotion(PTOLEMY, 0), 2)}°/d, at the perigee ${f(LunarEpicycle.dailyMotion(PTOLEMY, 180), 2)}°/d`
 	);
 }
 
-title('Model: the eccentric equivalent to the epicycle');
+title('Model: the equivalent eccentric');
 {
-	const rate = MEEUS.lon - MEEUS.anomaly;
+	const rate = MEEUS.n - MEEUS.nM;
 	const rateP = PTOLEMY.n - PTOLEMY.nM;
 
 	console.log(
-		`its apogee lambdaBar - M moves east by n - nM = ${f(rate, 5)}°/d = ${f(rate * MONTHS.anomalistic, 2)}° an anomalistic month, ${f(rate * 365.25, 2)}° a year; one turn in ${f(360 / rate, 0)} d = ${f(360 / rate / 365.25, 2)} years`
+		`its apogee moves east by n - nM = ${f(rate, 5)}°/d = ${f(rate * MONTHS.anomalistic, 2)}° an anomalistic month, ${f(rate * 365.25, 1)}° a year; a turn in ${f(360 / rate, 0)} d = ${f(360 / rate / 365.25, 2)} years`
 	);
 	console.log(
-		`Ptolemy: n - nM = ${sexagesimal(rateP, 5)} = ${f(rateP, 6)}°/d, a turn in ${f(360 / rateP / 365.25, 2)} years`
-	);
-	console.log(
-		'the Sun (page 2.1): the two periods are equal (apart from the slow apogee), so the eccentric does not turn'
+		`Ptolemy: n - nM = ${sexagesimal(rateP, 5)}° = ${f(rateP, 6)}°/d, a turn in ${f(360 / rateP / 365.25, 2)} years`
 	);
 }
 
 /* ==========================================================================
-   7. FIT
+   6. FIT
    ========================================================================== */
 
-const triples = {
-	/* Almagest IV 6: the Babylonian eclipses of -720 Mar 19/20, -719 Mar
-	   8/9, -719 Sep 1/2. Anomaly 306;25 then 150;26; true motion minus
-	   mean motion +3;24, then -0;37. Ptolemy: 60 : 5;13, the Moon 12;24°
-	   from the apogee at the second, equation -0;59. */
-	babylon: {
-		a12: fromSexagesimal(306, 25),
-		a23: fromSexagesimal(150, 26),
-		d12: fromSexagesimal(3, 24),
-		d23: -fromSexagesimal(0, 37)
-	},
-	/* Almagest IV 6: Ptolemy's eclipses of 133 May 6/7, 134 Oct 20/21,
-	   136 Mar 5/6. Anomaly 110;21 then 81;36; -7;42, then +1;21. Ptolemy:
-	   60 : 5;14, 64;38° at the second, equation -4;20. */
-	alexandria: {
-		a12: fromSexagesimal(110, 21),
-		a23: fromSexagesimal(81, 36),
-		d12: -fromSexagesimal(7, 42),
-		d23: fromSexagesimal(1, 21)
-	},
-	/* De Revolutionibus IV 5: Copernicus' eclipses of 1511 Oct 6/7, 1522
-	   Sep 5/6, 1523 Aug 25/26. Anomaly 250;36 then 306;43; true motions
-	   329;47 against mean 334;47 (-5;00), then 349;09 against 346;10
-	   (+2;59). Copernicus: 8,604 parts to 100,000, 21;10° at the third
-	   (74;27° at the second). */
-	copernicus: {
-		a12: fromSexagesimal(250, 36),
-		a23: fromSexagesimal(306, 43),
-		d12: -5,
-		d23: fromSexagesimal(2, 59)
-	}
-};
-
-title('Fit: the three-eclipse method on the historical data');
-Object.entries(triples).forEach(([name, data]) => {
-	const s = threeEclipses(data);
+title('Fit: the three-eclipse method on the sources');
+Object.entries(TRIPLES).forEach(([name, data]) => {
+	const s = LunarEpicycle.threeEclipses(data);
 
 	console.log(
-		`${name.padEnd(11)} first order: r/R = ${f(s.first.e, 5)}, M2 = ${f(s.first.M2, 2)}°;  exact: r/R = ${f(s.e, 5)} (${sexagesimal(s.e * 60, 2)} on 60), M2 = ${f(s.M2, 2)}° (${dms(s.M2)}), q2 = ${f(s.q2, 3)}° (${dms(s.q2)}), greatest ${f(asin(s.e), 2)}°`
+		`${name.padEnd(11)} first order: r/R = ${f(s.first.e, 5)}, M2 = ${f(s.first.M2, 2)}° (X ${f(s.first.X, 4)}, Y ${f(s.first.Y, 4)})`
+	);
+	console.log(
+		`            exact: r/R = ${f(s.e, 5)} (${sexagesimal(s.e * 60, 2)} on 60), M2 = ${dms(s.M2)}, q2 = ${dms(s.q2)}, greatest ${f(asin(s.e), 2)}° (X ${f(s.X, 4)}, Y ${f(s.Y, 4)})`
+	);
+	console.log(
+		`            the source: r/R = ${f(data.result.e, 5)}, M2 = ${dms(data.result.M2)}; greatest ${dms(asin(data.result.e))}`
 	);
 });
 
-/* The lunar eclipses of the reference sky: full Moons with the Moon
-   within 1° of the ecliptic (umbral eclipses need about 0.9°; the
-   page names only the ones that were). */
-const FULL = syzygies(180, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
-const NEW = syzygies(0, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
-const ECLIPSES = FULL.filter(jd => Math.abs(moonLat(jd)) < 0.9);
+title('Fit: the lunar eclipses of the reference sky, 2019 - 2030');
+ECLIPSES.forEach(jd =>
+	console.log(`   ${when(jd)} TT  JD ${f(jd, 6)}  lambda ${f(moonLon(jd), 3)}°  beta ${f(moonLat(jd), 3)}°`)
+);
 
-title('Fit: the lunar eclipses of the reference sky, 2019 - 2030 (|beta| < 0.9° at full Moon)');
-ECLIPSES.forEach(jd => console.log(`   ${when(jd)} TT   lambda ${f(moonLon(jd), 3)}°   beta ${f(moonLat(jd), 3)}°`));
-
-/* The triple's data from three reference eclipses: the anomaly from
-   Meeus' mean motion, the true motion of the reference Moon. */
-function referenceTriple(t1, t2, t3) {
-	const mean12 = MEEUS.lon * (t2 - t1);
-	const mean23 = MEEUS.lon * (t3 - t2);
-
-	return {
-		a12: norm360(MEEUS.anomaly * (t2 - t1)),
-		a23: norm360(MEEUS.anomaly * (t3 - t2)),
-		d12: norm180(moonLon(t2) - moonLon(t1) - mean12),
-		d23: norm180(moonLon(t3) - moonLon(t2) - mean23)
-	};
-}
-
-/* Our fit: the second of the three eclipses fixes the epoch. */
-function fitFromEclipses(t1, t2, t3) {
-	const data = referenceTriple(t1, t2, t3);
-	const s = threeEclipses(data);
-	const meanAt2 = norm360(moonLon(t2) - s.q2);
-
-	return {
-		data,
-		s,
-		params: {
-			L0: norm360(meanAt2 - MEEUS.lon * (t2 - J2000)),
-			n: MEEUS.lon,
-			M0: norm360(s.M2 - MEEUS.anomaly * (t2 - J2000)),
-			nM: MEEUS.anomaly,
-			epoch: J2000,
-			e: s.e
-		}
-	};
-}
-
+/* Our fit: the three eclipses around 2026; the second fixes the epoch. */
 const pick = (y, m, d) => ECLIPSES.find(jd => Math.abs(jd - Time.julianDay(y, m, d)) < 2);
-const E1 = pick(2025, 9, 7);
-const E2 = pick(2026, 3, 3);
-const E3 = pick(2026, 8, 28);
-const FIT = fitFromEclipses(E1, E2, E3);
+const OURS = [pick(2025, 9, 7), pick(2026, 3, 3), pick(2026, 8, 28)];
+const OURS_LON = OURS.map(moonLon);
+const OURS_DATA = LunarEpicycle.tripleFromObservations(OURS, OURS_LON, MEEUS);
+const OURS_SOLUTION = LunarEpicycle.threeEclipses(OURS_DATA);
+const FIT = LunarEpicycle.fitEclipses(OURS, OURS_LON, MEEUS, J2000);
 
-title('Fit: our three eclipses, 2025 Sep 7, 2026 Mar 3, 2026 Aug 28');
-console.log(`times (TT): ${[E1, E2, E3].map(when).join('; ')}`);
+title('Fit: our three eclipses, 7 Sep 2025, 3 Mar 2026, 28 Aug 2026');
+console.log(`moments (TT): ${OURS.map(when).join('; ')}`);
+console.log(`ECLIPSES_2026 = [${OURS.map(jd => f(jd, 6)).join(', ')}]`);
+console.log(`true longitudes ${OURS_LON.map(l => f(l, 3)).join('°, ')}°`);
 console.log(
-	`anomaly a12 = ${f(FIT.data.a12, 2)}°, a23 = ${f(FIT.data.a23, 2)}°; true minus mean d12 = ${f(FIT.data.d12, 3)}°, d23 = ${f(FIT.data.d23, 3)}°`
+	`anomaly a12 = ${f(OURS_DATA.a12, 2)}°, a23 = ${f(OURS_DATA.a23, 2)}°; true minus mean d12 = ${f(OURS_DATA.d12, 3)}°, d23 = ${f(OURS_DATA.d23, 3)}°`
 );
 console.log(
-	`first order r/R = ${f(FIT.s.first.e, 5)}, M2 = ${f(FIT.s.first.M2, 2)}°; exact r/R = ${f(FIT.s.e, 5)}, M2 = ${f(FIT.s.M2, 2)}°, q2 = ${f(FIT.s.q2, 3)}°, greatest ${f(asin(FIT.s.e), 3)}°`
+	`first order r/R = ${f(OURS_SOLUTION.first.e, 5)}, M2 = ${f(OURS_SOLUTION.first.M2, 2)}°; exact r/R = ${f(OURS_SOLUTION.e, 5)}, M2 = ${f(OURS_SOLUTION.M2, 2)}°, q2 = ${f(OURS_SOLUTION.q2, 3)}°, greatest ${f(asin(OURS_SOLUTION.e), 3)}° (X ${f(OURS_SOLUTION.X, 4)}, Y ${f(OURS_SOLUTION.Y, 4)})`
 );
 console.log(
-	`parameters at J2000: L0 = ${f(FIT.params.L0, 4)}° (Meeus L'0 ${MEEUS.L0}), M0 = ${f(FIT.params.M0, 4)}° from the apogee (Meeus M'0 + 180 = ${f(MEEUS.Mp0 + 180, 4)})`
+	`FIT_2026: L0 = ${f(FIT.L0, 6)}, M0 = ${f(FIT.M0, 6)}, e = ${f(FIT.e, 6)} (model file: L0 ${LunarEpicycle.FIT_2026.L0}, M0 ${LunarEpicycle.FIT_2026.M0}, e ${LunarEpicycle.FIT_2026.e})`
+);
+console.log(
+	`   against Meeus at J2000: L'0 = ${MEEUS.L0}, M'0 + 180 = ${f(MEEUS.M0, 4)}; differences ${f((FIT.L0 - MEEUS.L0) * 60, 2)}', ${f(FIT.M0 - MEEUS.M0, 2)}°`
 );
 
-title('Fit: every triple of consecutive eclipses, 2019 - 2030');
+title('Fit: every three consecutive eclipses, 2019 - 2030');
 {
 	const values = [];
 
 	for (let i = 0; i + 2 < ECLIPSES.length; i++) {
-		const s = threeEclipses(referenceTriple(ECLIPSES[i], ECLIPSES[i + 1], ECLIPSES[i + 2]));
+		const times = ECLIPSES.slice(i, i + 3);
+		const s = LunarEpicycle.threeEclipses(LunarEpicycle.tripleFromObservations(times, times.map(moonLon), MEEUS));
 
 		values.push(s.e);
-		console.log(
-			`   ${date(ECLIPSES[i])} .. ${date(ECLIPSES[i + 2])}: r/R = ${f(s.e, 5)}, greatest ${f(asin(s.e), 2)}°`
-		);
+		console.log(`   ${date(times[0])} .. ${date(times[2])}: r/R = ${f(s.e, 4)}, greatest ${f(asin(s.e), 2)}°`);
 	}
-	console.log(`range ${f(Math.min(...values), 4)} .. ${f(Math.max(...values), 4)}`);
+	console.log(
+		`range r/R ${f(Math.min(...values), 3)} .. ${f(Math.max(...values), 3)}; greatest equation ${f(asin(Math.min(...values)), 1)}° .. ${f(asin(Math.max(...values)), 1)}°`
+	);
 }
 
 title('Fit: least squares on every new and full Moon of 2026 (a check)');
 {
-	const times = FULL.concat(NEW).filter(jd => jd >= Y2026 && jd < Y2027);
+	const times = in2026(FULL.concat(NEW));
 
-	/* Linear in (L, X, Y) to first order: lambda - n d = L - X sin(nM d) - Y cos(nM d),
-	   with X = e cos M0 and Y = e sin M0, d from J2000. Normal equations. */
+	/* To first order, lambda - n d = L - X sin(nM d) - Y cos(nM d), with
+	   X = e cos M0 and Y = e sin M0 and d from J2000: linear in (L, X, Y).
+	   The normal equations, solved by elimination. */
 	const rows = times.map(jd => {
 		const d = jd - J2000;
-		const unwrap = norm180(moonLon(jd) - (FIT.params.L0 + MEEUS.lon * d));
 
 		return {
-			x: [1, -sin(MEEUS.anomaly * d), -cos(MEEUS.anomaly * d)],
-			y: unwrap * D2R
+			x: [1, -sin(MEEUS.nM * d), -Math.cos(MEEUS.nM * d * D2R)],
+			y: norm180(moonLon(jd) - (FIT.L0 + MEEUS.n * d)) * D2R
 		};
 	});
-	const N = [
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 0, 0]
-	];
-	const b = [0, 0, 0];
+	const N = [0, 1, 2].map(i => [0, 1, 2].map(j => rows.reduce((s, r) => s + r.x[i] * r.x[j], 0)));
+	const b = [0, 1, 2].map(i => rows.reduce((s, r) => s + r.x[i] * r.y, 0));
 
-	rows.forEach(row => {
-		for (let i = 0; i < 3; i++) {
-			b[i] += row.x[i] * row.y;
-			for (let j = 0; j < 3; j++) {
-				N[i][j] += row.x[i] * row.x[j];
+	for (let i = 0; i < 3; i++) {
+		for (let k = i + 1; k < 3; k++) {
+			const factor = N[k][i] / N[i][i];
+
+			for (let j = i; j < 3; j++) {
+				N[k][j] -= factor * N[i][j];
 			}
+			b[k] -= factor * b[i];
 		}
-	});
+	}
 
-	/* Gaussian elimination on 3 x 3. */
-	const solve = (A, v) => {
-		const m = A.map((r, i) => r.concat([v[i]]));
+	const x = [0, 0, 0];
 
-		for (let i = 0; i < 3; i++) {
-			for (let k = i + 1; k < 3; k++) {
-				const factor = m[k][i] / m[i][i];
+	for (let i = 2; i >= 0; i--) {
+		let sum = b[i];
 
-				for (let j = i; j < 4; j++) {
-					m[k][j] -= factor * m[i][j];
-				}
-			}
+		for (let j = i + 1; j < 3; j++) {
+			sum -= N[i][j] * x[j];
 		}
-
-		const x = [0, 0, 0];
-
-		for (let i = 2; i >= 0; i--) {
-			x[i] = (m[i][3] - m[i].slice(i + 1, 3).reduce((s, a, j) => s + a * x[i + 1 + j], 0)) / m[i][i];
-		}
-
-		return x;
-	};
-	const [, X, Y] = solve(N, b);
-
+		x[i] = sum / N[i][i];
+	}
 	console.log(
-		`${times.length} syzygies; first-order least squares: r/R = ${f(Math.hypot(X, Y), 5)}, greatest ${f(Math.hypot(X, Y) * R2D, 2)}°`
+		`${times.length} new and full Moons: r/R = ${f(Math.hypot(x[1], x[2]), 4)}, greatest ${f(Math.hypot(x[1], x[2]) * R2D, 2)}°`
 	);
 }
 
-title('Fit: what the real Moon is made of at the syzygies (Meeus 47, Fitzpatrick 6.5-6.6)');
+title('Fit: the exact epicycle by least squares on the same new and full Moons (a check)');
+{
+	const times = in2026(FULL.concat(NEW));
+	const residualsOf = q => {
+		const model = LunarEpicycle.make(Object.assign({}, FIT, { L0: q[0], M0: q[1], e: q[2] }));
+
+		return times.map(jd => norm180(model(jd) - moonLon(jd)));
+	};
+
+	/* Gauss-Newton on (L0, M0, e), from the three-eclipse fit; the
+	   Jacobian by differences, the 3 x 3 normal equations by Cramer. */
+	let q = [FIT.L0, FIT.M0, FIT.e];
+
+	for (let iteration = 0; iteration < 10; iteration++) {
+		const r = residualsOf(q);
+		const steps = [1e-5, 1e-5, 1e-7];
+		const J = steps.map((h, k) => {
+			const moved = q.slice();
+
+			moved[k] += h;
+
+			return residualsOf(moved).map((v, i) => (v - r[i]) / h);
+		});
+		const N = [0, 1, 2].map(a => [0, 1, 2].map(b => J[a].reduce((sum, v, i) => sum + v * J[b][i], 0)));
+		const g = [0, 1, 2].map(a => J[a].reduce((sum, v, i) => sum + v * r[i], 0));
+		const det3 = m =>
+			m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+			m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+			m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+		const D = det3(N);
+		const delta = [0, 1, 2].map(k => det3(N.map((row, i) => row.map((v, j) => (j === k ? g[i] : v)))) / D);
+
+		q = q.map((v, k) => v - delta[k]);
+	}
+
+	const r = residualsOf(q).map(v => v * 60);
+	const rmsLs = Math.sqrt(r.reduce((sum, v) => sum + v * v, 0) / r.length);
+
+	console.log(
+		`exact least squares: r/R = ${f(q[2], 4)}, greatest ${f(asin(q[2]), 2)}°, M0 ${f(q[1] - MEEUS.M0, 2)}° from Meeus' M' + 180; largest error ${f(maxAbs(r), 1)}', rms ${f(rmsLs, 1)}'`
+	);
+}
+
+title('Fit: the smaller inequalities at new and full Moon (Meeus 47.A, 47.B)');
 console.log(
-	`Kepler: 2 e_K = 2 x 0.0549 = ${f(2 * 0.0549, 4)}, greatest ${f(asin(2 * 0.0549), 2)}°; Meeus' leading term 6.289°`
+	`annual equation 0.185116° sin M (the Sun's anomaly) = ${f(0.185116 * 60, 1)}'; reduction to the ecliptic 0.114332° sin 2F = ${f(0.114332 * 60, 1)}'`
+);
+
+title('Fit: the real Moon at new and full Moon (Meeus 47; Fitzpatrick 6.5 - 6.6)');
+console.log(`the Moon's eccentricity (Fitzpatrick, Table 6.1): 0.054881 = ${f(0.054881, 3)}`);
+console.log(
+	`Kepler: 2 e_K = 2 x 0.0549 = ${f(2 * 0.0549, 4)}, greatest ${f(asin(2 * 0.0549), 2)}°; Meeus' term 6.289°`
 );
 console.log(
-	`evection 1.274° sin(2D - M'): at new and full Moon it is -1.274 sin M', so the amplitude is 6.289 - 1.274 = ${f(6.289 - 1.274, 3)}°, i.e. r/R = ${f(sin(6.289 - 1.274), 4)}`
+	`evection 1.274° sin(2D - M'): at new and full Moon -1.274 sin M', so the amplitude is 6.289 - 1.274 = ${f(6.289 - 1.274, 3)}°, r/R = ${f(sin(6.289 - 1.274), 4)}`
 );
 console.log(`at the quarters 6.289 + 1.274 = ${f(6.289 + 1.274, 3)}° (Ptolemy, Almagest V 3: about 7 2/3°)`);
 
 /* ==========================================================================
-   8. TEST
+   7. TEST
    ========================================================================== */
 
-const model = lunarModel(FIT.params);
-const uniform = uniformMoon(FIT.params);
+const model = LunarEpicycle.make(LunarEpicycle.FIT_2026);
+const uniform = LunarEpicycle.makeUniform(LunarEpicycle.FIT_2026);
+const ptolemy = LunarEpicycle.make(PTOLEMY);
+const ptolemySun = SolarEccentric.make(SolarEccentric.PTOLEMY);
 const error = (fn, jd) => norm180(fn(jd) - moonLon(jd)) * 60; // arcmin
 
-/* Largest |error| over [from, to], sampled every 'step' days. */
+/* The largest |error| over [from, to], sampled every 'step' days. */
 function largest(fn, from, to, step = 0.05) {
 	let worst = { v: 0 };
 
@@ -614,194 +478,219 @@ function largest(fn, from, to, step = 0.05) {
 	return worst;
 }
 
-title('Test: our epicycle against the reference Moon, 2026');
+title('Test: our epicycle against the reference Moon, 2026 (Figure 5)');
 {
 	const all = largest(model, Y2026, Y2027);
 	const flat = largest(uniform, Y2026, Y2027);
-	const syz = FULL.concat(NEW).filter(jd => jd >= Y2026 && jd < Y2027);
-	const atSyz = syz.map(jd => error(model, jd));
-	const quarters = syzygies(90, Y2026, Y2027).concat(syzygies(270, Y2026, Y2027));
-	const atQ = quarters.map(jd => error(model, jd));
-	const maxAbs = list => Math.max(...list.map(Math.abs));
+	const syzygies = in2026(FULL.concat(NEW));
+	const atSyzygies = syzygies.map(jd => error(model, jd));
+	const quarters = phases(90, Y2026, Y2027).concat(phases(270, Y2026, Y2027));
+	const atQuarters = quarters.map(jd => error(model, jd));
+	const rms = list => Math.sqrt(list.reduce((s, v) => s + v * v, 0) / list.length);
 
-	console.log(`uniform Moon: largest error ${f(flat.v / 60, 2)}° on ${date(flat.jd)}`);
-	console.log(`epicycle: largest error ${f(all.v / 60, 2)}° on ${date(all.jd)}`);
+	console.log(`the uniform Moon: largest error ${f(flat.v / 60, 2)}° on ${date(flat.jd)}`);
+	console.log(`the epicycle: largest error ${f(all.v / 60, 2)}° on ${date(all.jd)}`);
 	console.log(
-		`epicycle at the ${syz.length} new and full Moons: largest ${f(maxAbs(atSyz), 1)}', rms ${f(Math.sqrt(atSyz.reduce((s, v) => s + v * v, 0) / atSyz.length), 1)}'`
+		`the epicycle at the ${syzygies.length} new and full Moons: largest ${f(maxAbs(atSyzygies), 1)}', rms ${f(rms(atSyzygies), 1)}'`
 	);
-	console.log(`epicycle at the ${quarters.length} quarters: largest ${f(maxAbs(atQ) / 60, 2)}°`);
-	console.log(`at the three fitted eclipses: ${[E1, E2, E3].map(jd => f(error(model, jd), 2)).join(', ')}'`);
-	console.log(
-		`at the eclipses of 2025 Mar 14 and 2027 (outside the fit): ${ECLIPSES.filter(jd => jd < E1 || jd > E3)
-			.filter(jd => Math.abs(jd - E2) < 800)
-			.map(jd => `${date(jd)} ${f(error(model, jd), 1)}'`)
-			.join('; ')}`
-	);
+	console.log(`the epicycle at the ${quarters.length} quarters: largest ${f(maxAbs(atQuarters) / 60, 2)}°`);
+	console.log(`at the three fitted eclipses: ${OURS.map(jd => f(error(model, jd), 2)).join(', ')}'`);
+	console.log(`at the eclipse of 14 Mar 2025 (outside the fit): ${f(error(model, pick(2025, 3, 14)), 1)}'`);
 }
 
 title('Test: our epicycle over 100 and 1,000 years');
 {
-	const a = largest(model, Time.julianDay(1976, 1, 1), Time.julianDay(2076, 1, 1), 0.25);
-	const b = largest(model, Time.julianDay(1526, 1, 1), Time.julianDay(2526, 1, 1), 1);
+	const century = largest(model, Time.julianDay(1976, 1, 1), Time.julianDay(2076, 1, 1), 0.25);
 
-	console.log(
-		`1976 - 2076: largest ${f(a.v / 60, 2)}° on ${date(a.jd)}; 1526 - 2526: largest ${f(b.v / 60, 2)}° on ${date(b.jd)}`
-	);
+	console.log(`1976 - 2076: largest ${f(century.v / 60, 2)}° on ${date(century.jd)}`);
+	[1526, 2526].forEach(y => {
+		const syzygies = phases(180, Time.julianDay(y, 1, 1), Time.julianDay(y + 1, 1, 1)).concat(
+			phases(0, Time.julianDay(y, 1, 1), Time.julianDay(y + 1, 1, 1))
+		);
 
-	/* At the syzygies only, at the ends of the millennium. */
-	[1526, 1776, 2276, 2526].forEach(y => {
-		const full = syzygies(180, Time.julianDay(y, 1, 1), Time.julianDay(y + 1, 1, 1));
-		const worst = Math.max(...full.map(jd => Math.abs(error(model, jd))));
-
-		console.log(`   full Moons of ${y}: largest ${f(worst, 1)}'`);
+		console.log(`   new and full Moons of ${y}: largest ${f(maxAbs(syzygies.map(jd => error(model, jd))), 1)}'`);
 	});
 }
 
-title("Test: Ptolemy's simple Moon (first anomaly only)");
+title("Test: Ptolemy's simple Moon (first anomaly only), Figure 6");
 {
-	const ptolemy = lunarModel(PTOLEMY);
-	const check = (label, y, m, d) => {
-		const jd = FULL.length && syzygiesNear(y, m, d);
-		const s = lunarState(PTOLEMY, jd);
-
-		console.log(
-			`   ${label}: opposition ${when(jd)} TT; Ptolemy's Moon ${f(s.lambda, 2)}°, real ${f(moonLon(jd), 2)}°, error ${f(error(ptolemy, jd), 1)}'; mean ${f(s.meanLongitude, 2)}°, anomaly ${f(s.M, 2)}°`
-		);
-	};
-	const syzygiesNear = (y, m, d) => {
+	/* The real moment of opposition nearest a date. */
+	const oppositionNear = (y, m, d) => {
 		const jd0 = Time.julianDay(y, m, d);
 
-		return syzygies(180, jd0 - 3, jd0 + 3)[0];
+		return phases(180, jd0 - 3, jd0 + 3)[0];
+	};
+	const show = (label, y, m, d) => {
+		const jd = oppositionNear(y, m, d);
+		const s = LunarEpicycle.state(PTOLEMY, jd);
+		const sunError = norm180(ptolemySun(jd) - sunLon(jd)) * 60;
+
+		console.log(
+			`   ${label}: opposition ${when(jd)} TT; his Moon ${f(s.lambda, 2)}°, real ${f(moonLon(jd), 2)}°, error ${f(error(ptolemy, jd), 0)}'; his Sun's error ${f(sunError, 0)}'`
+		);
 	};
 
-	console.log('at the eclipses of IV 6 (the real moments of opposition):');
-	check('-720 Mar 19', -720, 3, 19);
-	check('-719 Mar 8', -719, 3, 8);
-	check('-719 Sep 1', -719, 9, 1);
-	check('133 May 6', 133, 5, 6);
-	check('134 Oct 20', 134, 10, 20);
-	check('136 Mar 5', 136, 3, 5);
+	console.log('at the eclipses of Almagest IV 6 (at the real moments of opposition):');
+	show('721 BC Mar 19', -720, 3, 19);
+	show('720 BC Mar 8', -719, 3, 8);
+	show('720 BC Sep 1', -719, 9, 1);
+	show('AD 133 May 6', 133, 5, 6);
+	show('AD 134 Oct 20', 134, 10, 20);
+	show('AD 136 Mar 5', 136, 3, 5);
 
-	const from = Time.julianDay(135, 1, 1);
-	const to = Time.julianDay(136, 1, 1);
+	const from = Time.julianDay(134, 9, 1);
+	const to = from + 61;
 	const all = largest(ptolemy, from, to);
-	const syz = syzygies(180, from, to)
-		.concat(syzygies(0, from, to))
-		.map(jd => error(ptolemy, jd));
+	const syzygies = phases(180, from, to).concat(phases(0, from, to));
 
 	console.log(
-		`AD 135: largest error ${f(all.v / 60, 2)}°; at the syzygies between ${f(Math.min(...syz) / 60, 2)}° and ${f(Math.max(...syz) / 60, 2)}°`
+		`Sep - Oct 134: largest error ${f(all.v / 60, 2)}°; at the new and full Moons ${syzygies.map(jd => f(error(ptolemy, jd) / 60, 2)).join(', ')}°`
 	);
 
-	[-720, 1, 500, 1000, 1500, 2026].forEach(y => {
+	[1, 1000, 2026].forEach(y => {
 		const a = Time.julianDay(y, 1, 1);
-		const syzY = syzygies(180, a, a + 365)
-			.concat(syzygies(0, a, a + 365))
+		const errors = phases(180, a, a + 365)
+			.concat(phases(0, a, a + 365))
 			.map(jd => error(ptolemy, jd));
-		const mean = syzY.reduce((s, v) => s + v, 0) / syzY.length;
+		const mean = errors.reduce((s, v) => s + v, 0) / errors.length;
+		const sunErrors = phases(180, a, a + 365)
+			.concat(phases(0, a, a + 365))
+			.map(jd => norm180(ptolemySun(jd) - sunLon(jd)));
+		const sun = sunErrors.reduce((sum, v) => sum + v, 0) / sunErrors.length;
 
-		console.log(`   ${y}: mean error at the syzygies ${f(mean / 60, 2)}°`);
+		console.log(
+			`   ${y}: mean error at the new and full Moons ${f(mean / 60, 2)}°; his Sun's at the same moments ${f(sun, 2)}°`
+		);
 	});
 
-	/* The check of our implementation against IV 7: the mean positions
-	   at the second Babylonian eclipse, 27 Egyptian years 17 days 11 1/6
-	   h after the epoch (IV 8): Virgo 14;44 and 12;24° of anomaly. */
-	const t = 27 * 365 + 17 + 11 / 24 + 10 / 1440;
+	/* His month: the daily motion in elongation, Moon minus Sun, against
+	   the real one (Meeus 47.2), and what it adds up to from AD 135 to
+	   2026. */
+	const elongation = PTOLEMY.n - MeanSun.PTOLEMY.n;
+	const realElongation = 445267.1114034 / 36525;
+	const days = (2026 - 135) * 365.25;
 
 	console.log(
-		`implementation check: ${f(norm360(PTOLEMY.L0 + PTOLEMY.n * t), 3)}° (Virgo 14;44 = 164.733), anomaly ${f(norm360(PTOLEMY.M0 + PTOLEMY.nM * t), 3)}° (12;24 = 12.400)`
+		`his elongation ${f(elongation, 9)}°/d, real ${f(realElongation, 9)}°/d: from 135 to 2026 ${f((elongation - realElongation) * days, 2)}°`
+	);
+
+	/* The check of the model against Almagest IV 7 and IV 8: the mean
+	   positions at the second Babylonian eclipse, 27 Egyptian years 17
+	   days 11 1/6 hours after the epoch: Virgo 14;44 and 12;24°. */
+	const t = 27 * 365 + 17 + (11 + 1 / 6) / 24;
+	const s = LunarEpicycle.state(Object.assign({}, PTOLEMY, { clock: 'tt' }), PTOLEMY.epoch + t);
+
+	console.log(
+		`check: at the second Babylonian eclipse ${f(s.meanLongitude, 3)}° (Virgo 14;44 = 164.733), anomaly ${f(s.M, 3)}° (12.400)`
 	);
 }
 
 /* ==========================================================================
-   9. RESIDUAL
+   8. RESIDUAL
    ========================================================================== */
 
-title('Residual: the quarters');
-{
-	const quarters = syzygies(90, Y2026, Y2027).concat(syzygies(270, Y2026, Y2027));
-	const worst = quarters.reduce(
-		(w, jd) => (Math.abs(error(model, jd)) > Math.abs(w.v) ? { v: error(model, jd), jd } : w),
-		{ v: 0 }
-	);
-
-	console.log(`largest error at a quarter in 2026: ${f(worst.v / 60, 2)}° on ${date(worst.jd)}`);
-}
-
-title("Residual: Hipparchus' sighting of -127 Aug 5 (Almagest V 3)");
+title("Residual: Hipparchus' sighting of 5 August 127 BC (Almagest V 3)");
 {
 	const M = fromSexagesimal(257, 47);
-	const q = equationOfAnomaly(M, PTOLEMY.e);
+	const q = LunarEpicycle.equationOfAnomaly(M, PTOLEMY.e);
 	const meanToSun = fromSexagesimal(93, 55);
 	const observed = fromSexagesimal(86, 15);
 
 	console.log(
-		`first anomaly at 257;47: q = +${f(q, 2)}° (${dms(q)}); predicted Sun - Moon = ${f(meanToSun - q, 2)}°, observed ${f(observed, 2)}°: the model is ${f(meanToSun - q - observed, 2)}° short`
+		`first anomaly at 257;47: q = +${f(q, 2)}°; predicted Sun - Moon = ${f(meanToSun - q, 2)}°, observed ${f(observed, 2)}°: the model is ${f(meanToSun - q - observed, 2)}° short`
 	);
 	console.log(`Ptolemy: true minus mean ${f(meanToSun - observed, 2)}° (7 2/3) instead of about 5`);
 }
 
 /* ==========================================================================
-   10. EXERCISES
+   9. EXERCISES
    ========================================================================== */
 
-title("Exercise 1: Hipparchus' two ratios (IV 11)");
+title("Exercise 1: Hipparchus' two ratios (Almagest IV 11)");
 [
 	['eccentric 60 : 6;15', 6.25 / 60],
 	['epicycle 60 : 4;46', (4 + 46 / 60) / 60],
 	['Ptolemy 60 : 5;15', 5.25 / 60]
-].forEach(([label, e]) => console.log(`   ${label}: greatest equation ${dms(asin(e))} (${f(asin(e), 3)}°)`));
+].forEach(([label, e]) =>
+	console.log(`   ${label}: r/R = ${f(e, 5)}, greatest equation ${dms(asin(e))} (${f(asin(e), 3)}°)`)
+);
 
 title('Exercise 2: the anomalistic month from the beat');
 {
-	/* The full Moons nearest perigee: the fastest full Moon of each run. */
-	const full = syzygies(180, Time.julianDay(2000, 1, 1), Time.julianDay(2040, 1, 1));
+	/* The full Moons nearest the perigee: those faster than the full
+	   Moons on either side. */
+	const full = phases(180, Time.julianDay(2000, 1, 1), Time.julianDay(2040, 1, 1));
 	const speeds = full.map(jd => ({ jd, v: moonMotion(jd) }));
 	const peaks = speeds.filter(
 		(s, i) => i > 0 && i < speeds.length - 1 && s.v > speeds[i - 1].v && s.v > speeds[i + 1].v
 	);
 
-	console.log('fastest full Moons (local maxima of the speed at full Moon):');
+	console.log('the fastest full Moons:');
 	peaks.forEach((s, i) =>
-		console.log(`   ${date(s.jd)} ${f(s.v, 3)}°/d${i ? `  +${f(s.jd - peaks[i - 1].jd, 1)} d` : ''}`)
+		console.log(`   ${date(s.jd)} ${f(s.v, 2)}°/d${i ? `  +${f(s.jd - peaks[i - 1].jd, 1)} d` : ''}`)
 	);
 
 	const span = peaks[peaks.length - 1].jd - peaks[0].jd;
 	const beats = peaks.length - 1;
+	const beat = span / beats;
 
 	console.log(
-		`${beats} beats in ${f(span, 1)} d: beat ${f(span / beats, 2)} d; anomalistic month 1/(1/29.530589 + beats/span) = ${f(1 / (1 / MONTHS.synodic + beats / span), 4)} d (real ${f(MONTHS.anomalistic, 4)})`
+		`${beats} beats in ${f(span, 1)} d, from ${date(peaks[0].jd)} to ${date(peaks[peaks.length - 1].jd)}: one beat = ${f(beat, 2)} d`
 	);
-	console.log(`with the beat 411.78 d: ${f(1 / (1 / MONTHS.synodic + 1 / 411.78), 5)} d`);
-	console.log(`from the Periodic, 223 syn / 239: ${f((223 * MONTHS.synodic) / 239, 4)} d`);
+	console.log(
+		`anomalistic month 1/(1/${f(MONTHS.synodic, 6)} + 1/${f(beat, 2)}) = ${f(1 / (1 / MONTHS.synodic + 1 / beat), 4)} d (real ${f(MONTHS.anomalistic, 4)} d, difference ${f((1 / (1 / MONTHS.synodic + 1 / beat) - MONTHS.anomalistic) * 86400, 0)} s)`
+	);
+	console.log(
+		`in one beat: ${f(beat / MONTHS.synodic, 3)} synodic months, ${f(beat / MONTHS.anomalistic, 3)} anomalistic months`
+	);
+	console.log(`from the 'Periodic', 223 x synodic / 239: ${f((223 * MONTHS.synodic) / 239, 4)} d`);
 }
 
-title("Exercise 3: Ptolemy's three Babylonian eclipses (see the Fit section)");
+title("Exercise 3: Ptolemy's three Babylonian eclipses (Figure 4, 'Babylon')");
 {
-	const s = threeEclipses(triples.babylon);
+	const data = TRIPLES.babylon;
+	const s = LunarEpicycle.threeEclipses(data);
+	const rows = LunarEpicycle.firstOrderRows(data);
 
-	console.log(`first order: X = e cos M2, Y = e sin M2 -> r/R = ${f(s.first.e, 5)}, M2 = ${f(s.first.M2, 2)}°`);
 	console.log(
-		`exact: r/R = ${f(s.e, 5)} = ${sexagesimal(s.e * 60, 2)} parts in 60 (Ptolemy 5;13), M2 = ${dms(s.M2)} (12;24), q2 = ${dms(s.q2)} (-0;59)`
+		`a12 = ${f(data.a12, 4)}°, a23 = ${f(data.a23, 4)}°, d12 = ${f(data.d12, 4)}° = ${f(data.d12 * D2R, 5)} rad, d23 = ${f(data.d23, 4)}° = ${f(data.d23 * D2R, 5)} rad`
 	);
 	console.log(
-		`mean longitude at the second eclipse: true Virgo 13;45 (163.75°) - q2 = ${f(163.75 - s.q2, 3)}° (Virgo 14;44 = 164.733)`
+		`rows: ${f(rows[0][0], 4)} X + ${f(rows[0][1], 4)} Y = ${f(rows[0][2], 5)};  ${f(rows[1][0], 4)} X + ${f(rows[1][1], 4)} Y = ${f(rows[1][2], 5)}`
+	);
+	console.log(
+		`first order: X = ${f(s.first.X, 5)}, Y = ${f(s.first.Y, 5)}, r/R = ${f(s.first.e, 4)}, M2 = ${f(s.first.M2, 1)}°, ${f(100 * (1 - s.first.e / s.e), 1)}% short of the exact r/R`
+	);
+	console.log(
+		`exact: r/R = ${f(s.e, 5)} = ${sexagesimal(s.e * 60, 2)} parts in 60 (Ptolemy 5;13), M2 = ${dms(s.M2)} (12;24), q2 = ${dms(s.q2)} = ${f(s.q2, 3)}° (-0;59)`
+	);
+	console.log(
+		`the mean Moon at the second eclipse: true Virgo 13;45 (163.75°) - q2 = ${f(163.75 - s.q2, 3)}° (Ptolemy: Virgo 14;44 = 164.733°)`
 	);
 }
 
 /* ==========================================================================
-   11. THE SCALES OF THE FIGURES
+   10. THE SCALES OF THE FIGURES
    ========================================================================== */
 
 title('Scales');
-console.log(`Figure 2 (b): q for r/R up to 0.3: greatest asin 0.3 = ${f(asin(0.3), 2)}°`);
 {
 	let lo = 99;
 	let hi = 0;
 
-	for (let jd = Y2026; jd <= Y2027; jd += 0.05) {
+	for (let jd = Y2026 - 1; jd <= Y2027 + 1; jd += 0.05) {
 		lo = Math.min(lo, moonMotion(jd));
 		hi = Math.max(hi, moonMotion(jd));
 	}
-	console.log(`Figure 1: daily motion between ${f(lo, 2)} and ${f(hi, 2)}°/d`);
+	console.log(`Figure 1: the daily motion between ${f(lo, 2)} and ${f(hi, 2)}°/d`);
+	console.log(`Figure 2 (b): q for r/R up to 0.3: greatest asin 0.3 = ${f(asin(0.3), 2)}°`);
+
+	const all = Object.values(TRIPLES)
+		.concat([OURS_DATA])
+		.map(data => LunarEpicycle.threeEclipses(data));
+	const reach = Math.max(
+		...all.map(s => Math.max(Math.abs(s.X), Math.abs(s.Y), Math.abs(s.first.X), Math.abs(s.first.Y)))
+	);
+
+	console.log(`Figure 4 (b): the largest |X| or |Y| of the four solutions is ${f(reach, 4)}`);
 }

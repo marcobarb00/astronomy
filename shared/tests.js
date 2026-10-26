@@ -6,8 +6,9 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 2.3 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
-   solar-eccentric.js, equation-of-time.js, precession.js).
+   pages 1.1 to 3.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   solar-eccentric.js, equation-of-time.js, precession.js,
+   lunar-epicycle.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -26,7 +27,8 @@
 	14. The solar eccentric (Almagest III 4-7; page 2.1)
 	15. The equation of time (Almagest I 16, III 9; De Rev. III 26; Meeus ch. 28; page 2.2)
 	16. Precession and the moving apogee (Almagest VII 2; page 2.3)
-	17. Run
+	17. The lunar epicycle (Almagest IV 5-10; De Rev. IV 5; page 3.1)
+	18. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1615,7 +1617,147 @@ function testPrecessionModel() {
 }
 
 /* ==========================================================================
-   17. RUN
+   17. THE LUNAR EPICYCLE (Almagest IV 5-10; De Rev. IV 5; page 3.1)
+   The three-eclipse method on the sources' own data gives back their
+   results; Ptolemy's mean Moon at the second Babylonian eclipse (IV 7);
+   his greatest equation (IV 10); the epicycle and its eccentric give the
+   same point (IV 5); our fit passes through its three eclipses.
+   ========================================================================== */
+
+function testLunarEpicycle() {
+	group('The lunar epicycle · models/lunar-epicycle.js (page 3.1)');
+
+	// the three-eclipse method on the sources' data
+	[
+		['babylon', 'Almagest IV 6, 721-720 BC'],
+		['alexandria', 'Almagest IV 6, AD 133-136'],
+		['copernicus', 'De Rev. IV 5, 1511-1523']
+	].forEach(([name, source]) => {
+		const data = LunarEpicycle.TRIPLES[name];
+		const solution = LunarEpicycle.threeEclipses(data);
+
+		check({
+			name: `Three eclipses (${name}): r/R`,
+			source: source,
+			expected: data.result.e,
+			computed: solution.e,
+			tol: 0.02,
+			unit: 'parts in 60',
+			scale: 60,
+			show: x => x.toFixed(5)
+		});
+		check({
+			name: `Three eclipses (${name}): anomaly at the second`,
+			source: source,
+			expected: data.result.M2,
+			computed: solution.M2,
+			tol: 3,
+			unit: '′',
+			scale: 60,
+			show: showDeg,
+			angle: true
+		});
+	});
+
+	// Almagest IV 7: at the second Babylonian eclipse, 27 Egyptian years
+	// 17 days 11 1/6 hours after the epoch, the mean Moon at Virgo 14;44
+	// and 12;24° from the apogee of the epicycle (Toomer: computed exactly
+	// with Ptolemy's motions, both come out about 1' more)
+	const ptolemy = Object.assign({}, LunarEpicycle.PTOLEMY, { clock: 'tt' });
+	const t = 27 * 365 + 17 + (11 + 1 / 6) / 24;
+	const then = LunarEpicycle.state(ptolemy, ptolemy.epoch + t);
+
+	check({
+		name: "Ptolemy's mean Moon, 720 BC March 8/9",
+		source: 'Almagest IV 7',
+		expected: 150 + 14 + 44 / 60,
+		computed: then.meanLongitude,
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+	check({
+		name: "Ptolemy's anomaly, 720 BC March 8/9",
+		source: 'Almagest IV 7',
+		expected: 12 + 24 / 60,
+		computed: then.M,
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+
+	// Almagest IV 10: the greatest equation for 5;15, 5;1 at 96° in his table
+	check({
+		name: 'Greatest equation for 60 : 5;15',
+		source: 'Almagest IV 10',
+		expected: 5 + 1 / 60,
+		computed: SolarEccentric.greatestEquation(LunarEpicycle.PTOLEMY.e).q,
+		tol: 0.5,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// the epicycle and its eccentric: the Moon is r from K and R from C,
+	// and in the direction of the model's longitude
+	const jd = Time.julianDay(2026, 5, 17);
+	const s = LunarEpicycle.state(LunarEpicycle.FIT_2026, jd);
+	const parts = LunarEpicycle.construction(s, LunarEpicycle.FIT_2026.e);
+	const fromC = Math.hypot(parts.moon[0] - parts.C[0], parts.moon[1] - parts.C[1]);
+
+	check({
+		name: 'Equivalence: the Moon is R from C',
+		source: 'Almagest IV 5',
+		expected: 1,
+		computed: fromC,
+		tol: 1e-9,
+		show: x => x.toFixed(12)
+	});
+	check({
+		name: 'Equivalence: the same direction',
+		source: 'Almagest IV 5',
+		expected: s.lambda,
+		computed: atan2d(parts.moon[1], parts.moon[0]),
+		tol: 0.001,
+		unit: '″',
+		scale: 3600,
+		show: showDeg,
+		angle: true
+	});
+
+	// our fit passes through its three eclipses, and refitting gives it back
+	const times = LunarEpicycle.ECLIPSES_2026;
+	const longitudes = times.map(time => Ephem.longitude('moon', time));
+	const refit = LunarEpicycle.fitEclipses(times, longitudes, LunarEpicycle.MEEUS, 2451545.0);
+	const model = LunarEpicycle.make(LunarEpicycle.FIT_2026);
+
+	check({
+		name: 'FIT_2026 at its middle eclipse (3 Mar 2026)',
+		source: 'reference Moon',
+		expected: longitudes[1],
+		computed: model(times[1]),
+		tol: 0.1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+	check({
+		name: 'FIT_2026 refitted from its eclipses: r/R',
+		source: 'page 3.1',
+		expected: LunarEpicycle.FIT_2026.e,
+		computed: refit.e,
+		tol: 0.000002,
+		show: x => x.toFixed(6)
+	});
+}
+
+/* ==========================================================================
+   18. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1636,5 +1778,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testSolarEccentric();
 	testEquationOfTime();
 	testPrecessionModel();
+	testLunarEpicycle();
 	render();
 });
