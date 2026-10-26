@@ -154,6 +154,14 @@ read-out line is never split (it keeps its fixed lines), so keep it short
 enough for a phone. The smoke test reports any equation wider than its
 column.
 
+### 4.7 Footer
+
+One line at the foot of every page, the hub and the templates: "© 2026
+Marco Barbieri. Text and figures under CC BY-NC-SA 4.0, code under MIT.",
+linked to `LICENSE-CONTENT.md` and `LICENSE`. Spectral 14 px, `--muted`,
+under a 1 px `--line` rule, as wide as the text column. `shared/components.js`
+adds it to any page that loads it; a page never writes its own.
+
 ## 5. Stars
 
 Stars are always drawn as **four-pointed stars**, never as dots:
