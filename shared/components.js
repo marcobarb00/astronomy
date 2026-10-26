@@ -46,7 +46,8 @@
 	 5. Margin notes (origins, detours), exercises, figure numbers
 	 6. Previous / next navigation
 	 7. Hub
-	 8. Entry point
+	 8. Footer: copyright and licences
+	 9. Entry point
 	 GraduatedFrame (after Site): the border of every figure
    ========================================================================== */
 
@@ -455,7 +456,37 @@ const Site = (function () {
 	}
 
 	/* ======================================================================
-	   8. ENTRY POINT
+	   8. FOOTER: COPYRIGHT AND LICENCES
+	   One line at the foot of every page that loads this file (the
+	   articles, the hub and the templates): the copyright and the two
+	   licences, linked to their files. GitHub Pages serves .md files and
+	   LICENSE as raw text, so the links open them on GitHub, rendered.
+	   ====================================================================== */
+
+	const REPOSITORY = 'https://github.com/marcobarb00/astronomy/blob/main/';
+
+	const FOOTER_TEXT =
+		'© 2026 Marco Barbieri. ' +
+		`Text and figures under <a href="${REPOSITORY}LICENSE-CONTENT.md">CC BY-NC-SA 4.0</a>, ` +
+		`code under <a href="${REPOSITORY}LICENSE">MIT</a>.`;
+
+	/* Add the footer once, at the end of the page container. */
+	function buildFooter() {
+		if (document.querySelector('footer.site-foot')) {
+			return;
+		}
+
+		const container = document.querySelector('.page') ?? document.body;
+
+		container.appendChild(makeEl('footer', 'site-foot', FOOTER_TEXT));
+	}
+
+	/* Every page that loads this file gets the footer, whether or not it
+	   calls initPage (the hub does not). */
+	document.addEventListener('DOMContentLoaded', buildFooter);
+
+	/* ======================================================================
+	   9. ENTRY POINT
 	   ====================================================================== */
 
 	/* Build every shared component of an article page, then typeset. The
