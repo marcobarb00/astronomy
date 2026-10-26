@@ -724,6 +724,480 @@ Regenerate with: node tools/check/smoke.js --update
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
   dragged 1 spheres
 
+=== act2-sun/01-uneven-year/index.html ===
+  as loaded
+    OUTPUT (ecc-day): 3 Apr
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Apr:}\quad \bar\lambda = 11.34^\circ,\quad M = 267.61^\circ | q = +11.39^\circ,\quad \lambda = \bar\lambda + q = 22.73^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+    OUTPUT (fit-spring): 94.50 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #ecc-day = 0
+    OUTPUT (ecc-day): 1 Jan
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{1 Jan:}\quad \bar\lambda = 280.66^\circ,\quad M = 176.93^\circ | q = -0.77^\circ,\quad \lambda = \bar\lambda + q = 279.89^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  slider #ecc-day = 364
+    OUTPUT (ecc-day): 31 Dec
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{31 Dec:}\quad \bar\lambda = 279.43^\circ,\quad M = 175.70^\circ | q = -1.07^\circ,\quad \lambda = \bar\lambda + q = 278.36^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  slider #ecc-day = 182
+    OUTPUT (ecc-day): 2 Jul
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.61^\circ,\quad \lambda = \bar\lambda + q = 100.66^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  slider #ecc-day + one key step
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  slider #ecc-e = 0
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  slider #ecc-e = 0.2
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  slider #ecc-e = 0.1
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.1000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.59\,\text{d},\quad \text{summer } 98.35\,\text{d} | \text{autumn } 87.03\,\text{d},\quad \text{winter } 84.27\,\text{d}
+  slider #ecc-e + one key step
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
+  slider #fit-spring = 90
+    OUTPUT (fit-spring): 90.00 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 88.71^\circ,\quad a_2 = 91.17^\circ | h = -0.0215,\ k = -0.0010,\quad e = 0.0215 | \lambda_A = 182.8^\circ,\quad |q|_\text{max} = 1.23^\circ | \text{autumn } 92.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+  slider #fit-spring = 96
+    OUTPUT (fit-spring): 96.00 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 94.62^\circ,\quad a_2 = 91.17^\circ | h = 0.0301,\ k = 0.0505,\quad e = 0.0588 | \lambda_A = 59.2^\circ,\quad |q|_\text{max} = 3.37^\circ | \text{autumn } 86.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+  slider #fit-spring = 93
+    OUTPUT (fit-spring): 93.00 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 91.67^\circ,\quad a_2 = 91.17^\circ | h = 0.0043,\ k = 0.0248,\quad e = 0.0251 | \lambda_A = 80.1^\circ,\quad |q|_\text{max} = 1.44^\circ | \text{autumn } 89.62\,\text{d},\quad \text{winter } 90.12\,\text{d}
+  slider #fit-spring + one key step
+    OUTPUT (fit-spring): 93.01 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.17^\circ | h = 0.0044,\ k = 0.0248,\quad e = 0.0252 | \lambda_A = 80.0^\circ,\quad |q|_\text{max} = 1.45^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 90.12\,\text{d}
+  slider #fit-summer = 90
+    OUTPUT (fit-spring): 93.01 d
+    OUTPUT (fit-summer): 90.00 d
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 88.71^\circ | h = 0.0259,\ k = 0.0033,\quad e = 0.0261 | \lambda_A = 7.4^\circ,\quad |q|_\text{max} = 1.50^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 92.62\,\text{d}
+  slider #fit-summer = 96
+    OUTPUT (fit-spring): 93.01 d
+    OUTPUT (fit-summer): 96.00 d
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 94.62^\circ | h = -0.0257,\ k = 0.0549,\quad e = 0.0606 | \lambda_A = 115.1^\circ,\quad |q|_\text{max} = 3.48^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 86.62\,\text{d}
+  slider #fit-summer = 93
+    OUTPUT (fit-spring): 93.01 d
+    OUTPUT (fit-summer): 93.00 d
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.67^\circ | h = 0.0001,\ k = 0.0291,\quad e = 0.0291 | \lambda_A = 89.8^\circ,\quad |q|_\text{max} = 1.67^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.62\,\text{d}
+  slider #fit-summer + one key step
+    OUTPUT (fit-spring): 93.01 d
+    OUTPUT (fit-summer): 93.01 d
+    #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.68^\circ | h = 0.0000,\ k = 0.0292,\quad e = 0.0292 | \lambda_A = 90.0^\circ,\quad |q|_\text{max} = 1.68^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.61\,\text{d}
+  button "‹ previous day"
+    OUTPUT (ecc-day): 2 Jul
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.34^\circ,\quad \lambda = \bar\lambda + q = 100.38^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
+  button "next day ›"
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.1005
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
+  button "the Sun, 2026"
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0335
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+  button "exaggerated, 0.2"
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.2000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+  button "no eccentricity"
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  button "Hipparchus"
+    OUTPUT (fit-spring): 94.50 d
+    OUTPUT (fit-summer): 92.50 d
+    #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
+  button "141 BC"
+    OUTPUT (fit-spring): 94.01 d
+    OUTPUT (fit-summer): 92.34 d
+    #fit-readout: a_1 = 92.66^\circ,\quad a_2 = 91.01^\circ | h = 0.0144,\ k = 0.0321,\quad e = 0.0351 | \lambda_A = 65.9^\circ,\quad |q|_\text{max} = 2.01^\circ | \text{autumn } 88.61\,\text{d},\quad \text{winter } 90.28\,\text{d}
+  button "2026"
+    OUTPUT (fit-spring): 92.74 d
+    OUTPUT (fit-summer): 93.66 d
+    #fit-readout: a_1 = 91.41^\circ,\quad a_2 = 92.32^\circ | h = -0.0079,\ k = 0.0325,\quad e = 0.0334 | \lambda_A = 103.7^\circ,\quad |q|_\text{max} = 1.92^\circ | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
+  button "equal"
+    OUTPUT (fit-spring): 91.31 d
+    OUTPUT (fit-summer): 91.31 d
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #motion-plot at 0.3
+  hover #motion-plot at 0.6
+  hover #motion-plot at 0.9
+  hover #motion-plot left
+  hover #eccentric-plot at 0.3
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #eccentric-plot at 0.6
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #eccentric-plot at 0.9
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #eccentric-plot left
+    OUTPUT (ecc-day): 3 Jul
+    OUTPUT (ecc-e): 0.0000
+    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #fit-plot at 0.3
+    OUTPUT (fit-spring): 91.31 d
+    OUTPUT (fit-summer): 91.31 d
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #fit-plot at 0.6
+    OUTPUT (fit-spring): 91.31 d
+    OUTPUT (fit-summer): 91.31 d
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #fit-plot at 0.9
+    OUTPUT (fit-spring): 91.31 d
+    OUTPUT (fit-summer): 91.31 d
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #fit-plot left
+    OUTPUT (fit-spring): 91.31 d
+    OUTPUT (fit-summer): 91.31 d
+    #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #error-2026-plot at 0.3
+    .errorcurve-readout: 4 Apr 2026 · uniform circle: −114.7′ · eccentric: −0.1′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot at 0.6
+    .errorcurve-readout: 1 Aug 2026 · uniform circle: +51.6′ · eccentric: +0.9′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot at 0.9
+    .errorcurve-readout: 28 Nov 2026 · uniform circle: +68.4′ · eccentric: −1.5′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-zoom-plot at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 4 Apr 2026 · eccentric: −0.1′
+  hover #error-2026-zoom-plot at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 1 Aug 2026 · eccentric: +0.9′
+  hover #error-2026-zoom-plot at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 28 Nov 2026 · eccentric: −1.5′
+  hover #error-2026-zoom-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-ptolemy-plot at 0.3
+    .errorcurve-readout: 18 Sep 347 BC · uniform circle: +169.5′ · Ptolemy's eccentric: +31.5′
+  hover #error-ptolemy-plot at 0.6
+    .errorcurve-readout: 9 Mar 306 · uniform circle: −227.3′ · Ptolemy's eccentric: −87.1′
+  hover #error-ptolemy-plot at 0.9
+    .errorcurve-readout: 28 Aug 957 · uniform circle: −159.8′ · Ptolemy's eccentric: −303.0′
+  hover #error-ptolemy-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-residual-plot at 0.3
+    .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
+  hover #error-residual-plot at 0.6
+    .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
+  hover #error-residual-plot at 0.9
+    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
+  hover #error-residual-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 0 spheres
+
+=== act2-sun/02-equation-of-time/index.html ===
+  as loaded
+    OUTPUT (red-lon): 30°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 30^\circ,\quad \alpha = 22.21^\circ | \lambda - \alpha = {+7.79}^\circ = {+31.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+    OUTPUT (ana-day): 3 Nov
+    #analemma-readout: \text{3 Nov:}\quad E = +16\,\text{min}\ 31\,\text{s} | H = {+4.13}^\circ,\quad \delta = {-15.1}^\circ
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{minimum } {-14.20}\,\text{min at } \lambda = 323^\circ | \text{maximum } {+16.46}\,\text{min at } \lambda = 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  opened 7 hints and answers
+  slider #red-lon = 0
+    OUTPUT (red-lon): 0°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 0^\circ,\quad \alpha = 0.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon = 360
+    OUTPUT (red-lon): 360°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 360^\circ,\quad \alpha = 0.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon = 180
+    OUTPUT (red-lon): 180°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 180^\circ,\quad \alpha = 180.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-lon + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-eps = 0
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  slider #red-eps = 45
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  slider #red-eps = 22.5
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22.50°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.30}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0396 | \text{greatest } 2.27^\circ \text{ at } \lambda = 46.1^\circ
+  slider #red-eps + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22.51°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.30}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0396 | \text{greatest } 2.27^\circ \text{ at } \lambda = 46.1^\circ
+  slider #ana-day = 0
+    OUTPUT (ana-day): 1 Jan
+    #analemma-readout: \text{1 Jan:}\quad E = -3\,\text{min}\ 31\,\text{s} | H = {-0.88}^\circ,\quad \delta = {-23.0}^\circ
+  slider #ana-day = 364
+    OUTPUT (ana-day): 31 Dec
+    #analemma-readout: \text{31 Dec:}\quad E = -2\,\text{min}\ 55\,\text{s} | H = {-0.73}^\circ,\quad \delta = {-23.1}^\circ
+  slider #ana-day = 182
+    OUTPUT (ana-day): 2 Jul
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+  slider #ana-day + one key step
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  slider #cent-year = -1000
+    OUTPUT (cent-year): 1001 BC
+    #centuries-readout: \text{minimum } {-18.29}\,\text{min at } \lambda = 315^\circ | \text{maximum } {+11.75}\,\text{min at } \lambda = 215^\circ | \text{range } 30.04\,\text{min} = 7.51\ \text{time-degrees}
+  slider #cent-year = 3000
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  slider #cent-year = 1000
+    OUTPUT (cent-year): 1000
+    #centuries-readout: \text{minimum } {-16.05}\,\text{min at } \lambda = 321^\circ | \text{maximum } {+15.34}\,\text{min at } \lambda = 218^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
+  slider #cent-year + one key step
+    OUTPUT (cent-year): 1001
+    #centuries-readout: \text{minimum } {-16.06}\,\text{min at } \lambda = 320^\circ | \text{maximum } {+15.33}\,\text{min at } \lambda = 219^\circ | \text{range } 31.39\,\text{min} = 7.85\ \text{time-degrees}
+  button "today, 23.44°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 23.44°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.33}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0430 | \text{greatest } 2.47^\circ \text{ at } \lambda = 46.2^\circ
+  button "exaggerated, 45°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.71^\circ | \lambda - \alpha = {+0.29}^\circ = {+1.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
+  button "no tilt"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  button "‹ previous day"
+    OUTPUT (ana-day): 2 Jul
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+  button "next day ›"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  button "both causes"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+  button "eccentricity only"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -0\,\text{min}\ 17\,\text{s} | H = {-0.07}^\circ,\quad \delta = {+22.9}^\circ
+  button "obliquity only"
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  button "141 BC"
+    OUTPUT (cent-year): 141 BC
+    #centuries-readout: \text{minimum } {-17.57}\,\text{min at } \lambda = 317^\circ | \text{maximum } {+13.49}\,\text{min at } \lambda = 216^\circ | \text{range } 31.07\,\text{min} = 7.77\ \text{time-degrees}
+  button "AD 140"
+    OUTPUT (cent-year): AD 140
+    #centuries-readout: \text{minimum } {-17.27}\,\text{min at } \lambda = 318^\circ | \text{maximum } {+14.00}\,\text{min at } \lambda = 217^\circ | \text{range } 31.26\,\text{min} = 7.82\ \text{time-degrees}
+  button "1246"
+    OUTPUT (cent-year): 1246
+    #centuries-readout: \text{minimum } {-15.65}\,\text{min at } \lambda = 321^\circ | \text{maximum } {+15.65}\,\text{min at } \lambda = 219^\circ | \text{range } 31.30\,\text{min} = 7.82\ \text{time-degrees}
+  button "1515"
+    OUTPUT (cent-year): 1515
+    #centuries-readout: \text{minimum } {-15.17}\,\text{min at } \lambda = 322^\circ | \text{maximum } {+15.97}\,\text{min at } \lambda = 220^\circ | \text{range } 31.13\,\text{min} = 7.78\ \text{time-degrees}
+  button "2026"
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{minimum } {-14.20}\,\text{min at } \lambda = 323^\circ | \text{maximum } {+16.46}\,\text{min at } \lambda = 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
+  button "3000"
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #sundial-day at 0.3
+  hover #sundial-day at 0.6
+  hover #sundial-day at 0.9
+  hover #sundial-day left
+  hover #sundial-equation at 0.3
+  hover #sundial-equation at 0.6
+  hover #sundial-equation at 0.9
+  hover #sundial-equation left
+  hover #reduction-plot at 0.3
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot at 0.6
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot at 0.9
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #reduction-plot left
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0.00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
+  hover #parts-plot at 0.3
+    #parts-readout: \text{5 Apr:}\quad E = -2\,\text{min}\ 42\,\text{s} | -q = {-7.67},\quad \lambda - \alpha = {+4.96}\,\text{min}
+  hover #parts-plot at 0.6
+    #parts-readout: \text{2 Aug:}\quad E = -6\,\text{min}\ 22\,\text{s} | -q = {+3.42},\quad \lambda - \alpha = {-9.79}\,\text{min}
+  hover #parts-plot at 0.9
+    #parts-readout: \text{29 Nov:}\quad E = +11\,\text{min}\ 49\,\text{s} | -q = {+4.56},\quad \lambda - \alpha = {+7.25}\,\text{min}
+  hover #parts-plot left
+    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+  hover #analemma-plot at 0.3
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot at 0.6
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot at 0.9
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #analemma-plot left
+    OUTPUT (ana-day): 3 Jul
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+  hover #test-both at 0.3
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+  hover #test-both at 0.6
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+  hover #test-both at 0.9
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+  hover #test-both left
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+  hover #test-error at 0.3
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+  hover #test-error at 0.6
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+  hover #test-error at 0.9
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+  hover #test-error left
+    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+  hover #centuries-plot at 0.3
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot at 0.6
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot at 0.9
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  hover #centuries-plot left
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
+  dragged 1 spheres
+
+=== act2-sun/03-precession/index.html ===
+  as loaded
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #model-year = -11000
+    OUTPUT (model-year): 11,001 BC
+    #model-readout: \text{11,001 BC: shift } -181.98^\circ | \text{Spica: } \lambda = 22.22^\circ,\ \delta = +6.74^\circ | \text{nearest P: Vega, } 7.7^\circ
+  slider #model-year = 15000
+    OUTPUT (model-year): AD 15,000
+    #model-readout: \text{AD 15,000: shift } +181.25^\circ | \text{Spica: } \lambda = 25.45^\circ,\ \delta = +7.93^\circ | \text{nearest P: Vega, } 8.8^\circ
+  slider #model-year = 2000
+    OUTPUT (model-year): 2000
+    #model-readout: \text{2000: shift } -0.36^\circ | \text{Spica: } \lambda = 203.84^\circ,\ \delta = -11.16^\circ | \text{nearest P: Polaris, } 0.7^\circ
+  slider #model-year + one key step
+    OUTPUT (model-year): 2001
+    #model-readout: \text{2001: shift } -0.35^\circ | \text{Spica: } \lambda = 203.86^\circ,\ \delta = -11.17^\circ | \text{nearest P: Polaris, } 0.7^\circ
+  button "2831 BC"
+    OUTPUT (model-year): 2831 BC
+    #model-readout: \text{2831 BC: shift } -67.84^\circ | \text{Spica: } \lambda = 136.36^\circ,\ \delta = +13.97^\circ | \text{nearest P: Thuban, } 0.2^\circ
+  button "128 BC"
+    OUTPUT (model-year): 128 BC
+    #model-readout: \text{128 BC: shift } -30.08^\circ | \text{Spica: } \lambda = 174.13^\circ,\ \delta = +0.44^\circ | \text{nearest P: Polaris, } 12.4^\circ
+  button "2026"
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
+  button "AD 13,790"
+    OUTPUT (model-year): AD 13,790
+    #model-readout: \text{AD 13,790: shift } +164.35^\circ | \text{Spica: } \lambda = 8.55^\circ,\ \delta = +1.50^\circ | \text{nearest P: Vega, } 4.8^\circ
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "6,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2,000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #stars-ecliptic at 0.3
+  hover #stars-ecliptic at 0.6
+  hover #stars-ecliptic at 0.9
+  hover #stars-ecliptic left
+  hover #stars-declination at 0.3
+  hover #stars-declination at 0.6
+  hover #stars-declination at 0.9
+  hover #stars-declination left
+  hover #records-plot at 0.3
+  hover #records-plot at 0.6
+  hover #records-plot at 0.9
+  hover #records-plot left
+  hover #error-spica-plot at 0.3
+    .errorcurve-readout: 19 Feb 569 · uniform precession: −4.9′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot at 0.6
+    .errorcurve-readout: 31 Jul 2523 · uniform precession: −0.1′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot at 0.9
+    .errorcurve-readout: 9 Jan 4478 · uniform precession: −9.2′
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-spica-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 10 Sep 1540 · fixed apogee: +4.3′ · moving apogee: +0.8′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 7 Mar 2192 · fixed apogee: +3.3′ · moving apogee: +0.6′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: 3 Sep 2843 · fixed apogee: −19.2′ · moving apogee: −1.4′
+  hover #error-sun-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #ptolemy-plot at 0.3
+  hover #ptolemy-plot at 0.6
+  hover #ptolemy-plot at 0.9
+  hover #ptolemy-plot left
+  dragged 1 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2104,7 +2578,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 105 tests pass.
+    #summary: All 130 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

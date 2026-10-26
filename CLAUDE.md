@@ -16,6 +16,8 @@ can be hosted on a GitHub page.
   no build step or server).
 - The current state of the project is in this repository: read the existing
   files before writing new ones.
+- `DECISIONS.md` lists the choices already made and why. Read it before
+  proposing a change of direction, and say so if a task contradicts it.
 
 ### Code style
 
@@ -50,16 +52,27 @@ same style:
 
 ### Rules for every figure
 
-- Every element shown in a figure (a labelled point, a letter, a curve, a
-  shaded region, a symbol in a read-out, a line that follows the pointer)
-  is explained. If it is not worth explaining, remove it. Shared widgets
-  explain their own built-in elements (the error curve does it for its
-  pointer line and its bands), so pages need not repeat them.
-- Explain the elements in a figure key, one line per element, not in a
-  paragraph: `<div class="keys">` with one or more `<dl class="key">`
-  ("In the figure", "Read-out"), styled by `shared/theme.css` (see
-  `templates/page.html`). The caption only says what to do with the figure
-  and what to notice.
+- Describe what the reader needs in order to read the figure, and leave
+  out what they see at once. A curve under a labelled axis, grid lines at
+  labelled ticks, a dot on the chosen date, a line that follows the
+  pointer, the lines of a labelled equinox or solstice: none of these
+  needs a word. What is not obvious (what a colour or a line style stands
+  for, a ghost, a band, which way an angle is counted) is explained by a
+  label in the figure, the text or the key. An element that is neither
+  obvious nor worth explaining is removed. Shared widgets explain their
+  own built-in elements (the error curve does it for its pointer line and
+  its bands), so pages need not repeat them.
+- Name things with labels in the figure itself (P, γ, Vega, N, S), in the
+  text colour of their line. The figure key is only for what a label can't
+  say and the reader can't see at once, and read-out symbols the text does
+  not define. Keep it short: one or two entries are often enough, never
+  more than five, and a figure whose labels say everything has no key.
+  Leave out anything labelled in the figure, already said by the caption,
+  or obvious (WRITING.md §7). The key is `<div class="keys">` with one or
+  more `<dl class="key">` ("In the figure", "Read-out"), one line per
+  entry, styled by `shared/theme.css` (see `templates/page.html`).
+- The caption says what to do with the figure and what to notice, in two
+  or three sentences; it does not describe the figure.
 - Not every figure needs controls. A figure that makes one point is drawn
   once, with no sliders. Add a control only when moving it shows what the
   section is about, and never one that mixes in a second effect: a figure

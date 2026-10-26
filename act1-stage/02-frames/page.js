@@ -109,6 +109,7 @@ const zodiacFigure = {
 		const chart = Plate.rectangular(byId('plate-zodiac'), {
 			area: ZODIAC_AREA,
 			figures: ['TAURUS', 'ARIES', 'ORION'],
+			keep: ['alf Tau'], // Aldebaran, the star of the caption, stays on a phone
 			names: [
 				['alf Tau', 'Aldebaran', 8, 22],
 				['alf Ori', 'Betelgeuse', 9, 4],

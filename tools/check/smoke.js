@@ -3,7 +3,8 @@
    A safety net for refactoring: serves the repository on a local port,
    opens every HTML page in Chromium (Playwright) at a desktop and a phone
    width, and fails on any console error or warning, uncaught exception,
-   failed request or broken local link, and checks that each page still
+   failed request, broken local link or equation wider than its column
+   (which would scroll sideways on a phone), and checks that each page still
    starts its figures when the CDN (KaTeX) is unreachable. It saves a
    full-page screenshot
    per page and width, then (desktop only) moves every slider, presses
@@ -285,6 +286,35 @@ async function checkTests(page, problems) {
 	if (summary && !summary.pass) {
 		problems.push(`tests: ${summary.text}`);
 	}
+}
+
+/* Every equation fits its column without scrolling sideways: the prose's
+   display equations (split into wrapping pieces by wrapDisplayMath in
+   shared/common.js) and the lines of the read-outs, as the page first
+   shows them. Checked at both widths; the phone is the one that matters. */
+async function checkEquationsFit(page, problems) {
+	const wide = await page.evaluate(() => {
+		const found = [];
+
+		document.querySelectorAll('.eq-split, .katex-display, .readout .eq').forEach(element => {
+			// a piece of a split equation is judged with its whole equation,
+			// and a read-out line by its .eq box
+			if (!element.classList.contains('eq-split') && element.parentElement.closest('.eq-split, .eq')) {
+				return;
+			}
+
+			if (element.scrollWidth > element.clientWidth + 1) {
+				const tex = element.querySelector('annotation');
+				const source = tex ? tex.textContent.replace(/\s+/g, ' ').trim() : element.textContent;
+
+				found.push(`${element.scrollWidth} px in ${element.clientWidth} px: ${source.slice(0, 70)}`);
+			}
+		});
+
+		return found;
+	});
+
+	wide.forEach(message => problems.push(`equation wider than its column, ${message}`));
 }
 
 /* ==========================================================================
@@ -651,11 +681,16 @@ function readoutText(page, selector) {
 }
 
 /* On a touch screen, a plot that answers to the pointer must keep its
-   read-out once the finger lifts (phone width only). */
+   read-out once the finger lifts (phone width only). Consecutive plots
+   are tapped at different places (60% and 40% of the width), so that two
+   panels sharing one read-out and one time axis (page 2.2, Figure 5) are
+   tapped at different dates, and the second tap changes the read-out. */
+const TOUCH_TAP_FRACTIONS = [0.6, 0.4];
+
 async function checkTouchReadouts(page, problems) {
 	const plots = await markAll(page, 'canvas[data-hover]', 'smoke-touch');
 
-	for (const { selector, name } of plots) {
+	for (const [index, { selector, name }] of plots.entries()) {
 		const plot = page.locator(selector);
 
 		if (!(await plot.isVisible())) {
@@ -667,7 +702,9 @@ async function checkTouchReadouts(page, problems) {
 		const before = await readoutText(page, selector);
 		const box = await plot.boundingBox();
 
-		await page.touchscreen.tap(box.x + 0.6 * box.width, box.y + box.height / 2);
+		const fraction = TOUCH_TAP_FRACTIONS[index % TOUCH_TAP_FRACTIONS.length];
+
+		await page.touchscreen.tap(box.x + fraction * box.width, box.y + box.height / 2);
 		await page.waitForTimeout(150);
 
 		const after = await readoutText(page, selector);
@@ -889,6 +926,7 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 		await openPage(page, site.base + pageFile);
 		await checkTests(page, problems);
 		await checkLinks(page, site.root, site.base, problems);
+		await checkEquationsFit(page, problems);
 
 		fs.mkdirSync(path.join(shotDir, viewportName), { recursive: true });
 		await page.screenshot({ path: path.join(shotDir, name), fullPage: true });

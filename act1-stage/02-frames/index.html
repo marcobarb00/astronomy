@@ -131,12 +131,8 @@
 					<dl class="key">
 						<dt>grid</dt>
 						<dd>right ascension every hour, declination every 10°</dd>
-						<dt>border</dt>
-						<dd>right ascension every 30 minutes (top and bottom), declination every 5° (sides)</dd>
 						<dt>stars</dt>
-						<dd>every star brighter than magnitude 4.6, and the fainter stars of the figures; the larger, the brighter</dd>
-						<dt>star lines</dt>
-						<dd>the usual figures of Taurus, Aries and Orion</dd>
+						<dd>every star brighter than magnitude 4.6; the larger, the brighter</dd>
 						<dt>stipple</dt>
 						<dd>the Milky Way, drawn as a band about the galactic equator</dd>
 					</dl>
@@ -263,7 +259,7 @@
 				globe. The upright ring at right angles to it is the meridian.
 				Inside, the band of zodiac figures cut out of brass plate is the
 				ecliptic, which turns with the other inner rings as the sky
-				does. The museum's label says Kepler used it.
+				does.
 				<span class="credit">Chris Bainbridge, 2009,
 					<a href="https://commons.wikimedia.org/wiki/File:Armillary_sphere_with_astronomical_clock.jpg">Wikimedia Commons</a>,
 					public domain (object: Nordiska museet, Stockholm).</span>
@@ -423,32 +419,22 @@
 			</div>
 			<figcaption>
 				Press play, or step through the days, and watch the Sun go once
-				round the ecliptic while the stars stay where they are; the
-				figure turns with the sky, so the daily rotation does not
-				appear. Notice that $\lambda$ grows steadily, $\beta$ stays near
-				zero and $\delta$ swings between $+\varepsilon$ and
-				$-\varepsilon$, while a star's coordinates do not change at all.
-				Drag the sphere to turn the view.
+				round the ecliptic while the stars stay where they are. Notice
+				that $\lambda$ grows steadily, $\beta$ stays near zero and
+				$\delta$ swings between $+\varepsilon$ and $-\varepsilon$, while a
+				star's coordinates do not change at all. Drag the sphere to turn
+				the view.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-earth">equator</dt>
-						<dd>the celestial equator; the blue arrows are the equatorial frame's $y$ and $z$ axes</dd>
-						<dt class="c-sun">ecliptic</dt>
-						<dd>the Sun's yearly path; the yellow arrows are the ecliptic frame's $y$ and $z$ axes</dd>
-						<dt>arrows</dt>
-						<dd>the $x$ axis towards γ, shared by both frames; by the Sun, its yearly motion eastward, about 1° a day</dd>
-						<dt><span class="c-earth">α, δ</span>, <span class="c-sun">λ, β</span></dt>
-						<dd>counted along the fundamental circle from γ (solid), then up to the object (dashed); the small dots are the feet of the two paths</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">Read-out</p>
-					<dl class="key">
-						<dt>$\mathbf s_\text{eq}, \mathbf s_\text{ecl}$</dt>
-						<dd>the object's unit vector in each frame: $\mathbf s_\text{eq} = R_x(\varepsilon)\,\mathbf s_\text{ecl}$, with $\varepsilon = 23.4359^\circ$</dd>
+						<dt class="c-earth">blue</dt>
+						<dd>the celestial equator and the equatorial frame's axes</dd>
+						<dt class="c-sun">gold</dt>
+						<dd>the ecliptic and the ecliptic frame's axes; both frames share the $x$ axis, towards γ</dd>
+						<dt>arrow</dt>
+						<dd>by the Sun, its yearly motion eastward, about 1° a day</dd>
 					</dl>
 				</div>
 			</div>
@@ -544,9 +530,8 @@
 				</div>
 			</div>
 			<figcaption>
-				The sky of Figure 2, now with an observer. Press "the
-				observation" and the read-out gives Aldebaran's azimuth and
-				altitude from the table of section 1. Then press play and watch
+				Press "the observation" and the read-out gives Aldebaran's
+				azimuth and altitude from the table of section 1. Then press play and watch
 				the sky turn about P above a fixed horizon: $H$, $A$ and $a$
 				change, while $\alpha$ and $\delta$ do not. Switch to the
 				equatorial frame to see the same motion with the stars held
@@ -556,18 +541,14 @@
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-deferent">horizon</dt>
-						<dd>the shaded plane, with the cardinal points N, E, S, W and the zenith Z; fixed in the horizon frame</dd>
-						<dt class="c-earth">equator</dt>
-						<dd>the celestial equator, with the pole P; fixed in the equatorial frame. The dot is where it crosses the meridian, at $\alpha = \theta$</dd>
-						<dt class="c-sun">ecliptic</dt>
-						<dd>dashed, fixed with the equator; γ is where it crosses the equator</dd>
-						<dt class="c-muted">meridian</dt>
-						<dd>dotted, through N, Z and S (and P)</dd>
-						<dt class="c-earth">H, δ</dt>
-						<dd>counted westward along the equator from the meridian (solid), then up to the star (dashed)</dd>
-						<dt class="c-deferent">A, a</dt>
-						<dd>counted along the horizon from N through E (solid), then up to the star (dashed)</dd>
+						<dt class="c-earth">blue</dt>
+						<dd>the celestial equator; the dot on it marks where the meridian crosses it, at $\alpha = \theta$</dd>
+						<dt class="c-sun">gold</dt>
+						<dd>the ecliptic</dd>
+						<dt class="c-muted">dotted</dt>
+						<dd>the meridian, through N, Z and S</dd>
+						<dt><span class="c-earth">H</span>, <span class="c-deferent">A</span></dt>
+						<dd>$H$ counted west along the equator from the meridian, $A$ along the horizon from N through E</dd>
 					</dl>
 				</div>
 				<div>
@@ -657,7 +638,7 @@
 			June and 35.388° on 21 December. These give $\varepsilon =
 			23.426^\circ$, only 0.6′ below the true 23.436°, and $\varphi =
 			31.186^\circ$. Most of the error comes from refraction, which raises
-			the low winter Sun by 1.4′ and the summer Sun by only 0.1′.
+			the low winter Sun much more than the high summer Sun.
 		</p>
 
 		<div class="row">
@@ -687,8 +668,7 @@
 		<p>
 			The true obliquity in AD 137 was $23^\circ 40' 40''$ (23.678°), so
 			Ptolemy's value is 10.7′ too large, and the true value lies outside
-			even his bounds of 23.833° to 23.875°. Section 4 follows this error
-			into his tables of the Sun.
+			even the bounds he measured.
 		</p>
 
 		<h3>The origin</h3>
@@ -710,9 +690,8 @@
 		<div class="row">
 			<p>
 				Because γ is defined by the Sun, it can move relative to the
-				stars, and then the coordinates of every star change with it, as
-				section 5 shows. This is why a catalogue gives positions for its
-				own date.
+				stars, and then the coordinates of every star change with it.
+				This is why a catalogue gives positions for its own date.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="instruments"></div>
@@ -755,11 +734,11 @@
 
 		<p>
 			Our formulas, computed with the same $\varepsilon$, reproduce his 90
-			declinations, half of them within 1″ and nine in ten within 3″. The
-			largest difference, 9″ at 27°, is in an entry that Toomer suspects
-			was miscopied (57″ written for 47″). His right ascensions agree
-			within 0.35′, as expected since he rounds them to the minute. So any
-			error in his tables comes from the obliquity he put into them.
+			declinations, nine in ten of them within 3″, and the largest
+			difference, 9″, is in an entry that Toomer suspects was miscopied.
+			His right ascensions, which he rounds to the minute, agree within
+			that rounding. So any error in his tables comes from the obliquity
+			he put into them.
 		</p>
 
 		<p>
@@ -927,12 +906,10 @@
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-planet">curve</dt>
-						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$, in arcseconds, through 2026</dd>
-						<dt class="c-epicycle">curve</dt>
-						<dd>$\Delta\alpha = \alpha_\text{model} - \alpha_\text{real}$, the same for the right ascension</dd>
-						<dt class="c-muted">dashed</dt>
-						<dd>$\pm\Delta\varepsilon$, the nutation in obliquity on each day</dd>
+						<dt class="c-planet">red</dt>
+						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$</dd>
+						<dt class="c-epicycle">purple</dt>
+						<dd>$\Delta\alpha = \alpha_\text{model} - \alpha_\text{real}$</dd>
 					</dl>
 				</div>
 			</div>
@@ -950,9 +927,8 @@
 
 		<div class="row">
 			<p>
-				In 2026 $\Delta\varepsilon$ lies between 6.7″ and 9.1″, so the
-				declination is off by at most 7.9″ and the right ascension by at
-				most 1.9″. The models on the following pages err by arcminutes
+				In 2026 the declination is off by at most 7.9″ and the right
+				ascension by at most 1.9″. The models on the following pages err by arcminutes
 				or more, so from now on we neglect nutation and use the mean
 				obliquity.
 			</p>
@@ -966,10 +942,9 @@
 
 		<p>
 			Our frames are fixed, but the angle between them changes. The
-			obliquity was 23.678° in Ptolemy's time and is 23.436° now, 14.5′
-			less, and it is falling by 47″ a century. Even the correct obliquity
-			of AD 137, used today, would miss the Sun's declination by 14.5′ at
-			the solstices.
+			obliquity was 23.678° in Ptolemy's time and is 23.436° now, so even
+			the correct obliquity of AD 137, used today, would put the Sun's
+			declination at the solstices wrong by the whole difference, 14.5′.
 		</p>
 
 		<div class="row">
