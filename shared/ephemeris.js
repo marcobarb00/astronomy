@@ -804,9 +804,10 @@ const Ephem = (function () {
 	}
 
 	/* Equation of time in minutes of time, apparent minus mean solar time
-	   (positive when the sundial is ahead of the clock), Meeus 28.1. */
-	function equationOfTime(jdTT) {
-		const sunPosition = sun(jdTT);
+	   (positive when the sundial is ahead of the clock), Meeus 28.1.
+	   sunPosition: the apparent Sun at jdTT, when the caller has it
+	   already (sun(jdTT)), so that it is not computed twice. */
+	function equationOfTime(jdTT, sunPosition = sun(jdTT)) {
 		const eq = equatorial(sunPosition, jdTT);
 		const n = nutation(jdTT);
 		const eps = obliquity(jdTT);

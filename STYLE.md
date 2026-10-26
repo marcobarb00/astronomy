@@ -143,6 +143,17 @@ Display equations centred in the text column. An equation is numbered only
 when the text, an exercise or another page refers to it; the number `(1.1)`
 then sits at the right, in `--muted`.
 
+No equation scrolls sideways, on a phone either. KaTeX never breaks a
+display equation, so `renderMath` (`shared/common.js`) cuts each one at its
+top level and lets the pieces wrap: write several equations in one display
+separated by `\qquad` (or `, \quad`), and a system as one `aligned`
+environment with one `&` per line. On a wide screen they are set as
+written; on a phone the equations stack, a long chain `a = b = c` breaks
+before a relation, and a long right side continues after a `+` or `−`. A
+read-out line is never split (it keeps its fixed lines), so keep it short
+enough for a phone. The smoke test reports any equation wider than its
+column.
+
 ## 5. Stars
 
 Stars are always drawn as **four-pointed stars**, never as dots:
@@ -232,7 +243,11 @@ pages 1.1 and 1.2 have one each):
   other way, as seen from outside the sphere). A rectangular chart is seen
   looking south: north up, east to the left.
 - Text on a chart keeps its size on the screen, at least 13 px, whatever
-  the width of the chart; on a phone the minor labels are left out.
+  the width of the chart. On a chart drawn narrower than 480 px (a phone)
+  the names are left out (stars, constellations, circles), except the
+  star the caption speaks of (`keep` in `Plate.polar` / `Plate.rectangular`:
+  Capella on page 1.1, Aldebaran on page 1.2); the numbers of the ring or
+  border and the pole's P remain.
 - Built by `shared/plate.js` (`Plate.polar`, `Plate.rectangular`, the
   highlights) and styled by `shared/theme.css` §13: a page never draws its
   own.

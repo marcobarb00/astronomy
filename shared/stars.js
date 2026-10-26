@@ -12,7 +12,10 @@
 	 copied as returned, in degrees and milliarcseconds per year
 	 (pmra = mu_alpha cos delta, as in SIMBAD).
 	 V magnitudes from the same query (SIMBAD table "allfluxes", retrieved
-	 2026-10-17, tools/numbers/data/stars-2026-10-17.csv). SIMBAD gives no
+	 2026-10-17, tools/numbers/data/stars-2026-10-17.csv). Regulus and the
+	 two stars of MORE were added for page 2.3, from the same query
+	 retrieved 2026-10-24 (tools/numbers/data/fetch-stars-2.3.sh,
+	 stars-2.3-2026-10-24.csv). SIMBAD gives no
 	 V for Acrux as a whole, only for its two components (alf01 Cru 1.28,
 	 alf02 Cru 1.58, table "flux", retrieved 2026-10-19,
 	 tools/numbers/data/acrux-components-2026-10-19.csv); their combined
@@ -48,6 +51,7 @@ const Stars = (function () {
 		{ name: 'Vega',       id: 'alf Lyr', ra: 279.234734787025,    dec: 38.783688956244,     pmra: 200.94,   pmdec: 286.23, mag: 0.03 },
 		{ name: 'Arcturus',   id: 'alf Boo', ra: 213.915300294925,    dec: 19.1824091615312,    pmra: -1093.39, pmdec: -2000.06, mag: -0.05 },
 		{ name: 'Aldebaran',  id: 'alf Tau', ra: 68.9801627900154,    dec: 16.5093023507718,    pmra: 63.45,    pmdec: -188.94, mag: 0.86 },
+		{ name: 'Regulus',    id: 'alf Leo', ra: 152.09296243828146,  dec: 11.967208776100023,  pmra: -248.73,  pmdec: 5.59, mag: 1.4 },
 		{ name: 'Altair',     id: 'alf Aql', ra: 297.69582729638694,  dec: 8.868321196436963,   pmra: 536.23,   pmdec: 385.29, mag: 0.76 },
 		{ name: 'Betelgeuse', id: 'alf Ori', ra: 88.79293899077537,   dec: 7.407063995272694,   pmra: 27.54,    pmdec: 11.3, mag: 0.42 },
 		{ name: 'Mintaka',    id: 'del Ori', ra: 83.00166705557675,   dec: -0.29909510708333326, pmra: 0.64,    pmdec: -0.69, mag: 2.41 },
@@ -62,12 +66,25 @@ const Stars = (function () {
 		{ name: 'σ Octantis', id: 'sig Oct', ra: 317.19526487582993,  dec: -88.95649953627,     pmra: 26.323,   pmdec: 4.721, mag: 5.42 }
 	];
 
+	/* Fainter stars that a page names but that the skies of pages 1.1 and
+	   1.3, which draw every star of LIST, leave out: the northern star in
+	   the forehead of Scorpius, one of the stars whose longitudes
+	   Timocharis, Ptolemy and al-Battani recorded (Almagest VII 3,
+	   De Revolutionibus III 2), and Thuban, the pole star around 2800 BC
+	   (page 2.3). */
+	// prettier-ignore
+	const MORE = [
+		{ name: 'β Scorpii',  id: 'bet01 Sco', ra: 241.3592999275,     dec: -19.805452782777778, pmra: -5.2,    pmdec: -24.04, mag: 2.62 },
+		{ name: 'Thuban',     id: 'alf Dra',   ra: 211.09732332021125, dec: 64.3758696175675,    pmra: -56.351, pmdec: 12.329, mag: 3.68 }
+	];
+
 	const MAS_TO_DEG = 1 / 3.6e6;
 	const DAYS_PER_YEAR = 365.25;
 
-	/* The star with this name (throws on a typo, so a page fails loudly). */
+	/* The star with this name, in LIST or MORE (throws on a typo, so a
+	   page fails loudly). */
 	function find(name) {
-		const star = LIST.find(entry => entry.name === name);
+		const star = LIST.find(entry => entry.name === name) ?? MORE.find(entry => entry.name === name);
 
 		if (!star) {
 			throw new Error(`Stars.find: no star named "${name}"`);
@@ -119,6 +136,7 @@ const Stars = (function () {
 
 	return {
 		LIST,
+		MORE,
 		find,
 		vectorJ2000,
 		atEpoch,

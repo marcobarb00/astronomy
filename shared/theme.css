@@ -366,9 +366,20 @@ h3 {
 	color: var(--accent);
 }
 
-/* Long routine algebra may be folded (STRUCTURE.md §2). */
+/* Long routine algebra may be folded (STRUCTURE.md §2). Once opened, the
+   fold is boxed so that its text stands apart from the paragraphs around
+   it. The closed fold keeps the same padding and an invisible border, so
+   the summary does not move under the pointer when it is clicked. */
 details.fold {
 	margin: 12px 0;
+	padding: 6px 16px;
+	border: 1px solid transparent;
+}
+
+details.fold[open] {
+	padding-bottom: 2px;
+	border-color: var(--line);
+	background: var(--card);
 }
 
 details.fold > summary {
@@ -378,8 +389,20 @@ details.fold > summary {
 	color: var(--accent);
 }
 
-/* Equations never wrap; any overflow scrolls quietly. Display equations
-   are centred in the text column (STYLE.md §4.6). */
+details.fold > summary:hover {
+	color: var(--ink);
+}
+
+/* A light rule separates the summary from the folded text. */
+details.fold[open] > summary {
+	padding-bottom: 6px;
+	border-bottom: 1px solid var(--line);
+}
+
+/* Display equations are centred in the text column (STYLE.md §4.6). An
+   equation is never cut by KaTeX, so the prose's display equations are
+   split by wrapDisplayMath (common.js) into pieces that wrap, below; any
+   overflow left (a single piece wider than a phone) scrolls quietly. */
 .eq {
 	display: block;
 	margin: 6px 0;
@@ -410,6 +433,92 @@ details.fold > summary {
 .katex {
 	white-space: nowrap;
 	font-size: 1.05em;
+}
+
+/* A display equation split by wrapDisplayMath: its groups (the equations
+   set side by side, "a = b, \qquad c = d") sit on one line when they fit
+   and wrap one under the other when they don't; a group still too wide
+   (.eq-chain) breaks before one of its relations. The pieces line up on
+   their baselines, and the gap between groups is about a \qquad. */
+.eq-split,
+.eq-chain {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+}
+
+/* The whole equation is the box that would scroll, so that KaTeX's
+   small overhangs past a piece (a subscript, an accent) are not clipped. */
+.eq-split {
+	position: relative;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: none;
+	column-gap: 2.5em;
+	row-gap: 0.9em;
+	max-width: var(--text-width);
+	margin: 0.8em 0;
+}
+
+.eq-split::-webkit-scrollbar {
+	display: none;
+}
+
+.eq-chain {
+	row-gap: 0.5em;
+}
+
+.eq-chain,
+.eq-piece {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.eq-split .katex-display {
+	overflow: visible;
+	margin: 0;
+}
+
+/* A piece still wider than the column breaks after a binary operator
+   (+, -, \times), at KaTeX's own break points. */
+.eq-split .katex-display > .katex {
+	white-space: normal;
+}
+
+/* An aligned environment (makeAlignedMath): a grid whose left column
+   holds the left sides, set flush right and never broken, and whose right
+   column holds the right sides from the relation on, set flush left, so
+   that the relations line up. The right column may shrink, and a long
+   right side then continues on a second line. */
+.eq-split.eq-aligned {
+	display: grid;
+	grid-template-columns: auto minmax(0, auto);
+	justify-content: center;
+	column-gap: 0;
+	row-gap: 0.35em;
+}
+
+.eq-aligned .eq-left .katex-display > .katex {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.eq-aligned .eq-right .katex-display > .katex {
+	text-align: left;
+}
+
+/* The second line of a long right side is indented, as in print: the
+   first line hangs out by the same amount. Only the line boxes of the
+   formula move; the inside of each part of it (a fraction, a subscript)
+   keeps no indent. */
+.eq-aligned .eq-right .katex-html {
+	padding-left: 1.5em;
+	text-indent: -1.5em;
+}
+
+.eq-aligned .eq-right .katex-html > * {
+	text-indent: 0;
 }
 
 /* Tables: ink rules at the top and bottom and under the header, light
@@ -1172,8 +1281,10 @@ figure.plate-figure {
 		inset 0 0 0 7px var(--bg);
 }
 
+/* The chart takes at least 480 px when it can (the width below which it
+   loses its names): on a narrower plate the caption wraps under it. */
 .plate .chart {
-	flex: 1 1 340px;
+	flex: 1 1 480px;
 	max-width: 600px;
 }
 
@@ -1296,6 +1407,16 @@ figure.plate-figure {
 	font-weight: 500;
 }
 
+/* A chart drawn narrower than 480 px (plate.js, COMPACT_WIDTH) shows no
+   names (on a phone they would crowd it beyond reading) except the star
+   names the page keeps, class 'keep': the star its caption speaks of. The
+   numbers of the ring or border and the pole's P remain. */
+.plate svg.compact .star-names text:not(.keep),
+.plate svg.compact .figure-names,
+.plate svg.compact .circle-name {
+	display: none;
+}
+
 /* The one highlighted element. */
 .plate .highlight {
 	fill: none;
@@ -1306,6 +1427,18 @@ figure.plate-figure {
 
 .plate .highlight-text {
 	fill: var(--plate-accent);
+}
+
+/* The ticks across a highlighted path (the pole's path, page 2.3). */
+.plate .highlight-tick {
+	stroke: var(--plate-accent);
+	stroke-width: 1.8;
+}
+
+/* The cross of a point named by a symbol (the ecliptic pole K). */
+.plate .symbol-mark {
+	stroke: var(--plate-ink);
+	stroke-width: 1.4;
 }
 
 /* ==========================================================================
@@ -1514,7 +1647,7 @@ dl.origin-key dd {
 
 	/* A long inline formula may break after a relation or an operator
 	   (KaTeX's own break points), rather than widen the page. Display
-	   equations still scroll. */
+	   equations wrap through .eq-split (above). */
 	:not(.katex-display) > .katex {
 		white-space: normal;
 	}
@@ -1556,7 +1689,8 @@ dl.origin-key dd {
 	}
 
 	/* A plate takes the whole width; its chart keeps only the main
-	   labels, at their full size (every other hour, no grid labels). */
+	   labels, at their full size (every other hour, no grid labels). The
+	   names go too on a chart narrower than 480 px, below. */
 	.plate {
 		padding: 14px;
 	}

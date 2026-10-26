@@ -88,7 +88,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.1',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'The uneven year',
 			question: 'Why are the seasons not equal?',
 			path: 'act2-sun/01-uneven-year/index.html'
@@ -96,7 +96,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.2',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'The equation of time',
 			question: 'Why does the sundial disagree with the clock?',
 			path: 'act2-sun/02-equation-of-time/index.html'
@@ -104,7 +104,7 @@ const SITE_MAP = (function () {
 		{
 			number: '2.3',
 			act: 2,
-			ready: false,
+			ready: true,
 			title: 'Precession',
 			question: "Why do the stars' longitudes grow?",
 			path: 'act2-sun/03-precession/index.html'
