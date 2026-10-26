@@ -75,6 +75,15 @@ section.
   fixed scales, an observer's sky in the horizon frame, a control only
   when it shows the point of the section. → CLAUDE.md, "Rules for every
   figure"
+- **A label never jumps: moving points are named by letters, words stay
+  put.** On 2026-10-26 Marco noticed names that jumped wildly as their
+  object moved (page 3.1, Figure 2: "Moon", "deferent", "epicycle"). They
+  were moved to the other side of their point, to avoid a line or
+  another label, by `LabelPlacer` or by the page's own choice of side. A
+  moving point is now named by a letter the text defines (O, K, L, A),
+  or not named when the title or the key says what it is; a word keeps
+  its side of its object, and `LabelPlacer` moves only labels of one or
+  two characters. → CLAUDE.md, "Rules for every figure"
 
 ## Writing
 

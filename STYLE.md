@@ -177,6 +177,9 @@ L x, y+s  L x−0.28s, y+0.28s  L x−s, y  L x−0.28s, y−0.28s  Z
   one helper, `starSize(mag)`, next to `drawStar` in `shared/common.js`.
 - Background stars: `--ink` at about 55% opacity.
 - The chosen star: `--planet`, `s` about 9 px, with its name in Cormorant SC.
+  The name keeps its side of the star as the sky turns; it never jumps
+  round the star to avoid another label (CLAUDE.md, "Rules for every
+  figure").
 - On a plate (§7): `--plate-ink`, the highlighted one in `--plate-accent`.
 
 The drawing is one shared helper, `drawStar(ctx, x, y, s)` in

@@ -117,6 +117,9 @@ see, not re-describe everything.
 - **Label things in the figure itself** (P, γ, Vega, N, S) and leave them out
   of the key. A key entry is only for what a label can't say: what a colour
   or line style means, which way an angle is counted, what a band shows.
+  A point that moves with the controls is named by a letter the text
+  defines (the Earth O, the Moon L), not by a word, which would jump from
+  side to side as the point turns (CLAUDE.md, "Rules for every figure").
 - **Leave out the obvious.** Describe what the reader needs to read the
   figure, not every mark in it. A curve under a labelled axis, grid lines
   at labelled ticks, the dot on the chosen date, the line under the
