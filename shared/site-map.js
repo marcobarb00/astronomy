@@ -186,7 +186,8 @@ const SITE_MAP = (function () {
 		},
 		aberration: {
 			title: 'aberration',
-			sentence: "the Earth's motion tilts the incoming starlight by up to 20″",
+			sentence:
+				"the Earth's yearly motion relative to the solar system's centre of mass tilts the incoming starlight by up to 20″",
 			path: null,
 			ready: false
 		},
