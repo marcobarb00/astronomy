@@ -2930,6 +2930,7 @@ Ptolemy's daily motions: longitude 13.17638222°, anomaly 13.06498286°; real 13
 248 days / 9 = 27.5556 d (the Babylonian table of the Moon's daily motion)
 
 === Model: Ptolemy's epicycle, 60 : 5;15 (Almagest IV 9, IV 10) ===
+the ratios as decimals of 60: 5;13 = 5.22, 5;14 = 5.23, 5;15 = 5.25, 6;15 = 6.25, 4;46 = 4.77
 r/R = 0.08750; greatest equation asin(r/R) = 5.020° = 5°01'11" at M = 95.02° (his table: 5;1 at 96°)
 the exact and first-order curves differ by at most 13.7'
 daily motion at the apogee of the epicycle 12.13°/d, at the perigee 14.43°/d
@@ -3089,7 +3090,7 @@ from the 'Periodic', 223 x synodic / 239: 27.5536 d
 a12 = 306.4167°, a23 = 150.4333°, d12 = 3.4000° = 0.05934 rad, d23 = -0.6167° = -0.01076 rad
 rows: 0.8047 X + -0.4063 Y = 0.05934;  -0.4934 X + 1.8698 Y = -0.01076
 first order: X = 0.08173, Y = 0.01581, r/R = 0.0832, M2 = 10.9°, 4.3% short of the exact r/R
-exact: r/R = 0.08694 = 5;12,59 parts in 60 (Ptolemy 5;13), M2 = 12°24'11" (12;24), q2 = -0°59'10" = -0.986° (-0;59)
+exact: r/R = 0.08694 = 5;12,59 = 5.216 parts in 60 (Ptolemy 5;13 = 5.217), M2 = 12°24'11" (12;24), q2 = -0°59'10" = -0.986° (-0;59)
 the mean Moon at the second eclipse: true Virgo 13;45 (163.75°) - q2 = 164.736° (Ptolemy: Virgo 14;44 = 164.733°)
 
 === Scales ===
