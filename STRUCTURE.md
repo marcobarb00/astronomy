@@ -429,10 +429,12 @@ The first anomaly and the simplest complete model.
 #### 4.3 · Same geometry, new centre
 
 - **Question:** what changes if the Sun is taken as at rest?
-- **Learn:** Copernicus' arrangement: every outer planet's epicycle, and
-  the deferent of Venus and Mercury, is a copy of the line from the Earth
-  to the Sun, at a scale of its own; linking them all to that one line
-  turns the free ratios into distances; the order of the planets;
+- **Learn:** Copernicus' arrangement: in Ptolemy's models every outer
+  planet's epicycle radius stays parallel to the line from the Earth to
+  the mean Sun (*Almagest* X 6), and the deferents of Venus and Mercury
+  follow the mean Sun approximately (from the equant, not the Earth);
+  linking them all to one Earth–Sun line, at a scale of its own for each
+  planet, turns the free ratios into distances; the order of the planets;
   sidereal periods from synodic periods; Mercury and Venus' maximum
   elongations.
 - **Figures:** the same planet in the heliostatic and geostatic
@@ -450,28 +452,40 @@ The first anomaly and the simplest complete model.
 - **Learn:**
   - The frame (what is taken as at rest) and the arrangement (how the
     motions are linked; the order and the distances of the planets) are
-    separate questions. Directions from the Earth depend only on relative
-    positions, so they cannot decide the frame, while the arrangement
-    makes predictions that can be tested.
-  - Tycho's system (1588): Copernicus' arrangement with the Earth at rest,
-    the planets going round the Sun and the Sun round the Earth. It gives
-    the same direction to every planet at every moment as Copernicus',
-    proved with vectors as in the equivalence of page 3.1.
-  - The phases of Venus (Galileo, 1610): a nearly full Venus is impossible
-    in Ptolemy's arrangement, where Venus stays on the Earth's side of the
-    Sun, and expected in Copernicus' and Tycho's alike.
+    separate questions. Directions from the Earth depend only on the
+    relative positions and velocities of the bodies, so they cannot decide
+    the frame, while the arrangement makes predictions that can be tested.
+  - Tycho's system (1588): the Sun, the Moon and the planets arranged as
+    in Copernicus, about a resting Earth, the planets going round the Sun
+    and the Sun round the Earth. Copernicus' model moved to the Earth at
+    rest gives the same direction to every planet at every moment, proved
+    with vectors as in the equivalence of page 3.1. Tycho's stars stay on
+    a sphere about the Earth, though, so the two arrangements differ for
+    the stars.
+  - The phases of Venus (Galileo, observed 1610): when Venus' epicycle
+    lies wholly between the Earth and the Sun, as in Ptolemy's order
+    (*Almagest* IX 1, and the nested spheres of the *Planetary
+    Hypotheses*), Venus is never more than half lit; a gibbous Venus is
+    expected in Copernicus' arrangement and Tycho's alike.
   - Stellar parallax: Copernicus explains its absence by the distance of
     the stars (*De Revolutionibus* I 10); Bessel measured it in 1838 (61
     Cygni). With the Earth at rest it means that every star moves each
-    year with the Sun, so it too concerns the arrangement.
-  - The physical arguments: Ptolemy's clouds and falling bodies
-    (*Almagest* I 7); Copernicus' natural motion and his ship (*De
-    Revolutionibus* I 8); Newton's laws of motion (*Principia*, 1687),
-    simplest in inertial frames, in which the solar system's centre of
-    mass, near the Sun, is at rest (Book III, Propositions 11–12). Physics
-    makes the heliostatic description simpler and leaves the geostatic one
-    correct. The Earth's daily rotation shows on the ground (Foucault,
-    1851); its yearly motion, a free fall, does not.
+    year with the Sun, which Tycho's stars do not: parallax decides
+    between Tycho's arrangement and Copernicus'. Aberration (Bradley,
+    1729), which depends on the Earth's velocity relative to the stars,
+    bears on the same question.
+  - The physical arguments: Ptolemy's clouds and thrown objects
+    (*Almagest* I 7), and his answer to an air that turns with the Earth;
+    Copernicus' natural motion and his ship (*De Revolutionibus* I 8);
+    Newton's laws of motion (*Principia*, 1687), which hold in inertial
+    frames, where the solar system's centre of mass, near the Sun, is at
+    rest or moves uniformly, and are simplest where it is at rest (Book
+    III, Hypothesis 1 and Propositions 11–12). Physics makes the
+    heliostatic description simpler; the geostatic one stays correct once
+    the forces of an accelerated, turning frame are added. The Earth's
+    daily rotation shows in an experiment on the ground (Foucault, 1851);
+    its yearly motion, a free fall, does not show in experiments of that
+    kind.
 - **Figures:** Mars seen from the Earth in Copernicus' and Tycho's systems,
   side by side, with one error curve for both, identical by construction;
   the phases of Venus in Ptolemy's arrangement and in Copernicus'; a star's
@@ -483,12 +497,15 @@ The first anomaly and the simplest complete model.
 - **Rhythm:** no longitude to fit, as in Act I: observation (Venus),
   model (frames and arrangements), test (the two error curves coincide),
   residual (Mars).
-- **Sources:** *Almagest* I 7; *De Revolutionibus* I 5, I 8, I 10 and
-  II 1; for Tycho, Galileo, Bessel, Newton and Foucault, sources outside
-  the `astronomy-sources` library, to be chosen when the page is built.
+- **Sources:** *Almagest* I 7, IX 1 and X 6; *De Revolutionibus* I 5,
+  I 8, I 10 and the preface to Book II; for Tycho, Galileo, Bessel,
+  Bradley, Newton, Foucault and Kepler, sources outside the
+  `astronomy-sources` library, to be chosen and checked when the page is
+  built (the dates above are not yet checked against them).
 - **Hands over:** circles still leave an error, and Mars shows it most.
-  Kepler, the first to make the Sun a physical cause of the planets'
-  motions (*Astronomia Nova*, 1609), removes it.
+  Kepler, who looked in the Sun for the physical cause of the planets'
+  motions (*Mysterium Cosmographicum*, 1596; *Astronomia Nova*, 1609),
+  removes it.
 
 #### 4.5 · Kepler
 
