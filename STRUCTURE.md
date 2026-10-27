@@ -33,11 +33,14 @@ Consequences:
 
 **In scope:** the sphere and its coordinates, time, the Sun, the Moon, the
 planets in longitude, the models of Hipparchus, Ptolemy, Copernicus and
-Kepler, eclipses.
+Kepler, eclipses; which body is taken as at rest, and what the
+observations can decide about it (page 4.4: Tycho's system, the phases of
+Venus, the argument from stellar parallax). The models are presented as
+history, never as true (WRITING.md §9).
 
 **Out of scope for now** (signposted with detour cards and the *Beyond Kepler*
-page, see §7.4): planetary latitudes in detail, nutation, aberration,
-parallax of stars, Tycho, Islamic astronomy (Tusi couple, Ibn al-Shatir),
+page, see §7.4): planetary latitudes in detail, nutation, aberration, the
+measurement of stellar parallax, Tycho's observations, Islamic astronomy (Tusi couple, Ibn al-Shatir),
 Newtonian dynamics and perturbations, calendars, instruments, the slowing of
 the Earth's rotation ($\Delta T$).
 
@@ -45,7 +48,7 @@ the Earth's rotation ($\Delta T$).
 
 ## 4. The path
 
-Five acts, fifteen pages, plus a hub and an epilogue. Pages are numbered
+Five acts, sixteen pages, plus a hub and an epilogue. Pages are numbered
 `act.page`. Each entry gives the guiding question, what the reader learns,
 the main figures, exercise ideas, and the residual that hands over to the
 next page.
@@ -210,7 +213,7 @@ The first anomaly and the simplest complete model.
   whose days are days of UT.
 - **Hands over:** the apogee moves, about 1.75° a century relative to γ, so
   the model drifts slowly over centuries (page 2.3); the eccentric's distance
-  varies twice as much as the real one (pages 3.2, 4.4); first, a consequence
+  varies twice as much as the real one (pages 3.2, 4.5); first, a consequence
   we can see every day.
 
 #### 2.2 · The equation of time
@@ -425,18 +428,69 @@ The first anomaly and the simplest complete model.
 
 #### 4.3 · Same geometry, new centre
 
-- **Question:** what changes if the Sun is at the centre?
-- **Learn:** every epicycle is the Earth's orbit seen from the planet; the
-  free ratios become distances; the order of the planets; sidereal periods
-  from synodic periods; Mercury and Venus' maximum elongations.
-- **Figures:** the same planet in the heliocentric and geocentric frames
-  side by side; the error curve, **unchanged**.
+- **Question:** what changes if the Sun is taken as at rest?
+- **Learn:** Copernicus' arrangement: every outer planet's epicycle, and
+  the deferent of Venus and Mercury, is a copy of the line from the Earth
+  to the Sun, at a scale of its own; linking them all to that one line
+  turns the free ratios into distances; the order of the planets;
+  sidereal periods from synodic periods; Mercury and Venus' maximum
+  elongations.
+- **Figures:** the same planet in the heliostatic and geostatic
+  descriptions side by side; the error curve, **unchanged**.
 - **Point to make:** the predictions barely improved. What changed is that
-  the system now has a scale and an order.
+  the system now has a scale and an order. They come from the arrangement:
+  the body taken as at rest changes no prediction (WRITING.md §9).
 - **Exercises:** the radius of Venus' orbit from its greatest elongation.
-- **Hands over:** circles still leave an error. Mars shows it most.
+- **Hands over:** Tycho kept this arrangement with the Earth at rest. What
+  can the observations decide?
 
-#### 4.4 · Kepler
+#### 4.4 · What moves?
+
+- **Question:** can the observations decide which body is at rest?
+- **Learn:**
+  - The frame (what is taken as at rest) and the arrangement (how the
+    motions are linked; the order and the distances of the planets) are
+    separate questions. Directions from the Earth depend only on relative
+    positions, so they cannot decide the frame, while the arrangement
+    makes predictions that can be tested.
+  - Tycho's system (1588): Copernicus' arrangement with the Earth at rest,
+    the planets going round the Sun and the Sun round the Earth. It gives
+    the same direction to every planet at every moment as Copernicus',
+    proved with vectors as in the equivalence of page 3.1.
+  - The phases of Venus (Galileo, 1610): a nearly full Venus is impossible
+    in Ptolemy's arrangement, where Venus stays on the Earth's side of the
+    Sun, and expected in Copernicus' and Tycho's alike.
+  - Stellar parallax: Copernicus explains its absence by the distance of
+    the stars (*De Revolutionibus* I 10); Bessel measured it in 1838 (61
+    Cygni). With the Earth at rest it means that every star moves each
+    year with the Sun, so it too concerns the arrangement.
+  - The physical arguments: Ptolemy's clouds and falling bodies
+    (*Almagest* I 7); Copernicus' natural motion and his ship (*De
+    Revolutionibus* I 8); Newton's laws of motion (*Principia*, 1687),
+    simplest in inertial frames, in which the solar system's centre of
+    mass, near the Sun, is at rest (Book III, Propositions 11–12). Physics
+    makes the heliostatic description simpler and leaves the geostatic one
+    correct. The Earth's daily rotation shows on the ground (Foucault,
+    1851); its yearly motion, a free fall, does not.
+- **Figures:** Mars seen from the Earth in Copernicus' and Tycho's systems,
+  side by side, with one error curve for both, identical by construction;
+  the phases of Venus in Ptolemy's arrangement and in Copernicus'; a star's
+  parallax drawn with the Sun at rest and with the Earth at rest.
+- **Exercises:** derive that Tycho's and Copernicus' systems give the same
+  directions; the greatest phase of Venus in Ptolemy's arrangement; the
+  parallax of 61 Cygni from its distance, and why Copernicus could not see
+  it.
+- **Rhythm:** no longitude to fit, as in Act I: observation (Venus),
+  model (frames and arrangements), test (the two error curves coincide),
+  residual (Mars).
+- **Sources:** *Almagest* I 7; *De Revolutionibus* I 5, I 8, I 10 and
+  II 1; for Tycho, Galileo, Bessel, Newton and Foucault, sources outside
+  the `astronomy-sources` library, to be chosen when the page is built.
+- **Hands over:** circles still leave an error, and Mars shows it most.
+  Kepler, the first to make the Sun a physical cause of the planets'
+  motions (*Astronomia Nova*, 1609), removes it.
+
+#### 4.5 · Kepler
 
 - **Question:** what shape removes the last error?
 - **Learn:** the ellipse; the area law; mean, eccentric and true anomaly;
@@ -466,7 +520,8 @@ the Islamic critiques of the equant, calendars, instruments.
 
 ### Hub
 
-The site's `index.html`: the objective in two sentences, the five acts as a
+The site's `index.html`: the objective in two sentences, the course as a
+journey through the models before Kepler (WRITING.md §9), the five acts as a
 map, and a link to *Beyond Kepler*. Optional: a notation page (§6).
 
 ---
@@ -659,7 +714,8 @@ act4-planets/
   01-going-backwards/
   02-equant/
   03-new-centre/
-  04-kepler/
+  04-what-moves/
+  05-kepler/
 beyond-kepler/
 archive/                   earlier pages, kept for reference, not linked
 ```
@@ -693,7 +749,7 @@ Modern references:
   reference Moon.
 - E. M. Standish, *Keplerian Elements for Approximate Positions of the Major
   Planets* (JPL): the planetary reference. Being Keplerian, it cannot judge a
-  Keplerian model (see page 4.4).
+  Keplerian model (see page 4.5).
 - J. Vondrák, N. Capitaine, P. Wallace, *New precession expressions, valid
   for long time intervals* (A&A, 2011), as in SOFA / ERFA: the precession
   used by the reference sky.
