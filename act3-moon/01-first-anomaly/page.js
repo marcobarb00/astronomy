@@ -13,7 +13,7 @@
 	 4. three eclipses               (2D: (a) the three positions on the
 									   epicycle, (b) the plane of X, Y with
 									   the two equations; four data sets)
-	 5. our epicycle against the Moon (error curve, 2026)
+	 5. the fitted epicycle against the Moon (error curve, 2026)
 	 6. Ptolemy's simple Moon        (error curve, AD 134 and 2,000 years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, models/lunar-epicycle.js, plot2d.js,
@@ -943,7 +943,7 @@ const eclipsesFigure = {
    dots mark the new and full Moons, on spans of a year or less.
    ========================================================================== */
 
-/* Figure 5: our epicycle and the uniform Moon over the year 2026, and
+/* Figure 5: the fitted epicycle and the uniform Moon over the year 2026, and
    over two months and a century centred on it. */
 const ourErrorFigure = {
 	init() {
