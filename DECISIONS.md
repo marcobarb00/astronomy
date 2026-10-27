@@ -114,6 +114,12 @@ section.
   made keys of nine entries; on 2026-10-25 Marco dropped the requirement
   that every element be explained, in favour of these simpler
   descriptions. → WRITING.md §7, CLAUDE.md "Rules for every figure"
+- **No semicolon notation on the pages.** A sexagesimal number from a
+  source is written as an angle in degrees and minutes (86°15′, Virgo
+  13°45′) or as a decimal (5.25 where the deferent is 60; 365.24667
+  days), never as 5;15 or 365;14,48. Marco asked for it on 2026-10-27:
+  the notation is the sources', and readers do not know it. Replaced the
+  earlier rule that ratios kept the source's notation. → STRUCTURE.md §6
 
 ## Code
 
