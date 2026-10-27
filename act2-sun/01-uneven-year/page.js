@@ -268,14 +268,14 @@ const ARC_RADIUS = { M: 0.16, q: 0.62 };
    apogee and the perigee, which lie 14° anticlockwise of 90° and 270°. */
 const ECCENTRIC_LABEL_SHIFT = -16;
 
-/* The name of the Earth goes on the side away from C, just below the
-   Earth and starting EARTH_LABEL_OFFSET px from it, so that it stays
-   clear of the season labels on a phone; that of C 45° to one side of
-   the line of apsides beyond C, CENTRE_LABEL_DISTANCE radii away. Each
-   takes the side farther from the other lines through the centre. */
+/* The Earth is named O, a single letter that may change sides without
+   jumping far (CLAUDE.md), 45° to one side of the line of apsides away
+   from C, EARTH_LABEL_DISTANCE px from it; C 45° to one side of the line
+   of apsides beyond C, CENTRE_LABEL_DISTANCE radii away. Each takes the
+   side farther from the other lines through the centre. */
 const CENTRE_LABEL_TURN = 45;
 const CENTRE_LABEL_DISTANCE = 0.2;
-const EARTH_LABEL_OFFSET = { x: 9, y: 14 };
+const EARTH_LABEL_DISTANCE = 16;
 
 const eccentricFigure = {
 	plot: null,
@@ -381,7 +381,7 @@ const eccentricFigure = {
 		this.labelCentre(centre, now);
 	},
 
-	/* The names of the Earth and of C (CENTRE_LABEL_TURN), clear of the
+	/* The names of the Earth O and of C (CENTRE_LABEL_TURN), clear of the
 	   mean direction, the Sun and the middle of the arc M. */
 	labelCentre(centre, now) {
 		const apogee = this.state.parameters.apogee;
@@ -394,14 +394,9 @@ const eccentricFigure = {
 		const C = toCanvas(this, centre.h, centre.k);
 		const away = (from, lon, distance) => ({ x: from.x + distance * cos(lon), y: from.y - distance * sin(lon) });
 
-		const toRight = cos(earthSide) >= 0;
 		const ctx = this.ctx;
 
-		ctx.fillStyle = textColor(COL.earth);
-		ctx.font = labelFont('Earth');
-		ctx.textAlign = toRight ? 'left' : 'right';
-		ctx.textBaseline = 'middle';
-		ctx.fillText('Earth', O.x + (toRight ? 1 : -1) * EARTH_LABEL_OFFSET.x, O.y + EARTH_LABEL_OFFSET.y);
+		centredLabel(ctx, 'O', away(O, earthSide, EARTH_LABEL_DISTANCE), COL.earth);
 		centredLabel(ctx, 'C', away(C, cSide, CENTRE_LABEL_DISTANCE * this.scale), COL.ink);
 	},
 
@@ -511,9 +506,11 @@ const FIT_EXAGGERATION = 6;
 /* Panel (a): the radius of the arcs of the two small angles at C, and
    where their names go (units of the radius, relative to C): 'along' the
    parallel, and 'clear' beyond the radius, on the side where the angle
-   opens, so that the name never sits on a line. */
+   opens, so that the name does not sit on a line. When the angle is
+   within 'ramp' of zero the name slides across the radius instead of
+   jumping to the other side (CLAUDE.md). */
 const SMALL_ANGLE_RADIUS = 0.45;
-const SMALL_ANGLE_LABEL = { along: 0.6, clear: { k: 0.11, h: 0.24 } };
+const SMALL_ANGLE_LABEL = { along: 0.6, clear: { k: 0.11, h: 0.24 }, ramp: 0.03 };
 
 /* Panel (b): the radius of the arc lambdaA about the Earth, and of its
    name (units of the radius of the eccentric), beyond C (e >= 0.033 for
@@ -562,8 +559,8 @@ const fitFigure = {
 		this.plot = new Plot2D(byId('fit-plot'), {
 			x: CENTRE_RANGE,
 			y: CENTRE_RANGE,
-			xLabel: 'x',
-			yLabel: 'y',
+			xLabel: 'x, towards γ',
+			yLabel: 'y, towards 90°',
 			aspect: 1,
 			maxHeight: 520,
 			margin: { left: 56, right: 14, top: 30, bottom: 40 },
@@ -653,7 +650,7 @@ const fitFigure = {
 
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
 		drawDot(ctx, C.x, C.y, 4, COL.ink);
-		centredLabel(ctx, 'Earth', { x: O.x - 36, y: O.y + 18 }, COL.earth);
+		centredLabel(ctx, 'O', { x: O.x - 13, y: O.y + 13 }, COL.earth);
 		centredLabel(ctx, 'C', { x: C.x - 13, y: C.y - 13 }, COL.ink);
 	},
 
@@ -714,15 +711,16 @@ const fitFigure = {
 		const ctx = this.ctx;
 		const C = this.fromC(0, 0);
 		const r = SMALL_ANGLE_RADIUS * this.scale;
-		const { along, clear } = SMALL_ANGLE_LABEL;
+		const { along, clear, ramp } = SMALL_ANGLE_LABEL;
+		const side = offset => Math.max(-1, Math.min(1, offset / ramp));
 
 		// how far the radius to gamma has dropped below the parallel (or
 		// risen above it) at 'along', and how far the radius to 90° has
 		// moved to the left of its parallel (or to the right)
 		const drop = along * tan(angles[0]);
 		const shift = along * tan(90 - angles[1]);
-		const kLabel = this.fromC(along, drop + (drop <= 0 ? -clear.k : clear.k));
-		const hLabel = this.fromC(shift + (shift <= 0 ? -clear.h : clear.h), along);
+		const kLabel = this.fromC(along, drop + side(drop) * clear.k);
+		const hLabel = this.fromC(shift + side(shift) * clear.h, along);
 
 		this.angleWedge(C, r, 0, angles[0]);
 		this.angleWedge(C, r, 90, angles[1]);
@@ -802,35 +800,22 @@ const fitFigure = {
 		);
 	},
 
-	/* The names in panel (b): the Earth, C, h and k, and where the axes
-	   lead. Each name goes on the side of the axes away from C, so that
-	   none sits on the dashed parallels: h under (or over) the x axis, k
-	   beside the y axis, C on its far side from the y axis. */
+	/* The names in panel (b): the Earth O, C, h and k, single letters
+	   that may change sides as C crosses an axis (CLAUDE.md). Each goes on
+	   the side of the axes away from C, so that none sits on the dashed
+	   parallels: O in the quadrant opposite C, h under (or over) the x
+	   axis, k beside the y axis, C on its far side from the y axis. The
+	   axis titles say where the axes lead. */
 	labelPlot() {
 		const p = this.plot;
 		const { h, k } = this.fit;
-		const towards = 0.75 * CENTRE_RANGE[1];
 		const right = h < 0 ? 1 : -1; // the side of the y axis away from C
 		const below = k < 0 ? -1 : 1; // the side of the x axis away from C
 
-		p.text('Earth', 0, 0, {
-			color: COL.earth,
-			align: right > 0 ? 'left' : 'right',
-			baseline: 'middle',
-			dx: 10 * right,
-			dy: 30 * below
-		});
+		centredLabel(p.ctx, 'O', { x: p.px(0) + 12 * right, y: p.py(0) + 14 * below }, COL.earth);
 		centredLabel(p.ctx, 'C', { x: p.px(h) - 14 * right, y: p.py(k) - 12 }, COL.ink);
 		centredLabel(p.ctx, 'h', { x: p.px(h / 2), y: p.py(0) + 14 * below }, COL.planet);
 		centredLabel(p.ctx, 'k', { x: p.px(0) + 12 * right, y: p.py(k / 2) }, COL.planet);
-		p.text('to γ', towards, 0, { color: COL.sun, align: 'center', baseline: 'middle', dx: 0, dy: 14 * below });
-		p.text('to 90°', 0, towards, {
-			color: COL.sun,
-			align: right > 0 ? 'left' : 'right',
-			baseline: 'middle',
-			dx: 6 * right,
-			dy: 0
-		});
 	}
 };
 

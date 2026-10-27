@@ -377,19 +377,16 @@ const modelFigure = {
 
 /* The point of a circle (angle -> point) nearest the viewer, offset by
    'skip' degrees so that two circles get their names at different places:
-   where a circle's name can be read. */
+   where a circle's name can be read. pointAt is cos(angle) u + sin(angle) v
+   and the depth is linear in the point, so the depth is cos(angle) d(u) +
+   sin(angle) d(v), least at the angle found below: exactly, so that the
+   name glides along its circle as the sphere turns instead of stepping
+   (CLAUDE.md). */
 function frontPoint(sphere, pointAt, skip = 0) {
-	let best = null;
+	const du = sphere.project(pointAt(0)).d;
+	const dv = sphere.project(pointAt(90)).d;
 
-	for (let angle = 0; angle < 360; angle += 10) {
-		const depth = sphere.project(pointAt(angle)).d;
-
-		if (!best || depth < best.depth) {
-			best = { angle, depth };
-		}
-	}
-
-	return pointAt(best.angle + skip);
+	return pointAt(atan2d(-dv, -du) + skip);
 }
 
 /* A point of the great circle with pole 'pole', at the angle 'angle'

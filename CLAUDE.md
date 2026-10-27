@@ -71,6 +71,22 @@ same style:
   or obvious (WRITING.md §7). The key is `<div class="keys">` with one or
   more `<dl class="key">` ("In the figure", "Read-out"), one line per
   entry, styled by `shared/theme.css` (see `templates/page.html`).
+- A label never jumps. A point that moves when a control moves or the
+  sphere turns (the Moon on its epicycle, the centre of a moving circle,
+  the Earth at a centre crossed by turning lines) is named by a single
+  letter that the text defines (O, K, L, C, A), or not named at all when
+  the panel title, the caption or the key already says what it is. A
+  word or an expression (Vega, mean Sun, deferent, 90° − a) may label a
+  moving object only if it stays on the same side of it, or turns
+  smoothly round it, as the object moves: it is never sent to the other
+  side of its point to avoid a line or another label. `LabelPlacer`
+  (`shared/common.js`) does this for `centredLabel` and `Sphere3D.label`:
+  only a label of one or two characters may move round its point, a
+  longer one keeps its place and only slides inside the canvas. A page
+  that chooses a label's side itself (by the clearest direction, the sign
+  of a coordinate) does it for letters only. Check by moving every
+  control slowly, and dragging every sphere: a word that jumps is
+  replaced by a letter or removed.
 - The caption says what to do with the figure and what to notice, in two
   or three sentences; it does not describe the figure.
 - Not every figure needs controls. A figure that makes one point is drawn

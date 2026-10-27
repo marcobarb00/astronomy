@@ -232,10 +232,6 @@ const ARC_LABEL_RADIUS = 1.16;
    drawn as its own dashed segment, so a step must be longer than a dash. */
 const HOUR_CIRCLE_STEP = 10;
 
-/* The name of the mean Sun goes above it, to the right, clear of the
-   equator and of the name of the arc below it (px). */
-const MEAN_SUN_LABEL = { dx: 10, dy: -10 };
-
 const reductionFigure = {
 	sphere: null,
 	plot: null,
@@ -366,8 +362,10 @@ const reductionFigure = {
 		s.point(foot, { color: COL.ink, radius: 3.5 });
 		s.point(meanSun, { color: COL.earth, radius: 6, ring: true });
 		s.point(sun, { color: COL.sun, radius: 7, ring: true });
-		s.label('mean Sun', meanSun, { color: COL.earth, dx: MEAN_SUN_LABEL.dx, dy: MEAN_SUN_LABEL.dy });
-		s.labelAway('Sun', sun, foot, COL.sun);
+
+		// no names on the two Suns: they start together at γ, where two
+		// names would have to jump apart (CLAUDE.md); the key gives each
+		// dot by the colour of its circle
 	},
 
 	/* Panel (b). */
