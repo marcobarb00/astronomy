@@ -40,7 +40,7 @@ const SITE_MAP = (function () {
 			id: 4,
 			name: 'Act IV',
 			title: 'The planets',
-			blurb: 'Loops, the equant, a new centre, and the ellipse that removes the last error.'
+			blurb: 'Loops, the equant, a new centre, what the observations can decide, and the ellipse that removes the last error.'
 		},
 		{
 			id: 5,
@@ -154,16 +154,24 @@ const SITE_MAP = (function () {
 			act: 4,
 			ready: false,
 			title: 'Same geometry, new centre',
-			question: 'What changes if the Sun is at the centre?',
+			question: 'What changes if the Sun is taken as at rest?',
 			path: 'act4-planets/03-new-centre/index.html'
 		},
 		{
 			number: '4.4',
 			act: 4,
 			ready: false,
+			title: 'What moves?',
+			question: 'Can the observations decide which body is at rest?',
+			path: 'act4-planets/04-what-moves/index.html'
+		},
+		{
+			number: '4.5',
+			act: 4,
+			ready: false,
 			title: 'Kepler',
 			question: 'What shape removes the last error?',
-			path: 'act4-planets/04-kepler/index.html'
+			path: 'act4-planets/05-kepler/index.html'
 		},
 		{
 			number: 'beyond',
