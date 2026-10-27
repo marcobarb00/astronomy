@@ -184,19 +184,27 @@ are.
   Earth's centre (the geocentric longitude of the reference sky). Never
   write that a model puts "the wrong body at the centre", or that the Sun
   is "really" at the centre.
-- **Keep two questions apart.** The frame, what is taken as at rest, is
-  something observations of direction cannot decide. The arrangement, how
-  the motions are linked, and the order and the distances of the planets,
-  is something they can decide. Tycho's system is Copernicus' arrangement
-  with the Earth at rest, and it gives the same directions.
+- **Keep two questions apart.** The first is the frame: what is taken as
+  at rest, which observations of direction cannot decide. The second is
+  the arrangement: how the motions are linked, in what order the planets
+  lie and at what distances. Observations can decide the arrangement.
+  Tycho's system puts Copernicus' arrangement of the Sun, the Moon and the
+  planets about a resting Earth and gives the same directions to all of
+  them. It keeps the stars on a sphere about the Earth, though, so it
+  predicts no yearly parallax of the stars where Copernicus' arrangement
+  predicts one: parallax and aberration bear on the arrangement.
 - **Tell how the frame was argued.** Ptolemy argued it with physics
-  (*Almagest* I 7), Copernicus with other physics (*De Revolutionibus*
-  I 8) and with the missing parallax of the stars (I 10). Since Newton,
-  the frames in which the laws of motion are simplest have the solar
-  system's centre of mass, near the Sun, at rest. Physics makes the
-  heliostatic description simpler and leaves the geostatic one correct.
-  The Earth's daily rotation shows on the ground (Foucault's pendulum);
-  its yearly motion, a free fall, does not.
+  (*Almagest* I 7), and Copernicus answered with other physics (*De
+  Revolutionibus* I 8). He explained the missing parallax of the stars by
+  their immense distance and argued for his arrangement from the way it
+  links the periods and the sizes of the orbits (I 10). Since Newton, the
+  laws of motion hold in frames in which the solar system's centre of
+  mass, near the Sun, is at rest or moves uniformly, and they are
+  simplest where it is at rest. Physics makes the heliostatic description
+  simpler; the geostatic one stays correct once the forces of an
+  accelerated, turning frame are added. The Earth's daily rotation shows
+  in an experiment on the ground (Foucault's pendulum); its yearly motion,
+  a free fall, does not show in experiments of that kind.
 - **The language of appearances is fine in its frame.** "The sky turns"
   and "the Sun moves along the ecliptic" describe the sky from the Earth,
   where it is observed (page 1.1). Copernicus did the same, and said so:
@@ -205,7 +213,7 @@ are.
 
 | As if a model were true | As history |
 |---|---|
-| "The real orbit is an ellipse." | "Kepler's ellipse, the modern description of the Sun's path relative to the Earth, …" (page 2.1) |
+| "The real orbit is an ellipse." | "Kepler's ellipse, which the modern theory keeps as the first approximation to the Sun's path relative to the Earth, …" (page 2.1) |
 | "Over 2026 our eccentric stays within 1.7′ of the real Sun." | "Over 2026 the eccentric fitted to that year stays within 1.7′ of the real Sun." |
 | "Ptolemy put the wrong body at the centre." | "Ptolemy takes the Earth as at rest. Seen from the Earth, his directions would be the same with the Sun at rest; what the observations test is his arrangement." |
 | "Copernicus moved the Sun to its true place." | "Copernicus took the Sun as at rest, and linked every planet's motion to the Earth's." |
