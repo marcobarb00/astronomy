@@ -582,16 +582,17 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 }
 
 /* A text label centred at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor). With a LabelPlacer, a label
-   that would cover an earlier one or leave the canvas (on a phone) moves
-   next to its point instead. */
+   colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
+   symbol that would cover an earlier label or leave the canvas (on a
+   phone) moves next to its point instead; a word stays where it is, only
+   moved inside the canvas (LabelPlacer.candidates). */
 function centredLabel(ctx, text, point, color, labels = null) {
 	ctx.fillStyle = textColor(color);
 	ctx.font = labelFont(text);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 
-	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
+	const place = labels ? labels.choose(ctx, text, LabelPlacer.candidates(ctx, text, point, point)) : point;
 
 	ctx.fillText(text, place.x, place.y);
 }
@@ -687,7 +688,15 @@ function whenCanvasFontsReady() {
    the first of its candidate places that stays inside the bounds and
    touches no earlier label. A label's designed place comes first, so it
    moves only where it would collide: on a wide screen, nowhere. Used by
-   Sphere3D.label and Plot2D.text. */
+   Sphere3D.label and Plot2D.text.
+
+   Only a single symbol (K, γ, P′) may move round its point: its step
+   aside is a few pixels. A word or an expression (Vega, mean Sun,
+   90° − a) keeps its designed place, slid inside the canvas if it would
+   leave it, even when that place is taken: a name that jumped from one
+   side of its point to the other whenever a control moves is worse than
+   one that briefly touches another (CLAUDE.md, "Rules for every
+   figure"). */
 
 /* Clear space between two labels, and between a point and its label (px). */
 const LABEL_CLEARANCE = 1;
@@ -739,6 +748,18 @@ class LabelPlacer {
 			at(q.x - d - w, q.y - d - h),
 			at(q.x - d - w, q.y + d)
 		];
+	}
+
+	/* May this label move round its point to stay clear of the others?
+	   Only a single symbol, of one or two characters (K, γ, P′). */
+	static mayMove(text) {
+		return [...text].length <= 2;
+	}
+
+	/* The candidate places of a label: its designed place, then, for a
+	   single symbol only, the places all round its point q (around). */
+	static candidates(ctx, text, designed, q, gap = LABEL_POINT_GAP) {
+		return LabelPlacer.mayMove(text) ? [designed, ...LabelPlacer.around(ctx, text, q, gap)] : [designed];
 	}
 
 	/* Keep later labels clear of a box drawn some other way ({ x0, y0, x1,
