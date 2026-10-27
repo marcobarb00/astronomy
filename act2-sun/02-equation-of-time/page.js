@@ -136,18 +136,6 @@ const DAYS = Array.from({ length: DAYS_IN_YEAR + 1 }, (_, i) => i);
 /* The day index under the pointer, or null off the plot. */
 const dayAt = x => (x === null ? null : clamp(Math.round(x), 0, DAYS_IN_YEAR));
 
-/* A straight segment between two canvas points. */
-function segment(ctx, a, b, style) {
-	ctx.strokeStyle = style.color;
-	ctx.lineWidth = style.width ?? 1.5;
-	ctx.setLineDash(style.dash ?? []);
-	ctx.beginPath();
-	ctx.moveTo(a.x, a.y);
-	ctx.lineTo(b.x, b.y);
-	ctx.stroke();
-	ctx.setLineDash([]);
-}
-
 /* ==========================================================================
    1. FIGURE 1: THE SUNDIAL AND THE CLOCK
    Static. (a) The true solar day, from one real noon at Greenwich to the
@@ -243,10 +231,6 @@ const ARC_LABEL_RADIUS = 1.16;
 /* The hour circle is drawn in steps of this many degrees: each step is
    drawn as its own dashed segment, so a step must be longer than a dash. */
 const HOUR_CIRCLE_STEP = 10;
-
-/* The name of the mean Sun goes above it, to the right, clear of the
-   equator and of the name of the arc below it (px). */
-const MEAN_SUN_LABEL = { dx: 10, dy: -10 };
 
 const reductionFigure = {
 	sphere: null,
@@ -378,8 +362,10 @@ const reductionFigure = {
 		s.point(foot, { color: COL.ink, radius: 3.5 });
 		s.point(meanSun, { color: COL.earth, radius: 6, ring: true });
 		s.point(sun, { color: COL.sun, radius: 7, ring: true });
-		s.label('mean Sun', meanSun, { color: COL.earth, dx: MEAN_SUN_LABEL.dx, dy: MEAN_SUN_LABEL.dy });
-		s.labelAway('Sun', sun, foot, COL.sun);
+
+		// no names on the two Suns: they start together at γ, where two
+		// names would have to jump apart (CLAUDE.md); the key gives each
+		// dot by the colour of its circle
 	},
 
 	/* Panel (b). */
