@@ -162,8 +162,55 @@ generated.
 10. Figure keys that list everything visible.
 11. The same sentence shape repeated: "X is Y. It does Z. That is W."
 12. "Not X, but Y" and "X, not Y" framings where a plain statement works.
+13. A model presented as true or as ours ("our eccentric"), or a body that
+    is "really" at the centre (§9).
 
-## 9. What stays the same
+## 9. Models, frames and what moves
+
+The site follows the astronomers before Kepler. Its models are theirs,
+rebuilt to see how they worked and how far they got, and tested against
+the modern sky. The text never presents one of them as how the heavens
+are.
+
+- **Name a model after its author**: "Hipparchus' eccentric", "Ptolemy's
+  epicycle", "Copernicus' arrangement". A model fitted to modern data is
+  "the eccentric fitted to 2026" or "the model of this page". "We" stays
+  for what the reader does: we derive, we fit, we test.
+- **Say what a model takes as at rest.** Directions measured from the
+  Earth cannot tell which body is at rest: a geostatic and a heliostatic
+  description give the same directions, because only relative motion is
+  observed. Write "geostatic" and "heliostatic" for the frame;
+  "geocentric" keeps its standard meaning, a position seen from the
+  Earth's centre (the geocentric longitude of the reference sky). Never
+  write that a model puts "the wrong body at the centre", or that the Sun
+  is "really" at the centre.
+- **Keep two questions apart.** The frame, what is taken as at rest, is
+  something observations of direction cannot decide. The arrangement, how
+  the motions are linked, and the order and the distances of the planets,
+  is something they can decide. Tycho's system is Copernicus' arrangement
+  with the Earth at rest, and it gives the same directions.
+- **Tell how the frame was argued.** Ptolemy argued it with physics
+  (*Almagest* I 7), Copernicus with other physics (*De Revolutionibus*
+  I 8) and with the missing parallax of the stars (I 10). Since Newton,
+  the frames in which the laws of motion are simplest have the solar
+  system's centre of mass, near the Sun, at rest. Physics makes the
+  heliostatic description simpler and leaves the geostatic one correct.
+  The Earth's daily rotation shows on the ground (Foucault's pendulum);
+  its yearly motion, a free fall, does not.
+- **The language of appearances is fine in its frame.** "The sky turns"
+  and "the Sun moves along the ecliptic" describe the sky from the Earth,
+  where it is observed (page 1.1). Copernicus did the same, and said so:
+  "I use the customary terminology, which can be accepted by everybody"
+  (*De Revolutionibus* II 1).
+
+| As if a model were true | As history |
+|---|---|
+| "The real orbit is an ellipse." | "Kepler's ellipse, the modern description of the Sun's path relative to the Earth, …" (page 2.1) |
+| "Over 2026 our eccentric stays within 1.7′ of the real Sun." | "Over 2026 the eccentric fitted to that year stays within 1.7′ of the real Sun." |
+| "Ptolemy put the wrong body at the centre." | "Ptolemy takes the Earth as at rest. Seen from the Earth, his directions would be the same with the Sun at rest; what the observations test is his arrangement." |
+| "Copernicus moved the Sun to its true place." | "Copernicus took the Sun as at rest, and linked every planet's motion to the Earth's." |
+
+## 10. What stays the same
 
 - The mathematics, the numbers (rounded for prose as in §4), and the
   sources.
