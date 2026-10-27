@@ -39,10 +39,18 @@ section.
 - **Exercises of four kinds: compute then check, predict then play,
   derive, break the model.** Two or three per page, with hint and worked
   answer, every number from a script. → STRUCTURE.md §7.2
-- **Page 4.4 (Kepler) cannot be judged by the planetary reference.** The
+- **Page 4.5 (Kepler) cannot be judged by the planetary reference.** The
   reference is itself Keplerian (Standish), so the error would be near
   zero by construction; the page needs another yardstick. → STRUCTURE.md
   §11
+- **A historical journey, not a claim about what moves.** The course
+  follows the astronomers before Kepler and rebuilds their models as
+  theirs; it never presents one as true. Directions seen from the Earth
+  cannot decide which body is at rest, so the text says what each model
+  takes as at rest (geostatic, heliostatic), keeps the frame apart from
+  the arrangement, and never speaks of a true centre. Adopted on
+  2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
+  the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 
 ## Look
 
@@ -183,4 +191,4 @@ section.
   the session. On 2026-10-26 a session with the `astronomy_reference`
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
-- **Where page 4.4 gets its yardstick** (see Course).
+- **Where page 4.5 (Kepler) gets its yardstick** (see Course).
