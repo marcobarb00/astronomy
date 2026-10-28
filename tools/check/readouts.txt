@@ -839,11 +839,11 @@ Regenerate with: node tools/check/smoke.js --update
     #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2,000 years"
+  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "1,000 years"
+  button "1000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
@@ -1118,11 +1118,11 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #model-year = -11000
-    OUTPUT (model-year): 11,001 BC
-    #model-readout: \text{11,001 BC: shift } -181.98^\circ | \text{Spica: } \lambda = 22.22^\circ,\ \delta = +6.74^\circ | \text{nearest P: Vega, } 7.7^\circ
+    OUTPUT (model-year): 11·001 BC
+    #model-readout: \text{11}{\cdotp}\text{001 BC: shift } -181.98^\circ | \text{Spica: } \lambda = 22.22^\circ,\ \delta = +6.74^\circ | \text{nearest P: Vega, } 7.7^\circ
   slider #model-year = 15000
-    OUTPUT (model-year): AD 15,000
-    #model-readout: \text{AD 15,000: shift } +181.25^\circ | \text{Spica: } \lambda = 25.45^\circ,\ \delta = +7.93^\circ | \text{nearest P: Vega, } 8.8^\circ
+    OUTPUT (model-year): AD 15·000
+    #model-readout: \text{AD 15}{\cdotp}\text{000: shift } +181.25^\circ | \text{Spica: } \lambda = 25.45^\circ,\ \delta = +7.93^\circ | \text{nearest P: Vega, } 8.8^\circ
   slider #model-year = 2000
     OUTPUT (model-year): 2000
     #model-readout: \text{2000: shift } -0.36^\circ | \text{Spica: } \lambda = 203.84^\circ,\ \delta = -11.16^\circ | \text{nearest P: Polaris, } 0.7^\circ
@@ -1138,22 +1138,22 @@ Regenerate with: node tools/check/smoke.js --update
   button "2026"
     OUTPUT (model-year): 2026
     #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
-  button "AD 13,790"
-    OUTPUT (model-year): AD 13,790
-    #model-readout: \text{AD 13,790: shift } +164.35^\circ | \text{Spica: } \lambda = 8.55^\circ,\ \delta = +1.50^\circ | \text{nearest P: Vega, } 4.8^\circ
-  button "2,000 years"
+  button "AD 13·790"
+    OUTPUT (model-year): AD 13·790
+    #model-readout: \text{AD 13}{\cdotp}\text{790: shift } +164.35^\circ | \text{Spica: } \lambda = 8.55^\circ,\ \delta = +1.50^\circ | \text{nearest P: Vega, } 4.8^\circ
+  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "6,000 years"
+  button "6000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "1,000 years"
+  button "1000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2,000 years"
+  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #stars-ecliptic at 0.3
@@ -1295,7 +1295,7 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "2 months"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2,000 years"
+  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6

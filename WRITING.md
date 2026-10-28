@@ -82,6 +82,14 @@ give it where it's needed.
   exercises keep the numbers each step needs.
 - Every number still comes from a script (CLAUDE.md). Rounding for the
   text is fine; the script keeps the full value.
+- **No comma between thousands.** Many readers take "4,267" for a number
+  with decimals. A number of four digits has no separator: 4267 months,
+  2000 years, AD 1134. A longer one sets off its thousands with a raised
+  dot: 126·007 days, 25·770 years, AD 13·790. Inside an equation, where
+  the raised dot reads as a product, write the digits without a
+  separator: $B = 13997.5 / 34$. The same holds for labels, buttons and
+  read-outs ("2000 years"); the scripts in `tools/numbers/` may print
+  what they like.
 
 ## 5. Sources and history
 
