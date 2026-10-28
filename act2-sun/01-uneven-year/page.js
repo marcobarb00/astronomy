@@ -12,8 +12,8 @@
 	 4. the first error curve        ((a) the eccentric fitted to 2026 and
 									   the uniform circle; (b) the eccentric
 									   alone, magnified)
-	 5. Ptolemy's Sun                (error curve, AD 140 and 2,000 years)
-	 6. the eccentric's residual     (error curve, 100 and 1,000 years)
+	 5. Ptolemy's Sun                (error curve, AD 140 and 2000 years)
+	 6. the eccentric's residual     (error curve, 100 and 1000 years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, plot2d.js, errorcurve.js, components.js.
    Every number quoted in the prose comes from tools/numbers/2.1-uneven-year.js.
@@ -869,7 +869,7 @@ function eccentricModel() {
 	};
 }
 
-/* Figure 5: Ptolemy's Sun in his own time, and over 2,000 years around it
+/* Figure 5: Ptolemy's Sun in his own time, and over 2000 years around it
    (861 BC to AD 1141, inside the reference sky's range). */
 const ptolemyFigure = {
 	init() {
@@ -880,7 +880,7 @@ const ptolemyFigure = {
 			end: start + 365.25,
 			spans: [
 				{ label: '1 year', years: 1 },
-				{ label: '2,000 years', years: 2000 }
+				{ label: '2000 years', years: 2000 }
 			],
 			ghostButtons: false
 		});
@@ -912,7 +912,7 @@ const residualFigure = {
 			end: middle + halfCentury,
 			spans: [
 				{ label: '100 years', years: 100 },
-				{ label: '1,000 years', years: 1000 }
+				{ label: '1000 years', years: 1000 }
 			],
 			ghostButtons: false
 		});

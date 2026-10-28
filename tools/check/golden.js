@@ -799,6 +799,7 @@ function page12(c) {
 	title('8b. PAGE 1.2 (act1-stage/02-frames/page.js)');
 	row('EPS_TODAY', num(inContext(c, 'EPS_TODAY'), 12));
 	row('formatDegrees', [-5.4721, 0, 12.345].map(v => quote(c.formatDegrees(v))).join(' '));
+	row('texText', ['2026: shift ', 'AD 13·790', '126·007 days'].map(t => quote(c.texText(t))).join(' '));
 	row('texDegrees', [-0.001, -5.4721, 359.999].map(v => quote(c.texDegrees(v))).join(' '));
 	row('texAngle360', [-0.001, 5.4721, 359.994, 359.999].map(v => quote(c.texAngle360(v))).join(' '));
 	row('formatAngle', [-33.9, -0.04, 0, 41.9, 360].map(v => quote(c.formatAngle(v))).join(' '));

@@ -1511,7 +1511,7 @@ function testEquationOfTime() {
 function testPrecessionModel() {
 	group('Precession · models/precession.js, the moving apogee (page 2.3)');
 
-	// the model's Spica against the reference star, 1,000 years before 2026
+	// the model's Spica against the reference star, 1000 years before 2026
 	const spica = Stars.find('Spica');
 	const epoch = Precession.MODERN.epoch;
 	const spicaThen = Stars.ofDate(spica, epoch);
