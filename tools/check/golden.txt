@@ -2939,6 +2939,24 @@ daily motion at the apogee of the epicycle 12.13°/d, at the perigee 14.43°/d
 its apogee moves east by n - nM = 0.11140°/d = 3.07° an anomalistic month, 40.7° a year; a turn in 3231 d = 8.85 years
 Ptolemy: n - nM = 0;06,41,02,15,39° = 0.111399°/d, a turn in 8.85 years
 
+=== Fit: the mean motions from the synodic month and the Sun (Almagest IV 2, IV 3) ===
+Hipparchus' synodic month: 126,007 d 1 h / 4,267 = 29.5305933 d; Ptolemy's value 29;31,50,8,20 = 29.5305941 d
+the Moon's mean motion in a month: Sun's 0.98563528°/d x 29.5305941 d + 360° = 389.1064° (Ptolemy 389;6,23,... = 389.1064°)
+n = n_sun + 360°/P_s = 13.17638222°/d (Ptolemy 13;10,34,58,33,30,30 = 13.17638222°/d; reference 13.17639647°/d)
+   Ptolemy's n minus the reference's: -0.0513"/d = -18.7" a year
+n_M = 269 x 360° / (251 P_s) = 13.06498377°/d (Ptolemy before correction 13;3,53,56,29,38,38 = 13.06498377°/d)
+   corrected (IV 7) by 0.00327" a day: 13.06498286°/d (PTOLEMY.nM 13.06498286; reference 13.06499295°/d)
+the same with the modern Sun and month: n = 13.17639647°/d, n_M = 13.06498610°/d
+the Moon moves 0.549° in an hour
+
+=== Fit: the data of Ptolemy's Babylonian triple (Almagest IV 6) ===
+interval 1: 354.1042 d as recorded; n dt = 345°48'43" (345.812°, Ptolemy 345°51'00"), nM dt = 306°21'54" (Ptolemy 306°25'00"); in decimal minutes 345°48.7', 306°21.9'
+   his mean motion in longitude implies 354.1071 d = 354 d 2.57 h; difference from the recorded 4 min
+   d = Sun's true motion 349°15'00" - mean 345°51'00" = 3°24'00" (3.4000°)
+interval 2: 176.8542 d as recorded; n dt = 170°17'53" (170.298°, Ptolemy 170°07'00"), nM dt = 150°35'48" (Ptolemy 150°26'00"); in decimal minutes 170°17.9', 150°35.8'
+   his mean motion in longitude implies 176.8404 d = 176 d 20.17 h; difference from the recorded -20 min
+   d = Sun's true motion 169°30'00" - mean 170°07'00" = -0°37'00" (-0.6167°)
+
 === Fit: the three-eclipse method on the sources ===
 babylon     first order: r/R = 0.08324, M2 = 10.95° (X 0.0817, Y 0.0158)
             exact: r/R = 0.08694 (5;12,59 on 60), M2 = 12°24'11", q2 = -0°59'10", greatest 4.99° (X 0.0849, Y 0.0187)
@@ -2975,6 +2993,10 @@ anomaly a12 = 148.97°, a23 = 161.57°; true minus mean d12 = 8.877°, d23 = -9.
 first order r/R = 0.08378, M2 = 270.82°; exact r/R = 0.08440, M2 = 275.04°, q2 = 4.771°, greatest 4.842° (X 0.0074, Y -0.0841)
 FIT_2026: L0 = 218.320909, M0 = 320.013246, e = 0.084402 (model file: L0 218.320909, M0 320.013246, e 0.084402)
    against Meeus at J2000: L'0 = 218.3164477, M'0 + 180 = 314.9634; differences 0.27', 5.05°
+
+=== Fit: the data of the eclipses of 2025 - 2026, from the Sun ===
+interval 1: 176.7296 d = 176 d 17.5 h; Sun's true motion 177.537° (the Moon's 177.537°); mean n dt = 168.660°; a = nM dt = 148.97°; d = 8.877°
+interval 2: 177.6940 d = 177 d 16.7 h; Sun's true motion 171.992° (the Moon's 171.992°); mean n dt = 181.367°; a = nM dt = 161.57°; d = -9.375°
 
 === Fit: every three consecutive eclipses, 2019 - 2030 ===
    21 Jan 2019 .. 26 May 2021: r/R = 0.0803, greatest 4.61°

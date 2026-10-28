@@ -348,7 +348,14 @@ The first anomaly and the simplest complete model.
   of our epicycle (uniform Moon as ghost, dots at new and full Moon); the
   error curve of Ptolemy's simple Moon. A photo: the eclipse of 7 September
   2025 (Donatiello, CC0).
-- **Fit:** the mean motions from Meeus 47; $e$ and the anomaly from three
+- **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ (Ptolemy's from
+  his Sun and Hipparchus' synodic month, IV 2-3) and $n_M = 269 \times
+  360^\circ / (251\,P_s)$ (corrected in IV 7), ours from Meeus 47; the data
+  of a triple: the arcs of anomaly $a = n_M\,\Delta t$ from the intervals,
+  reckoned in mean solar days (the equation of time, III 9), and $d$ = the
+  Sun's true motion between the eclipses (the Moon's, beyond whole turns)
+  minus $n\,\Delta t$, worked through for the Babylonian eclipses (a
+  table); $e$ and the anomaly from three
   eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5;13
   and 5;14 (he uses 5;15, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
   IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
