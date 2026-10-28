@@ -305,6 +305,65 @@ title('Model: the equivalent eccentric');
    6. FIT
    ========================================================================== */
 
+title('Fit: the mean motions from the synodic month and the Sun (Almagest IV 2, IV 3)');
+{
+	const synodic = fromSexagesimal(29, 31, 50, 8, 20);
+	const nSunP = MeanSun.PTOLEMY.n;
+	const perMonth = nSunP * synodic + 360;
+	const n = perMonth / synodic;
+	const nMRaw = (269 * 360) / (251 * synodic);
+	const nMRawSource = fromSexagesimal(13, 3, 53, 56, 29, 38, 38);
+	const correction = fromSexagesimal(0, 0, 0, 0, 11, 46, 39);
+
+	console.log(
+		`Hipparchus' synodic month: 126,007 d 1 h / 4,267 = ${f((126007 + 1 / 24) / 4267, 7)} d; Ptolemy's value 29;31,50,8,20 = ${f(synodic, 7)} d`
+	);
+	console.log(
+		`the Moon's mean motion in a month: Sun's ${f(nSunP, 8)}°/d x ${f(synodic, 7)} d + 360° = ${f(perMonth, 4)}° (Ptolemy 389;6,23,... = ${f(fromSexagesimal(389, 6, 23, 1, 24, 2, 30, 57), 4)}°)`
+	);
+	console.log(
+		`n = n_sun + 360°/P_s = ${f(n, 8)}°/d (Ptolemy 13;10,34,58,33,30,30 = ${f(PTOLEMY.n, 8)}°/d; reference ${f(MEEUS.n, 8)}°/d)`
+	);
+	console.log(
+		`   Ptolemy's n minus the reference's: ${f((PTOLEMY.n - MEEUS.n) * 3600, 4)}"/d = ${f((PTOLEMY.n - MEEUS.n) * 3600 * 365.25, 1)}" a year`
+	);
+	console.log(
+		`n_M = 269 x 360° / (251 P_s) = ${f(nMRaw, 8)}°/d (Ptolemy before correction 13;3,53,56,29,38,38 = ${f(nMRawSource, 8)}°/d)`
+	);
+	console.log(
+		`   corrected (IV 7) by ${f(correction * 3600, 5)}" a day: ${f(nMRawSource - correction, 8)}°/d (PTOLEMY.nM ${f(PTOLEMY.nM, 8)}; reference ${f(MEEUS.nM, 8)}°/d)`
+	);
+	console.log(
+		`the same with the modern Sun and month: n = ${f(MeanSun.MODERN.n + 360 / MONTHS.synodic, 8)}°/d, n_M = ${f((269 * 360) / (251 * MONTHS.synodic), 8)}°/d`
+	);
+	console.log(`the Moon moves ${f(MEEUS.n / 24, 3)}° in an hour`);
+}
+
+title("Fit: the data of Ptolemy's Babylonian triple (Almagest IV 6)");
+{
+	const intervals = [354 + 2.5 / 24, 176 + 20.5 / 24];
+	const mean = [fromSexagesimal(345, 51), fromSexagesimal(170, 7)];
+	const anomaly = [fromSexagesimal(306, 25), fromSexagesimal(150, 26)];
+	const sun = [fromSexagesimal(349, 15), fromSexagesimal(169, 30)];
+	const wrap = x => ((x % 360) + 360) % 360;
+
+	intervals.forEach((days, i) => {
+		const longitude = wrap(PTOLEMY.n * days);
+		const turns = Math.floor((PTOLEMY.n * days) / 360);
+		const accurate = (mean[i] + 360 * turns) / PTOLEMY.n;
+
+		console.log(
+			`interval ${i + 1}: ${f(days, 4)} d as recorded; n dt = ${dms(longitude)} (${f(longitude, 3)}°, Ptolemy ${dms(mean[i])}), nM dt = ${dms(wrap(PTOLEMY.nM * days))} (Ptolemy ${dms(anomaly[i])}); in decimal minutes ${Math.floor(longitude)}°${f((longitude % 1) * 60, 1)}', ${Math.floor(wrap(PTOLEMY.nM * days))}°${f((wrap(PTOLEMY.nM * days) % 1) * 60, 1)}'`
+		);
+		console.log(
+			`   his mean motion in longitude implies ${f(accurate, 4)} d = ${Math.floor(accurate)} d ${f((accurate % 1) * 24, 2)} h; difference from the recorded ${f((accurate - days) * 24 * 60, 0)} min`
+		);
+		console.log(
+			`   d = Sun's true motion ${dms(sun[i])} - mean ${dms(mean[i])} = ${dms(sun[i] - mean[i])} (${f(sun[i] - mean[i], 4)}°)`
+		);
+	});
+}
+
 title('Fit: the three-eclipse method on the sources');
 Object.entries(TRIPLES).forEach(([name, data]) => {
 	const s = LunarEpicycle.threeEclipses(data);
@@ -349,6 +408,22 @@ console.log(
 console.log(
 	`   against Meeus at J2000: L'0 = ${MEEUS.L0}, M'0 + 180 = ${f(MEEUS.M0, 4)}; differences ${f((FIT.L0 - MEEUS.L0) * 60, 2)}', ${f(FIT.M0 - MEEUS.M0, 2)}°`
 );
+
+title('Fit: the data of the eclipses of 2025 - 2026, from the Sun');
+{
+	OURS.slice(1).forEach((t2, i) => {
+		const t1 = OURS[i];
+		const days = t2 - t1;
+		const sunMotion = norm180(sunLon(t2) - sunLon(t1) - 180) + 180;
+		const moonMotionTrue = norm180(moonLon(t2) - moonLon(t1) - 180) + 180;
+		const mean = (((MEEUS.n * days) % 360) + 360) % 360;
+		const a = (((MEEUS.nM * days) % 360) + 360) % 360;
+
+		console.log(
+			`interval ${i + 1}: ${f(days, 4)} d = ${Math.floor(days)} d ${f((days % 1) * 24, 1)} h; Sun's true motion ${f(sunMotion, 3)}° (the Moon's ${f(moonMotionTrue, 3)}°); mean n dt = ${f(mean, 3)}°; a = nM dt = ${f(a, 2)}°; d = ${f(sunMotion - mean, 3)}°`
+		);
+	});
+}
 
 title('Fit: every three consecutive eclipses, 2019 - 2030');
 {

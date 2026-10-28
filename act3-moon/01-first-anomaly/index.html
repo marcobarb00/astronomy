@@ -490,9 +490,62 @@
 		<p>
 			What the observations must supply is the size of the epicycle, $e =
 			r/R$, and where the Moon stood at one moment, its mean longitude and
-			its anomaly, which fix $L_0$ and $M_0$. The two mean motions need no
-			new observation, since the months of section 1 give them, and we
-			take the reference Moon's (Meeus 47).
+			its anomaly, which fix $L_0$ and $M_0$. To use observations made months
+			apart, the method also needs the two mean motions, which carry the
+			Moon from one observation to the next, so we find those first.
+		</p>
+
+		<h3>The mean motions</h3>
+
+		<p>
+			The mean motion in longitude comes from the Moon's return to the Sun.
+			In one synodic month $P_s$ the Moon gains a whole turn on the mean Sun,
+			so it moves 360° more than the mean Sun in the same time, and its daily
+			motion is
+		</p>
+
+		$$n = n_\odot + \frac{360^\circ}{P_s},$$
+
+		<p>
+			where $n_\odot$ is the mean Sun's daily motion of page 1.3.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy computes $n$ this way (IV 3). Hipparchus' synodic month,
+				29.5305941 days, comes from eclipses: an interval of 126,007 days and
+				1 hour between eclipses holds 4,267 months (IV 2). With the daily
+				motion of Ptolemy's Sun it gives $n = 13.1763822^\circ$ a day, which
+				falls behind the reference Moon by 19″ a year.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			The motion in anomaly follows from the relation of section 1, 251
+			synodic months to 269 anomalistic months:
+		</p>
+
+		$$n_M = \frac{269 \times 360^\circ}{251\,P_s}.$$
+
+		<div class="row">
+			<p>
+				With Hipparchus' month this is $13.0649838^\circ$ a day (IV 3).
+				Ptolemy later lowered it very slightly, by 0.0033″ a day, after
+				comparing the Moon's anomaly at two sets of eclipses 854 years apart
+				(IV 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Instead of Ptolemy's values we take the reference Moon's, $n =
+			13.17640^\circ$ and $n_M = 13.06499^\circ$ a day (Meeus 47), which belong
+			to the tropical and the anomalistic month of section 1.
 		</p>
 
 		<h3>Lunar eclipses as observations</h3>
@@ -538,13 +591,102 @@
 		<h3>The three-eclipse method</h3>
 
 		<p>
-			Three eclipses give the Moon's true longitude at three known moments.
-			The unknowns are $e$ and the mean longitude and the anomaly $M_2$ at
-			the second eclipse. Taking away the mean motion over each interval
-			removes the mean longitude: the true motion minus the mean motion,
-			$d_{12}$ from the first eclipse to the second and $d_{23}$ from the
-			second to the third, is the change of $q$. With $a_{12}$ and $a_{23}$
-			the arcs of anomaly covered in the two intervals, from $n_M$,
+			Three eclipses give three moments, $t_1$, $t_2$ and $t_3$, the middles
+			of the eclipses. The unknowns are $e$ and the mean longitude and the
+			anomaly $M_2$ at the second eclipse. Between the first two eclipses the
+			mean Moon advances by $n\,(t_2 - t_1)$, and the Moon goes round its
+			epicycle by the arc of anomaly $a_{12}$; between the second and the
+			third, by $a_{23}$:
+		</p>
+
+		$$a_{12} = n_M\,(t_2 - t_1), \qquad a_{23} = n_M\,(t_3 - t_2),$$
+
+		<p>
+			both counted beyond whole turns.
+		</p>
+
+		<div class="row">
+			<p>
+				The records give the middle of each eclipse in hours of the night,
+				counted by the sky, so the intervals between them are in apparent
+				solar time. Ptolemy reckons them "accurately", in mean solar days, as
+				the equation of time of page 2.2 requires (III 9), because the Moon
+				moves more than half a degree in an hour. For the Babylonian eclipses
+				the recorded intervals are 354 days 2½ hours and 176 days 20½ hours,
+				and his mean motions correspond to intervals 4 minutes longer and 20
+				minutes shorter.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			The Moon's true motion over each interval is where eclipses pay off. At
+			the middle of each eclipse the Moon is opposite the Sun, so from one
+			eclipse to the next it moves, beyond whole turns, exactly as far as the
+			Sun. In Ptolemy's words, the motion of the Sun "is the same as that of
+			the moon apart from complete revolutions" (IV 6). The Moon's true
+			motion is therefore the Sun's, computed with the eccentric of page 2.1,
+			and the Moon itself never has to be measured against the stars.
+		</p>
+
+		<p>
+			Taking away the mean motion over the same interval leaves the true
+			motion minus the mean motion, again beyond whole turns:
+		</p>
+
+		$$d_{12} = \big[\lambda_\odot(t_2) - \lambda_\odot(t_1)\big] - n\,(t_2 - t_1), \qquad d_{23} = \big[\lambda_\odot(t_3) - \lambda_\odot(t_2)\big] - n\,(t_3 - t_2).$$
+
+		<p>
+			At the eclipses only the times are measured; the Sun and the two mean
+			motions give everything else. The table follows Ptolemy's Babylonian
+			eclipses through these steps.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table eclipse-data">
+			<thead>
+				<tr>
+					<th>Babylonian eclipses (IV 6)</th>
+					<th>first to second</th>
+					<th>second to third</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>interval, as recorded</td>
+					<td>354 d 2½ h</td>
+					<td>176 d 20½ h</td>
+				</tr>
+				<tr>
+					<td>the Sun's true motion</td>
+					<td>$349^\circ 15'$</td>
+					<td>$169^\circ 30'$</td>
+				</tr>
+				<tr>
+					<td>the mean motion, $n\,\Delta t$</td>
+					<td>$345^\circ 51'$</td>
+					<td>$170^\circ 07'$</td>
+				</tr>
+				<tr>
+					<td>the arc of anomaly, $n_M\,\Delta t$</td>
+					<td>$306^\circ 25'$</td>
+					<td>$150^\circ 26'$</td>
+				</tr>
+				<tr>
+					<td>true minus mean, $d$</td>
+					<td>$+3^\circ 24'$ ($+3.40^\circ$)</td>
+					<td>$-0^\circ 37'$ ($-0.62^\circ$)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Since the mean longitude grows by exactly $n\,(t_2 - t_1)$, what is left
+			in $d_{12}$ is the change of the equation of anomaly between the two
+			eclipses, and the same holds for $d_{23}$:
 		</p>
 
 		$$d_{12} = q(M_2) - q(M_2 - a_{12}), \qquad d_{23} = q(M_2 + a_{23}) - q(M_2).$$
@@ -637,7 +779,9 @@
 			We apply the method to the three lunar eclipses around 2026, on 7
 			September 2025, 3 March 2026 and 28 August 2026. At the moments of
 			opposition, within minutes of mid-eclipse, the reference Moon is at
-			345.37°, 162.91° and 334.90°. The method gives $e = 0.0844$, a greatest
+			345.37°, 162.91° and 334.90°. Over the two intervals the Sun, and so the
+			Moon, moves 177.54° and 171.99°, while the mean Moon moves 168.66° and
+			181.37°, so $d_{12} = +8.88^\circ$ and $d_{23} = -9.38^\circ$. The method gives $e = 0.0844$, a greatest
 			equation of 4.84°, and puts the Moon 275.0° from the apogee at the second
 			eclipse.
 		</p>
@@ -867,10 +1011,13 @@
 
 		<div class="exercise" data-kind="compute">
 			<p>
-				Between Ptolemy's first two Babylonian eclipses the Moon covered
-				306°25′ of anomaly, and its true motion exceeded the mean motion by
-				3°24′; between the second and the third it covered 150°26′ of anomaly,
-				and the true motion fell short by 0°37′ (IV 6). Solve the first-order
+				Start from the intervals between Ptolemy's Babylonian eclipses as
+				recorded, 354 days 2½ hours and 176 days 20½ hours, and his daily
+				motions, $n = 13.1763822^\circ$ and $n_M = 13.0649829^\circ$. Find the
+				mean motion and the arc of anomaly over each interval, and compare
+				them with his values in the table of section 3. Then, with his values,
+				the true motions of the Sun, 349°15′ and 169°30′, give $d_{12}$ and
+				$d_{23}$ (IV 6). Solve the first-order
 				equations of section 3 for $X$ and $Y$, then find $e$ and $M_2$, and
 				compare with the exact solution of Figure 4 ("Babylon, 721 BC") and
 				with Ptolemy's 5.22 and 12°24′. The Moon's true longitude at the
@@ -878,11 +1025,22 @@
 			</p>
 			<details class="hint">
 				<p>
-					Use $a_{12} = 306.4167^\circ$, $a_{23} = 150.4333^\circ$, $d_{12} =
-					3.4^\circ$ and $d_{23} = -0.6167^\circ$, in radians on the left.
+					Multiply each interval, in days, by the daily motion and drop the
+					whole turns. For the equations use Ptolemy's values, $a_{12} =
+					306.4167^\circ$, $a_{23} = 150.4333^\circ$, with $d_{12}$ and $d_{23}$
+					in radians.
 				</p>
 			</details>
 			<details class="answer">
+				<p>
+					From the recorded intervals the mean motions are 345°48.7′ and
+					170°17.9′, and the arcs of anomaly 306°21.9′ and 150°35.8′, within a
+					few minutes of Ptolemy's 345°51′, 170°07′, 306°25′ and 150°26′: he
+					reckons the intervals in mean solar days, 4 minutes longer and 20
+					minutes shorter. With his values, $d_{12} = 349^\circ 15' - 345^\circ
+					51' = +3^\circ 24'$ and $d_{23} = 169^\circ 30' - 170^\circ 07' =
+					-0^\circ 37'$.
+				</p>
 				<p>
 					In radians $d_{12} = 0.05934$ and $d_{23} = -0.01076$, and the two
 					equations are
