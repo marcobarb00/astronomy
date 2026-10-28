@@ -120,6 +120,12 @@ section.
   days), never as 5;15 or 365;14,48. Marco asked for it on 2026-10-27:
   the notation is the sources', and readers do not know it. Replaced the
   earlier rule that ratios kept the source's notation. → STRUCTURE.md §6
+- **No comma between thousands.** Four digits take no separator (4267,
+  2000 years); longer numbers set off their thousands with a raised dot
+  (126·007 days, AD 13·790); an equation has no separator at all, since a
+  raised dot there reads as a product. Marco asked for it on 2026-10-28,
+  after reading "4,267" on page 3.1 as a number with decimals. → WRITING.md
+  §4
 
 ## Code
 

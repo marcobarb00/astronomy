@@ -3,7 +3,7 @@
    PAGE 2.3 · PRECESSION - SCRIPT (page.js)
    Six figures, each with its own init and draw (and update when it has
    controls):
-	 1. six stars over 6,000 years  (2D, static: (a) the change of
+	 1. six stars over 6000 years  (2D, static: (a) the change of
 									  longitude and latitude, (b) the
 									  declination)
 	 2. the equator turning over the ecliptic
@@ -23,7 +23,7 @@
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
-	 1. Figure 1: six stars over 6,000 years
+	 1. Figure 1: six stars over 6000 years
 	 2. Figure 2: the equator turning over the ecliptic
 	 3. Figure 3: the path of the pole
 	 4. Figure 4: Spica's records
@@ -53,7 +53,7 @@ function starOfDate(star, jd) {
 /* JD of 1 January of an astronomical year (-127 = 128 BC). */
 const jdOfYear = year => Time.julianDay(year, 1, 1);
 
-/* "2026", "AD 137", "128 BC", "AD 13,790" for an astronomical year. */
+/* "2026", "AD 137", "128 BC", "AD 13·790" for an astronomical year. */
 function yearText(year) {
 	const rounded = Math.round(year);
 
@@ -64,9 +64,11 @@ function yearText(year) {
 	return rounded < 1000 || rounded > 9999 ? `AD ${withThousands(rounded)}` : String(rounded);
 }
 
-/* 13790 -> "13,790"; numbers under 10,000 keep no separator. */
+/* 13790 -> "13·790": the thousands set off by a raised dot, never a
+   comma, which many readers take for a decimal separator (WRITING.md §4);
+   numbers under 10000 keep no separator. */
 function withThousands(n) {
-	return n >= 10000 ? `${Math.floor(n / 1000)},${String(n % 1000).padStart(3, '0')}` : String(n);
+	return n >= 10000 ? `${Math.floor(n / 1000)}·${String(n % 1000).padStart(3, '0')}` : String(n);
 }
 
 /* Ticks of a year axis at round dates, labelled in BC / AD: the tick of
@@ -97,7 +99,7 @@ const yearTicksEvery = every => (min, max, count) => {
 };
 
 /* ==========================================================================
-   1. FIGURE 1: SIX STARS OVER 6,000 YEARS
+   1. FIGURE 1: SIX STARS OVER 6000 YEARS
    Static. The reference sky from 3000 BC to AD 3000, every 50 years:
    (a) each star's longitude and latitude minus its values in 2026 (the
    longitudes from -70.0° to +13.3°, all six within 0.85° of each other;
@@ -214,7 +216,7 @@ const sixStarsFigure = {
    towards the ecliptic pole K): the ecliptic and the stars stay still,
    and the year turns the pole P of the equator about K, with the equator
    and its node γ (models/precession.js). The stars are at their places of
-   2026 in that frame. The year runs over one turn, 11,001 BC to AD 15,000.
+   2026 in that frame. The year runs over one turn, 11·001 BC to AD 15·000.
    ========================================================================== */
 
 /* The stars of the figure: the pole stars of the text, and four stars
@@ -299,7 +301,7 @@ const modelFigure = {
 		const { year, shift, lambda, dec, nearest } = this.state;
 
 		showLines('model-readout', [
-			`\\text{${yearText(year)}: shift } ${signed(shift, 2).replace('−', '-')}^\\circ`,
+			`${texText(`${yearText(year)}: shift `)} ${signed(shift, 2).replace('−', '-')}^\\circ`,
 			`\\text{Spica: } \\lambda = ${fixed(lambda, 2)}^\\circ,\\ \\delta = ${signed(dec, 2).replace('−', '-')}^\\circ`,
 			`\\text{nearest P: ${nearest.name}, } ${fixed(nearest.distance, 1)}^\\circ`
 		]);
@@ -402,7 +404,7 @@ function crossDirection(pole, angle) {
    3. FIGURE 3: THE PATH OF THE POLE
    Static, a blue plate (STYLE.md §7; shared/plate.js). The northern sky of
    2026 down to declination +35°, and in gold the pole of the equator over
-   one turn of the reference sky's precession, 10,859 BC to AD 14,910,
+   one turn of the reference sky's precession, 10·859 BC to AD 14·910,
    seen in the equatorial frame of 2026; ticks every thousand years. It
    circles the ecliptic pole K, at right ascension 18 h and declination
    90° minus the obliquity of 2026.
@@ -411,7 +413,7 @@ function crossDirection(pole, angle) {
 const POLE_PATH_FROM = -10858;
 const POLE_PATH_TO = 14910;
 const POLE_PATH_STEP = 50; // years
-const POLE_PATH_LABELS = { '-2999': '3000 BC', 2000: 'AD 2000', 8000: 'AD 8000', 14000: 'AD 14,000' };
+const POLE_PATH_LABELS = { '-2999': '3000 BC', 2000: 'AD 2000', 8000: 'AD 8000', 14000: 'AD 14·000' };
 
 const polePathFigure = {
 	init() {
@@ -562,8 +564,8 @@ function leastSquares(xs, ys) {
    5. FIGURE 5: THE TWO MODELS AGAINST THE SKY
    (a) Spica: uniform precession from its place of 2026 against the real
    Spica, whose precession (Vondrák et al. 2011) holds far beyond the
-   ephemeris' dates, so nothing is shaded: within 2.6' over 2,000 years
-   and 18' over 6,000. (b) The Sun: the eccentric with its moving apogee
+   ephemeris' dates, so nothing is shaded: within 2.6' over 2000 years
+   and 18' over 6000. (b) The Sun: the eccentric with its moving apogee
    (SolarEccentric.MOVING_2026), with the fixed apogee of page 2.1 as a
    ghost. Both centred on 2026.
    ========================================================================== */
@@ -582,8 +584,8 @@ const testFigure = {
 			start: CENTRE_2026 - half(2000),
 			end: CENTRE_2026 + half(2000),
 			spans: [
-				{ label: '2,000 years', years: 2000 },
-				{ label: '6,000 years', years: 6000 }
+				{ label: '2000 years', years: 2000 },
+				{ label: '6000 years', years: 6000 }
 			],
 			resolution: 36525,
 			validRange: null,
@@ -603,8 +605,8 @@ const testFigure = {
 			end: CENTRE_2026 + half(2000),
 			spans: [
 				{ label: '100 years', years: 100 },
-				{ label: '1,000 years', years: 1000 },
-				{ label: '2,000 years', years: 2000 }
+				{ label: '1000 years', years: 1000 },
+				{ label: '2000 years', years: 2000 }
 			],
 			ghostButtons: false
 		});

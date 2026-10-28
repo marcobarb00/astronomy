@@ -1995,6 +1995,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 === 8b. PAGE 1.2 (act1-stage/02-frames/page.js) ===
   EPS_TODAY                      23.435910446294
   formatDegrees                  "−5.47°" "0.00°" "12.35°"
+  texText                        "\\text{2026: shift }" "\\text{AD 13}{\\cdotp}\\text{790}" "\\text{126}{\\cdotp}\\text{007 days}"
   texDegrees                     "0.00^\\circ" "-5.47^\\circ" "360.00^\\circ"
   texAngle360                    "0.00^\\circ" "5.47^\\circ" "359.99^\\circ" "0.00^\\circ"
   formatAngle                    "−33.9°" "0.0°" "0.0°" "41.9°" "360.0°"
@@ -2068,7 +2069,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   fixed ranges                   [-25,35]  [-18,18]  [-10,10]  [-6,6]  [-26,26]  [-8,8]  [-20,20]
 
 === 8f. PAGE 2.3 (act2-sun/03-precession/page.js) ===
-  yearText                       "13,001 BC" "2831 BC" "128 BC" "1 BC" "AD 137" "2026" "AD 13,790"
+  yearText                       "13·001 BC" "2831 BC" "128 BC" "1 BC" "AD 137" "2026" "AD 13·790"
   yearTicks 1000                 -2999:3000 BC -1999:2000 BC -999:1000 BC 1000:1000 2000:2000 3000:3000
   leastSquares                   {"a":1,"b":2}
   fixed ranges                   [-80,20]  [-40,100]  [165,205]  [-2.5,2]
