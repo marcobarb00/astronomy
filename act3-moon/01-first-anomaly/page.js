@@ -14,7 +14,7 @@
 									   epicycle, (b) the plane of X, Y with
 									   the two equations; four data sets)
 	 5. the fitted epicycle against the Moon (error curve, 2026)
-	 6. Ptolemy's simple Moon        (error curve, AD 134 and 2,000 years)
+	 6. Ptolemy's simple Moon        (error curve, AD 134 and 2000 years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, models/lunar-epicycle.js, plot2d.js,
    errorcurve.js, components.js.
@@ -985,7 +985,7 @@ const ourErrorFigure = {
 };
 
 /* Figure 6: Ptolemy's simple Moon around his eclipse of 20 October 134,
-   and over 2,000 years (866 BC to AD 1134, inside the reference sky's
+   and over 2000 years (866 BC to AD 1134, inside the reference sky's
    range). */
 const ptolemyErrorFigure = {
 	init() {
@@ -997,7 +997,7 @@ const ptolemyErrorFigure = {
 			end: end,
 			spans: [
 				{ label: '2 months', years: EPICYCLE_DAYS / 365.25 },
-				{ label: '2,000 years', years: 2000 }
+				{ label: '2000 years', years: 2000 }
 			],
 			ghostButtons: false
 		});

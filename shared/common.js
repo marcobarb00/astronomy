@@ -375,6 +375,14 @@ function signed3(x) {
 	return (x < 0 && Number(text) !== 0 ? '-' : '+') + text;
 }
 
+/* Plain text as TeX, "\text{...}". A raised dot between thousands
+   (AD 13·790, WRITING.md §4) is set between two \text groups: KaTeX
+   takes "·" inside \text for the math command \cdotp and prints it
+   raw. */
+function texText(text) {
+	return `\\text{${text.split('·').join('}{\\cdotp}\\text{')}}`;
+}
+
 /* "\alpha=12°30'" */
 const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
 

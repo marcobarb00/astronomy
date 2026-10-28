@@ -63,7 +63,7 @@ next page.
   after almost nineteen centuries. Two questions follow: how can circles do
   this well, and why are they still wrong? The rest of the site answers both.
 - **Figures:** a strip of the zodiac with both positions; a date slider; the
-  error curve over 2,000 years.
+  error curve over 2000 years.
 - **Note:** this page uses the Act IV machinery, so it is **built last**.
 
 ### Act I: The stage
@@ -191,8 +191,8 @@ The first anomaly and the simplest complete model.
   place magnified (spring and summer, with presets). **First appearance of
   the error curve:** (a) the uniform circle (ghost) against the eccentric
   fitted to 2026 and (b) the eccentric alone on a scale a hundred times
-  finer; Ptolemy's Sun in AD 140 and over 2,000 years; the eccentric over
-  100 and 1,000 years. A photo: Peurbach's woodcut of the Sun's eccentric
+  finer; Ptolemy's Sun in AD 140 and over 2000 years; the eccentric over
+  100 and 1000 years. A photo: Peurbach's woodcut of the Sun's eccentric
   orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer (Hipparchus'
   $94\tfrac12$ and $92\tfrac12$ days, *Almagest* III 4; the reference
@@ -283,18 +283,18 @@ The first anomaly and the simplest complete model.
   or the equator turning westward over a fixed ecliptic (Copernicus, III 1),
   with γ in the direction of $\vec P \times \vec K$; the rate of change of
   declination, $p\sin\varepsilon\cos\beta\cos\lambda/\cos\delta$; the
-  pole's circle of 25,770 years (Thuban, Polaris, Vega); tropical versus
+  pole's circle of 25·770 years (Thuban, Polaris, Vega); tropical versus
   sidereal year, $Y_\text{s} = Y \cdot 360^\circ/(360^\circ - pY)$; the
   slow motion of the solar apogee; why the model of 2.1 drifts over
   centuries.
-- **Figures:** six stars of the reference sky over 6,000 years ((a) the
+- **Figures:** six stars of the reference sky over 6000 years ((a) the
   change of λ and β, one line each; (b) δ, a curve per star; static); the
   equator turning over the fixed ecliptic (3D in the ecliptic frame, year
-  slider and play, presets 2831 BC, 128 BC, 2026, AD 13,790); a blue plate
+  slider and play, presets 2831 BC, 128 BC, 2026, AD 13·790); a blue plate
   of the path of the pole among the northern stars (on trial: Marco decides
   whether to keep it); Spica's six records with the line fitted to them and
   Ptolemy's rule (static); the error curves of uniform precession for Spica
-  and of the eccentric with and without a moving apogee over 2,000 years;
+  and of the eccentric with and without a moving apogee over 2000 years;
   the thirteen records of Spica, Regulus and β Scorpii minus the real sky,
   with the error of Ptolemy's Sun (static).
 - **Fit:** Ptolemy's 1° in 100 years from Regulus (VII 2); the rate from
@@ -302,9 +302,9 @@ The first anomaly and the simplest complete model.
   from the reference sky around 2026; Copernicus' mean rate (III 6); the
   apogee's rate, 1.741° a century, from the seasons of seventeen years by
   Hipparchus' method, of which 1.397° is precession.
-- **Test:** uniform precession within 2.6′ of Spica over 2,000 years; the
-  eccentric with a moving apogee within 6′ over 2,000 years (38.5′ with the
-  apogee fixed), and page 2.2's equation of time within 11 s over 1,000
+- **Test:** uniform precession within 2.6′ of Spica over 2000 years; the
+  eccentric with a moving apogee within 6′ over 2000 years (38.5′ with the
+  apogee fixed), and page 2.2's equation of time within 11 s over 1000
   years; Ptolemy's slow rate comes mostly from his Sun: the records he
   reduced err as his Sun does, and 49.9″ less the 14.9″ a year of his
   Sun's drift gives 34.9″, near his 36″ (the full cause is debated).

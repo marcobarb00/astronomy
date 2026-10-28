@@ -12,7 +12,7 @@
    1. CONTROLS
    ========================================================================== */
 
-/* The year slider shows values up to "13,000 BC": a wider value column. */
+/* The year slider shows values up to "13·000 BC": a wider value column. */
 figure.fig {
 	--ctl-output: 6.4em;
 }

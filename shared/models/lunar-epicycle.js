@@ -216,8 +216,8 @@ const LunarEpicycle = (function () {
 		/* De Revolutionibus IV 5 [ff. 107v-109r]: Copernicus' eclipses of
 		   1511 October 6/7, 1522 September 5/6 and 1523 August 25/26. True
 		   329;47° and 349;9° against mean 334;47° and 346;10°; anomaly
-		   250;36° and 306;43°. Copernicus finds 8,604 parts where the
-		   deferent is 100,000, and the Moon 74;27° from the apogee at the
+		   250;36° and 306;43°. Copernicus finds 8604 parts where the
+		   deferent is 100·000, and the Moon 74;27° from the apogee at the
 		   second eclipse. */
 		copernicus: {
 			a12: 250 + 36 / 60,
