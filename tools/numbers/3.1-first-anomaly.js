@@ -253,6 +253,21 @@ title('Observation: the ancient period relations (Almagest IV 2, IV 3)');
    ========================================================================== */
 
 title("Model: Ptolemy's epicycle, 60 : 5;15 (Almagest IV 9, IV 10)");
+
+/* The ratios of the sources, in parts where the deferent is 60, written
+   as decimals on the page: Ptolemy's 5;13 and 5;14 from his eclipses
+   (IV 6) and the 5;15 he adopts (IV 9), Hipparchus' 6;15 and 4;46 (IV 11). */
+console.log(
+	`the ratios as decimals of 60: ${[
+		[5, 13],
+		[5, 14],
+		[5, 15],
+		[6, 15],
+		[4, 46]
+	]
+		.map(([units, minutes]) => `${units};${minutes} = ${f(units + minutes / 60, 2)}`)
+		.join(', ')}`
+);
 {
 	const e = PTOLEMY.e;
 	const g = SolarEccentric.greatestEquation(e);
@@ -662,7 +677,7 @@ title("Exercise 3: Ptolemy's three Babylonian eclipses (Figure 4, 'Babylon')");
 		`first order: X = ${f(s.first.X, 5)}, Y = ${f(s.first.Y, 5)}, r/R = ${f(s.first.e, 4)}, M2 = ${f(s.first.M2, 1)}°, ${f(100 * (1 - s.first.e / s.e), 1)}% short of the exact r/R`
 	);
 	console.log(
-		`exact: r/R = ${f(s.e, 5)} = ${sexagesimal(s.e * 60, 2)} parts in 60 (Ptolemy 5;13), M2 = ${dms(s.M2)} (12;24), q2 = ${dms(s.q2)} = ${f(s.q2, 3)}° (-0;59)`
+		`exact: r/R = ${f(s.e, 5)} = ${sexagesimal(s.e * 60, 2)} = ${f(s.e * 60, 3)} parts in 60 (Ptolemy 5;13 = ${f(5 + 13 / 60, 3)}), M2 = ${dms(s.M2)} (12;24), q2 = ${dms(s.q2)} = ${f(s.q2, 3)}° (-0;59)`
 	);
 	console.log(
 		`the mean Moon at the second eclipse: true Virgo 13;45 (163.75°) - q2 = ${f(163.75 - s.q2, 3)}° (Ptolemy: Virgo 14;44 = 164.733°)`

@@ -37,6 +37,9 @@ voice is the same.
    after sentence.
 8. Consistency with the previous page: the same terms for the same
    things, the same register.
+9. The stance of WRITING.md §9: a historical model presented as true or
+   as ours, a body "really" at the centre, a frame confused with an
+   arrangement.
 
 ## Report
 

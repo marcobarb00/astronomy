@@ -216,6 +216,32 @@
 			</aside>
 		</div>
 
+		<div class="row">
+			<p>
+				Both constructions take the Earth as at rest, as Hipparchus and
+				Ptolemy did: they are <em>geostatic</em>. Observations made from
+				the Earth cannot check that choice, because only relative motion
+				is observed, as Copernicus puts it: "every observed change of place
+				is caused by a motion of either the observed object or the observer
+				or, of course, by an unequal displacement of each"
+				(<em>De Revolutionibus</em> I 5).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			The eccentric can therefore be turned into a <em>heliostatic</em>
+			description. An equal circle, its centre offset the opposite way,
+			carries the Earth about a resting Sun, and the line from the Earth
+			to the Sun is at every moment the same, in length and direction, as
+			in Hipparchus' eccentric. The Sun is seen exactly where the eccentric
+			puts it, so the choice of the body at rest does not change a single
+			prediction. Copernicus, who chose the Sun, explains the Sun's
+			inequality in this way, with the Earth on an eccentric (III 15).
+		</p>
+
 		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
 		<figure class="photo">
 			<img src="images/peurbach-solar-orbs.jpg" width="800" height="772" loading="lazy"
@@ -307,11 +333,11 @@
 
 		<div class="row">
 			<p>
-				The real orbit is an ellipse, and to first order Kepler's ellipse
-				gives $q \approx -2e_\text{K} \sin M$, where $e_\text{K}$ is its
-				eccentricity. The eccentric gives the same directions if its
-				centre is offset by $e = 2e_\text{K}$, as our fit in section 3
-				confirms. Page 4.2 compares the two to second order.
+				Kepler's ellipse, which the modern theory keeps as the first
+				approximation to the Sun's path relative to the Earth, gives to
+				first order $q \approx -2e_\text{K} \sin M$, where $e_\text{K}$ is its eccentricity. The
+				eccentric gives the same directions if its centre is offset by $e
+				= 2e_\text{K}$, as the fit in section 3 confirms. Page 4.2 compares the two to second order.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -323,7 +349,7 @@
 		<p>
 			The lines from the Earth towards the equinoxes and the solstices
 			cut the eccentric into four arcs. Because the Earth is not at the
-			centre, the arcs are unequal, and the Sun, covering each of them at
+			centre of the eccentric, the arcs are unequal, and the Sun, covering each of them at
 			the same uniform rate, takes longest over the longest.
 		</p>
 
@@ -416,11 +442,12 @@
 		<h2 id="fit"><span class="step">3 · Fit</span>Eccentricity and apogee from two seasons</h2>
 
 		<p>
-			Besides the mean motion $n$, which page 1.3 took from the length of
-			the year, the eccentric has three parameters: the eccentricity $e$,
-			the longitude of the apogee $\lambda_A$, and the mean longitude at
-			one moment, which fixes $L_0$. Hipparchus found the first two from
-			the lengths of spring and summer alone.
+			The offset centre of the eccentric is what makes the seasons
+			unequal, so their lengths reveal it. Hipparchus found the centre,
+			its distance $e$ from the Earth and the direction of the apogee
+			$\lambda_A$, from the lengths of spring and summer alone. The mean
+			motion $n$ comes from the length of the year (page 1.3), and the
+			place of the Sun at one moment gives $L_0$.
 		</p>
 
 		<h3>Hipparchus' method</h3>
@@ -440,12 +467,12 @@
 		</div>
 
 		<p>
-			The Sun moves uniformly as seen from C, so the time it takes over a
-			season is proportional to the angle, at C, between the two points
-			where the circle meets the axes at the start and at the end of that
-			season. Figure 3 (a) draws these angles with C six times farther
-			from the Earth than it really is, so that they can be seen, and
-			Figure 3 (b) shows C at its true place.
+			On the eccentric the Sun moves uniformly as seen from C, so the
+			time it takes over a season is proportional to the angle, at C,
+			between the two points where the circle meets the axes at the start
+			and at the end of that season. Figure 3 (a) draws these angles with C six times farther
+			from the Earth than the fit puts it, so that they can be seen, and
+			Figure 3 (b) shows C at the fitted distance.
 		</p>
 
 		<p>
@@ -517,7 +544,7 @@
 						<canvas id="fit-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) the centre at its true place, magnified</p>
+						<p class="panel-title">(b) the centre at the fitted distance, magnified</p>
 						<canvas id="fit-plot"></canvas>
 					</div>
 				</div>
@@ -583,8 +610,8 @@
 		<div class="row">
 			<p>
 				Compared with Kepler's ellipse for 2026, from the elements used by
-				our reference sky, our $e$ equals twice its eccentricity
-				$e_\text{K}$ to within 0.1%, while our apogee is 0.35° too far
+				the reference sky, the fitted $e$ equals twice its eccentricity
+				$e_\text{K}$ to within 0.1%, while the fitted apogee is 0.35° too far
 				east.
 			</p>
 			<aside>
@@ -680,9 +707,9 @@
 			it. It has the same shape, with the eccentricity and the apogee he
 			took from Hipparchus' seasons, the mean Sun of his epoch, at noon at
 			Alexandria on 26 February 747 BC, and the mean motion of his year.
-			He counted days of the turning Earth, so we convert the reference
-			sky's uniform time to them with $\Delta T$ (page 1.3), almost six
-			hours at his epoch.
+			He counted solar days, which follow the Earth's slowing rotation,
+			so we turn the reference sky's uniform time into his with
+			$\Delta T$ (page 1.3), almost six hours at his epoch.
 		</p>
 
 		<!-- Figure 5: Ptolemy's Sun against the real Sun -->
@@ -724,8 +751,9 @@
 
 		<p>
 			The part of the error that changes through the year comes from his
-			parameters, since his eccentricity is a fifth too large and his
-			apogee was already 5° behind the real one.
+			parameters: his eccentricity is a fifth too large, and his apogee
+			lies 5° behind the apogee fitted to the real seasons of his time
+			(Exercise 3).
 		</p>
 
 		<p>
@@ -738,11 +766,11 @@
 		<h2 id="residual"><span class="step">5 · Residual</span>What the eccentric leaves out</h2>
 
 		<p>
-			Over 2026 our eccentric stays within 1.7′ of the real Sun. About
-			half of this error comes from the shape of the circle, which differs
-			from Kepler's ellipse in the terms of second order in $e$ (page
-			4.2), and most of the rest from the small error of our fitted
-			apogee.
+			Over 2026 the eccentric fitted to that year stays within 1.7′ of
+			the real Sun. About half of this error comes from the shape of the
+			circle, which differs from Kepler's ellipse in the terms of second
+			order in $e$ (page 4.2), and most of the rest from the small error
+			of the fitted apogee.
 		</p>
 
 		<p>
@@ -757,21 +785,20 @@
 			2026 and almost 20′ five centuries away.
 		</p>
 
-		<!-- Figure 6: our eccentric over longer spans -->
+		<!-- Figure 6: the eccentric fitted to 2026, over longer spans -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-residual"></div>
 			</div>
 			<figcaption>
 				Switch between the two spans: the error grows on either side of
-				2026, as the real apogee moves away from the place where we
-				fitted it.
+				2026, the year the eccentric was fitted to.
 			</figcaption>
 		</figure>
 
 		<p>
-			The error grows because the apogee is not fixed. Fitting the real
-			seasons of other years by Hipparchus' method shows it moving east:
+			Fitting the real seasons of other years by Hipparchus' method shows
+			why the error grows: the apogee is not fixed, and it moves east.
 		</p>
 
 		<div class="table-scroll">
@@ -860,8 +887,8 @@
 				origin of longitudes itself slides westward along the ecliptic,
 				so that every longitude counted from it grows by about 1.4° a
 				century, as page 2.3 explains. Only the remaining 0.3° a century
-				is a real turning of the Earth's orbit, caused by the pull of the
-				planets.
+				is a turning of Kepler's ellipse itself: its line of apsides, through
+				the apogee and the perigee, turns under the pull of the planets.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="perturbations"></div>
@@ -930,7 +957,7 @@
 		<div class="exercise" data-kind="compute">
 			<p>
 				Hipparchus' spring lasts 94½ days and his summer 92½ days, with
-				Ptolemy's year of 365;14,48 days (365.24667 days). Find the centre
+				Ptolemy's year of 365.24667 days. Find the centre
 				$C = (h, k)$ of his eccentric, then $e$, $\lambda_A$, the lengths
 				of autumn and winter and the greatest equation of centre, and
 				compare them with Ptolemy's values. Check with the preset
@@ -954,8 +981,8 @@
 					before the summer solstice, so $h$ was positive.
 				</p>
 				<p>
-					Then $e = \sqrt{h^2 + k^2} = 0.04138$, or 2;28,58 parts (2.483)
-					on a radius of 60, which Ptolemy rounds to 2;30 parts (2.5), that
+					Then $e = \sqrt{h^2 + k^2} = 0.04138$, or 2.483 parts
+					on a radius of 60, which Ptolemy rounds to 2.5 parts, that
 					is, $1/24$. The apogee is at $\lambda_A = \operatorname{atan2}(k,
 					h) = 65.44^\circ$, 24.56° before the summer solstice, where
 					Ptolemy has $24^\circ 30'$ and so $65^\circ 30'$
@@ -985,7 +1012,7 @@
 				order in $e$ (in radians). Then show that $|q|$ is greatest when
 				$\cos M = -e$, and that its greatest value is exactly $\arcsin e$.
 				Where is the Sun then, as seen from the Earth? Find Ptolemy's
-				greatest equation for $e = 1/24$, and ours for $e = 0.03347$.
+				greatest equation for $e = 1/24$, and that of the 2026 fit, $e = 0.03347$.
 			</p>
 			<details class="hint">
 				<p>
@@ -1021,7 +1048,7 @@
 					($2.383^\circ$ at $92.383^\circ$). For $e = 0.03347$
 					it is $1^\circ 55' 05''$, at $M = 91.92^\circ$. The first-order
 					formula $-e\sin M$ differs from the exact one by at most 1.96′ for
-					our Sun.
+					the 2026 fit.
 				</p>
 			</details>
 		</div>
@@ -1080,7 +1107,9 @@
 				the effect of an hour); III 5–6 (the table of anomaly); III 7 (the
 				epoch: Nabonassar, Pisces 0° 45′, Gemini 5° 30′); III 8 (computing a
 				position, the sign of the equation).</li>
-			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), III 16
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), I 5
+				[f. 3r] (only relative motion is observed); III 15 [f. 85r] (the
+				Earth's eccentric about the Sun); III 16
 				[ff. 87r–88v] (Hipparchus' seasons; al-Battani and al-Zarqali; the
 				eccentricity 1/31 and the apogee in 1515).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.3 (Hipparchus' model

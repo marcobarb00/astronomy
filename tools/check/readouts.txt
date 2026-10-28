@@ -1205,7 +1205,7 @@ Regenerate with: node tools/check/smoke.js --update
     #epicycle-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | q = +4.93^\circ,\quad \lambda = \bar\lambda + q = 72.90^\circ | \text{daily motion } 18.47^\circ \text{ (mean } 13.18^\circ)
     OUTPUT (eq-day): 1 Jan 2026
     #equivalence-readout: \text{1 Jan 2026:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | \lambda_A = \bar\lambda - M = 236.25^\circ | \text{epicycle: } \lambda = 72.90^\circ | \text{eccentric: } \lambda = 72.90^\circ
-    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694\ (5;13),\ M_2 = 12;24^\circ
+    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694,\ M_2 = 12^\circ 24'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
@@ -1261,7 +1261,7 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.1505
     #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
-  button "Ptolemy, 5;15"
+  button "Ptolemy, 0.0875"
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0875
     #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +3.73^\circ,\quad \lambda = \bar\lambda + q = 107.65^\circ | \text{daily motion } 13.99^\circ \text{ (mean } 13.18^\circ)
@@ -1280,11 +1280,11 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (eq-day): 5 Jun 2030
     #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
   button "Babylon, 721 BC"
-    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694\ (5;13),\ M_2 = 12;24^\circ
+    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694,\ M_2 = 12^\circ 24'
   button "Alexandria, AD 133"
-    #eclipses-readout: a_{12} = 110.35^\circ,\quad a_{23} = 81.60^\circ | d_{12} = -7.70^\circ,\quad d_{23} = +1.35^\circ | \text{first order: } r/R = 0.08241,\ M_2 = 61.8^\circ | \text{exact: } r/R = 0.08707,\ M_2 = 64.6^\circ | \text{Ptolemy: } 0.08722\ (5;14),\ M_2 = 64;38^\circ
+    #eclipses-readout: a_{12} = 110.35^\circ,\quad a_{23} = 81.60^\circ | d_{12} = -7.70^\circ,\quad d_{23} = +1.35^\circ | \text{first order: } r/R = 0.08241,\ M_2 = 61.8^\circ | \text{exact: } r/R = 0.08707,\ M_2 = 64.6^\circ | \text{Ptolemy: } 0.08722,\ M_2 = 64^\circ 38'
   button "Copernicus, 1511"
-    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74;27^\circ
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   button "2025 – 2026"
     #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
   button "2 months"
