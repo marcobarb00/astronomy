@@ -145,7 +145,7 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (Ptolemy's 365;14,48 days, *Almagest*
+- **Fit:** the rate from the year (Ptolemy's 365.24667 days, *Almagest*
   III 1), the constant from the mean Sun at J2000, the longitude from one
   timed transit.
 - **Test:** the stars, against apparent sidereal time (within 0.7 s, the
@@ -341,7 +341,7 @@ The first anomaly and the simplest complete model.
   Newton's method.
 - **Figures:** the Moon's daily motion through 2026 with its full Moons
   (static); the epicycle with $q$ over two months (date and $r/R$,
-  starting at an exaggerated 0.3, with Ptolemy's 5;15 as a preset); the
+  starting at an exaggerated 0.3, with Ptolemy's 5.25 in 60 as a preset); the
   epicycle and its eccentric drawn together, the parallelogram O K Moon C
   (date, a month or nine years); the three-eclipse method on four sets of
   eclipses, with the two equations in the plane of $X, Y$; the error curve
@@ -356,8 +356,8 @@ The first anomaly and the simplest complete model.
   Sun's true motion between the eclipses (the Moon's, beyond whole turns)
   minus $n\,\Delta t$, worked through for the Babylonian eclipses (a
   table); $e$ and the anomaly from three
-  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5;13
-  and 5;14 (he uses 5;15, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
+  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5.22
+  and 5.23 where the deferent is 60 (he uses 5.25, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
   IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
   consecutive triples of 2019 to 2030 range from 0.080 to 0.093, and a
   least-squares fit to the 25 new and full Moons of 2026 gives 0.0864.
