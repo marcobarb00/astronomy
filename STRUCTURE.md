@@ -145,7 +145,7 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (Ptolemy's 365;14,48 days, *Almagest*
+- **Fit:** the rate from the year (Ptolemy's 365.24667 days, *Almagest*
   III 1), the constant from the mean Sun at J2000, the longitude from one
   timed transit.
 - **Test:** the stars, against apparent sidereal time (within 0.7 s, the
@@ -341,16 +341,23 @@ The first anomaly and the simplest complete model.
   Newton's method.
 - **Figures:** the Moon's daily motion through 2026 with its full Moons
   (static); the epicycle with $q$ over two months (date and $r/R$,
-  starting at an exaggerated 0.3, with Ptolemy's 5;15 as a preset); the
+  starting at an exaggerated 0.3, with Ptolemy's 5.25 in 60 as a preset); the
   epicycle and its eccentric drawn together, the parallelogram O K Moon C
   (date, a month or nine years); the three-eclipse method on four sets of
   eclipses, with the two equations in the plane of $X, Y$; the error curve
   of our epicycle (uniform Moon as ghost, dots at new and full Moon); the
   error curve of Ptolemy's simple Moon. A photo: the eclipse of 7 September
   2025 (Donatiello, CC0).
-- **Fit:** the mean motions from Meeus 47; $e$ and the anomaly from three
-  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5;13
-  and 5;14 (he uses 5;15, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
+- **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ (Ptolemy's from
+  his Sun and Hipparchus' synodic month, IV 2-3) and $n_M = 269 \times
+  360^\circ / (251\,P_s)$ (corrected in IV 7), ours from Meeus 47; the data
+  of a triple: the arcs of anomaly $a = n_M\,\Delta t$ from the intervals,
+  reckoned in mean solar days (the equation of time, III 9), and $d$ = the
+  Sun's true motion between the eclipses (the Moon's, beyond whole turns)
+  minus $n\,\Delta t$, worked through for the Babylonian eclipses (a
+  table); $e$ and the anomaly from three
+  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5.22
+  and 5.23 where the deferent is 60 (he uses 5.25, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
   IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
   consecutive triples of 2019 to 2030 range from 0.080 to 0.093, and a
   least-squares fit to the 25 new and full Moons of 2026 gives 0.0864.
@@ -610,8 +617,8 @@ Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
 written in degrees, minutes and seconds ($23^\circ 51' 20''$), always with its
 decimal value. Other sexagesimal quantities are written as decimals: a ratio on
-a radius of 60 as 5.25 (Ptolemy's 5;15), a length of the year as 365.24667
-days (his 365;14,48). The sources' semicolon notation is not used on the pages;
+a radius of 60 as 5.25, a length of the year as 365.24667 days. The
+sources' semicolon notation is not used on the pages;
 the scripts in `tools/numbers/` keep it, to check the values against the
 sources.
 

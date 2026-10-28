@@ -48,7 +48,8 @@ button.play {
 
 /* ==========================================================================
    3. THE TABLES OF THE PROSE
-   The five months: a narrow table, first two columns left.
+   The five months: a narrow table, first two columns left; the data of
+   the Babylonian eclipses: first column left.
    ========================================================================== */
 
 table.prose-table {
@@ -59,6 +60,13 @@ table.prose-table {
 table.prose-table th:nth-child(-n + 2),
 table.prose-table td:nth-child(-n + 2) {
 	text-align: left;
+}
+
+/* The data of the Babylonian eclipses: the two intervals are numbers,
+   centred like the rest of the shared tables. */
+table.prose-table.eclipse-data th:nth-child(2),
+table.prose-table.eclipse-data td:nth-child(2) {
+	text-align: center;
 }
 
 /* ==========================================================================
