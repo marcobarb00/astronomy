@@ -63,6 +63,7 @@ const SHARED_FILES = [
 	'shared/models/equation-of-time.js',
 	'shared/models/precession.js',
 	'shared/models/lunar-epicycle.js',
+	'shared/models/lunar-crank.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -76,7 +77,8 @@ const PAGE_FILES = [
 	'act2-sun/01-uneven-year/index.html',
 	'act2-sun/02-equation-of-time/index.html',
 	'act2-sun/03-precession/index.html',
-	'act3-moon/01-first-anomaly/index.html'
+	'act3-moon/01-first-anomaly/index.html',
+	'act3-moon/02-evection/index.html'
 ];
 
 /* ==========================================================================
@@ -655,6 +657,29 @@ function lunarEpicycleSection(c) {
 	});
 }
 
+function lunarCrankSection(c) {
+	const { Time, LunarCrank } = c;
+	const sets = { PTOLEMY: LunarCrank.PTOLEMY, FIT_2026: LunarCrank.FIT_2026 };
+
+	title("6h. PTOLEMY'S CRANK (models/lunar-crank.js)");
+	Object.entries(sets).forEach(([name, p]) => {
+		row(name, num(p.L0), num(p.M0), num(p.e, 12), num(p.c, 12), num(p.sun.L0), num(p.sun.epoch));
+	});
+	[0, 45, 90.5, 120, 180, 245.9].forEach(twoD => {
+		const g = LunarCrank.geometry(LunarCrank.PTOLEMY.e, LunarCrank.PTOLEMY.c, twoD, 333.2, true);
+
+		row(`geometry 2D = ${twoD}`, num(g.rho), num(g.shift), num(g.q), num(g.distance));
+	});
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = LunarCrank.state(LunarCrank.FIT_2026, jd);
+		const p = LunarCrank.state(LunarCrank.PTOLEMY, jd);
+
+		row(`${label}`, num(s.elongation), num(s.M), num(s.q), num(s.lambda), num(s.distance), num(p.lambda));
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -952,6 +977,27 @@ function page31(c) {
 	);
 }
 
+function page32(c) {
+	title('8h. PAGE 3.2 (act3-moon/02-evection/page.js)');
+	row('YEAR_START', num(inContext(c, 'YEAR_START')));
+	row('anomalyTicks', JSON.stringify(c.anomalyTicks()));
+	row(
+		'directionGeometry',
+		(() => {
+			const g = c.directionGeometry();
+
+			return [num(g.shift), num(g.meanApogee), vec(g.K, 9), vec(g.N, 9), vec(g.L, 9)].join(' ');
+		})()
+	);
+	row('epicycleDistance', [0, 10, 20].map(d => num(c.epicycleDistance(inContext(c, 'YEAR_START') + d))).join(' '));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'EQUATION_RANGE')),
+		JSON.stringify(inContext(c, 'Q_RANGE')),
+		JSON.stringify(inContext(c, 'DIAMETER_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1017,6 +1063,7 @@ function buildTable() {
 	equationOfTimeSection(shared);
 	precessionSection(shared);
 	lunarEpicycleSection(shared);
+	lunarCrankSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1025,6 +1072,7 @@ function buildTable() {
 	page22(pages[4]);
 	page23(pages[5]);
 	page31(pages[6]);
+	page32(pages[7]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

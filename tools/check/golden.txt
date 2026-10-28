@@ -1934,6 +1934,29 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 June solstice             167.722025286  272.365088387  4.803701210  172.525726495  255.356936899  162.691578229
   range end                      74.518594289  126.358287740  -4.092609954  70.425984335  308.160306549  54.008398235
 
+=== 6h. PTOLEMY'S CRANK (models/lunar-crank.js) ===
+  PTOLEMY                        41.366666667  268.816666667  0.087500000000  0.171944444444  330.750000000  1448637.916888889
+  FIT_2026                       218.320909000  320.013246000  0.084402000000  0.176153000000  280.466460000  2451545.000000000
+  geometry 2D = 0                1.000000000  0.000000000  2.095733193  1.078822862
+  geometry 2D = 45               0.940664005  -6.529567128  1.697769781  1.023194109
+  geometry 2D = 90.5             0.808507769  -12.027386282  1.431017698  0.893394124
+  geometry 2D = 120              0.728584304  -13.046511634  1.464703328  0.813841382
+  geometry 2D = 180              0.656111111  0.000000000  3.075743643  0.735271547
+  geometry 2D = 245.9            0.742833865  13.134929751  3.967064621  0.811871844
+  range start                    356.482778311  1.737802647  -0.053345767  251.471918365  1.082788000  256.459500975
+  Thales eclipse                 352.310997079  158.208272386  -2.155747524  48.925703661  0.915967080  49.489820791
+  Ptolemy                        76.588465301  35.198715273  -4.644823474  188.272865082  0.725764669  186.747503166
+  last Julian day                204.455273470  204.530035614  2.968244303  49.524175460  0.858251184  41.346376683
+  first Gregorian day            216.646022584  217.595028564  4.487923522  64.220251154  0.803152510  56.169839515
+  Sputnik (Meeus 7.a)            130.565494832  344.287165414  2.728767602  326.513153141  0.853050153  317.528194622
+  Meeus 12.a                     136.966441502  54.328524116  -3.700350776  150.965149642  0.881170524  141.569917985
+  Meeus 47.a                     113.846571777  190.200630004  -0.350457539  133.944194894  0.610605079  123.120959582
+  Meeus 25.a                     196.944408830  74.159332838  -4.835904601  33.915699156  0.983495369  24.115321137
+  J2000.0                        297.854449000  320.013246000  5.078449357  223.399358357  0.765025345  214.117504380
+  2026 January 1                 147.303414095  191.718797430  0.232566853  68.202596748  0.797144722  57.346458671
+  2026 June solstice             78.016887218  272.365088387  7.006529402  174.728554688  0.680270217  165.053153715
+  range end                      154.970550391  126.358287740  -4.770704138  69.747890151  0.888011938  53.354706978
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2080,6 +2103,13 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   dateYearText                   "1 Jan 2026" "6 Nov 2034"
   clearestDirection              180.000000000 90.000000000 110.000000000
   fixed ranges                   [11.5,15.5]  [-18,18]  [-0.12,0.12]
+
+=== 8h. PAGE 3.2 (act3-moon/02-evection/page.js) ===
+  YEAR_START                     2461041.500000000
+  anomalyTicks                   [{"value":0,"label":"0°"},{"value":90,"label":"90°"},{"value":180,"label":"180°"},{"value":270,"label":"270°"},{"value":360,"label":"360°"}]
+  directionGeometry              -12.027386282 77.972613718 [0.000000000, 0.808507769] [-0.171937897, 0.001500479] [-0.022311066, 0.893115490]
+  epicycleDistance               0.917517417 1.068086664 0.999116755
+  fixed ranges                   [-9,9]  [-8,8]  [25,60]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -3058,7 +3088,7 @@ Sep - Oct 134: largest error -3.61°; at the new and full Moons -1.17, -1.06, -1
 his elongation 12.190746937°/d, real 12.190749114°/d: from 135 to 2026 -1.50°
 check: at the second Babylonian eclipse 164.743° (Virgo 14;44 = 164.733), anomaly 12.406° (12.400)
 
-=== Residual: Hipparchus' sighting of 5 August 127 BC (Almagest V 3) ===
+=== Residual: Hipparchus' sighting of 5 August 128 BC (Almagest V 3; Toomer -127 Aug 5) ===
 first anomaly at 257;47: q = +4.98°; predicted Sun - Moon = 88.94°, observed 86.25°: the model is 2.69° short
 Ptolemy: true minus mean 7.67° (7 2/3) instead of about 5
 
@@ -3120,3 +3150,123 @@ the mean Moon at the second eclipse: true Virgo 13;45 (163.75°) - q2 = 164.736�
 Figure 1: the daily motion between 11.79 and 15.31°/d
 Figure 2 (b): q for r/R up to 0.3: greatest asin 0.3 = 17.46°
 Figure 4 (b): the largest |X| or |Y| of the four solutions is 0.0849
+
+=== 9. tools/numbers/3.2-evection.js ===
+
+=== Introduction: page 3.1's epicycle and the crank in 2026 ===
+the epicycle: at the syzygies within 39.8', largest 3.24°; the complete crank: largest 1.80°
+
+=== Observation: the whole equation at the syzygies and at the quarters, 2021 - 2030 (Figure 1) ===
+247 new and full Moons, 248 quarters
+greatest |true - mean|: at the syzygies 5.26°, at the quarters 7.92°
+least-squares amplitude of -a sin M: at the syzygies 4.96°, at the quarters 7.68°
+
+=== Observation: page 3.1's epicycle at the quarters of 2026 ===
+largest error at the 25 quarters 2.90°; it is about 2.78° x sin M
+
+=== Observation: Ptolemy's and Hipparchus' sightings near the quarters (Almagest V 3) ===
+AD 139 Feb 9: anomaly 87;19, first anomaly q = -4°58'30"; observed Scorpius 9;40 - mean 17;20 = -7;40
+128 BC Aug 5 (Toomer -127): anomaly 257;47, first anomaly q = +4°58'47"; observed 93;55 - 86;15 = +7°40'00"
+7 2/3° = 7.667°
+
+=== Model: the greatest equation in Ptolemy's crank (Almagest V 2, V 4) ===
+OK at syzygy 1 (60 parts), at quadrature 1 - 2c = 0.65611 (39.367 parts); greatest equation asin e = 5°01'11" (5.02°), asin(e / (1 - 2c)) = 7°39'50" (7.66°)
+
+=== Model: Figure 2, the crank fitted to 2026 without the direction ===
+1 Jan 2026 0h: mean longitude 67.97°, D 147.30°, OK 0.8815, M 191.72°, q 1.23°
+greatest equation: at syzygy 4.84°, at quadrature 7.49°
+
+=== Model: the direction of the epicycle, the example of Almagest V 6 (Figure 3) ===
+2D = 90;30, M = 333;12: shift of the mean apogee -12°01'39" (Ptolemy 12;1), anomaly from the true apogee 345°13'39" (345;13)
+OK = 48.510 parts (Ptolemy 48;31 = 48.517); q = 1°25'52" (Ptolemy +1;26); without the direction q = 2°32'52"
+the greatest shift 13°08'06" (13.1°) at 2D = 245.9° (D = 123.0°)
+as decimals: 2D = 90;30 = 90.5°, M = 333;12 = 333.2°, from the true apogee 345;13 = 345.2°; q +1;26 = 1.43°, without the direction 2.55°
+
+=== Model: the greatest equation at 2D = 120° (Almagest V 7, a check) ===
+OK = 43.715 parts (Ptolemy 43;43); greatest equation 6°53'51" (Ptolemy 6;54)
+
+=== Model: the first-order expansion, q ~ -e0 sin M + e0 k sin(M - 2D) ===
+Ptolemy: e0 = e / (1 - c) = 0.1057 rad = 6.05°, k = c / (1 - c) = 0.2076, e0 k = 0.02194 = 1.26°, e0 k / 2 = 0.63°
+Meeus 47.A: 6.288774° sin M' and 1.274027° sin(2D - M'), M' = M - 180°
+table, coefficients (deg) of sin M, sin(M - 2D), sin(M + 2D):
+   crank alone        -6.26  0.66  0.66
+   with the direction -6.18  1.33  -0.06
+   reference (Meeus)  -6.29  1.27  -0.05
+
+=== Fit: Ptolemy's eccentric from 5;15 and 7;40 (Almagest V 4) ===
+OG = 5.25 / sin 7°40' = 39.35; radius (60 + OG) / 2 = 49.68; OC = 10.32
+Ptolemy: OG 39;22 = 39.37, radius 49;41 = 49.68, OC 10;19 = 10.32; c = 0.1719
+the point N from Hipparchus' sightings (V 5): ON = 10;18 = 10.30 and 10;20 = 10.33
+
+=== Fit: c fitted to the quarters (golden section on the sum of squares) ===
+the epicycle of page 3.1: e = 0.084402 (5.06 parts where OA = 60)
+the 25 quarters of 2026: c = 0.176153 (model file 0.176153) = 0.1762, 10.57 parts (Ptolemy 10.32)
+greatest equation: at the quarters 7.49°, at new and full Moon 4.84°
+the quarters of 2021 - 2030: c = 0.1778
+
+=== Test: the error over 2026 (Figure 4) ===
+epicycle  largest 3.24° on 10 Jun 2026, rms 85'; at the syzygies 40', quarters 2.90°, octants 2.88°
+crank     largest 2.72° on 28 Jan 2026, rms 54'; at the syzygies 40', quarters 1.05°, octants 2.59°
+full      largest 1.80° on 16 Sep 2026, rms 43'; at the syzygies 42', quarters 1.08°, octants 1.51°
+the complete crank, 1976 - 2076: largest 1.99° on 9 Nov 1979
+
+=== Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (Figure 5) ===
+simple Moon from -3.63° to 1.83° (spread 5.45°, mean -0.87°)
+complete Moon from -1.58° to 0.27° (spread 1.85°, mean -0.87°)
+the complete Moon's spread is 0.34 of the simple Moon's
+his Sun over the same months: mean error -42'
+both on average 0.9° behind
+   the year 1000: mean error -4.8°
+   the year 2026: mean error -10.1°
+
+=== Test: the distances of Ptolemy's model (Almagest V 4, V 13) ===
+where OA = 60: greatest 60 + 5.25 = 65.25, least 39.37 - 5.25 = 34.12; ratio 1.91
+in Earth radii (OA = 59): least 33.55; the real Moon's nearest of 2026 55.92, 1.67 times farther
+
+=== Test: the real Moon in 2026 (Figure 6) ===
+nearest 356651 km on 24 Dec 2026, farthest 406417 km on 11 Dec 2026; ratio 1.140; apparent diameter 29.4' .. 33.5'
+
+=== Test: the models with their greatest distance set to the real farthest of 2026 (Figure 6) ===
+the crank: 29.4' .. 56.6' (x 1.92)
+page 3.1's epicycle: 29.4' .. 34.8' (x 1.18)
+Ptolemy's 31;20' at the greatest distance would become 59.9'
+
+=== Test: the Sun's eccentric of page 2.1 (Almagest V 14) ===
+the eccentric: distance varies by +-3.35%, the real one by +-1.67%; the Sun's diameter at 1 AU 32.0': eccentric 31.0' .. 33.1', real 31.5' .. 32.5'
+
+=== Residual: what remains of the crank's error in 2026 ===
+variation 0.658314° sin 2D = 39'; annual equation 0.185116° = 11'
+the error's projection on -(variation): 1.03
+rms 43', after removing the variation 33'
+share of the variance removed: 44%
+at the syzygies of 2026: the crank 42', the epicycle 40'
+regression (arcmin): sin 2D -40.2; first anomaly 37.1 (sin M' -18.8, cos M' 31.9); sin M_sun 11.9; sin 2F 2.0
+page 3.1's anomaly at the epoch minus Meeus': 5.05°
+largest error after removing the variation: 1.63°
+
+=== Residual: Copernicus (De Rev. IV 8, IV 17, IV 22) ===
+epicycles 1097 and 237 where the deferent is 10000; the Moon at the quarters 52;17 = 52.28 .. 68 1/3 = 68.33 Earth radii (IV 17): ratio 1.31
+
+=== Exercise 1: the eccentric and the distances (V 4, V 13, V 14) ===
+OG = 39.352, radius 49.676, OC 10.324 (Ptolemy 39.367, 49.683, 10.317)
+with Ptolemy's values: greatest 65.25, least 39.367 - 5.25 = 34.117; ratio 1.913
+in Earth radii (OA = 59): 64.16 (64;10) and 33.55 (33;33)
+the diameter: 31;20' = 31.33' at the greatest distance, 59.9' at the least
+the real Moon in 2026: ratio 1.140, 29.4' .. 33.5'
+
+=== Exercise 2: the direction to first order ===
+shift at 2D = 90;30: -c sin 2D = -9.85°, -kappa sin 2D = -11.90°, exact -12.03° (kappa = 0.2076); Ptolemy 12;1 = 12.02°
+(the coefficients are in the table of section 8)
+
+=== Exercise 3: Ptolemy's parallax of 1 October 135 (Almagest V 13) ===
+his model: elongation 78.47° (78;13), anomaly 262.60° (262;20), distance 40.38 parts where OA = 60 (Ptolemy 40;25 = 40.42)
+zenith distances 50;55 = 50.92°, 49;48 = 49.80°
+his parallax 50;55 - 49;48 = 67' -> 39;45 = 39.75 Earth radii; OA = 39.75 x 60 / 40.42 = 59.01 (Ptolemy 59)
+from 67' and sin p = sin 50;55 / d: d = 39.83 Earth radii (Toomer: more accurate 39;50 = 39.83)
+the reference Moon then: 385409 km = 60.4 Earth radii; parallax sin p = sin 50;55 / d: 44' (his 67')
+
+=== Scales ===
+Figure 1: |true - mean| up to 7.92°
+Figure 2 (b): |q| of the fitted crank up to asin(e / (1 - 2c)) = 7.49°
+Figure 2 (a): the greatest distance OL = 1 + e = 1.0844
+Figure 6: the real diameter 29.39' .. 33.49' (the crank's in section 11)

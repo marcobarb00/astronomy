@@ -1,0 +1,65 @@
+/* ==========================================================================
+   PAGE 3.2 · EVECTION AND THE DISTANCE PROBLEM - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The square drawings
+	 3. The table of the prose
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* The date slider's value runs up to "28 Feb, 23 h". */
+figure.fig {
+	--ctl-output: 7.4em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* A play button keeps its width between "Play two months" and "Pause". */
+button.play {
+	min-width: 10.5em;
+}
+
+/* ==========================================================================
+   2. THE SQUARE DRAWINGS
+   The canvases set their own square size (page.js); centre them.
+   ========================================================================== */
+
+#crank-canvas,
+#direction-canvas,
+#direction-zoom {
+	display: block;
+	margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. THE TABLE OF THE PROSE
+   The coefficients of the first-order expansion: first column left.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+}
