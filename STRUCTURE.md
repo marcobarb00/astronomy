@@ -617,8 +617,8 @@ Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
 written in degrees, minutes and seconds ($23^\circ 51' 20''$), always with its
 decimal value. Other sexagesimal quantities are written as decimals: a ratio on
-a radius of 60 as 5.25 (Ptolemy's 5;15), a length of the year as 365.24667
-days (his 365;14,48). The sources' semicolon notation is not used on the pages;
+a radius of 60 as 5.25, a length of the year as 365.24667 days. The
+sources' semicolon notation is not used on the pages;
 the scripts in `tools/numbers/` keep it, to check the values against the
 sources.
 
