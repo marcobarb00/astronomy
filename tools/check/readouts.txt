@@ -1343,6 +1343,79 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
+=== act3-moon/02-evection/index.html ===
+  as loaded
+    OUTPUT (crank-day): 1 Jan, 00 h
+    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.30^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.49^\circ
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #crank-day = 0
+    OUTPUT (crank-day): 1 Jan, 00 h
+    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.30^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.49^\circ
+  slider #crank-day = 60
+    OUTPUT (crank-day): 2 Mar, 00 h
+    #crank-readout: \text{2 Mar, 00 h:}\quad \bar\lambda = 138.55^\circ,\quad D = 158.75^\circ | \rho = \text{OK} = 0.945,\quad M = 255.62^\circ | q = +5.06^\circ,\quad \arcsin(e/\rho) = 5.12^\circ
+  slider #crank-day = 30
+    OUTPUT (crank-day): 31 Jan, 00 h
+    #crank-readout: \text{31 Jan, 00 h:}\quad \bar\lambda = 103.26^\circ,\quad D = 153.03^\circ | \rho = \text{OK} = 0.915,\quad M = 223.67^\circ | q = +3.90^\circ,\quad \arcsin(e/\rho) = 5.29^\circ
+  slider #crank-day + one key step
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  button "‹ previous day"
+    OUTPUT (crank-day): 30 Jan, 01 h
+    #crank-readout: \text{30 Jan, 01 h:}\quad \bar\lambda = 90.74^\circ,\quad D = 141.44^\circ | \rho = \text{OK} = 0.845,\quad M = 211.26^\circ | q = +3.24^\circ,\quad \arcsin(e/\rho) = 5.73^\circ
+  button "next day ›"
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #equation-plot at 0.3
+  hover #equation-plot at 0.6
+  hover #equation-plot at 0.9
+  hover #equation-plot left
+  hover #crank-plot at 0.3
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  hover #crank-plot at 0.6
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  hover #crank-plot at 0.9
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  hover #crank-plot left
+    OUTPUT (crank-day): 31 Jan, 01 h
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+  hover #error-ours-plot at 0.3
+    .errorcurve-readout: 18 Mar 2002 · epicycle: +100.5′ · crank alone: +1.3′ · complete model: −30.7′
+  hover #error-ours-plot at 0.6
+    .errorcurve-readout: 14 Oct 2034 · epicycle: −12.0′ · crank alone: −9.6′ · complete model: −36.2′
+  hover #error-ours-plot at 0.9
+    .errorcurve-readout: 11 May 2067 · epicycle: −2.7′ · crank alone: +18.6′ · complete model: +17.3′
+  hover #error-ours-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-ptolemy-plot at 0.3
+    .errorcurve-readout: 8 May 348 BC · simple Moon: +105.7′ · complete Moon: +24.9′
+  hover #error-ptolemy-plot at 0.6
+    .errorcurve-readout: 27 Oct 304 · simple Moon: −166.5′ · complete Moon: −87.6′
+  hover #error-ptolemy-plot at 0.9
+    .errorcurve-readout: 16 Apr 956 · simple Moon: −343.6′ · complete Moon: −300.3′
+  hover #error-ptolemy-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #diameter-plot at 0.3
+  hover #diameter-plot at 0.6
+  hover #diameter-plot at 0.9
+  hover #diameter-plot left
+  dragged 0 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2723,7 +2796,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 143 tests pass.
+    #summary: All 149 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

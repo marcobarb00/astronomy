@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 3.2 · EVECTION AND THE DISTANCE PROBLEM
+     Act III, the Moon. At the quarters the Moon's equation reaches 7⅔°, not
+     5° (Almagest V 2-3); Ptolemy carries the epicycle on an eccentric whose
+     centre turns about the Earth (V 2, V 4), and directs its apogee from a
+     point N opposite that centre (V 5); to first order the model is the
+     ellipse's term plus the evection. It halves the error in longitude and
+     makes the Moon's distance vary by a factor of 1.9, which its apparent
+     size does not show (Copernicus, De Revolutionibus IV 2).
+     Numbers: tools/numbers/3.2-evection.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>3.2 · Evection and the distance problem · Predicting the Sky</title>
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/lunar-epicycle.js"></script>
+	<script defer src="../../shared/models/lunar-crank.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="3.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Page 3.1 ended with an epicycle that places the Moon within 40′ at
+			every new and full Moon and is wrong by up to 3° in between. The large
+			errors come near the quarters, when the Moon is 90° from the Sun, the
+			positions that eclipses never sample.
+		</p>
+
+		<p>
+			Ptolemy found the law of this second inequality and built a model for
+			it, in which the epicycle comes nearer the Earth at the quarters. It
+			brings the largest error in longitude down from 3.2° to 1.8°. It also
+			makes the Moon's distance change by nearly a factor of two, and the
+			Moon's apparent size shows that it does not.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The Moon's equation at the quarters</h2>
+
+		<p>
+			To see the discrepancy, we take the real Moon's whole equation, its
+			true longitude minus its mean longitude, at two kinds of moments: the
+			new and full Moons, which eclipses sample, and the quarters. Figure 1
+			plots it for each of them from 2021 to 2030, about 250 of each, against
+			the anomaly $M$ of the reference Moon's mean motions, counted from the
+			apogee as on page 3.1.
+		</p>
+
+		<!-- Figure 1: the equation against the anomaly, at the syzygies and at the quarters (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="equation-plot"></canvas>
+			</div>
+			<figcaption>
+				Compare the two sets of dots. Both follow $-\sin M$ and vanish at the
+				apogee and the perigee, $M = 0^\circ$ and $180^\circ$, but the quarters
+				swing to nearly 8° on either side, the new and full Moons only to 5°.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-earth">blue dots</dt>
+						<dd>new and full Moons</dd>
+						<dt class="c-planet">red dots</dt>
+						<dd>first and last quarters</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			A curve $-a\sin M$ fitted to each set gives $a = 4.96^\circ$ at new and
+			full Moon and $a = 7.68^\circ$ at the quarters. The epicycle of page 3.1
+			was fitted to eclipses, so it has the smaller amplitude at every phase.
+			At the quarters of 2026 its error is about $2.8^\circ \sin M$, which has
+			the shape of the equation itself. The model has the right sign there,
+			and too small a size.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy describes the same pattern (<em>Almagest</em> V 2). At new and
+				full Moon he finds the discrepancy "either imperceptible or small". At
+				the quarters it is "very small or nothing when the moon is at apogee or
+				perigee of the epicycle", and greatest when the equation of the first
+				anomaly is greatest.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				He measured the size of the effect at the quarters (V 3). On 9
+				February 139 he found the Moon 7⅔° short of its mean position, where
+				the first anomaly allows 5°. Hipparchus' sighting of 5 August 128 BC,
+				the one page 3.1 ended with, puts it 7⅔° beyond. From these and other
+				sightings Ptolemy takes 7⅔° (7.67°) as the greatest equation at the
+				quarters.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Ptolemy's crank</h2>
+
+		<h3>The epicycle on a turning eccentric</h3>
+
+		<div class="row">
+			<p>
+				An epicycle seen from nearer looks larger, and its equation grows. So
+				Ptolemy concluded that "we must suppose the moon's epicycle to be
+				carried on an eccentric circle, being farthest from the earth at
+				conjunction and opposition, and nearest to the earth at both
+				quadratures" (V 2). Since the quarters come twice a month, the
+				eccentric must turn, so that its perigee meets the epicycle twice in
+				each synodic month.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Let $D = \bar\lambda - \bar\lambda_\odot$ be the mean elongation, the
+			Moon's mean longitude minus the mean Sun's. The centre K of the epicycle
+			still moves at the mean longitude $\bar\lambda$ as seen from the Earth
+			O. The eccentric's centre C turns westward about O, and its apogee A
+			lies at the longitude $\bar\lambda - 2D$, so that A and K always lie
+			symmetrically about the line of the mean Sun, at $\bar\lambda_\odot \pm
+			D$. The construction is usually called Ptolemy's crank mechanism, since
+			C turns about O as a crank turns about its axle.
+		</p>
+
+		<p>
+			We measure lengths in units of OA, the greatest distance of K, which
+			Ptolemy makes 60. With $\text{OC} = c$, the eccentric's radius is $1 - c$,
+			and the angle at O between OC and OK is $2D$. The law of cosines in the
+			triangle OCK gives the distance $\rho = \text{OK}$:
+		</p>
+
+		$$(1 - c)^2 = \rho^2 + c^2 - 2\rho c \cos 2D \quad\Longrightarrow\quad \rho = c\cos 2D + \sqrt{(1 - c)^2 - c^2 \sin^2 2D}.$$
+
+		<p>
+			At the mean new and full Moon, $2D = 0^\circ$, K is at the apogee A and
+			$\rho = 1$. At the mean quarters, $2D = 180^\circ$, K is at the
+			eccentric's perigee and $\rho = 1 - 2c$.
+		</p>
+
+		<h3>The equation of anomaly</h3>
+
+		<p>
+			The epicycle keeps its radius $r = e$ in these units, and the Moon its
+			anomaly $M$, counted westward from the apogee of the epicycle. Seen from
+			O, the construction is page 3.1's epicycle with $\rho$ in place of the
+			deferent's radius, so the equation of anomaly is
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}(e\sin M,\ \rho + e\cos M), \qquad \lambda = \bar\lambda + q.$$
+		</div>
+
+		<p>
+			Its greatest value is $\arcsin(e/\rho)$, which grows from $\arcsin e$ at
+			new and full Moon to $\arcsin\big(e/(1 - 2c)\big)$ at the quarters. At
+			new and full Moon the model is page 3.1's epicycle, so the ratio $e$
+			found from eclipses keeps its meaning. With Ptolemy's numbers the two
+			greatest equations are 5.02° and 7.66°.
+		</p>
+
+		<!-- Figure 2: the crank, and q over two months -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the epicycle on the turning eccentric</p>
+						<canvas id="crank-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the equation of anomaly over two months</p>
+						<canvas id="crank-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="crank-day">date</label>
+							<input id="crank-day" type="range" min="0" max="60" step="0.05" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="crank-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="crank-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="crank-play">Play two months</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="crank-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play the two months and watch C turn westward about O while K moves
+				eastward: K comes nearest to O at each quarter, and there the solid
+				curve in (b) swings wider than the dashed one. At each new and full
+				Moon K is back at A, and the two curves meet.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-sun">gold, dashed</dt>
+						<dd>the direction of the mean Sun</dd>
+						<dt class="c-muted">dotted</dt>
+						<dd>the eccentric's line of apsides</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-epicycle">dashed</dt>
+						<dd>the epicycle of page 3.1, on a deferent about O</dd>
+						<dt class="c-muted">Q</dt>
+						<dd>a quarter</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>The direction of the epicycle</h3>
+
+		<div class="row">
+			<p>
+				Between the new and full Moons and the quarters, at the octants,
+				Hipparchus' sightings with the Moon near the apogee or the perigee of
+				its epicycle still disagreed with the crank. Ptolemy concluded that the
+				anomaly is counted from a different diameter of the epicycle (V 5). Its
+				<em>mean apogee</em>, the point from which $M$ is counted, lies on the
+				line drawn through K from a point N, on the far side of O from C, with
+				$\text{ON} = \text{OC}$. Toomer translates Ptolemy's word for this as
+				the "direction" of the epicycle.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Take a frame turned to $\bar\lambda$, its first axis towards K and its
+			second 90° further east. There K is at $(\rho, 0)$ and N at $(-c\cos 2D,\
+			c\sin 2D)$, and the mean apogee lies off the line OK by the angle
+		</p>
+
+		$$\sigma = -\operatorname{atan2}(c\sin 2D,\ \rho + c\cos 2D),$$
+
+		<p>
+			counted eastward. It vanishes at new and full Moon and at the quarters,
+			where N, O and K are in line, and reaches 13.1° with Ptolemy's numbers.
+			A Moon at the anomaly $M$ from the mean apogee is at $M - \sigma$ from
+			the true apogee on the line OK, and that is the angle the equation of
+			anomaly needs. We call the crank with this rule the complete model, and
+			without it the crank alone.
+		</p>
+
+		<!-- Figure 3: the direction of the epicycle, Ptolemy's example of V 6 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the eccentric, with Ptolemy's numbers</p>
+						<canvas id="direction-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the epicycle, enlarged</p>
+						<canvas id="direction-zoom"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two lines through K in Ptolemy's example of V 6. The line
+				from N reaches the epicycle 12° from the line from O, so the Moon's
+				anomaly from the true apogee is 12° larger than the one counted from
+				the mean apogee, and its equation nearly halves.
+			</figcaption>
+		</figure>
+
+		<p>
+			In the example, the double elongation is 90½° and the Moon is 333.2°
+			from the mean apogee. It is therefore 345.2° from the true apogee, and
+			its equation is $+1^\circ 26'$ (1.43°), as Ptolemy computes, where the
+			crank alone gives $+2^\circ 33'$ (2.55°).
+		</p>
+
+		<h3>The model to first order</h3>
+
+		<p>
+			To compare Ptolemy's model with the modern theory of the Moon, we expand
+			$q$ to first order in $e$ and in $c$ separately, keeping their product.
+			Write $e_0 = e/(1 - c)$, the epicycle's ratio when K is at the
+			eccentric's mean distance, and $\kappa = c/(1 - c)$. To first order
+			$\rho \approx (1 - c)(1 + \kappa\cos 2D)$, so $e/\rho \approx e_0(1 -
+			\kappa\cos 2D)$, and the crank alone gives
+		</p>
+
+		$$q \approx -e_0\,(1 - \kappa\cos 2D)\sin M = -e_0 \sin M + \tfrac12 e_0 \kappa\,\big[\sin(M - 2D) + \sin(M + 2D)\big].$$
+
+		<p>
+			The crank adds two terms of equal size, one in $M - 2D$ and one in $M +
+			2D$. The direction of the epicycle changes $M$ into $M - \sigma$, with
+			$\sigma \approx -\kappa\sin 2D$, and to first order it removes the term
+			in $M + 2D$ and doubles the other (Exercise 2):
+		</p>
+
+		<div class="box">
+			$$q \approx -e_0 \sin M + e_0 \kappa \sin(M - 2D).$$
+		</div>
+
+		<div class="row">
+			<p>
+				The series of the reference Moon starts with the same two terms,
+				$6.29^\circ \sin M' + 1.27^\circ \sin(2D - M')$, in Meeus' notation: his
+				$M'$ is the Moon's anomaly counted from the perigee, $M' = M -
+				180^\circ$, so they read $-6.29^\circ \sin M + 1.27^\circ \sin(M - 2D)$.
+				The first belongs to the ellipse and the second is the evection of
+				page 3.1. With Ptolemy's numbers $e_0 = 0.1057$ radians, or 6.05°, and
+				$e_0 \kappa = 1.26^\circ$. Modern theory traces the evection to the
+				Sun's pull on the Moon's orbit.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="perturbations"></div>
+			</aside>
+		</div>
+
+		<p>
+			The table gives the exact coefficients of Ptolemy's model, computed
+			numerically. In the crank alone, the term in $M + 2D$ is as large as the
+			term in $M - 2D$. The direction of the epicycle reduces it to 0.06°,
+			close to the small term of the reference Moon, and doubles the other,
+			which comes within 0.06° of the evection.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Coefficient of</th>
+					<th>$\sin M$</th>
+					<th>$\sin(M - 2D)$</th>
+					<th>$\sin(M + 2D)$</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Ptolemy's crank alone</td>
+					<td>$-6.26^\circ$</td>
+					<td>$0.66^\circ$</td>
+					<td>$0.66^\circ$</td>
+				</tr>
+				<tr>
+					<td>Ptolemy's complete model</td>
+					<td>$-6.18^\circ$</td>
+					<td>$1.33^\circ$</td>
+					<td>$-0.06^\circ$</td>
+				</tr>
+				<tr>
+					<td>reference Moon (Meeus)</td>
+					<td>$-6.29^\circ$</td>
+					<td>$1.27^\circ$</td>
+					<td>$-0.05^\circ$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The eccentric from the quarters</h2>
+
+		<div class="row">
+			<p>
+				The crank needs one number besides those of page 3.1, the size of the
+				eccentric, and Ptolemy takes it from the 7⅔° at the quarters (V 4).
+				There K is at the eccentric's perigee G, and the greatest equation is
+				seen where the line from O touches the epicycle, so $\sin 7^\circ 40' =
+				r/\text{OG}$. With OA = 60 and $r = 5.25$ this fixes OG, then the
+				eccentric's radius, half of OA + OG, and finally OC, which Ptolemy finds
+				to be 10.32 (Exercise 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				The point N comes from two of Hipparchus' sightings at Rhodes in 127 BC,
+				made near the octants with the Moon near the perigee and the apogee of
+				its epicycle (V 5). From them Ptolemy computes ON = 10.30 and 10.33,
+				equal to OC within the accuracy of the observations, and takes ON = OC.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			The crank fitted to 2026 keeps everything page 3.1 fitted, including
+			the epicycle's ratio $e = 0.0844$ from three eclipses, takes the mean
+			Sun of page 1.3 for $D$, and keeps the direction of the epicycle as
+			Ptolemy found it. Its one new number, $c$, is fitted by least squares to
+			the 25 quarters of 2026, and comes out at 0.1762, against Ptolemy's
+			0.1719. The greatest equation is then 7.49° at the quarters.
+		</p>
+
+		<p>
+			Fitted to the quarters of all ten years from 2021 to 2030, $c$ comes out
+			at 0.1778. The value depends slightly on the moments chosen, because the
+			model leaves out smaller inequalities that also act at the quarters.
+		</p>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The crank against the real Moon</h2>
+
+		<h3>Longitude</h3>
+
+		<p>
+			The quarters of 2026 were used for the fit, so they test little. The
+			test is whether the complete model also holds between them, near the
+			octants, where nothing was fitted, and in other years. Figure 4 gives its
+			error over 2026, with the epicycle of page 3.1 and the crank alone as
+			ghosts.
+		</p>
+
+		<!-- Figure 4: the crank fitted to 2026 against the reference Moon -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-ours"></div>
+			</div>
+			<figcaption>
+				Point at the plot to read the errors. The dots, at the quarters, stay
+				within about a degree of zero. Switch to two months and notice that
+				the largest errors left fall between the quarters and the new and full
+				Moons.
+			</figcaption>
+		</figure>
+
+		<p>
+			The crank alone corrects the quarters but leaves the octants almost as
+			wrong as the epicycle was, near 2.6°. The direction of the epicycle,
+			which was not fitted, brings them down to 1.5°, and the largest error of
+			the year to 1.8°.
+		</p>
+
+		<p>
+			The model adds no motion of its own to those of page 3.1 and the mean
+			Sun, so its error does not grow with time: over the century from 1976
+			to 2076 it stays within 2.0°.
+		</p>
+
+		<h3>Ptolemy's complete Moon</h3>
+
+		<p>
+			Ptolemy's own model, with his parameters of Books IV and V, can be
+			judged in the same way. Figure 5 runs it over two months around his
+			sighting of 9 February 139, with his simple Moon of page 3.1 as a ghost.
+		</p>
+
+		<!-- Figure 5: Ptolemy's complete Moon -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-ptolemy"></div>
+			</div>
+			<figcaption>
+				Compare the width of the two curves around AD 139, then switch to 2000
+				years and watch the whole band drift as before.
+			</figcaption>
+		</figure>
+
+		<p>
+			The complete Moon swings about a third as widely as the simple one over
+			these two months. Both stay on average 0.9° behind the real Moon, an
+			error the second anomaly cannot remove.
+		</p>
+
+		<p>
+			As page 3.1 found, that offset comes from Ptolemy's Sun, here 42′
+			behind, and from the epoch he fixed with it. Over the centuries the
+			complete Moon drifts as the simple one does, and is 10° behind by 2026.
+		</p>
+
+		<h3>Distance</h3>
+
+		<p>
+			The crank was built to fit longitudes, but it also fixes the Moon's
+			distance OL. That is greatest, $1 + e$, at new and full Moon with the
+			Moon at the apogee of its epicycle, and least, $1 - 2c - e$, at a quarter
+			with the Moon at the perigee. With Ptolemy's numbers the ratio of the
+			two is 1.91. The real Moon's distance varies over 2026 by a ratio of
+			only 1.14.
+		</p>
+
+		<p>
+			The apparent diameter of the Moon is inversely proportional to its
+			distance, so it shows the difference directly. Figure 6 compares the
+			real Moon's diameter over 2026 with what the two models predict. A model
+			gives only ratios of distances, so each is scaled to have the real Moon's
+			smallest diameter, 29.4′, at its greatest distance.
+		</p>
+
+		<!-- Figure 6: the apparent diameter over 2026 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="diameter-plot"></canvas>
+			</div>
+			<figcaption>
+				Compare the swings. The real Moon's diameter stays between 29.4′ and
+				33.5′ all year; the crank's nearly doubles, to 56.6′, at every quarter
+				that finds the Moon near the perigee of its epicycle.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>thick</dt>
+						<dd>the real Moon</dd>
+						<dt class="c-planet">red</dt>
+						<dd>Ptolemy's crank, fitted to 2026</dd>
+						<dt class="c-epicycle">dashed</dt>
+						<dd>the epicycle of page 3.1</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				With Hipparchus' dioptra Ptolemy found the Moon's diameter equal to the
+				Sun's when the Moon is at its greatest distance at full Moon; the size
+				itself, 31⅓′, he computed from two lunar eclipses (V 14). On his model
+				the Moon at a quarter, at its least distance, would measure nearly a
+				degree. He reports no measurement of it, and the <em>Almagest</em>
+				does not discuss the difference.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernicus turned it against the model. After the uneven motions the
+				model requires and the parallaxes, "the error is evinced most of all by
+				the body of the moon, whose diameter would similarly look twice as
+				large and half as large" (<em>De Revolutionibus</em> IV 2). Anyone who
+				measures it, he adds, "will find that it varies only as much as
+				required by the epicycle without that eccentric". At its least
+				distance, the model puts the Moon 1.7 times nearer than the real Moon
+				ever comes.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			The eccentric of page 2.1 errs in the same way, on a smaller scale. It
+			makes the Sun's distance vary twice as much as the real one, which
+			changes the Sun's diameter by about two minutes of arc instead of one.
+			Ptolemy found no change in the Sun's diameter (V 14), and a minute of
+			arc was beyond his instruments.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>The variation, and the Moon's distance</h2>
+
+		<div class="row">
+			<p>
+				The largest single part of what remains is a term of the reference Moon
+				that no ancient model contains, the <em>variation</em>, $0.66^\circ \sin
+				2D$, greatest at the octants. In 2026 it accounts for over two fifths
+				of the error's mean square. Nearly as large is an error in the first
+				anomaly left by page 3.1's fit to three eclipses, whose anomaly at the
+				epoch is 5° off. The annual equation, 12′ here, comes next.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<p>
+			Ptolemy proves that at new and full Moon the crank's effect is
+			negligible (V 10). In 2026 the crank fitted to that year is within 42′
+			there, where page 3.1's epicycle was within 40′, so the longitudes that
+			decide eclipses are no better and no worse.
+		</p>
+
+		<div class="row">
+			<p>
+				The model's distances call for a different construction. Copernicus
+				replaced the crank with a second, small epicycle carried on the first,
+				on which the Moon goes round twice a month, nearest the first
+				epicycle's centre at new and full Moon and farthest at the quarters (IV
+				3). His deferent stays centred on the Earth, and at the quarters his
+				Moon ranges from 52.28 to 68.33 Earth radii (IV 17), a ratio of 1.31,
+				much nearer the real 1.14.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+				<div class="note detour" data-topic="islamic"></div>
+			</aside>
+		</div>
+
+		<p>
+			The complete model gives the Moon's longitude within 2° at every phase,
+			and within about 40′ at new and full Moon. An eclipse needs one more
+			coordinate, since the Moon must also be near the ecliptic. Page 3.3 adds
+			the Moon's latitude and decides which new and full Moons are eclipses.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				From the epicycle of 5.25 where OA = 60 and the greatest equation of
+				7⅔° at the quarters, find Ptolemy's eccentric: OG, the radius and OC.
+				Then, with his values OG = 39.37 and OC = 10.32, find the greatest and
+				the least distance of the Moon and their ratio. Ptolemy makes OA = 59
+				Earth radii (V 13): convert the two distances. If the Moon measures
+				31⅓′ at its greatest distance (V 14), what should it measure at its
+				least? Compare with the real Moon in Figure 6.
+			</p>
+			<details class="hint">
+				<p>
+					The greatest distance is OA plus the epicycle's radius; the least is
+					OG minus it.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					At the quarters $\sin 7^\circ 40' = 5.25/\text{OG}$, so OG = 39.352.
+					The eccentric's diameter is OA + OG, so its radius is 49.676, and OC =
+					60 − 49.676 = 10.324. Ptolemy, with his chords, writes 39.367, 49.683
+					and 10.317.
+				</p>
+				<p>
+					The greatest distance is $60 + 5.25 = 65.25$ and the least $39.367 -
+					5.25 = 34.117$, a ratio of 1.913. In Earth radii, multiplying by
+					59/60, they are 64.16 and 33.55: the 64⅙ and 33.55 that Copernicus
+					quotes against the model (<em>De Revolutionibus</em> IV 2).
+				</p>
+				<p>
+					The apparent diameter goes as the inverse of the distance, so 31.33′
+					at the greatest distance becomes $31.33' \times 1.913 = 59.9'$ at the
+					least, almost a degree. The real Moon's distance varied by a ratio of
+					1.140 in 2026, and its diameter only from 29.4′ to 33.5′.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Show that to first order the direction of the epicycle turns the
+				anomaly by $\sigma \approx -\kappa\sin 2D$, with $\kappa = c/(1 - c)$.
+				Then use it to complete the expansion of section 2: show that the
+				complete model gives $q \approx -e_0 \sin M + e_0 \kappa \sin(M - 2D)$,
+				with no term in $M + 2D$. Check $\sigma$ against Ptolemy's example of
+				Figure 3.
+			</p>
+			<details class="hint">
+				<p>
+					Expand $\sin(M - \sigma)$ to first order in $\sigma$, and write the
+					product $\sin 2D \cos M$ as a sum of two sines.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The vector from N to K is $(\rho + c\cos 2D,\ -c\sin 2D)$, and $\rho +
+					c\cos 2D = (1 - c) + 2c\cos 2D + O(c^2)$. To first order in $c$, then,
+					$\sigma = -c\sin 2D$. Dividing by $1 - c$ instead of 1, $\sigma \approx
+					-\kappa\sin 2D$, changes it only at second order, and keeps the same
+					$e_0$ and $\kappa$ as the crank's expansion. The Moon is at $M - \sigma
+					\approx M + \kappa\sin 2D$ from the true apogee, so
+				</p>
+				$$q \approx -e_0(1 - \kappa\cos 2D)\sin(M + \kappa\sin 2D) \approx -e_0\sin M + e_0 \kappa\cos 2D \sin M - e_0 \kappa \sin 2D\cos M,$$
+				<p>
+					dropping the terms of second order in $\kappa$. The last two terms are
+					$e_0 \kappa\,(\sin M\cos 2D - \cos M\sin 2D) = e_0 \kappa\sin(M - 2D)$.
+					In the sum-of-sines form of section 2, the direction contributes
+					$-\tfrac12 e_0 \kappa[\sin(M + 2D) - \sin(M - 2D)]$, which cancels the
+					crank's term in $M + 2D$ and doubles its term in $M - 2D$.
+				</p>
+				<p>
+					With $c = 0.1719$, $\kappa = 0.2076$ and $2D = 90.5^\circ$, the shift is
+					$-9.85^\circ$ as $-c\sin 2D$ and $-11.90^\circ$ as $-\kappa\sin 2D$,
+					against the exact $-12.03^\circ$ of Figure 3 and Ptolemy's 12°1′
+					(12.02°).
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				On 1 October 135, near the first quarter, Ptolemy measured the Moon's
+				zenith distance at Alexandria as 50°55′ (50.92°), where his model,
+				with the Moon's latitude, put its position as seen from the Earth's
+				centre at 49°48′ (49.80°) (V 13). He took the difference, 67′, as the
+				Moon's parallax, $\sin p = \sin z'/d$ with $z'$ the measured zenith
+				distance and $d$ the distance in Earth radii. Find $d$. His model put
+				the Moon at 40.42 where OA = 60: what does OA become in Earth radii?
+				The reference Moon was then 385·409 km from the Earth's centre, 60.4
+				Earth radii. What parallax should he have measured, and what does his
+				measurement say about his model?
+			</p>
+			<details class="hint">
+				<p>
+					Solve $\sin p = \sin z'/d$ for $d$, then use it the other way round
+					with the real distance.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					From 67′, $d = \sin 50^\circ 55' / \sin 67' = 39.83$ Earth radii;
+					Ptolemy, through a chain of roundings, writes 39.75, and Toomer notes
+					that 39.83 is more accurate. Scaling the model by Ptolemy's value, OA =
+					$39.75 \times 60/40.42 = 59.01$ Earth radii, which he rounds to 59.
+				</p>
+				<p>
+					At the real distance the parallax would have been $\arcsin(\sin
+					50^\circ 55' / 60.4) = 44'$, not 67′. His measurement put the Moon at
+					two thirds of its real distance, as his model required near the
+					quarter.
+				</p>
+				<p>
+					This one observation fixes the scale of the model, OA in Earth radii,
+					so it cannot test the model's ratio of distances: that needs
+					parallaxes at both new or full Moon and the quarters. Toomer finds that
+					the errors in the observation, the latitude and the model cancel, and
+					writes "This is no accident; Ptolemy knew (approximately) what the
+					parallax had to be at eclipses, and chose an observation which
+					produced that amount". Copernicus made the comparison and found the
+					parallaxes at the quarters to "differ very little or not at all" from
+					those at eclipses (IV 2).
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): IV 9–10 (the
+				epicycle of 5.25); V 2 (the second anomaly and the model); V 3
+				(Ptolemy's sighting of 139 and Hipparchus' of 128 BC, about 7⅔° at the
+				quarters); V 4 (the eccentric, 49.68 and 10.32); V 5 (the direction of
+				the epicycle, from Hipparchus' sightings of 127 BC); V 6–7 (the
+				computation of a position, the example of 90½°, the greatest equation
+				at 120°); V 10 (no effect at new and full Moon); V 13 (the parallax of
+				135 and the distances in Earth radii, with Toomer's notes); V 14 (the
+				apparent diameters of the Sun and the Moon). Toomer's dates in
+				negative years are astronomical: −127 is 128 BC.</li>
+			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), IV 2 (the
+				defects of Ptolemy's model, the distances 64⅙ and 33.55 Earth radii,
+				the Moon's diameter and parallax), IV 3 and IV 8 (the second
+				epicycle), IV 17 and IV 22 (the distances and diameters of his
+				model).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.1 (the evection, the
+				variation and the annual equation, from the Sun's perturbation).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 47
+				(the reference Moon: its longitude series, with the evection and the
+				variation, and its distance).</li>
+			<li>Every number on this page: <code>tools/numbers/3.2-evection.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

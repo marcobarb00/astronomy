@@ -679,7 +679,7 @@ title("Test: Ptolemy's simple Moon (first anomaly only), Figure 6");
    8. RESIDUAL
    ========================================================================== */
 
-title("Residual: Hipparchus' sighting of 5 August 127 BC (Almagest V 3)");
+title("Residual: Hipparchus' sighting of 5 August 128 BC (Almagest V 3; Toomer -127 Aug 5)");
 {
 	const M = fromSexagesimal(257, 47);
 	const q = LunarEpicycle.equationOfAnomaly(M, PTOLEMY.e);
