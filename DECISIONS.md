@@ -39,10 +39,18 @@ section.
 - **Exercises of four kinds: compute then check, predict then play,
   derive, break the model.** Two or three per page, with hint and worked
   answer, every number from a script. → STRUCTURE.md §7.2
-- **Page 4.4 (Kepler) cannot be judged by the planetary reference.** The
+- **Page 4.5 (Kepler) cannot be judged by the planetary reference.** The
   reference is itself Keplerian (Standish), so the error would be near
   zero by construction; the page needs another yardstick. → STRUCTURE.md
   §11
+- **A historical journey, not a claim about what moves.** The course
+  follows the astronomers before Kepler and rebuilds their models as
+  theirs; it never presents one as true. Directions seen from the Earth
+  cannot decide which body is at rest, so the text says what each model
+  takes as at rest (geostatic, heliostatic), keeps the frame apart from
+  the arrangement, and never speaks of a true centre. Adopted on
+  2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
+  the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 
 ## Look
 
@@ -106,6 +114,12 @@ section.
   made keys of nine entries; on 2026-10-25 Marco dropped the requirement
   that every element be explained, in favour of these simpler
   descriptions. → WRITING.md §7, CLAUDE.md "Rules for every figure"
+- **No semicolon notation on the pages.** A sexagesimal number from a
+  source is written as an angle in degrees and minutes (86°15′, Virgo
+  13°45′) or as a decimal (5.25 where the deferent is 60; 365.24667
+  days), never as 5;15 or 365;14,48. Marco asked for it on 2026-10-27:
+  the notation is the sources', and readers do not know it. Replaced the
+  earlier rule that ratios kept the source's notation. → STRUCTURE.md §6
 
 ## Code
 
@@ -183,4 +197,4 @@ section.
   the session. On 2026-10-26 a session with the `astronomy_reference`
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
-- **Where page 4.4 gets its yardstick** (see Course).
+- **Where page 4.5 (Kepler) gets its yardstick** (see Course).

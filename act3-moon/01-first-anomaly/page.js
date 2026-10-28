@@ -13,7 +13,7 @@
 	 4. three eclipses               (2D: (a) the three positions on the
 									   epicycle, (b) the plane of X, Y with
 									   the two equations; four data sets)
-	 5. our epicycle against the Moon (error curve, 2026)
+	 5. the fitted epicycle against the Moon (error curve, 2026)
 	 6. Ptolemy's simple Moon        (error curve, AD 134 and 2,000 years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, models/lunar-epicycle.js, plot2d.js,
@@ -249,7 +249,7 @@ const motionFigure = {
    Earth through K to the apogee of the epicycle, the Moon, the angles M
    (at K) and q (at the Earth). (b) q over the two months, exact and to
    first order, with the new and full Moons. The slider r/R runs from 0
-   to 0.3 (it starts at 0.3, three and a half times Ptolemy's 5;15, so
+   to 0.3 (it starts at 0.3, three and a half times Ptolemy's 0.0875, so
    that the angles can be seen); |q| stays under asin 0.3 = 17.46°: fixed
    scale +-18°.
    ========================================================================== */
@@ -683,9 +683,9 @@ const CONTOUR_CELLS = 120;
 /* What each set of data is, and the source's own result, for the
    read-out. */
 const TRIPLE_SOURCES = {
-	babylon: '\\text{Ptolemy: } 0.08694\\ (5;13),\\ M_2 = 12;24^\\circ',
-	alexandria: '\\text{Ptolemy: } 0.08722\\ (5;14),\\ M_2 = 64;38^\\circ',
-	copernicus: '\\text{Copernicus: } 0.08604,\\ M_2 = 74;27^\\circ',
+	babylon: "\\text{Ptolemy: } 0.08694,\\ M_2 = 12^\\circ 24'",
+	alexandria: "\\text{Ptolemy: } 0.08722,\\ M_2 = 64^\\circ 38'",
+	copernicus: "\\text{Copernicus: } 0.08604,\\ M_2 = 74^\\circ 27'",
 	ours: '\\text{the reference sky, 2025 – 2026}'
 };
 
@@ -943,7 +943,7 @@ const eclipsesFigure = {
    dots mark the new and full Moons, on spans of a year or less.
    ========================================================================== */
 
-/* Figure 5: our epicycle and the uniform Moon over the year 2026, and
+/* Figure 5: the fitted epicycle and the uniform Moon over the year 2026, and
    over two months and a century centred on it. */
 const ourErrorFigure = {
 	init() {
