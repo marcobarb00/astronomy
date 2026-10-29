@@ -28,7 +28,8 @@
 	15. The equation of time (Almagest I 16, III 9; De Rev. III 26; Meeus ch. 28; page 2.2)
 	16. Precession and the moving apogee (Almagest VII 2; page 2.3)
 	17. The lunar epicycle (Almagest IV 5-10; De Rev. IV 5; page 3.1)
-	18. Run
+	18. Ptolemy's crank (Almagest V 4-7, V 13; page 3.2)
+	19. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1757,7 +1758,106 @@ function testLunarEpicycle() {
 }
 
 /* ==========================================================================
-   18. RUN
+   18. PTOLEMY'S CRANK (Almagest V 4-7, V 13; page 3.2)
+   The model gives back Ptolemy's own worked numbers: the perigee of the
+   eccentric (V 4), the example of the direction of the epicycle (V 6),
+   the greatest equation at a double elongation of 120° (V 7), the
+   distance at his parallax observation of 135 (V 13); at mean syzygy it
+   is the epicycle of page 3.1.
+   ========================================================================== */
+
+function testLunarCrank() {
+	group("Ptolemy's crank · models/lunar-crank.js (page 3.2)");
+
+	const P = LunarCrank.PTOLEMY;
+	const parts = x => 60 * x;
+
+	check({
+		name: 'The perigee of the eccentric, OG',
+		source: 'Almagest V 4 (39;22)',
+		expected: 39 + 22 / 60,
+		computed: parts(LunarCrank.centreDistance(P.c, 180)),
+		tol: 0.02,
+		unit: 'parts',
+		show: x => x.toFixed(3)
+	});
+
+	// V 6: double elongation 90;30, anomaly 333;12 from the mean apogee
+	const example = LunarCrank.geometry(P.e, P.c, 90.5, 333.2, true);
+
+	check({
+		name: 'The shift of the mean apogee at 2D = 90;30',
+		source: 'Almagest V 6 (12;1)',
+		expected: -(12 + 1 / 60),
+		computed: example.shift,
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+	check({
+		name: 'The equation at 2D = 90;30, M = 333;12',
+		source: 'Almagest V 6 (+1;26)',
+		expected: 1 + 26 / 60,
+		computed: example.q,
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg,
+		angle: true
+	});
+
+	// V 7: OK = 43;43 and the greatest equation 6;54 at 2D = 120°
+	const rho = LunarCrank.centreDistance(P.c, 120);
+
+	check({
+		name: 'The greatest equation at 2D = 120°',
+		source: 'Almagest V 7 (6;54)',
+		expected: 6 + 54 / 60,
+		computed: asin(P.e / rho),
+		tol: 1,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// V 13: on 1 October 135, 5 5/6 hours after noon at Alexandria, the
+	// model puts the Moon at 40;25 where OA = 60 (Toomer: 40;23 exactly)
+	const ut = Time.julianDay(135, 10, 1) + (12 + 5 + 5 / 6) / 24 - 29.92 / 360;
+	const then = LunarCrank.state(P, Time.ttFromUt(ut));
+
+	check({
+		name: 'The distance on 1 October 135',
+		source: 'Almagest V 13 (40;25)',
+		expected: 40 + 25 / 60,
+		computed: parts(then.distance),
+		tol: 0.1,
+		unit: 'parts',
+		show: x => x.toFixed(3)
+	});
+
+	// at mean syzygy the crank is the epicycle of page 3.1
+	const worst = Math.max(
+		...[0, 50, 100, 150, 200, 250, 300].map(M =>
+			Math.abs(LunarCrank.geometry(P.e, P.c, 0, M, true).q - LunarEpicycle.equationOfAnomaly(M, P.e))
+		)
+	);
+
+	check({
+		name: 'At mean syzygy, the epicycle of page 3.1',
+		source: 'Almagest V 2, V 10',
+		expected: 0,
+		computed: worst,
+		tol: 1e-9,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(1)
+	});
+}
+
+/* ==========================================================================
+   19. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1779,5 +1879,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testEquationOfTime();
 	testPrecessionModel();
 	testLunarEpicycle();
+	testLunarCrank();
 	render();
 });
