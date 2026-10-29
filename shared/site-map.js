@@ -120,7 +120,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.2',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'Evection and the distance problem',
 			question: 'What goes wrong at the quarters?',
 			path: 'act3-moon/02-evection/index.html'

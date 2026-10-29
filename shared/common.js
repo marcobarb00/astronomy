@@ -652,6 +652,63 @@ function subscriptLabel(ctx, base, sub, point, color) {
 	ctx.fillText(sub, left + baseWidth, point.y + 5);
 }
 
+/* ---------- Points, circles and labels of plane constructions ----------
+   Drawings seen from the north ecliptic pole (the epicycles of pages 3.1
+   and 3.2): longitudes count anticlockwise from the right. */
+
+/* A canvas point at the distance r (px) from 'from', towards the
+   longitude 'lon' (anticlockwise from the right, as seen from the north
+   ecliptic pole). */
+function towards(from, lon, r) {
+	return { x: from.x + r * cos(lon), y: from.y - r * sin(lon) };
+}
+
+/* A circle on a canvas. */
+function circle(ctx, centre, r, style) {
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 2;
+	ctx.setLineDash(style.dash ?? []);
+	ctx.beginPath();
+	ctx.arc(centre.x, centre.y, r, 0, TAU);
+	ctx.stroke();
+	ctx.setLineDash([]);
+}
+
+/* A name set just outside a circle (or a point, r = 0) of centre
+   'centre' and radius r px, in the direction 'lon': its box starts
+   OUTSIDE_LABEL_GAP px beyond the circle, so it never sits on the circle. */
+const OUTSIDE_LABEL_GAP = 6;
+
+function labelOutside(ctx, text, centre, r, lon, color, labels) {
+	ctx.font = labelFont(text);
+
+	const box = ctx.measureText(text);
+	const halfWidth = box.width / 2;
+	const halfHeight = (box.actualBoundingBoxAscent + box.actualBoundingBoxDescent) / 2;
+	const reach = r + OUTSIDE_LABEL_GAP + Math.abs(halfWidth * cos(lon)) + Math.abs(halfHeight * sin(lon));
+
+	centredLabel(ctx, text, towards(centre, lon, reach), color, labels);
+}
+
+/* The direction (deg) from a point that is farthest from every line
+   leaving it ('rays', their directions in deg), where the point's name
+   goes: the best of 72 directions, 5° apart. */
+function clearestDirection(rays) {
+	let best = 0;
+	let bestGap = -1;
+
+	for (let lon = 0; lon < 360; lon += 5) {
+		const gap = Math.min(...rays.map(ray => Math.abs(norm180(lon - ray))));
+
+		if (gap > bestGap) {
+			best = lon;
+			bestGap = gap;
+		}
+	}
+
+	return best;
+}
+
 /* ---------- Canvas fonts (STYLE.md §3) ----------
    Labels in figures: names (Vega, meridian, never sets) in Cormorant SC,
    symbols (P, Z, gamma, theta, 90° - a) in Cormorant Garamond italic, as

@@ -373,7 +373,7 @@ The first anomaly and the simplest complete model.
   `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
   `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
   `ErrorCurve.addMarks` (dots at chosen dates).
-- **Residual:** at the quarters, Hipparchus' sighting of 127 BC (V 3);
+- **Residual:** at the quarters, Hipparchus' sighting of 128 BC (V 3);
   the evection, which takes 1.27° from the ellipse's 6.29° at new and full
   Moon and adds it at the quarters; the remaining 40′ at new and full Moon
   is half the three-eclipse fit (a least-squares epicycle, $e = 0.0864$,
@@ -383,15 +383,65 @@ The first anomaly and the simplest complete model.
 #### 3.2 · Evection and the distance problem
 
 - **Question:** what goes wrong at the quarters?
-- **Learn:** the second anomaly (evection), largest at quadratures; Ptolemy's
-  crank mechanism; the consequence that the model's Earth-Moon distance
-  varies by nearly a factor of two, while the Moon's apparent size does not.
-  A model can predict directions correctly and distances absurdly.
-- **Figures:** the crank mechanism animated; the predicted versus real
-  apparent diameter; the error curve before and after evection.
-- **Exercises:** the ratio of greatest to least distance in Ptolemy's model.
-- **Hands over:** longitude is now good enough to time eclipses, once we add
-  latitude.
+- **Learn:** the second anomaly, largest at the quarters: the real Moon's
+  whole equation reaches 4.96° at new and full Moon and 7.68° at the
+  quarters (2021–2030); Ptolemy's description (*Almagest* V 2), his and
+  Hipparchus' sightings of 7⅔° (V 3); Ptolemy's crank mechanism (V 2): K
+  seen from the Earth at the mean longitude, carried on an eccentric whose
+  centre C turns westward, its apogee A at $\bar\lambda - 2D$, so that
+  $\rho = \text{OK} = c\cos 2D + \sqrt{(1-c)^2 - c^2\sin^2 2D}$, 1 at mean
+  syzygy and $1 - 2c$ at the mean quarters, and $q = -\operatorname{atan2}(e
+  \sin M, \rho + e\cos M)$; the direction of the epicycle (V 5), its mean
+  apogee on the line from N, opposite C, shifted by $\sigma =
+  -\operatorname{atan2}(c\sin 2D, \rho + c\cos 2D)$, up to 13°; to first
+  order $q \approx -e_0\sin M + e_0 \kappa\sin(M - 2D)$, the ellipse's term and
+  the evection of Meeus' series ($e_0 = 6.05°$, $e_0\kappa = 1.26°$ against
+  6.29° and 1.27°; $\sigma$ and $\kappa$, since $\delta$ is the declination
+  and $k$ page 2.1's coordinate), the crank alone adding a spurious term in $M + 2D$ that
+  the direction cancels (a table of the exact coefficients). The model
+  predicts directions within a degree and distances that vary by a factor
+  of 1.91, while the Moon's apparent size does not (Copernicus, IV 2).
+- **Notation:** $D = \bar\lambda - \bar\lambda_\odot$, the mean
+  elongation; lengths in units of OA (Ptolemy's 60); $c = \text{OC}$; the
+  points O, C, A, K, N, L.
+- **Figures:** the real Moon's equation against $M$ at the new and full
+  Moons and at the quarters of 2021–2030 (static); the crank fitted to
+  2026, without the direction, with $q$ over two months against page 3.1's
+  epicycle (date); the direction of the epicycle in Ptolemy's example of
+  V 6 (static, the epicycle enlarged); the error curve of the crank with
+  the epicycle and the crank without the direction as ghosts, dots at the
+  quarters; Ptolemy's complete Moon around AD 139 and over 2000 years; the
+  apparent diameter through 2026, the real Moon against the two models
+  (static). No photo: no public-domain or CC0 photograph of the Moon at
+  perigee and apogee side by side was found (2026-10-28).
+- **Fit:** Ptolemy's eccentric from 5.25 and 7⅔° (V 4: OG 39.37, radius
+  49.68, OC 10.32); ON = OC from Hipparchus' sightings of 127 BC (V 5);
+  ours keeps page 3.1's fit and fits $c = 0.1762$ to the 25 quarters of
+  2026 (Ptolemy 0.1719).
+- **Test:** over 2026 the largest error falls from 3.2° (epicycle) to 2.7°
+  (crank alone) and 1.8° (with the direction); 2.0° over 1976–2076.
+  Ptolemy's complete Moon around AD 139 swings from −1.6° to +0.3°
+  against −3.6° to +1.8°, 0.9° behind on average (his Sun). Distances: 1.91
+  in the model, 1.14 in the real Moon (356·651 to 406·417 km in 2026); the
+  diameter up to 59.9′ on Ptolemy's 31⅓′ (V 14), 56.6′ for the fitted
+  crank, against 29.4′ to 33.5′; the Sun's eccentric of page 2.1 varies
+  twice as much as the real Sun too.
+- **Exercises:** Ptolemy's eccentric and the ratio of greatest to least
+  distance (1.913; 64.16 and 33.55 Earth radii; 59.9′); derive that the
+  direction cancels the term in $M + 2D$; Ptolemy's parallax of 135 (V 13),
+  67′ measured, 44′ for the real distance (break the model).
+- **Code:** `models/lunar-crank.js` (`LunarCrank`: `make()`,
+  `makeDistance()`, `state`, `geometry`, `construction`, `PTOLEMY`,
+  `FIT_2026`).
+- **Residual:** the variation, $0.66°\sin 2D$ (detour: Tycho), 44% of the
+  error's mean square in 2026, then the first anomaly left by page 3.1's
+  three-eclipse fit (its anomaly at the epoch 5° off), then the annual
+  equation; at the syzygies
+  the crank changes nothing (V 10). The distance: Copernicus' second
+  epicycle (IV 3, IV 8), 52.28 to 68.33 Earth radii for the Moon at the
+  quarters (IV 17); detour: Ibn al-Shatir.
+- **Hands over:** at new and full Moon the crank changes nothing, so
+  eclipses keep page 3.1's longitude; they still need latitude.
 
 #### 3.3 · Eclipses
 
@@ -612,6 +662,8 @@ once on the page.
 | $\dot\lambda_A$ | the motion of the apogee relative to γ (degrees a century), page 2.3 |
 | $n_M$ | the daily motion in anomaly (page 3.1); $n$ is then the daily motion in longitude |
 | $q$ (Moon) | the equation of anomaly, $\lambda = \bar\lambda + q$, with $M$ counted from the apogee of the epicycle and $e = r/R$ (page 3.1) |
+| $D$ | the mean elongation of the Moon, $\bar\lambda - \bar\lambda_\odot$ (Meeus' $D$), page 3.2 |
+| $c$ | OC, the distance of the centre of Ptolemy's lunar eccentric from the Earth, where OA = 1 (page 3.2) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -707,7 +759,7 @@ of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
 at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
-reuses the solar equation of centre as its equation of anomaly. The mean Sun (`models/mean-sun.js`, page 1.3)
+reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,
