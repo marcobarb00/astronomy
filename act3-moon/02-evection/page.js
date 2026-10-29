@@ -374,16 +374,19 @@ const crankFigure = {
 
 /* ==========================================================================
    3. FIGURE 3: THE DIRECTION OF THE EPICYCLE
-   Static. Ptolemy's example of Almagest V 6, with his parameters: double
-   elongation 90;30, anomaly 333;12 from the mean apogee. The drawing is
-   turned so that K is straight above O. (a) the eccentric about C, the
-   points O, N, A, the lines from O and from N through K. (b) the epicycle
-   enlarged, with its true apogee (on the line from O) and its mean apogee
-   (on the line from N), the angle between them and the Moon L.
+   Static. Ptolemy's parameters and the double elongation of his example
+   of Almagest V 6, 90;30, where sigma is 12°; the anomaly is a round 40°,
+   so that the arcs are short enough to read. The drawing is turned so
+   that K is straight above O. (a) the eccentric about C, the points O, N,
+   A, the lines from O and from N through K. (b) the epicycle enlarged:
+   its true apogee (on the line from O) and its mean apogee (on the line
+   from N), the angle sigma between them, the Moon L at M from the mean
+   apogee, and L', where the crank alone would put it, at M from the true
+   apogee.
    ========================================================================== */
 
 const DIRECTION_TWO_D = 90.5;
-const DIRECTION_M = 333.2;
+const DIRECTION_M = 40;
 
 /* The mean longitude of the drawing: K straight up. */
 const DIRECTION_LAMBDA = 90;
@@ -393,8 +396,11 @@ const DIRECTION_LAMBDA = 90;
 const DIRECTION_REACH = 1.12;
 const ZOOM_RADIUS = 0.5;
 
-/* Panel (b): how far the two lines run past K (epicycle radii). */
+/* Panel (b): how far the two lines run past K, and the radii of the arcs
+   of sigma and M (epicycle radii). */
 const ZOOM_LINE_END = 1.35;
+const SIGMA_ARC = 0.85;
+const M_ARC = 0.5;
 
 /* A name beside a point of a static drawing, aligned 'left' (starting
    just right of the point) or 'right' (ending just left of it). */
@@ -424,7 +430,6 @@ function directionGeometry() {
 		C: turn(g.C),
 		K: turn(g.K),
 		N: turn(g.N),
-		L: turn(g.L),
 		A: turn([cos(-DIRECTION_TWO_D), sin(-DIRECTION_TWO_D)]),
 		trueApogee: DIRECTION_LAMBDA,
 		meanApogee: DIRECTION_LAMBDA + g.shift,
@@ -499,7 +504,10 @@ const directionZoomFigure = {
 		const K = { x: this.cx, y: this.cy + 0.12 * this.R };
 		const fromK = (lon, r) => towards(K, lon, r);
 		const lineLength = this.width; // long enough to leave the canvas
-		const moon = toCanvas(K, radius / g.e, [g.L[0] - g.K[0], g.L[1] - g.K[1]]);
+		// the Moon, M westward (clockwise) from the mean apogee, and where
+		// the crank alone would put it, M from the true apogee
+		const moon = fromK(g.meanApogee - DIRECTION_M, radius);
+		const ghost = fromK(g.trueApogee - DIRECTION_M, radius);
 
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
@@ -517,26 +525,32 @@ const directionZoomFigure = {
 		});
 
 		circle(ctx, K, radius, { color: COL.epicycle, width: 2.2 });
+		segment(ctx, K, ghost, { color: COL.muted, width: 1.2, dash: [3, 4] });
 		segment(ctx, K, moon, { color: COL.epicycle, width: 1.5 });
 
-		// the angle between the two apogees, at K
-		screenArc(ctx, K, 0.45 * radius, g.meanApogee, g.trueApogee, { color: COL.ink, width: 2 });
+		// sigma, from the true apogee to the mean apogee, and M, from the
+		// mean apogee to the Moon
+		screenArc(ctx, K, SIGMA_ARC * radius, g.meanApogee, g.trueApogee, { color: COL.ink, width: 2 });
+		screenArc(ctx, K, M_ARC * radius, g.meanApogee - DIRECTION_M, g.meanApogee, {
+			color: COL.epicycle,
+			width: 2
+		});
 
 		drawDot(ctx, K.x, K.y, 3.5, COL.ink);
-		drawDot(ctx, moon.x, moon.y, 7, COL.planet);
 		[g.trueApogee, g.meanApogee].forEach(lon => {
 			const point = fromK(lon, radius);
 
 			drawDot(ctx, point.x, point.y, 3.5, COL.ink);
 		});
+		drawDot(ctx, ghost.x, ghost.y, 5, withAlpha(COL.planet, 0.45));
+		drawDot(ctx, moon.x, moon.y, 7, COL.planet);
 
-		this.drawLabels(K, radius, moon);
+		this.drawLabels(K, radius, moon, ghost);
 	},
 
-	drawLabels(K, radius, moon) {
+	drawLabels(K, radius, moon, ghost) {
 		const ctx = this.ctx;
 		const g = this.geometry;
-		const angle = `${Math.round(Math.abs(g.shift))}°`;
 		const bottom = this.width - 16;
 		const fromK = (lon, r) => towards(K, lon, r);
 
@@ -548,9 +562,20 @@ const directionZoomFigure = {
 		// away from the other line
 		sideLabel(ctx, 'true apogee', fromK(g.trueApogee, ZOOM_LINE_END * radius), 'right', COL.earth);
 		sideLabel(ctx, 'mean apogee', fromK(g.meanApogee, ZOOM_LINE_END * radius), 'left', COL.ink);
-		labelOutside(ctx, angle, K, 0.45 * radius, g.meanApogee - 30, COL.ink, this.labels);
+		labelOutside(ctx, 'σ', K, SIGMA_ARC * radius, g.meanApogee - 9, COL.ink, this.labels);
+		// M's name in the gap between the mean apogee's line and L′'s radius
+		labelOutside(
+			ctx,
+			'M',
+			K,
+			M_ARC * radius,
+			(g.meanApogee + g.trueApogee - DIRECTION_M) / 2,
+			COL.epicycle,
+			this.labels
+		);
 		labelOutside(ctx, 'K', K, 4, 200, COL.ink, this.labels);
-		labelOutside(ctx, 'L', moon, 8, 160, COL.planet, this.labels);
+		labelOutside(ctx, 'L', moon, 8, g.meanApogee - DIRECTION_M - 15, COL.planet, this.labels);
+		labelOutside(ctx, 'L′', ghost, 6, g.trueApogee - DIRECTION_M + 15, COL.muted, this.labels);
 		centredLabel(ctx, 'from O', { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
 		centredLabel(ctx, 'from N', { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
 	}

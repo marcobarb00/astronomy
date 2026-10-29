@@ -305,6 +305,15 @@ console.log(
 	`as decimals: 2D = 90;30 = ${f(90.5, 1)}°, M = 333;12 = ${f(fromSexagesimal(333, 12), 1)}°, from the true apogee 345;13 = ${f(fromSexagesimal(345, 13), 1)}°; q +1;26 = ${f(fromSexagesimal(1, 26), 2)}°, without the direction ${f(LunarCrank.geometry(P.e, P.c, 90.5, fromSexagesimal(333, 12), false).q, 2)}°`
 );
 
+{
+	/* Figure 3 (b): the double elongation of V 6 with M = 40°. */
+	const g = LunarCrank.geometry(P.e, P.c, 90.5, 40, true);
+
+	console.log(
+		`Figure 3 (b): 2D = 90.5°, M = 40°: sigma = ${f(g.shift, 2)}° (${f(Math.abs(g.shift), 0)}°), the Moon M - sigma = ${f(40 - g.shift, 2)}° west of the true apogee`
+	);
+}
+
 title('Model: the greatest equation at 2D = 120° (Almagest V 7, a check)');
 {
 	const rho = LunarCrank.centreDistance(P.c, 120);
