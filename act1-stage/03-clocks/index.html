@@ -854,10 +854,11 @@
 		<h2 id="fit"><span class="step">3 · Fit</span>The year, the epoch and the longitude</h2>
 
 		<p>
-			Our formula for the sidereal time depends on three numbers. The
-			daily motion $n$ of the mean Sun sets the rate $360^\circ + n$, the
-			constant $L_0$ ties the sidereal clock to the solar clock at one
-			moment, and the longitude $\ell$ places the observer.
+			To read the sky's angle from a clock, we have to fit the formula of
+			section 2 to the sky. Its rate $360^\circ + n$ comes from the mean
+			Sun's daily motion $n$, its constant $L_0$ from one moment at which
+			the sidereal and the solar clocks are compared, and the longitude
+			$\ell$ from the place of the observer.
 		</p>
 
 		<h3>The rate, from the length of the year</h3>
@@ -866,7 +867,7 @@
 			<p>
 				Since $n = 360^\circ / Y$, the rate follows from the length of
 				the year, measured from one equinox to the next. Hipparchus and Ptolemy
-				found $Y = 365;14,48$ days (365.24667 days, <em>Almagest</em> III 1),
+				found $Y = 365.24667$ days (<em>Almagest</em> III 1),
 				6.4 minutes longer than the modern 365.24219 days.
 			</p>
 			<aside>
@@ -926,7 +927,7 @@
 			<p>
 				The reference sky computes the sidereal time with the full Meeus
 				formula and adds nutation, the small back-and-forth shift of the
-				equinox met on page 1.2. Through 2026 our sidereal time differs
+				equinox met on page 1.2. Through 2026 the sidereal time of section 2 differs
 				from it by at most 0.66 s, so the transits we predict for the
 				stars are right to within a second.
 			</p>
@@ -941,7 +942,7 @@
 			To see how good the uniform Sun is, Figure 6 compares its noon,
 			sunrise and sunset with those of the reference Sun through 2026.
 			The reference Sun's noon is its real meridian crossing, and its
-			sunrise and sunset use the same $h_0 = -50'$ as ours, so the figure
+			sunrise and sunset use the same $h_0 = -50'$ as the uniform Sun's, so the figure
 			measures only the error in the Sun's motion.
 		</p>
 
@@ -997,24 +998,24 @@
 		</figure>
 
 		<p>
-			Our noon is wrong by up to a quarter of an hour. At every latitude
+			At every latitude the uniform Sun's noon is off by up to a quarter of an hour:
 			the real Sun crosses the meridian 14 minutes after mean noon on 11
 			February, and 16½ minutes before it on 3 November.
 		</p>
 
 		<p>
 			The length of the day comes out better, but its error grows with the
-			latitude. Our day is too short by up to 5 minutes at Rome, 7½ at
+			latitude. The uniform Sun's day is too short by up to 5 minutes at Rome, 7½ at
 			London and 13 at $65^\circ$. In the northern hemisphere it is almost
 			never too long, and then by less than a minute, while in the
 			southern hemisphere the signs are reversed.
 		</p>
 
 		<p>
-			The day comes out too short because our Sun moves uniformly. On 5
+			The day comes out too short because the uniform Sun keeps a constant rate. On 5
 			April 2026, for instance, the real Sun is almost $2^\circ$ ahead of
 			the mean Sun. Its declination is therefore
-			$6.19^\circ$ instead of our $5.45^\circ$, and in London its day
+			$6.19^\circ$ instead of the uniform Sun's $5.45^\circ$, and in London its day
 			lasts 13 h 13 min instead of 13 h 06 min.
 		</p>
 
@@ -1064,9 +1065,9 @@
 		<p>
 			Since both the daily shortfall and the number of days grow with the
 			time elapsed, $\Delta T$ grows as its square, from about a minute
-			today to hours in antiquity. Our formula for $\Delta T$, fitted to
-			ancient eclipse records, gives 2 h 35 min for Ptolemy's time, close
-			to this estimate.
+			today to hours in antiquity. The formula for $\Delta T$ used here,
+			Espenak and Meeus' polynomials, fitted to values of $\Delta T$
+			derived from ancient eclipse records, gives 2 h 35 min for Ptolemy's time, close to this estimate.
 		</p>
 
 		<div class="row">
@@ -1210,7 +1211,7 @@
 
 		<ul class="sources">
 			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): III 1
-				(the length of the year, 365;14,48 days, and the mean daily motion);
+				(the length of the year, 365.24667 days, and the mean daily motion);
 				III 7 (the era Nabonassar, epochs at noon, the 879 years to the
 				equinox of AD 132); III 9 (the inequality of solar days, the day
 				counted from the meridian). Toomer's introduction, § 5 (chronology

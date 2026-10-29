@@ -33,11 +33,14 @@ Consequences:
 
 **In scope:** the sphere and its coordinates, time, the Sun, the Moon, the
 planets in longitude, the models of Hipparchus, Ptolemy, Copernicus and
-Kepler, eclipses.
+Kepler, eclipses; which body is taken as at rest, and what the
+observations can decide about it (page 4.4: Tycho's system, the phases of
+Venus, the argument from stellar parallax). The models are presented as
+history, never as true (WRITING.md §9).
 
 **Out of scope for now** (signposted with detour cards and the *Beyond Kepler*
-page, see §7.4): planetary latitudes in detail, nutation, aberration,
-parallax of stars, Tycho, Islamic astronomy (Tusi couple, Ibn al-Shatir),
+page, see §7.4): planetary latitudes in detail, nutation, aberration, the
+measurement of stellar parallax, Tycho's observations, Islamic astronomy (Tusi couple, Ibn al-Shatir),
 Newtonian dynamics and perturbations, calendars, instruments, the slowing of
 the Earth's rotation ($\Delta T$).
 
@@ -45,7 +48,7 @@ the Earth's rotation ($\Delta T$).
 
 ## 4. The path
 
-Five acts, fifteen pages, plus a hub and an epilogue. Pages are numbered
+Five acts, sixteen pages, plus a hub and an epilogue. Pages are numbered
 `act.page`. Each entry gives the guiding question, what the reader learns,
 the main figures, exercise ideas, and the residual that hands over to the
 next page.
@@ -60,7 +63,7 @@ next page.
   after almost nineteen centuries. Two questions follow: how can circles do
   this well, and why are they still wrong? The rest of the site answers both.
 - **Figures:** a strip of the zodiac with both positions; a date slider; the
-  error curve over 2,000 years.
+  error curve over 2000 years.
 - **Note:** this page uses the Act IV machinery, so it is **built last**.
 
 ### Act I: The stage
@@ -142,7 +145,7 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (Ptolemy's 365;14,48 days, *Almagest*
+- **Fit:** the rate from the year (Ptolemy's 365.24667 days, *Almagest*
   III 1), the constant from the mean Sun at J2000, the longitude from one
   timed transit.
 - **Test:** the stars, against apparent sidereal time (within 0.7 s, the
@@ -188,8 +191,8 @@ The first anomaly and the simplest complete model.
   place magnified (spring and summer, with presets). **First appearance of
   the error curve:** (a) the uniform circle (ghost) against the eccentric
   fitted to 2026 and (b) the eccentric alone on a scale a hundred times
-  finer; Ptolemy's Sun in AD 140 and over 2,000 years; the eccentric over
-  100 and 1,000 years. A photo: Peurbach's woodcut of the Sun's eccentric
+  finer; Ptolemy's Sun in AD 140 and over 2000 years; the eccentric over
+  100 and 1000 years. A photo: Peurbach's woodcut of the Sun's eccentric
   orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer (Hipparchus'
   $94\tfrac12$ and $92\tfrac12$ days, *Almagest* III 4; the reference
@@ -210,7 +213,7 @@ The first anomaly and the simplest complete model.
   whose days are days of UT.
 - **Hands over:** the apogee moves, about 1.75° a century relative to γ, so
   the model drifts slowly over centuries (page 2.3); the eccentric's distance
-  varies twice as much as the real one (pages 3.2, 4.4); first, a consequence
+  varies twice as much as the real one (pages 3.2, 4.5); first, a consequence
   we can see every day.
 
 #### 2.2 · The equation of time
@@ -280,18 +283,18 @@ The first anomaly and the simplest complete model.
   or the equator turning westward over a fixed ecliptic (Copernicus, III 1),
   with γ in the direction of $\vec P \times \vec K$; the rate of change of
   declination, $p\sin\varepsilon\cos\beta\cos\lambda/\cos\delta$; the
-  pole's circle of 25,770 years (Thuban, Polaris, Vega); tropical versus
+  pole's circle of 25·770 years (Thuban, Polaris, Vega); tropical versus
   sidereal year, $Y_\text{s} = Y \cdot 360^\circ/(360^\circ - pY)$; the
   slow motion of the solar apogee; why the model of 2.1 drifts over
   centuries.
-- **Figures:** six stars of the reference sky over 6,000 years ((a) the
+- **Figures:** six stars of the reference sky over 6000 years ((a) the
   change of λ and β, one line each; (b) δ, a curve per star; static); the
   equator turning over the fixed ecliptic (3D in the ecliptic frame, year
-  slider and play, presets 2831 BC, 128 BC, 2026, AD 13,790); a blue plate
+  slider and play, presets 2831 BC, 128 BC, 2026, AD 13·790); a blue plate
   of the path of the pole among the northern stars (on trial: Marco decides
   whether to keep it); Spica's six records with the line fitted to them and
   Ptolemy's rule (static); the error curves of uniform precession for Spica
-  and of the eccentric with and without a moving apogee over 2,000 years;
+  and of the eccentric with and without a moving apogee over 2000 years;
   the thirteen records of Spica, Regulus and β Scorpii minus the real sky,
   with the error of Ptolemy's Sun (static).
 - **Fit:** Ptolemy's 1° in 100 years from Regulus (VII 2); the rate from
@@ -299,9 +302,9 @@ The first anomaly and the simplest complete model.
   from the reference sky around 2026; Copernicus' mean rate (III 6); the
   apogee's rate, 1.741° a century, from the seasons of seventeen years by
   Hipparchus' method, of which 1.397° is precession.
-- **Test:** uniform precession within 2.6′ of Spica over 2,000 years; the
-  eccentric with a moving apogee within 6′ over 2,000 years (38.5′ with the
-  apogee fixed), and page 2.2's equation of time within 11 s over 1,000
+- **Test:** uniform precession within 2.6′ of Spica over 2000 years; the
+  eccentric with a moving apogee within 6′ over 2000 years (38.5′ with the
+  apogee fixed), and page 2.2's equation of time within 11 s over 1000
   years; Ptolemy's slow rate comes mostly from his Sun: the records he
   reduced err as his Sun does, and 49.9″ less the 14.9″ a year of his
   Sun's drift gives 34.9″, near his 36″ (the full cause is debated).
@@ -323,28 +326,122 @@ The first anomaly and the simplest complete model.
 #### 3.1 · The first anomaly
 
 - **Question:** why does the Moon's speed vary, and with what period?
-- **Learn:** sidereal, synodic, anomalistic and draconitic months; the
-  epicycle model; **the eccentric/epicycle equivalence theorem**, proved here
-  and reused in Act IV; fitting the epicycle radius from eclipses.
-- **Figures:** epicycle and eccentric drawn together, tracing the same point;
-  the equation of anomaly over two months; error curve against the reference
-  Moon.
-- **Exercises:** prove the equivalence; find the anomalistic month from the
-  beat between two periods.
+- **Learn:** the Moon's daily motion, 11.8° to 15.3° in 2026, its peaks
+  drifting through the phases; the tropical, sidereal, synodic,
+  anomalistic and draconitic months, and the beat of the speed against
+  the phases (411.8 days); the period relations of *Almagest* IV 2 (251
+  synodic = 269 anomalistic months), from Babylonian astronomy (Toomer);
+  the epicycle model (IV 6), with the equation of anomaly
+  $q = -\operatorname{atan2}(e\sin M, 1 + e\cos M)$, $e = r/R$, the solar
+  equation of centre of page 2.1; the speed, $n + n_M\,dq/dM$; **the
+  eccentric/epicycle equivalence theorem**, proved by commuting the two
+  vectors (a parallelogram, IV 5), the eccentric's apogee turning at
+  $n - n_M$ (8.85 years), reused in Act IV; the three-eclipse method,
+  linear to first order in $X = e\cos M_2$, $Y = e\sin M_2$, exact by
+  Newton's method.
+- **Figures:** the Moon's daily motion through 2026 with its full Moons
+  (static); the epicycle with $q$ over two months (date and $r/R$,
+  starting at an exaggerated 0.3, with Ptolemy's 5.25 in 60 as a preset); the
+  epicycle and its eccentric drawn together, the parallelogram O K Moon C
+  (date, a month or nine years); the three-eclipse method on four sets of
+  eclipses, with the two equations in the plane of $X, Y$; the error curve
+  of our epicycle (uniform Moon as ghost, dots at new and full Moon); the
+  error curve of Ptolemy's simple Moon. A photo: the eclipse of 7 September
+  2025 (Donatiello, CC0).
+- **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ (Ptolemy's from
+  his Sun and Hipparchus' synodic month, IV 2-3) and $n_M = 269 \times
+  360^\circ / (251\,P_s)$ (corrected in IV 7), ours from Meeus 47; the data
+  of a triple: the arcs of anomaly $a = n_M\,\Delta t$ from the intervals,
+  reckoned in mean solar days (the equation of time, III 9), and $d$ = the
+  Sun's true motion between the eclipses (the Moon's, beyond whole turns)
+  minus $n\,\Delta t$, worked through for the Babylonian eclipses (a
+  table); $e$ and the anomaly from three
+  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5.22
+  and 5.23 where the deferent is 60 (he uses 5.25, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
+  IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
+  consecutive triples of 2019 to 2030 range from 0.080 to 0.093, and a
+  least-squares fit to the 25 new and full Moons of 2026 gives 0.0864.
+- **Test:** in 2026 within 40′ at the 25 new and full Moons, up to 2.9°
+  at the quarters and 3.2° overall (the uniform Moon 7.9°); no growth over
+  a thousand years. Ptolemy's simple Moon is a degree behind at his own
+  eclipses, as his Sun is, and 10° behind by 2026.
+- **Exercises:** prove the equivalence in Ptolemy's general form, and
+  judge Hipparchus' two ratios (IV 11); the anomalistic month from the
+  beat of the fastest full Moons, 2001 to 2039; Ptolemy's Babylonian
+  triple, to first order and exactly.
+- **Code:** `models/lunar-epicycle.js` (`LunarEpicycle`: `make()`,
+  `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
+  `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
+  `ErrorCurve.addMarks` (dots at chosen dates).
+- **Residual:** at the quarters, Hipparchus' sighting of 128 BC (V 3);
+  the evection, which takes 1.27° from the ellipse's 6.29° at new and full
+  Moon and adds it at the quarters; the remaining 40′ at new and full Moon
+  is half the three-eclipse fit (a least-squares epicycle, $e = 0.0864$,
+  stays within 22′) and mostly the annual equation (11′).
 - **Hands over:** the model is good at new and full Moon and bad in between.
 
 #### 3.2 · Evection and the distance problem
 
 - **Question:** what goes wrong at the quarters?
-- **Learn:** the second anomaly (evection), largest at quadratures; Ptolemy's
-  crank mechanism; the consequence that the model's Earth-Moon distance
-  varies by nearly a factor of two, while the Moon's apparent size does not.
-  A model can predict directions correctly and distances absurdly.
-- **Figures:** the crank mechanism animated; the predicted versus real
-  apparent diameter; the error curve before and after evection.
-- **Exercises:** the ratio of greatest to least distance in Ptolemy's model.
-- **Hands over:** longitude is now good enough to time eclipses, once we add
-  latitude.
+- **Learn:** the second anomaly, largest at the quarters: the real Moon's
+  whole equation reaches 4.96° at new and full Moon and 7.68° at the
+  quarters (2021–2030); Ptolemy's description (*Almagest* V 2), his and
+  Hipparchus' sightings of 7⅔° (V 3); Ptolemy's crank mechanism (V 2): K
+  seen from the Earth at the mean longitude, carried on an eccentric whose
+  centre C turns westward, its apogee A at $\bar\lambda - 2D$, so that
+  $\rho = \text{OK} = c\cos 2D + \sqrt{(1-c)^2 - c^2\sin^2 2D}$, 1 at mean
+  syzygy and $1 - 2c$ at the mean quarters, and $q = -\operatorname{atan2}(e
+  \sin M, \rho + e\cos M)$; the direction of the epicycle (V 5), its mean
+  apogee on the line from N, opposite C, shifted by $\sigma =
+  -\operatorname{atan2}(c\sin 2D, \rho + c\cos 2D)$, up to 13°; to first
+  order $q \approx -e_0\sin M + e_0 \kappa\sin(M - 2D)$, the ellipse's term and
+  the evection of Meeus' series ($e_0 = 6.05°$, $e_0\kappa = 1.26°$ against
+  6.29° and 1.27°; $\sigma$ and $\kappa$, since $\delta$ is the declination
+  and $k$ page 2.1's coordinate), the crank alone adding a spurious term in $M + 2D$ that
+  the direction cancels (a table of the exact coefficients). The model
+  predicts directions within a degree and distances that vary by a factor
+  of 1.91, while the Moon's apparent size does not (Copernicus, IV 2).
+- **Notation:** $D = \bar\lambda - \bar\lambda_\odot$, the mean
+  elongation; lengths in units of OA (Ptolemy's 60); $c = \text{OC}$; the
+  points O, C, A, K, N, L.
+- **Figures:** the real Moon's equation against $M$ at the new and full
+  Moons and at the quarters of 2021–2030 (static); the crank fitted to
+  2026, without the direction, with $q$ over two months against page 3.1's
+  epicycle (date); the direction of the epicycle in Ptolemy's example of
+  V 6 (static, the epicycle enlarged); the error curve of the crank with
+  the epicycle and the crank without the direction as ghosts, dots at the
+  quarters; Ptolemy's complete Moon around AD 139 and over 2000 years; the
+  apparent diameter through 2026, the real Moon against the two models
+  (static). No photo: no public-domain or CC0 photograph of the Moon at
+  perigee and apogee side by side was found (2026-10-28).
+- **Fit:** Ptolemy's eccentric from 5.25 and 7⅔° (V 4: OG 39.37, radius
+  49.68, OC 10.32); ON = OC from Hipparchus' sightings of 127 BC (V 5);
+  ours keeps page 3.1's fit and fits $c = 0.1762$ to the 25 quarters of
+  2026 (Ptolemy 0.1719).
+- **Test:** over 2026 the largest error falls from 3.2° (epicycle) to 2.7°
+  (crank alone) and 1.8° (with the direction); 2.0° over 1976–2076.
+  Ptolemy's complete Moon around AD 139 swings from −1.6° to +0.3°
+  against −3.6° to +1.8°, 0.9° behind on average (his Sun). Distances: 1.91
+  in the model, 1.14 in the real Moon (356·651 to 406·417 km in 2026); the
+  diameter up to 59.9′ on Ptolemy's 31⅓′ (V 14), 56.6′ for the fitted
+  crank, against 29.4′ to 33.5′; the Sun's eccentric of page 2.1 varies
+  twice as much as the real Sun too.
+- **Exercises:** Ptolemy's eccentric and the ratio of greatest to least
+  distance (1.913; 64.16 and 33.55 Earth radii; 59.9′); derive that the
+  direction cancels the term in $M + 2D$; Ptolemy's parallax of 135 (V 13),
+  67′ measured, 44′ for the real distance (break the model).
+- **Code:** `models/lunar-crank.js` (`LunarCrank`: `make()`,
+  `makeDistance()`, `state`, `geometry`, `construction`, `PTOLEMY`,
+  `FIT_2026`).
+- **Residual:** the variation, $0.66°\sin 2D$ (detour: Tycho), 44% of the
+  error's mean square in 2026, then the first anomaly left by page 3.1's
+  three-eclipse fit (its anomaly at the epoch 5° off), then the annual
+  equation; at the syzygies
+  the crank changes nothing (V 10). The distance: Copernicus' second
+  epicycle (IV 3, IV 8), 52.28 to 68.33 Earth radii for the Moon at the
+  quarters (IV 17); detour: Ibn al-Shatir.
+- **Hands over:** at new and full Moon the crank changes nothing, so
+  eclipses keep page 3.1's longitude; they still need latitude.
 
 #### 3.3 · Eclipses
 
@@ -388,18 +485,86 @@ The first anomaly and the simplest complete model.
 
 #### 4.3 · Same geometry, new centre
 
-- **Question:** what changes if the Sun is at the centre?
-- **Learn:** every epicycle is the Earth's orbit seen from the planet; the
-  free ratios become distances; the order of the planets; sidereal periods
-  from synodic periods; Mercury and Venus' maximum elongations.
-- **Figures:** the same planet in the heliocentric and geocentric frames
-  side by side; the error curve, **unchanged**.
+- **Question:** what changes if the Sun is taken as at rest?
+- **Learn:** Copernicus' arrangement: in Ptolemy's models every outer
+  planet's epicycle radius stays parallel to the line from the Earth to
+  the mean Sun (*Almagest* X 6), and the deferents of Venus and Mercury
+  follow the mean Sun approximately (from the equant, not the Earth);
+  linking them all to one Earth–Sun line, at a scale of its own for each
+  planet, turns the free ratios into distances; the order of the planets;
+  sidereal periods from synodic periods; Mercury and Venus' maximum
+  elongations.
+- **Figures:** the same planet in the heliostatic and geostatic
+  descriptions side by side; the error curve, **unchanged**.
 - **Point to make:** the predictions barely improved. What changed is that
-  the system now has a scale and an order.
+  the system now has a scale and an order. They come from the arrangement:
+  the body taken as at rest changes no prediction (WRITING.md §9).
 - **Exercises:** the radius of Venus' orbit from its greatest elongation.
-- **Hands over:** circles still leave an error. Mars shows it most.
+- **Hands over:** Tycho kept this arrangement with the Earth at rest. What
+  can the observations decide?
 
-#### 4.4 · Kepler
+#### 4.4 · What moves?
+
+- **Question:** can the observations decide which body is at rest?
+- **Learn:**
+  - The frame (what is taken as at rest) and the arrangement (how the
+    motions are linked; the order and the distances of the planets) are
+    separate questions. Directions from the Earth depend only on the
+    relative positions and velocities of the bodies, so they cannot decide
+    the frame, while the arrangement makes predictions that can be tested.
+  - Tycho's system (1588): the Sun, the Moon and the planets arranged as
+    in Copernicus, about a resting Earth, the planets going round the Sun
+    and the Sun round the Earth. Copernicus' model moved to the Earth at
+    rest gives the same direction to every planet at every moment, proved
+    with vectors as in the equivalence of page 3.1. Tycho's stars stay on
+    a sphere about the Earth, though, so the two arrangements differ for
+    the stars.
+  - The phases of Venus (Galileo, observed 1610): when Venus' epicycle
+    lies wholly between the Earth and the Sun, as in Ptolemy's order
+    (*Almagest* IX 1, and the nested spheres of the *Planetary
+    Hypotheses*), Venus is never more than half lit; a gibbous Venus is
+    expected in Copernicus' arrangement and Tycho's alike.
+  - Stellar parallax: Copernicus explains its absence by the distance of
+    the stars (*De Revolutionibus* I 10); Bessel measured it in 1838 (61
+    Cygni). With the Earth at rest it means that every star moves each
+    year with the Sun, which Tycho's stars do not: parallax decides
+    between Tycho's arrangement and Copernicus'. Aberration (Bradley,
+    1729), which depends on the Earth's velocity relative to the stars,
+    bears on the same question.
+  - The physical arguments: Ptolemy's clouds and thrown objects
+    (*Almagest* I 7), and his answer to an air that turns with the Earth;
+    Copernicus' natural motion and his ship (*De Revolutionibus* I 8);
+    Newton's laws of motion (*Principia*, 1687), which hold in inertial
+    frames, where the solar system's centre of mass, near the Sun, is at
+    rest or moves uniformly, and are simplest where it is at rest (Book
+    III, Hypothesis 1 and Propositions 11–12). Physics makes the
+    heliostatic description simpler; the geostatic one stays correct once
+    the forces of an accelerated, turning frame are added. The Earth's
+    daily rotation shows in an experiment on the ground (Foucault, 1851);
+    its yearly motion, a free fall, does not show in experiments of that
+    kind.
+- **Figures:** Mars seen from the Earth in Copernicus' and Tycho's systems,
+  side by side, with one error curve for both, identical by construction;
+  the phases of Venus in Ptolemy's arrangement and in Copernicus'; a star's
+  parallax drawn with the Sun at rest and with the Earth at rest.
+- **Exercises:** derive that Tycho's and Copernicus' systems give the same
+  directions; the greatest phase of Venus in Ptolemy's arrangement; the
+  parallax of 61 Cygni from its distance, and why Copernicus could not see
+  it.
+- **Rhythm:** no longitude to fit, as in Act I: observation (Venus),
+  model (frames and arrangements), test (the two error curves coincide),
+  residual (Mars).
+- **Sources:** *Almagest* I 7, IX 1 and X 6; *De Revolutionibus* I 5,
+  I 8, I 10 and the preface to Book II; for Tycho, Galileo, Bessel,
+  Bradley, Newton, Foucault and Kepler, sources outside the
+  `astronomy-sources` library, to be chosen and checked when the page is
+  built (the dates above are not yet checked against them).
+- **Hands over:** circles still leave an error, and Mars shows it most.
+  Kepler, who looked in the Sun for the physical cause of the planets'
+  motions (*Mysterium Cosmographicum*, 1596; *Astronomia Nova*, 1609),
+  removes it.
+
+#### 4.5 · Kepler
 
 - **Question:** what shape removes the last error?
 - **Learn:** the ellipse; the area law; mean, eccentric and true anomaly;
@@ -429,7 +594,8 @@ the Islamic critiques of the equant, calendars, instruments.
 
 ### Hub
 
-The site's `index.html`: the objective in two sentences, the five acts as a
+The site's `index.html`: the objective in two sentences, the course as a
+journey through the models before Kepler (WRITING.md §9), the five acts as a
 map, and a link to *Beyond Kepler*. Optional: a notation page (§6).
 
 ---
@@ -494,12 +660,19 @@ once on the page.
 | $p$ | the rate of precession in longitude (″ a year), page 2.3 |
 | $Y,\ Y_\text{s}$ | the tropical year (page 1.3) and the sidereal year (page 2.3) |
 | $\dot\lambda_A$ | the motion of the apogee relative to γ (degrees a century), page 2.3 |
+| $n_M$ | the daily motion in anomaly (page 3.1); $n$ is then the daily motion in longitude |
+| $q$ (Moon) | the equation of anomaly, $\lambda = \bar\lambda + q$, with $M$ counted from the apogee of the epicycle and $e = r/R$ (page 3.1) |
+| $D$ | the mean elongation of the Moon, $\bar\lambda - \bar\lambda_\odot$ (Meeus' $D$), page 3.2 |
+| $c$ | OC, the distance of the centre of Ptolemy's lunar eccentric from the Earth, where OA = 1 (page 3.2) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
 written in degrees, minutes and seconds ($23^\circ 51' 20''$), always with its
-decimal value; other sexagesimal quantities, such as ratios on a radius of 60,
-keep the source's notation ($2;30$), also with their decimal value.
+decimal value. Other sexagesimal quantities are written as decimals: a ratio on
+a radius of 60 as 5.25, a length of the year as 365.24667 days. The
+sources' semicolon notation is not used on the pages;
+the scripts in `tools/numbers/` keep it, to check the values against the
+sources.
 
 The sign convention for $q$ and the anomalies is fixed on page 2.1 and used
 everywhere afterwards: $M$ counts from the apogee, and $q$ is negative while
@@ -585,7 +758,8 @@ the frames, `models/frames.js`; the clocks, `models/clock.js`; the equation
 of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
-at the epoch. The mean Sun (`models/mean-sun.js`, page 1.3)
+at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
+reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,
@@ -619,7 +793,8 @@ act4-planets/
   01-going-backwards/
   02-equant/
   03-new-centre/
-  04-kepler/
+  04-what-moves/
+  05-kepler/
 beyond-kepler/
 archive/                   earlier pages, kept for reference, not linked
 ```
@@ -653,7 +828,7 @@ Modern references:
   reference Moon.
 - E. M. Standish, *Keplerian Elements for Approximate Positions of the Major
   Planets* (JPL): the planetary reference. Being Keplerian, it cannot judge a
-  Keplerian model (see page 4.4).
+  Keplerian model (see page 4.5).
 - J. Vondrák, N. Capitaine, P. Wallace, *New precession expressions, valid
   for long time intervals* (A&A, 2011), as in SOFA / ERFA: the precession
   used by the reference sky.

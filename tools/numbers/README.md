@@ -12,6 +12,8 @@ shared code in Node, and prints the numbers quoted on the page.
 | `2.1-uneven-year.js` | 2.1 · The uneven year |
 | `2.2-equation-of-time.js` | 2.2 · The equation of time |
 | `2.3-precession.js` | 2.3 · Precession |
+| `3.1-first-anomaly.js` | 3.1 · The first anomaly |
+| `3.2-evection.js` | 3.2 · Evection and the distance problem |
 
 Run from the repository root, e.g.
 

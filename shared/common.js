@@ -375,6 +375,14 @@ function signed3(x) {
 	return (x < 0 && Number(text) !== 0 ? '-' : '+') + text;
 }
 
+/* Plain text as TeX, "\text{...}". A raised dot between thousands
+   (AD 13·790, WRITING.md §4) is set between two \text groups: KaTeX
+   takes "·" inside \text for the math command \cdotp and prints it
+   raw. */
+function texText(text) {
+	return `\\text{${text.split('·').join('}{\\cdotp}\\text{')}}`;
+}
+
 /* "\alpha=12°30'" */
 const texAngle = (symbol, degrees) => `${symbol}=${dms(degrees)}`;
 
@@ -582,18 +590,123 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 }
 
 /* A text label centred at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor). With a LabelPlacer, a label
-   that would cover an earlier one or leave the canvas (on a phone) moves
-   next to its point instead. */
+   colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
+   symbol that would cover an earlier label or leave the canvas (on a
+   phone) moves next to its point instead; a word stays where it is, only
+   moved inside the canvas (LabelPlacer.candidates). */
 function centredLabel(ctx, text, point, color, labels = null) {
 	ctx.fillStyle = textColor(color);
 	ctx.font = labelFont(text);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 
-	const place = labels ? labels.choose(ctx, text, [point, ...LabelPlacer.around(ctx, text, point)]) : point;
+	const place = labels ? labels.choose(ctx, text, LabelPlacer.candidates(ctx, text, point, point)) : point;
 
 	ctx.fillText(text, place.x, place.y);
+}
+
+/* ---------- Segments, arcs and subscripts on a canvas ---------- */
+
+/* A straight segment between two canvas points. */
+function segment(ctx, a, b, style) {
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 1.5;
+	ctx.setLineDash(style.dash ?? []);
+	ctx.beginPath();
+	ctx.moveTo(a.x, a.y);
+	ctx.lineTo(b.x, b.y);
+	ctx.stroke();
+	ctx.setLineDash([]);
+}
+
+/* A circular arc about a canvas point, from angle 'from' to 'to'
+   (longitudes, anticlockwise on the screen), of radius r px. */
+function screenArc(ctx, centre, r, from, to, style) {
+	const start = -from * D2R;
+	const end = -to * D2R;
+
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 2;
+	ctx.beginPath();
+	ctx.arc(centre.x, centre.y, r, start, end, to > from);
+	ctx.stroke();
+}
+
+/* A symbol with a subscript ("λ" and "A"), centred at a canvas point, in
+   the text colour of 'color'. */
+function subscriptLabel(ctx, base, sub, point, color) {
+	const subFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
+
+	ctx.font = FONT_SYMBOL;
+	const baseWidth = ctx.measureText(base).width;
+	ctx.font = subFont;
+	const subWidth = ctx.measureText(sub).width;
+	const left = point.x - (baseWidth + subWidth) / 2;
+
+	ctx.fillStyle = textColor(color);
+	ctx.textAlign = 'left';
+	ctx.textBaseline = 'middle';
+	ctx.font = FONT_SYMBOL;
+	ctx.fillText(base, left, point.y);
+	ctx.font = subFont;
+	ctx.fillText(sub, left + baseWidth, point.y + 5);
+}
+
+/* ---------- Points, circles and labels of plane constructions ----------
+   Drawings seen from the north ecliptic pole (the epicycles of pages 3.1
+   and 3.2): longitudes count anticlockwise from the right. */
+
+/* A canvas point at the distance r (px) from 'from', towards the
+   longitude 'lon' (anticlockwise from the right, as seen from the north
+   ecliptic pole). */
+function towards(from, lon, r) {
+	return { x: from.x + r * cos(lon), y: from.y - r * sin(lon) };
+}
+
+/* A circle on a canvas. */
+function circle(ctx, centre, r, style) {
+	ctx.strokeStyle = style.color;
+	ctx.lineWidth = style.width ?? 2;
+	ctx.setLineDash(style.dash ?? []);
+	ctx.beginPath();
+	ctx.arc(centre.x, centre.y, r, 0, TAU);
+	ctx.stroke();
+	ctx.setLineDash([]);
+}
+
+/* A name set just outside a circle (or a point, r = 0) of centre
+   'centre' and radius r px, in the direction 'lon': its box starts
+   OUTSIDE_LABEL_GAP px beyond the circle, so it never sits on the circle. */
+const OUTSIDE_LABEL_GAP = 6;
+
+function labelOutside(ctx, text, centre, r, lon, color, labels) {
+	ctx.font = labelFont(text);
+
+	const box = ctx.measureText(text);
+	const halfWidth = box.width / 2;
+	const halfHeight = (box.actualBoundingBoxAscent + box.actualBoundingBoxDescent) / 2;
+	const reach = r + OUTSIDE_LABEL_GAP + Math.abs(halfWidth * cos(lon)) + Math.abs(halfHeight * sin(lon));
+
+	centredLabel(ctx, text, towards(centre, lon, reach), color, labels);
+}
+
+/* The direction (deg) from a point that is farthest from every line
+   leaving it ('rays', their directions in deg), where the point's name
+   goes: the best of 72 directions, 5° apart. */
+function clearestDirection(rays) {
+	let best = 0;
+	let bestGap = -1;
+
+	for (let lon = 0; lon < 360; lon += 5) {
+		const gap = Math.min(...rays.map(ray => Math.abs(norm180(lon - ray))));
+
+		if (gap > bestGap) {
+			best = lon;
+			bestGap = gap;
+		}
+	}
+
+	return best;
 }
 
 /* ---------- Canvas fonts (STYLE.md §3) ----------
@@ -640,7 +753,15 @@ function whenCanvasFontsReady() {
    the first of its candidate places that stays inside the bounds and
    touches no earlier label. A label's designed place comes first, so it
    moves only where it would collide: on a wide screen, nowhere. Used by
-   Sphere3D.label and Plot2D.text. */
+   Sphere3D.label and Plot2D.text.
+
+   Only a single symbol (K, γ, P′) may move round its point: its step
+   aside is a few pixels. A word or an expression (Vega, mean Sun,
+   90° − a) keeps its designed place, slid inside the canvas if it would
+   leave it, even when that place is taken: a name that jumped from one
+   side of its point to the other whenever a control moves is worse than
+   one that briefly touches another (CLAUDE.md, "Rules for every
+   figure"). */
 
 /* Clear space between two labels, and between a point and its label (px). */
 const LABEL_CLEARANCE = 1;
@@ -692,6 +813,18 @@ class LabelPlacer {
 			at(q.x - d - w, q.y - d - h),
 			at(q.x - d - w, q.y + d)
 		];
+	}
+
+	/* May this label move round its point to stay clear of the others?
+	   Only a single symbol, of one or two characters (K, γ, P′). */
+	static mayMove(text) {
+		return [...text].length <= 2;
+	}
+
+	/* The candidate places of a label: its designed place, then, for a
+	   single symbol only, the places all round its point q (around). */
+	static candidates(ctx, text, designed, q, gap = LABEL_POINT_GAP) {
+		return LabelPlacer.mayMove(text) ? [designed, ...LabelPlacer.around(ctx, text, q, gap)] : [designed];
 	}
 
 	/* Keep later labels clear of a box drawn some other way ({ x0, y0, x1,

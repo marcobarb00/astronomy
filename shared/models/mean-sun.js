@@ -89,6 +89,7 @@ const MeanSun = (function () {
 	return {
 		MODERN,
 		PTOLEMY,
+		daysSinceEpoch,
 		meanLongitude,
 		make,
 		yearLength
