@@ -74,27 +74,6 @@ function syzygies(from, to) {
 	return news.concat(fulls).sort((a, b) => a.jd - b.jd);
 }
 
-/* "3 Apr" for a JD. */
-function dateText(jd) {
-	const date = Time.calendarDate(jd);
-
-	return `${Math.floor(date.day)} ${Time.MONTH_NAMES[date.month - 1]}`;
-}
-
-/* "3 Apr, 18 h" for a JD: the date and the hour (UT is within a
-   minute of TT here; the hour is only a label). */
-function dateHourText(jd) {
-	const date = Time.calendarDate(jd);
-	const hour = Math.floor((date.day % 1) * 24);
-
-	return `${dateText(jd)}, ${String(hour).padStart(2, '0')} h`;
-}
-
-/* "3 Apr 2027" for a JD (Figure 3 runs over nine years). */
-function dateYearText(jd) {
-	return `${dateText(jd)} ${Time.calendarDate(jd).year}`;
-}
-
 /* First day of each month of YEAR, as a day index (0 = 1 January). */
 const MONTH_STARTS = Time.MONTH_NAMES.map((name, i) => ({
 	value: Time.julianDay(YEAR, i + 1, 1) - YEAR_START,
@@ -107,59 +86,6 @@ const monthTicks = (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8
 
 /* An angle with a sign in TeX: "+1.85^\circ", "-0.40^\circ". */
 const texSigned = (degrees, digits = 2) => `${signed(degrees, digits).replace('−', '-')}^\\circ`;
-
-/* A canvas point at the distance r (px) from 'from', towards the
-   longitude 'lon' (anticlockwise from the right, as seen from the north
-   ecliptic pole). */
-function towards(from, lon, r) {
-	return { x: from.x + r * cos(lon), y: from.y - r * sin(lon) };
-}
-
-/* A circle on a canvas. */
-function circle(ctx, centre, r, style) {
-	ctx.strokeStyle = style.color;
-	ctx.lineWidth = style.width ?? 2;
-	ctx.setLineDash(style.dash ?? []);
-	ctx.beginPath();
-	ctx.arc(centre.x, centre.y, r, 0, TAU);
-	ctx.stroke();
-	ctx.setLineDash([]);
-}
-
-/* A name set just outside a circle (or a point, r = 0) of centre
-   'centre' and radius r px, in the direction 'lon': its box starts
-   LABEL_GAP px beyond the circle, so it never sits on the circle. */
-const LABEL_GAP = 6;
-
-function labelOutside(ctx, text, centre, r, lon, color, labels) {
-	ctx.font = labelFont(text);
-
-	const box = ctx.measureText(text);
-	const halfWidth = box.width / 2;
-	const halfHeight = (box.actualBoundingBoxAscent + box.actualBoundingBoxDescent) / 2;
-	const reach = r + LABEL_GAP + Math.abs(halfWidth * cos(lon)) + Math.abs(halfHeight * sin(lon));
-
-	centredLabel(ctx, text, towards(centre, lon, reach), color, labels);
-}
-
-/* The direction (deg) from a point that is farthest from every line
-   leaving it ('rays', their directions in deg), where the point's name
-   goes: the best of 72 directions, 5° apart. */
-function clearestDirection(rays) {
-	let best = 0;
-	let bestGap = -1;
-
-	for (let lon = 0; lon < 360; lon += 5) {
-		const gap = Math.min(...rays.map(ray => Math.abs(norm180(lon - ray))));
-
-		if (gap > bestGap) {
-			best = lon;
-			bestGap = gap;
-		}
-	}
-
-	return best;
-}
 
 /* The drawing of one moment of the epicycle (Figures 2 and 3): the
    Earth O at the centre of the canvas, x towards the vernal point. 'view'
