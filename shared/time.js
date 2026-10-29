@@ -20,6 +20,7 @@
 	 5. Sidereal time and hour angle    (Meeus 12.4)
 	 6. Formatting
 	 7. Export
+	 8. Short date labels for figures   (dateText, dateHourText, dateYearText)
    ========================================================================== */
 
 const Time = (function () {
@@ -351,3 +352,29 @@ const Time = (function () {
 		formatDate
 	};
 })();
+
+/* ==========================================================================
+   8. SHORT DATE LABELS FOR FIGURES (pages 3.1 and 3.2)
+   ========================================================================== */
+
+/* "3 Apr" for a JD. */
+function dateText(jd) {
+	const date = Time.calendarDate(jd);
+
+	return `${Math.floor(date.day)} ${Time.MONTH_NAMES[date.month - 1]}`;
+}
+
+/* "3 Apr, 18 h" for a JD: the date and the hour (a label only: the
+   figures that use it do not distinguish UT from TT, about a minute
+   apart today). */
+function dateHourText(jd) {
+	const date = Time.calendarDate(jd);
+	const hour = Math.floor((date.day % 1) * 24);
+
+	return `${dateText(jd)}, ${String(hour).padStart(2, '0')} h`;
+}
+
+/* "3 Apr 2027" for a JD. */
+function dateYearText(jd) {
+	return `${dateText(jd)} ${Time.calendarDate(jd).year}`;
+}
