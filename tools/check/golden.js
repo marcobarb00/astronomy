@@ -986,7 +986,7 @@ function page32(c) {
 		(() => {
 			const g = c.directionGeometry();
 
-			return [num(g.shift), num(g.meanApogee), vec(g.K, 9), vec(g.N, 9), vec(g.L, 9)].join(' ');
+			return [num(g.shift), num(g.meanApogee), vec(g.K, 9), vec(g.N, 9), vec(g.A, 9)].join(' ');
 		})()
 	);
 	row('epicycleDistance', [0, 10, 20].map(d => num(c.epicycleDistance(inContext(c, 'YEAR_START') + d))).join(' '));

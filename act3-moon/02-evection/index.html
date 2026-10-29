@@ -178,8 +178,12 @@
 		<p>
 			We measure lengths in units of OA, the greatest distance of K, which
 			Ptolemy makes 60. With $\text{OC} = c$, the eccentric's radius CA is $1 - c$,
-			and the angle at O between OC and OK is $2D$. The law of cosines in the
-			triangle OCK gives the distance $\rho = \text{OK}$:
+			and the angle at O between OC and OK is $2D$, which Ptolemy calls the
+			<em>double elongation</em> (V 5). It is 0° at new and full Moon ($D =
+			0^\circ$ or $180^\circ$) and 180° at the quarters ($D = 90^\circ$ or
+			$270^\circ$), so the crank goes through its whole cycle twice in a
+			synodic month. The law of cosines in the triangle OCK gives the
+			distance $\rho = \text{OK}$:
 		</p>
 
 		$$(1 - c)^2 = \rho^2 + c^2 - 2\rho c \cos 2D \quad\Longrightarrow\quad \rho = c\cos 2D + \sqrt{(1 - c)^2 - c^2 \sin^2 2D}.$$
@@ -294,21 +298,41 @@
 		</div>
 
 		<p>
-			Take a frame turned to $\bar\lambda$, its first axis towards K and its
-			second 90° further east. There K is at $(\rho, 0)$ and N at $(-c\cos 2D,\
-			c\sin 2D)$, and the mean apogee lies off the line OK by the angle
+			To find the mean apogee, take a frame with its origin at the Earth O,
+			its first axis towards K, at the longitude $\bar\lambda$, and its
+			second 90° further east. There K is at $(\rho, 0)$ and N, opposite C, at
+			$(-c\cos 2D,\ c\sin 2D)$. The line from N through K leaves K at the
+			angle
 		</p>
 
-		$$\sigma = -\operatorname{atan2}(c\sin 2D,\ \rho + c\cos 2D),$$
+		$$\sigma = -\operatorname{atan2}(c\sin 2D,\ \rho + c\cos 2D)$$
 
 		<p>
-			counted eastward. It vanishes at new and full Moon (D = 0°) 
-			and at the quarters (D = 180°), and reaches 13.1° with Ptolemy's numbers.
-			A Moon at the anomaly $M$ from the mean apogee is at $M - \sigma$ from
-			the true apogee on the line OK, and that is the angle the equation of
-			anomaly needs. We call the crank with this rule the complete model, and
-			without it the crank alone.
+			from the line OK, counted eastward. It vanishes when N, O and K are in
+			line, at new and full Moon ($2D = 0^\circ$) and at the quarters ($2D =
+			180^\circ$), and reaches 13.1° in between with Ptolemy's numbers.
 		</p>
+
+		<p>
+			The anomaly itself does not change: $M$ still grows uniformly, $M = M_0
+			+ n_M\,t$, as on page 3.1. What changes is the point from which it is
+			counted. In the crank alone it is counted from the <em>true
+			apogee</em>, the point of the epicycle farthest from O, on the line OK,
+			and the equation of section 2 uses it as it is. In Ptolemy's complete
+			model it is counted from the mean apogee, which lies $\sigma$ east of
+			the true apogee, so the Moon, $M$ west of the mean apogee, is $M -
+			\sigma$ west of the true apogee.
+		</p>
+
+		<p>
+			The equation of anomaly is found in the triangle OKL, which needs the
+			Moon's angle from the line OK. The complete model therefore uses the
+			equation of section 2 with $M - \sigma$ in place of $M$:
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}\big(e\sin(M - \sigma),\ \rho + e\cos(M - \sigma)\big).$$
+		</div>
 
 		<!-- Figure 3: the direction of the epicycle, Ptolemy's example of V 6 (static) -->
 		<figure class="fig">
@@ -325,16 +349,15 @@
 				</div>
 			</div>
 			<figcaption>
-				Compare the two lines through K in Ptolemy's example of V 6. The line
-				from N reaches the epicycle 12° from the line from O, so the Moon's
-				anomaly from the true apogee is 12° larger than the one counted from
-				the mean apogee, and its equation nearly halves.
+				Compare L with L′. Both are $M = 40^\circ$ from an apogee, L from the
+				mean apogee and L′ from the true one, so the direction of the epicycle
+				moves the Moon along its epicycle by $\sigma$, here 12° at the double
+				elongation of Ptolemy's example, 90½°.
 			</figcaption>
 		</figure>
 
 		<p>
-			In the example, the double elongation is 90½° and the Moon is 333.2°
-			from the mean apogee. It is therefore 345.2° from the true apogee, and
+			In Ptolemy's own example the Moon is 333.2° from the mean apogee. It is therefore 345.2° from the true apogee, and
 			its equation is $+1^\circ 26'$ (1.43°), as Ptolemy computes, where the
 			crank alone gives $+2^\circ 33'$ (2.55°).
 		</p>
