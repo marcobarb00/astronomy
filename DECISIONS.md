@@ -39,10 +39,18 @@ section.
 - **Exercises of four kinds: compute then check, predict then play,
   derive, break the model.** Two or three per page, with hint and worked
   answer, every number from a script. → STRUCTURE.md §7.2
-- **Page 4.4 (Kepler) cannot be judged by the planetary reference.** The
+- **Page 4.5 (Kepler) cannot be judged by the planetary reference.** The
   reference is itself Keplerian (Standish), so the error would be near
   zero by construction; the page needs another yardstick. → STRUCTURE.md
   §11
+- **A historical journey, not a claim about what moves.** The course
+  follows the astronomers before Kepler and rebuilds their models as
+  theirs; it never presents one as true. Directions seen from the Earth
+  cannot decide which body is at rest, so the text says what each model
+  takes as at rest (geostatic, heliostatic), keeps the frame apart from
+  the arrangement, and never speaks of a true centre. Adopted on
+  2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
+  the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 
 ## Look
 
@@ -75,6 +83,15 @@ section.
   fixed scales, an observer's sky in the horizon frame, a control only
   when it shows the point of the section. → CLAUDE.md, "Rules for every
   figure"
+- **A label never jumps: moving points are named by letters, words stay
+  put.** On 2026-10-26 Marco noticed names that jumped wildly as their
+  object moved (page 3.1, Figure 2: "Moon", "deferent", "epicycle"). They
+  were moved to the other side of their point, to avoid a line or
+  another label, by `LabelPlacer` or by the page's own choice of side. A
+  moving point is now named by a letter the text defines (O, K, L, A),
+  or not named when the title or the key says what it is; a word keeps
+  its side of its object, and `LabelPlacer` moves only labels of one or
+  two characters. → CLAUDE.md, "Rules for every figure"
 
 ## Writing
 
@@ -97,6 +114,18 @@ section.
   made keys of nine entries; on 2026-10-25 Marco dropped the requirement
   that every element be explained, in favour of these simpler
   descriptions. → WRITING.md §7, CLAUDE.md "Rules for every figure"
+- **No semicolon notation on the pages.** A sexagesimal number from a
+  source is written as an angle in degrees and minutes (86°15′, Virgo
+  13°45′) or as a decimal (5.25 where the deferent is 60; 365.24667
+  days), never as 5;15 or 365;14,48. Marco asked for it on 2026-10-27:
+  the notation is the sources', and readers do not know it. Replaced the
+  earlier rule that ratios kept the source's notation. → STRUCTURE.md §6
+- **No comma between thousands.** Four digits take no separator (4267,
+  2000 years); longer numbers set off their thousands with a raised dot
+  (126·007 days, AD 13·790); an equation has no separator at all, since a
+  raised dot there reads as a product. Marco asked for it on 2026-10-28,
+  after reading "4,267" on page 3.1 as a number with decimals. → WRITING.md
+  §4
 
 ## Code
 
@@ -162,9 +191,16 @@ section.
   header). But there are no JPL values for Mercury and Venus, and none
   before 200 BC. Acts III and IV use ancient observations (eclipses back
   to the 8th century BC), so add Horizons values for every body at a few
-  dates between 750 BC and 200 BC before Act III.
+  dates between 750 BC and 200 BC before Act III. On 2026-10-26 (page 3.1)
+  the Horizons API answered every request from a cloud session with a
+  server error, so this is still open: page 3.1 fits and tests its
+  epicycle on 2025 - 2026 and AD 133 - 136, and keeps the errors at
+  Ptolemy's Babylonian eclipses of 721 - 720 BC out of its prose (they are
+  only in its numbers script).
 - **Sources in cloud sessions.** The `astronomy-sources` chapter files are
   not in the repository, so cloud sessions cannot read them. Options: a
   private repository for the sources, or attaching the needed chapters to
-  the session.
-- **Where page 4.4 gets its yardstick** (see Course).
+  the session. On 2026-10-26 a session with the `astronomy_reference`
+  repository attached could read every chapter through its copy of the
+  skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
+- **Where page 4.5 (Kepler) gets its yardstick** (see Course).

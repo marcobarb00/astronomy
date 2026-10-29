@@ -1,0 +1,80 @@
+/* ==========================================================================
+   PAGE 3.1 · THE FIRST ANOMALY - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The square drawings
+	 3. The tables of the prose
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here run up to "31 Dec 2034" and "1 Jan, 06 h"; the
+   labels ("ratio r/R") need a wider first column. */
+figure.fig {
+	--ctl-output: 7.4em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* A play button keeps its width between "Play two months" and "Pause". */
+button.play {
+	min-width: 10.5em;
+}
+
+/* ==========================================================================
+   2. THE SQUARE DRAWINGS
+   The canvases set their own square size (page.js); centre them.
+   ========================================================================== */
+
+#epicycle-canvas,
+#equivalence-canvas,
+#eclipses-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* Figure 4: the four sets of eclipses, under the two panels. */
+#eclipses-presets {
+	margin-top: 14px;
+	justify-content: center;
+}
+
+/* ==========================================================================
+   3. THE TABLES OF THE PROSE
+   The five months: a narrow table, first two columns left; the data of
+   the Babylonian eclipses: first column left.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:nth-child(-n + 2),
+table.prose-table td:nth-child(-n + 2) {
+	text-align: left;
+}
+
+/* The data of the Babylonian eclipses: the two intervals are numbers,
+   centred like the rest of the shared tables. */
+table.prose-table.eclipse-data th:nth-child(2),
+table.prose-table.eclipse-data td:nth-child(2) {
+	text-align: center;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+}

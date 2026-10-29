@@ -64,7 +64,7 @@
 	 These numbers are well below the errors of the historical models on the
 	 site (tens of arcminutes to degrees). They are NOT small enough to judge
 	 a Keplerian model at the arcminute level: the planets here are
-	 themselves Keplerian (see STRUCTURE.md, page 4.4).
+	 themselves Keplerian (see STRUCTURE.md, page 4.5).
 
    TABLE OF CONTENTS
 	 1. Constants and range

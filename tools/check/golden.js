@@ -62,6 +62,8 @@ const SHARED_FILES = [
 	'shared/models/solar-eccentric.js',
 	'shared/models/equation-of-time.js',
 	'shared/models/precession.js',
+	'shared/models/lunar-epicycle.js',
+	'shared/models/lunar-crank.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -74,7 +76,9 @@ const PAGE_FILES = [
 	'act1-stage/03-clocks/index.html',
 	'act2-sun/01-uneven-year/index.html',
 	'act2-sun/02-equation-of-time/index.html',
-	'act2-sun/03-precession/index.html'
+	'act2-sun/03-precession/index.html',
+	'act3-moon/01-first-anomaly/index.html',
+	'act3-moon/02-evection/index.html'
 ];
 
 /* ==========================================================================
@@ -613,6 +617,69 @@ function precessionSection(c) {
 	});
 }
 
+function lunarEpicycleSection(c) {
+	const { Time, LunarEpicycle } = c;
+	const sets = { PTOLEMY: LunarEpicycle.PTOLEMY, FIT_2026: LunarEpicycle.FIT_2026 };
+
+	title('6g. THE LUNAR EPICYCLE (models/lunar-epicycle.js)');
+	Object.entries(sets).forEach(([name, p]) => {
+		const months = LunarEpicycle.months(p);
+
+		row(
+			name,
+			num(p.L0),
+			num(p.n, 12),
+			num(p.M0),
+			num(p.nM, 12),
+			num(p.epoch),
+			num(p.e, 12),
+			num(months.anomalistic),
+			num(months.apogee)
+		);
+	});
+	row('ECLIPSES_2026', LunarEpicycle.ECLIPSES_2026.map(jd => num(jd)).join(' '));
+	Object.entries(LunarEpicycle.TRIPLES).forEach(([name, data]) => {
+		const s = LunarEpicycle.threeEclipses(data);
+
+		row(`threeEclipses ${name}`, num(s.first.e), num(s.first.M2), num(s.e), num(s.M2), num(s.q2));
+	});
+	row(
+		'dailyMotion PTOLEMY',
+		[0, 90, 180, 270].map(M => num(LunarEpicycle.dailyMotion(LunarEpicycle.PTOLEMY, M))).join(' ')
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = LunarEpicycle.state(LunarEpicycle.FIT_2026, jd);
+		const p = LunarEpicycle.state(LunarEpicycle.PTOLEMY, jd);
+
+		row(`${label}`, num(s.meanLongitude), num(s.M), num(s.q), num(s.lambda), num(s.apogee), num(p.lambda));
+	});
+}
+
+function lunarCrankSection(c) {
+	const { Time, LunarCrank } = c;
+	const sets = { PTOLEMY: LunarCrank.PTOLEMY, FIT_2026: LunarCrank.FIT_2026 };
+
+	title("6h. PTOLEMY'S CRANK (models/lunar-crank.js)");
+	Object.entries(sets).forEach(([name, p]) => {
+		row(name, num(p.L0), num(p.M0), num(p.e, 12), num(p.c, 12), num(p.sun.L0), num(p.sun.epoch));
+	});
+	[0, 45, 90.5, 120, 180, 245.9].forEach(twoD => {
+		const g = LunarCrank.geometry(LunarCrank.PTOLEMY.e, LunarCrank.PTOLEMY.c, twoD, 333.2, true);
+
+		row(`geometry 2D = ${twoD}`, num(g.rho), num(g.shift), num(g.q), num(g.distance));
+	});
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = LunarCrank.state(LunarCrank.FIT_2026, jd);
+		const p = LunarCrank.state(LunarCrank.PTOLEMY, jd);
+
+		row(`${label}`, num(s.elongation), num(s.M), num(s.q), num(s.lambda), num(s.distance), num(p.lambda));
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -757,6 +824,7 @@ function page12(c) {
 	title('8b. PAGE 1.2 (act1-stage/02-frames/page.js)');
 	row('EPS_TODAY', num(inContext(c, 'EPS_TODAY'), 12));
 	row('formatDegrees', [-5.4721, 0, 12.345].map(v => quote(c.formatDegrees(v))).join(' '));
+	row('texText', ['2026: shift ', 'AD 13·790', '126·007 days'].map(t => quote(c.texText(t))).join(' '));
 	row('texDegrees', [-0.001, -5.4721, 359.999].map(v => quote(c.texDegrees(v))).join(' '));
 	row('texAngle360', [-0.001, 5.4721, 359.994, 359.999].map(v => quote(c.texAngle360(v))).join(' '));
 	row('formatAngle', [-33.9, -0.04, 0, 41.9, 360].map(v => quote(c.formatAngle(v))).join(' '));
@@ -893,6 +961,43 @@ function page23(c) {
 	);
 }
 
+function page31(c) {
+	title('8g. PAGE 3.1 (act3-moon/01-first-anomaly/page.js)');
+	row('YEAR_START', num(inContext(c, 'YEAR_START')));
+	const start = inContext(c, 'YEAR_START');
+
+	row('dateHourText', [0, 0.26, 41.5, 364.99].map(d => quote(c.dateHourText(start + d))).join(' '));
+	row('dateYearText', [0, 3231].map(d => quote(c.dateYearText(start + d))).join(' '));
+	row('clearestDirection', [[0], [0, 180], [10, 20, 200]].map(rays => num(c.clearestDirection(rays))).join(' '));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'MOTION_RANGE')),
+		JSON.stringify(inContext(c, 'Q_RANGE')),
+		JSON.stringify(inContext(c, 'XY_RANGE'))
+	);
+}
+
+function page32(c) {
+	title('8h. PAGE 3.2 (act3-moon/02-evection/page.js)');
+	row('YEAR_START', num(inContext(c, 'YEAR_START')));
+	row('anomalyTicks', JSON.stringify(c.anomalyTicks()));
+	row(
+		'directionGeometry',
+		(() => {
+			const g = c.directionGeometry();
+
+			return [num(g.shift), num(g.meanApogee), vec(g.K, 9), vec(g.N, 9), vec(g.A, 9)].join(' ');
+		})()
+	);
+	row('epicycleDistance', [0, 10, 20].map(d => num(c.epicycleDistance(inContext(c, 'YEAR_START') + d))).join(' '));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'EQUATION_RANGE')),
+		JSON.stringify(inContext(c, 'Q_RANGE')),
+		JSON.stringify(inContext(c, 'DIAMETER_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -957,6 +1062,8 @@ function buildTable() {
 	solarEccentricSection(shared);
 	equationOfTimeSection(shared);
 	precessionSection(shared);
+	lunarEpicycleSection(shared);
+	lunarCrankSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -964,6 +1071,8 @@ function buildTable() {
 	page21(pages[3]);
 	page22(pages[4]);
 	page23(pages[5]);
+	page31(pages[6]);
+	page32(pages[7]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

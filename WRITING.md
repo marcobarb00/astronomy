@@ -82,6 +82,14 @@ give it where it's needed.
   exercises keep the numbers each step needs.
 - Every number still comes from a script (CLAUDE.md). Rounding for the
   text is fine; the script keeps the full value.
+- **No comma between thousands.** Many readers take "4,267" for a number
+  with decimals. A number of four digits has no separator: 4267 months,
+  2000 years, AD 1134. A longer one sets off its thousands with a raised
+  dot: 126·007 days, 25·770 years, AD 13·790. Inside an equation, where
+  the raised dot reads as a product, write the digits without a
+  separator: $B = 13997.5 / 34$. The same holds for labels, buttons and
+  read-outs ("2000 years"); the scripts in `tools/numbers/` may print
+  what they like.
 
 ## 5. Sources and history
 
@@ -117,6 +125,9 @@ see, not re-describe everything.
 - **Label things in the figure itself** (P, γ, Vega, N, S) and leave them out
   of the key. A key entry is only for what a label can't say: what a colour
   or line style means, which way an angle is counted, what a band shows.
+  A point that moves with the controls is named by a letter the text
+  defines (the Earth O, the Moon L), not by a word, which would jump from
+  side to side as the point turns (CLAUDE.md, "Rules for every figure").
 - **Leave out the obvious.** Describe what the reader needs to read the
   figure, not every mark in it. A curve under a labelled axis, grid lines
   at labelled ticks, the dot on the chosen date, the line under the
@@ -159,8 +170,63 @@ generated.
 10. Figure keys that list everything visible.
 11. The same sentence shape repeated: "X is Y. It does Z. That is W."
 12. "Not X, but Y" and "X, not Y" framings where a plain statement works.
+13. A model presented as true or as ours ("our eccentric"), or a body that
+    is "really" at the centre (§9).
 
-## 9. What stays the same
+## 9. Models, frames and what moves
+
+The site follows the astronomers before Kepler. Its models are theirs,
+rebuilt to see how they worked and how far they got, and tested against
+the modern sky. The text never presents one of them as how the heavens
+are.
+
+- **Name a model after its author**: "Hipparchus' eccentric", "Ptolemy's
+  epicycle", "Copernicus' arrangement". A model fitted to modern data is
+  "the eccentric fitted to 2026" or "the model of this page". "We" stays
+  for what the reader does: we derive, we fit, we test.
+- **Say what a model takes as at rest.** Directions measured from the
+  Earth cannot tell which body is at rest: a geostatic and a heliostatic
+  description give the same directions, because only relative motion is
+  observed. Write "geostatic" and "heliostatic" for the frame;
+  "geocentric" keeps its standard meaning, a position seen from the
+  Earth's centre (the geocentric longitude of the reference sky). Never
+  write that a model puts "the wrong body at the centre", or that the Sun
+  is "really" at the centre.
+- **Keep two questions apart.** The first is the frame: what is taken as
+  at rest, which observations of direction cannot decide. The second is
+  the arrangement: how the motions are linked, in what order the planets
+  lie and at what distances. Observations can decide the arrangement.
+  Tycho's system puts Copernicus' arrangement of the Sun, the Moon and the
+  planets about a resting Earth and gives the same directions to all of
+  them. It keeps the stars on a sphere about the Earth, though, so it
+  predicts no yearly parallax of the stars where Copernicus' arrangement
+  predicts one: parallax and aberration bear on the arrangement.
+- **Tell how the frame was argued.** Ptolemy argued it with physics
+  (*Almagest* I 7), and Copernicus answered with other physics (*De
+  Revolutionibus* I 8). He explained the missing parallax of the stars by
+  their immense distance and argued for his arrangement from the way it
+  links the periods and the sizes of the orbits (I 10). Since Newton, the
+  laws of motion hold in frames in which the solar system's centre of
+  mass, near the Sun, is at rest or moves uniformly, and they are
+  simplest where it is at rest. Physics makes the heliostatic description
+  simpler; the geostatic one stays correct once the forces of an
+  accelerated, turning frame are added. The Earth's daily rotation shows
+  in an experiment on the ground (Foucault's pendulum); its yearly motion,
+  a free fall, does not show in experiments of that kind.
+- **The language of appearances is fine in its frame.** "The sky turns"
+  and "the Sun moves along the ecliptic" describe the sky from the Earth,
+  where it is observed (page 1.1). Copernicus did the same, and said so:
+  "I use the customary terminology, which can be accepted by everybody"
+  (*De Revolutionibus* II 1).
+
+| As if a model were true | As history |
+|---|---|
+| "The real orbit is an ellipse." | "Kepler's ellipse, which the modern theory keeps as the first approximation to the Sun's path relative to the Earth, …" (page 2.1) |
+| "Over 2026 our eccentric stays within 1.7′ of the real Sun." | "Over 2026 the eccentric fitted to that year stays within 1.7′ of the real Sun." |
+| "Ptolemy put the wrong body at the centre." | "Ptolemy takes the Earth as at rest. Seen from the Earth, his directions would be the same with the Sun at rest; what the observations test is his arrangement." |
+| "Copernicus moved the Sun to its true place." | "Copernicus took the Sun as at rest, and linked every planet's motion to the Earth's." |
+
+## 10. What stays the same
 
 - The mathematics, the numbers (rounded for prose as in §4), and the
   sources.

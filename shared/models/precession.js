@@ -65,7 +65,7 @@ const Precession = (function () {
 	   equinox that begins the star's quarter of the ecliptic (Almagest
 	   VII 4: "82 1/3 from the summer solstice" is 90 + 82 1/3); 'ptolemy' marks
 	   the records reduced with his tables (Almagest VII 2-3).
-	   Copernicus' al-Battani is "1,202 years after Alexander's death",
+	   Copernicus' al-Battani is "1202 years after Alexander's death",
 	   about AD 880; his own records are at Frombork, in 1515 and 1525. */
 	const RECORDS = [
 		// Almagest VII 3: Timocharis' occultations, 294, 283 and 295 BC

@@ -40,7 +40,7 @@ const SITE_MAP = (function () {
 			id: 4,
 			name: 'Act IV',
 			title: 'The planets',
-			blurb: 'Loops, the equant, a new centre, and the ellipse that removes the last error.'
+			blurb: 'Loops, the equant, a new centre, what the observations can decide, and the ellipse that removes the last error.'
 		},
 		{
 			id: 5,
@@ -112,7 +112,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.1',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'The first anomaly',
 			question: "Why does the Moon's speed vary, and with what period?",
 			path: 'act3-moon/01-first-anomaly/index.html'
@@ -120,7 +120,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.2',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'Evection and the distance problem',
 			question: 'What goes wrong at the quarters?',
 			path: 'act3-moon/02-evection/index.html'
@@ -154,16 +154,24 @@ const SITE_MAP = (function () {
 			act: 4,
 			ready: false,
 			title: 'Same geometry, new centre',
-			question: 'What changes if the Sun is at the centre?',
+			question: 'What changes if the Sun is taken as at rest?',
 			path: 'act4-planets/03-new-centre/index.html'
 		},
 		{
 			number: '4.4',
 			act: 4,
 			ready: false,
+			title: 'What moves?',
+			question: 'Can the observations decide which body is at rest?',
+			path: 'act4-planets/04-what-moves/index.html'
+		},
+		{
+			number: '4.5',
+			act: 4,
+			ready: false,
 			title: 'Kepler',
 			question: 'What shape removes the last error?',
-			path: 'act4-planets/04-kepler/index.html'
+			path: 'act4-planets/05-kepler/index.html'
 		},
 		{
 			number: 'beyond',
@@ -186,7 +194,8 @@ const SITE_MAP = (function () {
 		},
 		aberration: {
 			title: 'aberration',
-			sentence: "the Earth's motion tilts the incoming starlight by up to 20″",
+			sentence:
+				"the Earth's yearly motion relative to the solar system's centre of mass tilts the incoming starlight by about 20″",
 			path: null,
 			ready: false
 		},
