@@ -366,11 +366,28 @@
 
 		<p>
 			To compare Ptolemy's model with the modern theory of the Moon, we expand
-			$q$ to first order in $e$ and in $c$ separately, keeping their product.
-			Write $e_0 = e/(1 - c)$, the epicycle's ratio when K is at the
-			eccentric's mean distance, and $\kappa = c/(1 - c)$. To first order
-			$\rho \approx (1 - c)(1 + \kappa\cos 2D)$, so $e/\rho \approx e_0(1 -
-			\kappa\cos 2D)$, and the crank alone gives
+			$q$ to first order: we keep the terms of first order in $e$ and in $c$
+			and their product, and drop the squares. For a small number $x$, four
+			approximations do all the work:
+		</p>
+
+		$$\arctan x \approx x, \qquad \frac{1}{1 + x} \approx 1 - x, \qquad \sqrt{1 - x^2}\, \approx 1, \qquad \sin(M + x) \approx \sin M + x\cos M.$$
+
+		<p>
+			The last follows from the addition formula, with $\cos x \approx 1$ and
+			$\sin x \approx x$. Write $\kappa = c/(1 - c)$. The square root in
+			$\rho$ is $(1 - c)\sqrt{1 - \kappa^2\sin^2 2D} \approx 1 - c$, so
+		</p>
+
+		$$\rho \approx (1 - c) + c\cos 2D = (1 - c)(1 + \kappa\cos 2D).$$
+
+		<p>
+			In the equation of anomaly the denominator $\rho + e\cos M$ is
+			positive, so $q = -\arctan\big(e\sin M/(\rho + e\cos M)\big)$. The
+			first two approximations give $q \approx -(e/\rho)\sin M$, as on page
+			3.1, and then $e/\rho \approx e_0(1 - \kappa\cos 2D)$, with $e_0 = e/(1
+			- c)$, the epicycle's ratio when K is at the eccentric's mean distance.
+			The crank alone therefore gives
 		</p>
 
 		$$q \approx -e_0\,(1 - \kappa\cos 2D)\sin M = -e_0 \sin M + \tfrac12 e_0 \kappa\,\big[\sin(M - 2D) + \sin(M + 2D)\big].$$
@@ -742,42 +759,28 @@
 			</p>
 			<details class="hint">
 				<p>
-					For $\sigma$, divide both arguments of the arctangent by $1 - c$, and
-					use $\arctan x \approx x$ and $1/(1 + x) \approx 1 - x$. For $q$, the
-					term $\kappa\sin 2D$ is a small angle: expand $\sin(M + \varepsilon)$
-					with the addition formula.
+					Use the four approximations of section 2. For $\sigma$, first divide
+					both arguments of the arctangent by $1 - c$.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
 					Since $\rho + c\cos 2D$ is positive, $\sigma = -\arctan\big(c\sin 2D
 					/ (\rho + c\cos 2D)\big)$. Dividing numerator and denominator by $1 -
-					c$, and using $\rho/(1 - c) \approx 1 + \kappa\cos 2D$ from section 2,
-				</p>
-				$$\sigma \approx -\arctan\frac{\kappa\sin 2D}{1 + 2\kappa\cos 2D}.$$
-				<p>
-					To first order $\arctan x \approx x$ and $1/(1 + x) \approx 1 - x$, so
+					c$, with $\rho/(1 - c) \approx 1 + \kappa\cos 2D$, the fraction becomes
+					$\kappa\sin 2D/(1 + 2\kappa\cos 2D)$. With the first two
+					approximations,
 				</p>
 				$$\sigma \approx -\kappa\sin 2D\,(1 - 2\kappa\cos 2D) \approx -\kappa\sin 2D,$$
 				<p>
 					dropping the term in $\kappa^2$; $\sigma$ is in radians.
 				</p>
 				<p>
-					For the equation, to first order in $e$ the formula of section 2 is
-					$q \approx -(e/\rho)\sin(M - \sigma)$, as on page 3.1, and $e/\rho
-					\approx e_0(1 - \kappa\cos 2D)$. The angle $M - \sigma \approx M +
-					\kappa\sin 2D$ is $M$ plus a small angle $\varepsilon = \kappa\sin
-					2D$. That $\varepsilon$ is itself a sine does not matter: it is only a
-					small number. The addition formula gives $\sin(M + \varepsilon) =
-					\sin M\cos\varepsilon + \cos M\sin\varepsilon$, and to first order
-					$\cos\varepsilon \approx 1$ and $\sin\varepsilon \approx \varepsilon$,
-					so
+					The complete model uses $M - \sigma \approx M + \kappa\sin 2D$ in
+					place of $M$. The term $\kappa\sin 2D$ is a small number, so the
+					fourth approximation applies, with $x = \kappa\sin 2D$:
 				</p>
-				$$\sin(M + \kappa\sin 2D) \approx \sin M + \kappa\sin 2D\cos M.$$
-				<p>
-					and the equation becomes
-				</p>
-				$$q \approx -e_0\,(1 - \kappa\cos 2D)\,(\sin M + \kappa\sin 2D\cos M).$$
+				$$q \approx -e_0\,(1 - \kappa\cos 2D)\sin(M + \kappa\sin 2D) \approx -e_0\,(1 - \kappa\cos 2D)\,(\sin M + \kappa\sin 2D\cos M).$$
 				<p>
 					Multiplying out, the product of the two terms in $\kappa$ is of
 					second order and is dropped:
