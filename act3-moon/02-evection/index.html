@@ -742,32 +742,57 @@
 			</p>
 			<details class="hint">
 				<p>
-					Expand $\sin(M - \sigma)$ to first order in $\sigma$, and write the
-					product $\sin 2D \cos M$ as a sum of two sines.
+					For $\sigma$, divide both arguments of the arctangent by $1 - c$, and
+					use $\arctan x \approx x$ and $1/(1 + x) \approx 1 - x$. For $q$, the
+					term $\kappa\sin 2D$ is a small angle: expand $\sin(M + \varepsilon)$
+					with the addition formula.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
-					The vector from N to K is $(\rho + c\cos 2D,\ -c\sin 2D)$, and $\rho +
-					c\cos 2D = (1 - c) + 2c\cos 2D + O(c^2)$. To first order in $c$, then,
-					$\sigma = -c\sin 2D$. Dividing by $1 - c$ instead of 1, $\sigma \approx
-					-\kappa\sin 2D$, changes it only at second order, and keeps the same
-					$e_0$ and $\kappa$ as the crank's expansion. The Moon is at $M - \sigma
-					\approx M + \kappa\sin 2D$ from the true apogee, so
+					Since $\rho + c\cos 2D$ is positive, $\sigma = -\arctan\big(c\sin 2D
+					/ (\rho + c\cos 2D)\big)$. Dividing numerator and denominator by $1 -
+					c$, and using $\rho/(1 - c) \approx 1 + \kappa\cos 2D$ from section 2,
 				</p>
-				$$q \approx -e_0(1 - \kappa\cos 2D)\sin(M + \kappa\sin 2D) \approx -e_0\sin M + e_0 \kappa\cos 2D \sin M - e_0 \kappa \sin 2D\cos M,$$
+				$$\sigma \approx -\arctan\frac{\kappa\sin 2D}{1 + 2\kappa\cos 2D}.$$
 				<p>
-					dropping the terms of second order in $\kappa$. The last two terms are
-					$e_0 \kappa\,(\sin M\cos 2D - \cos M\sin 2D) = e_0 \kappa\sin(M - 2D)$.
-					In the sum-of-sines form of section 2, the direction contributes
-					$-\tfrac12 e_0 \kappa[\sin(M + 2D) - \sin(M - 2D)]$, which cancels the
-					crank's term in $M + 2D$ and doubles its term in $M - 2D$.
+					To first order $\arctan x \approx x$ and $1/(1 + x) \approx 1 - x$, so
+				</p>
+				$$\sigma \approx -\kappa\sin 2D\,(1 - 2\kappa\cos 2D) \approx -\kappa\sin 2D,$$
+				<p>
+					dropping the term in $\kappa^2$; $\sigma$ is in radians.
 				</p>
 				<p>
-					With $c = 0.1719$, $\kappa = 0.2076$ and $2D = 90.5^\circ$, the shift is
-					$-9.85^\circ$ as $-c\sin 2D$ and $-11.90^\circ$ as $-\kappa\sin 2D$,
-					against the exact $-12.03^\circ$ of Figure 3 and Ptolemy's 12°1′
-					(12.02°).
+					For the equation, to first order in $e$ the formula of section 2 is
+					$q \approx -(e/\rho)\sin(M - \sigma)$, as on page 3.1, and $e/\rho
+					\approx e_0(1 - \kappa\cos 2D)$. The angle $M - \sigma \approx M +
+					\kappa\sin 2D$ is $M$ plus a small angle $\varepsilon = \kappa\sin
+					2D$. That $\varepsilon$ is itself a sine does not matter: it is only a
+					small number. The addition formula gives $\sin(M + \varepsilon) =
+					\sin M\cos\varepsilon + \cos M\sin\varepsilon$, and to first order
+					$\cos\varepsilon \approx 1$ and $\sin\varepsilon \approx \varepsilon$,
+					so
+				</p>
+				$$\sin(M + \kappa\sin 2D) \approx \sin M + \kappa\sin 2D\cos M.$$
+				<p>
+					and the equation becomes
+				</p>
+				$$q \approx -e_0\,(1 - \kappa\cos 2D)\,(\sin M + \kappa\sin 2D\cos M).$$
+				<p>
+					Multiplying out, the product of the two terms in $\kappa$ is of
+					second order and is dropped:
+				</p>
+				$$q \approx -e_0\sin M + e_0\kappa\,(\cos 2D\sin M - \sin 2D\cos M) = -e_0 \sin M + e_0\kappa\sin(M - 2D).$$
+				<p>
+					In the sum-of-sines form of section 2, the direction's term $-e_0\kappa
+					\sin 2D\cos M$ is $-\tfrac12 e_0 \kappa[\sin(M + 2D) - \sin(M -
+					2D)]$, which cancels the crank's term in $M + 2D$ and doubles its term
+					in $M - 2D$.
+				</p>
+				<p>
+					With $\kappa = 0.2076$ and $2D = 90.5^\circ$, $-\kappa\sin 2D =
+					-11.90^\circ$, against the exact $-12.03^\circ$ of Figure 3 and
+					Ptolemy's 12°1′ (12.02°).
 				</p>
 			</details>
 		</div>
