@@ -1,0 +1,75 @@
+/* ==========================================================================
+   PAGE 3.3 · ECLIPSES - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The square drawings and panel (c) of Figure 5
+	 3. The tables of the prose
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* The values beside the sliders run up to "31 Dec 2044" and
+   "406·700 km". */
+figure.fig {
+	--ctl-output: 7.4em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 112px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* A play button keeps its width between "Play 19 years" and "Pause". */
+button.play {
+	min-width: 9.5em;
+}
+
+/* ==========================================================================
+   2. THE SQUARE DRAWINGS AND PANEL (C) OF FIGURE 5
+   The canvases set their own square size (page.js); centre them.
+   ========================================================================== */
+
+#limits-solar,
+#limits-lunar {
+	display: block;
+	margin: 0 auto;
+}
+
+/* Panel (c) runs under the two drawings, the width of the frame. */
+#limits-plot {
+	display: block;
+	margin-top: 6px;
+}
+
+.frame > .panel-title {
+	margin-top: 14px;
+}
+
+/* ==========================================================================
+   3. THE TABLES OF THE PROSE
+   First column left.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+	}
+}

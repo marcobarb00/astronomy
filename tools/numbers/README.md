@@ -14,6 +14,7 @@ shared code in Node, and prints the numbers quoted on the page.
 | `2.3-precession.js` | 2.3 · Precession |
 | `3.1-first-anomaly.js` | 3.1 · The first anomaly |
 | `3.2-evection.js` | 3.2 · Evection and the distance problem |
+| `3.3-eclipses.js` | 3.3 · Eclipses |
 
 Run from the repository root, e.g.
 

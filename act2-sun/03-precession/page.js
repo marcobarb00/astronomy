@@ -323,7 +323,7 @@ const modelFigure = {
 		s.circle([1, 0, 0], [0, 1, 0], { color: COL.sun, width: 2 });
 		s.label(
 			'ecliptic',
-			frontPoint(s, angle => fromLonLat(angle, 0)),
+			s.frontPoint(angle => fromLonLat(angle, 0)),
 			{
 				color: COL.sun,
 				kind: 'name',
@@ -338,7 +338,7 @@ const modelFigure = {
 		s.greatCircle(pole, { color: COL.earth, width: 2 });
 		s.label(
 			'equator',
-			frontPoint(s, angle => crossDirection(pole, angle), 120),
+			s.frontPoint(angle => crossDirection(pole, angle), 120),
 			{
 				color: COL.earth,
 				kind: 'name',
@@ -376,20 +376,6 @@ const modelFigure = {
 		});
 	}
 };
-
-/* The point of a circle (angle -> point) nearest the viewer, offset by
-   'skip' degrees so that two circles get their names at different places:
-   where a circle's name can be read. pointAt is cos(angle) u + sin(angle) v
-   and the depth is linear in the point, so the depth is cos(angle) d(u) +
-   sin(angle) d(v), least at the angle found below: exactly, so that the
-   name glides along its circle as the sphere turns instead of stepping
-   (CLAUDE.md). */
-function frontPoint(sphere, pointAt, skip = 0) {
-	const du = sphere.project(pointAt(0)).d;
-	const dv = sphere.project(pointAt(90)).d;
-
-	return pointAt(atan2d(-dv, -du) + skip);
-}
 
 /* A point of the great circle with pole 'pole', at the angle 'angle'
    from the direction of P x K: where the name of the equator goes. */

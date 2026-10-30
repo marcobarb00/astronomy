@@ -31,7 +31,7 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights (and a symbol)
+	 7. Highlights (and a plain line, a symbol)
 	 8. Label placement
    ========================================================================== */
 
@@ -200,6 +200,21 @@ const Plate = (function () {
 				['del Ori', 'bet Ori']
 			],
 			name: [71, 1]
+		},
+		'LEO': {
+			lines: [
+				['eps Leo', 'mu. Leo'],
+				['mu. Leo', 'zet Leo'],
+				['zet Leo', 'gam Leo'],
+				['gam Leo', 'eta Leo'],
+				['eta Leo', 'alf Leo'],
+				['alf Leo', 'tet Leo'],
+				['gam Leo', 'del Leo'],
+				['del Leo', 'tet Leo'],
+				['del Leo', 'bet Leo'],
+				['tet Leo', 'bet Leo']
+			],
+			name: [165, 26]
 		}
 	};
 
@@ -684,11 +699,15 @@ const Plate = (function () {
 	}
 
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
-	   point given by nameAt [ra, dec, dx, dy]. */
-	function highlightCurve(chart, points, name, nameAt) {
+	   point given by nameAt [ra, dec, dx, dy]; with a short tick across it
+	   at each of 'marks' [{ ra, dec, text }] (page 3.3: the Moon's path,
+	   one tick a day), its text, if any, on the side 'side' (+1 below the
+	   curve, -1 above it). */
+	function highlightCurve(chart, points, name, nameAt, marks = [], side = 1) {
 		const screen = points.map(p => chart.at(p.ra, p.dec));
 
 		svgLine(chart.layer, screen, { class: 'highlight' });
+		marks.forEach(mark => drawCurveTick(chart, screen, mark, side));
 
 		const q = chart.at(nameAt[0], nameAt[1]);
 		const element = svgText(chart.layer, name, q.x + nameAt[2], q.y + nameAt[3], {
@@ -697,6 +716,72 @@ const Plate = (function () {
 
 		// other places: under or over the curve, at points along it
 		addLabel(chart, element, LABEL_ORDER.highlight, (box, k) =>
+			screen
+				.filter((p, i) => i % 5 === 0)
+				.flatMap(p => [
+					{ x: p.x - box.w / 2, y: p.y + LABEL_GAP * k },
+					{ x: p.x - box.w / 2, y: p.y - LABEL_GAP * k - box.h }
+				])
+		);
+		placeLabels(chart);
+	}
+
+	/* A tick across a curve (screen points) at the point of 'mark', at
+	   right angles to the curve there, and the mark's text beside it. */
+	function drawCurveTick(chart, screen, mark, side) {
+		const tickLength = 6;
+		const q = chart.at(mark.ra, mark.dec);
+		let nearest = 0;
+
+		screen.forEach((p, i) => {
+			if (Math.hypot(p.x - q.x, p.y - q.y) < Math.hypot(screen[nearest].x - q.x, screen[nearest].y - q.y)) {
+				nearest = i;
+			}
+		});
+
+		const a = screen[Math.max(0, nearest - 1)];
+		const b = screen[Math.min(screen.length - 1, nearest + 1)];
+		const length = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+		// the normal to the curve, turned towards 'side' (screen y down)
+		let u = { x: -(b.y - a.y) / length, y: (b.x - a.x) / length };
+
+		if (u.y * side < 0) {
+			u = { x: -u.x, y: -u.y };
+		}
+
+		svgLine(
+			chart.layer,
+			[
+				{ x: q.x - tickLength * u.x, y: q.y - tickLength * u.y },
+				{ x: q.x + tickLength * u.x, y: q.y + tickLength * u.y }
+			],
+			{ class: 'highlight-tick' }
+		);
+
+		if (mark.text) {
+			const away = 3 * tickLength;
+			const element = svgText(chart.layer, mark.text, q.x + away * u.x, q.y + away * u.y, {
+				class: 'circle-name highlight-text',
+				'text-anchor': 'middle',
+				'dominant-baseline': 'central'
+			});
+
+			addLabel(chart, element, LABEL_ORDER.highlight, (box, k) => aroundPoint(q, box, away + LABEL_GAP * k));
+		}
+	}
+
+	/* A line through (ra, dec) points on a rectangular chart, in the ink of
+	   the plate, not highlighted (page 3.3: the ecliptic, under the Moon's
+	   path), named at nameAt [ra, dec, dx, dy] like the equator. */
+	function plainLine(chart, points, name, nameAt) {
+		const screen = points.map(p => chart.at(p.ra, p.dec));
+
+		svgLine(chart.layer, screen, { class: 'circle-line' });
+
+		const q = chart.at(nameAt[0], nameAt[1]);
+		const element = svgText(chart.layer, name, q.x + nameAt[2], q.y + nameAt[3], { class: 'circle-name' });
+
+		addLabel(chart, element, LABEL_ORDER.circle, (box, k) =>
 			screen
 				.filter((p, i) => i % 5 === 0)
 				.flatMap(p => [
@@ -964,6 +1049,7 @@ const Plate = (function () {
 		highlightCircle,
 		highlightCurve,
 		highlightPath,
+		line: plainLine,
 		symbol
 	};
 })();

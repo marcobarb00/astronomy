@@ -27,7 +27,8 @@
    enough to draw bands.
 
    Every model function takes JD(TT) and returns an ecliptic longitude in
-   degrees. Over long spans (a yearly oscillation drawn over centuries) each
+   degrees, or, with quantity: 'β' and a reference of its own, another
+   angle (page 3.3: the Moon's latitude). Over long spans (a yearly oscillation drawn over centuries) each
    pixel column is sampled several times and the curve is drawn as a band
    between the min and max over one period of the error, so it never
    aliases.
@@ -98,7 +99,9 @@ class ErrorCurve {
 	   band's window), units ('auto' | 'arcmin' | 'deg'), yMax (fixed
 	   half-range, in the chosen units), xLabel, ghostButtons (false: no
 	   "Keep as ghost" and "Clear ghosts", for models without sliders),
-	   validRange ({ start, end } in JD: the dates where the reference can
+	   quantity (the symbol of the angle compared, 'λ' by default; page 3.3
+	   plots the latitude, 'β', with its own reference), validRange
+	   ({ start, end } in JD: the dates where the reference can
 	   be trusted, shaded outside; Ephem.RANGE by default, null for a
 	   reference valid at every date the plot can show, such as the
 	   precession of a star).
@@ -115,6 +118,7 @@ class ErrorCurve {
 		this.resolution = options.resolution ?? ERROR_RESOLUTION[this.body] ?? 5;
 		this.period = options.period ?? ERROR_PERIOD[this.body] ?? 365.25;
 		this.units = options.units ?? 'auto';
+		this.quantity = options.quantity ?? 'λ';
 		this.yMax = options.yMax ?? null;
 		this.ghostButtons = options.ghostButtons ?? true;
 		this.validRange = options.validRange === undefined ? Ephem.RANGE : options.validRange;
@@ -427,7 +431,7 @@ class ErrorCurve {
 		this.half = fixedHalf ?? niceCeiling(largest * this.unitFactor * 1.08);
 
 		this.plot.setRange([this.startYear(), this.endYear()], [-this.half, this.half]);
-		this.plot.yLabel = this.inDegrees ? 'Δλ (degrees)' : 'Δλ (arcminutes)';
+		this.plot.yLabel = `Δ${this.quantity} (${this.inDegrees ? 'degrees' : 'arcminutes'})`;
 	}
 
 	/* Warn (once) when a curve leaves the scale: the page must give the
