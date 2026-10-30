@@ -38,6 +38,8 @@ const SHARED_SCRIPTS = [
 	'shared/models/precession.js',
 	'shared/models/lunar-epicycle.js',
 	'shared/models/lunar-crank.js',
+	'shared/models/lunar-latitude.js',
+	'shared/models/eclipses.js',
 	'shared/sphere3d.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js',

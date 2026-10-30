@@ -1856,6 +1856,91 @@ function testLunarCrank() {
 	});
 }
 
+function testLunarLatitude() {
+	group("The Moon's latitude and eclipses · models/lunar-latitude.js, models/eclipses.js (page 3.3)");
+
+	// VI 5: with i = 5°, the Moon 8;20° and 10;36° from the node along its
+	// circle; Ptolemy finds the two distances from the shadow's centre
+	// 0;11,47° apart
+	check({
+		name: 'The latitudes 8;20° and 10;36° from the node, their difference',
+		source: 'Almagest VI 5 (0;11,47°)',
+		expected: (11 + 47 / 60) / 60,
+		computed: LunarLatitude.latitude(10 + 36 / 60, 5) - LunarLatitude.latitude(8 + 20 / 60, 5),
+		tol: 0.5,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// IV 2-3: Hipparchus' 5458 synodic months = 5923 returns in latitude
+	const synodic = (126007 + 1 / 24) / 4267;
+
+	check({
+		name: "Hipparchus' draconitic month against Meeus'",
+		source: 'Almagest IV 2; Meeus 47.5',
+		expected: 360 / LunarLatitude.MEEUS.nF,
+		computed: (5458 * synodic) / 5923,
+		tol: 1,
+		unit: 's',
+		scale: 86400,
+		show: x => x.toFixed(6)
+	});
+
+	// the saros: 242 / 223 is a convergent of synodic / draconitic
+	const ratio = 360 / (LunarEpicycle.MEEUS.n - MeanSun.MODERN.n) / (360 / LunarLatitude.MEEUS.nF);
+	const saros = Eclipses.convergents(ratio, 6)[5];
+
+	checkEqual(
+		'The sixth convergent of P_s / P_d',
+		'Almagest IV 2 (the Periodic)',
+		'242/223',
+		`${saros[0]}/${saros[1]}`
+	);
+
+	// NASA: the eclipses of 2026 (Espenak, eclipse.gsfc.nasa.gov), from
+	// the reference sky at its syzygies with the criteria of eclipses.js
+	const moonLon = jd => Ephem.longitude('moon', jd);
+	const sunLon = jd => Ephem.longitude('sun', jd);
+	const atSyzygy = (y, m, d, solar) => {
+		const k = Eclipses.indexNear(Time.julianDay(y, m, d), solar);
+		const jd = Eclipses.syzygy(sunLon, moonLon, Eclipses.meanSyzygy(k), solar ? 0 : 180);
+		const moon = Ephem.moon(jd);
+		const z = Eclipses.sizes(moon.dist, Ephem.sun(jd).dist);
+
+		return solar ? Eclipses.solarEclipse(moon.lat, z, moon.dist) : Eclipses.lunarEclipse(moon.lat, z);
+	};
+
+	checkEqual('The new Moon of 12 August 2026', 'NASA: total', 'total', atSyzygy(2026, 8, 12, true).kind);
+	checkEqual('The new Moon of 17 February 2026', 'NASA: annular', 'annular', atSyzygy(2026, 2, 17, true).kind);
+	check({
+		name: 'The umbral magnitude of 28 August 2026',
+		source: 'NASA (0.930)',
+		expected: 0.93,
+		computed: atSyzygy(2026, 8, 28, false).magnitude,
+		tol: 0.02,
+		show: x => x.toFixed(3)
+	});
+
+	// the model of page 3.3 finds the total eclipse of 12 August 2026
+	const k = Eclipses.indexNear(Time.julianDay(2026, 8, 12), true);
+
+	checkEqual(
+		'The model: 12 August 2026',
+		'page 3.3, Exercise 1',
+		'total',
+		Eclipses.predict(Eclipses.FIT_2026, k).kind
+	);
+
+	// angles folded onto the nearer node
+	checkEqual(
+		'Angles from the nearer node',
+		'Eclipses.nodeAngle',
+		'10 -10 -10 10 0',
+		[10, 350, 170, 190, 180].map(a => Math.round(Eclipses.nodeAngle(a))).join(' ')
+	);
+}
+
 /* ==========================================================================
    19. RUN
    ========================================================================== */
@@ -1880,5 +1965,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testPrecessionModel();
 	testLunarEpicycle();
 	testLunarCrank();
+	testLunarLatitude();
 	render();
 });
