@@ -3,7 +3,7 @@
 build_book_md.py
 ================
 
-Converts the plain-text extractions of the three reference books of the
+Converts the plain-text extractions of the reference books of the
 "celestial sphere simulator" project into Markdown files split by chapter,
 ready to be used as the reference material of a Claude Code skill.
 
@@ -12,6 +12,12 @@ Input  (plain text, one file per book, e.g. produced with `pdftotext -layout`
     raw/toomer_almagest.txt        Ptolemy's Almagest, transl. G. J. Toomer
     raw/de_revolutionibus.txt      Copernicus, De Revolutionibus, transl. E. Rosen
     raw/modern_almagest.txt        R. Fitzpatrick, A Modern Almagest
+    raw/hama_neugebauer_pt1.txt    O. Neugebauer, A History of Ancient
+                                   Mathematical Astronomy, Part One
+                                   (`pdftotext -layout` of the Springer PDF:
+                                   the page breaks must be kept)
+    raw/voelkel_kepler.txt         J. R. Voelkel, Johannes Kepler and the
+                                   New Astronomy (OCR text)
 
 Output:
     .claude/skills/astronomy-sources/references/<book>/...md
@@ -19,6 +25,9 @@ Output:
 
 Usage:
     python3 tools/build_book_md.py --raw raw --out .claude/skills/astronomy-sources/references
+    python3 tools/build_book_md.py --books hama voelkel     (only some books)
+
+A book whose raw file is missing is skipped with a message.
 
 The text comes from OCR / PDF extraction: it is NOT proof-read. Chapter
 boundaries are detected with heuristics; when a heading cannot be found the
@@ -402,25 +411,440 @@ def build_fitzpatrick(raw_dir, out_root):
 
 
 # ---------------------------------------------------------------------------
+# Neugebauer, A History of Ancient Mathematical Astronomy (HAMA), Part One
+# ---------------------------------------------------------------------------
+
+# Printed page = PDF page - offset. The offset changes at the title pages of
+# Book I and Book II, and at the blank pages after them, which are not in
+# the scan. Pages before PDF page 22 are front matter (Roman numerals).
+HAMA_PAGE_OFFSETS = [(22, 21), (41, 20), (364, 19), (365, 18)]
+HAMA_FIRST_PAGE = 22
+
+# The divisions of Part One and their sections (§), with the printed page
+# where each section starts, from the table of contents. `book_heading` is
+# the title line of the book that opens before the division, if any.
+HAMA_DIVISIONS = [
+    {"folder": "intro", "book": "Introduction", "letter": "", "title": "Introduction",
+     "book_heading": None,
+     "sections": [(1, "Limitations", 1),
+                  (2, "The Major Historical Periods, An Outline", 2),
+                  (3, "General Bibliography", 15)]},
+    {"folder": "book-1", "book": "I", "letter": "A", "title": "Spherical Astronomy",
+     "book_heading": r"^\s*Book I\s*$",
+     "sections": [(1, "Plane Trigonometry", 21),
+                  (2, "Spherical Trigonometry", 26),
+                  (3, "Equatorial and Ecliptic Coordinates", 30),
+                  (4, "Geographical Latitude; Length of Daylight", 34),
+                  (5, "Ecliptic and Horizon Coordinates", 45)]},
+    {"folder": "book-1", "book": "I", "letter": "B", "title": "Lunar Theory",
+     "book_heading": None,
+     "sections": [(1, "Solar Theory", 53),
+                  (2, "Equation of Time", 61),
+                  (3, "Theory of the Moon. First Inequality; Latitude", 68),
+                  (4, "Theory of the Moon. Second Inequality", 84),
+                  (5, "Parallax", 100),
+                  (6, "Theory of Eclipses", 118)]},
+    {"folder": "book-1", "book": "I", "letter": "C", "title": "Planetary Theory",
+     "book_heading": None,
+     "sections": [(1, "Introduction", 145),
+                  (2, "Venus", 152),
+                  (3, "Mercury", 158),
+                  (4, "The Ptolemaic Theory of the Motion of an Outer Planet", 170),
+                  (5, "Planetary Tables", 183),
+                  (6, "Theory of Retrogradation", 190),
+                  (7, "Planetary Latitudes", 206),
+                  (8, "Heliacal Phenomena (\"Phases\")", 230)]},
+    {"folder": "book-1", "book": "I", "letter": "D", "title": "Apollonius",
+     "book_heading": None,
+     "sections": [(1, "Biographical Data", 262),
+                  (2, "Equivalence of Eccenters and Epicycles", 263),
+                  (3, "Planetary Motion; Stationary Points", 267)]},
+    {"folder": "book-1", "book": "I", "letter": "E", "title": "Hipparchus",
+     "book_heading": None,
+     "sections": [(1, "Introduction", 274),
+                  (2, "Fixed Stars. The Length of the Year", 277),
+                  (3, "Trigonometry and Spherical Astronomy", 299),
+                  (4, "Solar Theory", 306),
+                  (5, "The Theory of the Moon", 308),
+                  (6, "Additional Topics", 329),
+                  (7, "Hipparchus' Astronomy. Summary", 339)]},
+    {"folder": "book-2", "book": "II", "letter": "", "title": "Introduction",
+     "book_heading": r"^\s*Book II\s*$",
+     "sections": [(1, "The Decipherment of the Astronomical Texts", 348),
+                  (2, "The Sources", 351),
+                  (3, "Calendaric Concepts", 353),
+                  (4, "Length of Daylight", 366),
+                  (5, "Solar Motion", 371),
+                  (6, "Mathematical Methodology", 373)]},
+    {"folder": "book-2", "book": "II", "letter": "A", "title": "Planetary Theory",
+     "book_heading": None,
+     "sections": [(1, "Basic Concepts", 380),
+                  (2, "Periods and Mean Motions", 388),
+                  (3, "System A", 392),
+                  (4, "Dates", 394),
+                  (5, "Subdivision of the Synodic Arc; Daily Motion", 397),
+                  (6, "The Fundamental Patterns of Planetary Theory", 420),
+                  (7, "The Single Planets", 434)]},
+    {"folder": "book-2", "book": "II", "letter": "B", "title": "Lunar Theory",
+     "book_heading": None,
+     "sections": [(1, "Introduction", 474),
+                  (2, "Lunar Velocity", 476),
+                  (3, "The Length of the Synodic Months", 482),
+                  (4, "The \"Saros\" and Column Φ", 497),
+                  (5, "Lunar Latitude", 514),
+                  (6, "Eclipse Magnitudes", 521),
+                  (7, "Eclipse Tables", 525),
+                  (8, "Solar Mean Motion and Length of Year", 528),
+                  (9, "Variable Solar Velocity", 530),
+                  (10, "Visibility", 533)]},
+    {"folder": "book-2", "book": "II", "letter": "C", "title": "Early Babylonian Astronomy",
+     "book_heading": None,
+     "sections": [(1, "Calendaric Data, Celestial Coordinates", 541),
+                  (2, "The Moon", 547),
+                  (3, "The Planets", 553)]},
+]
+
+
+def hama_printed_page(pdf_page):
+    """Printed page number of a PDF page (None for the front matter)."""
+    if pdf_page < HAMA_FIRST_PAGE:
+        return None
+
+    offset = HAMA_PAGE_OFFSETS[0][1]
+    for first, value in HAMA_PAGE_OFFSETS:
+        if pdf_page >= first:
+            offset = value
+    return pdf_page - offset
+
+
+def hama_pdf_page(printed):
+    """PDF page of a printed page (inverse of hama_printed_page)."""
+    for first, offset in reversed(HAMA_PAGE_OFFSETS):
+        if printed + offset >= first:
+            return printed + offset
+    return printed + HAMA_PAGE_OFFSETS[0][1]
+
+
+def is_hama_running_header(line, printed):
+    """
+    True for the running header at the top of a page, e.g.
+    "54        I B 1, 1. Length of the Year" or
+    "      I B 1, 2. Solar Mean Motion        55".
+    The header carries the page number at one end, or (when the OCR lost
+    it) a section reference such as "I B 3," or "II A 6.".
+    """
+    text = line.strip()
+    if not text or len(text) > 90:
+        return False
+
+    number = re.escape(str(printed))
+    if re.match(rf"^{number}\s{{2,}}\S", text) or re.search(rf"\S\s{{2,}}{number}$", text):
+        return True
+
+    # Damaged page number ("S28" for 528) or none at all: look for the
+    # section reference that every running header contains.
+    reference = r"(I{1,2}|l|II)\s?(Intr\.|[A-E]|[a-e]|[A-E][IlI\d])\s?[IlI\d]*[,.]?"
+    return bool(re.match(rf"^(\S{{1,4}}\s{{2,}})?{reference}\s", text)) and "§" not in text
+
+
+def hama_pages_to_lines(pages):
+    """
+    Joins the pages into one list of lines. The running header of every
+    numbered page is replaced by a page marker "[p. 61]". Returns the lines
+    and, for each line, the PDF page it comes from.
+    """
+    lines = []
+    page_of_line = []
+
+    for pdf_page, page in enumerate(pages, start=1):
+        printed = hama_printed_page(pdf_page)
+        page_lines = [l.rstrip() for l in page.splitlines()]
+        if not any(page_lines):
+            continue
+
+        if printed is not None:
+            lines.append(f"[p. {printed}]")
+            page_of_line.append(pdf_page)
+
+            # Drop the running header (the first non-empty line).
+            first = next((i for i, l in enumerate(page_lines) if l.strip()), None)
+            if first is not None and is_hama_running_header(page_lines[first], printed):
+                del page_lines[first]
+
+        for line in page_lines:
+            lines.append(line)
+            page_of_line.append(pdf_page)
+
+    return lines, page_of_line
+
+
+def find_hama_heading(lines, page_of_line, pdf_pages, patterns, after=0):
+    """
+    Index of the first line (from `after` on) on one of `pdf_pages` that
+    matches one of the regular expressions in `patterns`, or None.
+    """
+    for i in range(after, len(lines)):
+        if page_of_line[i] > max(pdf_pages):
+            break
+        if page_of_line[i] in pdf_pages:
+            for pattern in patterns:
+                if re.search(pattern, lines[i]):
+                    return i
+    return None
+
+
+def hama_section_patterns(number, title):
+    """
+    Regular expressions for a centred heading "§ 3. Mercury". The OCR
+    sometimes reads 1 as I or l and drops the space after §; the first
+    letters of the title are required, to skip references in the text.
+    """
+    digits = "[1Il]" if number == 1 else str(number)
+    word = re.match(r"\W*(\w{1,3})", title).group(1)
+    return [rf"^\s{{4,}}§\s*{digits}\s*\.\s*\W?{re.escape(word)}"]
+
+
+def collapse_blank_lines(text):
+    """Leaves at most two consecutive empty lines."""
+    return re.sub(r"\n{4,}", "\n\n\n", text)
+
+
+def build_hama(raw_dir, out_root):
+    text = (raw_dir / "hama_neugebauer_pt1.txt").read_text(encoding="utf-8")
+    pages = text.split("\f")
+    lines, page_of_line = hama_pages_to_lines(pages)
+    out_dir = out_root / "hama-neugebauer"
+    source = ("O. Neugebauer, *A History of Ancient Mathematical Astronomy*, Part One "
+              "(Springer 1975). Testo estratto da PDF, non revisionato. "
+              "Il marcatore [p. 61] indica la pagina dell'edizione a stampa.")
+
+    entries = []
+    notes = []
+
+    # Every section: (division, number, title, first printed page, start line).
+    starts = []
+    cursor = 0
+    for division in HAMA_DIVISIONS:
+        for k, (number, title, printed) in enumerate(division["sections"]):
+            pdf = hama_pdf_page(printed)
+            window = [pdf - 1, pdf, pdf + 1]
+            idx = find_hama_heading(lines, page_of_line, window,
+                                    hama_section_patterns(number, title), cursor)
+
+            if idx is None:
+                # Start at the marker of the page given by the table of contents.
+                idx = lines.index(f"[p. {printed}]", cursor)
+                notes.append(f"{hama_label(division, number, title)}: intestazione non "
+                             f"trovata, il file inizia all'inizio di p. {printed}.")
+
+            if k == 0:
+                idx = hama_division_start(lines, page_of_line, division, pdf, cursor, idx)
+
+            starts.append((division, number, title, printed, idx))
+            cursor = idx + 1
+
+    # Front matter: title pages, preface and table of contents of the whole work.
+    write_markdown(out_dir / "00-front-matter.md",
+                   "A History of Ancient Mathematical Astronomy — front matter",
+                   source, collapse_blank_lines("\n".join(lines[:starts[0][4]])))
+    entries.append({"label": "Frontespizio, prefazione, indice generale delle tre parti",
+                    "file": "00-front-matter.md"})
+
+    for k, (division, number, title, printed, idx) in enumerate(starts):
+        end = starts[k + 1][4] if k + 1 < len(starts) else len(lines)
+        body = lines[idx:end]
+
+        # A section that starts in the middle of a page opens with the
+        # marker of that page, so that every line can be cited.
+        first_page = hama_printed_page(page_of_line[idx])
+        if not body[0].startswith("[p. "):
+            body.insert(0, f"[p. {first_page}]")
+        last_page = hama_printed_page(page_of_line[end - 1])
+
+        prefix = (division["letter"] or "i").lower()
+        name = f"{division['folder']}/{prefix}{number}-{slugify(title.replace('Φ', 'Phi'))}.md"
+        pages_label = f"pp. {printed}–{last_page}" if last_page > printed else f"p. {printed}"
+
+        write_markdown(out_dir / name,
+                       f"HAMA, {hama_reference(division, number)} — {title} ({pages_label})",
+                       source, collapse_blank_lines("\n".join(body)))
+        entries.append({"label": f"{hama_label(division, number, title)} ({pages_label})",
+                        "file": name})
+
+    write_index(out_dir, "Neugebauer, A History of Ancient Mathematical Astronomy, Part One",
+                entries, notes)
+    return len(entries), len(notes)
+
+
+def hama_division_start(lines, page_of_line, division, pdf, cursor, section_idx):
+    """
+    The first section of a division also takes the division heading
+    ("B. Lunar Theory", with its epigraph) and, for the first division of
+    a book, the title page of the book.
+    """
+    start = section_idx
+    word = re.escape(division["title"].split()[0])
+
+    if division["letter"]:
+        heading = rf"^\s{{4,}}{division['letter']}\.\s+{word}"
+    else:
+        heading = rf"^\s{{4,}}{word}\s*$"
+    idx = find_hama_heading(lines, page_of_line, [pdf - 1, pdf], [heading], cursor)
+    if idx is not None and idx < start:
+        start = idx
+
+    if division["book_heading"]:
+        idx = find_hama_heading(lines, page_of_line, [pdf - 3, pdf - 2, pdf - 1, pdf],
+                                [division["book_heading"]], cursor)
+        if idx is not None and idx < start:
+            start = idx
+
+    # Begin at the page marker when the heading is the first text of its page.
+    while start > cursor and not lines[start - 1].strip():
+        start -= 1
+    if start > cursor and lines[start - 1].startswith("[p. "):
+        start -= 1
+    return start
+
+
+def hama_reference(division, number):
+    """Neugebauer's own reference, e.g. "I B 2" or "II Intr. 3"."""
+    if division["book"] == "Introduction":
+        return f"Introduction § {number}"
+    letter = division["letter"] or "Intr."
+    return f"{division['book']} {letter} {number}"
+
+
+def hama_label(division, number, title):
+    """Label of a section in INDEX.md, e.g. "Libro I, B (Lunar Theory) § 2: ..."."""
+    if division["book"] == "Introduction":
+        return f"Introduzione, § {number}: {title}"
+    part = f"{division['letter']} ({division['title']})" if division["letter"] else "Introduction"
+    return f"Libro {division['book']}, {part} § {number}: {title}"
+
+
+# ---------------------------------------------------------------------------
+# Voelkel, Johannes Kepler and the New Astronomy
+# ---------------------------------------------------------------------------
+
+# Chapters in order: (file name, title, regular expression of the first
+# title line). The text before the first one is the front matter; the text
+# from VOELKEL_END on (index, picture credits) is left out.
+VOELKEL_CHAPTERS = [
+    ("01-the-comet.md", "Chapter 1 — The Comet", r"^The Comet\s*$"),
+    ("02-the-secret-of-the-universe.md", "Chapter 2 — The Secret of the Universe",
+     r"^The Secret of the\s*$"),
+    ("03-the-new-astronomy.md", "Chapter 3 — The New Astronomy", r"^The New\s*$"),
+    ("04-the-harmony-of-the-world.md", "Chapter 4 — The Harmony of the World",
+     r"^The Harmony of\s*$"),
+    ("05-witch-trial.md", "Chapter 5 — Witch Trial", r"^Witch Trial\s*$"),
+    ("06-the-dream.md", "Chapter 6 — The Dream", r"^The Dream\s*$"),
+    ("07-epilogue-vindication.md", "Epilogue — Vindication", r"^Vindication\s*$"),
+    ("08-chronology.md", "Chronology", r"^CHRONOLOGY\s*$"),
+    ("09-further-reading.md", "Further Reading", r"^FURTHER\s*$"),
+]
+VOELKEL_END = r"^Page numbers in italics"
+
+# The sidebars (boxed explanations) and the chapter that contains them.
+VOELKEL_SIDEBARS = [
+    ("Copernicus's Model of Retrograde Motion", "01-the-comet.md"),
+    ("The Platonic Solids", "02-the-secret-of-the-universe.md"),
+    ("Uraniborg Observatory", "03-the-new-astronomy.md"),
+    ("Kepler's First Two Laws", "03-the-new-astronomy.md"),
+    ("Kepler's Third Law", "04-the-harmony-of-the-world.md"),
+]
+
+
+def is_voelkel_running_header(line, chapter_title):
+    """
+    True for the running headers of the book: "CHAPTER", "Johannes Kepler"
+    on the left pages (often with OCR noise: "Mi Johannes Kepler",
+    "MM Jotharnes: Ke pl re") and the chapter title on the right pages
+    ("The Comet Ij").
+    """
+    text = line.strip()
+    if text == "CHAPTER":
+        return True
+    if re.match(r"^\S{0,3}\s*[Jj]o\s?t?h\s?a\s?r?n+es:?\s+Ke\s?p\s?\w*\s*\w*\s*$", text):
+        return True
+
+    short_title = chapter_title.split("—")[-1].strip()
+    return bool(re.match(rf"^{re.escape(short_title)}(\s+\S{{1,3}})?$", text))
+
+
+def build_voelkel(raw_dir, out_root):
+    raw = (raw_dir / "voelkel_kepler.txt").read_text(encoding="utf-8")
+    lines = [l.rstrip() for l in raw.splitlines()]
+    out_dir = out_root / "kepler-voelkel"
+    source = ("J. R. Voelkel, *Johannes Kepler and the New Astronomy* (Oxford University "
+              "Press 1999, Oxford Portraits in Science). Testo OCR non revisionato; "
+              "le didascalie delle figure sono mescolate al testo.")
+
+    # Chapter boundaries, found in order.
+    starts = []
+    cursor = 0
+    for name, title, pattern in VOELKEL_CHAPTERS:
+        idx = find_heading(lines, cursor, len(lines), [re.compile(pattern)])
+        starts.append((name, title, idx))
+        cursor = idx + 1
+    end_of_text = find_heading(lines, cursor, len(lines), [re.compile(VOELKEL_END)])
+
+    entries = []
+    write_markdown(out_dir / "00-front-matter.md",
+                   "Johannes Kepler and the New Astronomy — front matter and contents",
+                   source, collapse_blank_lines("\n".join(lines[:starts[0][2]])))
+    entries.append({"label": "Frontespizio e indice", "file": "00-front-matter.md"})
+
+    for k, (name, title, idx) in enumerate(starts):
+        end = starts[k + 1][2] if k + 1 < len(starts) else end_of_text
+        body = [lines[idx]] + [l for l in lines[idx + 1:end]
+                               if not is_voelkel_running_header(l, title)]
+        write_markdown(out_dir / name, f"Johannes Kepler and the New Astronomy, {title}",
+                       source, collapse_blank_lines("\n".join(body)))
+
+        sidebars = [s for s, file in VOELKEL_SIDEBARS if file == name]
+        label = title + (f" (riquadri: {'; '.join(sidebars)})" if sidebars else "")
+        entries.append({"label": label, "file": name})
+
+    notes = ["L'indice analitico e i crediti delle immagini non sono stati inclusi.",
+             "Le didascalie che aprono un capitolo restano in fondo al file del "
+             "capitolo precedente."]
+    write_index(out_dir, "Voelkel, Johannes Kepler and the New Astronomy", entries, notes)
+    return len(entries), 0
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+# Builders: (option name, label, raw file, function).
+BUILDERS = [
+    ("toomer", "Almagest (Toomer)", "toomer_almagest.txt", build_toomer),
+    ("copernicus", "De Revolutionibus (Rosen)", "de_revolutionibus.txt", build_copernicus),
+    ("fitzpatrick", "A Modern Almagest (Fitzpatrick)", "modern_almagest.txt", build_fitzpatrick),
+    ("hama", "HAMA, Part One (Neugebauer)", "hama_neugebauer_pt1.txt", build_hama),
+    ("voelkel", "Kepler and the New Astronomy (Voelkel)", "voelkel_kepler.txt", build_voelkel),
+]
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--raw", default="raw", type=Path)
     parser.add_argument("--out", default=".claude/skills/astronomy-sources/references", type=Path)
+    parser.add_argument("--books", nargs="*", choices=[b[0] for b in BUILDERS],
+                        help="books to build (default: all)")
     args = parser.parse_args()
 
-    builders = [
-        ("Almagest (Toomer)", build_toomer),
-        ("De Revolutionibus (Rosen)", build_copernicus),
-        ("A Modern Almagest (Fitzpatrick)", build_fitzpatrick),
-    ]
+    for key, label, raw_name, builder in BUILDERS:
+        if args.books and key not in args.books:
+            continue
+        if not (args.raw / raw_name).exists():
+            print(f"{label:40s} saltato: manca {args.raw / raw_name}")
+            continue
 
-    for label, builder in builders:
         files, missing = builder(args.raw, args.out)
-        print(f"{label:35s} {files:4d} file   {missing:3d} capitoli non separati")
+        print(f"{label:40s} {files:4d} file   {missing:3d} capitoli non separati")
 
 
 if __name__ == "__main__":

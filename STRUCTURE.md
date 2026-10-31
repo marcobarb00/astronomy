@@ -620,10 +620,11 @@ The first anomaly and the simplest complete model.
   model (frames and arrangements), test (the two error curves coincide),
   residual (Mars).
 - **Sources:** *Almagest* I 7, IX 1 and X 6; *De Revolutionibus* I 5,
-  I 8, I 10 and the preface to Book II; for Tycho, Galileo, Bessel,
-  Bradley, Newton, Foucault and Kepler, sources outside the
-  `astronomy-sources` library, to be chosen and checked when the page is
-  built (the dates above are not yet checked against them).
+  I 8, I 10 and the preface to Book II; for Kepler and Tycho, Voelkel's
+  biography in the `astronomy-sources` library; for Galileo, Bessel,
+  Bradley, Newton and Foucault, sources outside it, to be chosen and
+  checked when the page is built (the dates above are not yet checked
+  against them).
 - **Hands over:** circles still leave an error, and Mars shows it most.
   Kepler, who looked in the Sun for the physical cause of the planets'
   motions (*Mysterium Cosmographicum*, 1596; *Astronomia Nova*, 1609),
@@ -891,7 +892,8 @@ archive/                   earlier pages, kept for reference, not linked
 ## 11. Sources
 
 Primary sources (in the project): Ptolemy, *Almagest* (English translation);
-Copernicus, *De Revolutionibus*.
+Copernicus, *De Revolutionibus*. Kepler's *Astronomia Nova* is not in the
+project yet.
 
 Modern references:
 
@@ -911,7 +913,12 @@ Modern references:
 - SIMBAD (CDS, Strasbourg): star positions and proper motions (ICRS J2000)
   for `shared/stars.js`.
 - J. Evans, *The History and Practice of Ancient Astronomy*.
-- O. Neugebauer, *A History of Ancient Mathematical Astronomy*.
+- O. Neugebauer, *A History of Ancient Mathematical Astronomy* (in the
+  project: Part One, the Almagest, its predecessors and Babylonian
+  astronomy).
+- J. R. Voelkel, *Johannes Kepler and the New Astronomy* (in the project):
+  Kepler's life and the outline of his work, for pages 4.4 and 4.5. A
+  short biography: precise claims are checked in other sources.
 
 Every page lists the sources it actually used.
 
