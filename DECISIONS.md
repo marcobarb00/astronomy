@@ -70,7 +70,9 @@ section.
 - **Blue plates only for static 2D charts of the sky, at most one per
   page, never for mathematics.** Page 1.1 has the sky around the pole,
   page 1.2 the zodiac around Taurus, page 2.3 the path of the pole (on
-  trial, 2026-10-24: Marco decides whether to keep it). → STYLE.md §7
+  trial, 2026-10-24: Marco decides whether to keep it), page 3.3 the
+  Moon's path near Regulus in August 2026 (approved by Marco on
+  2026-10-30). → STYLE.md §7
 - **Origin notes show the heading only** ("Origin · Greek"); the hub
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
@@ -164,6 +166,20 @@ section.
 - **The historical records of star longitudes live in the precession
   model** (`Precession.RECORDS`, with their sources), so the page, its
   numbers script and later pages read one copy. → shared/models/precession.js
+- **Eclipses: umbral only, with Danjon's rule.** A lunar eclipse counts
+  when part of the Moon enters the umbra, as with Ptolemy's limits; the
+  penumbral ones are not counted. The shadow is enlarged by 1% of the
+  Moon's parallax (Danjon), as in NASA's canon, with which the reference
+  sky's eclipses of 2021–2030 then agree in kind and, for the lunar ones,
+  within 0.002 in magnitude (the traditional 2% gave 0.008 too much).
+  Adopted on 2026-10-30 for page 3.3. → shared/models/eclipses.js
+- **The plate stars south of +20° from Gemini to Virgo are XHIP's, for
+  now.** On 2026-10-30 no CDS host (SIMBAD, VizieR and its mirrors)
+  answered from the session that built page 3.3, so its plate takes those
+  stars from the Extended Hipparcos Compilation (Anderson and Francis,
+  2012) as packaged by the npm package d3-celestial, without proper
+  motions (20″ at most over 26 years). Replace them by a SIMBAD query
+  when CDS answers. → tools/numbers/data/fetch-plate-stars-xhip.sh
 
 ## Workflow
 
@@ -196,7 +212,9 @@ section.
   server error, so this is still open: page 3.1 fits and tests its
   epicycle on 2025 - 2026 and AD 133 - 136, and keeps the errors at
   Ptolemy's Babylonian eclipses of 721 - 720 BC out of its prose (they are
-  only in its numbers script).
+  only in its numbers script). On 2026-10-30 Horizons answered from a
+  cloud session again (page 3.3 did not need it: it uses AD 100–200 and
+  2001–2100).
 - **Sources in cloud sessions.** The `astronomy-sources` chapter files are
   not in the repository, so cloud sessions cannot read them. Options: a
   private repository for the sources, or attaching the needed chapters to
@@ -204,3 +222,6 @@ section.
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
 - **Where page 4.5 (Kepler) gets its yardstick** (see Course).
+- **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
+  region right ascension 105° to 195°, declination −20° to +20°, and drop
+  the XHIP file.

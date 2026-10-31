@@ -1461,6 +1461,15 @@ figure.plate-figure {
 	stroke-width: 1.8;
 }
 
+/* A line that is not highlighted (page 3.3: the ecliptic, under the
+   Moon's highlighted path), as bright as the equator. */
+.plate .circle-line {
+	fill: none;
+	stroke: var(--plate-ink);
+	stroke-width: 0.9;
+	stroke-opacity: 0.6;
+}
+
 /* The cross of a point named by a symbol (the ecliptic pole K). */
 .plate .symbol-mark {
 	stroke: var(--plate-ink);
