@@ -190,9 +190,12 @@ section.
   per commit.** Large changes are staged: plan, a sample, approval, then
   the rest.
 - **Sources through the `astronomy-sources` skill** (Toomer's *Almagest*,
-  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*, split by
-  chapter). The chapter files are not in the repository (`.gitignore`),
-  only on Marco's computer.
+  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*,
+  Neugebauer's *A History of Ancient Mathematical Astronomy*, Part One, and
+  Voelkel's *Johannes Kepler and the New Astronomy*, split by chapter). The
+  chapter files are not in the repository (`.gitignore`), only on Marco's
+  computer and in the `astronomy_reference` repository. Voelkel is a short
+  biography, not Kepler's *Astronomia Nova*, whose text is still missing.
 - **Two review agents, no tester agent.** `math-reviewer` and
   `writing-reviewer` report before a page is merged; the mechanical tests
   are `npm run check`. → .claude/agents/
