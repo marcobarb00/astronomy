@@ -64,6 +64,8 @@ const SHARED_FILES = [
 	'shared/models/precession.js',
 	'shared/models/lunar-epicycle.js',
 	'shared/models/lunar-crank.js',
+	'shared/models/lunar-latitude.js',
+	'shared/models/eclipses.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -78,7 +80,8 @@ const PAGE_FILES = [
 	'act2-sun/02-equation-of-time/index.html',
 	'act2-sun/03-precession/index.html',
 	'act3-moon/01-first-anomaly/index.html',
-	'act3-moon/02-evection/index.html'
+	'act3-moon/02-evection/index.html',
+	'act3-moon/03-eclipses/index.html'
 ];
 
 /* ==========================================================================
@@ -680,6 +683,62 @@ function lunarCrankSection(c) {
 	});
 }
 
+function lunarLatitudeSection(c) {
+	const { Time, LunarLatitude, Eclipses } = c;
+	const sets = { PTOLEMY: LunarLatitude.PTOLEMY, FIT_2026: LunarLatitude.FIT_2026 };
+
+	title("6i. THE MOON'S LATITUDE AND ECLIPSES (models/lunar-latitude.js, models/eclipses.js)");
+	Object.entries(sets).forEach(([name, p]) => {
+		const months = LunarLatitude.months(p);
+
+		row(name, num(p.F0), num(p.nF, 12), num(p.i, 12), num(months.draconitic), num(months.node));
+	});
+	[0, 8 + 1 / 3, 45, 90, 170, 300].forEach(F => {
+		row(
+			`latitude F = ${num(F, 4)}`,
+			num(LunarLatitude.latitude(F, 5)),
+			num(LunarLatitude.argumentForLatitude(LunarLatitude.latitude(F, 5), 5))
+		);
+	});
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = LunarLatitude.state(LunarLatitude.FIT_2026, jd);
+		const p = LunarLatitude.state(LunarLatitude.PTOLEMY, jd);
+
+		row(`${label}`, num(s.meanArgument), num(s.F), num(s.beta), num(s.node), num(p.beta));
+	});
+
+	const z = Eclipses.sizes(385000.56, 1);
+	const l = Eclipses.limits(z);
+
+	row('sizes (mean)', num(z.sM), num(z.pM), num(z.sS), num(z.pS));
+	row('limits (mean)', num(l.umbra), num(l.lunar), num(l.lunarTotal), num(l.solar), num(l.central));
+	row('nodeAngle', [10, 350, 170, 190, 180, 90, -90].map(a => num(Eclipses.nodeAngle(a))).join(' '));
+	row('convergents', JSON.stringify(Eclipses.convergents(29.530589 / 27.212221, 7)));
+
+	[2026.62, 2026.65, 134.8].forEach(year => {
+		const k = Eclipses.indexNear(Time.jdFromDecimalYear(year), true);
+
+		[k, k + 0.5].forEach(kk => {
+			const m = Eclipses.predict(Eclipses.FIT_2026, kk);
+			const p = Eclipses.predict(Eclipses.PTOLEMY, kk);
+			const r = Eclipses.reference(kk);
+
+			row(
+				`k = ${kk}`,
+				num(m.jd),
+				num(m.beta),
+				String(m.kind),
+				num(p.jd),
+				num(p.beta),
+				num(r.jd),
+				num(r.least),
+				String(r.kind)
+			);
+		});
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -998,6 +1057,40 @@ function page32(c) {
 	);
 }
 
+function page33(c) {
+	title('8i. PAGE 3.3 (act3-moon/03-eclipses/page.js)');
+	row('YEAR_START', num(inContext(c, 'YEAR_START')));
+	row('thousands', [356400, 385000, 4267, 126007].map(v => quote(c.thousands(v))).join(' '));
+	row(
+		'syzygyIndices 2026',
+		JSON.stringify(c.syzygyIndices(inContext(c, 'YEAR_START'), inContext(c, 'YEAR_START') + 60))
+	);
+	row(
+		'limitsState',
+		[-10.3, 0, 15]
+			.map(x => {
+				const st = c.limitsState(x, 367200);
+
+				return [num(st.betaNew), String(st.solar.kind), String(st.lunar.kind), num(st.lunar.magnitude)].join(
+					' '
+				);
+			})
+			.join(' | ')
+	);
+	row(
+		'nodeLimits',
+		JSON.stringify(c.nodeLimits(inContext(c, 'MOON_NEAREST'))),
+		JSON.stringify(c.nodeLimits(inContext(c, 'MOON_FARTHEST')))
+	);
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'LIMITS_RANGE')),
+		JSON.stringify(inContext(c, 'LIMITS_WINDOW')),
+		JSON.stringify(inContext(c, 'SEASONS_REACH')),
+		JSON.stringify(inContext(c, 'PLATE_AREA'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1064,6 +1157,7 @@ function buildTable() {
 	precessionSection(shared);
 	lunarEpicycleSection(shared);
 	lunarCrankSection(shared);
+	lunarLatitudeSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1073,6 +1167,7 @@ function buildTable() {
 	page23(pages[5]);
 	page31(pages[6]);
 	page32(pages[7]);
+	page33(pages[8]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

@@ -128,7 +128,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.3',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'Eclipses',
 			question: 'When does a new Moon become a solar eclipse?',
 			path: 'act3-moon/03-eclipses/index.html'

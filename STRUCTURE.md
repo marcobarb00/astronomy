@@ -446,12 +446,77 @@ The first anomaly and the simplest complete model.
 #### 3.3 · Eclipses
 
 - **Question:** when does a new Moon become a solar eclipse?
-- **Learn:** the inclined lunar orbit; nodes and their regression; eclipse
-  limits; the eclipse seasons; the saros. Capstone of Acts II and III.
-- **Figures:** the Sun and the Moon near a node; eclipse limits; a calendar of
-  syzygies marking which ones are eclipses.
-- **Exercises:** decide whether a given new Moon produces an eclipse; derive
-  the saros from the three months.
+- **Learn:** the eclipses of 2021–2030 from the reference sky, which match
+  NASA's list (22 solar, 16 umbral lunar; penumbral eclipses not counted),
+  in 21 seasons 173.1 days apart on average, each about 19 days earlier in
+  the year; the Moon's greatest latitude, 4.99° to 5.30°; the nodes
+  moving westward 19.34° a year (18.61 years); Ptolemy's "Periodic" of
+  223 months (IV 2, Babylonian; "wrongly" called the saros, Toomer). The
+  inclined circle (V 12): from $R_z(\Omega)R_x(i)$, $\sin\beta = \sin
+  i\sin F$ and $\tan(\lambda - \Omega) = \cos i\tan F$, page 2.2's
+  reduction with $i$ for $\varepsilon$ (6.55′, left out by Ptolemy, IV 6);
+  $F = \bar F + q$ (IV 9); at a syzygy $F$ is the Sun's distance from the
+  node; the eclipse year, $1/Y_\text{e} = 1/P_d - 1/P_s$ (346.620 days).
+  The shadow: $u = 1.01\,\pi + \pi_\odot - s_\odot$ (Danjon's rule, as
+  NASA); lunar eclipse $|\beta| < u + s$, total $< u - s$; solar eclipse
+  seen somewhere $|\beta| < \pi - \pi_\odot + s + s_\odot$, central $<
+  \pi - \pi_\odot$, total or annular by the Moon's radius from the
+  point where the shadow's axis meets the Earth (non-central total and
+  annular eclipses included); the least distance taken as $|\beta|$ at the
+  syzygy (0.9956 of it). The limits from the node (lunar 10.2° to
+  12.1°, solar 16.4° to 18.3°, with the Moon's distance); Ptolemy's
+  (VI 5). The eclipse seasons: the solar limits take 31.5 to 35.3 days to
+  cross, more than a month, so at least two solar eclipses a year; the
+  lunar 19.7 to 23.4 days (VI 6). Capstone of Acts II and III.
+- **Notation:** $i$, $F$ and $\bar F$, $\Omega$ (☊ ☋ in figures),
+  $n_F$, $P_s$, $P_d$, $P_a$, $Y_\text{e}$; $s$, $s_\odot$, $\pi$,
+  $\pi_\odot$, $u$ (§6).
+- **Figures:** a calendar of the new and full Moons of 2021–2030 with the
+  eclipses (static); a photo of the total eclipse of 21 August 2017
+  (NASA, public domain); a blue plate of the Moon's path near Regulus,
+  11–15 August 2026, crossing the ecliptic at the node 16 hours after the
+  total eclipse of 12 August; the Moon's inclined circle (3D, ecliptic
+  frame, inclination drawn three times larger; date, a month or 19
+  years); the Earth's shadow (static, not to scale); the Sun, the Moon and
+  the shadow near a node, with the latitude and the limits (the Sun's
+  distance from the node and the Moon's distance); the eclipse seasons of
+  2026–2027 (static); the error curve of the latitude (the mean
+  inclination as ghost, dots at new and full Moon); Ptolemy's latitude
+  around AD 134 and over 2000 years. Tables: the eclipses of 2026, model
+  against real; Ptolemy's three eclipses at Alexandria (IV 6).
+- **Fit:** Ptolemy's 5° (V 12, 4.99° from his figures); Hipparchus' 5458
+  months = 5923 returns in latitude (IV 2, Babylonian), 0.1 s from the
+  reference; Ptolemy's correction and epoch (IV 9); his diameter and
+  shadow from two eclipses (VI 5); Copernicus' motion in latitude from
+  eclipses at opposite nodes (IV 13). Ours: Meeus' $n_F$, and $i$ and $F_0$
+  fitted to the latitudes at the 25 new and full Moons of 2026: $i =
+  5.00^\circ$ (the mean inclination 5.145° would be up to 10′ off
+  there), the node at J2000 125.05° (Meeus 125.04°); the sizes from the
+  model's distances.
+- **Test:** the latitude within 1.9′ at the new and full Moons of 2026, 26′
+  over the year, 29′ over a century; the eclipses: all 38 of 2021–2030,
+  364 of 366 in 2001–2100 (two missed and three added, all grazing
+  partials), times rms 45 min, worst 97 min (page 3.1's 40′). Ptolemy: his
+  latitudes within 2.3′ and his times within half an hour at his three
+  eclipses; his lunar limit holds all 157 lunar eclipses of AD 100–200;
+  in 2021–2030 still 37 of 38 eclipses, times wrong by up to 4.3 h.
+- **Exercises:** decide whether the new Moon of 12 August 2026 is an
+  eclipse, central, total or annular (and 11 September); derive the saros
+  from the three months by continued fractions, the exeligmos, the length
+  of a series, Hipparchus' 5458 months; Ptolemy's eclipse of 20 October
+  134 with a uniformly turning Earth, and $\Delta T$ from his time (break
+  the model: 2.50 h against the reference's 2.57 h).
+- **Code:** `models/lunar-latitude.js` (`LunarLatitude`: `state`, `make`,
+  `latitude`, `MEEUS`, `PTOLEMY`, `FIT_2026`) and `models/eclipses.js`
+  (`Eclipses`: sizes, limits, syzygies, `predict`, `reference`, Ptolemy's
+  limits, convergents; `FIT_2026`, `PTOLEMY`); `ErrorCurve`'s `quantity`
+  option (Δβ); `Plate.line` and day ticks on `Plate.highlightCurve`; the
+  figure of Leo.
+- **Residual:** the times (the longitude); the latitude at the quarters,
+  5.3° against 5.0° at new and full Moon (the reference Moon's
+  $0.17^\circ\sin(2D - F)$; detour: Tycho); a solar eclipse for one
+  observer (VI 10, *De Revolutionibus* IV 30); $\Delta T$ from ancient
+  eclipses (detour).
 - **Hands over:** the Sun and the Moon each have their own laws. The planets
   are tied to the Sun.
 
@@ -664,6 +729,15 @@ once on the page.
 | $q$ (Moon) | the equation of anomaly, $\lambda = \bar\lambda + q$, with $M$ counted from the apogee of the epicycle and $e = r/R$ (page 3.1) |
 | $D$ | the mean elongation of the Moon, $\bar\lambda - \bar\lambda_\odot$ (Meeus' $D$), page 3.2 |
 | $c$ | OC, the distance of the centre of Ptolemy's lunar eccentric from the Earth, where OA = 1 (page 3.2) |
+| $i$ | the inclination of the Moon's circle to the ecliptic (page 3.3) |
+| $\Omega$ | the longitude of the Moon's ascending node; ☊ and ☋, the ascending and descending nodes, in figures (page 3.3) |
+| $F,\ \bar F$ | the argument of latitude, the Moon's angle along its circle from the ascending node, and its mean value $\bar\lambda - \Omega$ (Meeus' $F$); Ptolemy counts it from the northern limit, $F - 90^\circ$ (page 3.3) |
+| $n_F$ | the daily motion of $\bar F$ (page 3.3) |
+| $P_s,\ P_a,\ P_d$ | the synodic, anomalistic and draconitic months (pages 3.1, 3.3) |
+| $Y_\text{e}$ | the eclipse year, the Sun's return to a node (page 3.3) |
+| $s,\ s_\odot$ | the apparent radii of the Moon and the Sun (page 3.3) |
+| $\pi,\ \pi_\odot$ | the horizontal parallaxes of the Moon and the Sun (page 3.3) |
+| $u$ | the radius of the Earth's umbra at the Moon's distance (page 3.3) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -759,7 +833,7 @@ of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
 at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
-reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The mean Sun (`models/mean-sun.js`, page 1.3)
+reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,
