@@ -1416,6 +1416,130 @@ Regenerate with: node tools/check/smoke.js --update
   hover #diameter-plot left
   dragged 0 spheres
 
+=== act3-moon/03-eclipses/index.html ===
+  as loaded
+    OUTPUT (orbit-day): 12 Aug
+    #orbit-readout: \text{12 Aug:}\quad \Omega = 330.3^\circ | F = 170.0^\circ,\quad \beta = +0.87^\circ | \text{the Sun } 10.3^\circ \text{ before the nearer node}
+    OUTPUT (limits-node): −10.3°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = -53.6' | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #orbit-day = 0
+    OUTPUT (orbit-day): 1 Jan
+    #orbit-readout: \text{1 Jan:}\quad \Omega = 342.2^\circ | F = 86.9^\circ,\quad \beta = +4.99^\circ | \text{the Sun } 61.6^\circ \text{ before the nearer node}
+  slider #orbit-day = 6940
+    OUTPUT (orbit-day): 1 Jan
+    #orbit-readout: \text{1 Jan:}\quad \Omega = 334.7^\circ | F = 94.3^\circ,\quad \beta = +4.98^\circ | \text{the Sun } 53.7^\circ \text{ before the nearer node}
+  slider #orbit-day = 3470
+    OUTPUT (orbit-day): 3 Jul
+    #orbit-readout: \text{3 Jul:}\quad \Omega = 158.4^\circ | F = 270.5^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.5^\circ \text{ before the nearer node}
+  slider #orbit-day + one key step
+    OUTPUT (orbit-day): 3 Jul
+    #orbit-readout: \text{3 Jul:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearer node}
+  slider #limits-node = -20
+    OUTPUT (limits-node): −20.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = -102.5' | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node = 20
+    OUTPUT (limits-node): +20.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +102.5' | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node = 0
+    OUTPUT (limits-node): +0.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.0' | \text{solar eclipse: annular} | \text{full Moon: } \beta = +0.0' | \text{lunar eclipse: total, magnitude 1.84} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node + one key step
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-distance = 356400
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+  slider #limits-distance = 406700
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  slider #limits-distance = 381600
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 381·600 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.7',\ \pi = 57.5',\ u = 42.2'
+  slider #limits-distance + one key step
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 381·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.6',\ \pi = 57.4',\ u = 42.2'
+  button "‹ previous day"
+    OUTPUT (orbit-day): 2 Jul
+    #orbit-readout: \text{2 Jul:}\quad \Omega = 158.5^\circ | F = 256.8^\circ,\quad \beta = -4.87^\circ | \text{the Sun } 58.4^\circ \text{ before the nearer node}
+  button "next day ›"
+    OUTPUT (orbit-day): 3 Jul
+    #orbit-readout: \text{3 Jul:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearer node}
+  button "nearest"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+  button "mean"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  button "farthest"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "2000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #calendar-plot at 0.3
+  hover #calendar-plot at 0.6
+  hover #calendar-plot at 0.9
+  hover #calendar-plot left
+  hover #limits-plot at 0.3
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot at 0.6
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot at 0.9
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot left
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #seasons-plot at 0.3
+  hover #seasons-plot at 0.6
+  hover #seasons-plot at 0.9
+  hover #seasons-plot left
+  hover #error-latitude-plot at 0.3
+    .errorcurve-readout: 18 Mar 2002 · mean inclination: +0.9′ · fitted: +5.2′
+  hover #error-latitude-plot at 0.6
+    .errorcurve-readout: 14 Oct 2034 · mean inclination: +1.0′ · fitted: −5.7′
+  hover #error-latitude-plot at 0.9
+    .errorcurve-readout: 11 May 2067 · mean inclination: +1.7′ · fitted: −5.2′
+  hover #error-latitude-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-ptolemy-plot at 0.3
+    .errorcurve-readout: 7 Jan 352 BC · Ptolemy: −6.5′
+  hover #error-ptolemy-plot at 0.6
+    .errorcurve-readout: 27 Jun 300 · Ptolemy: −22.3′
+  hover #error-ptolemy-plot at 0.9
+    .errorcurve-readout: 17 Dec 951 · Ptolemy: −0.9′
+  hover #error-ptolemy-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 1 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -2796,7 +2920,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 149 tests pass.
+    #summary: All 157 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

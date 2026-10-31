@@ -110,6 +110,20 @@ class Sphere3D {
 		});
 	}
 
+	/* The point of a circle (angle -> point) nearest the viewer, offset by
+	   'skip' degrees so that two circles get their names at different
+	   places: where a circle's name can be read (pages 2.3 and 3.3).
+	   pointAt is cos(angle) u + sin(angle) v and the depth is linear in the
+	   point, so the depth is cos(angle) d(u) + sin(angle) d(v), least at the
+	   angle found below: exactly, so that the name glides along its circle
+	   as the sphere turns instead of stepping (CLAUDE.md). */
+	frontPoint(pointAt, skip = 0) {
+		const du = this.project(pointAt(0)).d;
+		const dv = this.project(pointAt(90)).d;
+
+		return pointAt(atan2d(-dv, -du) + skip);
+	}
+
 	/* Match the canvas resolution to its displayed size. */
 	resize() {
 		const width = this.canvas.clientWidth || 400;
