@@ -35,9 +35,11 @@ The following keep their own licences and are not covered by this one:
 - **The photos.** Each keeps the licence recorded in the `images/CREDITS.md`
   file of its page and in the credit line of its caption.
 - **Quotations** from Ptolemy's *Almagest* (transl. G. J. Toomer),
-  Copernicus' *De Revolutionibus* (transl. E. Rosen) and R. Fitzpatrick's
-  *A Modern Almagest*. They are short, attributed quotations, and remain
-  the property of their authors and publishers.
+  Copernicus' *De Revolutionibus* (transl. E. Rosen), R. Fitzpatrick's
+  *A Modern Almagest*, O. Neugebauer's *A History of Ancient Mathematical
+  Astronomy* and J. R. Voelkel's *Johannes Kepler and the New Astronomy*.
+  They are short, attributed quotations, and remain the property of their
+  authors and publishers.
 - **The data and methods of others** (SIMBAD, E. M. Standish's elements
   from JPL, Meeus' *Astronomical Algorithms*, the precession of Vondrák,
   Capitaine and Wallace), as credited in the Sources section of each page.

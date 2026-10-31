@@ -167,6 +167,8 @@ same style:
 ## Sources
 
 The reference books (Ptolemy's *Almagest*, Copernicus' *De Revolutionibus*,
-Fitzpatrick's *A Modern Almagest*) are available, split by chapter, through the
-`astronomy-sources` skill (`.claude/skills/astronomy-sources/`). Use it for
-historical models, parameters, definitions and short attributed quotations.
+Fitzpatrick's *A Modern Almagest*, Neugebauer's *A History of Ancient
+Mathematical Astronomy* (Part One) and Voelkel's *Johannes Kepler and the New
+Astronomy*) are available, split by chapter, through the `astronomy-sources`
+skill (`.claude/skills/astronomy-sources/`). Use it for historical models,
+parameters, definitions and short attributed quotations.
