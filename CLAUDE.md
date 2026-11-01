@@ -172,3 +172,7 @@ Mathematical Astronomy* (Part One) and Voelkel's *Johannes Kepler and the New
 Astronomy*) are available, split by chapter, through the `astronomy-sources`
 skill (`.claude/skills/astronomy-sources/`). Use it for historical models,
 parameters, definitions and short attributed quotations.
+
+## Git
+- Never add Co-Authored-By, Claude-Session, or "Generated with Claude Code" lines to commits or PRs.
+- Commits must be authored by the repo's configured git user, never a Claude identity.
