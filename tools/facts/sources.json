@@ -1,0 +1,12 @@
+{
+	"format": 1,
+	"library": "C:/dev/astronomy_reference/.claude/skills/astronomy-sources/references",
+	"note": "Chapter lists not filled yet: the fact-check of 2026-10-31 stopped before any page was checked (audit/AUDIT-facts.md).",
+	"works": [
+		{ "work": "Toomer Almagest", "folder": "almagest-toomer", "chapters": [] },
+		{ "work": "Rosen De Revolutionibus", "folder": "de-revolutionibus-rosen", "chapters": [] },
+		{ "work": "Fitzpatrick Modern Almagest", "folder": "modern-almagest-fitzpatrick", "chapters": [] },
+		{ "work": "Neugebauer HAMA", "folder": "hama-neugebauer", "chapters": [] },
+		{ "work": "Voelkel Kepler", "folder": "kepler-voelkel", "chapters": [] }
+	]
+}
