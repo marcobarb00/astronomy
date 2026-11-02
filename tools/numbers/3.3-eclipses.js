@@ -347,8 +347,12 @@ title('6. Model: the latitude');
 		}
 	}
 
-	console.log(`  e = tan^2(i/2) = ${f(e, 6)} (i = ${f(LAT.i, 2)}°); the two forms agree within ${(identity * 3600).toExponential(1)}"`);
-	console.log(`  largest ${arcmin(largest.value, 2)} at F = ${f(largest.F, 2)}° (2F = 90° + asin e: F = ${f((90 + asin(e)) / 2, 2)}°)`);
+	console.log(
+		`  e = tan^2(i/2) = ${f(e, 6)} (i = ${f(LAT.i, 2)}°); the two forms agree within ${(identity * 3600).toExponential(1)}"`
+	);
+	console.log(
+		`  largest ${arcmin(largest.value, 2)} at F = ${f(largest.F, 2)}° (2F = 90° + asin e: F = ${f((90 + asin(e)) / 2, 2)}°)`
+	);
 	console.log(`  first order -e sin 2F: largest ${arcmin(e * (180 / Math.PI), 2)}`);
 	[12.1, 18.3].forEach(F => {
 		console.log(`  at F = ${F}°: lambda - Omega - F = ${arcmin(exact(F), 2)}`);

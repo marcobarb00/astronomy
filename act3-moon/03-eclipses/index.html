@@ -16,6 +16,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>3.3 · Eclipses · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -277,24 +278,30 @@
 			The second formula says that the Moon's longitude counted from the
 			node, $\lambda - \Omega$, is not quite its angle $F$ along its own
 			circle: an arc of the tilted circle, projected onto the ecliptic, comes
-			out a little shorter or longer. To find the difference, we take the
-			tangent of $\lambda - \Omega - F$ and multiply its numerator and
-			denominator by $\cos^2 F$:
+			out a little shorter or longer. Written as a difference, it becomes
 		</p>
 
-		$$\tan(\lambda - \Omega - F) = \frac{\cos i\tan F - \tan F}{1 + \cos i\tan^2 F} = \frac{(\cos i - 1)\sin F\cos F}{\cos^2 F + \cos i\sin^2 F}.$$
+		$$\lambda - \Omega = F - \operatorname{atan2}(e\sin 2F,\ 1 + e\cos 2F) \approx F - e\sin 2F, \qquad e = \tan^2\frac{i}{2}.$$
 
-		<p>
-			With $\sin F\cos F = \tfrac12\sin 2F$, $\cos^2 F = \tfrac12(1 + \cos
-			2F)$ and $\sin^2 F = \tfrac12(1 - \cos 2F)$, and dividing above and
-			below by $\tfrac12(1 + \cos i)$, this becomes
-			$-e\sin 2F/(1 + e\cos 2F)$, with $e = (1 - \cos i)/(1 + \cos i) =
-			\tan^2(i/2)$:
-		</p>
-
-		<div class="box">
-			$$\lambda - \Omega = F - \operatorname{atan2}(e\sin 2F,\ 1 + e\cos 2F) \approx F - e\sin 2F, \qquad e = \tan^2\frac{i}{2}.$$
-		</div>
+		<details class="fold">
+			<summary>The derivation of the difference</summary>
+			<p>
+				Take the tangent of $\lambda - \Omega - F$, with $\tan(\lambda -
+				\Omega) = \cos i\tan F$, and multiply its numerator and denominator
+				by $\cos^2 F$:
+			</p>
+			$$\tan(\lambda - \Omega - F) = \frac{\cos i\tan F - \tan F}{1 + \cos i\tan^2 F} = \frac{(\cos i - 1)\sin F\cos F}{\cos^2 F + \cos i\sin^2 F}.$$
+			<p>
+				With $\sin F\cos F = \tfrac12\sin 2F$, $\cos^2 F = \tfrac12(1 + \cos
+				2F)$ and $\sin^2 F = \tfrac12(1 - \cos 2F)$, and dividing above and
+				below by $\tfrac12(1 + \cos i)$, this becomes
+			</p>
+			$$\tan(\lambda - \Omega - F) = -\frac{e\sin 2F}{1 + e\cos 2F}, \qquad e = \frac{1 - \cos i}{1 + \cos i} = \tan^2\frac{i}{2}.$$
+			<p>
+				The denominator is positive, so the angle is the one of the formula
+				above, and to first order in $e$ it is $-e\sin 2F$.
+			</p>
+		</details>
 
 		<p>
 			The difference has the form of the equation of centre of page 2.1,
