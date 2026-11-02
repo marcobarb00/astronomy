@@ -98,6 +98,10 @@ section.
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
 - **Detours are margin notes**, not cards. → STRUCTURE.md §7.4
+- **Today notes are a third kind of margin note**, headed "Today" in the
+  colour of the Modern origin, saying what replaces the page's model as
+  the modern first approximation (pages 2.1, 3.1, 3.2; 2026-11-02). →
+  STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md

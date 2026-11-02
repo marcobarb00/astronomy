@@ -211,9 +211,9 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/solar-eccentric.js` (`SolarEccentric.make()`, the
   parameter sets `PTOLEMY` and `FIT_2026`, `fitSeasons`); `MeanSun.PTOLEMY`,
   whose days are days of UT.
-- **Today note** (§7.5): Kepler's ellipse, the first approximation used
-  today for the Sun's path relative to the Earth; to second order, with
-  $M$ from the apogee, $q \approx -2e_\text{K}\sin M +
+- **Today note** (§7.5), beside the residual: Kepler's ellipse, the first
+  approximation used today for the Sun's path relative to the Earth; to
+  second order, with $M$ from the apogee, $q \approx -2e_\text{K}\sin M +
   \tfrac54 e_\text{K}^2\sin 2M$, against the eccentric's
   $-e\sin M + \tfrac12 e^2\sin 2M$ with $e = 2e_\text{K}$; page 4.5
   applies it to the Sun.
@@ -379,10 +379,11 @@ The first anomaly and the simplest complete model.
   `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
   `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
   `ErrorCurve.addMarks` (dots at chosen dates).
-- **Today note** (§7.5): the Moon's orbit is close to an ellipse, whose
-  equation of centre (6.29°) is the epicycle's term; modern lunar theory
-  adds the other terms as a series (Meeus 47), and their cause, the Sun's
-  pull, is beyond Kepler (page 4.5, epilogue).
+- **Today note** (§7.5): the Moon's longitude is computed today from a
+  series of terms derived from Newton's gravitation (Meeus 47); the first
+  is the ellipse's, the others come from the Sun's pull, which also turns
+  the perigee round in 8.85 years, like the apogee of the eccentric of
+  section 2 (Fitzpatrick § 6.1).
 - **Residual:** at the quarters, Hipparchus' sighting of 128 BC (V 3);
   the evection, which takes 1.27° from the ellipse's 6.29° at new and full
   Moon and adds it at the quarters; the remaining 40′ at new and full Moon
@@ -443,12 +444,11 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/lunar-crank.js` (`LunarCrank`: `make()`,
   `makeDistance()`, `state`, `geometry`, `construction`, `PTOLEMY`,
   `FIT_2026`).
-- **Today note** (§7.5): the text already sets the crank's terms beside
-  the series of the reference Moon ($-6.29°\sin M + 1.27°\sin(M - 2D)$);
-  the note says what that series is today: an ellipse whose shape and
-  orientation the Sun's pull changes through the month, so that the
-  distance varies by a factor of 1.14, not the crank's 1.91 (page 4.5,
-  epilogue).
+- **Today note** (§7.5), beside the distances: the evection as an effect
+  of the Sun's pull, which through each month makes the Moon's ellipse
+  more and less eccentric and swings its axis; with the Earth at the
+  focus, the 1.27° in longitude costs little distance, where the crank
+  brings the whole epicycle nearer.
 - **Residual:** the variation, $0.66°\sin 2D$ (detour: Tycho), 44% of the
   error's mean square in 2026, then the first anomaly left by page 3.1's
   three-eclipse fit (its anomaly at the epoch 5° off), then the annual
@@ -859,9 +859,9 @@ first approximation and how the two compare (a formula, a number from the
 page's script). It states the modern counterpart; it does not judge the
 historical model, which the page tests with the error curve. Pages 2.1,
 3.1 and 3.2 have one (§4); other pages add one only when their model has
-a direct modern counterpart. Adopted on 2026-11-02, with the style of the
-note (a new kind beside origins and detours) to be set in `STYLE.md` §4.5
-when the first one is built.
+a direct modern counterpart. Its numbers come from the page's script, like
+every other number. Adopted on 2026-11-02; written on pages 2.1, 3.1 and
+3.2 the same day. The style is in `STYLE.md` §4.5.
 
 ---
 
