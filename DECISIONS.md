@@ -51,6 +51,27 @@ section.
   the arrangement, and never speaks of a true centre. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
+- **The Sun and the Moon are connected to the models used today, without
+  new pages.** On 2026-11-02 Marco noted that Acts II and III end on
+  Hipparchus' and Ptolemy's circles, which are not used today, and that
+  the hub promised each astronomer fixing the last one's model, while the
+  pages show Hipparchus and Ptolemy refining their own. Two options were
+  set aside: a site limited to Hipparchus and Ptolemy, with Kepler on
+  another site (it drops the story's end and the objective), and full
+  Copernican and Keplerian treatments of the Sun and the Moon (too long;
+  Copernicus' Sun is page 2.1's eccentric and his Moon's second epicycle
+  is on page 3.2, and a bare ellipse is not today's Moon either).
+  Adopted instead: a "Today" margin note on pages 2.1, 3.1 and 3.2 giving
+  the modern counterpart of the page's model; a short section of page 4.5
+  and an epilogue entry on the Moon after Kepler (its remaining terms come
+  from the Sun's pull); the hub's opening rewritten to say where the
+  ellipse comes in and what is used as it is today. → STRUCTURE.md §4
+  (pages 2.1, 3.1, 3.2, 4.5, epilogue, hub), §7.5
+- **Page 4.5 applies the ellipse back to the Sun (on trial).** A section
+  fits Kepler's ellipse to the Sun of page 2.1 and closes its open
+  questions (the second-order error, the distance varying twice too
+  much). Adopted on 2026-11-02 on trial: Marco decides whether to keep it
+  once the page is built. → STRUCTURE.md §4 (page 4.5)
 
 ## Look
 
@@ -225,6 +246,9 @@ section.
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
 - **Where page 4.5 (Kepler) gets its yardstick** (see Course).
+- **Whether page 4.5 keeps its section on the Sun** (see Course), once the
+  page is built. If it goes, the hub's sentence on the Earth's orbit still
+  holds, since it states history, not the page's content.
 - **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
   region right ascension 105° to 195°, declination −20° to +20°, and drop
   the XHIP file.

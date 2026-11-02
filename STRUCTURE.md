@@ -211,6 +211,12 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/solar-eccentric.js` (`SolarEccentric.make()`, the
   parameter sets `PTOLEMY` and `FIT_2026`, `fitSeasons`); `MeanSun.PTOLEMY`,
   whose days are days of UT.
+- **Today note** (§7.5): Kepler's ellipse, the first approximation used
+  today for the Sun's path relative to the Earth; to second order, with
+  $M$ from the apogee, $q \approx -2e_\text{K}\sin M +
+  \tfrac54 e_\text{K}^2\sin 2M$, against the eccentric's
+  $-e\sin M + \tfrac12 e^2\sin 2M$ with $e = 2e_\text{K}$; page 4.5
+  applies it to the Sun.
 - **Hands over:** the apogee moves, about 1.75° a century relative to γ, so
   the model drifts slowly over centuries (page 2.3); the eccentric's distance
   varies twice as much as the real one (pages 3.2, 4.5); first, a consequence
@@ -373,6 +379,10 @@ The first anomaly and the simplest complete model.
   `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
   `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
   `ErrorCurve.addMarks` (dots at chosen dates).
+- **Today note** (§7.5): the Moon's orbit is close to an ellipse, whose
+  equation of centre (6.29°) is the epicycle's term; modern lunar theory
+  adds the other terms as a series (Meeus 47), and their cause, the Sun's
+  pull, is beyond Kepler (page 4.5, epilogue).
 - **Residual:** at the quarters, Hipparchus' sighting of 128 BC (V 3);
   the evection, which takes 1.27° from the ellipse's 6.29° at new and full
   Moon and adds it at the quarters; the remaining 40′ at new and full Moon
@@ -433,6 +443,12 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/lunar-crank.js` (`LunarCrank`: `make()`,
   `makeDistance()`, `state`, `geometry`, `construction`, `PTOLEMY`,
   `FIT_2026`).
+- **Today note** (§7.5): the text already sets the crank's terms beside
+  the series of the reference Moon ($-6.29°\sin M + 1.27°\sin(M - 2D)$);
+  the note says what that series is today: an ellipse whose shape and
+  orientation the Sun's pull changes through the month, so that the
+  distance varies by a factor of 1.14, not the crank's 1.91 (page 4.5,
+  epilogue).
 - **Residual:** the variation, $0.66°\sin 2D$ (detour: Tycho), 44% of the
   error's mean square in 2026, then the first anomaly left by page 3.1's
   three-eclipse fit (its anomaly at the epoch 5° off), then the annual
@@ -635,8 +651,27 @@ The first anomaly and the simplest complete model.
 - **Question:** what shape removes the last error?
 - **Learn:** the ellipse; the area law; mean, eccentric and true anomaly;
   Kepler's equation and its iterative solution; the third law.
+- **The Sun on an ellipse (on trial, 2026-11-02: Marco decides whether to
+  keep it once the page is built):** the Earth's orbit is an ellipse too,
+  so the Sun's path relative to the Earth is one. Kepler found from Mars
+  that the Earth's motion also speeds up near the Sun, as a uniform
+  eccentric cannot (Voelkel, ch. 3). The section applies the ellipse and
+  Kepler's equation to the Sun of page 2.1: its error curve, with the
+  eccentric fitted to 2026 as ghost (the second-order term of page 2.1's
+  Today note); the distance, which now varies by $e_\text{K}$ either
+  way, as the real one does, closing the "twice too much" of pages 2.1
+  and 3.2; the apogee's motion of page 2.3 as a turning of the ellipse
+  (detour: perturbations). Mind the caution below: the reference Sun is
+  itself Keplerian.
+- **The Moon after Kepler (a short section):** an ellipse is the first
+  term of the Moon's motion (page 3.1); the evection, the variation and
+  the annual equation remain, and so does the motion of the perigee and
+  the nodes. They come from the Sun's pull on the Moon, which is Newton's
+  subject, so the Moon's story continues in the epilogue. No new model
+  and no figure.
 - **Figures:** Mars on its ellipse with swept areas; the error curve, nearly
-  flat; all previous error curves overlaid.
+  flat; all previous error curves overlaid; the Sun's error curve, the
+  ellipse against the eccentric (on trial, see above).
 - **Exercises:** solve Kepler's equation by fixed-point and Newton iteration;
   compare the convergence.
 - **Caution (reference sky):** the reference planets in `shared/ephemeris.js`
@@ -655,14 +690,28 @@ The first anomaly and the simplest complete model.
 One short page: where the story goes next. Each entry has one sentence on why
 it matters, and becomes a link when its page exists. Unbuilt entries are
 shown greyed out. Candidates: Tycho's observations, Newton and gravitation,
-perturbations, nutation, aberration and stellar parallax, planetary latitudes,
+perturbations, the Moon after Kepler (the evection, the variation and the
+annual equation as effects of the Sun's pull; modern lunar series), nutation, aberration and stellar parallax, planetary latitudes,
 the Islamic critiques of the equant, calendars, instruments.
 
 ### Hub
 
-The site's `index.html`: the objective in two sentences, the course as a
-journey through the models before Kepler (WRITING.md §9), the five acts as a
-map, and a link to *Beyond Kepler*. Optional: a notation page (§6).
+The site's `index.html`: the story in a few short paragraphs, the five
+acts as a map, and a link to *Beyond Kepler*. Optional: a notation page
+(§6). The opening says, as part of the story and not as a warning:
+
+- each page rebuilds a historical model as its author conceived it
+  (WRITING.md §9); some steps refine an astronomer's own model, others
+  change its form;
+- Kepler's ellipse is the first approximation used today, for the
+  planets and for the Sun's path relative to the Earth; the course
+  reaches it on page 4.5;
+- circles already come close for the Sun and the Moon, and much of what
+  the reader learns on the way (coordinates, sidereal time, the equation
+  of time, precession, eclipse limits) is used as it is today;
+- the Moon needs more than an ellipse, and its remaining terms lead to the
+  epilogue;
+- the objective (§1).
 
 ---
 
@@ -801,6 +850,18 @@ naturally comes up (`STYLE.md` §4.5): the heading "Detour · coming later",
 then the topic and why it matters, "*Nutation: the small wobble of the pole
 on top of precession.*" When the topic gets its own page, the topic becomes
 a link.
+
+### 7.5 Today notes
+
+On a page whose model is not the one used today, a margin note headed
+"Today" says, in one or two sentences, what replaces it as the modern
+first approximation and how the two compare (a formula, a number from the
+page's script). It states the modern counterpart; it does not judge the
+historical model, which the page tests with the error curve. Pages 2.1,
+3.1 and 3.2 have one (§4); other pages add one only when their model has
+a direct modern counterpart. Adopted on 2026-11-02, with the style of the
+note (a new kind beside origins and detours) to be set in `STYLE.md` §4.5
+when the first one is built.
 
 ---
 
