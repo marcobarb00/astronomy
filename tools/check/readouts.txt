@@ -1425,7 +1425,7 @@ Regenerate with: node tools/check/smoke.js --update
     #limits-readout: \text{new Moon: } \beta = -53.6' | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  opened 6 hints and answers
+  opened 7 hints and answers
   slider #orbit-day = 0
     OUTPUT (orbit-day): 1 Jan
     #orbit-readout: \text{1 Jan:}\quad \Omega = 342.2^\circ | F = 86.9^\circ,\quad \beta = +4.99^\circ | \text{the Sun } 61.6^\circ \text{ before the nearer node}
