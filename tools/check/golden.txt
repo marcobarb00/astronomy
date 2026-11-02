@@ -3460,7 +3460,7 @@ reduction to the ecliptic: greatest 6.55' = asin tan^2(i/2)
 
 === 7. Model: the months ===
 n_F = 13.22935° a day, n = 13.17640°: the node moves west 0.05295° a day
-draconitic month 27.21222 d; synodic 29.53059 d; anomalistic 27.55455 d
+draconitic month 27.21222 d; tropical 27.32158 d; synodic 29.53059 d; anomalistic 27.55455 d
 the Sun from the node: 1.0386° a day; eclipse year 346.620 d, half 173.31 d
   check 1/P_d - 1/P_s: 346.620 d
 

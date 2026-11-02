@@ -315,12 +315,11 @@
 
 		<div class="row">
 			<p>
-				The Moon's place on its circle is the mean place moved by the equation
-				of anomaly of page 3.1, $F = \bar F + q$, as Ptolemy applies it (IV 9),
-				where the mean argument of latitude $\bar F = \bar\lambda - \Omega$
-				grows uniformly. Its daily motion $n_F$ exceeds the mean motion $n$ in
-				longitude, since the node moves westward at the rate $n_F - n$. The
-				return of $F$ is the draconitic month of page 3.1, 27.21 days.
+				Along its circle the Moon moves as it does in longitude on page 3.1:
+				a uniform mean motion, corrected by the equation of anomaly. Its mean
+				argument of latitude is $\bar F = \bar\lambda - \Omega$, and its true
+				argument of latitude is $F = \bar F + q$, with the same $q$ as the
+				longitude. Ptolemy computes it in the same way (IV 9).
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -328,15 +327,28 @@
 		</div>
 
 		<p>
-			Ptolemy neglects this difference, and so does the model of this page.
-			It takes the Moon's longitude from the epicycle of page 3.1, $\lambda
-			= \bar\lambda + q$, as if the Moon moved in the ecliptic, and its
-			argument of latitude from the same angles, $F = \bar F + q$ with
-			$\bar F = \bar\lambda - \Omega$, so that $\lambda - \Omega = F$
-			exactly. Its longitude is therefore off by up to 6.55′, little beside
-			the 40′ of the epicycle at new and full Moon. Near a node, where
-			eclipses happen, the error is smaller still: 3.90′ with the Sun 18.3°
-			from the node, at the edge of the solar limits.
+			The mean argument of latitude grows by $n_F$ a day: the Moon's mean
+			motion $n$, plus the motion of the node, which moves westward, towards
+			the Moon, by 0.053° a day. The Moon therefore comes back to the same
+			node a little sooner than to the same longitude: after 27.21 days, the
+			draconitic month of page 3.1, instead of 27.32.
+		</p>
+
+		<p>
+			The model of this page computes the Moon's longitude as on page 3.1,
+			$\lambda = \bar\lambda + q$, as if the Moon moved along the ecliptic
+			itself. Subtracting $\Omega$ gives $\lambda - \Omega = \bar F + q = F$:
+			the model takes the Moon's distance from the node measured along the
+			ecliptic to be the same as its distance measured along its own circle.
+			That is the difference derived above, which the model neglects, as
+			Ptolemy does.
+		</p>
+
+		<p>
+			The model's longitude is therefore off by up to 6.55′, little beside
+			the epicycle's own error of 40′ at new and full Moon. The difference
+			vanishes at the nodes, so it is smaller still where eclipses happen:
+			within about 18° of a node, it stays under 4′.
 		</p>
 
 		<!-- Figure 3: the Moon's inclined circle (3D, date) -->

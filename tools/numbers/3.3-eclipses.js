@@ -379,7 +379,7 @@ const ECLIPSE_YEAR = 360 / SUN_FROM_NODE_RATE;
 title('7. Model: the months');
 console.log(`n_F = ${f(RATES.nF, 5)}° a day, n = ${f(RATES.n, 5)}°: the node moves west ${f(NODE_RATE, 5)}° a day`);
 console.log(
-	`draconitic month ${f(P_DRACONITIC, 5)} d; synodic ${f(P_SYNODIC, 5)} d; anomalistic ${f(P_ANOMALISTIC, 5)} d`
+	`draconitic month ${f(P_DRACONITIC, 5)} d; tropical ${f(360 / RATES.n, 5)} d; synodic ${f(P_SYNODIC, 5)} d; anomalistic ${f(P_ANOMALISTIC, 5)} d`
 );
 console.log(
 	`the Sun from the node: ${f(SUN_FROM_NODE_RATE, 4)}° a day; eclipse year ${f(ECLIPSE_YEAR, 3)} d, half ${f(ECLIPSE_YEAR / 2, 2)} d`
