@@ -322,7 +322,7 @@ const orbitFigure = {
 		showLines('orbit-readout', [
 			`\\text{${dateText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
 			`F = ${fixed(moon.F, 1)}^\\circ,\\quad \\beta = ${signed(moon.beta, 2).replace('−', '-')}^\\circ`,
-			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearer node}`
+			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`
 		]);
 	},
 
@@ -716,7 +716,7 @@ const limitsFigure = {
 
 /* ==========================================================================
    6. FIGURE 6: THE ECLIPSE SEASONS
-   Static. Through 2026 and 2027, the model Sun's distance from the nearer
+   Static. Through 2026 and 2027, the model Sun's distance from the nearest
    node of the model's Moon (folded onto [-90°, 90°), shown within 40° of
    the node), with the model's new and full Moons on it, and the bands of the solar and lunar limits
    (their range with the Moon's distance, 356·400 to 406·700 km).
@@ -740,7 +740,7 @@ function nodeLimits(km) {
 	return { solar: inF(l.solar), lunar: inF(l.lunar) };
 }
 
-/* The model Sun's distance from the nearer node at JD (deg). */
+/* The model Sun's distance from the nearest node at JD (deg). */
 function modelSunFromNode(jd) {
 	const sun = SolarEccentric.make(MODEL.sun)(jd);
 
@@ -783,7 +783,7 @@ const seasonsFigure = {
 			x: [0, SEASONS_DAYS],
 			y: [-SEASONS_REACH, SEASONS_REACH],
 			xLabel: 'date',
-			yLabel: 'the Sun from the nearer node (°)',
+			yLabel: 'the Sun from the nearest node (°)',
 			xTicks: () => ticks,
 			yTicks: () => [-40, -20, 0, 20, 40].map(value => ({ value, label: `${value}°` })),
 			aspect: 0.5,

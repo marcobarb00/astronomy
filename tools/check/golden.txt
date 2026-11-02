@@ -3435,8 +3435,8 @@ eclipse seasons: 21, 163 to 185 days apart, mean 173.1
   a year later the season comes 365.24 - 2 x 173.1 = 19 days earlier
 the Moon's greatest latitude, 2021-2030: 4.99° to 5.30°
 the mean node moves west 0.05295° a day, 19.34° a year; a turn in 6798.4 days = 18.61 years
-the Sun from the nearer node at the eclipses: solar up to 15.6°, lunar up to 11.5°
-  full Moons with the Sun nearer the node than 11.5° and no eclipse: 3
+the Sun from the nearest node at the eclipses: solar up to 15.6°, lunar up to 11.5°
+  full Moons with the Sun nearest the node than 11.5° and no eclipse: 3
 
 === 5. The plate: the Moon near Regulus, August 2026 ===
 new Moon 12 Aug 2026 17:47 TT: the Sun at 140.0°, the Moon 0.89° north

@@ -272,16 +272,16 @@ title('4. Observation');
 		`the mean node moves west ${f(nodeRate, 5)}° a day, ${f(nodeRate * 365.25, 2)}° a year; a turn in ${f(360 / nodeRate, 1)} days = ${f(360 / nodeRate / 365.25, 2)} years`
 	);
 
-	/* The Sun's distance from the nearer mean node at each eclipse. */
+	/* The Sun's distance from the nearest mean node at each eclipse. */
 	const fromNode = s => Math.abs(Eclipses.nodeAngle(Ephem.sun(s.jd).lon - meanNode(s.jd)));
 	const solar = ours.filter(s => s.solar).map(fromNode);
 	const lunar = ours.filter(s => !s.solar).map(fromNode);
 
 	console.log(
-		`the Sun from the nearer node at the eclipses: solar up to ${f(Math.max(...solar), 1)}°, lunar up to ${f(Math.max(...lunar), 1)}°`
+		`the Sun from the nearest node at the eclipses: solar up to ${f(Math.max(...solar), 1)}°, lunar up to ${f(Math.max(...lunar), 1)}°`
 	);
 	console.log(
-		`  full Moons with the Sun nearer the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
+		`  full Moons with the Sun nearest the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
 	);
 }
 
