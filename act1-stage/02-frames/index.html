@@ -380,9 +380,17 @@
 
 		<p>
 			The last line gives $\delta$ directly. The first two give
-			$\cos\delta$ times the cosine and the sine of $\alpha$, so
-			$\operatorname{atan2}$ gives $\alpha$ in the right quadrant, which
-			dividing them into $\tan\alpha$ would lose.
+			$\cos\delta$ times the cosine and the sine of $\alpha$, so $\alpha =
+			\operatorname{atan2}(\cos\delta\sin\alpha,\ \cos\delta\cos\alpha)$,
+			where $\operatorname{atan2}(y, x)$ is the angle from the $x$ axis of
+			the ray from $(0, 0)$ to $(x, y)$.
+		</p>
+
+		<p>
+			Dividing the two lines into $\tan\alpha$ and taking the arctangent
+			would lose the quadrant, since $(x, y)$ and $(-x, -y)$ have the same
+			ratio $y/x$. The function $\operatorname{atan2}$ uses the signs of
+			both, and puts $\alpha$ in its correct quadrant.
 		</p>
 
 		<p>
