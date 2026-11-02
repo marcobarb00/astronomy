@@ -1,0 +1,10 @@
+<!-- The site's icon (STYLE.md): the four-pointed star of section 5 in ink
+     (#1d2a44) on a tile of parchment (#f3eee2) with a 1-unit ink border.
+     Star: centre (16, 16), half-size s = 12.5, waist 0.28 s = 3.5
+     (STAR_WAIST in shared/common.js). Linked from every page's head, so
+     browsers never ask for /favicon.ico. No double hyphen in this comment:
+     XML forbids it. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+	<rect x="0.5" y="0.5" width="31" height="31" rx="5" fill="#f3eee2" stroke="#1d2a44" stroke-width="1"/>
+	<path d="M16 3.5 L19.5 12.5 L28.5 16 L19.5 19.5 L16 28.5 L12.5 19.5 L3.5 16 L12.5 12.5 Z" fill="#1d2a44"/>
+</svg>
