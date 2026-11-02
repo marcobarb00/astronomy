@@ -470,7 +470,8 @@ The first anomaly and the simplest complete model.
   223 months (IV 2, Babylonian; "wrongly" called the saros, Toomer). The
   inclined circle (V 12): from $R_z(\Omega)R_x(i)$, $\sin\beta = \sin
   i\sin F$ and $\tan(\lambda - \Omega) = \cos i\tan F$, page 2.2's
-  reduction with $i$ for $\varepsilon$ (6.55′, left out by Ptolemy, IV 6);
+  reduction with $i$ for $\varepsilon$ (at most 6.55′, under 4′ within the
+  eclipse limits; left out by Ptolemy, IV 6, and by the model);
   $F = \bar F + q$ (IV 9); at a syzygy $F$ is the Sun's distance from the
   node; the eclipse year, $1/Y_\text{e} = 1/P_d - 1/P_s$ (346.620 days).
   The shadow: $u = 1.01\,\pi + \pi_\odot - s_\odot$ (Danjon's rule, as

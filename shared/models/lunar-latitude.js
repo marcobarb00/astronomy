@@ -11,6 +11,10 @@
 								  anomaly q of page 3.1,
 	   sin beta = sin i sin F     the latitude (the right spherical
 								  triangle node - Moon - ecliptic).
+   The longitude stays the epicycle's, lambdaBar + q, as if the Moon moved
+   in the ecliptic: like Ptolemy, the model takes lambda - Omega = F and
+   neglects the reduction to the ecliptic, tan(lambda - Omega) = cos i
+   tan F, at most asin tan^2(i/2) = 6.55' (page 3.3).
    The mean longitude of the ascending node is lambdaBar - Fbar: it moves
    westward at nF - n, a turn in 18.6 years.
    Ptolemy counts the argument of latitude from the northern limit, the

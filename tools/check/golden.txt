@@ -3452,6 +3452,11 @@ Regulus 2026: lambda 150.19°, beta 0.47°
 === 6. Model: the latitude ===
 beta = i sin F to first order: largest error 9" (i = 5.00°)
 reduction to the ecliptic: greatest 6.55' = asin tan^2(i/2)
+  e = tan^2(i/2) = 0.001906 (i = 5.00°); the two forms agree within 3.7e-10"
+  largest 6.55' at F = 225.05° (2F = 90° + asin e: F = 45.05°)
+  first order -e sin 2F: largest 6.55'
+  at F = 12.1°: lambda - Omega - F = -2.68'
+  at F = 18.3°: lambda - Omega - F = -3.90'
 
 === 7. Model: the months ===
 n_F = 13.22935° a day, n = 13.17640°: the node moves west 0.05295° a day

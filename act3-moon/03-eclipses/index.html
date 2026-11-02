@@ -270,11 +270,40 @@
 
 		<p>
 			For a small inclination $\beta \approx i \sin F$, within 9″ for $i =
-			5^\circ$. The second formula is the reduction to the equator of page
-			2.2, with $i$ in place of $\varepsilon$. Its greatest value, $\arctan
-			\tan^2(i/2)$, is 6.55′, the small effect on the longitude that Ptolemy
-			leaves out. The model of this page leaves it out too: its longitude is
-			the epicycle's of page 3.1.
+			5^\circ$.
+		</p>
+
+		<p>
+			The second formula says that the Moon's longitude counted from the
+			node, $\lambda - \Omega$, is not quite its angle $F$ along its own
+			circle: an arc of the tilted circle, projected onto the ecliptic, comes
+			out a little shorter or longer. To find the difference, we take the
+			tangent of $\lambda - \Omega - F$ and multiply its numerator and
+			denominator by $\cos^2 F$:
+		</p>
+
+		$$\tan(\lambda - \Omega - F) = \frac{\cos i\tan F - \tan F}{1 + \cos i\tan^2 F} = \frac{(\cos i - 1)\sin F\cos F}{\cos^2 F + \cos i\sin^2 F}.$$
+
+		<p>
+			With $\sin F\cos F = \tfrac12\sin 2F$, $\cos^2 F = \tfrac12(1 + \cos
+			2F)$ and $\sin^2 F = \tfrac12(1 - \cos 2F)$, and dividing above and
+			below by $\tfrac12(1 + \cos i)$, this becomes
+			$-e\sin 2F/(1 + e\cos 2F)$, with $e = (1 - \cos i)/(1 + \cos i) =
+			\tan^2(i/2)$:
+		</p>
+
+		<div class="box">
+			$$\lambda - \Omega = F - \operatorname{atan2}(e\sin 2F,\ 1 + e\cos 2F) \approx F - e\sin 2F, \qquad e = \tan^2\frac{i}{2}.$$
+		</div>
+
+		<p>
+			The difference has the form of the equation of centre of page 2.1,
+			with $\tan^2(i/2)$ in place of the eccentricity and $2F$ in place of
+			the anomaly; it is the reduction to the equator of page 2.2, with $i$
+			in place of $\varepsilon$. So, as there, its greatest value is
+			$\arcsin\tan^2(i/2)$, 6.55′ for $i = 5^\circ$, reached near $F =
+			45^\circ$ and every 90° after, and it vanishes at the nodes and at the
+			northern and southern limits.
 		</p>
 
 		<div class="row">
@@ -290,6 +319,18 @@
 				<div class="note" data-origin="ptolemy"></div>
 			</aside>
 		</div>
+
+		<p>
+			Ptolemy neglects this difference, and so does the model of this page.
+			It takes the Moon's longitude from the epicycle of page 3.1, $\lambda
+			= \bar\lambda + q$, as if the Moon moved in the ecliptic, and its
+			argument of latitude from the same angles, $F = \bar F + q$ with
+			$\bar F = \bar\lambda - \Omega$, so that $\lambda - \Omega = F$
+			exactly. Its longitude is therefore off by up to 6.55′, little beside
+			the 40′ of the epicycle at new and full Moon. Near a node, where
+			eclipses happen, the error is smaller still: 3.90′ with the Sun 18.3°
+			from the node, at the edge of the solar limits.
+		</p>
 
 		<!-- Figure 3: the Moon's inclined circle (3D, date) -->
 		<figure class="fig">
@@ -340,7 +381,7 @@
 		<p>
 			At a new Moon the Moon has the Sun's longitude, so its argument of
 			latitude is $F = \lambda_\odot - \Omega$, the Sun's distance from the
-			ascending node, to within the reduction of a few arcminutes. At a full
+			ascending node, to within the reduction, under 4′ this near a node. At a full
 			Moon it is $\lambda_\odot + 180^\circ - \Omega$, the distance of the
 			shadow's centre from that node. Whether a new or full Moon is an
 			eclipse therefore depends mostly on where the Sun is relative to the

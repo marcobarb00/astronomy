@@ -49,7 +49,7 @@ const shared = loadFiles([
 	'shared/models/lunar-latitude.js',
 	'shared/models/eclipses.js'
 ]);
-const { norm180, norm360, sin, asin, tan, Time, Ephem, Stars } = shared;
+const { norm180, norm360, sin, cos, asin, tan, Time, Ephem, Stars } = shared;
 const { MeanSun, SolarEccentric, LunarEpicycle, LunarLatitude, Eclipses } = shared;
 
 /* ==========================================================================
@@ -329,6 +329,30 @@ title('6. Model: the latitude');
 
 	console.log(`beta = i sin F to first order: largest error ${f(worst * 3600, 0)}" (i = ${f(LAT.i, 2)}°)`);
 	console.log(`reduction to the ecliptic: greatest ${arcmin(reduction, 2)} = asin tan^2(i/2)`);
+
+	/* The reduction as an eccentric: lambda - Omega - F = -atan2(e sin 2F,
+	   1 + e cos 2F) with e = tan^2(i/2). Checked against the exact
+	   tan(lambda - Omega) = cos i tan F, and its value where eclipses
+	   happen (the Sun within 12.1° and 18.3° of a node). */
+	const e = tan(LAT.i / 2) ** 2;
+	const exact = F => norm180(shared.atan2d(cos(LAT.i) * sin(F), cos(F)) - F);
+	const asEccentric = F => -shared.atan2d(e * sin(2 * F), 1 + e * cos(2 * F));
+	let identity = 0;
+	let largest = { F: 0, value: 0 };
+
+	for (let F = 0; F < 360; F += 0.01) {
+		identity = Math.max(identity, Math.abs(exact(F) - asEccentric(F)));
+		if (Math.abs(exact(F)) > largest.value) {
+			largest = { F, value: Math.abs(exact(F)) };
+		}
+	}
+
+	console.log(`  e = tan^2(i/2) = ${f(e, 6)} (i = ${f(LAT.i, 2)}°); the two forms agree within ${(identity * 3600).toExponential(1)}"`);
+	console.log(`  largest ${arcmin(largest.value, 2)} at F = ${f(largest.F, 2)}° (2F = 90° + asin e: F = ${f((90 + asin(e)) / 2, 2)}°)`);
+	console.log(`  first order -e sin 2F: largest ${arcmin(e * (180 / Math.PI), 2)}`);
+	[12.1, 18.3].forEach(F => {
+		console.log(`  at F = ${F}°: lambda - Omega - F = ${arcmin(exact(F), 2)}`);
+	});
 }
 
 /* ==========================================================================
