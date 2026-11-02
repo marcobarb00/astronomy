@@ -1446,7 +1446,11 @@ function markChosen(buttons, chosen) {
    from the slider, so a slider with a coarse step (one day) still advances
    by the small amount of each frame. options: playLabel, pauseLabel (the
    two texts of the button), onPlay (called when it starts, e.g. to pause
-   another player of the same figure). The button shows a small play or
+   another player of the same figure), stride (slider units: the player
+   then moves by whole strides only, unitsPerSecond / stride of them a
+   second; a stride of one period of a fast motion freezes it, so a slow
+   motion can be watched without the fast one flickering, pages 3.1 and
+   3.3). The button shows a small play or
    pause icon (inline SVG, STYLE.md §8) before its label. While its figure
    is off the screen it stops drawing, and goes on from the same position
    when the figure comes back. Returns { pause }. */
@@ -1479,6 +1483,22 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	let visible = true; // the figure is on the screen
 	let lastTime = null;
 	let position = 0;
+	let pending = 0; // with a stride: the advance not yet taken (slider units)
+
+	// the advance of one frame: all of it, or the whole strides in it
+	const advance = amount => {
+		if (!options.stride) {
+			return amount;
+		}
+
+		pending += amount;
+
+		const strides = Math.floor(pending / options.stride);
+
+		pending -= strides * options.stride;
+
+		return strides * options.stride;
+	};
 
 	// one frame: move on by the time since the last one
 	const step = now => {
@@ -1489,10 +1509,13 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 
 		if (lastTime !== null) {
 			const seconds = Math.min((now - lastTime) / 1000, PLAY_MAX_FRAME_SECONDS);
+			const amount = advance(seconds * unitsPerSecond);
 
-			position = wrapIntoRange(position + seconds * unitsPerSecond, Number(slider.min), Number(slider.max));
-			slider.value = position;
-			slider.dispatchEvent(new Event('input'));
+			if (amount > 0) {
+				position = wrapIntoRange(position + amount, Number(slider.min), Number(slider.max));
+				slider.value = position;
+				slider.dispatchEvent(new Event('input'));
+			}
 		}
 
 		lastTime = now;
@@ -1510,6 +1533,7 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	const setPlaying = on => {
 		playing = on;
 		position = Number(slider.value);
+		pending = 0;
 		showPlayState(button, on, on ? pauseLabel : playLabel);
 
 		if (on) {

@@ -440,10 +440,14 @@ const epicycleFigure = {
 const EQUIVALENCE_E = 0.3;
 const EQUIVALENCE_REACH = 1 + EQUIVALENCE_E + 0.14;
 
-/* The two speeds of play (days a second): a month in 9 seconds, the
-   whole turn of the eccentric in 8 seconds. */
+/* The month plays continuously, 3 days a second (9 seconds). The turn of
+   the eccentric plays one anomalistic month at a time, 12 a second (10
+   seconds): the Moon then keeps its anomaly, so it stays at the same
+   point of its epicycle while the parallelogram turns, 3.07° a step,
+   instead of whirling round the epicycle so fast that it flickers. */
 const MONTH_DAYS_PER_SECOND = 3;
-const YEARS_DAYS_PER_SECOND = 400;
+const ANOMALISTIC_STRIDE = 360 / LunarEpicycle.FIT_2026.nM;
+const TURN_STRIDES_PER_SECOND = 12;
 
 const equivalenceFigure = {
 	state: null,
@@ -469,9 +473,10 @@ const equivalenceFigure = {
 			})
 		);
 		players.push(
-			wirePlayButton(byId('eq-play-years'), byId('eq-day'), YEARS_DAYS_PER_SECOND, {
-				playLabel: 'Play 9 years',
-				onPlay: () => players[0].pause()
+			wirePlayButton(byId('eq-play-years'), byId('eq-day'), ANOMALISTIC_STRIDE * TURN_STRIDES_PER_SECOND, {
+				playLabel: 'Turn the eccentric',
+				onPlay: () => players[0].pause(),
+				stride: ANOMALISTIC_STRIDE
 			})
 		);
 

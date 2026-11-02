@@ -261,9 +261,17 @@ const plateFigure = {
    2026, a total eclipse, seen from the side of the sphere it happened on.
    ========================================================================== */
 
-/* The two play buttons: a month in 20 seconds, 19 years in 19 seconds. */
+/* The month plays continuously, 1.5 days a second (20 seconds). The
+   turn of the nodes plays 14 draconitic months at a time (a year and two
+   weeks), 2.5 a second (7 seconds for a turn): the Moon then keeps its
+   argument of latitude, so it stays at its place on its circle, and the
+   Sun moves only 15° a step, while the line of nodes turns westward by
+   about 20° a step. A stride of one draconitic month would make the Sun
+   jump 27° at every step, and a continuous play over years makes the
+   Moon whirl round so fast that it flickers. */
 const ORBIT_DAYS_PER_SECOND_MONTH = 1.5;
-const ORBIT_DAYS_PER_SECOND_YEARS = 365;
+const NODES_STRIDE = (14 * 360) / LunarLatitude.FIT_2026.nF;
+const NODES_STRIDES_PER_SECOND = 2.5;
 
 /* The arrow of the ecliptic pole reaches this far. */
 const POLE_LENGTH = 1.25;
@@ -290,12 +298,21 @@ const orbitFigure = {
 			value => dateText(YEAR_START + Number(value))
 		);
 		wirePresets(figure);
-		wirePlayButton(byId('orbit-play-month'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_MONTH, {
-			playLabel: 'Play a month'
-		});
-		wirePlayButton(byId('orbit-play-years'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_YEARS, {
-			playLabel: 'Play 19 years'
-		});
+		const players = [];
+
+		players.push(
+			wirePlayButton(byId('orbit-play-month'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_MONTH, {
+				playLabel: 'Play a month',
+				onPlay: () => players[1].pause()
+			})
+		);
+		players.push(
+			wirePlayButton(byId('orbit-play-years'), byId('orbit-day'), NODES_STRIDE * NODES_STRIDES_PER_SECOND, {
+				playLabel: 'Turn the nodes',
+				onPlay: () => players[0].pause(),
+				stride: NODES_STRIDE
+			})
+		);
 
 		this.update();
 	},
