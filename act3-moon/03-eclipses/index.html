@@ -468,8 +468,41 @@
 			Moon's distance subtends the angle $\pi$, and the cone narrows by
 			$s_\odot - \pi_\odot$ over that distance, so the umbra's radius is $u
 			= \pi - (s_\odot - \pi_\odot)$, to first order in these small
-			angles. The Earth's atmosphere makes the shadow a little larger.
-			NASA's eclipse tables uses Danjon's rule, adding 1% to $\pi$, and so do we:
+			angles.
+		</p>
+
+		<details class="fold">
+			<summary>The derivation of the umbra's radius</summary>
+			<p>
+				Let $R$ and $R_\odot$ be the radii of the Earth and the Sun, and
+				$d$ and $d_\odot$ the distances of the Moon and the Sun from O.
+				Treating each small angle as equal to its tangent, the angles of the
+				text are $s_\odot = R_\odot / d_\odot$, $\pi_\odot = R / d_\odot$ and
+				$\pi = R / d$.
+			</p>
+			<p>
+				The ray of Figure 4 leaves the Sun's edge, $R_\odot$ from the axis,
+				and grazes the Earth's edge on the same side, $R$ from the axis, a
+				distance $d_\odot$ further on. It therefore comes closer to the
+				axis by $R_\odot - R$ over $d_\odot$, and makes with the axis the
+				angle
+			</p>
+
+			$$\frac{R_\odot - R}{d_\odot} = s_\odot - \pi_\odot,$$
+
+			<p>
+				the angle at the tip of the shadow. Behind the Earth the ray keeps
+				this angle, so at the Moon's distance it is $R - (s_\odot -
+				\pi_\odot)\,d$ from the axis. That is the umbra's radius there, and
+				seen from O it subtends
+			</p>
+
+			$$u = \frac{R - (s_\odot - \pi_\odot)\,d}{d} = \frac{R}{d} - (s_\odot - \pi_\odot) = \pi - (s_\odot - \pi_\odot).$$
+		</details>
+
+		<p>
+			The Earth's atmosphere makes the shadow a little larger. NASA's
+			eclipse tables use Danjon's rule, adding 1% to $\pi$, and so do we:
 		</p>
 
 		<div class="box">
