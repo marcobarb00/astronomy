@@ -169,6 +169,12 @@ same style:
     "coordinates", not "address" or "name"; "refraction", not "the lift";
     "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
     away". Use the term the sources use, and define it once.
+- Every longitude and latitude says which one it is: "ecliptic
+  longitude", "ecliptic latitude", "geographic latitude", "heliocentric
+  longitude", in the prose, the captions, the keys, the labels and the
+  read-outs. The names of quantities that are not coordinates (the
+  argument of latitude, the motion in latitude) and quotations keep their
+  wording.
 
 ## Sources
 

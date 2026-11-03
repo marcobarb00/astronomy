@@ -65,15 +65,15 @@
 	<article>
 
 		<p class="lead">
-			Page 3.2 ended with the Moon's longitude known within about 40′ at
-			every new and full Moon. A new Moon at the Sun's longitude is not yet
+			Page 3.2 ended with the Moon's ecliptic longitude known within about 40′ at
+			every new and full Moon. A new Moon at the Sun's ecliptic longitude is not yet
 			an eclipse, though: the Moon must also pass close enough to the
 			ecliptic to cover the Sun, and a full Moon must pass close enough to
 			it to enter the Earth's shadow.
 		</p>
 
 		<p>
-			With the Moon's latitude and the sizes of the Sun, the Moon and the
+			With the Moon's ecliptic latitude and the sizes of the Sun, the Moon and the
 			Earth's shadow, the Sun of Act II and the Moon of page 3.1 tell which
 			new and full Moons are eclipses. Built that way, the model of this
 			page finds every eclipse of the ten years from 2021 to 2030, and gives
@@ -82,7 +82,7 @@
 		</p>
 
 		<!-- ============================ 1. OBSERVATION ============================ -->
-		<h2 id="observation"><span class="step">1 · Observation</span>Eclipses and the Moon's latitude</h2>
+		<h2 id="observation"><span class="step">1 · Observation</span>Eclipses and the Moon's ecliptic latitude</h2>
 
 		<p>
 			To see which new and full Moons become eclipses, and how often, we
@@ -165,8 +165,7 @@
 		</figure>
 
 		<p>
-			What decides which new and full Moons are eclipses is the Moon's
-			latitude. The Moon does not move along the ecliptic, as the Sun does,
+			What decides which new and full Moons are eclipses is the Moon's ecliptic latitude. The Moon does not move along the ecliptic, as the Sun does,
 			but on a path tilted against it, which takes it about 5° north of the
 			ecliptic and 5° south each month: from 4.99° to 5.30° at the greatest,
 			over 2021–2030. Twice a month it crosses the ecliptic, at the
@@ -228,13 +227,12 @@
 		<!-- =============================== 2. MODEL =============================== -->
 		<h2 id="model"><span class="step">2 · Model</span>The Moon's inclined circle</h2>
 
-		<h3>The latitude</h3>
+		<h3>The ecliptic latitude</h3>
 
 		<div class="row">
 			<p>
 				Ptolemy carries the Moon, with its epicycle, on a circle inclined to
-				the ecliptic by 5° (V 12), whose nodes move westward. For the
-				longitude alone he leaves the tilt out, since "such a small
+				the ecliptic by 5° (V 12), whose nodes move westward. For the ecliptic longitude alone he leaves the tilt out, since "such a small
 				inclination has no noticeable effect on the position in longitude"
 				(IV 6).
 			</p>
@@ -275,7 +273,7 @@
 		</p>
 
 		<p>
-			The second formula says that the Moon's longitude counted from the
+			The second formula says that the Moon's ecliptic longitude counted from the
 			node, $\lambda - \Omega$, is not quite its angle $F$ along its own
 			circle: an arc of the tilted circle, projected onto the ecliptic, comes
 			out a little shorter or longer. Written as a difference, it becomes
@@ -315,11 +313,10 @@
 
 		<div class="row">
 			<p>
-				Along its circle the Moon moves as it does in longitude on page 3.1:
+				Along its circle the Moon moves as it does in ecliptic longitude on page 3.1:
 				a uniform mean motion, corrected by the equation of anomaly. Its mean
 				argument of latitude is $\bar F = \bar\lambda - \Omega$, and its true
-				argument of latitude is $F = \bar F + q$, with the same $q$ as the
-				longitude. Ptolemy computes it in the same way (IV 9).
+				argument of latitude is $F = \bar F + q$, with the same $q$ as the ecliptic longitude. Ptolemy computes it in the same way (IV 9).
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -330,22 +327,23 @@
 			The mean argument of latitude grows by $n_F$ a day: the Moon's mean
 			motion $n$, plus the motion of the node, which moves westward, towards
 			the Moon, by 0.053° a day. The Moon therefore comes back to the same
-			node a little sooner than to the same longitude: after 27.21 days, the
+			node a little sooner than to the same ecliptic longitude: after 27.21 days, the
 			draconitic month of page 3.1, instead of 27.32.
 		</p>
 
 		<p>
-			The model of this page computes the Moon's longitude as on page 3.1,
+			The model of this page computes the Moon's ecliptic longitude as on page 3.1,
 			$\lambda = \bar\lambda + q$, as if the Moon moved along the ecliptic
 			itself. Subtracting $\Omega$ gives $\lambda - \Omega = \bar F + q = F$:
-			the model takes the Moon's distance from the node measured along the
-			ecliptic to be the same as its distance measured along its own circle.
+			the model takes the Moon's angular distance from the node measured
+			along the ecliptic to be the same as its angular distance measured
+			along its own circle.
 			That is the difference derived above, which the model neglects, as
 			Ptolemy does.
 		</p>
 
 		<p>
-			The model's longitude is therefore off by up to 6.55′, little beside
+			The model's ecliptic longitude is therefore off by up to 6.55′, little beside
 			the epicycle's own error of 40′ at new and full Moon. The difference
 			vanishes at the nodes, so it is smaller still where eclipses happen:
 			within about 18° of a node, it stays under 4′.
@@ -391,17 +389,17 @@
 						<dt class="c-epicycle">purple</dt>
 						<dd>the Moon's circle, its inclination drawn three times larger</dd>
 						<dt class="c-planet">red arc</dt>
-						<dd>the Moon's latitude $\beta$</dd>
+						<dd>the Moon's ecliptic latitude $\beta$</dd>
 					</dl>
 				</div>
 			</div>
 		</figure>
 
 		<p>
-			At a new Moon the Moon has the Sun's longitude, so its argument of
-			latitude is $F = \lambda_\odot - \Omega$, the Sun's distance from the
-			ascending node, to within the reduction, under 4′ this near a node. At a full
-			Moon it is $\lambda_\odot + 180^\circ - \Omega$, the distance of the
+			At a new Moon the Moon has the Sun's ecliptic longitude, so the model
+			gives its argument of latitude as $F = \lambda_\odot - \Omega$, the
+			Sun's angular distance from the ascending node. At a full Moon it is
+			$\lambda_\odot + 180^\circ - \Omega$, the angular distance of the
 			shadow's centre from that node. Whether a new or full Moon is an
 			eclipse therefore depends mostly on where the Sun is relative to the
 			line of nodes, as at the new Moon of 12 August 2026 where Figure 3
@@ -465,11 +463,9 @@
 			there is a lunar eclipse when the two discs overlap, $|\beta| < u + s$,
 			and a total one when the Moon is wholly inside, $|\beta| < u - s$. The
 			fraction of the Moon's diameter inside the umbra is the eclipse's
-			<em>magnitude</em>. Strictly, what counts is the least distance of the
-			two centres, which comes a few minutes from the full Moon. The Moon's
-			path relative to the shadow is inclined by 5.40°, so that distance is
-			0.9956 of $|\beta|$; the model neglects the difference, as Fitzpatrick
-			does (§ 7.4), while the reference sky finds the least distance.
+			<em>magnitude</em>. Strictly, what counts is the least angular distance of the two centres, which comes a few minutes from the full Moon. The Moon's
+			path relative to the shadow is inclined by 5.40°, so that angular distance is 0.9956 of $|\beta|$; the model neglects the difference, as Fitzpatrick
+			does (§ 7.4), while the reference sky finds the least angular distance.
 		</p>
 
 		<p>
@@ -494,7 +490,7 @@
 		<h3>The eclipse limits</h3>
 
 		<p>
-			A limit on $|\beta|$ becomes a limit on the Sun's distance from a node
+			A limit on $|\beta|$ becomes a limit on the Sun's angular distance from a node
 			through $\sin\beta = \sin i \sin F$. The sizes change with the Moon's
 			distance, from 356·400 to 406·700 km, and so do the limits: a lunar
 			eclipse needs the Sun within 10.2° to 12.1° of a node, and a solar one
@@ -515,7 +511,7 @@
 						<canvas id="limits-lunar"></canvas>
 					</div>
 				</div>
-				<p class="panel-title">(c) the Moon's latitude at the new Moon, against the Sun's distance from the node</p>
+				<p class="panel-title">(c) the Moon's ecliptic latitude at the new Moon, against the Sun's angular distance from the node</p>
 				<canvas id="limits-plot"></canvas>
 				<div class="panel-controls">
 					<div>
@@ -599,8 +595,8 @@
 		<div class="row">
 			<p>
 				Ptolemy reasons in the same way about the intervals between eclipses
-				(VI 6). In six months the Moon moves 184° in latitude, a little more
-				than half a turn, so an eclipse at one node can be followed by an
+				(VI 6). In six months the Moon's argument of latitude grows by 184°, a
+				little more than half a turn, so an eclipse at one node can be followed by an
 				eclipse at the other six months later.
 			</p>
 			<aside>
@@ -614,7 +610,7 @@
 				<canvas id="seasons-plot"></canvas>
 			</div>
 			<figcaption>
-				Follow the Sun's distance from the nearest node as it climbs through
+				Follow the Sun's angular distance from the nearest node as it climbs through
 				the bands. Each time it crosses the gold band at least one new Moon
 				falls inside, while two of the four crossings of the red band, both
 				in 2027, bring no lunar eclipse.
@@ -641,9 +637,8 @@
 
 		<p>
 			Eclipses happen only at new and full Moon, where the crank of page 3.2
-			moves the Moon by a few arcminutes at most, so the Moon's longitude is
-			that of the epicycle of page 3.1, and the Sun's that of page 2.3, with
-			its moving apogee. The latitude needs three more numbers: the
+			moves the Moon by a few arcminutes at most, so the Moon's ecliptic longitude is that of the epicycle of page 3.1, and the Sun's that of page 2.3, with
+			its moving apogee. The ecliptic latitude needs three more numbers: the
 			inclination $i$, the motion in latitude $n_F$, and the argument of
 			latitude at one moment, which places the nodes.
 		</p>
@@ -656,7 +651,7 @@
 				(V 12). With the Moon at its northern limit near the summer solstice,
 				he found it always about 2⅛° from the zenith at Alexandria. The equator
 				is 30;58° from the zenith there and the solstice 23;51° from the
-				equator, which leaves 4.99° for the Moon's latitude, "5°" in his words.
+				equator, which leaves 4.99° for the Moon's ecliptic latitude, "5°" in his words.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -717,16 +712,14 @@
 		<p>
 			The model of this page takes its motion in latitude from the reference
 			Moon (Meeus 47), as page 3.1 took its mean motions. The inclination and the argument of
-			latitude at J2000.0 are fitted by least squares to the latitude of the
-			reference Moon at the 25 new and full Moons of 2026. The fit gives $i
+			latitude at J2000.0 are fitted by least squares to the ecliptic latitude of the reference Moon at the 25 new and full Moons of 2026. The fit gives $i
 			= 5.00^\circ$, Ptolemy's value, and puts the ascending node at 125.05°
-			at J2000.0, where Meeus' mean node is at 125.04°. At the 25 moments the
-			latitudes are within 1.9′.
+			at J2000.0, where Meeus' mean node is at 125.04°. At the 25 moments the ecliptic latitudes are within 1.9′.
 		</p>
 
 		<p>
-			The Moon's greatest latitudes, 4.99° to 5.30°, would suggest a larger
-			inclination. With 5.145°, their mean, the latitudes at the new and
+			The Moon's greatest ecliptic latitudes, 4.99° to 5.30°, would suggest a larger
+			inclination. With 5.145°, their mean, the ecliptic latitudes at the new and
 			full Moons of 2026, where eclipses happen, would be off by up to 10′.
 		</p>
 
@@ -743,10 +736,10 @@
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The model against the real eclipses</h2>
 
-		<h3>The latitude</h3>
+		<h3>The ecliptic latitude</h3>
 
 		<p>
-			The latitude can be judged as the longitude was, by an error curve,
+			The ecliptic latitude can be judged as the ecliptic longitude was, by an error curve,
 			now of $\Delta\beta = \beta_\text{model} - \beta_\text{ref}$.
 		</p>
 
@@ -764,7 +757,7 @@
 
 		<p>
 			The 25 new and full Moons of 2026 were used for the fit. At every new
-			and full Moon of 2001–2100, which were not, the latitude is still
+			and full Moon of 2001–2100, which were not, the ecliptic latitude is still
 			within 2.2′. Elsewhere, over the century from 1976 to 2076, the error
 			stays within 29′, since the motions of the model are the reference
 			Moon's mean motions.
@@ -786,7 +779,7 @@
 		<p>
 			The model's new and full Moons fall typically 45 minutes (root mean
 			square) from the middle of the real eclipse, and at worst 97 minutes.
-			Most of this is the error in longitude of page 3.1, up to 40′ at new
+			Most of this is the error in ecliptic longitude of page 3.1, up to 40′ at new
 			and full Moon, which the Moon takes about 79 minutes to cover relative
 			to the Sun, and longer near its apogee. The rest is the Sun's error,
 			and the middle of an eclipse, which can fall up to 17 minutes from
@@ -841,7 +834,7 @@
 		<h3>Ptolemy's eclipses</h3>
 
 		<p>
-			Ptolemy's own model, with his Sun, his simple Moon and his latitude, can
+			Ptolemy's own model, with his Sun, his simple Moon and his ecliptic latitude, can
 			be judged at the three eclipses he observed at Alexandria (IV 6). As on
 			pages 2.1 and 3.1, his days follow the Earth's rotation, and $\Delta T$
 			turns the reference sky's uniform time into his. His times are local
@@ -891,7 +884,7 @@
 		</div>
 
 		<p>
-			His model's latitudes are within 2.3′ of the reference Moon's, and its
+			His model's ecliptic latitudes are within 2.3′ of the reference Moon's, and its
 			times within half an hour of the real ones. Yet his Sun is 43′ to 75′
 			behind at these moments, and his Moon about a degree. The errors
 			cancel in the time of the eclipse, because he fixed his Moon by
@@ -913,16 +906,16 @@
 			</div>
 			<figcaption>
 				Read the error at the new and full Moons around his eclipse of 20
-				October 134, then switch to 2000 years. Unlike his longitude on pages
-				3.1 and 3.2, his latitude does not drift away.
+				October 134, then switch to 2000 years. Unlike his ecliptic longitude on
+				pages 3.1 and 3.2, his ecliptic latitude does not drift away.
 			</figcaption>
 		</figure>
 
 		<p>
 			In 2026 his mean argument of latitude is only 0.8° from the reference
-			Moon's, while his mean longitude is 10° off: his motion in latitude
+			Moon's, while his mean ecliptic longitude is 10° off: his motion in latitude
 			comes from Hipparchus' period, right within 0.03° a century, while
-			his motion in longitude inherits the drift of his Sun (page 3.1). Run
+			his motion in ecliptic longitude inherits the drift of his Sun (page 3.1). Run
 			forward to 2021–2030,
 			his model finds 37 of the 38 eclipses, missing only the partial lunar
 			eclipse of 28 October 2023, and adds four; 7 of the 37 are of another
@@ -937,16 +930,16 @@
 			An eclipse whose middle is predicted an hour and a half off is still
 			the same eclipse, but a lunar eclipse can then be predicted for a time
 			when the Moon is below the observer's horizon. Such errors in the time
-			are the largest left, and they come from the Moon's longitude, which
+			are the largest left, and they come from the Moon's ecliptic longitude, which
 			needs the smaller inequalities that page 3.2 left out.
 		</p>
 
 		<div class="row">
 			<p>
-				Away from the new and full Moons the latitude is wrong by up to 26′.
-				The Moon's greatest latitude in 2026 is 5.23° to 5.28° when the Sun is
+				Away from the new and full Moons the ecliptic latitude is wrong by up to 26′.
+				The Moon's greatest ecliptic latitude in 2026 is 5.23° to 5.28° when the Sun is
 				near a node, and 4.99° to 5.04° when it is far from them. At new and
-				full Moon the latitude follows a circle inclined by 5.0°, at the
+				full Moon the ecliptic latitude follows a circle inclined by 5.0°, at the
 				quarters one inclined by about 5.3°, as the reference Moon's term
 				$0.17^\circ \sin(2D - F)$ requires. Like the evection, it is an effect of
 				the Sun's pull.
@@ -1002,12 +995,10 @@
 			<p>
 				At the model's new Moon of 12 August 2026, at 17:28 TT, the Moon's
 				argument of latitude is $F = 169.7^\circ$; the model puts the Moon at
-				367·193 km and the Sun at 1.027 au. With $i = 5.00^\circ$, find the
-				Moon's latitude. Is a solar eclipse seen somewhere on the Earth? Is it
+				367·193 km and the Sun at 1.027 au. With $i = 5.00^\circ$, find the Moon's ecliptic latitude. Is a solar eclipse seen somewhere on the Earth? Is it
 				central, and if so total or annular? Do the same for the next new Moon,
 				11 September, where $F = 199.7^\circ$ and the solar limit is 89.0′.
-				Check the first in Figure 5, with the Sun at +10.3°: the same distance
-				from a node, with the Moon north of the ecliptic as on 12 August.
+				Check the first in Figure 5, with the Sun at +10.3°: the same angular distance from a node, with the Moon north of the ecliptic as on 12 August.
 			</p>
 			<details class="hint">
 				<p>
@@ -1086,8 +1077,7 @@
 					19755.96 days, are almost a whole number of days. The ancient
 					astronomers tripled the Periodic "in order to obtain a period with an
 					integer number of days", the <em>Exeligmos</em> of 19756 days (IV
-					2), after which an eclipse also comes back to nearly the same
-					longitude on the Earth.
+					2), after which an eclipse also comes back to nearly the same geographic longitude.
 				</p>
 				<p>
 					Over one period $F$ changes by $-0.478^\circ$, so the Sun's place at
@@ -1117,14 +1107,14 @@
 			</p>
 			<details class="hint">
 				<p>
-					Local mean time is UT plus the longitude at 4 minutes a degree;
+					Local mean time is UT plus the geographic longitude at 4 minutes a degree;
 					apparent time is mean time plus the equation of time. Run the same
 					steps backwards from Ptolemy's 23:00.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
-					With UT = TT, 23:17 plus 119.7 minutes of longitude is 01:17 local
+					With UT = TT, 23:17 plus 119.7 minutes of geographic longitude is 01:17 local
 					mean time, and with the equation of time 01:30 apparent time, an hour
 					and a half after midnight: two and a half hours later than Ptolemy
 					saw it.
@@ -1148,8 +1138,7 @@
 			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): IV 2 (the
 				Periodic of 223 months and the Exeligmos, Hipparchus' 5458 months and
 				5923 returns in latitude, with Toomer's notes on the name saros and on
-				the Babylonian origin); IV 6 (the inclination left out of the
-				longitude; the eclipses of 133–136); IV 9 (the motion in latitude and
+				the Babylonian origin); IV 6 (the inclination left out of the ecliptic longitude; the eclipses of 133–136); IV 9 (the motion in latitude and
 				its epoch, the eclipses of 491 BC and AD 125); V 12 (the inclination of
 				5°); VI 5 (the diameter and the shadow
 				from the eclipses of 174 BC and 141 BC, and the eclipse limits); VI 6
@@ -1160,11 +1149,11 @@
 				motion in latitude from the eclipses of 174 BC and 1509) and IV 30
 				(which new and full Moons are eclipses, and the apparent new Moon
 				for an observer).</li>
-			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.3 (the latitude,
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.3 (the ecliptic latitude,
 				$\sin\beta = \sin i \sin F$) and § 7.4–7.6 (the criteria for eclipses
 				and their frequency).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 47
-				(the reference Moon: its latitude series, $F$ and the mean node) and
+				(the reference Moon: its ecliptic latitude series, $F$ and the mean node) and
 				ch. 49 (the mean new and full Moons).</li>
 			<li>F. Espenak, NASA Goddard Space Flight Center, the decade tables of
 				solar and lunar eclipses, 2021–2030 (eclipse.gsfc.nasa.gov, retrieved

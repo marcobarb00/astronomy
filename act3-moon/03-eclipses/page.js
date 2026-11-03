@@ -899,7 +899,7 @@ const latitudeErrorFigure = {
 			fn: LunarLatitude.make(Object.assign({}, MOON, { i: 5.145 }))
 		});
 		curve.addModel({
-			label: 'the latitude fitted to the new and full Moons of 2026',
+			label: 'the ecliptic latitude fitted to the new and full Moons of 2026',
 			short: 'fitted',
 			color: COL.planet,
 			fn: fit
@@ -937,7 +937,7 @@ const ptolemyErrorFigure = {
 		const syzygies = syzygyIndices(middle - 40, middle + 40).map(k => Eclipses.reference(k).syzygy);
 
 		curve.addModel({
-			label: "Ptolemy's latitude (<em>Almagest</em> IV 9, V 12)",
+			label: "Ptolemy's ecliptic latitude (<em>Almagest</em> IV 9, V 12)",
 			short: 'Ptolemy',
 			color: COL.epicycle,
 			fn: ptolemy

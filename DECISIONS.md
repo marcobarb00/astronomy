@@ -131,6 +131,12 @@ section.
 
 ## Writing
 
+- **Every longitude and latitude names its kind** (ecliptic, geographic,
+  heliocentric), even where the context seems to make it clear. Marco
+  asked for it on 2026-11-03, on page 3.3, where "the Sun's longitude"
+  and "the Moon's latitude" were left bare. The names of quantities that
+  are not coordinates (the argument of latitude) keep their form. →
+  CLAUDE.md "Writing"
 - **The voice of a good teacher writing a careful textbook.** "We" for the
   work done together, "you" for what the reader does with the page; why
   before what; no announced plans, verdict sentences or slogans. Adopted
