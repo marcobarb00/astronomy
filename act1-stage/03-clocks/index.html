@@ -66,7 +66,7 @@
 		<p>
 			Once we know $\theta$ at any moment, we can predict when a star
 			crosses the meridian at any place, and how long the Sun stays above
-			the horizon on any date and at any latitude.
+			the horizon on any date and at any geographic latitude.
 		</p>
 
 		<!-- ============================ 1. OBSERVATION ============================ -->
@@ -276,10 +276,10 @@
 		$$\theta = \theta_G + \ell, \qquad H = \theta_G + \ell - \alpha.$$
 
 		<p>
-			Longitudes on this site are positive east. Meeus counts them
-			positive west, and Fitzpatrick writes $\varphi$ for the longitude
-			(and $L$ for the latitude). Their formulas have $-\ell$ where ours
-			have $+\ell$.
+			Geographic longitudes on this site are positive east. Meeus counts
+			them positive west, and Fitzpatrick writes $\varphi$ for the
+			geographic longitude (and $L$ for the geographic latitude). Their
+			formulas have $-\ell$ where ours have $+\ell$.
 		</p>
 
 		<h3>Mean solar time and Universal Time</h3>
@@ -290,7 +290,7 @@
 				timekeeper, since its days are uneven, as we saw in section 1,
 				so astronomers defined a fictitious <em>mean Sun</em> that moves
 				along the equator at a constant rate. Its right ascension is the
-				Sun's mean longitude $\bar\lambda$, which grows by $n$ every
+				Sun's mean ecliptic longitude $\bar\lambda$, which grows by $n$ every
 				day:
 			</p>
 			<aside>
@@ -459,7 +459,7 @@
 
 		<div class="row">
 			<p>
-				Tables of the Sun give a slightly larger mean longitude at
+				Tables of the Sun give a slightly larger mean ecliptic longitude at
 				J2000.0, $280.46646^\circ$ (Meeus 25.2), 21″ more than $L_0$,
 				because they give the Sun's geometric position. The mean Sun of
 				the clock follows the Sun as we see it, which lags to the west by
@@ -476,8 +476,8 @@
 		<div class="row">
 			<p>
 				In time, 21″ is only 1.4 s, too small to matter on this page. We
-				use $L_0$ in the clock formula, and the Sun's mean longitude for
-				the model Sun that sets the length of the day.
+				use $L_0$ in the clock formula, and the Sun's mean ecliptic
+				longitude for the model Sun that sets the length of the day.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="aberration"></div>
@@ -511,7 +511,7 @@
 							<button type="button" class="play" id="sid-play">Play</button>
 						</div>
 						<div class="ctl">
-							<label for="sid-lon">longitude ℓ</label>
+							<label for="sid-lon">geographic longitude ℓ</label>
 							<input id="sid-lon" type="range" min="-180" max="180" step="0.01" value="12.4964">
 							<output></output>
 						</div>
@@ -529,7 +529,7 @@
 			<figcaption>
 				Press play and watch the arcs θ and H grow together while α
 				stays fixed, in the sky of Rome on 1 January 2026.
-				Then move the longitude with the time fixed: going east
+				Then move the geographic longitude with the time fixed: going east
 				increases θ by the same angle, and the star stands further west.
 				Drag the sphere to turn the view.
 			</figcaption>
@@ -578,10 +578,10 @@
 			<p>
 				A Julian Date starts at noon, as Ptolemy's astronomical day did.
 				He counted the day from the Sun's meridian crossing because
-				sunrise comes at different times at different latitudes, while
-				the meridian behaves "the same at every place on earth"
-				(<em>Almagest</em> III 9), and he put all his epochs at noon
-				(III 7).
+				sunrise comes at different times at different geographic
+				latitudes, while the meridian behaves "the same at every place
+				on earth" (<em>Almagest</em> III 9), and he put all his epochs
+				at noon (III 7).
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -687,7 +687,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="transit-lat">latitude φ</label>
+							<label for="transit-lat">geographic latitude φ</label>
 							<input id="transit-lat" type="range" min="-60" max="60" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -727,9 +727,9 @@
 			Now that we can read the sky's angle from a clock, we can predict
 			when the Sun rises and sets. For that we need its declination, and
 			we'll start with the simplest Sun there is: one that moves along the
-			ecliptic at a constant rate, so that its longitude is always the
-			mean longitude, $\lambda = \bar\lambda$. Its declination then
-			follows from the conversion formula of page 1.2:
+			ecliptic at a constant rate, so that its ecliptic longitude is
+			always the mean ecliptic longitude, $\lambda = \bar\lambda$. Its
+			declination then follows from the conversion formula of page 1.2:
 		</p>
 
 		$$\sin\delta_\odot = \sin\varepsilon \sin\bar\lambda.$$
@@ -754,7 +754,7 @@
 			At the equator those 50′ add 7 minutes to the day, which lasts 12 h
 			07 min all year, and Ptolemy's longest day at Rhodes, $14\tfrac12$
 			hours with the geometric horizon of page 1.1, becomes 14 h 39 min.
-			The table gives the day at three other latitudes.
+			The table gives the day at three other geographic latitudes.
 		</p>
 
 		<div class="table-scroll">
@@ -804,18 +804,18 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the day through 2026 at latitude φ</p>
+						<p class="panel-title">(a) the day through 2026 at geographic latitude φ</p>
 						<canvas id="day-curve"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) every latitude</p>
+						<p class="panel-title">(b) every geographic latitude</p>
 						<canvas id="day-map"></canvas>
 					</div>
 				</div>
 				<div class="panel-controls">
 					<div>
 						<div class="ctl">
-							<label for="day-lat">latitude φ</label>
+							<label for="day-lat">geographic latitude φ</label>
 							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -833,10 +833,10 @@
 				<div class="readout" id="day-readout" data-lines="3"></div>
 			</div>
 			<figcaption>
-				Move the latitude and watch the curve in (a) flatten towards the
-				equator, and reach 0 h and 24 h beyond the polar circles. In (b),
-				notice that the southern half repeats the northern half six
-				months later.
+				Move the geographic latitude and watch the curve in (a) flatten
+				towards the equator, and reach 0 h and 24 h beyond the polar
+				circles. In (b), notice that the southern half repeats the
+				northern half six months later.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -852,14 +852,14 @@
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
-		<h2 id="fit"><span class="step">3 · Fit</span>The year, the epoch and the longitude</h2>
+		<h2 id="fit"><span class="step">3 · Fit</span>The year, the epoch and the geographic longitude</h2>
 
 		<p>
 			To read the sky's angle from a clock, we have to fit the formula of
 			section 2 to the sky. Its rate $360^\circ + n$ comes from the mean
 			Sun's daily motion $n$, its constant $L_0$ from one moment at which
-			the sidereal and the solar clocks are compared, and the longitude
-			$\ell$ from the place of the observer.
+			the sidereal and the solar clocks are compared, and the geographic
+			longitude $\ell$ from the place of the observer.
 		</p>
 
 		<h3>The rate, from the length of the year</h3>
@@ -897,17 +897,17 @@
 
 		<p>
 			The constant $L_0$ is the mean Sun's right ascension at the epoch,
-			which is also its mean longitude. It is found from timed equinoxes,
+			which is also its mean ecliptic longitude. It is found from timed equinoxes,
 			as page 1.2 found the vernal point, and page 2.1 shows how. Here we
 			use the conventional value of section 2, $L_0 = 280.46061837^\circ$.
 		</p>
 
-		<h3>The longitude, from a timed transit</h3>
+		<h3>The geographic longitude, from a timed transit</h3>
 
 		<p>
 			Once $n$ and $L_0$ are known, one timed transit gives the observer's
-			longitude, because at the transit $\theta = \alpha$, so $\ell =
-			\alpha - \theta_G$. Vega, for example, at right ascension
+			geographic longitude, because at the transit $\theta = \alpha$, so
+			$\ell = \alpha - \theta_G$. Vega, for example, at right ascension
 			$279.4601^\circ$ in 2026, crossed the meridian of Rome on 15 August
 			2026 at 20:10:52 UT, timed to the second.
 		</p>
@@ -916,7 +916,7 @@
 			At that moment the formula gives $\theta_G = 266.9626^\circ$, so
 			$\ell = 12.4975^\circ$, against the true 12.4964°. How close we get
 			depends only on the timing, since one second of time is 15″ of
-			longitude, 345 m on the parallel of Rome.
+			geographic longitude, 345 m on the parallel of Rome.
 		</p>
 
 		<!-- =============================== 4. TEST =============================== -->
@@ -956,7 +956,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="test-lat">latitude φ</label>
+							<label for="test-lat">geographic latitude φ</label>
 							<input id="test-lat" type="range" min="-65" max="65" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -972,8 +972,8 @@
 				</div>
 			</div>
 			<figcaption>
-				Move the latitude and notice that only sunrise and sunset
-				change, spreading apart as the latitude grows, while the noon
+				Move the geographic latitude and notice that only sunrise and sunset
+				change, spreading apart as the geographic latitude grows, while the noon
 				curve stays the same. Point at the plot to read a date.
 			</figcaption>
 			<div class="keys">
@@ -999,17 +999,18 @@
 		</figure>
 
 		<p>
-			At every latitude the uniform Sun's noon is off by up to a quarter of an hour:
-			the real Sun crosses the meridian 14 minutes after mean noon on 11
-			February, and 16½ minutes before it on 3 November.
+			At every geographic latitude the uniform Sun's noon is off by up to
+			a quarter of an hour: the real Sun crosses the meridian 14 minutes
+			after mean noon on 11 February, and 16½ minutes before it on 3
+			November.
 		</p>
 
 		<p>
 			The length of the day comes out better, but its error grows with the
-			latitude. The uniform Sun's day is too short by up to 5 minutes at Rome, 7½ at
-			London and 13 at $65^\circ$. In the northern hemisphere it is almost
-			never too long, and then by less than a minute, while in the
-			southern hemisphere the signs are reversed.
+			geographic latitude. The uniform Sun's day is too short by up to 5
+			minutes at Rome, 7½ at London and 13 at $65^\circ$. In the northern
+			hemisphere it is almost never too long, and then by less than a
+			minute, while in the southern hemisphere the signs are reversed.
 		</p>
 
 		<p>
@@ -1024,10 +1025,10 @@
 		<h2 id="residual"><span class="step">5 · Residual</span>What the clock leaves out</h2>
 
 		<p>
-			Both errors of Figure 6 come from the model Sun, whose longitude
-			grows by the same angle every day. The real Sun runs up to about
-			$2^\circ$ ahead of it in spring and behind it in autumn. Page 2.1
-			measures this inequality and builds the first model of it.
+			Both errors of Figure 6 come from the model Sun, whose ecliptic
+			longitude grows by the same angle every day. The real Sun runs up to
+			about $2^\circ$ ahead of it in spring and behind it in autumn. Page
+			2.1 measures this inequality and builds the first model of it.
 		</p>
 
 		<p>
@@ -1135,11 +1136,12 @@
 		<div class="exercise" data-kind="compute">
 			<p>
 				At what time does Sirius cross the meridian of Rome ($\ell =
-				12.4964^\circ$, $\varphi = 41.9^\circ$) on New Year's Eve, 31 December
-				2026? Its position of date is $\alpha = 101.5845^\circ$, $\delta =
-				-16.755^\circ$. Give the answer in UT and in Central European Time
-				(UT + 1 h), and the star's altitude. Check in Figure 4, then repeat
-				for your own longitude.
+				12.4964^\circ$, $\varphi = 41.9^\circ$) on New Year's Eve, 31
+				December 2026? Its position of date is $\alpha =
+				101.5845^\circ$, $\delta = -16.755^\circ$. Give the answer in UT
+				and in Central European Time (UT + 1 h), and the star's
+				altitude. Check in Figure 4, then repeat for your own geographic
+				longitude.
 			</p>
 			<details class="hint">
 				<p>
@@ -1222,10 +1224,11 @@
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, ch. 3 (Julian day
 				numbers), § 2.10 (meridian transits), § 2.14 (the length of the day
 				and what it leaves out), § 5.4 (the mean sun, UT and local time). He
-				writes $\varphi$ for the longitude, here $\ell$.</li>
+				writes $\varphi$ for the geographic longitude, here $\ell$.</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 7
-				(Julian Day), 10 (ΔT), 12 (sidereal time), 15 (rising, transit and
-				setting, $h_0 = -0.8333^\circ$), 25 (the Sun's mean longitude).</li>
+				(Julian Day), 10 (ΔT), 12 (sidereal time), 15 (rising, transit
+				and setting, $h_0 = -0.8333^\circ$), 25 (the Sun's mean ecliptic
+				longitude).</li>
 			<li>ΔT: F. Espenak and J. Meeus, <em>Five Millennium Canon of Solar
 				Eclipses</em> (NASA, 2006), polynomials; today's value from the leap
 				seconds of the IERS (TT − UTC = 69.184 s since 2017).</li>

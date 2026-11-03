@@ -106,7 +106,7 @@ const SITE_MAP = (function () {
 			act: 2,
 			ready: true,
 			title: 'Precession',
-			question: "Why do the stars' longitudes grow?",
+			question: "Why do the stars' ecliptic longitudes grow?",
 			path: 'act2-sun/03-precession/index.html'
 		},
 		{
@@ -206,7 +206,7 @@ const SITE_MAP = (function () {
 			ready: false
 		},
 		latitudes: {
-			title: 'planetary latitudes',
+			title: 'planetary ecliptic latitudes',
 			sentence: 'how far the planets wander north and south of the ecliptic',
 			path: null,
 			ready: false

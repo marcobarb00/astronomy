@@ -484,7 +484,7 @@ const recordsFigure = {
 			x: [RECORDS_FROM, RECORDS_TO],
 			y: RECORDS_RANGE,
 			xLabel: 'year',
-			yLabel: 'longitude of Spica λ (°)',
+			yLabel: 'ecliptic longitude of Spica λ (°)',
 			xTicks: yearTicksEvery(200),
 			aspect: 0.5,
 			maxHeight: 400,

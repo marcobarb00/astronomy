@@ -137,7 +137,7 @@ const equationFigure = {
 			x: [0, 360],
 			y: EQUATION_RANGE,
 			xLabel: 'anomaly M from the apogee (°)',
-			yLabel: 'true − mean longitude (°)',
+			yLabel: "the Moon's equation (°)",
 			xTicks: anomalyTicks,
 			aspect: 0.5,
 			onDraw: () => this.draw()

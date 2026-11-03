@@ -186,7 +186,7 @@
 		<p>
 			The mean Sun of page 1.3 is an imaginary point that moves along the
 			celestial equator at a constant rate, with its right ascension
-			always equal to the Sun's mean longitude, $\alpha_m = \bar\lambda$.
+			always equal to the Sun's mean ecliptic longitude, $\alpha_m = \bar\lambda$.
 			Because it moves uniformly along the equator, its hour angle grows
 			by exactly 15° an hour, which is what a clock needs.
 		</p>
@@ -203,7 +203,7 @@
 			and in time 1° is 4 minutes, since the sky turns 360° in 24 hours.
 			We want to split this difference into the effect of the Sun's
 			uneven speed, which page 2.1 modelled, and the effect of the tilt.
-			Adding and subtracting the true longitude $\lambda$ does it:
+			Adding and subtracting the true ecliptic longitude $\lambda$ does it:
 		</p>
 
 		<div class="box">
@@ -333,7 +333,7 @@
 				<div class="panel-controls">
 					<div>
 						<div class="ctl">
-							<label for="red-lon">longitude λ</label>
+							<label for="red-lon">ecliptic longitude λ</label>
 							<input id="red-lon" type="range" min="0" max="360" step="1" value="30">
 							<output></output>
 						</div>
@@ -520,7 +520,7 @@
 			<p>
 				In the first-order formula, expanding $e\sin M$ with $M =
 				\bar\lambda - \lambda_A$ splits the yearly wave into a sine and a
-				cosine of the mean longitude:
+				cosine of the mean ecliptic longitude:
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -542,10 +542,10 @@
 			Applied to the real $E$ of 2026, the averages give the first column
 			of the table. They are close, but not exact, because the first-order
 			formula leaves out a cross term: the half-yearly wave depends on the
-			true longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$, and the
-			product of the two waves contains a yearly part of amplitude
-			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part of
-			the eccentricity.
+			true ecliptic longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$,
+			and the product of the two waves contains a yearly part of amplitude
+			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part
+			of the eccentricity.
 		</p>
 
 		<details class="fold">
@@ -648,12 +648,13 @@
 		</figure>
 
 		<p>
-			Through 2026 the model is never more than 6 s from the real
-			equation of time. Almost all of this comes from the eccentric's
-			error in longitude, under 2′ (page 2.1), since 1′ of longitude is
-			about 4 s of time. The small monthly ripples in (b) are the Moon's,
-			as on page 2.1: the Earth swings about the centre of mass of the
-			Earth and the Moon, and the Sun seen from it moves to and fro.
+			Through 2026 the model is never more than 6 s from the real equation
+			of time. Almost all of this comes from the eccentric's error in
+			ecliptic longitude, under 2′ (page 2.1), since 1′ of ecliptic
+			longitude is about 4 s of time. The small monthly ripples in (b) are
+			the Moon's, as on page 2.1: the Earth swings about the centre of
+			mass of the Earth and the Moon, and the Sun seen from it moves to
+			and fro.
 		</p>
 
 		<h3>Ptolemy's equation of time</h3>
@@ -753,9 +754,9 @@
 
 		<p>
 			Most of the apogee's motion belongs to γ, the origin of every
-			longitude, which slides westward along the ecliptic. The whole
-			frame we have used since page 1.2 is turning slowly, and page 2.3
-			measures how fast.
+			ecliptic longitude, which slides westward along the ecliptic. The
+			whole frame we have used since page 1.2 is turning slowly, and page
+			2.3 measures how fast.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

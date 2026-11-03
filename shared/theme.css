@@ -805,8 +805,11 @@ figure.photo img {
 	font-size: 16px;
 }
 
+/* A label of two words may wrap onto a second line ("geographic /
+   latitude φ"): set it tighter than the prose. */
 .ctl label {
 	color: var(--ink);
+	line-height: 1.25;
 }
 
 .ctl output {
@@ -1754,7 +1757,9 @@ dl.origin-key dd {
 		grid-column: 1;
 	}
 
+	/* 82px: the longest word of a label ("geographic", in "geographic
+	   latitude φ") fits on one line, the rest wraps under it. */
 	.ctl {
-		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
+		grid-template-columns: 82px minmax(0, 1fr) var(--ctl-output);
 	}
 }

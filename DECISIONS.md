@@ -134,9 +134,12 @@ section.
 - **Every longitude and latitude names its kind** (ecliptic, geographic,
   heliocentric), even where the context seems to make it clear. Marco
   asked for it on 2026-11-03, on page 3.3, where "the Sun's longitude"
-  and "the Moon's latitude" were left bare. The names of quantities that
-  are not coordinates (the argument of latitude) keep their form. →
-  CLAUDE.md "Writing"
+  and "the Moon's latitude" were left bare, and the same day on every
+  page, the templates and the site map. The names of quantities that are
+  not coordinates (the argument of latitude) keep their form; a general
+  frame of page 1.2 has "the frame's longitude". A slider label such as
+  "geographic latitude φ" wraps onto two lines, in a label column widened
+  to 82 px on a phone so that "geographic" fits. → CLAUDE.md "Writing"
 - **The voice of a good teacher writing a careful textbook.** "We" for the
   work done together, "you" for what the reader does with the page; why
   before what; no announced plans, verdict sentences or slogans. Adopted
