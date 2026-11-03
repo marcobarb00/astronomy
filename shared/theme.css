@@ -1484,6 +1484,17 @@ figure.plate-figure {
 	stroke-opacity: 0.6;
 }
 
+/* The Sun's sign ☉, drawn on its place (page 3.3). */
+.plate .sun-ring {
+	fill: var(--plate);
+	stroke: var(--plate-ink);
+	stroke-width: 1.6;
+}
+
+.plate .sun-dot {
+	fill: var(--plate-ink);
+}
+
 /* The cross of a point named by a symbol (the ecliptic pole K). */
 .plate .symbol-mark {
 	stroke: var(--plate-ink);

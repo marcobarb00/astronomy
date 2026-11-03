@@ -178,7 +178,8 @@ const calendarFigure = {
    seen looking south, on the equatorial grid; the ecliptic of 2026 in
    the plate's ink, and highlighted the reference Moon's path from 11 to
    15 August 2026, a tick at 0 h TT of each day; the Sun at the new Moon
-   of 12 August (☉) and the node where the Moon crosses the ecliptic (☋).
+   of 12 August (the sign ☉ drawn on its place, on the ecliptic) and the
+   node where the Moon crosses the ecliptic (☋).
    ========================================================================== */
 
 /* The area of the chart (degrees): right ascension 7h to 12h. */
@@ -242,7 +243,7 @@ const plateFigure = {
 		const crossing = bisect(moonLatitude, newMoon.jd, newMoon.jd + 3, 40);
 		const node = equatorial(Ephem.moon(crossing).lon, 0);
 
-		Plate.symbol(chart, sun.ra, sun.dec, '☉');
+		Plate.sun(chart, sun.ra, sun.dec);
 		Plate.symbol(chart, node.ra, node.dec, '☋');
 	}
 };
