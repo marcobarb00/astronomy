@@ -475,10 +475,27 @@
 			<summary>The derivation of the umbra's radius</summary>
 			<p>
 				Let $R$ and $R_\odot$ be the radii of the Earth and the Sun, and
-				$d$ and $d_\odot$ the distances of the Moon and the Sun from O.
-				Treating each small angle as equal to its sine, the angles of the
-				text are $s_\odot = R_\odot / d_\odot$, $\pi_\odot = R / d_\odot$ and
-				$\pi = R / d$.
+				$d$ and $d_\odot$ the distances of the Moon and the Sun from O. The
+				Moon's horizontal parallax $\pi$ is the angle at the Moon M under
+				which the Earth's radius is seen. The line from M that grazes the
+				Earth touches it at T, where it is square to the radius OT, so the
+				right angle of the triangle OTM is at T, on the Earth's surface:
+			</p>
+
+			<div class="frame">
+				<canvas id="parallax-canvas" role="img"
+					aria-label="The Earth with centre O, the Moon M on a line from O, and the line from M that touches the Earth at T, square to the radius OT; the angle at M is the parallax."></canvas>
+			</div>
+
+			$$\sin\pi = \frac{\text{OT}}{\text{OM}} = \frac{R}{d}.$$
+
+			<p>
+				The same triangle with the Sun in place of the Moon gives
+				$\sin\pi_\odot = R / d_\odot$, and the triangle with its right angle
+				on the Sun's surface, seen from O, gives $\sin s_\odot = R_\odot /
+				d_\odot$. Treating each of these small angles as equal to its sine,
+				$s_\odot = R_\odot / d_\odot$, $\pi_\odot = R / d_\odot$ and $\pi = R /
+				d$.
 			</p>
 			<p>
 				The ray of Figure 4 leaves the Sun's edge, $R_\odot$ from the axis,

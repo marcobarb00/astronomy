@@ -8,7 +8,9 @@
 	 2. the Moon near Regulus                 (blue plate, static: the
 											   Moon's path of August 2026)
 	 3. the Moon's inclined circle            (3D, ecliptic frame; date)
-	 4. the Earth's shadow                    (2D, static, not to scale)
+	 4. the Earth's shadow                    (2D, static, not to scale;
+											   in its fold, the parallax
+											   triangle, not numbered)
 	 5. the Sun, the Moon and the shadow      (2D: (a) new Moon, (b) full
 		near a node                            Moon, (c) the latitude and
 											   the limits; the Sun's
@@ -30,7 +32,7 @@
 	 1. Figure 1: the new and full Moons of 2021 - 2030
 	 2. Figure 2: the Moon near Regulus (blue plate)
 	 3. Figure 3: the Moon's inclined circle
-	 4. Figure 4: the Earth's shadow
+	 4. Figure 4: the Earth's shadow, and the parallax triangle
 	 5. Figure 5: the Sun, the Moon and the shadow near a node
 	 6. Figure 6: the eclipse seasons
 	 7. Figures 7 and 8: the error curves of the latitude
@@ -401,7 +403,7 @@ const orbitFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE EARTH'S SHADOW
+   4. FIGURE 4: THE EARTH'S SHADOW, AND THE PARALLAX TRIANGLE
    Static, not to scale: the Sun, the Earth O and the Moon's distance,
    with the ray that grazes the Sun and the Earth on the same side and
    closes the umbra. The angles: s_sun - pi_sun at the tip of the cone,
@@ -532,6 +534,128 @@ const shadowFigure = {
 		subscriptLabel(ctx, 's', '⊙', { x: at.tipX - 56, y: at.axisY - 28 }, COL.sun);
 		put('−', at.tipX - 32, at.axisY - 28, COL.sun);
 		subscriptLabel(ctx, 'π', '⊙', { x: at.tipX - 12, y: at.axisY - 28 }, COL.sun);
+	}
+};
+
+/* ---------- The parallax triangle (in the fold of Figure 4) ----------
+   Static, not to scale: the Earth, centre O and radius R; the Moon M at
+   the distance d; the line from M that grazes the Earth at T, square to
+   the radius OT. The angle at M is the horizontal parallax pi, and
+   sin pi = R / d. A diagram of the fold, not a numbered figure: it sits
+   in a frame but not in a <figure class="fig">. The fold is closed when
+   the page loads, so the canvas is drawn again when it opens (its frame
+   then gets a width). */
+const parallaxDiagram = {
+	init() {
+		this.canvas = byId('parallax-canvas');
+		this.ctx = this.canvas.getContext('2d');
+		this.width = 0;
+		new ResizeObserver(() => {
+			if (contentWidth(this.canvas.parentElement) !== this.width) {
+				this.resize();
+				this.draw();
+			}
+		}).observe(this.canvas.parentElement);
+		whenCanvasFontsReady().then(() => this.draw());
+		onPixelRatioChange(() => {
+			this.resize();
+			this.draw();
+		});
+		this.resize();
+		this.draw();
+	},
+
+	/* The canvas as wide as the frame, 0.34 times as tall, and at least
+	   160 px tall: on a phone the Earth stays large enough, and the angle
+	   at M wide enough, for the labels T and pi. */
+	resize() {
+		const width = Math.max(SQUARE_CANVAS_MIN, contentWidth(this.canvas.parentElement) || 600);
+		const height = Math.max(160, Math.round(0.34 * width));
+
+		this.canvas.style.width = `${width}px`;
+		this.canvas.style.height = `${height}px`;
+		scaleCanvas(this.canvas, this.ctx, width, height);
+		this.width = width;
+		this.height = height;
+	},
+
+	draw() {
+		const ctx = this.ctx;
+		const w = this.width;
+		const h = this.height;
+		// the layout: the Earth on the left, the Moon on the same line
+		const r = 0.37 * h;
+		const O = { x: Math.max(0.2 * w, r + 14), y: 0.55 * h };
+		const M = { x: 0.84 * w, y: O.y };
+		const distance = M.x - O.x;
+		// T, where the line from M touches the Earth: OT is square to TM,
+		// so the angle TOM has the cosine r / OM
+		const atO = Math.acos(r / distance) * R2D;
+		const T = towards(O, atO, r);
+		// the parallax: the angle at M between MO and MT
+		const parallax = Math.asin(r / distance) * R2D;
+
+		ctx.clearRect(0, 0, w, h);
+
+		// the Earth
+		ctx.fillStyle = withAlpha(COL.earth, 0.12);
+		ctx.beginPath();
+		ctx.arc(O.x, O.y, r, 0, TAU);
+		ctx.fill();
+		circle(ctx, O, r, { color: COL.earth, width: 2 });
+
+		// the triangle: OM, the grazing line MT, the radius OT
+		segment(ctx, O, M, { color: COL.ink, width: 1.5 });
+		segment(ctx, M, T, { color: COL.ink, width: 1.5 });
+		segment(ctx, O, T, { color: COL.earth, width: 2 });
+		this.drawRightAngle(T, O, M);
+
+		// the angle pi at M, between M -> O (180 deg) and M -> T
+		const arcRadius = 0.36 * distance;
+
+		screenArc(ctx, M, arcRadius, 180 - parallax, 180, { color: COL.ink, width: 1.2 });
+
+		drawDot(ctx, O.x, O.y, 3.5, COL.earth);
+		drawDot(ctx, M.x, M.y, 5, COL.planet);
+
+		this.drawLabels({ O, M, T, r, atO, parallax, arcRadius });
+	},
+
+	/* The mark of the right angle at T, its sides along T -> O and T -> M. */
+	drawRightAngle(T, O, M) {
+		const size = 9;
+		const unit = (from, to) => {
+			const length = Math.hypot(to.x - from.x, to.y - from.y);
+
+			return { x: (to.x - from.x) / length, y: (to.y - from.y) / length };
+		};
+		const a = unit(T, O);
+		const b = unit(T, M);
+		const ctx = this.ctx;
+
+		ctx.strokeStyle = COL.ink;
+		ctx.lineWidth = 1.2;
+		ctx.beginPath();
+		ctx.moveTo(T.x + size * a.x, T.y + size * a.y);
+		ctx.lineTo(T.x + size * (a.x + b.x), T.y + size * (a.y + b.y));
+		ctx.lineTo(T.x + size * b.x, T.y + size * b.y);
+		ctx.stroke();
+	},
+
+	/* The labels of a static drawing: they never move. */
+	drawLabels(at) {
+		const ctx = this.ctx;
+		const { O, M, T, r, atO, parallax, arcRadius } = at;
+		const middle = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+		centredLabel(ctx, 'O', { x: O.x - 14, y: O.y + 14 }, COL.earth);
+		centredLabel(ctx, 'T', towards(O, atO, r + 14), COL.earth);
+		centredLabel(ctx, 'M', { x: M.x + 16, y: M.y }, COL.planet);
+		// R beside the radius, on the side away from the angle at O
+		centredLabel(ctx, 'R', towards(middle(O, T), atO + 90, 12), COL.earth);
+		centredLabel(ctx, 'd', { x: (O.x + M.x) / 2 + 0.1 * (M.x - O.x), y: O.y + 16 }, COL.ink);
+		// pi just inside the arc, in the middle of the angle
+		centredLabel(ctx, 'π', towards(M, 180 - parallax / 2, arcRadius - 14), COL.ink);
 	}
 };
 
@@ -965,6 +1089,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		plateFigure,
 		orbitFigure,
 		shadowFigure,
+		parallaxDiagram,
 		limitsFigure,
 		seasonsFigure,
 		latitudeErrorFigure,
