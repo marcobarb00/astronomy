@@ -1533,7 +1533,9 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	const setPlaying = on => {
 		playing = on;
 		position = Number(slider.value);
-		pending = 0;
+		// with a stride, the first one is taken at once, so the button
+		// answers at once instead of after a whole stride's time
+		pending = options.stride ?? 0;
 		showPlayState(button, on, on ? pauseLabel : playLabel);
 
 		if (on) {
