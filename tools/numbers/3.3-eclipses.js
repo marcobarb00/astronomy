@@ -386,15 +386,6 @@ console.log(
 );
 console.log(`  check 1/P_d - 1/P_s: ${f(1 / (1 / P_DRACONITIC - 1 / P_SYNODIC), 3)} d`);
 
-/* Figure 3's turn of the nodes: 14 draconitic months a step. */
-{
-	const stride = 14 * P_DRACONITIC;
-
-	console.log(
-		`Figure 3: 14 draconitic months = ${f(stride, 2)} d, the year and ${f(stride - 365.25, 1)} days; the node turns ${f(stride * NODE_RATE, 2)}° west a step, the Sun ${f((stride * RATES.nSun) % 360, 1)}° east; ${f(360 / (stride * NODE_RATE), 1)} steps a turn`
-	);
-}
-
 /* ==========================================================================
    8. MODEL: THE SHADOW AND THE LIMITS
    ========================================================================== */

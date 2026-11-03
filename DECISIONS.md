@@ -119,6 +119,15 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **A fast and a slow motion in one figure: two views, not a faster
+  play.** Playing the slow motion at the speed it needs (years a second)
+  made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing
+  only every n-th frame, tried on 2026-11-02, looked wrong to Marco. On
+  2026-11-03 Marco chose a view switch: "A month" draws everything, the
+  slow view ("The eccentric's turn", "The nodes' turn") draws only what
+  moves slowly, and the play button plays the chosen view at its own
+  speed. What is drawn changes only when the reader changes the view. →
+  CLAUDE.md, "Rules for every figure"
 
 ## Writing
 

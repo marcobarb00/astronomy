@@ -261,17 +261,15 @@ const plateFigure = {
    2026, a total eclipse, seen from the side of the sphere it happened on.
    ========================================================================== */
 
-/* The month plays continuously, 1.5 days a second (20 seconds). The
-   turn of the nodes plays 14 draconitic months at a time (a year and two
-   weeks), 2.5 a second (7 seconds for a turn): the Moon then keeps its
-   argument of latitude, so it stays at its place on its circle, and the
-   Sun moves only 15° a step, while the line of nodes turns westward by
-   about 20° a step. A stride of one draconitic month would make the Sun
-   jump 27° at every step, and a continuous play over years makes the
-   Moon whirl round so fast that it flickers. */
-const ORBIT_DAYS_PER_SECOND_MONTH = 1.5;
-const NODES_STRIDE = (14 * 360) / LunarLatitude.FIT_2026.nF;
-const NODES_STRIDES_PER_SECOND = 2.5;
+/* The two views (CLAUDE.md: a view the reader chooses may change what is
+   drawn): a month, with everything drawn, played 1.5 days a second (20
+   seconds); and the nodes' turn, with only what moves slowly (the Moon's
+   circle and its nodes), played over the whole 18.6 years in about 9
+   seconds. Played over years, the Moon and the Sun go round so fast that
+   they flicker, so that view leaves them out. */
+const MONTH_VIEW = 'A month';
+const TURN_VIEW = "The nodes' turn";
+const VIEW_DAYS_PER_SECOND = { [MONTH_VIEW]: 1.5, [TURN_VIEW]: 750 };
 
 /* The arrow of the ecliptic pole reaches this far. */
 const POLE_LENGTH = 1.25;
@@ -282,6 +280,7 @@ const ORBIT_EXAGGERATION = 3;
 const orbitFigure = {
 	sphere: null,
 	state: null,
+	view: MONTH_VIEW,
 
 	init() {
 		const figure = byId('orbit-sphere').closest('figure');
@@ -295,24 +294,14 @@ const orbitFigure = {
 		wireSlider(
 			byId('orbit-day'),
 			() => this.update(),
-			value => dateText(YEAR_START + Number(value))
+			value => dateYearText(YEAR_START + Number(value))
 		);
 		wirePresets(figure);
-		const players = [];
-
-		players.push(
-			wirePlayButton(byId('orbit-play-month'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_MONTH, {
-				playLabel: 'Play a month',
-				onPlay: () => players[1].pause()
-			})
-		);
-		players.push(
-			wirePlayButton(byId('orbit-play-years'), byId('orbit-day'), NODES_STRIDE * NODES_STRIDES_PER_SECOND, {
-				playLabel: 'Turn the nodes',
-				onPlay: () => players[0].pause(),
-				stride: NODES_STRIDE
-			})
-		);
+		buildChoice(byId('orbit-views'), [MONTH_VIEW, TURN_VIEW], this.view, name => {
+			this.view = name;
+			this.update();
+		});
+		wirePlayButton(byId('orbit-play'), byId('orbit-day'), () => VIEW_DAYS_PER_SECOND[this.view]);
 
 		this.update();
 	},
@@ -336,8 +325,19 @@ const orbitFigure = {
 	showReadout() {
 		const { jd, moon, sunFromNode } = this.state;
 
+		if (this.view === TURN_VIEW) {
+			// only the slow motion: the node, and how far it has turned
+			const start = LunarLatitude.state(MOON, YEAR_START).node;
+
+			showLines('orbit-readout', [
+				`\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
+				`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`
+			]);
+			return;
+		}
+
 		showLines('orbit-readout', [
-			`\\text{${dateText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
+			`\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
 			`F = ${fixed(moon.F, 1)}^\\circ,\\quad \\beta = ${signed(moon.beta, 2).replace('−', '-')}^\\circ`,
 			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`
 		]);
@@ -376,13 +376,19 @@ const orbitFigure = {
 		s.circle(ascending, top, { color: COL.epicycle, width: 2 });
 		s.path([descending, ascending], { color: COL.muted, width: 1.2, dash: [5, 4] });
 
-		// gamma, the nodes, the Sun
+		// gamma and the nodes
 		s.point([1, 0, 0], { color: COL.ink, radius: 4, ring: true });
 		s.label('γ', [1, 0, 0], { color: COL.ink, kind: 'symbol', dx: 8, dy: 16 });
 		s.point(ascending, { color: COL.ink, radius: 4, ring: true });
 		s.label('☊', ascending, { color: COL.ink, kind: 'symbol', dx: 8, dy: -8 });
 		s.point(descending, { color: COL.ink, radius: 4, ring: true });
 		s.label('☋', descending, { color: COL.ink, kind: 'symbol', dx: 8, dy: -8 });
+
+		if (this.view === TURN_VIEW) {
+			return; // the slow motion alone: no Sun, no Moon
+		}
+
+		// the Sun
 		s.point(fromLonLat(sunLongitude, 0), { color: COL.sun, radius: 7, ring: true });
 		s.label('☉', fromLonLat(sunLongitude, 0), { color: COL.sun, kind: 'symbol', dx: -18, dy: 18 });
 

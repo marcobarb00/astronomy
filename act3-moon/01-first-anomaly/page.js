@@ -440,22 +440,24 @@ const epicycleFigure = {
 const EQUIVALENCE_E = 0.3;
 const EQUIVALENCE_REACH = 1 + EQUIVALENCE_E + 0.14;
 
-/* The month plays continuously, 3 days a second (9 seconds). The turn of
-   the eccentric plays one anomalistic month at a time, 12 a second (10
-   seconds): the Moon then keeps its anomaly, so it stays at the same
-   point of its epicycle while the parallelogram turns, 3.07° a step,
-   instead of whirling round the epicycle so fast that it flickers. */
-const MONTH_DAYS_PER_SECOND = 3;
-const ANOMALISTIC_STRIDE = 360 / LunarEpicycle.FIT_2026.nM;
-const TURN_STRIDES_PER_SECOND = 12;
+/* The two views (CLAUDE.md: a view the reader chooses may change what is
+   drawn): a month, with everything drawn, played 3 days a second (9
+   seconds); and the eccentric's turn, with only what moves slowly (the
+   eccentric, its centre C and its apogee A), played over the whole turn
+   in 9 seconds. Played over years, the Moon and K go round so fast that
+   they flicker, so that view leaves them out. */
+const MONTH_VIEW = 'A month';
+const TURN_VIEW = "The eccentric's turn";
+const VIEW_DAYS_PER_SECOND = { [MONTH_VIEW]: 3, [TURN_VIEW]: 360 };
 
 const equivalenceFigure = {
 	state: null,
 	labels: new LabelPlacer(),
 
+	view: MONTH_VIEW,
+
 	init() {
 		const figure = byId('equivalence-canvas').closest('figure');
-		const players = [];
 
 		squareCanvas(this, byId('equivalence-canvas'), 460, 10);
 		this.parameters = Object.assign({}, LunarEpicycle.FIT_2026, { e: EQUIVALENCE_E });
@@ -466,19 +468,11 @@ const equivalenceFigure = {
 			value => dateYearText(YEAR_START + Number(value))
 		);
 		wirePresets(figure);
-		players.push(
-			wirePlayButton(byId('eq-play-month'), byId('eq-day'), MONTH_DAYS_PER_SECOND, {
-				playLabel: 'Play a month',
-				onPlay: () => players[1].pause()
-			})
-		);
-		players.push(
-			wirePlayButton(byId('eq-play-years'), byId('eq-day'), ANOMALISTIC_STRIDE * TURN_STRIDES_PER_SECOND, {
-				playLabel: 'Turn the eccentric',
-				onPlay: () => players[0].pause(),
-				stride: ANOMALISTIC_STRIDE
-			})
-		);
+		buildChoice(byId('eq-views'), [MONTH_VIEW, TURN_VIEW], this.view, name => {
+			this.view = name;
+			this.update();
+		});
+		wirePlayButton(byId('eq-play'), byId('eq-day'), () => VIEW_DAYS_PER_SECOND[this.view]);
 
 		this.update();
 	},
@@ -501,6 +495,17 @@ const equivalenceFigure = {
 		const C = LunarEpicycle.construction(now, this.parameters.e).C;
 		const viaEpicycle = now.lambda;
 		const viaEccentric = norm360(atan2d(C[1] + sin(now.meanLongitude), C[0] + cos(now.meanLongitude)));
+
+		if (this.view === TURN_VIEW) {
+			// only the slow motion: the apogee, and how far it has turned
+			const start = LunarEpicycle.state(this.parameters, YEAR_START).apogee;
+
+			showLines('equivalence-readout', [
+				`\\text{${dateYearText(jd)}:}\\quad \\lambda_A = ${fixedAngle(now.apogee, 2)}^\\circ`,
+				`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`
+			]);
+			return;
+		}
 
 		showLines('equivalence-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 2)}^\\circ,\\quad M = ${fixedAngle(now.M, 2)}^\\circ`,
@@ -527,9 +532,19 @@ const equivalenceFigure = {
 
 		this.drawApsides(O, now.apogee, e);
 
-		// the three circles
+		// the deferent and the eccentric
 		circle(ctx, O, this.scale, { color: COL.deferent, width: 1.5 });
 		circle(ctx, C, this.scale, { color: COL.earth, width: 2 });
+
+		if (this.view === TURN_VIEW) {
+			// the slow motion alone: the eccentric about C, and its apogee A
+			segment(ctx, O, C, { color: COL.earth, width: 2.2 });
+			drawDot(ctx, O.x, O.y, 6, COL.earth);
+			drawDot(ctx, C.x, C.y, 4, COL.ink);
+			this.drawTurnLabels(O, C, now, e);
+			return;
+		}
+
 		circle(ctx, K, e * this.scale, { color: COL.epicycle, width: 2 });
 
 		// the parallelogram: O K and C Moon (length R), O C and K Moon (r)
@@ -547,6 +562,16 @@ const equivalenceFigure = {
 		drawDot(ctx, moon.x, moon.y, 7, COL.planet);
 
 		this.drawLabels(O, K, C, moon, now, e);
+	},
+
+	/* The labels of the eccentric's turn: C, O and the apogee A. */
+	drawTurnLabels(O, C, now, e) {
+		const ctx = this.ctx;
+		const apogee = now.apogee;
+
+		labelOutside(ctx, 'C', C, 4, clearestDirection([apogee, apogee + 180]), COL.ink, this.labels);
+		labelOutside(ctx, 'O', O, 7, clearestDirection([apogee, apogee + 180]), COL.earth, this.labels);
+		labelOutside(ctx, 'A', O, this.scale * (1 + e), apogee, COL.earth, this.labels);
 	},
 
 	/* The eccentric's line of apsides, dotted, from its perigee through
