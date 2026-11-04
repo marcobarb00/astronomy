@@ -700,16 +700,14 @@ function limitsState(x, km) {
    gamma pi and the Sun by gamma pi_sun: the two centres coincide, and
    the observer is on the shadow's axis, at gamma = beta / (pi - pi_sun),
    and the discs still touch (s + s_sun) / (pi - pi_sun) further out, the
-   penumbra's radius. The eclipse on the axis is total when the Moon seen
-   from there (Eclipses.axisRadius) is larger than the Sun. */
+   penumbra's radius. */
 function shadowOnEarth(st) {
 	const scale = st.z.pM - st.z.pS;
 	const gamma = st.betaNew / scale;
 
 	return {
 		gamma,
-		penumbra: (st.z.sM + st.z.sS) / scale,
-		total: Eclipses.axisRadius(st.km, Math.abs(gamma)) > st.z.sS
+		penumbra: (st.z.sM + st.z.sS) / scale
 	};
 }
 
@@ -762,13 +760,14 @@ function limitsPanel(canvasId, span, drawPanel) {
 	};
 }
 
-/* The Moon's path across a panel, through its centre at (0, beta), with
-   the slope of its circle there. */
-function drawMoonPath(ctx, at, beta, F) {
+/* The Moon's path across a panel, through the point (0, north), with
+   the slope of its circle at the argument of latitude F; 'reach' is the
+   panel's half-width in its own unit. */
+function drawMoonPath(ctx, at, north, F, halfWidth = LIMITS_WINDOW) {
 	const slope = tan(MOON.i) * cos(F);
-	const reach = LIMITS_WINDOW * 1.2;
+	const reach = 1.2 * halfWidth;
 
-	segment(ctx, at(-reach, beta - slope * reach), at(reach, beta + slope * reach), {
+	segment(ctx, at(-reach, north - slope * reach), at(reach, north + slope * reach), {
 		color: COL.epicycle,
 		width: 1.2,
 		dash: [6, 4]
@@ -786,10 +785,12 @@ function disc(ctx, centre, radiusPx, fill, stroke) {
 
 /* Panel (a): the new Moon. The Earth seen from the Sun, and the Moon's
    shadow on it: the penumbra, where the Moon hides part of the Sun, and
-   a dot on the shadow's axis for the umbra, far smaller than the dot,
-   filled when the eclipse there is total and a ring when it is annular.
-   A solar eclipse is seen somewhere when the penumbra reaches the Earth,
-   and a central one when the axis does. */
+   a black dot on the shadow's axis for the umbra, drawn larger than it
+   is (in an annular eclipse, the antumbra beyond the umbra's tip). The
+   shadow follows the Moon, so the Moon's path is drawn through its axis;
+   seen from the Sun, east is on the right, so the path is mirrored from
+   panel (b). A solar eclipse is seen somewhere when the penumbra reaches
+   the Earth, and a central one when the axis does. */
 const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, st, labels) => {
 	const earth = at(0, 0);
 	const shadow = shadowOnEarth(st);
@@ -799,13 +800,9 @@ const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, 
 	disc(ctx, earth, scalePx, withAlpha(COL.earth, 0.14), COL.earth);
 	labelOutside(ctx, 'Earth', earth, scalePx, 160, COL.earth, labels);
 	disc(ctx, axis, penumbra, withAlpha(COL.ink, 0.18), COL.ink);
+	drawMoonPath(ctx, (east, north) => at(-east, north), shadow.gamma, st.x, shadowWindow());
 	labelOutside(ctx, 'penumbra', axis, penumbra, 25, COL.ink, labels);
-
-	if (shadow.total) {
-		drawDot(ctx, axis.x, axis.y, 4.5, COL.ink, false);
-	} else {
-		circle(ctx, axis, 4.5, { color: COL.ink, width: 1.8 });
-	}
+	drawDot(ctx, axis.x, axis.y, 5, COL.ink, false);
 });
 
 /* Panel (b): the full Moon, its centre at -beta from the shadow's. */

@@ -545,20 +545,41 @@
 		</p>
 
 		<p>
-			Parallax gives their place and size. An observer $\gamma$ Earth radii
-			north of the Earth's centre, measured square to the line of sight,
-			sees the Moon shifted south by $\gamma\pi$ and the Sun by
-			$\gamma\pi_\odot$, so the Moon moves towards the Sun by $\gamma(\pi -
-			\pi_\odot)$. The two centres coincide, and the observer is on the
-			shadow's axis, at
+			Parallax gives their place and size. Take an observer $x$ Earth radii
+			north of the Earth's centre, measured square to the line of sight
+			($x$ is negative to the south). Seen from there, the Moon is shifted
+			south by $x\pi$ and the Sun by $x\pi_\odot$, so the Moon comes closer
+			to the Sun by $x(\pi - \pi_\odot)$, and the angular distance between
+			their centres is
 		</p>
 
-		$$\gamma = \frac{\beta}{\pi - \pi_\odot},$$
+		$$\left|\beta - x(\pi - \pi_\odot)\right|.$$
 
 		<p>
-			the two discs still	overlap up to $(s + s_\odot)/(\pi - \pi_\odot)$ Earth radii further out,
-			the penumbra's radius. So from some place on the Earth the Moon
-			covers part of the Sun when the penumbra reaches the Earth,
+			It is zero at $x = \gamma$, with
+		</p>
+
+		$$\gamma = \frac{\beta}{\pi - \pi_\odot}:$$
+
+		<p>
+			there the observer sees the Moon's centre on the Sun's, and stands
+			on the shadow's axis. Each Earth radius away from the axis adds $\pi
+			- \pi_\odot$ to the distance between the centres. The two discs
+			overlap, and the observer sees a partial eclipse, while that distance
+			is less than the sum of their radii, $s + s_\odot$: up to $(s +
+			s_\odot)/(\pi - \pi_\odot)$ Earth radii from the axis. That is the
+			penumbra's radius, the same in every direction across the line of
+			sight, so the penumbra is a circle about the axis.
+		</p>
+
+		<p>
+			The Earth's disc reaches from $x = -1$ to $x = 1$. If $|\gamma| < 1$,
+			the axis meets the Earth, and the eclipse is <em>central</em>.
+			Otherwise the observer nearest the axis is at the Earth's edge, $x =
+			\pm 1$, where the Sun and the Moon are on the horizon and the distance
+			between their centres is $|\beta| - (\pi - \pi_\odot)$. So the Moon
+			covers part of the Sun from some place on the Earth when that distance
+			is less than $s + s_\odot$,
 		</p>
 
 		<div class="box">
@@ -566,10 +587,10 @@
 		</div>
 
 		<p>
-			and the axis of the Moon's shadow meets the Earth, a <em>central</em>
-			eclipse, when $|\gamma| < 1$, that is $|\beta| < \pi - \pi_\odot$. The eclipse is total if the
-			Moon, seen from where the axis meets the Earth, is larger than the Sun,
-			and annular if a ring of the Sun stays visible around it.
+			and the eclipse is central when $|\beta| < \pi - \pi_\odot$. A central
+			eclipse is total if the Moon, seen from where the axis meets the
+			Earth, is larger than the Sun, and annular if a ring of the Sun stays
+			visible around it.
 		</p>
 
 		<h3>The eclipse limits</h3>
@@ -626,17 +647,17 @@
 				Earth in (a), and the Moon slides out of the Earth's shadow in (b).
 				The gold and red bands in (c) are the solar and lunar limits. Then
 				choose the nearest and the farthest Moon: the limits widen and
-				narrow, and the dot on the shadow's axis turns from filled (total)
-				to a ring (annular).
+				narrow, and the read-out's central eclipse turns from total to
+				annular.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>dot</dt>
-						<dd>(a) the shadow's axis, drawn larger than the umbra: filled where the eclipse is total, a ring where it is annular</dd>
+						<dt>black dot</dt>
+						<dd>(a) the umbra, drawn larger than it is</dd>
 						<dt class="c-epicycle">purple, dashed</dt>
-						<dd>(b) the Moon's path</dd>
+						<dd>the Moon's path; in (a), seen from the Sun, the path of its shadow</dd>
 						<dt class="c-sun">gold line</dt>
 						<dd>the ecliptic</dd>
 					</dl>
