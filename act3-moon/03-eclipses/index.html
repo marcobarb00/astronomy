@@ -538,10 +538,30 @@
 		</p>
 
 		<p>
-			A solar eclipse depends on where the observer is. Seen from a point
-			on the Earth's surface rather than from its centre, the Moon is
-			displaced by its parallax, up to $\pi$, and the Sun by $\pi_\odot$. So
-			from some place on the Earth the Moon covers part of the Sun when
+			A solar eclipse is seen only where the Moon's shadow falls on the
+			Earth. Seen from the Sun, the Earth is a disc, and the Moon's shadow
+			crosses it as two circles about one axis: the <em>penumbra</em>,
+			where the Moon hides part of the Sun, and inside it the much smaller
+			<em>umbra</em>, where it hides all of it (Figure 5a, drawn as the
+			Earth is seen from the Sun).
+		</p>
+
+		<p>
+			Parallax gives their place and size. An observer $\gamma$ Earth radii
+			north of the Earth's centre, measured square to the line of sight,
+			sees the Moon shifted south by $\gamma\pi$ and the Sun by
+			$\gamma\pi_\odot$, so the Moon moves towards the Sun by $\gamma(\pi -
+			\pi_\odot)$. The two centres coincide, and the observer is on the
+			shadow's axis, at
+		</p>
+
+		$$\gamma = \frac{\beta}{\pi - \pi_\odot},$$
+
+		<p>
+			south of the centre when $\beta$ is negative, and the two discs still
+			overlap up to $(s + s_\odot)/(\pi - \pi_\odot)$ Earth radii further out,
+			the penumbra's radius. So from some place on the Earth the Moon
+			covers part of the Sun when the penumbra reaches the Earth,
 		</p>
 
 		<div class="box">
@@ -550,7 +570,7 @@
 
 		<p>
 			and the axis of the Moon's shadow meets the Earth, a <em>central</em>
-			eclipse, when $|\beta| < \pi - \pi_\odot$. The eclipse is total if the
+			eclipse, when $|\gamma| < 1$, that is $|\beta| < \pi - \pi_\odot$. The eclipse is total if the
 			Moon, seen from where the axis meets the Earth, is larger than the Sun,
 			and annular if a ring of the Sun stays visible around it. At the mean
 			distances the solar limit is 88.3′ and the lunar 57.2′.
@@ -572,11 +592,11 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) new Moon: the Sun and the Moon</p>
+						<p class="panel-title">(a) new Moon: the Moon's shadow on the Earth</p>
 						<canvas id="limits-solar"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) full Moon: the umbra and the Moon</p>
+						<p class="panel-title">(b) full Moon: the Moon in the Earth's shadow</p>
 						<canvas id="limits-lunar"></canvas>
 					</div>
 				</div>
@@ -606,23 +626,21 @@
 				<div class="readout" id="limits-readout" data-lines="5"></div>
 			</div>
 			<figcaption>
-				Move the Sun away from the node: in (a) the Moon slides off the Sun
-				even for the observer who sees it nearest, and in (b) it slides out
-				of the shadow. The gold and red bands in (c) are the solar and lunar
-				limits. Then choose the nearest and the farthest Moon: the limits
-				widen and narrow, and the central eclipse turns from total to
-				annular.
+				Move the Sun away from the node: the Moon's shadow slides off the
+				Earth in (a), and the Moon slides out of the Earth's shadow in (b).
+				The gold and red bands in (c) are the solar and lunar limits. Then
+				choose the nearest and the farthest Moon: the limits widen and
+				narrow, and the dot on the shadow's axis turns from filled (total)
+				to a ring (annular).
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>faint, dashed</dt>
-						<dd>(a) the Moon seen from the Earth's centre</dd>
-						<dt>dark disc</dt>
-						<dd>(a) the Moon seen from the place on the Earth where it appears nearest the Sun, shifted by parallax up to $\pi - \pi_\odot$</dd>
+						<dt>dot</dt>
+						<dd>(a) the shadow's axis, drawn larger than the umbra: filled where the eclipse is total, a ring where it is annular</dd>
 						<dt class="c-epicycle">purple, dashed</dt>
-						<dd>the Moon's path</dd>
+						<dd>(b) the Moon's path</dd>
 						<dt class="c-sun">gold line</dt>
 						<dd>the ecliptic</dd>
 					</dl>

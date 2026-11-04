@@ -1428,10 +1428,10 @@ Regenerate with: node tools/check/smoke.js --update
     #orbit-readout: \text{12 Aug 2026:}\quad \Omega = 330.3^\circ | F = 170.0^\circ,\quad \beta = +0.87^\circ | \text{the Sun } 10.3^\circ \text{ before the nearest node}
     OUTPUT (limits-node): −10.3°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = -53.6' | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = -53.6',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  opened 7 hints and answers
+  opened 8 hints and answers
   slider #orbit-day = 0
     OUTPUT (orbit-day): 1 Jan 2026
     #orbit-readout: \text{1 Jan 2026:}\quad \Omega = 342.2^\circ | F = 86.9^\circ,\quad \beta = +4.99^\circ | \text{the Sun } 61.6^\circ \text{ before the nearest node}
@@ -1447,35 +1447,35 @@ Regenerate with: node tools/check/smoke.js --update
   slider #limits-node = -20
     OUTPUT (limits-node): −20.0°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = -102.5' | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = -102.5',\ \gamma = −1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-node = 20
     OUTPUT (limits-node): +20.0°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = +102.5' | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = +102.5',\ \gamma = +1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-node = 0
     OUTPUT (limits-node): +0.0°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = +0.0' | \text{solar eclipse: annular} | \text{full Moon: } \beta = +0.0' | \text{lunar eclipse: total, magnitude 1.84} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = +0.0',\ \gamma = +0.00 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +0.0' | \text{lunar eclipse: total, magnitude 1.84} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-node + one key step
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-distance = 356400
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 356·400 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
   slider #limits-distance = 406700
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   slider #limits-distance = 381600
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 381·600 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.7',\ \pi = 57.5',\ u = 42.2'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.7',\ \pi = 57.5',\ u = 42.2'
   slider #limits-distance + one key step
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 381·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.6',\ \pi = 57.4',\ u = 42.2'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.6',\ \pi = 57.4',\ u = 42.2'
   button "‹ previous day"
     OUTPUT (orbit-day): 2 Jul 2035
     #orbit-readout: \text{2 Jul 2035:}\quad \Omega = 158.5^\circ | F = 256.8^\circ,\quad \beta = -4.87^\circ | \text{the Sun } 58.4^\circ \text{ before the nearest node}
@@ -1491,15 +1491,15 @@ Regenerate with: node tools/check/smoke.js --update
   button "nearest"
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 356·400 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
   button "mean"
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   button "farthest"
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   button "2 months"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
@@ -1517,19 +1517,19 @@ Regenerate with: node tools/check/smoke.js --update
   hover #limits-plot at 0.3
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   hover #limits-plot at 0.6
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   hover #limits-plot at 0.9
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   hover #limits-plot left
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 406·700 km
-    #limits-readout: \text{new Moon: } \beta = +0.5' | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
   hover #seasons-plot at 0.3
   hover #seasons-plot at 0.6
   hover #seasons-plot at 0.9

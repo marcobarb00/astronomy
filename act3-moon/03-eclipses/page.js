@@ -662,15 +662,14 @@ const parallaxDiagram = {
 /* ==========================================================================
    5. FIGURE 5: THE SUN, THE MOON AND THE SHADOW NEAR A NODE
    A new or full Moon when the Sun is x from the ascending node, the Moon
-   at a chosen distance and the Sun at 1 au. (a) the new Moon: the Sun's
-   disc, the Moon seen from the Earth's centre (a dashed ghost at its
-   latitude) and seen from the place on the Earth where it appears
-   nearest the Sun (a dark disc, shifted by parallax); (b) the full
-   Moon, at the other node: the umbra and the Moon; (c) the latitude of
-   the new Moon against x, with the bands of the limits. The drawings are
-   in degrees about the Sun (or the shadow's centre), north up and east to
-   the left, as on the sky; fixed window +-2° (the latitude reaches 1.71°
-   at 20° from the node).
+   at a chosen distance and the Sun at 1 au. (a) the new Moon: the
+   Earth seen from the Sun, and the Moon's shadow on it (the penumbra,
+   and a dot on its axis for the umbra), in Earth radii, north up; (b)
+   the full Moon, at the other node: the Earth's umbra and the Moon, in
+   degrees about the shadow's centre, north up and east to the left, as
+   on the sky, in a fixed window of +-2° (the latitude reaches 1.71° at
+   20° from the node); (c) the latitude of the new Moon against x, with
+   the bands of the limits.
    ========================================================================== */
 
 const LIMITS_WINDOW = 2;
@@ -695,8 +694,43 @@ function limitsState(x, km) {
 	};
 }
 
-/* One of the two square drawings of Figure 5. */
-function limitsPanel(canvasId, drawPanel) {
+/* Panel (a) in Earth radii, on the plane through the Earth's centre
+   square to the line from the Sun. An observer gamma Earth radii north
+   of the Earth's centre, across that line, sees the Moon shifted south by
+   gamma pi and the Sun by gamma pi_sun: the two centres coincide, and
+   the observer is on the shadow's axis, at gamma = beta / (pi - pi_sun),
+   and the discs still touch (s + s_sun) / (pi - pi_sun) further out, the
+   penumbra's radius. The eclipse on the axis is total when the Moon seen
+   from there (Eclipses.axisRadius) is larger than the Sun. */
+function shadowOnEarth(st) {
+	const scale = st.z.pM - st.z.pS;
+	const gamma = st.betaNew / scale;
+
+	return {
+		gamma,
+		penumbra: (st.z.sM + st.z.sS) / scale,
+		total: Eclipses.axisRadius(st.km, Math.abs(gamma)) > st.z.sS
+	};
+}
+
+/* The half-width of panel (a) (Earth radii): the farthest edge of the
+   penumbra, at 20° from the node, for the nearest and the farthest Moon
+   the slider allows, and a margin. */
+function shadowWindow() {
+	const slider = byId('limits-distance');
+	const beta = LunarLatitude.latitude(LIMITS_RANGE[1], MOON.i);
+	const reach = km => {
+		const z = Eclipses.sizes(km, LIMITS_SUN_AU);
+
+		return (beta + z.sM + z.sS) / (z.pM - z.pS);
+	};
+
+	return 1.06 * Math.max(reach(Number(slider.min)), reach(Number(slider.max)));
+}
+
+/* One of the two square drawings of Figure 5: 'span' is its half-width,
+   in its own unit (a number, or a function giving one). */
+function limitsPanel(canvasId, span, drawPanel) {
 	return {
 		labels: new LabelPlacer(),
 
@@ -710,19 +744,19 @@ function limitsPanel(canvasId, drawPanel) {
 			}
 
 			const ctx = this.ctx;
-			const scalePx = this.R / LIMITS_WINDOW; // px per degree
+			const scalePx = this.R / (typeof span === 'function' ? span() : span); // px per unit
 			const at = (east, north) => ({ x: this.cx - scalePx * east, y: this.cy - scalePx * north });
 
+			this.labels.begin({ x0: 2, y0: 2, x1: this.width - 2, y1: this.width - 2 });
 			ctx.clearRect(0, 0, this.width, this.width);
 			ctx.save();
 			ctx.beginPath();
 			ctx.rect(0, 0, this.width, this.width);
 			ctx.clip();
 
-			// the ecliptic, and the Moon's path through the Moon (inclined
-			// by i, rising eastward after the ascending node)
-			segment(ctx, at(-LIMITS_WINDOW * 1.1, 0), at(LIMITS_WINDOW * 1.1, 0), { color: COL.sun, width: 1.5 });
-			drawPanel(ctx, at, scalePx, limitsFigure.state);
+			// the ecliptic, across the whole panel
+			segment(ctx, { x: 0, y: this.cy }, { x: this.width, y: this.cy }, { color: COL.sun, width: 1.5 });
+			drawPanel(ctx, at, scalePx, limitsFigure.state, this.labels);
 			ctx.restore();
 		}
 	};
@@ -750,32 +784,32 @@ function disc(ctx, centre, radiusPx, fill, stroke) {
 	circle(ctx, centre, radiusPx, { color: stroke, width: 1.5 });
 }
 
-/* Panel (a): the new Moon, seen from two places. Seen from the Earth's
-   centre (the faint dashed ghost) it is |beta| from the Sun. Seen from
-   the place on the Earth where it appears nearest the Sun (the dark
-   disc), parallax shifts it towards the Sun by pi - pi_sun, or by |beta|
-   when that is less (where the shadow's axis meets the Earth, the Moon is
-   centred on the Sun). There the Moon is nearer the observer and looks
-   a little larger (Eclipses.axisRadius), so a central eclipse shows as
-   total or annular. A solar eclipse is seen somewhere exactly when the
-   dark disc overlaps the Sun. */
-const solarPanel = limitsPanel('limits-solar', (ctx, at, scalePx, st) => {
-	const sun = at(0, 0);
-	const sunRadius = scalePx * st.z.sS;
-	const beta = st.betaNew;
-	const central = st.limits.central;
-	const shift = Math.min(central, Math.abs(beta));
-	const seenRadius = Eclipses.axisRadius(st.km, Math.abs(beta) / central);
+/* Panel (a): the new Moon. The Earth seen from the Sun, and the Moon's
+   shadow on it: the penumbra, where the Moon hides part of the Sun, and
+   a dot on the shadow's axis for the umbra, far smaller than the dot,
+   filled when the eclipse there is total and a ring when it is annular.
+   A solar eclipse is seen somewhere when the penumbra reaches the Earth,
+   and a central one when the axis does. */
+const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, st, labels) => {
+	const earth = at(0, 0);
+	const shadow = shadowOnEarth(st);
+	const axis = at(0, shadow.gamma);
+	const penumbra = scalePx * shadow.penumbra;
 
-	drawMoonPath(ctx, at, beta, st.x);
-	disc(ctx, sun, sunRadius, withAlpha(COL.sun, 0.55), COL.sun);
-	labelOutside(ctx, 'Sun', sun, sunRadius, 35, COL.sun, null);
-	circle(ctx, at(0, beta), scalePx * st.z.sM, { color: withAlpha(COL.ink, 0.6), width: 1.3, dash: [5, 4] });
-	disc(ctx, at(0, beta - Math.sign(beta) * shift), scalePx * seenRadius, withAlpha(COL.ink, 0.85), COL.ink);
+	disc(ctx, earth, scalePx, withAlpha(COL.earth, 0.14), COL.earth);
+	labelOutside(ctx, 'Earth', earth, scalePx, 160, COL.earth, labels);
+	disc(ctx, axis, penumbra, withAlpha(COL.ink, 0.18), COL.ink);
+	labelOutside(ctx, 'penumbra', axis, penumbra, 25, COL.ink, labels);
+
+	if (shadow.total) {
+		drawDot(ctx, axis.x, axis.y, 4.5, COL.ink, false);
+	} else {
+		circle(ctx, axis, 4.5, { color: COL.ink, width: 1.8 });
+	}
 });
 
 /* Panel (b): the full Moon, its centre at -beta from the shadow's. */
-const lunarPanel = limitsPanel('limits-lunar', (ctx, at, scalePx, st) => {
+const lunarPanel = limitsPanel('limits-lunar', LIMITS_WINDOW, (ctx, at, scalePx, st, labels) => {
 	const shadow = at(0, 0);
 	const moon = at(0, st.betaFull);
 	const umbra = scalePx * st.limits.umbra;
@@ -783,7 +817,7 @@ const lunarPanel = limitsPanel('limits-lunar', (ctx, at, scalePx, st) => {
 
 	drawMoonPath(ctx, at, st.betaFull, st.x + 180);
 	disc(ctx, shadow, umbra, withAlpha(COL.ink, 0.22), COL.ink);
-	labelOutside(ctx, 'umbra', shadow, umbra, 35, COL.ink, null);
+	labelOutside(ctx, 'umbra', shadow, umbra, 35, COL.ink, labels);
 	disc(ctx, moon, moonRadius, COL.card, COL.planet);
 
 	// the part of the Moon inside the umbra, darkened
@@ -848,7 +882,7 @@ const limitsFigure = {
 		const lunar = st.lunar.kind ? `${st.lunar.kind}, magnitude ${fixed(st.lunar.magnitude, 2)}` : 'none';
 
 		showLines('limits-readout', [
-			`\\text{new Moon: } \\beta = ${texArcmin(st.betaNew)}`,
+			`\\text{new Moon: } \\beta = ${texArcmin(st.betaNew)},\\ \\gamma = ${signed(shadowOnEarth(st).gamma, 2)}`,
 			`\\text{solar eclipse: ${solar}}`,
 			`\\text{full Moon: } \\beta = ${texArcmin(st.betaFull)}`,
 			`\\text{lunar eclipse: ${lunar}}`,
