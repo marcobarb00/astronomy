@@ -663,8 +663,9 @@ const parallaxDiagram = {
    5. FIGURE 5: THE SUN, THE MOON AND THE SHADOW NEAR A NODE
    A new or full Moon when the Sun is x from the ascending node, the Moon
    at a chosen distance and the Sun at 1 au. (a) the new Moon: the Sun's
-   disc, the Moon's disc at its latitude, and the dashed circle it can be
-   displaced to by parallax, seen from places on the Earth; (b) the full
+   disc, the Moon seen from the Earth's centre (a dashed ghost at its
+   latitude) and seen from the place on the Earth where it appears
+   nearest the Sun (a dark disc, shifted by parallax); (b) the full
    Moon, at the other node: the umbra and the Moon; (c) the latitude of
    the new Moon against x, with the bands of the limits. The drawings are
    in degrees about the Sun (or the shadow's centre), north up and east to
@@ -749,16 +750,28 @@ function disc(ctx, centre, radiusPx, fill, stroke) {
 	circle(ctx, centre, radiusPx, { color: stroke, width: 1.5 });
 }
 
-/* Panel (a): the new Moon. */
+/* Panel (a): the new Moon, seen from two places. Seen from the Earth's
+   centre (the faint dashed ghost) it is |beta| from the Sun. Seen from
+   the place on the Earth where it appears nearest the Sun (the dark
+   disc), parallax shifts it towards the Sun by pi - pi_sun, or by |beta|
+   when that is less (where the shadow's axis meets the Earth, the Moon is
+   centred on the Sun). There the Moon is nearer the observer and looks
+   a little larger (Eclipses.axisRadius), so a central eclipse shows as
+   total or annular. A solar eclipse is seen somewhere exactly when the
+   dark disc overlaps the Sun. */
 const solarPanel = limitsPanel('limits-solar', (ctx, at, scalePx, st) => {
 	const sun = at(0, 0);
-	const moon = at(0, st.betaNew);
-	const reach = st.z.pM - st.z.pS + st.z.sM;
+	const sunRadius = scalePx * st.z.sS;
+	const beta = st.betaNew;
+	const central = st.limits.central;
+	const shift = Math.min(central, Math.abs(beta));
+	const seenRadius = Eclipses.axisRadius(st.km, Math.abs(beta) / central);
 
-	drawMoonPath(ctx, at, st.betaNew, st.x);
-	disc(ctx, sun, scalePx * st.z.sS, withAlpha(COL.sun, 0.55), COL.sun);
-	circle(ctx, moon, scalePx * reach, { color: COL.ink, width: 1.3, dash: [5, 4] });
-	disc(ctx, moon, scalePx * st.z.sM, withAlpha(COL.ink, 0.85), COL.ink);
+	drawMoonPath(ctx, at, beta, st.x);
+	disc(ctx, sun, sunRadius, withAlpha(COL.sun, 0.55), COL.sun);
+	labelOutside(ctx, 'Sun', sun, sunRadius, 35, COL.sun, null);
+	circle(ctx, at(0, beta), scalePx * st.z.sM, { color: withAlpha(COL.ink, 0.6), width: 1.3, dash: [5, 4] });
+	disc(ctx, at(0, beta - Math.sign(beta) * shift), scalePx * seenRadius, withAlpha(COL.ink, 0.85), COL.ink);
 });
 
 /* Panel (b): the full Moon, its centre at -beta from the shadow's. */
@@ -770,6 +783,7 @@ const lunarPanel = limitsPanel('limits-lunar', (ctx, at, scalePx, st) => {
 
 	drawMoonPath(ctx, at, st.betaFull, st.x + 180);
 	disc(ctx, shadow, umbra, withAlpha(COL.ink, 0.22), COL.ink);
+	labelOutside(ctx, 'umbra', shadow, umbra, 35, COL.ink, null);
 	disc(ctx, moon, moonRadius, COL.card, COL.planet);
 
 	// the part of the Moon inside the umbra, darkened
