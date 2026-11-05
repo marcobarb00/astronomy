@@ -805,8 +805,11 @@ figure.photo img {
 	font-size: 16px;
 }
 
+/* A label of two words may wrap onto a second line ("geographic /
+   latitude φ"): set it tighter than the prose. */
 .ctl label {
 	color: var(--ink);
+	line-height: 1.25;
 }
 
 .ctl output {
@@ -981,12 +984,14 @@ button.play {
 }
 
 /* ==========================================================================
-   9. MARGIN NOTES: ORIGINS AND DETOURS (STYLE.md §4.5)
+   9. MARGIN NOTES: ORIGINS, DETOURS, TODAY (STYLE.md §4.5)
    In the margin column of a row (section 4). A small-caps heading under a
-   rule: ink for an origin, dashed accent for a detour.
+   rule: ink for an origin, dashed accent for a detour, the colour of the
+   Modern origin for a Today note.
 	 <aside>
 		 <div class="note" data-origin="greek"></div>
 		 <div class="note detour" data-topic="nutation"></div>
+		 <div class="note today"> ... </div>
 	 </aside>
    ========================================================================== */
 
@@ -1040,6 +1045,15 @@ button.play {
 
 .note.detour .note-head {
 	color: var(--accent);
+}
+
+/* A Today note: the model used today, in the colour of the Modern origin. */
+.note.today {
+	border-top: 1px solid var(--earth-text);
+}
+
+.note.today .note-head {
+	color: var(--earth-text);
 }
 
 /* ==========================================================================
@@ -1470,6 +1484,17 @@ figure.plate-figure {
 	stroke-opacity: 0.6;
 }
 
+/* The Sun's sign ☉, drawn on its place (page 3.3). */
+.plate .sun-ring {
+	fill: var(--plate);
+	stroke: var(--plate-ink);
+	stroke-width: 1.6;
+}
+
+.plate .sun-dot {
+	fill: var(--plate-ink);
+}
+
 /* The cross of a point named by a symbol (the ecliptic pole K). */
 .plate .symbol-mark {
 	stroke: var(--plate-ink);
@@ -1743,7 +1768,9 @@ dl.origin-key dd {
 		grid-column: 1;
 	}
 
+	/* 82px: the longest word of a label ("geographic", in "geographic
+	   latitude φ") fits on one line, the rest wraps under it. */
 	.ctl {
-		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
+		grid-template-columns: 82px minmax(0, 1fr) var(--ctl-output);
 	}
 }

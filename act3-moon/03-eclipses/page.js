@@ -8,7 +8,9 @@
 	 2. the Moon near Regulus                 (blue plate, static: the
 											   Moon's path of August 2026)
 	 3. the Moon's inclined circle            (3D, ecliptic frame; date)
-	 4. the Earth's shadow                    (2D, static, not to scale)
+	 4. the Earth's shadow                    (2D, static, not to scale;
+											   in its fold, the parallax
+											   triangle, not numbered)
 	 5. the Sun, the Moon and the shadow      (2D: (a) new Moon, (b) full
 		near a node                            Moon, (c) the latitude and
 											   the limits; the Sun's
@@ -30,7 +32,7 @@
 	 1. Figure 1: the new and full Moons of 2021 - 2030
 	 2. Figure 2: the Moon near Regulus (blue plate)
 	 3. Figure 3: the Moon's inclined circle
-	 4. Figure 4: the Earth's shadow
+	 4. Figure 4: the Earth's shadow, and the parallax triangle
 	 5. Figure 5: the Sun, the Moon and the shadow near a node
 	 6. Figure 6: the eclipse seasons
 	 7. Figures 7 and 8: the error curves of the latitude
@@ -178,7 +180,8 @@ const calendarFigure = {
    seen looking south, on the equatorial grid; the ecliptic of 2026 in
    the plate's ink, and highlighted the reference Moon's path from 11 to
    15 August 2026, a tick at 0 h TT of each day; the Sun at the new Moon
-   of 12 August (☉) and the node where the Moon crosses the ecliptic (☋).
+   of 12 August (the sign ☉ drawn on its place, on the ecliptic) and the
+   node where the Moon crosses the ecliptic (☋).
    ========================================================================== */
 
 /* The area of the chart (degrees): right ascension 7h to 12h. */
@@ -242,7 +245,7 @@ const plateFigure = {
 		const crossing = bisect(moonLatitude, newMoon.jd, newMoon.jd + 3, 40);
 		const node = equatorial(Ephem.moon(crossing).lon, 0);
 
-		Plate.symbol(chart, sun.ra, sun.dec, '☉');
+		Plate.sun(chart, sun.ra, sun.dec);
 		Plate.symbol(chart, node.ra, node.dec, '☋');
 	}
 };
@@ -261,9 +264,15 @@ const plateFigure = {
    2026, a total eclipse, seen from the side of the sphere it happened on.
    ========================================================================== */
 
-/* The two play buttons: a month in 20 seconds, 19 years in 19 seconds. */
-const ORBIT_DAYS_PER_SECOND_MONTH = 1.5;
-const ORBIT_DAYS_PER_SECOND_YEARS = 365;
+/* The two views (CLAUDE.md: a view the reader chooses may change what is
+   drawn): a month, with everything drawn, played 1.5 days a second (20
+   seconds); and the nodes' turn, with only what moves slowly (the Moon's
+   circle and its nodes), played over the whole 18.6 years in about 9
+   seconds. Played over years, the Moon and the Sun go round so fast that
+   they flicker, so that view leaves them out. */
+const MONTH_VIEW = 'A month';
+const TURN_VIEW = "The nodes' turn";
+const VIEW_DAYS_PER_SECOND = { [MONTH_VIEW]: 1.5, [TURN_VIEW]: 750 };
 
 /* The arrow of the ecliptic pole reaches this far. */
 const POLE_LENGTH = 1.25;
@@ -274,6 +283,7 @@ const ORBIT_EXAGGERATION = 3;
 const orbitFigure = {
 	sphere: null,
 	state: null,
+	view: MONTH_VIEW,
 
 	init() {
 		const figure = byId('orbit-sphere').closest('figure');
@@ -287,15 +297,14 @@ const orbitFigure = {
 		wireSlider(
 			byId('orbit-day'),
 			() => this.update(),
-			value => dateText(YEAR_START + Number(value))
+			value => dateYearText(YEAR_START + Number(value))
 		);
 		wirePresets(figure);
-		wirePlayButton(byId('orbit-play-month'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_MONTH, {
-			playLabel: 'Play a month'
+		buildChoice(byId('orbit-views'), [MONTH_VIEW, TURN_VIEW], this.view, name => {
+			this.view = name;
+			this.update();
 		});
-		wirePlayButton(byId('orbit-play-years'), byId('orbit-day'), ORBIT_DAYS_PER_SECOND_YEARS, {
-			playLabel: 'Play 19 years'
-		});
+		wirePlayButton(byId('orbit-play'), byId('orbit-day'), () => VIEW_DAYS_PER_SECOND[this.view]);
 
 		this.update();
 	},
@@ -319,10 +328,21 @@ const orbitFigure = {
 	showReadout() {
 		const { jd, moon, sunFromNode } = this.state;
 
+		if (this.view === TURN_VIEW) {
+			// only the slow motion: the node, and how far it has turned
+			const start = LunarLatitude.state(MOON, YEAR_START).node;
+
+			showLines('orbit-readout', [
+				`\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
+				`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`
+			]);
+			return;
+		}
+
 		showLines('orbit-readout', [
-			`\\text{${dateText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
+			`\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`,
 			`F = ${fixed(moon.F, 1)}^\\circ,\\quad \\beta = ${signed(moon.beta, 2).replace('−', '-')}^\\circ`,
-			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearer node}`
+			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`
 		]);
 	},
 
@@ -359,13 +379,19 @@ const orbitFigure = {
 		s.circle(ascending, top, { color: COL.epicycle, width: 2 });
 		s.path([descending, ascending], { color: COL.muted, width: 1.2, dash: [5, 4] });
 
-		// gamma, the nodes, the Sun
+		// gamma and the nodes
 		s.point([1, 0, 0], { color: COL.ink, radius: 4, ring: true });
 		s.label('γ', [1, 0, 0], { color: COL.ink, kind: 'symbol', dx: 8, dy: 16 });
 		s.point(ascending, { color: COL.ink, radius: 4, ring: true });
 		s.label('☊', ascending, { color: COL.ink, kind: 'symbol', dx: 8, dy: -8 });
 		s.point(descending, { color: COL.ink, radius: 4, ring: true });
 		s.label('☋', descending, { color: COL.ink, kind: 'symbol', dx: 8, dy: -8 });
+
+		if (this.view === TURN_VIEW) {
+			return; // the slow motion alone: no Sun, no Moon
+		}
+
+		// the Sun
 		s.point(fromLonLat(sunLongitude, 0), { color: COL.sun, radius: 7, ring: true });
 		s.label('☉', fromLonLat(sunLongitude, 0), { color: COL.sun, kind: 'symbol', dx: -18, dy: 18 });
 
@@ -377,7 +403,7 @@ const orbitFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE EARTH'S SHADOW
+   4. FIGURE 4: THE EARTH'S SHADOW, AND THE PARALLAX TRIANGLE
    Static, not to scale: the Sun, the Earth O and the Moon's distance,
    with the ray that grazes the Sun and the Earth on the same side and
    closes the umbra. The angles: s_sun - pi_sun at the tip of the cone,
@@ -511,17 +537,139 @@ const shadowFigure = {
 	}
 };
 
+/* ---------- The parallax triangle (in the fold of Figure 4) ----------
+   Static, not to scale: the Earth, centre O and radius R; the Moon M at
+   the distance d; the line from M that grazes the Earth at T, square to
+   the radius OT. The angle at M is the horizontal parallax pi, and
+   sin pi = R / d. A diagram of the fold, not a numbered figure: it sits
+   in a frame but not in a <figure class="fig">. The fold is closed when
+   the page loads, so the canvas is drawn again when it opens (its frame
+   then gets a width). */
+const parallaxDiagram = {
+	init() {
+		this.canvas = byId('parallax-canvas');
+		this.ctx = this.canvas.getContext('2d');
+		this.width = 0;
+		new ResizeObserver(() => {
+			if (contentWidth(this.canvas.parentElement) !== this.width) {
+				this.resize();
+				this.draw();
+			}
+		}).observe(this.canvas.parentElement);
+		whenCanvasFontsReady().then(() => this.draw());
+		onPixelRatioChange(() => {
+			this.resize();
+			this.draw();
+		});
+		this.resize();
+		this.draw();
+	},
+
+	/* The canvas as wide as the frame, 0.34 times as tall, and at least
+	   160 px tall: on a phone the Earth stays large enough, and the angle
+	   at M wide enough, for the labels T and pi. */
+	resize() {
+		const width = Math.max(SQUARE_CANVAS_MIN, contentWidth(this.canvas.parentElement) || 600);
+		const height = Math.max(160, Math.round(0.34 * width));
+
+		this.canvas.style.width = `${width}px`;
+		this.canvas.style.height = `${height}px`;
+		scaleCanvas(this.canvas, this.ctx, width, height);
+		this.width = width;
+		this.height = height;
+	},
+
+	draw() {
+		const ctx = this.ctx;
+		const w = this.width;
+		const h = this.height;
+		// the layout: the Earth on the left, the Moon on the same line
+		const r = 0.37 * h;
+		const O = { x: Math.max(0.2 * w, r + 14), y: 0.55 * h };
+		const M = { x: 0.84 * w, y: O.y };
+		const distance = M.x - O.x;
+		// T, where the line from M touches the Earth: OT is square to TM,
+		// so the angle TOM has the cosine r / OM
+		const atO = Math.acos(r / distance) * R2D;
+		const T = towards(O, atO, r);
+		// the parallax: the angle at M between MO and MT
+		const parallax = Math.asin(r / distance) * R2D;
+
+		ctx.clearRect(0, 0, w, h);
+
+		// the Earth
+		ctx.fillStyle = withAlpha(COL.earth, 0.12);
+		ctx.beginPath();
+		ctx.arc(O.x, O.y, r, 0, TAU);
+		ctx.fill();
+		circle(ctx, O, r, { color: COL.earth, width: 2 });
+
+		// the triangle: OM, the grazing line MT, the radius OT
+		segment(ctx, O, M, { color: COL.ink, width: 1.5 });
+		segment(ctx, M, T, { color: COL.ink, width: 1.5 });
+		segment(ctx, O, T, { color: COL.earth, width: 2 });
+		this.drawRightAngle(T, O, M);
+
+		// the angle pi at M, between M -> O (180 deg) and M -> T
+		const arcRadius = 0.36 * distance;
+
+		screenArc(ctx, M, arcRadius, 180 - parallax, 180, { color: COL.ink, width: 1.2 });
+
+		drawDot(ctx, O.x, O.y, 3.5, COL.earth);
+		drawDot(ctx, M.x, M.y, 5, COL.planet);
+
+		this.drawLabels({ O, M, T, r, atO, parallax, arcRadius });
+	},
+
+	/* The mark of the right angle at T, its sides along T -> O and T -> M. */
+	drawRightAngle(T, O, M) {
+		const size = 9;
+		const unit = (from, to) => {
+			const length = Math.hypot(to.x - from.x, to.y - from.y);
+
+			return { x: (to.x - from.x) / length, y: (to.y - from.y) / length };
+		};
+		const a = unit(T, O);
+		const b = unit(T, M);
+		const ctx = this.ctx;
+
+		ctx.strokeStyle = COL.ink;
+		ctx.lineWidth = 1.2;
+		ctx.beginPath();
+		ctx.moveTo(T.x + size * a.x, T.y + size * a.y);
+		ctx.lineTo(T.x + size * (a.x + b.x), T.y + size * (a.y + b.y));
+		ctx.lineTo(T.x + size * b.x, T.y + size * b.y);
+		ctx.stroke();
+	},
+
+	/* The labels of a static drawing: they never move. */
+	drawLabels(at) {
+		const ctx = this.ctx;
+		const { O, M, T, r, atO, parallax, arcRadius } = at;
+		const middle = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+		centredLabel(ctx, 'O', { x: O.x - 14, y: O.y + 14 }, COL.earth);
+		centredLabel(ctx, 'T', towards(O, atO, r + 14), COL.earth);
+		centredLabel(ctx, 'M', { x: M.x + 16, y: M.y }, COL.planet);
+		// R beside the radius, on the side away from the angle at O
+		centredLabel(ctx, 'R', towards(middle(O, T), atO + 90, 12), COL.earth);
+		centredLabel(ctx, 'd', { x: (O.x + M.x) / 2 + 0.1 * (M.x - O.x), y: O.y + 16 }, COL.ink);
+		// pi just inside the arc, in the middle of the angle
+		centredLabel(ctx, 'π', towards(M, 180 - parallax / 2, arcRadius - 14), COL.ink);
+	}
+};
+
 /* ==========================================================================
    5. FIGURE 5: THE SUN, THE MOON AND THE SHADOW NEAR A NODE
    A new or full Moon when the Sun is x from the ascending node, the Moon
-   at a chosen distance and the Sun at 1 au. (a) the new Moon: the Sun's
-   disc, the Moon's disc at its latitude, and the dashed circle it can be
-   displaced to by parallax, seen from places on the Earth; (b) the full
-   Moon, at the other node: the umbra and the Moon; (c) the latitude of
-   the new Moon against x, with the bands of the limits. The drawings are
-   in degrees about the Sun (or the shadow's centre), north up and east to
-   the left, as on the sky; fixed window +-2° (the latitude reaches 1.71°
-   at 20° from the node).
+   at a chosen distance and the Sun at 1 au. (a) the new Moon: the
+   Earth seen from the Sun, and the Moon's shadow on it (the penumbra,
+   and a dot on its axis for the umbra), in Earth radii, north up; (b)
+   the full Moon, at the other node: the Earth's umbra and the Moon, in
+   degrees about the shadow's centre, north up and east to the left, as
+   on the sky, in a fixed window of +-2° (the latitude reaches 1.71° at
+   20° from the node); (c) the latitude of the new Moon against x, with
+   the bands of the limits.
    ========================================================================== */
 
 const LIMITS_WINDOW = 2;
@@ -546,8 +694,41 @@ function limitsState(x, km) {
 	};
 }
 
-/* One of the two square drawings of Figure 5. */
-function limitsPanel(canvasId, drawPanel) {
+/* Panel (a) in Earth radii, on the plane through the Earth's centre
+   square to the line from the Sun. An observer gamma Earth radii north
+   of the Earth's centre, across that line, sees the Moon shifted south by
+   gamma pi and the Sun by gamma pi_sun: the two centres coincide, and
+   the observer is on the shadow's axis, at gamma = beta / (pi - pi_sun),
+   and the discs still touch (s + s_sun) / (pi - pi_sun) further out, the
+   penumbra's radius. */
+function shadowOnEarth(st) {
+	const scale = st.z.pM - st.z.pS;
+	const gamma = st.betaNew / scale;
+
+	return {
+		gamma,
+		penumbra: (st.z.sM + st.z.sS) / scale
+	};
+}
+
+/* The half-width of panel (a) (Earth radii): the farthest edge of the
+   penumbra, at 20° from the node, for the nearest and the farthest Moon
+   the slider allows, and a margin. */
+function shadowWindow() {
+	const slider = byId('limits-distance');
+	const beta = LunarLatitude.latitude(LIMITS_RANGE[1], MOON.i);
+	const reach = km => {
+		const z = Eclipses.sizes(km, LIMITS_SUN_AU);
+
+		return (beta + z.sM + z.sS) / (z.pM - z.pS);
+	};
+
+	return 1.06 * Math.max(reach(Number(slider.min)), reach(Number(slider.max)));
+}
+
+/* One of the two square drawings of Figure 5: 'span' is its half-width,
+   in its own unit (a number, or a function giving one). */
+function limitsPanel(canvasId, span, drawPanel) {
 	return {
 		labels: new LabelPlacer(),
 
@@ -561,31 +742,32 @@ function limitsPanel(canvasId, drawPanel) {
 			}
 
 			const ctx = this.ctx;
-			const scalePx = this.R / LIMITS_WINDOW; // px per degree
+			const scalePx = this.R / (typeof span === 'function' ? span() : span); // px per unit
 			const at = (east, north) => ({ x: this.cx - scalePx * east, y: this.cy - scalePx * north });
 
+			this.labels.begin({ x0: 2, y0: 2, x1: this.width - 2, y1: this.width - 2 });
 			ctx.clearRect(0, 0, this.width, this.width);
 			ctx.save();
 			ctx.beginPath();
 			ctx.rect(0, 0, this.width, this.width);
 			ctx.clip();
 
-			// the ecliptic, and the Moon's path through the Moon (inclined
-			// by i, rising eastward after the ascending node)
-			segment(ctx, at(-LIMITS_WINDOW * 1.1, 0), at(LIMITS_WINDOW * 1.1, 0), { color: COL.sun, width: 1.5 });
-			drawPanel(ctx, at, scalePx, limitsFigure.state);
+			// the ecliptic, across the whole panel
+			segment(ctx, { x: 0, y: this.cy }, { x: this.width, y: this.cy }, { color: COL.sun, width: 1.5 });
+			drawPanel(ctx, at, scalePx, limitsFigure.state, this.labels);
 			ctx.restore();
 		}
 	};
 }
 
-/* The Moon's path across a panel, through its centre at (0, beta), with
-   the slope of its circle there. */
-function drawMoonPath(ctx, at, beta, F) {
+/* The Moon's path across a panel, through the point (0, north), with
+   the slope of its circle at the argument of latitude F; 'reach' is the
+   panel's half-width in its own unit. */
+function drawMoonPath(ctx, at, north, F, halfWidth = LIMITS_WINDOW) {
 	const slope = tan(MOON.i) * cos(F);
-	const reach = LIMITS_WINDOW * 1.2;
+	const reach = 1.2 * halfWidth;
 
-	segment(ctx, at(-reach, beta - slope * reach), at(reach, beta + slope * reach), {
+	segment(ctx, at(-reach, north - slope * reach), at(reach, north + slope * reach), {
 		color: COL.epicycle,
 		width: 1.2,
 		dash: [6, 4]
@@ -601,20 +783,30 @@ function disc(ctx, centre, radiusPx, fill, stroke) {
 	circle(ctx, centre, radiusPx, { color: stroke, width: 1.5 });
 }
 
-/* Panel (a): the new Moon. */
-const solarPanel = limitsPanel('limits-solar', (ctx, at, scalePx, st) => {
-	const sun = at(0, 0);
-	const moon = at(0, st.betaNew);
-	const reach = st.z.pM - st.z.pS + st.z.sM;
+/* Panel (a): the new Moon. The Earth seen from the Sun, and the Moon's
+   shadow on it: the penumbra, where the Moon hides part of the Sun, and
+   a black dot on the shadow's axis for the umbra, drawn larger than it
+   is (in an annular eclipse, the antumbra beyond the umbra's tip). The
+   shadow follows the Moon, so the Moon's path is drawn through its axis;
+   seen from the Sun, east is on the right, so the path is mirrored from
+   panel (b). A solar eclipse is seen somewhere when the penumbra reaches
+   the Earth, and a central one when the axis does. */
+const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, st, labels) => {
+	const earth = at(0, 0);
+	const shadow = shadowOnEarth(st);
+	const axis = at(0, shadow.gamma);
+	const penumbra = scalePx * shadow.penumbra;
 
-	drawMoonPath(ctx, at, st.betaNew, st.x);
-	disc(ctx, sun, scalePx * st.z.sS, withAlpha(COL.sun, 0.55), COL.sun);
-	circle(ctx, moon, scalePx * reach, { color: COL.ink, width: 1.3, dash: [5, 4] });
-	disc(ctx, moon, scalePx * st.z.sM, withAlpha(COL.ink, 0.85), COL.ink);
+	disc(ctx, earth, scalePx, withAlpha(COL.earth, 0.14), COL.earth);
+	labelOutside(ctx, 'Earth', earth, scalePx, 160, COL.earth, labels);
+	disc(ctx, axis, penumbra, withAlpha(COL.ink, 0.18), COL.ink);
+	drawMoonPath(ctx, (east, north) => at(-east, north), shadow.gamma, st.x, shadowWindow());
+	labelOutside(ctx, 'penumbra', axis, penumbra, 25, COL.ink, labels);
+	drawDot(ctx, axis.x, axis.y, 5, COL.ink, false);
 });
 
 /* Panel (b): the full Moon, its centre at -beta from the shadow's. */
-const lunarPanel = limitsPanel('limits-lunar', (ctx, at, scalePx, st) => {
+const lunarPanel = limitsPanel('limits-lunar', LIMITS_WINDOW, (ctx, at, scalePx, st, labels) => {
 	const shadow = at(0, 0);
 	const moon = at(0, st.betaFull);
 	const umbra = scalePx * st.limits.umbra;
@@ -622,6 +814,7 @@ const lunarPanel = limitsPanel('limits-lunar', (ctx, at, scalePx, st) => {
 
 	drawMoonPath(ctx, at, st.betaFull, st.x + 180);
 	disc(ctx, shadow, umbra, withAlpha(COL.ink, 0.22), COL.ink);
+	labelOutside(ctx, 'umbra', shadow, umbra, 35, COL.ink, labels);
 	disc(ctx, moon, moonRadius, COL.card, COL.planet);
 
 	// the part of the Moon inside the umbra, darkened
@@ -686,7 +879,7 @@ const limitsFigure = {
 		const lunar = st.lunar.kind ? `${st.lunar.kind}, magnitude ${fixed(st.lunar.magnitude, 2)}` : 'none';
 
 		showLines('limits-readout', [
-			`\\text{new Moon: } \\beta = ${texArcmin(st.betaNew)}`,
+			`\\text{new Moon: } \\beta = ${texArcmin(st.betaNew)},\\ \\gamma = ${signed(shadowOnEarth(st).gamma, 2)}`,
 			`\\text{solar eclipse: ${solar}}`,
 			`\\text{full Moon: } \\beta = ${texArcmin(st.betaFull)}`,
 			`\\text{lunar eclipse: ${lunar}}`,
@@ -716,7 +909,7 @@ const limitsFigure = {
 
 /* ==========================================================================
    6. FIGURE 6: THE ECLIPSE SEASONS
-   Static. Through 2026 and 2027, the model Sun's distance from the nearer
+   Static. Through 2026 and 2027, the model Sun's distance from the nearest
    node of the model's Moon (folded onto [-90°, 90°), shown within 40° of
    the node), with the model's new and full Moons on it, and the bands of the solar and lunar limits
    (their range with the Moon's distance, 356·400 to 406·700 km).
@@ -740,7 +933,7 @@ function nodeLimits(km) {
 	return { solar: inF(l.solar), lunar: inF(l.lunar) };
 }
 
-/* The model Sun's distance from the nearer node at JD (deg). */
+/* The model Sun's distance from the nearest node at JD (deg). */
 function modelSunFromNode(jd) {
 	const sun = SolarEccentric.make(MODEL.sun)(jd);
 
@@ -783,7 +976,7 @@ const seasonsFigure = {
 			x: [0, SEASONS_DAYS],
 			y: [-SEASONS_REACH, SEASONS_REACH],
 			xLabel: 'date',
-			yLabel: 'the Sun from the nearer node (°)',
+			yLabel: 'the Sun from the nearest node (°)',
 			xTicks: () => ticks,
 			yTicks: () => [-40, -20, 0, 20, 40].map(value => ({ value, label: `${value}°` })),
 			aspect: 0.5,
@@ -876,7 +1069,7 @@ const latitudeErrorFigure = {
 			fn: LunarLatitude.make(Object.assign({}, MOON, { i: 5.145 }))
 		});
 		curve.addModel({
-			label: 'the latitude fitted to the new and full Moons of 2026',
+			label: 'the ecliptic latitude fitted to the new and full Moons of 2026',
 			short: 'fitted',
 			color: COL.planet,
 			fn: fit
@@ -914,7 +1107,7 @@ const ptolemyErrorFigure = {
 		const syzygies = syzygyIndices(middle - 40, middle + 40).map(k => Eclipses.reference(k).syzygy);
 
 		curve.addModel({
-			label: "Ptolemy's latitude (<em>Almagest</em> IV 9, V 12)",
+			label: "Ptolemy's ecliptic latitude (<em>Almagest</em> IV 9, V 12)",
 			short: 'Ptolemy',
 			color: COL.epicycle,
 			fn: ptolemy
@@ -941,6 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		plateFigure,
 		orbitFigure,
 		shadowFigure,
+		parallaxDiagram,
 		limitsFigure,
 		seasonsFigure,
 		latitudeErrorFigure,

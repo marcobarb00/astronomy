@@ -51,6 +51,27 @@ section.
   the arrangement, and never speaks of a true centre. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
+- **The Sun and the Moon are connected to the models used today, without
+  new pages.** On 2026-11-02 Marco noted that Acts II and III end on
+  Hipparchus' and Ptolemy's circles, which are not used today, and that
+  the hub promised each astronomer fixing the last one's model, while the
+  pages show Hipparchus and Ptolemy refining their own. Two options were
+  set aside: a site limited to Hipparchus and Ptolemy, with Kepler on
+  another site (it drops the story's end and the objective), and full
+  Copernican and Keplerian treatments of the Sun and the Moon (too long;
+  Copernicus' Sun is page 2.1's eccentric and his Moon's second epicycle
+  is on page 3.2, and a bare ellipse is not today's Moon either).
+  Adopted instead: a "Today" margin note on pages 2.1, 3.1 and 3.2 giving
+  the modern counterpart of the page's model; a short section of page 4.5
+  and an epilogue entry on the Moon after Kepler (its remaining terms come
+  from the Sun's pull); the hub's opening rewritten to say where the
+  ellipse comes in and what is used as it is today. → STRUCTURE.md §4
+  (pages 2.1, 3.1, 3.2, 4.5, epilogue, hub), §7.5
+- **Page 4.5 applies the ellipse back to the Sun (on trial).** A section
+  fits Kepler's ellipse to the Sun of page 2.1 and closes its open
+  questions (the second-order error, the distance varying twice too
+  much). Adopted on 2026-11-02 on trial: Marco decides whether to keep it
+  once the page is built. → STRUCTURE.md §4 (page 4.5)
 
 ## Look
 
@@ -77,6 +98,10 @@ section.
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
 - **Detours are margin notes**, not cards. → STRUCTURE.md §7.4
+- **Today notes are a third kind of margin note**, headed "Today" in the
+  colour of the Modern origin, saying what replaces the page's model as
+  the modern first approximation (pages 2.1, 3.1, 3.2; 2026-11-02). →
+  STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md
@@ -94,9 +119,27 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **A fast and a slow motion in one figure: two views, not a faster
+  play.** Playing the slow motion at the speed it needs (years a second)
+  made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing
+  only every n-th frame, tried on 2026-11-02, looked wrong to Marco. On
+  2026-11-03 Marco chose a view switch: "A month" draws everything, the
+  slow view ("The eccentric's turn", "The nodes' turn") draws only what
+  moves slowly, and the play button plays the chosen view at its own
+  speed. What is drawn changes only when the reader changes the view. →
+  CLAUDE.md, "Rules for every figure"
 
 ## Writing
 
+- **Every longitude and latitude names its kind** (ecliptic, geographic,
+  heliocentric), even where the context seems to make it clear. Marco
+  asked for it on 2026-11-03, on page 3.3, where "the Sun's longitude"
+  and "the Moon's latitude" were left bare, and the same day on every
+  page, the templates and the site map. The names of quantities that are
+  not coordinates (the argument of latitude) keep their form; a general
+  frame of page 1.2 has "the frame's longitude". A slider label such as
+  "geographic latitude φ" wraps onto two lines, in a label column widened
+  to 82 px on a phone so that "geographic" fits. → CLAUDE.md "Writing"
 - **The voice of a good teacher writing a careful textbook.** "We" for the
   work done together, "you" for what the reader does with the page; why
   before what; no announced plans, verdict sentences or slogans. Adopted
@@ -190,9 +233,12 @@ section.
   per commit.** Large changes are staged: plan, a sample, approval, then
   the rest.
 - **Sources through the `astronomy-sources` skill** (Toomer's *Almagest*,
-  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*, split by
-  chapter). The chapter files are not in the repository (`.gitignore`),
-  only on Marco's computer.
+  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*,
+  Neugebauer's *A History of Ancient Mathematical Astronomy*, Part One, and
+  Voelkel's *Johannes Kepler and the New Astronomy*, split by chapter). The
+  chapter files are not in the repository (`.gitignore`), only on Marco's
+  computer and in the `astronomy_reference` repository. Voelkel is a short
+  biography, not Kepler's *Astronomia Nova*, whose text is still missing.
 - **Two review agents, no tester agent.** `math-reviewer` and
   `writing-reviewer` report before a page is merged; the mechanical tests
   are `npm run check`. → .claude/agents/
@@ -222,6 +268,9 @@ section.
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
 - **Where page 4.5 (Kepler) gets its yardstick** (see Course).
+- **Whether page 4.5 keeps its section on the Sun** (see Course), once the
+  page is built. If it goes, the hub's sentence on the Earth's orbit still
+  holds, since it states history, not the page's content.
 - **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
   region right ascension 105° to 195°, declination −20° to +20°, and drop
   the XHIP file.

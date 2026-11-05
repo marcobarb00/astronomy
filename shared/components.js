@@ -20,6 +20,7 @@
 		 <aside>
 			 <div class="note" data-origin="ptolemy"></div>
 			 <div class="note detour" data-topic="nutation"></div>
+			 <div class="note today"> ... </div>     the model used today
 		 </aside>
 	 </div>
 	 <div class="exercise" data-kind="derive"> ... <details class="hint">
@@ -303,6 +304,15 @@ const Site = (function () {
 		});
 	}
 
+	/* Today notes (STRUCTURE.md §7.5): the heading "Today" above the text
+	   the author wrote, which says what replaces the page's model as the
+	   modern first approximation. */
+	function buildTodayNotes(root) {
+		root.querySelectorAll('.note.today').forEach(note => {
+			note.prepend(makeEl('div', 'note-head', 'Today'));
+		});
+	}
+
 	/* Exercises: "Exercise n · kind" header and labelled hint / answer. */
 	function buildExercises(root) {
 		root.querySelectorAll('.exercise').forEach((exercise, i) => {
@@ -502,6 +512,7 @@ const Site = (function () {
 
 		buildOriginNotes(article);
 		buildDetours(article);
+		buildTodayNotes(article);
 		buildExercises(article);
 		numberFigures(article);
 		GraduatedFrame.attachAll(article);

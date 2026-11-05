@@ -211,6 +211,12 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/solar-eccentric.js` (`SolarEccentric.make()`, the
   parameter sets `PTOLEMY` and `FIT_2026`, `fitSeasons`); `MeanSun.PTOLEMY`,
   whose days are days of UT.
+- **Today note** (§7.5), beside the residual: Kepler's ellipse, the first
+  approximation used today for the Sun's path relative to the Earth; to
+  second order, with $M$ from the apogee, $q \approx -2e_\text{K}\sin M +
+  \tfrac54 e_\text{K}^2\sin 2M$, against the eccentric's
+  $-e\sin M + \tfrac12 e^2\sin 2M$ with $e = 2e_\text{K}$; page 4.5
+  applies it to the Sun.
 - **Hands over:** the apogee moves, about 1.75° a century relative to γ, so
   the model drifts slowly over centuries (page 2.3); the eccentric's distance
   varies twice as much as the real one (pages 3.2, 4.5); first, a consequence
@@ -373,6 +379,11 @@ The first anomaly and the simplest complete model.
   `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
   `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);
   `ErrorCurve.addMarks` (dots at chosen dates).
+- **Today note** (§7.5): the Moon's longitude is computed today from a
+  series of terms derived from Newton's gravitation (Meeus 47); the first
+  is the ellipse's, the others come from the Sun's pull, which also turns
+  the perigee round in 8.85 years, like the apogee of the eccentric of
+  section 2 (Fitzpatrick § 6.1).
 - **Residual:** at the quarters, Hipparchus' sighting of 128 BC (V 3);
   the evection, which takes 1.27° from the ellipse's 6.29° at new and full
   Moon and adds it at the quarters; the remaining 40′ at new and full Moon
@@ -433,6 +444,11 @@ The first anomaly and the simplest complete model.
 - **Code:** `models/lunar-crank.js` (`LunarCrank`: `make()`,
   `makeDistance()`, `state`, `geometry`, `construction`, `PTOLEMY`,
   `FIT_2026`).
+- **Today note** (§7.5), beside the distances: the evection as an effect
+  of the Sun's pull, which through each month makes the Moon's ellipse
+  more and less eccentric and swings its axis; with the Earth at the
+  focus, the 1.27° in longitude costs little distance, where the crank
+  brings the whole epicycle nearer.
 - **Residual:** the variation, $0.66°\sin 2D$ (detour: Tycho), 44% of the
   error's mean square in 2026, then the first anomaly left by page 3.1's
   three-eclipse fit (its anomaly at the epoch 5° off), then the annual
@@ -454,7 +470,8 @@ The first anomaly and the simplest complete model.
   223 months (IV 2, Babylonian; "wrongly" called the saros, Toomer). The
   inclined circle (V 12): from $R_z(\Omega)R_x(i)$, $\sin\beta = \sin
   i\sin F$ and $\tan(\lambda - \Omega) = \cos i\tan F$, page 2.2's
-  reduction with $i$ for $\varepsilon$ (6.55′, left out by Ptolemy, IV 6);
+  reduction with $i$ for $\varepsilon$ (at most 6.55′, under 4′ within the
+  eclipse limits; left out by Ptolemy, IV 6, and by the model);
   $F = \bar F + q$ (IV 9); at a syzygy $F$ is the Sun's distance from the
   node; the eclipse year, $1/Y_\text{e} = 1/P_d - 1/P_s$ (346.620 days).
   The shadow: $u = 1.01\,\pi + \pi_\odot - s_\odot$ (Danjon's rule, as
@@ -620,10 +637,11 @@ The first anomaly and the simplest complete model.
   model (frames and arrangements), test (the two error curves coincide),
   residual (Mars).
 - **Sources:** *Almagest* I 7, IX 1 and X 6; *De Revolutionibus* I 5,
-  I 8, I 10 and the preface to Book II; for Tycho, Galileo, Bessel,
-  Bradley, Newton, Foucault and Kepler, sources outside the
-  `astronomy-sources` library, to be chosen and checked when the page is
-  built (the dates above are not yet checked against them).
+  I 8, I 10 and the preface to Book II; for Kepler and Tycho, Voelkel's
+  biography in the `astronomy-sources` library; for Galileo, Bessel,
+  Bradley, Newton and Foucault, sources outside it, to be chosen and
+  checked when the page is built (the dates above are not yet checked
+  against them).
 - **Hands over:** circles still leave an error, and Mars shows it most.
   Kepler, who looked in the Sun for the physical cause of the planets'
   motions (*Mysterium Cosmographicum*, 1596; *Astronomia Nova*, 1609),
@@ -634,8 +652,27 @@ The first anomaly and the simplest complete model.
 - **Question:** what shape removes the last error?
 - **Learn:** the ellipse; the area law; mean, eccentric and true anomaly;
   Kepler's equation and its iterative solution; the third law.
+- **The Sun on an ellipse (on trial, 2026-11-02: Marco decides whether to
+  keep it once the page is built):** the Earth's orbit is an ellipse too,
+  so the Sun's path relative to the Earth is one. Kepler found from Mars
+  that the Earth's motion also speeds up near the Sun, as a uniform
+  eccentric cannot (Voelkel, ch. 3). The section applies the ellipse and
+  Kepler's equation to the Sun of page 2.1: its error curve, with the
+  eccentric fitted to 2026 as ghost (the second-order term of page 2.1's
+  Today note); the distance, which now varies by $e_\text{K}$ either
+  way, as the real one does, closing the "twice too much" of pages 2.1
+  and 3.2; the apogee's motion of page 2.3 as a turning of the ellipse
+  (detour: perturbations). Mind the caution below: the reference Sun is
+  itself Keplerian.
+- **The Moon after Kepler (a short section):** an ellipse is the first
+  term of the Moon's motion (page 3.1); the evection, the variation and
+  the annual equation remain, and so does the motion of the perigee and
+  the nodes. They come from the Sun's pull on the Moon, which is Newton's
+  subject, so the Moon's story continues in the epilogue. No new model
+  and no figure.
 - **Figures:** Mars on its ellipse with swept areas; the error curve, nearly
-  flat; all previous error curves overlaid.
+  flat; all previous error curves overlaid; the Sun's error curve, the
+  ellipse against the eccentric (on trial, see above).
 - **Exercises:** solve Kepler's equation by fixed-point and Newton iteration;
   compare the convergence.
 - **Caution (reference sky):** the reference planets in `shared/ephemeris.js`
@@ -654,14 +691,28 @@ The first anomaly and the simplest complete model.
 One short page: where the story goes next. Each entry has one sentence on why
 it matters, and becomes a link when its page exists. Unbuilt entries are
 shown greyed out. Candidates: Tycho's observations, Newton and gravitation,
-perturbations, nutation, aberration and stellar parallax, planetary latitudes,
+perturbations, the Moon after Kepler (the evection, the variation and the
+annual equation as effects of the Sun's pull; modern lunar series), nutation, aberration and stellar parallax, planetary latitudes,
 the Islamic critiques of the equant, calendars, instruments.
 
 ### Hub
 
-The site's `index.html`: the objective in two sentences, the course as a
-journey through the models before Kepler (WRITING.md §9), the five acts as a
-map, and a link to *Beyond Kepler*. Optional: a notation page (§6).
+The site's `index.html`: the story in a few short paragraphs, the five
+acts as a map, and a link to *Beyond Kepler*. Optional: a notation page
+(§6). The opening says, as part of the story and not as a warning:
+
+- each page rebuilds a historical model as its author conceived it
+  (WRITING.md §9); some steps refine an astronomer's own model, others
+  change its form;
+- Kepler's ellipse is the first approximation used today, for the
+  planets and for the Sun's path relative to the Earth; the course
+  reaches it on page 4.5;
+- circles already come close for the Sun and the Moon, and much of what
+  the reader learns on the way (coordinates, sidereal time, the equation
+  of time, precession, eclipse limits) is used as it is today;
+- the Moon needs more than an ellipse, and its remaining terms lead to the
+  epilogue;
+- the objective (§1).
 
 ---
 
@@ -801,6 +852,18 @@ then the topic and why it matters, "*Nutation: the small wobble of the pole
 on top of precession.*" When the topic gets its own page, the topic becomes
 a link.
 
+### 7.5 Today notes
+
+On a page whose model is not the one used today, a margin note headed
+"Today" says, in one or two sentences, what replaces it as the modern
+first approximation and how the two compare (a formula, a number from the
+page's script). It states the modern counterpart; it does not judge the
+historical model, which the page tests with the error curve. Pages 2.1,
+3.1 and 3.2 have one (§4); other pages add one only when their model has
+a direct modern counterpart. Its numbers come from the page's script, like
+every other number. Adopted on 2026-11-02; written on pages 2.1, 3.1 and
+3.2 the same day. The style is in `STYLE.md` §4.5.
+
 ---
 
 ## 8. Shared code
@@ -891,7 +954,8 @@ archive/                   earlier pages, kept for reference, not linked
 ## 11. Sources
 
 Primary sources (in the project): Ptolemy, *Almagest* (English translation);
-Copernicus, *De Revolutionibus*.
+Copernicus, *De Revolutionibus*. Kepler's *Astronomia Nova* is not in the
+project yet.
 
 Modern references:
 
@@ -911,7 +975,12 @@ Modern references:
 - SIMBAD (CDS, Strasbourg): star positions and proper motions (ICRS J2000)
   for `shared/stars.js`.
 - J. Evans, *The History and Practice of Ancient Astronomy*.
-- O. Neugebauer, *A History of Ancient Mathematical Astronomy*.
+- O. Neugebauer, *A History of Ancient Mathematical Astronomy* (in the
+  project: Part One, the Almagest, its predecessors and Babylonian
+  astronomy).
+- J. R. Voelkel, *Johannes Kepler and the New Astronomy* (in the project):
+  Kepler's life and the outline of his work, for pages 4.4 and 4.5. A
+  short biography: precise claims are checked in other sources.
 
 Every page lists the sources it actually used.
 

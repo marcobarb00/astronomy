@@ -134,6 +134,10 @@ Everything that comments on a paragraph moves into the margin:
 - **Citations** ("Almagest I 3, transl. Toomer"): plain, 15 px, no rule.
 - **Detours**: heading "Detour · coming later" in `--accent`, a 1 px dashed
   `--accent` rule on top. Becomes a link when the page exists.
+- **Today notes** (STRUCTURE.md §7.5): heading "Today" in `--earth-text`,
+  the colour of the Modern origin, with a 1 px `--earth-text` rule on top,
+  then one or two sentences. Written `<div class="note today">…</div>`;
+  `shared/components.js` adds the heading.
 
 Inline badges in the text are no longer used.
 

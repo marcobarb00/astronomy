@@ -3,3 +3,4 @@ raw/
 tools/check/out/
 tools/check/baseline/
 node_modules/
+audit/

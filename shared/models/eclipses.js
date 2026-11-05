@@ -219,7 +219,7 @@ const Eclipses = (function () {
 		return fromNode < (sin(F) > 0 ? PTOLEMY_LIMITS.solarNorth : PTOLEMY_LIMITS.solarSouth);
 	}
 
-	/* An angle from the ascending node (deg) folded onto the nearer node:
+	/* An angle from the ascending node (deg) folded onto the nearest node:
 	   in [-90, 90), negative before that node. */
 	function nodeAngle(angle) {
 		const a = norm180(angle);
@@ -276,7 +276,7 @@ const Eclipses = (function () {
 	   ====================================================================== */
 
 	/* Beyond this latitude at a syzygy (deg) no eclipse is possible: the
-	   least distance is searched only nearer the ecliptic. */
+	   least distance is searched only nearest the ecliptic. */
 	const REFERENCE_SEARCH_LATITUDE = 1.8;
 
 	/* Angular distance (deg) between two points of the ecliptic sphere. */

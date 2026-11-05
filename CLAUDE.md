@@ -120,6 +120,12 @@ same style:
   a line instead of adding or removing one. A note or legend entry that
   applies only to some states is shown always, or its room is reserved, as
   the error curve does for its band note and legend.
+- A view the reader chooses may change what is drawn, as it may change a
+  scale. When a figure shows a fast motion and a slow one (the Moon in a
+  month, the nodes in 18.6 years), give it views (`buildChoice`) and let
+  each view draw only what moves visibly at its speed; playing a view
+  never hides, thins out or skips what the view draws (see Figure 3 of
+  pages 3.1 and 3.3).
 - Scales never jump while a control moves. When a slider changes what is
   plotted, fix the axis range to cover every value the slider allows, with
   the bound computed by a script. A scale may change only when the reader
@@ -163,10 +169,22 @@ same style:
     "coordinates", not "address" or "name"; "refraction", not "the lift";
     "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
     away". Use the term the sources use, and define it once.
+- Every longitude and latitude says which one it is: "ecliptic
+  longitude", "ecliptic latitude", "geographic latitude", "heliocentric
+  longitude", in the prose, the captions, the keys, the labels and the
+  read-outs. The names of quantities that are not coordinates (the
+  argument of latitude, the motion in latitude) and quotations keep their
+  wording.
 
 ## Sources
 
 The reference books (Ptolemy's *Almagest*, Copernicus' *De Revolutionibus*,
-Fitzpatrick's *A Modern Almagest*) are available, split by chapter, through the
-`astronomy-sources` skill (`.claude/skills/astronomy-sources/`). Use it for
-historical models, parameters, definitions and short attributed quotations.
+Fitzpatrick's *A Modern Almagest*, Neugebauer's *A History of Ancient
+Mathematical Astronomy* (Part One) and Voelkel's *Johannes Kepler and the New
+Astronomy*) are available, split by chapter, through the `astronomy-sources`
+skill (`.claude/skills/astronomy-sources/`). Use it for historical models,
+parameters, definitions and short attributed quotations.
+
+## Git
+- Never add Co-Authored-By, Claude-Session, or "Generated with Claude Code" lines to commits or PRs.
+- Commits must be authored by the repo's configured git user, never a Claude identity.

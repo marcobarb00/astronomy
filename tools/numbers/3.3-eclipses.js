@@ -49,7 +49,7 @@ const shared = loadFiles([
 	'shared/models/lunar-latitude.js',
 	'shared/models/eclipses.js'
 ]);
-const { norm180, norm360, sin, asin, tan, Time, Ephem, Stars } = shared;
+const { norm180, norm360, sin, cos, asin, tan, Time, Ephem, Stars } = shared;
 const { MeanSun, SolarEccentric, LunarEpicycle, LunarLatitude, Eclipses } = shared;
 
 /* ==========================================================================
@@ -272,16 +272,16 @@ title('4. Observation');
 		`the mean node moves west ${f(nodeRate, 5)}° a day, ${f(nodeRate * 365.25, 2)}° a year; a turn in ${f(360 / nodeRate, 1)} days = ${f(360 / nodeRate / 365.25, 2)} years`
 	);
 
-	/* The Sun's distance from the nearer mean node at each eclipse. */
+	/* The Sun's distance from the nearest mean node at each eclipse. */
 	const fromNode = s => Math.abs(Eclipses.nodeAngle(Ephem.sun(s.jd).lon - meanNode(s.jd)));
 	const solar = ours.filter(s => s.solar).map(fromNode);
 	const lunar = ours.filter(s => !s.solar).map(fromNode);
 
 	console.log(
-		`the Sun from the nearer node at the eclipses: solar up to ${f(Math.max(...solar), 1)}°, lunar up to ${f(Math.max(...lunar), 1)}°`
+		`the Sun from the nearest node at the eclipses: solar up to ${f(Math.max(...solar), 1)}°, lunar up to ${f(Math.max(...lunar), 1)}°`
 	);
 	console.log(
-		`  full Moons with the Sun nearer the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
+		`  full Moons with the Sun nearest the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
 	);
 }
 
@@ -329,6 +329,34 @@ title('6. Model: the latitude');
 
 	console.log(`beta = i sin F to first order: largest error ${f(worst * 3600, 0)}" (i = ${f(LAT.i, 2)}°)`);
 	console.log(`reduction to the ecliptic: greatest ${arcmin(reduction, 2)} = asin tan^2(i/2)`);
+
+	/* The reduction as an eccentric: lambda - Omega - F = -atan2(e sin 2F,
+	   1 + e cos 2F) with e = tan^2(i/2). Checked against the exact
+	   tan(lambda - Omega) = cos i tan F, and its value where eclipses
+	   happen (the Sun within 12.1° and 18.3° of a node). */
+	const e = tan(LAT.i / 2) ** 2;
+	const exact = F => norm180(shared.atan2d(cos(LAT.i) * sin(F), cos(F)) - F);
+	const asEccentric = F => -shared.atan2d(e * sin(2 * F), 1 + e * cos(2 * F));
+	let identity = 0;
+	let largest = { F: 0, value: 0 };
+
+	for (let F = 0; F < 360; F += 0.01) {
+		identity = Math.max(identity, Math.abs(exact(F) - asEccentric(F)));
+		if (Math.abs(exact(F)) > largest.value) {
+			largest = { F, value: Math.abs(exact(F)) };
+		}
+	}
+
+	console.log(
+		`  e = tan^2(i/2) = ${f(e, 6)} (i = ${f(LAT.i, 2)}°); the two forms agree within ${(identity * 3600).toExponential(1)}"`
+	);
+	console.log(
+		`  largest ${arcmin(largest.value, 2)} at F = ${f(largest.F, 2)}° (2F = 90° + asin e: F = ${f((90 + asin(e)) / 2, 2)}°)`
+	);
+	console.log(`  first order -e sin 2F: largest ${arcmin(e * (180 / Math.PI), 2)}`);
+	[12.1, 18.3].forEach(F => {
+		console.log(`  at F = ${F}°: lambda - Omega - F = ${arcmin(exact(F), 2)}`);
+	});
 }
 
 /* ==========================================================================
@@ -351,7 +379,7 @@ const ECLIPSE_YEAR = 360 / SUN_FROM_NODE_RATE;
 title('7. Model: the months');
 console.log(`n_F = ${f(RATES.nF, 5)}° a day, n = ${f(RATES.n, 5)}°: the node moves west ${f(NODE_RATE, 5)}° a day`);
 console.log(
-	`draconitic month ${f(P_DRACONITIC, 5)} d; synodic ${f(P_SYNODIC, 5)} d; anomalistic ${f(P_ANOMALISTIC, 5)} d`
+	`draconitic month ${f(P_DRACONITIC, 5)} d; tropical ${f(360 / RATES.n, 5)} d; synodic ${f(P_SYNODIC, 5)} d; anomalistic ${f(P_ANOMALISTIC, 5)} d`
 );
 console.log(
 	`the Sun from the node: ${f(SUN_FROM_NODE_RATE, 4)}° a day; eclipse year ${f(ECLIPSE_YEAR, 3)} d, half ${f(ECLIPSE_YEAR / 2, 2)} d`
@@ -554,6 +582,15 @@ title('10. Fit');
 	);
 	console.log(
 		`  diameter 3 x 11;47 = ${f(3 * difference, 2)}' (his 0;35,20 = ${f(35 + 20 / 60, 2)}'); shadow 46' = ${f(46 / ((35 + 20 / 60) / 2), 2)} Moon radii`
+	);
+
+	/* The shadow's radius from the second eclipse: 3 digits, a quarter of
+	   the diameter, in the shadow, so the Moon's centre was a quarter of
+	   the diameter outside the shadow's edge. */
+	const quarter = (35 + 20 / 60) / 4;
+
+	console.log(
+		`  shadow's radius: the second eclipse's ${arcmin(b2)} minus a quarter of the diameter, ${f(quarter, 2)}': ${f(b2 * 60 - quarter, 1)}' (his 46')`
 	);
 }
 
