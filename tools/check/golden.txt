@@ -3500,6 +3500,7 @@ fit to the 25 new and full Moons of 2026: i = 4.999207°, F0 = 93.266574° (FIT_
   with the mean inclination 5.145° (Meeus' sin F term 5.128° and the Moon's whole range) the latitudes at the 25 are off by up to 10.0'
 Ptolemy VI 5: latitudes at 8;20° and 10;36° from the node with i = 5°: 43.4' and 55.1', 11.7' apart (his 0;11,47 = 11.78')
   diameter 3 x 11;47 = 35.35' (his 0;35,20 = 35.33'); shadow 46' = 2.60 Moon radii
+  shadow's radius: the second eclipse's 55.1' minus a quarter of the diameter, 8.83': 46.3' (his 46')
 
 === 11. Test: the latitude ===
 the fit: at the 25 new and full Moons of 2026 within 1.9'; over the year within 26.0'

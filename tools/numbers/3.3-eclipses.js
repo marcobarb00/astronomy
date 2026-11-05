@@ -583,6 +583,15 @@ title('10. Fit');
 	console.log(
 		`  diameter 3 x 11;47 = ${f(3 * difference, 2)}' (his 0;35,20 = ${f(35 + 20 / 60, 2)}'); shadow 46' = ${f(46 / ((35 + 20 / 60) / 2), 2)} Moon radii`
 	);
+
+	/* The shadow's radius from the second eclipse: 3 digits, a quarter of
+	   the diameter, in the shadow, so the Moon's centre was a quarter of
+	   the diameter outside the shadow's edge. */
+	const quarter = (35 + 20 / 60) / 4;
+
+	console.log(
+		`  shadow's radius: the second eclipse's ${arcmin(b2)} minus a quarter of the diameter, ${f(quarter, 2)}': ${f(b2 * 60 - quarter, 1)}' (his 46')`
+	);
 }
 
 /* ==========================================================================
