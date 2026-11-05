@@ -12,6 +12,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>2.1 · The uneven year · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -63,22 +64,22 @@
 		<p>
 			Hipparchus measured this unevenness and explained it with a single
 			circle whose centre is not the Earth. With his circle we can predict
-			the Sun's longitude to within two arcminutes, and from here on we
-			judge every model by its error curve, the difference between the
-			model and the real sky, plotted against time.
+			the Sun's ecliptic longitude to within two arcminutes, and from here
+			on we judge every model by its error curve, the difference between
+			the model and the real sky, plotted against time.
 		</p>
 
 		<!-- ============================ 1. OBSERVATION ============================ -->
 		<h2 id="observation"><span class="step">1 · Observation</span>Four unequal seasons</h2>
 
 		<p>
-			The equinoxes and the solstices divide the year at the moments
-			when the Sun's longitude reaches 0°, 90°, 180° and 270°. A Sun moving
-			uniformly would take a quarter of the year, 91.31 days, over each
-			of these quarters. The real Sun of 2026 takes between 89 and almost
-			94 days. The table gives its seasons from the reference sky, with
-			the times in UT and the names of the northern hemisphere, which the
-			sources use.
+			The equinoxes and the solstices divide the year at the moments when
+			the Sun's ecliptic longitude reaches 0°, 90°, 180° and 270°. A Sun
+			moving uniformly would take a quarter of the year, 91.31 days, over
+			each of these quarters. The real Sun of 2026 takes between 89 and
+			almost 94 days. The table gives its seasons from the reference sky,
+			with the times in UT and the names of the northern hemisphere, which
+			the sources use.
 		</p>
 
 		<div class="table-scroll">
@@ -87,7 +88,7 @@
 				<tr>
 					<th>Season</th>
 					<th>Begins</th>
-					<th>Longitude $\lambda$</th>
+					<th>Ecliptic longitude $\lambda$</th>
 					<th>Length</th>
 				</tr>
 			</thead>
@@ -123,7 +124,7 @@
 		<p>
 			The half of the year from the March equinox to the September
 			equinox is 7.6 days longer than the other half. Since the Sun covers
-			180° of longitude in each half, it must move more slowly in the
+			180° of ecliptic longitude in each half, it must move more slowly in the
 			northern summer than in the winter, and Figure 1 shows that it does.
 		</p>
 
@@ -268,19 +269,20 @@
 		<h3>The equation of centre</h3>
 
 		<p>
-			Let the Sun move uniformly, at the rate $n$ of page 1.3, on a
-			circle of radius 1 whose centre C lies at a distance $e$ from the
-			Earth O. The point of the circle farthest from the Earth, in the
-			direction from O through C, is the <em>apogee</em>, at longitude
+			Let the Sun move uniformly, at the rate $n$ of page 1.3, on a circle
+			of radius 1 whose centre C lies at a distance $e$ from the Earth O.
+			The point of the circle farthest from the Earth, in the direction
+			from O through C, is the <em>apogee</em>, at ecliptic longitude
 			$\lambda_A$, and the nearest, opposite it, is the <em>perigee</em>.
 		</p>
 
 		<p>
-			Seen from C, the Sun's longitude is the mean longitude $\bar\lambda
-			= L_0 + n\,d$ of page 1.3, and we count its angle from the apogee,
-			the <em>mean anomaly</em> $M = \bar\lambda - \lambda_A$. Seen from O,
-			it is the true longitude $\lambda$, and the difference $q = \lambda -
-			\bar\lambda$ is called the <em>equation of centre</em>.
+			Seen from C, the Sun's ecliptic longitude is the mean ecliptic
+			longitude $\bar\lambda = L_0 + n\,d$ of page 1.3, and we count its
+			angle from the apogee, the <em>mean anomaly</em> $M = \bar\lambda -
+			\lambda_A$. Seen from O, it is the true ecliptic longitude
+			$\lambda$, and the difference $q = \lambda - \bar\lambda$ is called
+			the <em>equation of centre</em>.
 		</p>
 
 		<div class="row">
@@ -310,7 +312,7 @@
 
 		<p>
 			From the apogee to the perigee, $0^\circ < M < 180^\circ$, $q$ is
-			negative and the Sun lags behind its mean longitude, while on the
+			negative and the Sun lags behind its mean ecliptic longitude, while on the
 			other half of the circle it runs ahead. Ptolemy uses the same sign,
 			subtracting the equation in the first half (<em>Almagest</em> III 8).
 			Fitzpatrick counts $M$ from the perigee, so his $q$ has the opposite
@@ -627,15 +629,15 @@
 			quarter of a day at best.
 		</p>
 
-		<h3>The mean longitude at the epoch</h3>
+		<h3>The mean ecliptic longitude at the epoch</h3>
 
 		<p>
 			The last parameter comes from the moment of the spring equinox,
 			which we timed on page 1.2 to find γ. At that moment the Sun is at
 			γ, at the angle $-\arcsin k$ as seen from C, which is therefore its
-			mean longitude. In 2026 the equinox came on 20 March at 14:32 TT,
-			9575.106 days after J2000.0, with $-\arcsin k = 358.137^\circ$.
-			Going back to the epoch at the rate $n$,
+			mean ecliptic longitude. In 2026 the equinox came on 20 March at
+			14:32 TT, 9575.106 days after J2000.0, with $-\arcsin k =
+			358.137^\circ$. Going back to the epoch at the rate $n$,
 		</p>
 
 		$$L_0 = 358.137^\circ - n \times 9575.106\ \text{d} = 280.459^\circ \pmod{360^\circ},$$
@@ -694,10 +696,10 @@
 		<p>
 			The eccentric also removes the error that page 1.3 left in the
 			length of the day, which depends on the Sun's declination and so on
-			its longitude. With the eccentric's longitude in the declination
-			formula, the largest error of the day in 2026, which page 1.3 found
-			to be 5 to 13 minutes at Rome, London and latitude 65°, falls below
-			half a minute at all three.
+			its ecliptic longitude. With the eccentric's ecliptic longitude in
+			the declination formula, the largest error of the day in 2026, which
+			page 1.3 found to be 5 to 13 minutes at Rome, London and geographic
+			latitude 65°, falls below half a minute at all three.
 		</p>
 
 		<h3>Ptolemy's Sun</h3>
@@ -895,11 +897,12 @@
 		<div class="row">
 			<p>
 				Most of this motion belongs to γ rather than to the apogee. The
-				origin of longitudes itself slides westward along the ecliptic,
-				so that every longitude counted from it grows by about 1.4° a
-				century, as page 2.3 explains. Only the remaining 0.3° a century
-				is a turning of Kepler's ellipse itself: its line of apsides, through
-				the apogee and the perigee, turns under the pull of the planets.
+				origin of ecliptic longitudes itself slides westward along the
+				ecliptic, so that every ecliptic longitude counted from it grows
+				by about 1.4° a century, as page 2.3 explains. Only the
+				remaining 0.3° a century is a turning of Kepler's ellipse
+				itself: its line of apsides, through the apogee and the perigee,
+				turns under the pull of the planets.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="perturbations"></div>
@@ -958,8 +961,8 @@
 			The Sun's uneven motion also shows every day, on a sundial. A
 			sundial reads the Sun's hour angle, which depends on its right
 			ascension, and the right ascension depends both on the uneven
-			longitude of this page and on the tilt of the ecliptic. Page 2.2
-			combines the two into the equation of time.
+			ecliptic longitude of this page and on the tilt of the ecliptic.
+			Page 2.2 combines the two into the equation of time.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -1045,13 +1048,13 @@
 				</p>
 				$$\frac{e\cos M\,(1 + e\cos M) + e^2 \sin^2 M}{(1 + e\cos M)^2} = \frac{e\,(\cos M + e)}{(1 + e\cos M)^2},$$
 				<p>
-					which vanishes at $\cos M = -e$. There $\sin M = \sqrt{1 - e^2}$
-					and $1 + e\cos M = 1 - e^2$, so $\tan|q| = e / \sqrt{1 - e^2}$,
-					which means $\sin|q| = e$. Since $M = 90^\circ + \arcsin e$ and $q
-					= -\arcsin e$, the true longitude is $\lambda = \lambda_A +
-					90^\circ$: seen from the Earth, the Sun is a right angle from the
-					apogee. This is Ptolemy's construction in III 4, a right angle at
-					the Earth.
+					which vanishes at $\cos M = -e$. There $\sin M = \sqrt{1 -
+					e^2}$ and $1 + e\cos M = 1 - e^2$, so $\tan|q| = e / \sqrt{1
+					- e^2}$, which means $\sin|q| = e$. Since $M = 90^\circ +
+					\arcsin e$ and $q = -\arcsin e$, the true ecliptic longitude
+					is $\lambda = \lambda_A + 90^\circ$: seen from the Earth,
+					the Sun is a right angle from the apogee. This is Ptolemy's
+					construction in III 4, a right angle at the Earth.
 				</p>
 				<p>
 					For $e = 1/24$ the greatest equation is $2^\circ 23' 17''$, at $M =
@@ -1128,8 +1131,8 @@
 				distance), §§ 5.1 and 5.3 (the equation of centre, with $M$ from the
 				perigee; the lengths of the seasons).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 25
-				(the Sun's mean longitude) and ch. 55 (its semidiameter, 959.63″ at
-				1 au).</li>
+				(the Sun's mean ecliptic longitude) and ch. 55 (its
+				semidiameter, 959.63″ at 1 au).</li>
 			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
 				the Major Planets</em> (JPL): the Earth's eccentricity and perihelion,
 				used by the reference sky.</li>

@@ -31,7 +31,7 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights (and a plain line, a symbol)
+	 7. Highlights (and a plain line, a symbol, the Sun)
 	 8. Label placement
    ========================================================================== */
 
@@ -561,7 +561,7 @@ const Plate = (function () {
 
 		// a label stays inside the rim of the chart, clear of the hour ring
 		const inside = box => boxCorners(box).every(p => Math.hypot(p.x - c, p.y - c) <= R - 2);
-		const chart = { svg, at, project, radius, centre: c, inside, labels: [] };
+		const chart = { svg, at, project, radius, centre: c, inside, labels: [], obstacles: [] };
 
 		// graticule: declination every 10°, right ascension every 2 h
 		const grid = svgEl('g', { class: 'grid' }, svg);
@@ -640,7 +640,7 @@ const Plate = (function () {
 		svgEl('rect', { x: left, y: top, width: width, height: height }, clip);
 
 		const layer = svgEl('g', { 'clip-path': `url(#${clipId})` }, svg);
-		const chart = { svg, layer, at, project, inside, labels: [] };
+		const chart = { svg, layer, at, project, inside, labels: [], obstacles: [] };
 		const grid = svgEl('g', { class: 'grid' }, layer);
 
 		for (let ra = Math.ceil(raMin / 15) * 15; ra <= raMax; ra += 15) {
@@ -833,6 +833,24 @@ const Plate = (function () {
 		placeLabels(chart);
 	}
 
+	/* The Sun at a point: the sign ☉ itself, a ring and a dot, centred
+	   on the Sun's place, not a label beside a cross. A label can be moved
+	   off its point to stay clear of a line; the Sun's sign, which reads as
+	   the Sun, must stay where the Sun is (page 3.3: on the ecliptic, where
+	   the Moon's path passes it at the new Moon). The ring is filled with
+	   the plate's blue, so a line through the Sun stops at its edge. */
+	function sun(chart, ra, dec) {
+		const q = chart.at(ra, dec);
+		const group = svgEl('g', { class: 'sun-mark' }, chart.svg);
+
+		svgEl('circle', { cx: q.x.toFixed(1), cy: q.y.toFixed(1), r: 7, class: 'sun-ring' }, group);
+		svgEl('circle', { cx: q.x.toFixed(1), cy: q.y.toFixed(1), r: 1.6, class: 'sun-dot' }, group);
+
+		// labels keep clear of the sign, as of another label
+		chart.obstacles.push({ x: q.x - 7, y: q.y - 7, w: 14, h: 14 });
+		placeLabels(chart);
+	}
+
 	/* A point named by a symbol (e.g. the ecliptic pole K): a small cross
 	   in the ink of the plate and the symbol beside it, kept on a phone as
 	   the pole's P is. */
@@ -987,7 +1005,7 @@ const Plate = (function () {
 	function placeLabels(chart) {
 		const k = Number(chart.svg.style.getPropertyValue('--k')) || 1;
 		const clear = LABEL_CLEAR * k;
-		const placed = [];
+		const placed = [...chart.obstacles];
 		const labels = [...chart.labels].sort((a, b) => a.order - b.order);
 
 		labels.forEach(label => {
@@ -1050,6 +1068,7 @@ const Plate = (function () {
 		highlightCurve,
 		highlightPath,
 		line: plainLine,
-		symbol
+		symbol,
+		sun
 	};
 })();

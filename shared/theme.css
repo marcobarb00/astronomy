@@ -805,8 +805,11 @@ figure.photo img {
 	font-size: 16px;
 }
 
+/* A label of two words may wrap onto a second line ("geographic /
+   latitude φ"): set it tighter than the prose. */
 .ctl label {
 	color: var(--ink);
+	line-height: 1.25;
 }
 
 .ctl output {
@@ -1481,6 +1484,17 @@ figure.plate-figure {
 	stroke-opacity: 0.6;
 }
 
+/* The Sun's sign ☉, drawn on its place (page 3.3). */
+.plate .sun-ring {
+	fill: var(--plate);
+	stroke: var(--plate-ink);
+	stroke-width: 1.6;
+}
+
+.plate .sun-dot {
+	fill: var(--plate-ink);
+}
+
 /* The cross of a point named by a symbol (the ecliptic pole K). */
 .plate .symbol-mark {
 	stroke: var(--plate-ink);
@@ -1754,7 +1768,9 @@ dl.origin-key dd {
 		grid-column: 1;
 	}
 
+	/* 82px: the longest word of a label ("geographic", in "geographic
+	   latitude φ") fits on one line, the rest wraps under it. */
 	.ctl {
-		grid-template-columns: 74px minmax(0, 1fr) var(--ctl-output);
+		grid-template-columns: 82px minmax(0, 1fr) var(--ctl-output);
 	}
 }

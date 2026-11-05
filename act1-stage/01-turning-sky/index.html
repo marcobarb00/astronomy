@@ -2,7 +2,7 @@
 <!-- ==========================================================================
      PAGE 1.1 · THE TURNING SKY
      Act I, the stage. The sky as a rigid sphere of directions turning about
-     the polar axis; the observer's latitude; stars that never set, rise and
+     the polar axis; the observer's geographic latitude; stars that never set, rise and
      set, or never rise. Numbers: tools/numbers/1.1-turning-sky.js.
      ========================================================================== -->
 <html lang="en">
@@ -10,6 +10,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>1.1 · The turning sky · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -109,16 +110,17 @@
 
 		<p>
 			The pole stands above the north point of the horizon at an altitude
-			equal to the observer's latitude $\varphi$, for example 41.9° at Rome
-			and 51.5° in London.
+			equal to the observer's geographic latitude $\varphi$, for example
+			41.9° at Rome and 51.5° in London.
 		</p>
 
 		<p>
-			Because the height of the pole depends on the latitude, so does the
-			part of the sky we can see. As Ptolemy puts it, the further north we
-			travel, "the more of the southern stars disappear and the more of
-			the northern stars appear" (<em>Almagest</em> I 4). Canopus, the second brightest star, can be seen
-			from Rhodes but never from Rome.
+			Because the height of the pole depends on the geographic latitude,
+			so does the part of the sky we can see. As Ptolemy puts it, the
+			further north we travel, "the more of the southern stars disappear
+			and the more of the northern stars appear" (<em>Almagest</em> I 4).
+			Canopus, the second brightest star, can be seen from Rhodes but
+			never from Rome.
 		</p>
 
 		<!-- Figure 1: the sky around the pole, a blue plate (STYLE.md §7) -->
@@ -166,7 +168,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="sky-lat">latitude φ</label>
+							<label for="sky-lat">geographic latitude φ</label>
 							<input id="sky-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -194,9 +196,9 @@
 			</div>
 			<figcaption>
 				Press play and watch the sky turn about P while the ground stays
-				put. Then move the latitude and watch P climb to an altitude equal
-				to φ, and Ptolemy's circle of stars that never set grow with it.
-				Drag the sphere to turn the view.
+				put. Then move the geographic latitude and watch P climb to an
+				altitude equal to φ, and Ptolemy's circle of stars that never
+				set grow with it. Drag the sphere to turn the view.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -457,7 +459,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="out-lat">latitude φ</label>
+							<label for="out-lat">geographic latitude φ</label>
 							<input id="out-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -476,8 +478,8 @@
 			</div>
 			<figcaption>
 				Here the stars are held still and the Earth turns instead. Give
-				the figure the time and latitude of Figure 2 and notice that the
-				altitude comes out the same.
+				the figure the time and geographic latitude of Figure 2 and
+				notice that the altitude comes out the same.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -556,9 +558,10 @@
 
 		<p>
 			On the equator itself $\delta = 0$, so $H_0 = 90^\circ$ and $f =
-			\tfrac12$ at every latitude. This is why Ptolemy calls the equator "the
-			only [such parallel circle] which is always bisected by the horizon"
-			(<em>Almagest</em> I 8), and why the Sun on it gives equal day and night.
+			\tfrac12$ at every geographic latitude. This is why Ptolemy calls
+			the equator "the only [such parallel circle] which is always
+			bisected by the horizon" (<em>Almagest</em> I 8), and why the Sun on
+			it gives equal day and night.
 		</p>
 
 		<!-- Figure 4: the day of a star -->
@@ -585,7 +588,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="day-lat">latitude φ</label>
+							<label for="day-lat">geographic latitude φ</label>
 							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -602,10 +605,10 @@
 				<div class="readout" id="day-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Choose a declination and a latitude, and notice how the shaded
-				part of the turn in (a), the time the star spends above the
-				horizon, fills the whole turn as the dot in (b) enters the region
-				of stars that never set.
+				Choose a declination and a geographic latitude, and notice how
+				the shaded part of the turn in (a), the time the star spends
+				above the horizon, fills the whole turn as the dot in (b) enters
+				the region of stars that never set.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -627,8 +630,8 @@
 			star crosses that fixed line at a sharp moment, which a clock can
 			time, and it is then at its highest, where its altitude briefly
 			stops changing and can be read. The crossings give the rate of the
-			turn, the latitude $\varphi$, which is the altitude of the pole, and
-			each star's declination $\delta$.
+			turn, the geographic latitude $\varphi$, which is the altitude of
+			the pole, and each star's declination $\delta$.
 		</p>
 
 		<div class="row">
@@ -645,11 +648,11 @@
 
 		<div class="row">
 			<p>
-				<strong>Latitude and declination together.</strong> For these we
-				take a star that never sets and measure its altitude at both
-				meridian crossings, counted from the north point (so the upper
-				one may pass 90°). The formulas for $a_\text{max}$ and
-				$a_\text{min}$ then give
+				<strong>Geographic latitude and declination together.</strong>
+				For these we take a star that never sets and measure its
+				altitude at both meridian crossings, counted from the north
+				point (so the upper one may pass 90°). The formulas for
+				$a_\text{max}$ and $a_\text{min}$ then give
 			</p>
 			<aside>
 				<div class="note" data-origin="greek"></div>
@@ -668,11 +671,11 @@
 
 		<div class="row">
 			<p>
-				Ptolemy measured the meridian altitudes of the noon Sun with a bronze
-				ring and a stone quadrant (<em>Almagest</em> I 12). For
+				Ptolemy measured the meridian altitudes of the noon Sun with a
+				bronze ring and a stone quadrant (<em>Almagest</em> I 12). For
 				Alexandria he gives the equator's distance from the zenith,
-				which is the latitude, as 30°58′ (30.97°, <em>Almagest</em> V 12), 14′ below the
-				modern 31°12′.
+				which is the geographic latitude, as 30°58′ (30.97°,
+				<em>Almagest</em> V 12), 14′ below the modern 31°12′.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -731,7 +734,7 @@
 					</div>
 					<div>
 						<div class="ctl">
-							<label for="test-lat">latitude φ</label>
+							<label for="test-lat">geographic latitude φ</label>
 							<input id="test-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -747,7 +750,7 @@
 				</div>
 			</div>
 			<figcaption>
-				Choose a star and a latitude, and notice that the curve stays
+				Choose a star and a geographic latitude, and notice that the curve stays
 				within a few arcminutes of zero while the star is high and plunges
 				only in its last few degrees above the horizon.
 			</figcaption>
@@ -787,8 +790,8 @@
 		</p>
 
 		<p>
-			This page has no longitude to test, so it has no error curve. The
-			error curve, the model's longitude minus the real one plotted
+			This page has no ecliptic longitude to test, so it has no error curve. The
+			error curve, the model's ecliptic longitude minus the real one plotted
 			against time, starts on
 			<a href="../../act2-sun/01-uneven-year/index.html">page 2.1</a>,
 			with the first model of the Sun's motion, and from there on every
@@ -979,9 +982,10 @@
 
 		<ul class="sources">
 			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): I 3, I 4,
-				I 6, I 7, I 8 (the sphere, the Earth as a point, the two motions);
-				I 12 (the meridian instruments); II 1–3 and II 6 (latitude, the longest
-				day at Rhodes, the ever-visible circle); V 12 (Alexandria).</li>
+				I 6, I 7, I 8 (the sphere, the Earth as a point, the two
+				motions); I 12 (the meridian instruments); II 1–3 and II 6
+				(geographic latitude, the longest day at Rhodes, the
+				ever-visible circle); V 12 (Alexandria).</li>
 			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), I 5
 				[ff. 3r–3v] (the observer's motion and the turning Earth); I 8
 				[f. 6r] (the air turns with the Earth); the preface to Book II
@@ -990,7 +994,7 @@
 				la Terre au moyen du pendule", <em>Comptes rendus de l'Académie
 				des sciences</em> 32 (1851).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.1–2.2 and 2.8–2.10.
-				He writes $L$ for the latitude, here $\varphi$.</li>
+				He writes $L$ for the geographic latitude, here $\varphi$.</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 12
 				(sidereal time), 13 (altitude), 15 (rising and setting), 16
 				(refraction).</li>

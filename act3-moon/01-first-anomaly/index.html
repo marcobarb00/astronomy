@@ -14,6 +14,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>3.1 · The first anomaly · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -126,7 +127,7 @@
 		<p>
 			Each of the Moon's motions has its own month, the time it takes to
 			come back to the same place. The model of this page uses two of them,
-			the tropical month for the mean motion in longitude and the
+			the tropical month for the mean motion in ecliptic longitude and the
 			anomalistic month for the motion in anomaly. The table gives all five,
 			from the mean motions of the reference Moon, because they differ by
 			hours and are easily confused.
@@ -144,7 +145,7 @@
 			<tbody>
 				<tr>
 					<td>tropical</td>
-					<td>the same longitude</td>
+					<td>the same ecliptic longitude</td>
 					<td>27.32158 d</td>
 				</tr>
 				<tr>
@@ -219,7 +220,7 @@
 				epicycle "in such a way that on the arc near the apogee its motion is
 				in advance with respect to the heavens", that is, westward, at the
 				speed of its return in anomaly. He leaves out the small tilt of the
-				Moon's orbit, which hardly changes its longitude.
+				Moon's orbit, which hardly changes its ecliptic longitude.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -229,12 +230,12 @@
 		<p>
 			Let the carrying circle, the <em>deferent</em>, have radius $R$, and
 			the epicycle radius $r$. The centre K of the epicycle moves at the
-			mean longitude $\bar\lambda = L_0 + n\,d$, as the mean Sun of page 1.3
-			does. The Moon's angle on the epicycle, counted westward from the
-			epicycle's apogee, the point farthest from the Earth, is the
-			<em>anomaly</em> $M = M_0 + n_M\,d$, the angle after which the first
-			anomaly is named. The two daily motions $n$ and $n_M$
-			belong to the tropical and the anomalistic month, 13.18° and 13.06°.
+			mean ecliptic longitude $\bar\lambda = L_0 + n\,d$, as the mean Sun
+			of page 1.3 does. The Moon's angle on the epicycle, counted westward
+			from the epicycle's apogee, the point farthest from the Earth, is
+			the <em>anomaly</em> $M = M_0 + n_M\,d$, the angle after which the
+			first anomaly is named. The two daily motions $n$ and $n_M$ belong
+			to the tropical and the anomalistic month, 13.18° and 13.06°.
 		</p>
 
 		<p>
@@ -259,7 +260,7 @@
 
 		<p>
 			The direction of this vector from the first axis is the angle from
-			$\bar\lambda$ to the Moon's true longitude $\lambda$, the
+			$\bar\lambda$ to the Moon's true ecliptic longitude $\lambda$, the
 			<em>equation of anomaly</em> $q$. With $e = r/R$,
 		</p>
 
@@ -367,7 +368,7 @@
 					<p class="key-title">In panel (a)</p>
 					<dl class="key">
 						<dt class="c-deferent">dashed</dt>
-						<dd>the mean longitude $\bar\lambda$, through K to the apogee of the epicycle</dd>
+						<dd>the mean ecliptic longitude $\bar\lambda$, through K to the apogee of the epicycle</dd>
 						<dt class="c-epicycle">$M$</dt>
 						<dd>counted westward (clockwise) from the apogee</dd>
 					</dl>
@@ -381,19 +382,19 @@
 			Page 2.1 noted that the Sun's inequality can be produced either by an
 			eccentric or by an epicycle. The two models are equivalent, and once
 			the Moon's position is written as a sum of vectors the proof is short.
-			With $\hat u(\lambda)$ the unit vector at longitude $\lambda$, the
+			With $\hat u(\lambda)$ the unit vector at ecliptic longitude $\lambda$, the
 			epicycle puts the Moon at
 		</p>
 
 		$$\vec{OL} = R\,\hat u(\bar\lambda) + r\,\hat u(\bar\lambda - M).$$
 
 		<p>
-			Vector addition commutes, so the same point is $r\,\hat u(\bar\lambda
-			- M) + R\,\hat u(\bar\lambda)$. Read this way, the Moon moves at the
-			mean longitude on a circle of radius $R$ whose centre C lies at the
-			distance $r$ from the Earth, towards $\bar\lambda - M$. That circle is
-			an eccentric with eccentricity $e = r/R$ and its apogee at $\lambda_A
-			= \bar\lambda - M$:
+			Vector addition commutes, so the same point is $r\,\hat
+			u(\bar\lambda - M) + R\,\hat u(\bar\lambda)$. Read this way, the
+			Moon moves at the mean ecliptic longitude on a circle of radius $R$
+			whose centre C lies at the distance $r$ from the Earth, towards
+			$\bar\lambda - M$. That circle is an eccentric with eccentricity $e
+			= r/R$ and its apogee at $\lambda_A = \bar\lambda - M$:
 		</p>
 
 		<div class="box">
@@ -401,22 +402,23 @@
 		</div>
 
 		<p>
-			The two constructions give the same point at every moment, and so the
-			same longitude and the same distance, provided the eccentric's apogee
-			moves at the difference of the two mean motions. The Earth O, the
-			centre K, the Moon L and the centre C are the corners of a
-			parallelogram.
+			The two constructions give the same point at every moment, and so
+			the same ecliptic longitude and the same distance, provided the
+			eccentric's apogee moves at the difference of the two mean motions.
+			The Earth O, the centre K, the Moon L and the centre C are the
+			corners of a parallelogram.
 		</p>
 
 		<div class="row">
 			<p>
-				That parallelogram is Ptolemy's proof (IV 5). He concludes that "the
-				same phenomena will in all cases result from both the hypotheses",
-				whether the periods of the anomaly and of the longitude are equal, as
-				for the Sun, or unequal, as for the Moon, provided the ratios are
-				the same. An eccentric of another size, with the same ratio of
-				eccentricity to radius, still gives the same directions; only the
-				distances change (Exercise 1).
+				That parallelogram is Ptolemy's proof (IV 5). He concludes that
+				"the same phenomena will in all cases result from both the
+				hypotheses", whether the periods of the anomaly and of the
+				ecliptic longitude are equal, as for the Sun, or unequal, as for
+				the Moon, provided the ratios are the same. An eccentric of
+				another size, with the same ratio of eccentricity to radius,
+				still gives the same directions; only the distances change
+				(Exercise 1).
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -455,19 +457,20 @@
 									aria-label="next day">next day ›</button>
 							</span>
 						</div>
+						<div class="presets" id="eq-views"></div>
 						<div class="presets">
-							<button type="button" class="play" id="eq-play-month">Play a month</button>
-							<button type="button" class="play" id="eq-play-years">Play 9 years</button>
+							<button type="button" class="play" id="eq-play">Play</button>
 						</div>
 						<div class="readout" id="equivalence-readout" data-lines="4"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Play a month and follow the parallelogram: the Moon sits where the
-				epicycle and the eccentric meet, and the read-out gives the same
-				longitude for both. Then play nine years and watch the eccentric turn
-				once round the Earth. The drawing uses $r/R = 0.3$.
+				Play a month and follow the parallelogram: the Moon sits where
+				the epicycle and the eccentric meet, and the read-out gives the
+				same ecliptic longitude for both. Then choose the eccentric's
+				turn and play it: the eccentric goes once round the Earth in
+				8.85 years. The drawing uses $r/R = 0.3$.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -489,19 +492,20 @@
 
 		<p>
 			What the observations must supply is the size of the epicycle, $e =
-			r/R$, and where the Moon stood at one moment, its mean longitude and
-			its anomaly, which fix $L_0$ and $M_0$. To use observations made months
-			apart, the method also needs the two mean motions, which carry the
-			Moon from one observation to the next, so we find those first.
+			r/R$, and where the Moon stood at one moment, its mean ecliptic
+			longitude and its anomaly, which fix $L_0$ and $M_0$. To use
+			observations made months apart, the method also needs the two mean
+			motions, which carry the Moon from one observation to the next, so
+			we find those first.
 		</p>
 
 		<h3>The mean motions</h3>
 
 		<p>
-			The mean motion in longitude comes from the Moon's return to the Sun.
-			In one synodic month $P_s$ the Moon gains a whole turn on the mean Sun,
-			so it moves 360° more than the mean Sun in the same time, and its daily
-			motion is
+			The mean motion in ecliptic longitude comes from the Moon's return
+			to the Sun. In one synodic month $P_s$ the Moon gains a whole turn
+			on the mean Sun, so it moves 360° more than the mean Sun in the same
+			time, and its daily motion is
 		</p>
 
 		$$n = n_\odot + \frac{360^\circ}{P_s},$$
@@ -555,8 +559,9 @@
 				Ptolemy insists that the theory of the Moon be built on lunar
 				eclipses, "the only observations which allow one to determine the
 				lunar position precisely" (IV 1). At the middle of a lunar eclipse
-				the Moon is opposite the Sun, whose longitude the eccentric of page
-				2.1 gives, so the Moon's longitude is known without measuring it
+				the Moon is opposite the Sun, whose ecliptic longitude the eccentric of
+			page 2.1 gives, so the Moon's ecliptic longitude is known without
+			measuring it
 				against the stars. And the Moon is near enough for an observer's
 				place on the Earth to shift it against the stars, a parallax that
 				does not affect the moment of an eclipse.
@@ -591,12 +596,12 @@
 		<h3>The three-eclipse method</h3>
 
 		<p>
-			Three eclipses give three moments, $t_1$, $t_2$ and $t_3$, the middles
-			of the eclipses. The unknowns are $e$ and the mean longitude and the
-			anomaly $M_2$ at the second eclipse. Between the first two eclipses the
-			mean Moon advances by $n\,(t_2 - t_1)$, and the Moon goes round its
-			epicycle by the arc of anomaly $a_{12}$; between the second and the
-			third, by $a_{23}$:
+			Three eclipses give three moments, $t_1$, $t_2$ and $t_3$, the
+			middles of the eclipses. The unknowns are $e$ and the mean ecliptic
+			longitude and the anomaly $M_2$ at the second eclipse. Between the
+			first two eclipses the mean Moon advances by $n\,(t_2 - t_1)$, and
+			the Moon goes round its epicycle by the arc of anomaly $a_{12}$;
+			between the second and the third, by $a_{23}$:
 		</p>
 
 		$$a_{12} = n_M\,(t_2 - t_1), \qquad a_{23} = n_M\,(t_3 - t_2),$$
@@ -684,9 +689,9 @@
 		</div>
 
 		<p>
-			Since the mean longitude grows by exactly $n\,(t_2 - t_1)$, what is left
-			in $d_{12}$ is the change of the equation of anomaly between the two
-			eclipses, and the same holds for $d_{23}$:
+			Since the mean ecliptic longitude grows by exactly $n\,(t_2 - t_1)$,
+			what is left in $d_{12}$ is the change of the equation of anomaly
+			between the two eclipses, and the same holds for $d_{23}$:
 		</p>
 
 		$$d_{12} = q(M_2) - q(M_2 - a_{12}), \qquad d_{23} = q(M_2 + a_{23}) - q(M_2).$$
@@ -787,8 +792,8 @@
 
 		<p>
 			Going back from the second eclipse to J2000.0 at the two mean rates
-			gives $L_0$ and $M_0$. The mean longitude we find there differs from
-			Meeus' by a quarter of an arcminute.
+			gives $L_0$ and $M_0$. The mean ecliptic longitude we find there
+			differs from Meeus' by a quarter of an arcminute.
 		</p>
 
 		<p>
@@ -907,11 +912,12 @@
 			<aside>
 				<div class="note" data-origin="modern"></div>
 				<div class="note today">
-					The Moon's longitude is computed from a series of terms derived
-					from Newton's gravitation (Meeus 47 for the reference sky). The
-					first is the ellipse's; the others come from the Sun's pull, which
-					also turns the ellipse, its perigee going round in 8.85 years like
-					the apogee of this page's eccentric.
+					The Moon's ecliptic longitude is computed from a series of
+					terms derived from Newton's gravitation (Meeus 47 for the
+					reference sky). The first is the ellipse's; the others come
+					from the Sun's pull, which also turns the ellipse, its
+					perigee going round in 8.85 years like the apogee of this
+					page's eccentric.
 				</div>
 			</aside>
 		</div>
@@ -944,14 +950,15 @@
 		<div class="exercise" data-kind="derive">
 			<p>
 				Prove the theorem of section 2 in Ptolemy's general form: an
-				eccentric of radius $R'$, whose centre is at the distance $r'$ from
-				the Earth with $r'/R' = r/R$, whose apogee moves at $n - n_M$, and on
-				which the Moon is seen from the centre at the mean longitude
-				$\bar\lambda$, puts the Moon in the same direction as the epicycle at every moment,
-				but not at the same distance. Then apply it to Hipparchus: Ptolemy
-				reports that he found 6.25 where the radius is 60 with an eccentric,
-				and 4.77 with an epicycle (IV 11). Can both describe the same Moon?
-				Find the greatest equation of each.
+				eccentric of radius $R'$, whose centre is at the distance $r'$
+				from the Earth with $r'/R' = r/R$, whose apogee moves at $n -
+				n_M$, and on which the Moon is seen from the centre at the mean
+				ecliptic longitude $\bar\lambda$, puts the Moon in the same
+				direction as the epicycle at every moment, but not at the same
+				distance. Then apply it to Hipparchus: Ptolemy reports that he
+				found 6.25 where the radius is 60 with an eccentric, and 4.77
+				with an epicycle (IV 11). Can both describe the same Moon? Find
+				the greatest equation of each.
 			</p>
 			<details class="hint">
 				<p>
@@ -1017,17 +1024,18 @@
 
 		<div class="exercise" data-kind="compute">
 			<p>
-				Start from the intervals between Ptolemy's Babylonian eclipses as
-				recorded, 354 days 2½ hours and 176 days 20½ hours, and his daily
-				motions, $n = 13.1763822^\circ$ and $n_M = 13.0649829^\circ$. Find the
-				mean motion and the arc of anomaly over each interval, and compare
-				them with his values in the table of section 3. Then, with his values,
-				the true motions of the Sun, 349°15′ and 169°30′, give $d_{12}$ and
-				$d_{23}$ (IV 6). Solve the first-order
-				equations of section 3 for $X$ and $Y$, then find $e$ and $M_2$, and
-				compare with the exact solution of Figure 4 ("Babylon, 721 BC") and
-				with Ptolemy's 5.22 and 12°24′. The Moon's true longitude at the
-				second eclipse was Virgo 13°45′ (163.75°): where was the mean Moon?
+				Start from the intervals between Ptolemy's Babylonian eclipses
+				as recorded, 354 days 2½ hours and 176 days 20½ hours, and his
+				daily motions, $n = 13.1763822^\circ$ and $n_M =
+				13.0649829^\circ$. Find the mean motion and the arc of anomaly
+				over each interval, and compare them with his values in the
+				table of section 3. Then, with his values, the true motions of
+				the Sun, 349°15′ and 169°30′, give $d_{12}$ and $d_{23}$ (IV 6).
+				Solve the first-order equations of section 3 for $X$ and $Y$,
+				then find $e$ and $M_2$, and compare with the exact solution of
+				Figure 4 ("Babylon, 721 BC") and with Ptolemy's 5.22 and 12°24′.
+				The Moon's true ecliptic longitude at the second eclipse was
+				Virgo 13°45′ (163.75°): where was the mean Moon?
 			</p>
 			<details class="hint">
 				<p>
@@ -1091,8 +1099,8 @@
 				anomalies: the ellipse, the evection, the variation, the annual
 				equation; the motion of the perigee in 8.85 years).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 47
-				(the reference Moon, its mean longitude, mean anomaly and argument of
-				latitude, the terms of the evection).</li>
+				(the reference Moon, its mean ecliptic longitude, mean anomaly
+				and argument of latitude, the terms of the evection).</li>
 			<li>Every number on this page: <code>tools/numbers/3.1-first-anomaly.js</code>.</li>
 		</ul>
 

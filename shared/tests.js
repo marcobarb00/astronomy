@@ -1932,9 +1932,9 @@ function testLunarLatitude() {
 		Eclipses.predict(Eclipses.FIT_2026, k).kind
 	);
 
-	// angles folded onto the nearer node
+	// angles folded onto the nearest node
 	checkEqual(
-		'Angles from the nearer node',
+		'Angles from the nearest node',
 		'Eclipses.nodeAngle',
 		'10 -10 -10 10 0',
 		[10, 350, 170, 190, 180].map(a => Math.round(Eclipses.nodeAngle(a))).join(' ')

@@ -119,9 +119,27 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **A fast and a slow motion in one figure: two views, not a faster
+  play.** Playing the slow motion at the speed it needs (years a second)
+  made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing
+  only every n-th frame, tried on 2026-11-02, looked wrong to Marco. On
+  2026-11-03 Marco chose a view switch: "A month" draws everything, the
+  slow view ("The eccentric's turn", "The nodes' turn") draws only what
+  moves slowly, and the play button plays the chosen view at its own
+  speed. What is drawn changes only when the reader changes the view. →
+  CLAUDE.md, "Rules for every figure"
 
 ## Writing
 
+- **Every longitude and latitude names its kind** (ecliptic, geographic,
+  heliocentric), even where the context seems to make it clear. Marco
+  asked for it on 2026-11-03, on page 3.3, where "the Sun's longitude"
+  and "the Moon's latitude" were left bare, and the same day on every
+  page, the templates and the site map. The names of quantities that are
+  not coordinates (the argument of latitude) keep their form; a general
+  frame of page 1.2 has "the frame's longitude". A slider label such as
+  "geographic latitude φ" wraps onto two lines, in a label column widened
+  to 82 px on a phone so that "geographic" fits. → CLAUDE.md "Writing"
 - **The voice of a good teacher writing a careful textbook.** "We" for the
   work done together, "you" for what the reader does with the page; why
   before what; no announced plans, verdict sentences or slogans. Adopted

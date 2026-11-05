@@ -15,6 +15,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>3.2 · Evection and the distance problem · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -65,11 +66,12 @@
 		</p>
 
 		<p>
-			Ptolemy found the law of this second inequality and built a model for
-			it, in which the epicycle comes nearer the Earth at the quarters. It
-			brings the largest error in longitude down from 3.2° to 1.8°. It also
-			makes the Moon's distance change by nearly a factor of two, and the
-			Moon's apparent size shows that it does not.
+			Ptolemy found the law of this second inequality and built a model
+			for it, in which the epicycle comes nearer the Earth at the
+			quarters. It brings the largest error in ecliptic longitude down
+			from 3.2° to 1.8°. It also makes the Moon's distance change by
+			nearly a factor of two, and the Moon's apparent size shows that it
+			does not.
 		</p>
 
 		<!-- ============================ 1. OBSERVATION ============================ -->
@@ -77,11 +79,11 @@
 
 		<p>
 			To see the discrepancy, we take the real Moon's whole equation, its
-			true longitude minus its mean longitude, at two kinds of moments: the
-			new and full Moons, which eclipses sample, and the quarters. Figure 1
-			plots it for each of them from 2021 to 2030, about 250 of each, against
-			the anomaly $M$ of the reference Moon's mean motions, counted from the
-			apogee as on page 3.1.
+			true ecliptic longitude minus its mean ecliptic longitude, at two
+			kinds of moments: the new and full Moons, which eclipses sample, and
+			the quarters. Figure 1 plots it for each of them from 2021 to 2030,
+			about 250 of each, against the anomaly $M$ of the reference Moon's
+			mean motions, counted from the apogee as on page 3.1.
 		</p>
 
 		<!-- Figure 1: the equation against the anomaly, at the syzygies and at the quarters (static) -->
@@ -151,7 +153,7 @@
 
 		<div class="row">
 			<p>
-				An epicycle seen from nearer looks larger, and its equation grows. So
+				A closer epicycle appears larger, increasing the equation of the center. So
 				Ptolemy concluded that "we must suppose the moon's epicycle to be
 				carried on an eccentric circle, being farthest from the earth at
 				conjunction and opposition, and nearest to the earth at both
@@ -165,14 +167,15 @@
 		</div>
 
 		<p>
-			Let $D = \bar\lambda - \bar\lambda_\odot$ be the mean elongation, the
-			Moon's mean longitude minus the mean Sun's. The centre K of the epicycle
-			still moves at the mean longitude $\bar\lambda$ as seen from the Earth
-			O. The eccentric's centre C turns westward about O, and its apogee A
-			lies at the longitude $\bar\lambda - 2D$, so that A and K always lie
-			symmetrically about the line of the mean Sun, at $\bar\lambda_\odot \pm
-			D$. The construction is usually called Ptolemy's crank mechanism, since
-			C turns about O as a crank turns about its axle.
+			Let $D = \bar\lambda - \bar\lambda_\odot$ be the mean elongation,
+			the Moon's mean ecliptic longitude minus the mean Sun's. The centre
+			K of the epicycle still moves at the mean ecliptic longitude
+			$\bar\lambda$ as seen from the Earth O. The eccentric's centre C
+			turns westward about O, and its apogee A lies at the ecliptic
+			longitude $\bar\lambda - 2D$, so that A and K always lie
+			symmetrically about the line of the mean Sun, at $\bar\lambda_\odot
+			\pm D$. The construction is usually called Ptolemy's crank
+			mechanism, since C turns about O as a crank turns about its axle.
 		</p>
 
 		<p>
@@ -299,7 +302,7 @@
 
 		<p>
 			To find the mean apogee, take a frame with its origin at the Earth O,
-			its first axis towards K, at the longitude $\bar\lambda$, and its
+			its first axis towards K, at the ecliptic longitude $\bar\lambda$, and its
 			second 90° further east. There K is at $(\rho, 0)$ and N, opposite C, at
 			$(-c\cos 2D,\ c\sin 2D)$. The line from N through K leaves K at the
 			angle
@@ -508,7 +511,7 @@
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The crank against the real Moon</h2>
 
-		<h3>Longitude</h3>
+		<h3>Ecliptic longitude</h3>
 
 		<p>
 			The quarters of 2026 were used for the fit, so they test little. The
@@ -579,20 +582,21 @@
 
 		<div class="row">
 			<p>
-				The crank was built to fit longitudes, but it also fixes the Moon's
-				distance OL. That is greatest, $1 + e$, at new and full Moon with the
-				Moon at the apogee of its epicycle, and least, $1 - 2c - e$, at a quarter
-				with the Moon at the perigee. With Ptolemy's numbers the ratio of the
-				two is 1.91. The real Moon's distance varies over 2026 by a ratio of
-				only 1.14.
+				The crank was built to fit ecliptic longitudes, but it also
+				fixes the Moon's distance OL. That is greatest, $1 + e$, at new
+				and full Moon with the Moon at the apogee of its epicycle, and
+				least, $1 - 2c - e$, at a quarter with the Moon at the perigee.
+				With Ptolemy's numbers the ratio of the two is 1.91. The real
+				Moon's distance varies over 2026 by a ratio of only 1.14.
 			</p>
 			<aside>
 				<div class="note today">
-					The evection is explained as an effect of the Sun's pull, which
-					through each month makes the Moon's ellipse more and less
-					eccentric and swings its axis to and fro. The Earth stays at the
-					focus, so the 1.27° in longitude comes with a small change of
-					distance, where the crank brings the whole epicycle nearer.
+					The evection is explained as an effect of the Sun's pull,
+					which through each month makes the Moon's ellipse more and
+					less eccentric and swings its axis to and fro. The Earth
+					stays at the focus, so the 1.27° in ecliptic longitude comes
+					with a small change of distance, where the crank brings the
+					whole epicycle nearer.
 				</div>
 			</aside>
 		</div>
@@ -694,9 +698,9 @@
 
 		<p>
 			Ptolemy proves that at new and full Moon the crank's effect is
-			negligible (V 10). In 2026 the crank fitted to that year is within 42′
-			there, where page 3.1's epicycle was within 40′, so the longitudes that
-			decide eclipses are no better and no worse.
+			negligible (V 10). In 2026 the crank fitted to that year is within
+			42′ there, where page 3.1's epicycle was within 40′, so the ecliptic
+			longitudes that decide eclipses are no better and no worse.
 		</p>
 
 		<div class="row">
@@ -716,10 +720,11 @@
 		</div>
 
 		<p>
-			The complete model gives the Moon's longitude within 2° at every phase,
-			and within about 40′ at new and full Moon. An eclipse needs one more
-			coordinate, since the Moon must also be near the ecliptic. Page 3.3 adds
-			the Moon's latitude and decides which new and full Moons are eclipses.
+			The complete model gives the Moon's ecliptic longitude within 2° at
+			every phase, and within about 40′ at new and full Moon. An eclipse
+			needs one more coordinate, since the Moon must also be near the
+			ecliptic. Page 3.3 adds the Moon's ecliptic latitude and decides
+			which new and full Moons are eclipses.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -817,16 +822,17 @@
 
 		<div class="exercise" data-kind="break">
 			<p>
-				On 1 October 135, near the first quarter, Ptolemy measured the Moon's
-				zenith distance at Alexandria as 50°55′ (50.92°), where his model,
-				with the Moon's latitude, put its position as seen from the Earth's
-				centre at 49°48′ (49.80°) (V 13). He took the difference, 67′, as the
-				Moon's parallax, $\sin p = \sin z'/d$ with $z'$ the measured zenith
-				distance and $d$ the distance in Earth radii. Find $d$. His model put
-				the Moon at 40.42 where OA = 60: what does OA become in Earth radii?
-				The reference Moon was then 385·409 km from the Earth's centre, 60.4
-				Earth radii. What parallax should he have measured, and what does his
-				measurement say about his model?
+				On 1 October 135, near the first quarter, Ptolemy measured the
+				Moon's zenith distance at Alexandria as 50°55′ (50.92°), where
+				his model, with the Moon's ecliptic latitude, put its position
+				as seen from the Earth's centre at 49°48′ (49.80°) (V 13). He
+				took the difference, 67′, as the Moon's parallax, $\sin p = \sin
+				z'/d$ with $z'$ the measured zenith distance and $d$ the
+				distance in Earth radii. Find $d$. His model put the Moon at
+				40.42 where OA = 60: what does OA become in Earth radii? The
+				reference Moon was then 385·409 km from the Earth's centre, 60.4
+				Earth radii. What parallax should he have measured, and what
+				does his measurement say about his model?
 			</p>
 			<details class="hint">
 				<p>
@@ -848,15 +854,17 @@
 					quarter.
 				</p>
 				<p>
-					This one observation fixes the scale of the model, OA in Earth radii,
-					so it cannot test the model's ratio of distances: that needs
-					parallaxes at both new or full Moon and the quarters. Toomer finds that
-					the errors in the observation, the latitude and the model cancel, and
-					writes "This is no accident; Ptolemy knew (approximately) what the
-					parallax had to be at eclipses, and chose an observation which
-					produced that amount". Copernicus made the comparison and found the
-					parallaxes at the quarters to "differ very little or not at all" from
-					those at eclipses (IV 2).
+					This one observation fixes the scale of the model, OA in
+					Earth radii, so it cannot test the model's ratio of
+					distances: that needs parallaxes at both new or full Moon
+					and the quarters. Toomer finds that the errors in the
+					observation, the ecliptic latitude and the model cancel, and
+					writes "This is no accident; Ptolemy knew (approximately)
+					what the parallax had to be at eclipses, and chose an
+					observation which produced that amount". Copernicus made the
+					comparison and found the parallaxes at the quarters to
+					"differ very little or not at all" from those at eclipses
+					(IV 2).
 				</p>
 			</details>
 		</div>
@@ -883,8 +891,8 @@
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.1 (the evection, the
 				variation and the annual equation, from the Sun's perturbation).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 47
-				(the reference Moon: its longitude series, with the evection and the
-				variation, and its distance).</li>
+				(the reference Moon: its ecliptic longitude series, with the
+				evection and the variation, and its distance).</li>
 			<li>Every number on this page: <code>tools/numbers/3.2-evection.js</code>.</li>
 		</ul>
 

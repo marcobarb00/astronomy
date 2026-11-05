@@ -249,7 +249,7 @@ const reductionFigure = {
 		this.plot = new Plot2D(byId('reduction-plot'), {
 			x: [0, 360],
 			y: REDUCTION_RANGE,
-			xLabel: 'longitude λ',
+			xLabel: 'ecliptic longitude λ',
 			yLabel: 'λ − α (°)',
 			xTicks: longitudeTicks,
 			aspect: 0.95,
@@ -697,7 +697,7 @@ const centuriesFigure = {
 		this.plot = new Plot2D(byId('centuries-plot'), {
 			x: [0, 360],
 			y: CENTURIES_RANGE,
-			xLabel: 'the Sun’s longitude λ',
+			xLabel: 'the Sun’s ecliptic longitude λ',
 			yLabel: 'E (min)',
 			xTicks: longitudeTicks,
 			aspect: 0.5,

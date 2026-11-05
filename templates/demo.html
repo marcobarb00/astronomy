@@ -10,6 +10,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Demo of the shared components · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -80,7 +81,7 @@
 		<div class="row">
 			<p>
 				A star never sets when its declination is $\delta > 90^\circ - \varphi$:
-				try Vega at different latitudes.
+				try Vega at different geographic latitudes.
 			</p>
 			<aside>
 				<div class="note" data-origin="greek"></div>
@@ -111,7 +112,7 @@
 							<output></output>
 						</div>
 						<div class="ctl">
-							<label for="latitude">latitude φ</label>
+							<label for="latitude">geographic latitude φ</label>
 							<input id="latitude" type="range" min="-90" max="90" step="1" value="45">
 							<output></output>
 						</div>
