@@ -740,130 +740,175 @@
 
 		<p>
 			Eclipses happen only at new and full Moon, where the crank of page 3.2
-			moves the Moon by a few arcminutes at most, so the Moon's ecliptic longitude is that of the epicycle of page 3.1, and the Sun's that of page 2.3, with
-			its moving apogee. The ecliptic latitude needs three more numbers: the
-			inclination $i$, the motion in latitude $n_F$, and the argument of
-			latitude at one moment, which places the nodes.
+			moves the Moon by a few arcminutes at most, so the Moon's ecliptic
+			longitude is that of the epicycle of page 3.1, and the Sun's that of
+			page 2.3, with its moving apogee. Both are fitted already. The inclined
+			circle adds three parameters: the motion in latitude $n_F$, the
+			inclination $i$, and the argument of latitude at one moment, which
+			places the nodes.
 		</p>
 
-		<h3>Ptolemy's parameters</h3>
-
-		<div class="row">
-			<p>
-				Ptolemy measured the inclination directly (V 12). At Alexandria the
-				equator passes 30°58′ south of the zenith, and the summer solstice
-				lies 23°51′ north of the equator, so 30°58′ − 23°51′ from the zenith.
-				When the Moon was at its farthest north, near the solstice, it passed
-				only 2⅛° from the zenith: it stood 4.99° north of the ecliptic, "5°"
-				in his words.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				The motion in latitude comes from a period of Babylonian origin that
-				Hipparchus used: 5458 synodic months contain 5923 returns of the Moon
-				to the same node (IV 2). It gives a draconitic month within a tenth of
-				a second of the reference Moon's. Ptolemy corrected it from two
-				eclipses by too little to matter (IV 9), and placed the nodes at his
-				epoch with two more.
-			</p>
-			<aside>
-				<div class="note" data-origin="babylonian"></div>
-				<div class="note" data-origin="hipparchus"></div>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				Ptolemy's eclipse limits of section 2 rest on two sizes, the Moon's
-				apparent diameter and the shadow's radius. He did not trust his
-				sighting instrument to measure them, "it is safer to demonstrate this
-				kind of parameter from the actual phenomena" (VI 5), so he took them
-				from two lunar eclipses with the Moon near the perigee of its
-				epicycle, at the same distance from the Earth both times.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				On 1 May 174 BC at Alexandria the shadow covered 7 twelfths of the
-				Moon's diameter. On 27 January 141 BC at Rhodes, in an eclipse that
-				Hipparchus observed, it covered 3 twelfths. For each, Ptolemy's model
-				gives the Moon's distance from the ecliptic, which at a full Moon is
-				its distance from the shadow's centre: about 43′ in the first eclipse
-				and 55′ in the second.
-			</p>
-			<aside>
-				<div class="note" data-origin="hipparchus"></div>
-			</aside>
-		</div>
+		<h3>The motion in latitude</h3>
 
 		<p>
-			Ptolemy computes that difference as 11′47″ (11.78′). Moving that much
-			farther from the shadow's centre, the Moon had 4 twelfths, a third of
-			its diameter, less in the shadow. So the diameter is three times
-			11.78′, 35.35′, which Ptolemy rounds to 35′20″ (35.33′).
+			A rate is fixed best by two observations far apart, since the error of
+			each is divided by the time between them, once an approximate rate has
+			given the number of whole turns in between. Eclipses are such
+			observations: each puts the Moon close to a node at a recorded moment.
+			One year is far too short for this, so the model of this page takes
+			$n_F$ from the reference Moon (Meeus 47), as page 3.1 took its mean
+			motions.
+		</p>
+
+		<h3>The inclination and the node</h3>
+
+		<p>
+			The inclination and the place of the nodes come from the ecliptic
+			latitudes themselves. From $\beta \approx i\sin F$, small errors
+			$\delta i$ in the inclination and $\delta F$ in the argument of
+			latitude (in radians) change the ecliptic latitude by
+		</p>
+
+		$$\delta\beta \approx \sin F\,\delta i + i\cos F\,\delta F.$$
+
+		<p>
+			An error in the place of the nodes is an error in $F$, which shows most
+			at the nodes and not at all at the limits, where an error in $i$ shows
+			most. So latitudes near the nodes fix the nodes, and latitudes near the
+			limits fix the inclination.
 		</p>
 
 		<p>
-			In the second eclipse a quarter of the diameter, 8.83′, was in the
-			shadow, so the Moon's centre, half a diameter from the Moon's darkened
-			edge, was a quarter of the diameter outside the shadow's edge. The shadow's radius is therefore about 55′ less 8.83′,
-			46′ in Ptolemy's figures: "2⅗ times the moon's radius", close to the
-			2.69 Moon radii of this page.
+			The new and full Moons of a year fall at every distance from the nodes,
+			so they fix both, and they are the moments at which eclipses happen. The
+			model of this page therefore fits $i$ and the argument of latitude at
+			J2000.0 by least squares to the reference Moon's ecliptic latitude at
+			the 25 new and full Moons of 2026.
 		</p>
 
-		<div class="row">
+		<p>
+			The Moon's greatest ecliptic latitudes, which vary from month to month
+			(section 1), would suggest a larger inclination. With 5.145°, their
+			mean, the ecliptic latitudes at the new and full Moons of 2026 would be
+			off by up to 10′.
+		</p>
+
+		<p>
+			The fit gives $i = 5.00^\circ$, and puts the ascending node at 125.05°
+			at J2000.0, a hundredth of a degree from Meeus' mean node.
+		</p>
+
+		<h3>The sizes</h3>
+
+		<p>
+			The limits of section 2 need the radii of the Earth, the Moon and the
+			Sun, and the distances of the Moon and the Sun. The radii are the modern
+			ones; for the distances we take the model's own, the epicycle's, on a
+			deferent at the reference Moon's mean distance of 385·000 km, and the
+			eccentric's, whose radius is 1 au. The model then decides each eclipse
+			with its own Sun and Moon alone, even though its distances vary more
+			than the real ones (page 3.2).
+		</p>
+
+		<!-- History block: Ptolemy's and Copernicus' parameters -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's and Copernicus' parameters</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy fixed the same parameters from other observations. He
+					measured the inclination directly (V 12). At Alexandria the equator
+					passes 30°58′ south of the zenith, and the summer solstice lies
+					23°51′ north of the equator, so 30°58′ − 23°51′ from the zenith.
+					When the Moon was at its farthest north, near the solstice, it passed
+					only 2⅛° from the zenith: it stood 4.99° north of the ecliptic, "5°"
+					in his words, the inclination the fit to 2026 gives.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					The motion in latitude comes from a period of Babylonian origin that
+					Hipparchus used: 5458 synodic months contain 5923 returns of the Moon
+					to the same node (IV 2). It gives a draconitic month within a tenth of
+					a second of the reference Moon's. Ptolemy corrected it from two
+					eclipses by too little to matter (IV 9), and placed the nodes at his
+					epoch with two more.
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Copernicus checked the motion in latitude with two eclipses far apart,
+					one of 174 BC that Ptolemy reports and his own of 2 June 1509, 1683
+					years later (<em>De Revolutionibus</em> IV 13). The motion he finds is
+					within 24′ of the reference Moon's over that interval.
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Ptolemy's eclipse limits of section 2 rest on two sizes, the Moon's
+					apparent diameter and the shadow's radius. He did not trust his
+					sighting instrument to measure them, "it is safer to demonstrate this
+					kind of parameter from the actual phenomena" (VI 5), so he took them
+					from two lunar eclipses with the Moon near the perigee of its
+					epicycle, at the same distance from the Earth both times. The shadow
+					covered different fractions of the Moon in the two, and his model
+					gave how far from the shadow's centre the Moon passed in each, so the
+					difference measures the Moon's diameter.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+
 			<p>
-				Copernicus checked the motion in latitude with two eclipses 1683 years
-				apart, Ptolemy's of 174 BC and his own of 2 June 1509 (<em>De
-				Revolutionibus</em> IV 13). The motion he finds is within 24′ of the
-				reference Moon's over that interval.
+				He finds a diameter of 35′20″ (35.33′), and a shadow's radius of
+				46′, "2⅗ times the moon's radius", close to the 2.69 Moon radii of this
+				page.
 			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
+
+			<details class="fold">
+				<summary>Ptolemy's computation of the sizes</summary>
+				<p>
+					On 1 May 174 BC at Alexandria the shadow covered 7 twelfths of the
+					Moon's diameter. On 27 January 141 BC at Rhodes, in an eclipse that
+					Hipparchus observed, it covered 3 twelfths. For each, Ptolemy's model
+					gives the Moon's distance from the ecliptic, which at a full Moon is
+					its distance from the shadow's centre: about 43′ in the first eclipse
+					and 55′ in the second.
+				</p>
+				<p>
+					Ptolemy computes that difference as 11′47″ (11.78′). Moving that much
+					farther from the shadow's centre, the Moon had 4 twelfths, a third of
+					its diameter, less in the shadow. So the diameter is three times
+					11.78′, 35.35′, which Ptolemy rounds to 35′20″ (35.33′).
+				</p>
+				<p>
+					In the second eclipse a quarter of the diameter, 8.83′, was in the
+					shadow, so the Moon's centre, half a diameter from the Moon's darkened
+					edge, was a quarter of the diameter outside the shadow's edge. The
+					shadow's radius is therefore about 55′ less 8.83′, 46′ in Ptolemy's
+					figures.
+				</p>
+			</details>
 		</div>
-
-		<h3>The fit to 2026</h3>
-
-		<p>
-			The model of this page takes its motion in latitude from the reference
-			Moon (Meeus 47), as page 3.1 took its mean motions. The inclination
-			and the argument of latitude at J2000.0 are fitted by least squares
-			to the ecliptic latitude of the reference Moon at the 25 new and full
-			Moons of 2026. The fit gives $i = 5.00^\circ$, Ptolemy's value, and
-			puts the ascending node at 125.05° at J2000.0, where Meeus' mean node
-			is at 125.04°. At the 25 moments the ecliptic latitudes are within
-			1.9′.
-		</p>
-
-		<p>
-			The Moon's greatest ecliptic latitudes, 4.99° to 5.30°, would suggest a larger
-			inclination. With 5.145°, their mean, the ecliptic latitudes at the new and
-			full Moons of 2026, where eclipses happen, would be off by up to 10′.
-		</p>
-
-		<p>
-			For the sizes we take the modern radii of the Earth, the Moon and the
-			Sun, and the model's own distances: the epicycle's, on a deferent at
-			the reference Moon's mean distance of 385·000 km, and the eccentric's,
-			whose radius is 1 au. Both vary more than the real distances, as page
-			3.2 found: at new and full Moon the epicycle puts the Moon between
-			352·500 and 417·500 km, and the eccentric puts the Sun between 0.967
-			and 1.034 au.
-		</p>
 
 		<!-- =============================== 4. TEST =============================== -->
-		<h2 id="test"><span class="step">4 · Test</span>The model against the real eclipses</h2>
+		<h2 id="test"><span class="step">4 · Test</span>The model against the eclipses of 2021–2030</h2>
 
 		<h3>The ecliptic latitude</h3>
 
@@ -880,16 +925,17 @@
 			<figcaption>
 				Point at the plot to read the errors. The dots, at new and full Moon,
 				stay within 2′ of zero while the curve swings by up to 26′ between
-				them. Switch to 100 years and notice that it does not grow.
+				them. At the dots, compare the faint curve of the mean inclination,
+				which misses by up to 10′.
 			</figcaption>
 		</figure>
 
 		<p>
-			The 25 new and full Moons of 2026 were used for the fit. At every new
-			and full Moon of 2001–2100, which were not, the ecliptic latitude is still
-			within 2.2′. Elsewhere, over the century from 1976 to 2076, the error
-			stays within 29′, since the motions of the model are the reference
-			Moon's mean motions.
+			At the 25 new and full Moons of 2026, to which it was fitted, the
+			ecliptic latitude is within 1.9′ of the reference Moon's. At the other
+			new and full Moons of 2021–2030, which the fit did not use, it is within
+			2.6′. Between them the error is much larger, but no eclipse happens
+			there.
 		</p>
 
 		<h3>The eclipses</h3>
@@ -898,21 +944,17 @@
 			We let the model find its own new and full Moons, from its Sun and its
 			Moon, and decide at each whether there is an eclipse and of what kind.
 			All 38 eclipses of 2021–2030 come out, each of the right kind, and no
-			other. Over the century from 2001 to 2100, 364 of the 366 come out, 11
-			of them of another kind (total for annular, or the reverse, or partial
-			for either); two partial solar eclipses are missed, and two partial
-			lunar and one partial solar eclipse are added, all of them grazing,
-			at the edge of the limits.
+			other.
 		</p>
 
 		<p>
-			The model's new and full Moons fall typically 45 minutes (root mean
-			square) from the middle of the real eclipse, and at worst 97 minutes.
-			Most of this is the error in ecliptic longitude of page 3.1, up to 40′ at new
-			and full Moon, which the Moon takes about 79 minutes to cover relative
-			to the Sun, and longer near its apogee. The rest is the Sun's error,
-			and the middle of an eclipse, which can fall up to 17 minutes from
-			the new or full Moon.
+			The model's new and full Moons fall typically three quarters of an hour
+			from the middle of the real eclipse, and at worst about an hour and a
+			half. Most of this is the error in ecliptic longitude of page 3.1, up
+			to 40′ at new and full Moon, which the Moon takes about 79 minutes to
+			cover relative to the Sun. The rest comes from the Sun's error, and
+			from the middle of an eclipse, which need not fall at the new or full
+			Moon itself.
 		</p>
 
 		<p>
@@ -960,118 +1002,133 @@
 		</table>
 		</div>
 
-		<h3>Ptolemy's eclipses</h3>
+		<!-- History block: Ptolemy's model against his eclipses -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's model against his eclipses</h3>
 
-		<p>
-			Ptolemy's own model, with his Sun, his simple Moon and his ecliptic latitude, can
-			be judged at the three eclipses he observed at Alexandria (IV 6). As on
-			pages 2.1 and 3.1, his days follow the Earth's rotation, and $\Delta T$
-			turns the reference sky's uniform time into his. His times are local
-			apparent times, read from the sky, so the equation of time of page 2.2
-			converts the reference sky's into his.
-		</p>
+			<p>
+				Ptolemy's own model, with his Sun, his simple Moon and his ecliptic
+				latitude, can be judged at the three eclipses he observed at Alexandria
+				(IV 6). As on pages 2.1 and 3.1, his days follow the Earth's rotation,
+				and $\Delta T$ turns the reference sky's uniform time into his. His
+				times are local apparent times, read from the sky, so the equation of
+				time of page 2.2 converts the reference sky's into his.
+			</p>
 
-		<div class="table-scroll">
-		<table class="prose-table">
-			<thead>
-				<tr>
-					<th>Eclipse at Alexandria</th>
-					<th>middle: Ptolemy (IV 6)</th>
-					<th>reference</th>
-					<th>his model</th>
-					<th>$\beta$: reference</th>
-					<th>his model</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>6/7 May 133, total</td>
-					<td>23:15</td>
-					<td>22:52</td>
-					<td>22:55</td>
-					<td>$-22.9'$</td>
-					<td>$-22.5'$</td>
-				</tr>
-				<tr>
-					<td>20/21 October 134, partial</td>
-					<td>23:00</td>
-					<td>22:56</td>
-					<td>22:39</td>
-					<td>$-30.5'$</td>
-					<td>$-30.1'$</td>
-				</tr>
-				<tr>
-					<td>5/6 March 136, half the diameter</td>
-					<td>04:00</td>
-					<td>03:17</td>
-					<td>03:43</td>
-					<td>$-47.7'$</td>
-					<td>$-45.4'$</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-
-		<p>
-			His model's ecliptic latitudes are within 2.3′ of the reference Moon's, and its
-			times within half an hour of the real ones. Yet his Sun is 43′ to 75′
-			behind at these moments, and his Moon about a degree. The errors
-			cancel in the time of the eclipse, because he fixed his Moon by
-			eclipses, as the opposite of his own Sun.
-		</p>
-
-		<p>
-			Over the century from AD 100 to 200 his lunar limit of 15°12′ marks
-			210 of the 1237 full Moons as possible eclipses, and the 157 real
-			lunar eclipses are all among them. The times of his full Moons are
-			typically within 28 minutes of the real eclipses, and at worst an
-			hour.
-		</p>
-
-		<!-- Figure 8: Ptolemy's latitude -->
-		<figure class="fig">
-			<div class="frame">
-				<div id="error-ptolemy"></div>
+			<div class="table-scroll">
+			<table class="prose-table">
+				<thead>
+					<tr>
+						<th>Eclipse at Alexandria</th>
+						<th>middle: Ptolemy (IV 6)</th>
+						<th>reference</th>
+						<th>his model</th>
+						<th>$\beta$: reference</th>
+						<th>his model</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>6/7 May 133, total</td>
+						<td>23:15</td>
+						<td>22:52</td>
+						<td>22:55</td>
+						<td>$-22.9'$</td>
+						<td>$-22.5'$</td>
+					</tr>
+					<tr>
+						<td>20/21 October 134, partial</td>
+						<td>23:00</td>
+						<td>22:56</td>
+						<td>22:39</td>
+						<td>$-30.5'$</td>
+						<td>$-30.1'$</td>
+					</tr>
+					<tr>
+						<td>5/6 March 136, half the diameter</td>
+						<td>04:00</td>
+						<td>03:17</td>
+						<td>03:43</td>
+						<td>$-47.7'$</td>
+						<td>$-45.4'$</td>
+					</tr>
+				</tbody>
+			</table>
 			</div>
-			<figcaption>
-				Read the error at the new and full Moons around his eclipse of 20
-				October 134, then switch to 2000 years. Unlike his ecliptic longitude on
-				pages 3.1 and 3.2, his ecliptic latitude does not drift away.
-			</figcaption>
-		</figure>
 
-		<p>
-			In 2026 his mean argument of latitude is only 0.8° from the reference
-			Moon's, while his mean ecliptic longitude is 10° off: his motion in latitude
-			comes from Hipparchus' period, right within 0.03° a century, while
-			his motion in ecliptic longitude inherits the drift of his Sun (page 3.1). Run
-			forward to 2021–2030,
-			his model finds 37 of the 38 eclipses, missing only the partial lunar
-			eclipse of 28 October 2023, and adds four; 7 of the 37 are of another
-			kind. Its times, though, are now wrong by up to 4.3 hours, as his Sun
-			and his Moon drift apart.
-		</p>
+			<p>
+				His model's ecliptic latitudes are within 2.3′ of the reference Moon's,
+				and its times within half an hour of the real ones. Yet his Sun is 43′
+				to 75′ behind at these moments, and his Moon about a degree. The errors
+				cancel in the time of the eclipse, because he fixed his Moon by
+				eclipses, as the opposite of his own Sun.
+			</p>
+
+			<div class="row">
+				<p>
+					Turned round, the same comparison measures $\Delta T$. The hour
+					Ptolemy recorded follows the Earth's own rotation, while the reference
+					sky gives the moment in its uniform time, so the difference says how
+					far the Earth's rotation has fallen behind a uniform clock. Old eclipse
+					records are how $\Delta T$ is measured before the age of telescopes
+					(Exercise 3).
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+					<div class="note detour" data-topic="deltaT"></div>
+				</aside>
+			</div>
+
+			<p>
+				His lunar limit holds over his century too: all 157 lunar eclipses of
+				AD 100–200 fall within it.
+			</p>
+
+			<!-- Figure 8: Ptolemy's latitude -->
+			<figure class="fig">
+				<div class="frame">
+					<div id="error-ptolemy"></div>
+				</div>
+				<figcaption>
+					Read the error at the new and full Moons around his eclipse of 20
+					October 134, then switch to 2000 years. Unlike his ecliptic longitude on
+					pages 3.1 and 3.2, his ecliptic latitude does not drift away.
+				</figcaption>
+			</figure>
+
+			<p>
+				In 2026 his mean argument of latitude is only 0.8° from the reference
+				Moon's, while his mean ecliptic longitude is 10° off. His motion in
+				latitude comes from Hipparchus' period, which is almost exact, while his
+				motion in ecliptic longitude inherits the drift of his Sun (page 3.1).
+			</p>
+
+			<p>
+				Run forward to 2021–2030, his model still finds 37 of the 38 eclipses,
+				and adds four. Its times, though, are wrong by up to 4.3 hours, as his
+				Sun and his Moon drift apart.
+			</p>
+		</div>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>The times, the quarters and the place</h2>
 
 		<p>
-			An eclipse whose middle is predicted an hour and a half off is still
-			the same eclipse, but a lunar eclipse can then be predicted for a time
-			when the Moon is below the observer's horizon. Such errors in the time
-			are the largest left, and they come from the Moon's ecliptic longitude, which
-			needs the smaller inequalities that page 3.2 left out.
+			The largest errors left are in the times. An eclipse whose middle is
+			predicted an hour and a half off is still the same eclipse, but a lunar
+			eclipse can then be predicted for a time when the Moon is below the
+			observer's horizon. These errors come from the Moon's ecliptic
+			longitude, which needs the smaller inequalities that page 3.2 left out.
 		</p>
 
 		<div class="row">
 			<p>
-				Away from the new and full Moons the ecliptic latitude is wrong by up to 26′.
-				The Moon's greatest ecliptic latitude in 2026 is 5.23° to 5.28° when the Sun is
-				near a node, and 4.99° to 5.04° when it is far from them. At new and
-				full Moon the ecliptic latitude follows a circle inclined by 5.0°, at the
-				quarters one inclined by about 5.3°, as the reference Moon's term
-				$0.17^\circ \sin(2D - F)$ requires. Like the evection, it is an effect of
-				the Sun's pull.
+				The swings of Figure 7 between the new and full Moons come from an
+				inclination that changes with the Moon's phase. At new and full Moon
+				the Moon follows a circle inclined by 5.0°, at the quarters one
+				inclined by about 5.3°, as the reference Moon's term $0.17^\circ
+				\sin(2D - F)$ requires. Like the evection, it is an effect of the Sun's
+				pull.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -1094,27 +1151,11 @@
 			</aside>
 		</div>
 
-		<div class="row">
-			<p>
-				An eclipse recorded at Babylon or Alexandria happened at a moment the
-				reference sky gives in its uniform time, while the recorded hour
-				follows the Earth's own rotation.
-				The difference between the two is $\Delta T$, and the old eclipse
-				records are how it is measured before the age of telescopes (Exercise
-				3).
-			</p>
-			<aside>
-				<div class="note" data-origin="modern"></div>
-				<div class="note detour" data-topic="deltaT"></div>
-			</aside>
-		</div>
-
 		<p>
-			What the model still lacks, besides the smaller inequalities, is the
-			eclipse as one observer sees it. The Sun and the Moon each have their
-			own laws, and the eclipses are where they meet. The planets are tied
-			to the Sun more closely: each of them loops back once in every return
-			to the Sun, the subject of page 4.1.
+			The Sun and the Moon each have their own laws, and the eclipses are
+			where they meet. The planets are tied to the Sun more closely: each of
+			them loops back once in every return to the Sun, the subject of page
+			4.1.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

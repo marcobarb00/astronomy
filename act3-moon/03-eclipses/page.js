@@ -17,9 +17,11 @@
 											   distance from the node, the
 											   Moon's distance)
 	 6. the eclipse seasons of 2026 - 2027    (2D, static)
-	 7. the latitude fitted to 2026           (error curve of the latitude)
+	 7. the latitude fitted to 2026           (error curve of the latitude,
+											   two months and the year)
 	 8. Ptolemy's latitude                    (error curve, AD 134 and
-											   2000 years)
+											   2000 years; in the history
+											   block of the Test)
    Shared code: common.js, time.js, ephemeris.js, stars.js, plate-stars.js,
    plate.js, models/mean-sun.js, models/solar-eccentric.js,
    models/lunar-epicycle.js, models/lunar-latitude.js, models/eclipses.js,
@@ -1039,8 +1041,9 @@ const seasonsFigure = {
    ========================================================================== */
 
 /* Figure 7: the latitude fitted to 2026, with the mean inclination 5.145°
-   as a ghost, over 2026, two months and a century; dots at the new and
-   full Moons (spans of a year or less). */
+   as a ghost, over 2026 and two months of it; dots at the new and full
+   Moons. The Test covers the current period only, so there is no longer
+   span. */
 const latitudeErrorFigure = {
 	init() {
 		const start = YEAR_START;
@@ -1054,8 +1057,7 @@ const latitudeErrorFigure = {
 			end: end,
 			spans: [
 				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 }
+				{ label: '1 year', years: 1 }
 			],
 			ghostButtons: false
 		});
@@ -1075,7 +1077,7 @@ const latitudeErrorFigure = {
 			fn: fit
 		});
 		curve.addMarks({
-			label: 'at the new and full Moons (spans of a year or less)',
+			label: 'at the new and full Moons',
 			color: COL.planet,
 			fn: fit,
 			dates: syzygies,

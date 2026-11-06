@@ -6,7 +6,8 @@
 	 1. Controls
 	 2. The square drawings and panel (c) of Figure 5
 	 3. The tables of the prose
-	 4. Phone width
+	 4. The history blocks
+	 5. Phone width
    ========================================================================== */
 
 /* ==========================================================================
@@ -65,7 +66,46 @@ table.prose-table td:first-child {
 }
 
 /* ==========================================================================
-   4. PHONE WIDTH
+   4. THE HISTORY BLOCKS
+   Ptolemy's and Copernicus' fit and test, kept apart from the model of
+   the page: between two rules in the colour of their origin notes, under
+   a small-caps "History" label. Existing colours only (a pilot: if other
+   pages adopt it, it moves to shared/theme.css).
+   ========================================================================== */
+
+.history {
+	margin: 40px 0;
+	padding: 2px 0 6px;
+	border-top: 1px solid var(--epicycle-text);
+	border-bottom: 1px solid var(--epicycle-text);
+}
+
+.history > h3 {
+	margin-top: 14px;
+}
+
+/* Text keeps to the text column inside the block too, as theme.css does
+   for the article's own paragraphs; figures and rows use the whole width. */
+.history > p,
+.history > h3,
+.history > details.fold {
+	max-width: var(--text-width);
+}
+
+/* The label above the heading, as the step label above a section title. */
+.history-label {
+	display: block;
+	margin-bottom: 2px;
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	color: var(--epicycle-text);
+}
+
+/* ==========================================================================
+   5. PHONE WIDTH
    ========================================================================== */
 
 @media (max-width: 800px) {

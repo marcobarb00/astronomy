@@ -1431,7 +1431,7 @@ Regenerate with: node tools/check/smoke.js --update
     #limits-readout: \text{new Moon: } \beta = -53.6',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  opened 8 hints and answers
+  opened 9 hints and answers
   slider #orbit-day = 0
     OUTPUT (orbit-day): 1 Jan 2026
     #orbit-readout: \text{1 Jan 2026:}\quad \Omega = 342.2^\circ | F = 86.9^\circ,\quad \beta = +4.99^\circ | \text{the Sun } 61.6^\circ \text{ before the nearest node}
@@ -1504,8 +1504,6 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "100 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "2 months"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "2000 years"
@@ -1535,11 +1533,11 @@ Regenerate with: node tools/check/smoke.js --update
   hover #seasons-plot at 0.9
   hover #seasons-plot left
   hover #error-latitude-plot at 0.3
-    .errorcurve-readout: 18 Mar 2002 · mean inclination: +0.9′ · fitted: +5.2′
+    .errorcurve-readout: 4 Apr 2026 · mean inclination: −0.9′ · fitted: +7.2′
   hover #error-latitude-plot at 0.6
-    .errorcurve-readout: 14 Oct 2034 · mean inclination: +1.0′ · fitted: −5.7′
+    .errorcurve-readout: 1 Aug 2026 · mean inclination: −3.9′ · fitted: −6.2′
   hover #error-latitude-plot at 0.9
-    .errorcurve-readout: 11 May 2067 · mean inclination: +1.7′ · fitted: −5.2′
+    .errorcurve-readout: 28 Nov 2026 · mean inclination: +17.8′ · fitted: +14.4′
   hover #error-latitude-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-ptolemy-plot at 0.3
