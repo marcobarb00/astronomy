@@ -3493,16 +3493,10 @@ fit to the 25 new and full Moons of 2026: i = 4.999207°, F0 = 93.266574° (FIT_
   residuals: largest 1.9', rms 0.9'
   with the mean inclination 5.145° (Meeus' sin F term 5.128° and the Moon's whole range) the latitudes at the 25 are off by up to 10.0'
 
-=== 10. Fit: Ptolemy's and Copernicus' parameters ===
+=== 10. Fit: Ptolemy's parameters ===
 Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = 4.99°, "about 5°"
 Hipparchus' 5458 synodic = 5923 returns in latitude: 27.212220 d against 27.212221 d (-0.1 s)
   5458 synodic months = 441.3 Julian years
-  Ptolemy's corrected motion 13.2293510° a day; reference 13.2293502°: 0.03° a century
-  Hipparchus' motion 13.2293507° a day: 0.017° a century from the reference; Ptolemy's 0.028°
-Copernicus IV 13: 1683 Egyptian years of 365 days and 88 days = 614383.934 days = 1682.09 Julian years; the reference's motion in latitude 180.245° beyond whole turns, against his 179;51 = 179.850° (24')
-Ptolemy VI 5: latitudes at 8;20° and 10;36° from the node with i = 5°: 43.4' and 55.1', 11.7' apart (his 0;11,47 = 11.78')
-  diameter 3 x 11;47 = 35.35' (his 0;35,20 = 35.33'); shadow 46' = 2.60 Moon radii
-  shadow's radius: the second eclipse's 55.1' minus a quarter of the diameter, 8.83': 46.3' (his 46')
 
 === 11. Test: the latitude ===
 the fit: at the 25 new and full Moons of 2026 within 1.9'; over the year within 26.0'

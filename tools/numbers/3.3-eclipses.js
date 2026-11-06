@@ -22,7 +22,7 @@
 	 7. Model: the months
 	 8. Model: the shadow and the limits
 	 9. Model: the eclipse seasons
-	10. Fit, then Ptolemy's and Copernicus' parameters (history block)
+	10. Fit, then Ptolemy's parameters (history block)
 	11. Test: the latitude
 	12. Test: the eclipses
 	13. Test: Ptolemy (history block)
@@ -537,8 +537,8 @@ title('10. Fit');
 	);
 }
 
-/* Ptolemy's and Copernicus' parameters (the history block of the Fit). */
-title("10. Fit: Ptolemy's and Copernicus' parameters");
+/* Ptolemy's parameters (the history block of the Fit). */
+title("10. Fit: Ptolemy's parameters");
 {
 	/* Ptolemy's inclination (V 12): the Moon 2 1/8° from the zenith at
 	   the northern limit near the summer solstice, the equator 30;58° and
@@ -553,46 +553,6 @@ title("10. Fit: Ptolemy's and Copernicus' parameters");
 		`Hipparchus' 5458 synodic = 5923 returns in latitude: ${f(draconiticH, 6)} d against ${f(P_DRACONITIC, 6)} d (${f((draconiticH - P_DRACONITIC) * 86400, 1)} s)`
 	);
 	console.log(`  5458 synodic months = ${f((5458 * synodicH) / 365.25, 1)} Julian years`);
-	console.log(
-		`  Ptolemy's corrected motion ${f(LunarLatitude.PTOLEMY.nF, 7)}° a day; reference ${f(RATES.nF, 7)}°: ${f((LunarLatitude.PTOLEMY.nF - RATES.nF) * 36525, 2)}° a century`
-	);
-	console.log(
-		`  Hipparchus' motion ${f(360 / draconiticH, 7)}° a day: ${f((360 / draconiticH - RATES.nF) * 36525, 3)}° a century from the reference; Ptolemy's ${f((LunarLatitude.PTOLEMY.nF - RATES.nF) * 36525, 3)}°`
-	);
-
-	/* Copernicus (De Revolutionibus IV 13): between the eclipses of 174 BC
-	   and 1509, 1683 Egyptian years, 88 days, 22 h 25 min, the uniform
-	   motion in latitude was 179;51° beyond whole turns. */
-	const copernicusDays = 1683 * 365 + 88 + (22 + 25 / 60) / 24;
-	const copernicusMotion = (RATES.nF * copernicusDays) % 360;
-
-	console.log(
-		`Copernicus IV 13: 1683 Egyptian years of 365 days and 88 days = ${f(copernicusDays, 3)} days = ${f(copernicusDays / 365.25, 2)} Julian years; the reference's motion in latitude ${f(copernicusMotion, 3)}° beyond whole turns, against his 179;51 = ${f(179 + 51 / 60, 3)}° (${arcmin(copernicusMotion - (179 + 51 / 60), 0)})`
-	);
-
-	/* Ptolemy's sizes (VI 5): two eclipses near the perigee of the
-	   epicycle, the Moon 8;20° and 10;36° from the node, 7 and 3 digits
-	   eclipsed; their distances from the shadow's centre differ by 0;11,47°,
-	   a third of the diameter; the shadow's radius 46', 2 3/5 Moon radii. */
-	const b1 = LunarLatitude.latitude(8 + 20 / 60, 5);
-	const b2 = LunarLatitude.latitude(10 + 36 / 60, 5);
-	const difference = 11 + 47 / 60;
-
-	console.log(
-		`Ptolemy VI 5: latitudes at 8;20° and 10;36° from the node with i = 5°: ${arcmin(b1)} and ${arcmin(b2)}, ${arcmin(b2 - b1)} apart (his 0;11,47 = ${f(difference, 2)}')`
-	);
-	console.log(
-		`  diameter 3 x 11;47 = ${f(3 * difference, 2)}' (his 0;35,20 = ${f(35 + 20 / 60, 2)}'); shadow 46' = ${f(46 / ((35 + 20 / 60) / 2), 2)} Moon radii`
-	);
-
-	/* The shadow's radius from the second eclipse: 3 digits, a quarter of
-	   the diameter, in the shadow, so the Moon's centre was a quarter of
-	   the diameter outside the shadow's edge. */
-	const quarter = (35 + 20 / 60) / 4;
-
-	console.log(
-		`  shadow's radius: the second eclipse's ${arcmin(b2)} minus a quarter of the diameter, ${f(quarter, 2)}': ${f(b2 * 60 - quarter, 1)}' (his 46')`
-	);
 }
 
 /* ==========================================================================
