@@ -1071,7 +1071,7 @@ const latitudeErrorFigure = {
 			fn: LunarLatitude.make(Object.assign({}, MOON, { i: 5.145 }))
 		});
 		curve.addModel({
-			label: 'the ecliptic latitude fitted to the new and full Moons of 2026',
+			label: 'fitted to the new and full Moons of 2026',
 			short: 'fitted',
 			color: COL.planet,
 			fn: fit

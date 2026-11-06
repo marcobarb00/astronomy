@@ -3496,9 +3496,10 @@ fit to the 25 new and full Moons of 2026: i = 4.999207°, F0 = 93.266574° (FIT_
 === 10. Fit: Ptolemy's and Copernicus' parameters ===
 Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = 4.99°, "about 5°"
 Hipparchus' 5458 synodic = 5923 returns in latitude: 27.212220 d against 27.212221 d (-0.1 s)
+  5458 synodic months = 441.3 Julian years
   Ptolemy's corrected motion 13.2293510° a day; reference 13.2293502°: 0.03° a century
   Hipparchus' motion 13.2293507° a day: 0.017° a century from the reference; Ptolemy's 0.028°
-Copernicus IV 13: 614383.934 days; the reference's motion in latitude 180.245° beyond whole turns, against his 179;51 = 179.850° (24')
+Copernicus IV 13: 1683 Egyptian years of 365 days and 88 days = 614383.934 days = 1682.09 Julian years; the reference's motion in latitude 180.245° beyond whole turns, against his 179;51 = 179.850° (24')
 Ptolemy VI 5: latitudes at 8;20° and 10;36° from the node with i = 5°: 43.4' and 55.1', 11.7' apart (his 0;11,47 = 11.78')
   diameter 3 x 11;47 = 35.35' (his 0;35,20 = 35.33'); shadow 46' = 2.60 Moon radii
   shadow's radius: the second eclipse's 55.1' minus a quarter of the diameter, 8.83': 46.3' (his 46')
@@ -3519,7 +3520,7 @@ the relative path is inclined K = 5.40°: least distance = 0.9956 |beta|
   2032-05-09: reference annular, NASA annular
   2043-04-09: reference total, NASA total
   2043-10-03: reference annular, NASA annular
-page 3.1's 40' at the syzygies / 0.5079° an hour = 79 min
+at the 38 eclipses of 2021-2030: the epicycle's ecliptic longitude within 43.4', the Sun's within 1.8' (3 min at the mean 0.5079° an hour)
   17 Feb 2026 12:14 TT solar annular | model 11:39 (-35 min) annular
   3 Mar 2026 11:36 TT lunar total mag 1.15 | model 11:40 (4 min) total mag 1.15
   12 Aug 2026 17:47 TT solar total | model 17:28 (-19 min) total
@@ -3535,8 +3536,8 @@ page 3.1's 40' at the syzygies / 0.5079° an hour = 79 min
 5/6 March 136: local apparent times: Ptolemy 04:00, reference 03:17, his model 03:43
 5/6 March 136: Ptolemy 4 h | reference partial mag 0.44, 3.29 h, beta -47.7' | his model 3.72 h, beta -45.4' (2.3')
   his Sun -43', his Moon -62'
-AD 100-200: 157 lunar eclipses of 1237 full Moons; his limit of 15;12° flags 210 and holds 157
 1 Jan 2026: Ptolemy's mean argument of latitude minus Meeus' 0.80°; his mean longitude -10.04°
+  since his epoch 2772 years: 0.028° a century x 27.72 = 0.77°
 Ptolemy in 2021-2030: 38 real eclipses; the model finds 37, misses 1, adds 4; of another kind 7
   its new or full Moon minus greatest eclipse: rms 140 min, largest 259 min
   latitude at the syzygies: largest error 16.0'; lunar magnitudes within 0.54
