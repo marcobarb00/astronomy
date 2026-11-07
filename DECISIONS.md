@@ -33,6 +33,17 @@ section.
   future material. → STRUCTURE.md §4
 - **One rhythm per page: observation, model, fit, test, residual.** Each
   page ends on the question the next one answers. → STRUCTURE.md §5
+- **Fit, Test and Residual narrowed; history in short blocks.** Fit says
+  which observation fixes each parameter and gives the fitted values once;
+  Test covers the current period only (the fit year, at most the decade
+  around it); Residual is short prose. The historical astronomer's fit
+  and test move to a short history block at the end of each section: how
+  he measured and how he checked his model, with the results in words.
+  Both fits are kept: the modern one so that the error curve measures the
+  geometry, not parameters nineteen centuries old; the historical one for
+  how the ancients knew what they knew. Piloted on page 3.3 on 2026-11-07
+  at Marco's request, after its Fit and Test read as streams of facts and
+  numbers. → STRUCTURE.md §5
 - **The error curve is the thread of the course.** From page 2.1 on, every
   model is tested against the reference sky, with earlier models as
   ghosts. → STRUCTURE.md §7.3
