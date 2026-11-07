@@ -3495,8 +3495,6 @@ fit to the 25 new and full Moons of 2026: i = 4.999207°, F0 = 93.266574° (FIT_
 
 === 10. Fit: Ptolemy's parameters ===
 Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = 4.99°, "about 5°"
-Hipparchus' 5458 synodic = 5923 returns in latitude: 27.212220 d against 27.212221 d (-0.1 s)
-  5458 synodic months = 441.3 Julian years
 
 === 11. Test: the latitude ===
 the fit: at the 25 new and full Moons of 2026 within 1.9'; over the year within 26.0'

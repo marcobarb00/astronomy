@@ -544,15 +544,6 @@ title("10. Fit: Ptolemy's parameters");
 	   the northern limit near the summer solstice, the equator 30;58° and
 	   the solstice 23;51° from the equator. */
 	console.log(`Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = ${f(30 + 58 / 60 - 2.125 - (23 + 51 / 60), 2)}°, "about 5°"`);
-
-	/* Hipparchus' period and Ptolemy's motion in latitude. */
-	const synodicH = (126007 + 1 / 24) / 4267;
-	const draconiticH = (5458 * synodicH) / 5923;
-
-	console.log(
-		`Hipparchus' 5458 synodic = 5923 returns in latitude: ${f(draconiticH, 6)} d against ${f(P_DRACONITIC, 6)} d (${f((draconiticH - P_DRACONITIC) * 86400, 1)} s)`
-	);
-	console.log(`  5458 synodic months = ${f((5458 * synodicH) / 365.25, 1)} Julian years`);
 }
 
 /* ==========================================================================
