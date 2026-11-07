@@ -727,11 +727,39 @@ Every page follows the same rhythm:
 
 1. **Observation.** What is seen in the sky, with numbers.
 2. **Model.** The geometric idea, derived.
-3. **Fit.** How the model's parameters are obtained from observations.
-4. **Test.** The model against the reference sky, with the error curve from
-   page 2.1 on. Act I has no longitude model: its pages test the quantity
-   they predict (an altitude, a rising time).
-5. **Residual.** What is still wrong, and the question for the next page.
+3. **Fit.** How the model's parameters could be obtained: for each
+   parameter, which observation fixes it and why that observation is the
+   right one. The method comes first; the fitted values appear once, as
+   its outcome, not as a stream of numbers.
+4. **Test.** The model against the reference sky in the current period
+   only (the fit year, at most the decade around it), with the error curve
+   from page 2.1 on. Longer spans are left out. Act I has no longitude
+   model: its pages test the quantity they predict (an altitude, a rising
+   time).
+5. **Residual.** In short prose with few numbers: what the model still
+   lacks and why, ending with the question for the next page.
+
+Fit and Test are mostly modern, with a little history. Each may end with a
+short **history block** about the astronomer whose model the page rebuilds:
+two or three short paragraphs, after the modern text and never between its
+paragraphs, in a `<div class="history">` headed "History".
+
+- **History in the Fit:** how he measured each parameter, the observation
+  he chose, the instrument, and why that observation was the right one.
+  How the ancients knew what they knew is the point; the result is given
+  in words, compared with the modern fit, with at most one number when the
+  agreement is the point. The numbers of his observations are left out,
+  or kept for an exercise in which the reader redoes his measurement.
+- **History in the Test:** how he checked his model, and how it fared, in
+  words: whether it held in his own time, and, when it shows something
+  the modern test cannot, how it does today. At most one or two numbers,
+  no tables of his observations and no figures of his errors.
+
+Where his numbers were off, say so in words, without working through
+them. Every statement of how he measured or checked comes from the
+sources (book and chapter), like any historical claim. The style of the
+block is a pilot in page 3.3's `page.css`; it moves to `shared/theme.css`
+when a second page uses it.
 
 Followed by:
 
