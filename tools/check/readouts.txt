@@ -1430,7 +1430,6 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (limits-distance): 385·000 km
     #limits-readout: \text{new Moon: } \beta = -53.6',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 8 hints and answers
   slider #orbit-day = 0
     OUTPUT (orbit-day): 1 Jan 2026
@@ -1504,10 +1503,6 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2 months"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2000 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #calendar-plot at 0.3
   hover #calendar-plot at 0.6
   hover #calendar-plot at 0.9
@@ -1539,14 +1534,6 @@ Regenerate with: node tools/check/smoke.js --update
   hover #error-latitude-plot at 0.9
     .errorcurve-readout: 28 Nov 2026 · mean inclination: +17.8′ · fitted: +14.4′
   hover #error-latitude-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-ptolemy-plot at 0.3
-    .errorcurve-readout: 7 Jan 352 BC · Ptolemy: −6.5′
-  hover #error-ptolemy-plot at 0.6
-    .errorcurve-readout: 27 Jun 300 · Ptolemy: −22.3′
-  hover #error-ptolemy-plot at 0.9
-    .errorcurve-readout: 17 Dec 951 · Ptolemy: −0.9′
-  hover #error-ptolemy-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 1 spheres
 

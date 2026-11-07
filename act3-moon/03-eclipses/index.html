@@ -763,24 +763,15 @@
 
 		<p>
 			The inclination and the place of the nodes come from the ecliptic
-			latitudes themselves. From $\beta \approx i\sin F$, small errors
-			$\delta i$ in the inclination and $\delta F$ in the argument of
-			latitude (in radians) change the ecliptic latitude by
-		</p>
-
-		$$\delta\beta \approx \sin F\,\delta i + i\cos F\,\delta F.$$
-
-		<p>
-			An error in the place of the nodes is an error in $F$, which shows most
-			at the nodes and not at all at the greatest ecliptic latitudes, $F =
-			\pm 90^\circ$, where an error in $i$ shows most. So latitudes near the
-			nodes fix the nodes, and latitudes far from them fix the inclination.
+			latitudes themselves: the latitudes near the nodes, $F = 0^\circ$ or
+			$180^\circ$, fix the nodes, and the greatest ones, at $F = \pm
+			90^\circ$, fix the inclination. The new and full Moons of a year fall at
+			every distance from the nodes, so they fix both, and they are the
+			moments at which eclipses happen.
 		</p>
 
 		<p>
-			The new and full Moons of a year fall at every distance from the nodes,
-			so they fix both, and they are the moments at which eclipses happen. We
-			therefore fit $i$ and the argument of latitude at J2000.0 by least
+			We therefore fit $i$ and the argument of latitude at J2000.0 by least
 			squares to the reference Moon's ecliptic latitude at the 25 new and full
 			Moons of 2026. The fit gives $i = 5.00^\circ$, and puts the ascending
 			node at the ecliptic longitude 125.05° at J2000.0, where Meeus' mean
@@ -995,18 +986,6 @@
 				opposite his own Sun, so it shares that Sun's error.
 			</p>
 
-			<!-- Figure 8: Ptolemy's latitude -->
-			<figure class="fig">
-				<div class="frame">
-					<div id="error-ptolemy"></div>
-				</div>
-				<figcaption>
-					Read the error at the new and full Moons around his eclipse of 20
-					October 134, then switch to 2000 years. Unlike his ecliptic longitude on
-					pages 3.1 and 3.2, his ecliptic latitude does not drift away.
-				</figcaption>
-			</figure>
-
 			<p>
 				In 2026 his mean argument of latitude is only 0.8° from the reference
 				Moon's, though his mean ecliptic longitude is 10° off. His motion in
@@ -1040,8 +1019,8 @@
 				The swings of Figure 7 between the new and full Moons have two causes.
 				The model's argument of latitude carries the epicycle's error in
 				ecliptic longitude away from the new and full Moons, the evection that
-				page 3.2's crank corrects, and near the nodes it shows as $i\cos F\,
-				\delta F$. The inclination also changes with the Moon's phase. At new
+				page 3.2's crank corrects, and it shows most near the nodes, where the
+				latitude changes fastest with $F$. The inclination also changes with the Moon's phase. At new
 				and full Moon the Moon follows a circle inclined by 5.0°, at the
 				quarters one inclined by about 5.3°, as the reference Moon's term
 				$0.17^\circ \sin(2D - F)$ requires. Like the evection, it is an effect
