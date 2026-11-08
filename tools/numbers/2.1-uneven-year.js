@@ -575,6 +575,12 @@ console.log(
 	`AD 140 real: spring ${f(sAD140.lengths[0], 2)}, summer ${f(sAD140.lengths[1], 2)} -> apogee ${f(sAD140fit.apogee, 2)}°, e ${f(sAD140fit.e, 4)}`
 );
 
+/* The answer's "one hour moved between two seasons", with the real
+   seasons of AD 140. */
+const sAD140hour = SolarEccentric.fitSeasons(sAD140.lengths[0] + 1 / 24, sAD140.lengths[1] - 1 / 24, YEAR);
+
+console.log(`  one hour from summer to spring: apogee ${f(sAD140hour.apogee - sAD140fit.apogee, 2)}°`);
+
 /* ==========================================================================
    10. THE SCALES OF THE FIGURES
    ========================================================================== */

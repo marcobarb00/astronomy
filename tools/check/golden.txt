@@ -2681,6 +2681,7 @@ autumn equinox 139: real 24 Sep 139 21:17; Ptolemy 26 Sep, 1 h after sunrise (ab
 spring equinox 140: real 21 Mar 140 16:16; Ptolemy 22 Mar, 1 h after noon (13h)
 summer solstice 140: real 23 Jun 140 13:49; Ptolemy 25 Jun, 2 h after midnight (02h)
 AD 140 real: spring 93.90, summer 92.56 -> apogee 70.69°, e 0.0349
+  one hour from summer to spring: apogee -1.10°
 
 === Scales ===
 Figure 2: e up to 0.2 -> |q| up to 11.54° (axis +-12°); 0.2 / e(2026) = 5.97
