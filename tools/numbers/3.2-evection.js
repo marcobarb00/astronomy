@@ -747,5 +747,5 @@ title('Scales');
 		lo = Math.min(lo, diameter(moonDist(jd)));
 		hi = Math.max(hi, diameter(moonDist(jd)));
 	}
-	console.log(`Figure 6: the real diameter ${f(lo, 2)}' .. ${f(hi, 2)}' (the crank's in section 11)`);
+	console.log(`Figure 5: the real diameter ${f(lo, 2)}' .. ${f(hi, 2)}' (the crank's in section 11)`);
 }
