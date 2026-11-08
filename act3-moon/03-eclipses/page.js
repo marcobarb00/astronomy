@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 3.3 · ECLIPSES - SCRIPT (page.js)
-   Eight figures, each with its own init and draw (and update when it has
+   Seven figures, each with its own init and draw (and update when it has
    controls):
 	 1. the new and full Moons of 2021 - 2030  (2D, static: a calendar,
 											   the eclipses marked)
@@ -17,9 +17,8 @@
 											   distance from the node, the
 											   Moon's distance)
 	 6. the eclipse seasons of 2026 - 2027    (2D, static)
-	 7. the latitude fitted to 2026           (error curve of the latitude)
-	 8. Ptolemy's latitude                    (error curve, AD 134 and
-											   2000 years)
+	 7. the latitude fitted to 2026           (error curve of the latitude,
+											   two months and the year)
    Shared code: common.js, time.js, ephemeris.js, stars.js, plate-stars.js,
    plate.js, models/mean-sun.js, models/solar-eccentric.js,
    models/lunar-epicycle.js, models/lunar-latitude.js, models/eclipses.js,
@@ -35,7 +34,7 @@
 	 4. Figure 4: the Earth's shadow, and the parallax triangle
 	 5. Figure 5: the Sun, the Moon and the shadow near a node
 	 6. Figure 6: the eclipse seasons
-	 7. Figures 7 and 8: the error curves of the latitude
+	 7. Figure 7: the error curve of the latitude
 	 8. Page start
    ========================================================================== */
 
@@ -1032,15 +1031,16 @@ const seasonsFigure = {
 };
 
 /* ==========================================================================
-   7. FIGURES 7 AND 8: THE ERROR CURVES OF THE LATITUDE
+   7. FIGURE 7: THE ERROR CURVE OF THE LATITUDE
    Delta beta = beta_model - beta_reference (shared/errorcurve.js, with
    the reference Moon's latitude). No slider changes a model here, so the
    widget fits its scale to each span.
    ========================================================================== */
 
 /* Figure 7: the latitude fitted to 2026, with the mean inclination 5.145°
-   as a ghost, over 2026, two months and a century; dots at the new and
-   full Moons (spans of a year or less). */
+   as a ghost, over 2026 and two months of it; dots at the new and full
+   Moons. The Test covers the current period only, so there is no longer
+   span. */
 const latitudeErrorFigure = {
 	init() {
 		const start = YEAR_START;
@@ -1054,8 +1054,7 @@ const latitudeErrorFigure = {
 			end: end,
 			spans: [
 				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 }
+				{ label: '1 year', years: 1 }
 			],
 			ghostButtons: false
 		});
@@ -1069,53 +1068,15 @@ const latitudeErrorFigure = {
 			fn: LunarLatitude.make(Object.assign({}, MOON, { i: 5.145 }))
 		});
 		curve.addModel({
-			label: 'the ecliptic latitude fitted to the new and full Moons of 2026',
+			label: 'fitted to the new and full Moons of 2026',
 			short: 'fitted',
 			color: COL.planet,
 			fn: fit
 		});
 		curve.addMarks({
-			label: 'at the new and full Moons (spans of a year or less)',
+			label: 'at the new and full Moons',
 			color: COL.planet,
 			fn: fit,
-			dates: syzygies,
-			maxYears: 1.01
-		});
-	}
-};
-
-/* Figure 8: Ptolemy's latitude around his eclipse of 20 October 134, and
-   over 2000 years (866 BC to AD 1134, inside the reference sky's range). */
-const ptolemyErrorFigure = {
-	init() {
-		const start = Time.julianDay(134, 9, 21);
-		const end = start + 60;
-		const middle = (start + end) / 2;
-		const curve = new ErrorCurve(byId('error-ptolemy'), {
-			body: 'moon',
-			reference: moonLatitude,
-			quantity: 'β',
-			start: start,
-			end: end,
-			spans: [
-				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '2000 years', years: 2000 }
-			],
-			ghostButtons: false
-		});
-		const ptolemy = LunarLatitude.make(LunarLatitude.PTOLEMY);
-		const syzygies = syzygyIndices(middle - 40, middle + 40).map(k => Eclipses.reference(k).syzygy);
-
-		curve.addModel({
-			label: "Ptolemy's ecliptic latitude (<em>Almagest</em> IV 9, V 12)",
-			short: 'Ptolemy',
-			color: COL.epicycle,
-			fn: ptolemy
-		});
-		curve.addMarks({
-			label: 'at the new and full Moons (spans of a year or less)',
-			color: COL.epicycle,
-			fn: ptolemy,
 			dates: syzygies,
 			maxYears: 1.01
 		});
@@ -1137,7 +1098,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		parallaxDiagram,
 		limitsFigure,
 		seasonsFigure,
-		latitudeErrorFigure,
-		ptolemyErrorFigure
+		latitudeErrorFigure
 	]);
 });

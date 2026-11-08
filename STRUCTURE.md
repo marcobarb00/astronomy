@@ -498,25 +498,25 @@ The first anomaly and the simplest complete model.
   the shadow near a node, with the latitude and the limits (the Sun's
   distance from the node and the Moon's distance); the eclipse seasons of
   2026–2027 (static); the error curve of the latitude (the mean
-  inclination as ghost, dots at new and full Moon); Ptolemy's latitude
-  around AD 134 and over 2000 years. Tables: the eclipses of 2026, model
-  against real; Ptolemy's three eclipses at Alexandria (IV 6).
-- **Fit:** Ptolemy's 5° (V 12, 4.99° from his figures); Hipparchus' 5458
-  months = 5923 returns in latitude (IV 2, Babylonian), 0.1 s from the
-  reference; Ptolemy's correction and epoch (IV 9); his diameter and
-  shadow from two eclipses (VI 5); Copernicus' motion in latitude from
-  eclipses at opposite nodes (IV 13). Ours: Meeus' $n_F$, and $i$ and $F_0$
-  fitted to the latitudes at the 25 new and full Moons of 2026: $i =
-  5.00^\circ$ (the mean inclination 5.145° would be up to 10′ off
-  there), the node at J2000 125.05° (Meeus 125.04°); the sizes from the
-  model's distances.
-- **Test:** the latitude within 1.9′ at the new and full Moons of 2026, 26′
-  over the year, 29′ over a century; the eclipses: all 38 of 2021–2030,
-  364 of 366 in 2001–2100 (two missed and three added, all grazing
-  partials), times rms 45 min, worst 97 min (page 3.1's 40′). Ptolemy: his
-  latitudes within 2.3′ and his times within half an hour at his three
-  eclipses; his lunar limit holds all 157 lunar eclipses of AD 100–200;
-  in 2021–2030 still 37 of 38 eclipses, times wrong by up to 4.3 h.
+  inclination as ghost, dots at new and full Moon; 2026, two months or
+  the year). Table: the eclipses of 2026, model against real.
+- **Fit:** which observation fixes each parameter. $n_F$ from
+  observations far apart, so taken from the reference Moon (Meeus 47);
+  the node from the latitudes near the nodes and $i$ from those near $F =
+  \pm 90^\circ$, fitted by least squares to the 25 new and full Moons of
+  2026: $i = 5.00^\circ$, the node at J2000 125.05° (Meeus 125.04°); the
+  mean inclination 5.145° would be up to 10′ off there. The sizes from the
+  model's own distances. History block: Ptolemy's inclination from the
+  Moon near the zenith of Alexandria (V 12), 5°; his motion in latitude
+  from a Babylonian period of centuries (IV 2), in words.
+- **Test:** 2026 and 2021–2030 only. The latitude within 1.9′ at the new
+  and full Moons of 2026 and 2.6′ at the others of 2021–2030, 26′ between
+  them; all 38 eclipses of 2021–2030, each of the right kind; times about
+  45 min typical and 95 min at worst, from the epicycle's error in
+  ecliptic longitude (43′ at these eclipses). History block: Ptolemy's
+  three eclipses at Alexandria (IV 6), the ones he fitted his epicycle to,
+  his latitudes within a few arcminutes and his times within half an hour;
+  run to 2021–2030, all but one of the 38 found, times off by hours.
 - **Exercises:** decide whether the new Moon of 12 August 2026 is an
   eclipse, central, total or annular (and 11 September); derive the saros
   from the three months by continued fractions, the exeligmos, the length
@@ -529,11 +529,11 @@ The first anomaly and the simplest complete model.
   limits, convergents; `FIT_2026`, `PTOLEMY`); `ErrorCurve`'s `quantity`
   option (Δβ); `Plate.line` and day ticks on `Plate.highlightCurve`; the
   figure of Leo.
-- **Residual:** the times (the longitude); the latitude at the quarters,
-  5.3° against 5.0° at new and full Moon (the reference Moon's
-  $0.17^\circ\sin(2D - F)$; detour: Tycho); a solar eclipse for one
-  observer (VI 10, *De Revolutionibus* IV 30); $\Delta T$ from ancient
-  eclipses (detour).
+- **Residual:** the times (the epicycle's anomaly, page 3.2); the latitude
+  between the new and full Moons (the epicycle's error in $F$, and the
+  inclination, 5.3° at the quarters against 5.0° at new and full Moon, the
+  reference Moon's $0.17^\circ\sin(2D - F)$; detour: Tycho); a solar
+  eclipse for one observer (VI 10, *De Revolutionibus* IV 30).
 - **Hands over:** the Sun and the Moon each have their own laws. The planets
   are tied to the Sun.
 
@@ -727,11 +727,39 @@ Every page follows the same rhythm:
 
 1. **Observation.** What is seen in the sky, with numbers.
 2. **Model.** The geometric idea, derived.
-3. **Fit.** How the model's parameters are obtained from observations.
-4. **Test.** The model against the reference sky, with the error curve from
-   page 2.1 on. Act I has no longitude model: its pages test the quantity
-   they predict (an altitude, a rising time).
-5. **Residual.** What is still wrong, and the question for the next page.
+3. **Fit.** How the model's parameters could be obtained: for each
+   parameter, which observation fixes it and why that observation is the
+   right one. The method comes first; the fitted values appear once, as
+   its outcome, not as a stream of numbers.
+4. **Test.** The model against the reference sky in the current period
+   only (the fit year, at most the decade around it), with the error curve
+   from page 2.1 on. Longer spans are left out. Act I has no longitude
+   model: its pages test the quantity they predict (an altitude, a rising
+   time).
+5. **Residual.** In short prose with few numbers: what the model still
+   lacks and why, ending with the question for the next page.
+
+Fit and Test are mostly modern, with a little history. Each may end with a
+short **history block** about the astronomer whose model the page rebuilds:
+two or three short paragraphs, after the modern text and never between its
+paragraphs, in a `<div class="history">` headed "History".
+
+- **History in the Fit:** how he measured each parameter, the observation
+  he chose, the instrument, and why that observation was the right one.
+  How the ancients knew what they knew is the point; the result is given
+  in words, compared with the modern fit, with at most one number when the
+  agreement is the point. The numbers of his observations are left out,
+  or kept for an exercise in which the reader redoes his measurement.
+- **History in the Test:** how he checked his model, and how it fared, in
+  words: whether it held in his own time, and, when it shows something
+  the modern test cannot, how it does today. At most one or two numbers,
+  no tables of his observations and no figures of his errors.
+
+Where his numbers were off, say so in words, without working through
+them. Every statement of how he measured or checked comes from the
+sources (book and chapter), like any historical claim. The style of the
+block is a pilot in page 3.3's `page.css`; it moves to `shared/theme.css`
+when a second page uses it.
 
 Followed by:
 
