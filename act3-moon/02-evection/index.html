@@ -465,48 +465,84 @@
 		<!-- =============================== 3. FIT ================================ -->
 		<h2 id="fit"><span class="step">3 · Fit</span>The eccentric from the quarters</h2>
 
-		<div class="row">
-			<p>
-				The crank needs one number besides those of page 3.1, the size of the
-				eccentric, and Ptolemy takes it from the 7⅔° at the quarters (V 4).
-				There K is at the eccentric's perigee G, and the greatest equation is
-				seen where the line from O touches the epicycle, so $\sin 7^\circ 40' =
-				r/\text{OG}$. With OA = 60 and $r = 5.25$ this fixes OG, then the
-				eccentric's radius, half of OA + OG, and finally OC, which Ptolemy finds
-				to be 10.32 (Exercise 1).
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				The point N comes from two of Hipparchus' sightings at Rhodes in 127 BC,
-				made near the octants with the Moon near the perigee and the apogee of
-				its epicycle (V 5). From them Ptolemy computes ON = 10.30 and 10.33,
-				equal to OC within the accuracy of the observations, and takes ON = OC.
-			</p>
-			<aside>
-				<div class="note" data-origin="hipparchus"></div>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
 		<p>
-			The crank fitted to 2026 keeps everything page 3.1 fitted, including
-			the epicycle's ratio $e = 0.0844$ from three eclipses, takes the mean
-			Sun of page 1.3 for $D$, and keeps the direction of the epicycle as
-			Ptolemy found it. Its one new number, $c$, is fitted by least squares to
-			the 25 quarters of 2026, and comes out at 0.1762, against Ptolemy's
-			0.1719. The greatest equation is then 7.49° at the quarters.
+			The crank adds two parameters to the epicycle of page 3.1, the size of
+			the eccentric, $c$, and the direction of the epicycle.
 		</p>
 
 		<p>
-			Fitted to the quarters of all ten years from 2021 to 2030, $c$ comes out
-			at 0.1778. The value depends slightly on the moments chosen, because the
-			model leaves out smaller inequalities that also act at the quarters.
+			At the mean quarters the epicycle's centre K is at the eccentric's
+			perigee G, nearest the Earth, so the size of the eccentric has its
+			greatest effect there. The greatest equation $q_\text{max}$ is seen
+			where the line from O touches the epicycle, so, as in section 2,
 		</p>
+
+		$$\sin q_\text{max} = \frac{r}{\text{OG}}.$$
+
+		<p>
+			The greatest equation at the quarters therefore gives OG, then the
+			eccentric's radius, half of OA + OG, and finally its offset OC, which is
+			$c$ where OA = 1.
+		</p>
+
+		<p>
+			The direction of the epicycle turns the anomaly by an angle that
+			vanishes at new and full Moon and at the quarters (section 2), and is
+			largest between them, near the octants. It shows most there when the
+			Moon is near the apogee or the perigee of its epicycle, where the
+			equation changes fastest with the anomaly. We keep Ptolemy's choice for
+			it, ON = OC, rather than fit it, so that the octants remain a fair
+			test.
+		</p>
+
+		<p>
+			We keep everything page 3.1 fitted, including its epicycle, and take the
+			mean Sun of page 1.3 for $D$, so the only parameter left is $c$. Fitted
+			by least squares to the quarters of 2026, it comes out at 0.1762, which
+			makes the greatest equation at the quarters 7.49°, against the 7.68°
+			the reference Moon shows there (section 1). The difference comes from
+			the epicycle of page 3.1, whose equation at new and full Moon is a
+			little small, and the fit keeps the ratio between the two phases.
+		</p>
+
+		<p>
+			Fitted to the quarters of 2021–2030 instead, $c$ changes by about 1%,
+			because the quarters of different years sample the model's other errors
+			differently.
+		</p>
+
+		<!-- History block: Ptolemy's eccentric and the point N -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's eccentric and the point N</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy took the eccentric from the greatest equation he had measured
+					near the quarters with his astrolabe, the armillary instrument he
+					describes in V 1 (V 3). By the same geometry he obtained $c =
+					0.1719$, close to the fit to 2026 (V 4); Exercise 1 redoes his
+					computation.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					For the direction of the epicycle he selected two of Hipparchus'
+					sightings near the octants, with the Moon near the perigee and the
+					apogee of its epicycle, where the anomaly alone gives almost no
+					equation, so what remains shows the direction. From each he computed
+					ON, found it very nearly equal to OC, and took the two equal (V 5),
+					as the model of this page does.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The crank against the real Moon</h2>
@@ -514,11 +550,10 @@
 		<h3>Ecliptic longitude</h3>
 
 		<p>
-			The quarters of 2026 were used for the fit, so they test little. The
-			test is whether the complete model also holds between them, near the
-			octants, where nothing was fitted, and in other years. Figure 4 gives its
-			error over 2026, with the epicycle of page 3.1 and the crank alone as
-			ghosts.
+			Since the quarters of 2026 were used for the fit, the test is whether the
+			complete model also holds between them, near the octants, where nothing
+			was fitted, and in other years. Figure 4 gives its error over 2026, with
+			the epicycle of page 3.1 and the crank alone as ghosts.
 		</p>
 
 		<!-- Figure 4: the crank fitted to 2026 against the reference Moon -->
@@ -529,8 +564,7 @@
 			<figcaption>
 				Point at the plot to read the errors. The dots, at the quarters, stay
 				within about a degree of zero. Switch to two months and notice that
-				the largest errors left fall between the quarters and the new and full
-				Moons.
+				the largest errors left fall near the octants.
 			</figcaption>
 		</figure>
 
@@ -547,48 +581,17 @@
 			to 2076 it stays within 2.0°.
 		</p>
 
-		<h3>Ptolemy's complete Moon</h3>
-
-		<p>
-			Ptolemy's own model, with his parameters of Books IV and V, can be
-			judged in the same way. Figure 5 runs it over two months around his
-			sighting of 9 February 139, with his simple Moon of page 3.1 as a ghost.
-		</p>
-
-		<!-- Figure 5: Ptolemy's complete Moon -->
-		<figure class="fig">
-			<div class="frame">
-				<div id="error-ptolemy"></div>
-			</div>
-			<figcaption>
-				Compare the width of the two curves around AD 139, then switch to 2000
-				years and watch the whole band drift.
-			</figcaption>
-		</figure>
-
-		<p>
-			The complete Moon swings about a third as widely as the simple one over
-			these two months. Both stay on average 0.9° behind the real Moon, an
-			error the second anomaly cannot remove.
-		</p>
-
-		<p>
-			As page 3.1 found, that offset comes from Ptolemy's Sun, here 42′
-			behind, and from the epoch he fixed with it. Over the centuries the
-			complete Moon drifts with his Sun, as the simple one does, and is 10°
-			behind by 2026.
-		</p>
-
 		<h3>Distance</h3>
 
 		<div class="row">
 			<p>
-				The crank was built to fit ecliptic longitudes, but it also
-				fixes the Moon's distance OL. That is greatest, $1 + e$, at new
+				The complete model was built to fit ecliptic longitudes, but it
+				also fixes the Moon's distance OL. That is greatest, $1 + e$, at new
 				and full Moon with the Moon at the apogee of its epicycle, and
-				least, $1 - 2c - e$, at a quarter with the Moon at the perigee.
-				With Ptolemy's numbers the ratio of the two is 1.91. The real
-				Moon's distance varies over 2026 by a ratio of only 1.14.
+				least, $1 - 2c - e$, at a quarter with the Moon at the perigee. For
+				the model fitted to 2026 the ratio of the two is nearly two, where
+				the real Moon's distance varies over the year by a ratio of only
+				1.14.
 			</p>
 			<aside>
 				<div class="note today">
@@ -604,21 +607,21 @@
 
 		<p>
 			The apparent diameter of the Moon is inversely proportional to its
-			distance, so it shows the difference directly. Figure 6 compares the
+			distance, so it shows the difference directly. Figure 5 compares the
 			real Moon's diameter over 2026 with what the two models predict. A model
 			gives only ratios of distances, so each is scaled to have the real Moon's
 			smallest diameter, 29.4′, at its greatest distance.
 		</p>
 
-		<!-- Figure 6: the apparent diameter over 2026 (static) -->
+		<!-- Figure 5: the apparent diameter over 2026 (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="diameter-plot"></canvas>
 			</div>
 			<figcaption>
-				Compare the swings. The real Moon's diameter stays between 29.4′ and
-				33.5′ all year; the crank's nearly doubles, to 56.6′, at every quarter
-				that finds the Moon near the perigee of its epicycle.
+				Compare the three curves. The real Moon's diameter changes about as
+				little as the epicycle's, while the complete model's nearly doubles
+				at the quarters when the Moon is near the perigee of its epicycle.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -627,7 +630,7 @@
 						<dt>thick</dt>
 						<dd>the real Moon</dd>
 						<dt class="c-planet">red</dt>
-						<dd>Ptolemy's crank, fitted to 2026</dd>
+						<dd>the complete model, fitted to 2026</dd>
 						<dt class="c-epicycle">dashed</dt>
 						<dd>the epicycle of page 3.1</dd>
 					</dl>
@@ -635,43 +638,47 @@
 			</div>
 		</figure>
 
-		<div class="row">
-			<p>
-				With Hipparchus' dioptra Ptolemy found the Moon's diameter equal to the
-				Sun's when the Moon is at its greatest distance at full Moon; the size
-				itself, 31⅓′, he computed from two lunar eclipses (V 14). On his model
-				the Moon at a quarter, at its least distance, would measure nearly a
-				degree. He reports no measurement of it, and the <em>Almagest</em>
-				does not discuss the difference.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
+		<!-- History block: Ptolemy's complete Moon and its size -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's complete Moon and its size</h3>
 
-		<div class="row">
-			<p>
-				Copernicus turned it against the model. After the uneven motions the
-				model requires and the parallaxes, "the error is evinced most of all by
-				the body of the moon, whose diameter would similarly look twice as
-				large and half as large" (<em>De Revolutionibus</em> IV 2). Anyone who
-				measures it, he adds, "will find that it varies only as much as
-				required by the epicycle without that eccentric". At its least
-				distance, the model puts the Moon 1.7 times nearer than the real Moon
-				ever comes.
-			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
-		</div>
+			<div class="row">
+				<p>
+					Ptolemy checked the complete model against further sightings, his own
+					and Hipparchus', which he says give about the same values (V 3, V 5).
+					Around his sighting of 9 February 139, its error is about a third as
+					large as that of his epicycle of page 3.1. Both are on average about a
+					degree behind the real Moon, most of it from his Sun, as page 3.1
+					found.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
 
-		<p>
-			The eccentric of page 2.1 errs in the same way, on a smaller scale. It
-			makes the Sun's distance vary twice as much as the real one, which
-			changes the Sun's diameter by about two minutes of arc instead of one.
-			Ptolemy found no change in the Sun's diameter (V 14), and a minute of
-			arc was beyond his instruments.
-		</p>
+			<p>
+				With Hipparchus' dioptra he found the Moon's diameter equal to the
+				Sun's only when the Moon is at its greatest distance at full Moon. He
+				took its size from lunar eclipses, with the Moon at that distance and,
+				for the eclipse limits, at its least distance at syzygy (V 14, VI 5).
+				He reports none at a quarter, where his model would make the Moon
+				nearly a degree across.
+			</p>
+
+			<div class="row">
+				<p>
+					Copernicus turned this against the model: anyone who measures the
+					Moon's diameter "will find that it varies only as much as required by
+					the epicycle without that eccentric" (<em>De Revolutionibus</em> IV
+					2). The eccentric of page 2.1 errs in the same way for the Sun, but by
+					only about a minute of arc. That was below what Ptolemy could measure,
+					and he found no noticeable change in the Sun's diameter (V 14).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>The variation, and the Moon's distance</h2>
@@ -690,29 +697,29 @@
 		</div>
 
 		<p>
-			The next part is not missing from the model but comes from its fit.
-			Page 3.1 found the epicycle's anomaly from only three eclipses, and it
-			comes out about 5° from the real Moon's, so the first anomaly, the
-			largest term of all, is slightly out of phase. This leaves an error of
-			about 37′ that repeats every anomalistic month.
+			Next comes the fit itself. Taken from only three eclipses, the
+			epicycle's anomaly is slightly out of phase with the real Moon's, and
+			its size a little small, which leaves an error of about 37′ that
+			repeats every anomalistic month.
 		</p>
 
 		<p>
-			Ptolemy proves that at new and full Moon the crank's effect is
-			negligible (V 10). In 2026 the crank fitted to that year is within
-			42′ there, where page 3.1's epicycle was within 40′, so the ecliptic
-			longitudes that decide eclipses are no better and no worse.
+			At new and full Moon the crank changes almost nothing, as Ptolemy shows
+			(V 10): there the complete model is about as close as page 3.1's
+			epicycle, so the ecliptic longitudes that decide eclipses are no better
+			and no worse.
 		</p>
 
 		<div class="row">
 			<p>
-				The model's distances call for a different construction. Copernicus
-				replaced the crank with a second, small epicycle carried on the first,
+				To keep the Moon's distance nearly constant, Copernicus replaced the
+				crank with a second, small epicycle carried on the first,
 				on which the Moon goes round twice a month, nearest the first
 				epicycle's centre at new and full Moon and farthest at the quarters (IV
-				3). His deferent stays centred on the Earth, and at the quarters his
-				Moon ranges from 52.28 to 68.33 Earth radii (IV 17), a ratio of 1.31,
-				much nearer the real 1.14.
+				3). His deferent stays centred on the Earth instead of turning like the
+				crank's eccentric, and his Moon's distance at the quarters varies by a
+				ratio of 1.31 (IV 17), much nearer the real Moon's 1.14 over the
+				year.
 			</p>
 			<aside>
 				<div class="note" data-origin="copernicus"></div>
@@ -721,11 +728,9 @@
 		</div>
 
 		<p>
-			The complete model gives the Moon's ecliptic longitude within 2° at
-			every phase, and within about 40′ at new and full Moon. An eclipse
-			needs one more coordinate, since the Moon must also be near the
-			ecliptic. Page 3.3 adds the Moon's ecliptic latitude and decides
-			which new and full Moons are eclipses.
+			The complete model now gives the Moon's ecliptic longitude at every
+			phase, but an eclipse also needs the Moon near the ecliptic, and so
+			its ecliptic latitude, which page 3.3 adds.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -739,7 +744,7 @@
 				the least distance of the Moon and their ratio. Ptolemy makes OA = 59
 				Earth radii (V 13): convert the two distances. If the Moon measures
 				31⅓′ at its greatest distance (V 14), what should it measure at its
-				least? Compare with the real Moon in Figure 6.
+				least? Compare with the real Moon in Figure 5.
 			</p>
 			<details class="hint">
 				<p>
@@ -882,7 +887,8 @@
 				computation of a position, the example of 90½°, the greatest equation
 				at 120°); V 10 (no effect at new and full Moon); V 13 (the parallax of
 				135 and the distances in Earth radii, with Toomer's notes); V 14 (the
-				apparent diameters of the Sun and the Moon). Toomer's dates in
+				apparent diameters of the Sun and the Moon, the dioptra); VI 5 (the
+				Moon's diameter at least distance, from eclipses). Toomer's dates in
 				negative years are astronomical: −127 is 128 BC.</li>
 			<li>Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen), IV 2 (the
 				defects of Ptolemy's model, the distances 64⅙ and 33.55 Earth radii,
