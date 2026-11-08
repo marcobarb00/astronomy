@@ -2989,8 +2989,6 @@ Ptolemy's year 365;14,48 d is 6.45 min longer than ours (page 2.1)
 
 === Residual: the obliquity ===
 Ptolemy 23;51,20 = 23.8556°; real 23.7255° (250 BC), 23.6777° (AD 139): 10.7' too large
-al-Battani 23;35 = 23.5833°; real 23.5841° (880)
-Copernicus 23;28,30 = 23.4750°; real 23.5010° (1525)
 2026: 23.4359° = 23°26'09" (23.44°), changing by -46.8" a century
 
 === Residual: the latitudes are not quite fixed ===
