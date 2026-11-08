@@ -12,7 +12,7 @@
 	 3. Page layout: container, link to the hub, header, contents
 	 4. Paragraphs with margin notes, the drop cap
 	 5. Headings, prose, equations, tables
-	 6. Boxes and colour keys
+	 6. Boxes, history blocks and colour keys
 	 7. Figures: the graduated frame, captions, keys, photos
 	 8. Controls: sliders, presets, play, read-outs
 	 9. Margin notes: origins and detours
@@ -562,7 +562,7 @@ code {
 }
 
 /* ==========================================================================
-   6. BOXES AND COLOUR KEYS
+   6. BOXES, HISTORY BLOCKS AND COLOUR KEYS
    ========================================================================== */
 
 /* Highlighted remark (key result, definition): on the card colour,
@@ -578,6 +578,43 @@ code {
 
 .box.warn {
 	border-color: var(--planet);
+}
+
+/* History block (STRUCTURE.md §5, STYLE.md §4.8): the historical
+   astronomer's fit or test, at the end of the Fit or the Test, kept apart
+   from the modern text between two rules in the colour of the author
+   origins, under a small-caps "History" label above its heading. */
+.history {
+	margin: 40px 0;
+	padding: 2px 0 6px;
+	border-top: 1px solid var(--epicycle-text);
+	border-bottom: 1px solid var(--epicycle-text);
+}
+
+.history > h3 {
+	margin-top: 14px;
+}
+
+/* Text keeps to the text column inside the block too, as for the
+   article's own paragraphs; figures and rows use the whole width. */
+.history > p,
+.history > ul,
+.history > ol,
+.history > h3,
+.history > details.fold {
+	max-width: var(--text-width);
+}
+
+/* "History", above the heading, as the step label above a section title. */
+.history-label {
+	display: block;
+	margin-bottom: 2px;
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	color: var(--epicycle-text);
 }
 
 /* Colour keys: coloured words in the text that match the figures, in

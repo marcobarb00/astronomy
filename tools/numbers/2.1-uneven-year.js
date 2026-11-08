@@ -289,6 +289,20 @@ title('Fit: sensitivity to the timing');
 		`one hour from summer to spring: apogee ${f(moved.apogee - base.apogee, 2)}°, e ${f(moved.e - base.e, 5)}`
 	);
 	console.log(`one hour added to spring: apogee ${f(longer.apogee - base.apogee, 2)}°, e ${f(longer.e - base.e, 5)}`);
+
+	/* A quarter of a day, the ancient timing error (Almagest III 1), moved
+	   from summer to spring: "several degrees" in the Test's history block. */
+	const quarter = SolarEccentric.fitSeasons(94.5 + 0.25, 92.5 - 0.25, YEAR);
+
+	console.log(`a quarter of a day from summer to spring: apogee ${f(quarter.apogee - base.apogee, 2)}°`);
+
+	/* The same hour with the seasons of 2026 (the Fit's "Sun of 2026"). */
+	const base2026 = SolarEccentric.fitSeasons(92.7391, 93.6629, YEAR);
+	const moved2026 = SolarEccentric.fitSeasons(92.7391 + 1 / 24, 93.6629 - 1 / 24, YEAR);
+
+	console.log(
+		`2026, one hour from summer to spring: apogee ${f(moved2026.apogee - base2026.apogee, 2)}°, e ${f(moved2026.e - base2026.e, 5)}`
+	);
 }
 
 title('Fit: the real seasons of 141 BC through the same method (Figure 3 preset)');
@@ -370,6 +384,23 @@ const meanSun = MeanSun.make();
 const ours = SolarEccentric.make(SolarEccentric.FIT_2026);
 printStats('uniform circle (MeanSun.MODERN)', errorStats(meanSun, Y2026, Y2027, 0.25));
 printStats('eccentric (FIT_2026)', errorStats(ours, Y2026, Y2027, 0.25));
+{
+	/* "A twentieth of the Sun's apparent diameter": the largest error over
+	   the diameter at 1 au (Meeus' 1919.26"). */
+	const s = errorStats(ours, Y2026, Y2027, 0.25);
+	const largest = Math.max(Math.abs(s.low.value), Math.abs(s.high.value));
+
+	console.log(`  largest error / the Sun's diameter ${f(1919.26 / 60, 2)}': ${f(largest / (1919.26 / 60), 3)}`);
+}
+
+title('Test: the eccentric over longer spans, Figure 4 (b)');
+printStats('2026', errorStats(ours, Y2026, Y2027, 0.25));
+[
+	[1976, 2076],
+	[1526, 2526]
+].forEach(([from, to]) => {
+	printStats(`${from}-${to}`, errorStats(ours, Time.julianDay(from, 1, 1), Time.julianDay(to, 1, 1), 2));
+});
 
 title('Test: the day of page 1.3, with the eccentric Sun (2026, meridian of Greenwich)');
 
@@ -424,15 +455,12 @@ function modelDayHours(jd0, phi, longitude) {
 	);
 });
 
-title("Test: Ptolemy's Sun (Almagest III 7-8), Figure 5");
+/* The history block of the Test: "about a degree behind" in his own time,
+   "more than a day" at his equinox, "further behind every century". */
+title("Test: Ptolemy's Sun (Almagest III 7-8), history block");
 const ptolemy = SolarEccentric.make(SolarEccentric.PTOLEMY);
-const ptolemyMean = MeanSun.make(MeanSun.PTOLEMY);
-console.log(
-	`epoch JD(UT) ${f(MeanSun.PTOLEMY.epoch, 4)} = ${when(MeanSun.PTOLEMY.epoch)} UT (noon at Alexandria); Delta T ${f(Time.deltaT(Time.decimalYear(MeanSun.PTOLEMY.epoch)) / 3600, 2)} h`
-);
 const Y140 = Time.julianDay(140, 1, 1);
 printStats("Ptolemy's eccentric, AD 140", errorStats(ptolemy, Y140, Y140 + 365.25, 0.25), 'deg');
-printStats("Ptolemy's mean Sun, AD 140", errorStats(ptolemyMean, Y140, Y140 + 365.25, 0.25), 'deg');
 
 /* His autumn equinox of AD 132, 2 equinoctial hours after noon (III 7):
    1769539.0833 is that moment on the meridian of Greenwich (page 1.3). */
@@ -447,29 +475,13 @@ console.log(
 	`   the real equinox: ${when(atAlexandria(realEquinox132))} Alexandria mean time, ${f((equinox132 - realEquinox132) * 24, 1)} h earlier`
 );
 
-[-860, -200, 140, 500, 1000, 1140, 1500, 2026].forEach(year => {
-	const start = Time.julianDay(year, 1, 1);
-	const s = errorStats(ptolemy, start, start + 365.25, 1);
-
-	console.log(
-		`   ${Time.formatYear(year).padStart(7)}: ${f(s.low.value / 60, 2)}° to ${f(s.high.value / 60, 2)}°, mean ${f((s.low.value + s.high.value) / 120, 2)}°`
-	);
-});
 console.log(`his mean Sun falls behind by ${f((N_MODERN - N_PTOLEMY) * 36525, 3)}° a century`);
 
 /* ==========================================================================
    8. RESIDUAL
    ========================================================================== */
 
-title('Residual: our eccentric over longer spans, Figure 6');
-printStats('2026', errorStats(ours, Y2026, Y2027, 0.25));
-[
-	[1976, 2076],
-	[1526, 2526]
-].forEach(([from, to]) => {
-	printStats(`${from}-${to}`, errorStats(ours, Time.julianDay(from, 1, 1), Time.julianDay(to, 1, 1), 2));
-});
-
+title('Residual: the shape of the circle');
 /* The part of the 2026 residual that is the eccentric's shape: Kepler's
    q to second order, -2 e_K sin M + 5/4 e_K^2 sin 2M, with e_K = e / 2,
    differs from the eccentric's -e sin M + e^2 / 2 sin 2M by
@@ -562,6 +574,12 @@ const sAD140fit = SolarEccentric.fitSeasons(sAD140.lengths[0], sAD140.lengths[1]
 console.log(
 	`AD 140 real: spring ${f(sAD140.lengths[0], 2)}, summer ${f(sAD140.lengths[1], 2)} -> apogee ${f(sAD140fit.apogee, 2)}°, e ${f(sAD140fit.e, 4)}`
 );
+
+/* The answer's "one hour moved between two seasons", with the real
+   seasons of AD 140. */
+const sAD140hour = SolarEccentric.fitSeasons(sAD140.lengths[0] + 1 / 24, sAD140.lengths[1] - 1 / 24, YEAR);
+
+console.log(`  one hour from summer to spring: apogee ${f(sAD140hour.apogee - sAD140fit.apogee, 2)}°`);
 
 /* ==========================================================================
    10. THE SCALES OF THE FIGURES

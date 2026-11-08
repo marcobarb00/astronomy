@@ -191,18 +191,25 @@ The first anomaly and the simplest complete model.
   place magnified (spring and summer, with presets). **First appearance of
   the error curve:** (a) the uniform circle (ghost) against the eccentric
   fitted to 2026 and (b) the eccentric alone on a scale a hundred times
-  finer; Ptolemy's Sun in AD 140 and over 2000 years; the eccentric over
-  100 and 1000 years. A photo: Peurbach's woodcut of the Sun's eccentric
-  orbs.
-- **Fit:** $e$ and $\lambda_A$ from spring and summer (Hipparchus'
-  $94\tfrac12$ and $92\tfrac12$ days, *Almagest* III 4; the reference
-  seasons of 2026, which give $e = 2e_\text{K}$ within 0.1%); the mean
+  finer, over 1, 100 and 1000 years. A photo: Peurbach's woodcut of the
+  Sun's eccentric orbs.
+- **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
+  construction applied to the reference seasons of 2026 ($e = 0.03347$,
+  $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one
+  hour moved between the seasons shifts the apogee 1.2°); the mean
   longitude at epoch $L_0$ from the timed spring equinox (page 1.3 used
-  Meeus' value without deriving it).
+  Meeus' value without deriving it). History block: equinoxes timed with
+  bronze rings in the plane of the equator, solstices to a quarter of a
+  day (III 1); Hipparchus' seasons give the apogee within half a degree
+  and $e$ a fifth too large; Ptolemy repeats the computation (III 4) and
+  takes his epoch back to Nabonassar (III 7).
 - **Test:** the eccentric against the reference Sun (within 1.7′ in 2026,
-  against 115′ for the uniform circle); page 1.3's day at 65° now within
-  0.3 min; Ptolemy's own Sun 1.1° behind in AD 140 (his equinoxes a day
-  late), 9.2° by 2026.
+  against 115′ for the uniform circle; about 3′ within fifty years, almost
+  20′ five centuries away); page 1.3's day now within half a minute.
+  History block, in words: Ptolemy finds Hipparchus' seasons again and
+  takes the apogee as fixed (III 4); his equinoxes a day late (the
+  "faked observations" dispute); his Sun about a degree behind in his
+  time, falling further behind every century.
 - **Exercises:** "Hipparchus' Sun from two numbers" (fit $e \approx 0.041$,
   $\lambda_A \approx 65.4^\circ$ from $94\tfrac12$ and $92\tfrac12$ days;
   predict autumn and winter); derive $q$ to second order and its greatest
@@ -731,11 +738,13 @@ Every page follows the same rhythm:
    parameter, which observation fixes it and why that observation is the
    right one. The method comes first; the fitted values appear once, as
    its outcome, not as a stream of numbers.
-4. **Test.** The model against the reference sky in the current period
-   only (the fit year, at most the decade around it), with the error curve
-   from page 2.1 on. Longer spans are left out. Act I has no longitude
-   model: its pages test the quantity they predict (an altitude, a rising
-   time).
+4. **Test.** The model fitted to the current period against the
+   reference sky, with the error curve from page 2.1 on: around the fit
+   year, and over centuries or millennia when that shows something about
+   the model. It is tested once: the same test is not repeated in the
+   historical astronomer's own time (Hipparchus', Ptolemy's). Act I has no
+   longitude model: its pages test the quantity they predict (an
+   altitude, a rising time).
 5. **Residual.** In short prose with few numbers: what the model still
    lacks and why, ending with the question for the next page.
 
@@ -757,9 +766,8 @@ paragraphs, in a `<div class="history">` headed "History".
 
 Where his numbers were off, say so in words, without working through
 them. Every statement of how he measured or checked comes from the
-sources (book and chapter), like any historical claim. The style of the
-block is a pilot in page 3.3's `page.css`; it moves to `shared/theme.css`
-when a second page uses it.
+sources (book and chapter), like any historical claim. The block is
+styled by `shared/theme.css` (STYLE.md §4.8; see `templates/page.html`).
 
 Followed by:
 
