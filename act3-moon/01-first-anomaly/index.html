@@ -540,10 +540,10 @@
 		</p>
 
 		<p>
-			Eclipses have one more advantage. The Moon's motion has a second
-			inequality, largest at the quarters, which vanishes at new and full
-			Moon, so at an eclipse only the first is present, the one the epicycle
-			models.
+			Eclipses have one more advantage. The Moon's motion has a second large
+			inequality, greatest at the quarters, which at new and full Moon only
+			changes the size of the first, so an eclipse measures a single
+			equation, the one the epicycle models.
 		</p>
 
 		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
@@ -583,9 +583,8 @@
 			The Moon's true motion over each interval comes from the Sun. At the
 			middle of each eclipse the Moon is opposite the Sun, so from one
 			eclipse to the next it moves, beyond whole turns, exactly as far as the
-			Sun. The Moon's true motion is therefore the Sun's, computed with the
-			eccentric of page 2.1, and the Moon itself never has to be measured
-			against the stars.
+			Sun. The Moon's true motion is therefore the Sun's, and the Moon itself
+			never has to be measured against the stars.
 		</p>
 
 		<p>
@@ -599,7 +598,8 @@
 			At the eclipses only the times are measured, and the Sun and the two
 			mean motions give everything else. The table follows the three lunar
 			eclipses around 2026, on 7 September 2025, 3 March 2026 and 28 August
-			2026, through these steps.
+			2026, through these steps, with the reference Sun and the moments of
+			opposition of the reference sky, within minutes of mid-eclipse.
 		</p>
 
 		<div class="table-scroll">
@@ -728,25 +728,31 @@
 				<p>
 					Ptolemy insists that the theory of the Moon be built on lunar
 					eclipses, "the only observations which allow one to determine the
-					lunar position precisely" (IV 1). Hipparchus fixed the synodic month
-					by just the long interval the rates need, comparing eclipses recorded
-					by the Chaldaeans with those of his own time (IV 2).
+					lunar position precisely" (IV 1). For the synodic month he credits
+					Hipparchus with just the long interval the rates need, eclipses of
+					the Chaldaeans compared with those of his own time (IV 2), though
+					Toomer notes that Hipparchus took the month from Babylonian astronomy
+					and only confirmed it. Ptolemy built the Moon's mean motion from this
+					month and his own Sun (IV 3).
 				</p>
 				<aside>
 					<div class="note" data-origin="babylonian"></div>
 					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="debated"></div>
 				</aside>
 			</div>
 
 			<div class="row">
 				<p>
 					Ptolemy solved the three-eclipse problem exactly, with chords,
-					following Hipparchus' method. The records gave the intervals in hours
-					of the night, which he turned into mean solar days with the equation
-					of time of page 2.2 (IV 6). He solved it with three Babylonian
+					following Hipparchus' method. The records gave the time of each
+					eclipse in hours of the night, and he turned the intervals between
+					them into mean solar days with the equation of time of page 2.2 (IV
+					6). He solved it with three Babylonian
 					eclipses and again with three he observed at Alexandria, and the two
 					epicycles came out "very nearly the same". He used 5.25 where the
-					deferent is 60, close to what the eclipses of 2025–2026 give.
+					deferent is 60, close to what a least-squares fit to the new and full
+					Moons of 2026 gives.
 				</p>
 				<aside>
 					<div class="note" data-origin="ptolemy"></div>
@@ -758,9 +764,9 @@
 					Copernicus repeated the method fourteen centuries later with three
 					eclipses he observed himself, and found almost the same epicycle
 					(<em>De Revolutionibus</em> IV 5). All these sets of eclipses, from
-					the Babylonian ones to those of 2025–2026, give nearly the same
-					ratio, as the presets of Figure 4 show. Exercise 3 redoes Ptolemy's
-					Babylonian computation.
+					the Babylonian ones to those of 2025–2026, agree within the spread a
+					single set of three shows today, as the presets of Figure 4 show.
+					Exercise 3 redoes Ptolemy's Babylonian computation.
 				</p>
 				<aside>
 					<div class="note" data-origin="copernicus"></div>
@@ -802,16 +808,17 @@
 			more than 40′ from the real Moon.
 		</p>
 
-		<!-- History block: Ptolemy's simple Moon -->
+		<!-- History block: Ptolemy's epicycle against his eclipses -->
 		<div class="history">
 			<h3><span class="history-label">History</span>Ptolemy's epicycle against his eclipses</h3>
 
 			<div class="row">
 				<p>
 					Ptolemy's check of his epicycle was the agreement of the two he found
-					from eclipses about nine centuries apart. The three eclipses he
-					observed himself are among those he fitted it to, so they check his
-					arithmetic more than his model.
+					from eclipses about eight and a half centuries apart (IV 6). The
+					three eclipses he observed himself are among those he fitted it to,
+					so the fair test is elsewhere: at the other new and full Moons of his
+					time, his Moon is about a degree behind the real one.
 				</p>
 				<aside>
 					<div class="note" data-origin="ptolemy"></div>
@@ -819,19 +826,16 @@
 			</div>
 
 			<p>
-				Against the reference sky, his Moon at those eclipses is about a
-				degree behind the real one, and his Sun by about as much. He placed
-				the Moon opposite his own Sun at each eclipse, so the Moon inherits
-				the Sun's error, and the epoch he fixed from those eclipses does too.
+				His Sun is behind by about as much. He placed the Moon opposite his
+				own Sun at each eclipse, so the Moon inherits the Sun's error, and so
+				does his epoch, which he fixed from one of the Babylonian eclipses with
+				the same Sun (IV 8).
 			</p>
-				<aside>
-					<div class="note" data-origin="ptolemy"></div>
-				</aside>
-			</div>
 
 			<p>
-				Over the centuries his Moon drifts with his Sun, and a little faster,
-				because Hipparchus' month is half a second too long.
+				Over the centuries his Moon drifts with his Sun, and a little faster:
+				the month he took from Hipparchus is about half a second longer than
+				today's.
 			</p>
 		</div>
 
@@ -839,7 +843,7 @@
 		<h2 id="residual"><span class="step">5 · Residual</span>Right at new and full Moon, wrong at the quarters</h2>
 
 		<p>
-			The largest errors of Figure 5 come at the quarters, when the Moon is
+			The largest errors of Figure 5 come near the quarters, when the Moon is
 			90° from the Sun, where eclipses never see it. An epicycle fitted to
 			eclipses has no way of knowing how the Moon moves there.
 		</p>
@@ -864,7 +868,8 @@
 				equation of about 6.3°, and the Sun's pull adds the <em>evection</em>,
 				a term that depends on the Moon's elongation from the Sun. At new and
 				full Moon it subtracts, leaving about the 5° the eclipses measure, and
-				at the quarters it adds the same amount, giving Ptolemy's 7⅔°.
+				at the quarters it adds the same amount, giving about 7.6°, close to
+				Ptolemy's 7⅔°.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -999,10 +1004,10 @@
 			<details class="answer">
 				<p>
 					From the recorded intervals the mean motions are 345°48.7′ and
-					170°17.9′, and the arcs of anomaly 306°21.9′ and 150°35.8′, within a
-					few minutes of Ptolemy's 345°51′, 170°07′, 306°25′ and 150°26′: he
-					reckons the intervals in mean solar days, 4 minutes longer and 20
-					minutes shorter. With his values, $d_{12} = 349^\circ 15' - 345^\circ
+					170°17.9′, and the arcs of anomaly 306°21.9′ and 150°35.8′, within
+					11′ of Ptolemy's 345°51′, 170°07′, 306°25′ and 150°26′: he reckons
+					the intervals in mean solar days, and his mean motions correspond to
+					intervals 4 minutes longer and 20 minutes shorter. With his values, $d_{12} = 349^\circ 15' - 345^\circ
 					51' = +3^\circ 24'$ and $d_{23} = 169^\circ 30' - 170^\circ 07' =
 					-0^\circ 37'$.
 				</p>
