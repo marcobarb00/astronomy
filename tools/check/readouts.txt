@@ -734,8 +734,6 @@ Regenerate with: node tools/check/smoke.js --update
     #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #ecc-day = 0
     OUTPUT (ecc-day): 1 Jan
@@ -839,11 +837,12 @@ Regenerate with: node tools/check/smoke.js --update
     #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
@@ -895,31 +894,15 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-2026-zoom-plot at 0.3
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 4 Apr 2026 · eccentric: −0.1′
+    .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
   hover #error-2026-zoom-plot at 0.6
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 1 Aug 2026 · eccentric: +0.9′
+    .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
   hover #error-2026-zoom-plot at 0.9
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 28 Nov 2026 · eccentric: −1.5′
+    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
   hover #error-2026-zoom-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-ptolemy-plot at 0.3
-    .errorcurve-readout: 18 Sep 347 BC · uniform circle: +169.5′ · Ptolemy's eccentric: +31.5′
-  hover #error-ptolemy-plot at 0.6
-    .errorcurve-readout: 9 Mar 306 · uniform circle: −227.3′ · Ptolemy's eccentric: −87.1′
-  hover #error-ptolemy-plot at 0.9
-    .errorcurve-readout: 28 Aug 957 · uniform circle: −159.8′ · Ptolemy's eccentric: −303.0′
-  hover #error-ptolemy-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-residual-plot at 0.3
-    .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
-  hover #error-residual-plot at 0.6
-    .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
-  hover #error-residual-plot at 0.9
-    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
-  hover #error-residual-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 

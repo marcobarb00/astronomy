@@ -445,14 +445,14 @@
 
 		<p>
 			The offset centre of the eccentric is what makes the seasons
-			unequal, so their lengths reveal it. Hipparchus found the centre,
-			its distance $e$ from the Earth and the direction of the apogee
-			$\lambda_A$, from the lengths of spring and summer alone. The mean
-			motion $n$ comes from the length of the year (page 1.3), and the
-			place of the Sun at one moment gives $L_0$.
+			unequal, so their lengths reveal it: two of them fix the centre, its
+			distance $e$ from the Earth and the direction of the apogee
+			$\lambda_A$. The mean motion $n$ is already known from the length of
+			the year (page 1.3), and $L_0$ needs one moment at which the Sun's
+			ecliptic longitude is known exactly, an equinox.
 		</p>
 
-		<h3>Hipparchus' method</h3>
+		<h3>The centre from two seasons</h3>
 
 		<div class="row">
 			<p>
@@ -523,20 +523,6 @@
 			we compare it with the sky.
 		</p>
 
-		<div class="row">
-			<p>
-				With Hipparchus' two seasons, the method puts the centre at $e =
-				0.0414$ towards $\lambda_A = 65.4^\circ$. Ptolemy, who works with
-				chords, finds the radius "approximately 24 times" the distance
-				between the centres, and adopts $e = 1/24$ with the apogee at
-				$\lambda_A = 65^\circ 30'$ (III 4). Exercise 1 follows his
-				computation.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
 		<!-- Figure 3: Hipparchus' construction -->
 		<figure class="fig">
 			<div class="frame">
@@ -575,12 +561,11 @@
 				<div class="readout" id="fit-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Choose a preset, or set the two seasons yourself, and follow the
-				spring arc $a_1$ in (a) from the radius towards γ to the radius
-				towards 90°: it is a right angle plus the two small angles
-				$\arcsin k$ and $\arcsin h$. Then compare "Hipparchus" with "141
-				BC": the apogee agrees within half a degree, the eccentricity does
-				not.
+				Choose a preset, or set the two seasons yourself, and watch C: the
+				longer spring and summer are together, the farther it lies from the
+				Earth, and the more they differ, the farther the apogee turns from
+				the summer solstice. With "equal" seasons, each a quarter of the
+				year, C sits on the Earth and there is no apogee.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -604,60 +589,75 @@
 
 		<p>
 			Applied to the seasons of 2026 in the table of section 1, with the
-			modern year of 365.24219 days, the method gives $e = 0.03347$ and
+			year of page 1.3, the method gives $e = 0.03347$ and
 			$\lambda_A = 103.73^\circ$. It then predicts autumn and winter to
 			within about half an hour of the real ones.
 		</p>
 
-		<div class="row">
-			<p>
-				Compared with Kepler's ellipse for 2026, from the elements used by
-				the reference sky, the fitted $e$ equals twice its eccentricity
-				$e_\text{K}$ to within 0.1%, while the fitted apogee is 0.35° too far
-				east.
-			</p>
-			<aside>
-				<div class="note" data-origin="modern"></div>
-			</aside>
-		</div>
-
 		<p>
-			Of the two parameters, the apogee depends far more on the timing of
-			the seasons. Moving one hour from summer to spring shifts it by 0.9°
-			and hardly changes $e$, as Toomer also notes for Hipparchus' data
-			(note to III 4), and the ancient observations were timed to a
-			quarter of a day at best.
+			The apogee is the more delicate of the two. Its direction depends on
+			$h$, the small component of C, which is set by the small difference
+			between spring and summer, so moving one hour from summer to spring
+			shifts the apogee by 0.9° and hardly changes $e$.
 		</p>
 
 		<h3>The mean ecliptic longitude at the epoch</h3>
 
 		<p>
-			The last parameter comes from the moment of the spring equinox,
-			which we timed on page 1.2 to find γ. At that moment the Sun is at
-			γ, at the angle $-\arcsin k$ as seen from C, which is therefore its
-			mean ecliptic longitude. In 2026 the equinox came on 20 March at
-			14:32 TT, 9575.106 days after J2000.0, with $-\arcsin k =
-			358.137^\circ$. Going back to the epoch at the rate $n$,
+			At the spring equinox, which we timed on page 1.2 to find γ, the
+			Sun's ecliptic longitude is exactly 0°. The Sun is then at γ, at the
+			angle $-\arcsin k$ as seen from C, which is therefore its mean
+			ecliptic longitude. In 2026 the equinox came on 20 March at 14:32 TT
+			(14:31 UT in the table of section 1), where $-\arcsin k =
+			358.137^\circ$. Going back to the epoch J2000.0 at the rate $n$,
 		</p>
 
 		$$L_0 = 358.137^\circ - n \times 9575.106\ \text{d} = 280.459^\circ \pmod{360^\circ},$$
 
 		<p>
-			0.45′ less than the value 280.46646° of Meeus that page 1.3 used
+			within half an arcminute of the value of Meeus that page 1.3 used
 			without deriving it.
 		</p>
 
-		<div class="row">
+		<!-- History block: Hipparchus' and Ptolemy's parameters -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Hipparchus' and Ptolemy's parameters</h3>
+
+			<div class="row">
+				<p>
+					Hipparchus found the centre by this method from his own spring and
+					summer (section 1). Equinoxes were timed with bronze rings fixed in
+					the plane of the equator, like those at Alexandria: on the day of the
+					equinox, the lit side of the ring's inner surface changes from one
+					side to the other (<em>Almagest</em> III 1). A solstice is harder to
+					time, since the Sun's declination hardly changes near it, and
+					Hipparchus admits errors of up to a quarter of a day in his.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+
 			<p>
-				Ptolemy fixed his epoch in the same way, from the autumn equinox
-				he observed in AD 132. His eccentric gave the Sun's mean position
-				at that moment, and he carried it back 879 years to the start of
-				the era Nabonassar, where the mean Sun was $0^\circ 45'$ into
-				Pisces, at $330.75^\circ$ (III 7).
+				With his seasons the method puts the apogee within half a degree of
+				the one the real seasons of his time give, but makes the eccentricity
+				a fifth too large: his spring and summer together are over half a day
+				too long. The presets "Hipparchus" and "141 BC" of Figure 3 and
+				Exercise 1 follow the difference.
 			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
+
+			<div class="row">
+				<p>
+					Ptolemy repeated Hipparchus' computation from the same two seasons
+					(III 4). He fixed his epoch as we
+					did, from an equinox he observed himself, but carried it back to the
+					start of the era of Nabonassar, because the ancient observations are
+					preserved from that era on (III 7).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
 		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
@@ -669,7 +669,7 @@
 			$\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$, in
 			arcminutes, as on page 1.1. The two errors differ so much that one
 			scale cannot show both, so Figure 4 (a) shows them together and (b)
-			the eccentric alone, on a scale a hundred times finer.
+			the eccentric alone, on a much finer scale.
 		</p>
 
 		<!-- Figure 4: the first error curve, at two scales -->
@@ -682,98 +682,80 @@
 			</div>
 			<figcaption>
 				Point at either plot to read the errors on a date. In (a) the
-				uniform circle swings by almost 2° either way while the eccentric
-				stays on the zero line; (b) magnifies that line and shows that the
-				eccentric is not quite exact.
+				uniform circle swings far to either side while the eccentric stays
+				on the zero line; (b) magnifies that line, where the eccentric's own
+				error shows, with small monthly ripples. Then switch (b) to 100 and
+				1000 years and watch its error grow on either side of 2026.
 			</figcaption>
 		</figure>
 
 		<p>
 			The uniform circle is wrong by up to 115′ and the eccentric by at
-			most 1.7′, about seventy times less.
+			most 1.7′, about seventy times less and a twentieth of the Sun's
+			apparent diameter. Away from 2026 the eccentric's error grows, to
+			about 3′ within fifty years and almost 20′ five centuries away, so an
+			eccentric fitted to one year serves for a few decades.
 		</p>
 
 		<p>
-			The eccentric also removes the error that page 1.3 left in the
-			length of the day, which depends on the Sun's declination and so on
-			its ecliptic longitude. With the eccentric's ecliptic longitude in
-			the declination formula, the largest error of the day in 2026, which
-			page 1.3 found to be 5 to 13 minutes at Rome, London and geographic
-			latitude 65°, falls below half a minute at all three.
+			The length of the day depends on the Sun's declination, and so on its
+			ecliptic longitude. With the eccentric's ecliptic longitude, the
+			largest error that page 1.3 left in it in 2026 falls, at its three
+			geographic latitudes, from up to 13 minutes to under half a minute.
 		</p>
 
-		<h3>Ptolemy's Sun</h3>
+		<!-- History block: Ptolemy's Sun against his observations -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's Sun against his observations</h3>
 
-		<p>
-			To judge the eccentric in its own time, we run Ptolemy's version of
-			it. It has the same shape, with the eccentricity and the apogee he
-			took from Hipparchus' seasons, the mean Sun of his epoch, at noon at
-			Alexandria on 26 February 747 BC, and the mean motion of his year.
-			He counted solar days, which follow the Earth's slowing rotation,
-			so we turn the reference sky's uniform time into his with
-			$\Delta T$ (page 1.3), almost six hours at his epoch.
-		</p>
-
-		<!-- Figure 5: Ptolemy's Sun against the real Sun -->
-		<figure class="fig">
-			<div class="frame">
-				<div id="error-ptolemy"></div>
+			<div class="row">
+				<p>
+					Ptolemy checked his Sun against equinoxes and a solstice he observed
+					himself, found Hipparchus' seasons again, and concluded that the
+					eccentric "always maintains the same position relative to the
+					solsticial and equinoctial points" (III 4). With timings good to a
+					quarter of a day, which can move the apogee by several degrees, he
+					could not have seen it move, as Toomer notes.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
 			</div>
-			<figcaption>
-				Read the error in AD 140, when Ptolemy was writing, then switch to
-				2000 years and watch it grow on either side of his time.
-			</figcaption>
-		</figure>
 
-		<p>
-			In AD 140 his Sun is behind the real one by about 1.1° on average,
-			and most of this error is in his epoch.
-		</p>
+			<div class="row">
+				<p>
+					Set against the reference sky, with $\Delta T$ turning its uniform
+					time into his days, which followed the Earth's slowing rotation (page
+					1.3), his observations come about a day after the real events. At the
+					equinox from which he fixed his epoch, his model puts the Sun at the
+					equinox, as it must, but the real Sun had reached it more than a day
+					earlier (Exercise 3).
+					Toomer calls the delay "the strongest argument of those modern
+					critics who have maintained that Ptolemy 'faked' observations" (note
+					to III 1).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
 
-		<p>
-			At the autumn equinox he observed on 25 September 132, two hours
-			after noon, his model puts the Sun at the equinox within a fraction
-			of an arcminute, as it must, since he fixed his epoch from that
-			observation. The real Sun had reached the equinox 34 hours
-			earlier.
-		</p>
-
-		<div class="row">
 			<p>
-				Ptolemy's other equinox and his solstice are also about a day late
-				(Exercise 3), and whether he really observed them is one of the
-				long disputes about the <em>Almagest</em>. Toomer calls the delay
-				"the strongest argument of those modern critics who have
-				maintained that Ptolemy 'faked' observations" (note to III 1).
+				In his own time his Sun is therefore about a degree behind the real
+				one, most of it from his epoch. His year is too long, so his Sun falls
+				further behind every century.
 			</p>
-			<aside>
-				<div class="note" data-origin="debated"></div>
-			</aside>
 		</div>
-
-		<p>
-			The part of the error that changes through the year comes from his
-			parameters: his eccentricity is a fifth too large, and his apogee
-			lies 5° behind the apogee fitted to the real seasons of his time
-			(Exercise 3).
-		</p>
-
-		<p>
-			Over the centuries the error grows because his year is 6.4 minutes
-			too long. His mean Sun falls further behind every century, and by
-			2026 his Sun is 9.2° behind the real one.
-		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What the eccentric leaves out</h2>
 
 		<div class="row">
 			<p>
-				Over 2026 the eccentric fitted to that year stays within 1.7′ of
-				the real Sun. About half of this error comes from the shape of the
-				circle, which differs from Kepler's ellipse in the terms of second
-				order in $e$ (page 4.2), and most of the rest from the small error
-				of the fitted apogee.
+				About half of the eccentric's small error over 2026 comes from the
+				shape of the circle, which differs from the ellipse of the modern
+				theory in the terms of second order in $e$ (page 4.2), and most of
+				the rest from the fitted apogee, about a third of a degree east of
+				the reference Sun's.
 			</p>
 			<aside>
 				<div class="note today">
@@ -790,104 +772,17 @@
 			The small monthly ripples of Figure 4 (b) come from the Moon. The
 			Earth and the Moon both turn about their common centre of mass, so
 			the Earth swings a little to and fro every month, and the Sun, seen
-			from the Earth, moves the opposite way by up to 7″.
+			from the Earth, moves the opposite way by a few arcseconds.
 		</p>
-
-		<p>
-			Over longer spans the error grows, to about 3′ within fifty years of
-			2026 and almost 20′ five centuries away.
-		</p>
-
-		<!-- Figure 6: the eccentric fitted to 2026, over longer spans -->
-		<figure class="fig">
-			<div class="frame">
-				<div id="error-residual"></div>
-			</div>
-			<figcaption>
-				Switch between the two spans: the error grows on either side of
-				2026, the year the eccentric was fitted to.
-			</figcaption>
-		</figure>
-
-		<p>
-			Fitting the real seasons of other years by Hipparchus' method shows
-			why the error grows: the apogee is not fixed, and it moves east.
-		</p>
-
-		<div class="table-scroll">
-		<table class="prose-table">
-			<thead>
-				<tr>
-					<th>Year</th>
-					<th>Spring</th>
-					<th>Summer</th>
-					<th>Apogee $\lambda_A$</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>141 BC (Hipparchus)</td>
-					<td>94.01 d</td>
-					<td>92.34 d</td>
-					<td>$65.9^\circ$</td>
-				</tr>
-				<tr>
-					<td>AD 140 (Ptolemy)</td>
-					<td>93.90 d</td>
-					<td>92.56 d</td>
-					<td>$70.7^\circ$</td>
-				</tr>
-				<tr>
-					<td>880 (al-Battani)</td>
-					<td>93.51 d</td>
-					<td>93.07 d</td>
-					<td>$83.6^\circ$</td>
-				</tr>
-				<tr>
-					<td>1250</td>
-					<td>93.29 d</td>
-					<td>93.29 d</td>
-					<td>$90.1^\circ$</td>
-				</tr>
-				<tr>
-					<td>1515 (Copernicus)</td>
-					<td>93.11 d</td>
-					<td>93.43 d</td>
-					<td>$94.7^\circ$</td>
-				</tr>
-				<tr>
-					<td>2026</td>
-					<td>92.74 d</td>
-					<td>93.66 d</td>
-					<td>$103.7^\circ$</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
 
 		<div class="row">
 			<p>
-				The apogee moves by about 1.75° a century relative to γ. Around
-				1250 it passed the summer solstice, and spring and summer were
-				then equally long. Ptolemy thought it fixed, because he found
-				Hipparchus' seasons again in his own time, and concluded
-				that the eccentric "always maintains the same position relative to
-				the solsticial and equinoctial points" (III 4). Exercise 3 shows
-				what went wrong.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				Later astronomers saw it move. Al-Battani, around 880, put the
-				apogee 7°43′ before the summer solstice, and Copernicus, in 1515,
-				found it 6⅔° after it. Copernicus wrote of the eccentricity and the
-				apogee that "both values are now found to have changed with a
-				perceptible difference" (<em>De Revolutionibus</em> III 16
-				[f. 87v]).
+				Away from 2026 the error grows because the apogee is not fixed.
+				Fitting the real seasons of other years by the same method shows it
+				moving east by about 1.75° a century relative to γ. Around 1250 it
+				passed the summer solstice, when spring and summer were equally long.
+				Al-Battani and Copernicus, who found seasons unlike Ptolemy's, saw it
+				move (<em>De Revolutionibus</em> III 16).
 			</p>
 			<aside>
 				<div class="note" data-origin="copernicus"></div>
@@ -896,13 +791,13 @@
 
 		<div class="row">
 			<p>
-				Most of this motion belongs to γ rather than to the apogee. The
-				origin of ecliptic longitudes itself slides westward along the
-				ecliptic, so that every ecliptic longitude counted from it grows
-				by about 1.4° a century, as page 2.3 explains. Only the
-				remaining 0.3° a century is a turning of Kepler's ellipse
-				itself: its line of apsides, through the apogee and the perigee,
-				turns under the pull of the planets.
+				Most of this motion is that of γ itself. The origin of ecliptic
+				longitudes slides westward along the ecliptic, so that every
+				ecliptic longitude counted from it grows by about 1.4° a century, as
+				page 2.3 explains. Only the remaining 0.3° a century is a turning of
+				the Sun's path: in the ellipse that the modern theory keeps as its
+				first approximation, the line of apsides, through the apogee and the
+				perigee, turns under the pull of the planets.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="perturbations"></div>
@@ -910,59 +805,22 @@
 		</div>
 
 		<p>
-			The eccentric also predicts how far away the Sun is. The Sun is
-			farthest at the apogee, $1 + e$ times the radius of the circle from
-			the Earth, and nearest at the perigee, $1 - e$ times, so with $e =
-			0.0335$ its distance swings by 3.35% either way from the mean.
+			The eccentric gives the Sun's distance too, from $1 - e$ to $1 + e$
+			times the radius of its circle, so the distance swings by as much as
+			the daily motion of section 1, about 3.4% either way. The real
+			distance, and with it the Sun's apparent diameter, swings by only half
+			as much, $e_\text{K} = e/2$. The eccentric gets the directions right
+			but doubles the variation of the distance, a fault that returns, much
+			larger, with the Moon on page 3.2.
 		</p>
 
 		<p>
-			We can check this against the size of the Sun's disc. Its apparent
-			diameter, the angle the disc spans in the sky, is inversely
-			proportional to the distance, and at the mean distance it is
-			31.99′. Dividing by $1 + e$ and $1 - e$ gives the disc the eccentric
-			predicts at the apogee and the perigee, which the table compares
-			with the real disc of 2026:
-		</p>
-
-		<div class="table-scroll">
-		<table class="prose-table">
-			<thead>
-				<tr>
-					<th>Apparent diameter</th>
-					<th>Apogee, early July</th>
-					<th>Perigee, early January</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>eccentric</td>
-					<td>30.95′</td>
-					<td>33.10′</td>
-				</tr>
-				<tr>
-					<td>real Sun</td>
-					<td>31.46′</td>
-					<td>32.53′</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-
-		<p>
-			The real disc changes by only half as much, because the real
-			distance follows Kepler's ellipse and swings by $e_\text{K} = e/2$
-			either way. The eccentric gets the directions right but doubles the
-			variation of the distance, a fault that returns, much larger, with
-			the Moon on page 3.2.
-		</p>
-
-		<p>
-			The Sun's uneven motion also shows every day, on a sundial. A
-			sundial reads the Sun's hour angle, which depends on its right
-			ascension, and the right ascension depends both on the uneven
-			ecliptic longitude of this page and on the tilt of the ecliptic.
-			Page 2.2 combines the two into the equation of time.
+			On a sundial the Sun's uneven motion shows every day. A sundial
+			reads the Sun's hour angle, which depends on its right ascension,
+			and the right ascension depends both on the uneven ecliptic
+			longitude of this page and on the tilt of the ecliptic. So a sundial
+			and a clock disagree through the year, by an amount that page 2.2
+			works out.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

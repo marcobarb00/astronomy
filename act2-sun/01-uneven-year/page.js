@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 2.1 · THE UNEVEN YEAR - SCRIPT (page.js)
-   Six figures, each with its own init and draw (and update when it has
+   Four figures, each with its own init and draw (and update when it has
    controls):
 	 1. the Sun's daily motion       (2D, static: the real Sun through 2026)
 	 2. the eccentric                (2D: (a) the circle seen from the north
@@ -11,9 +11,8 @@
 									   centre magnified; spring and summer)
 	 4. the first error curve        ((a) the eccentric fitted to 2026 and
 									   the uniform circle; (b) the eccentric
-									   alone, magnified)
-	 5. Ptolemy's Sun                (error curve, AD 140 and 2000 years)
-	 6. the eccentric's residual     (error curve, 100 and 1000 years)
+									   alone, magnified, over 1, 100 and 1000
+									   years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, plot2d.js, errorcurve.js, components.js.
    Every number quoted in the prose comes from tools/numbers/2.1-uneven-year.js.
@@ -24,7 +23,7 @@
 	 2. The drawing of an eccentric with its four seasons (Figures 2, 3)
 	 3. Figure 2: the eccentric and the equation of centre
 	 4. Figure 3: Hipparchus' construction
-	 5. Figures 4 to 6: the error curves
+	 5. Figure 4: the error curves
 	 6. Page start
    ========================================================================== */
 
@@ -820,7 +819,7 @@ const fitFigure = {
 };
 
 /* ==========================================================================
-   5. FIGURES 4 TO 6: THE ERROR CURVES
+   5. FIGURE 4: THE ERROR CURVES
    The models take JD(TT) and return a longitude (models/*.js); the widget
    compares them with the reference Sun (shared/errorcurve.js). No slider
    changes a model here, so the widget fits its scale to each span.
@@ -828,7 +827,9 @@ const fitFigure = {
 
 /* Figure 4: 2026. (a) the fitted eccentric and the uniform circle of page
    1.3, on the scale of the uniform circle's error; (b) the eccentric
-   alone, on a scale about 60 times finer, where its own error shows. */
+   alone, on a scale about 60 times finer, where its own error shows, and
+   over a century and a thousand years centred on 2026, where it grows
+   (the Test of the eccentric fitted to 2026 over longer spans). */
 const errorFigure = {
 	init() {
 		const both = new ErrorCurve(byId('error-2026'), {
@@ -851,7 +852,11 @@ const errorFigure = {
 			body: 'sun',
 			start: YEAR_START,
 			end: YEAR_START + 365.25,
-			spans: [],
+			spans: [
+				{ label: '1 year', years: 1 },
+				{ label: '100 years', years: 100 },
+				{ label: '1000 years', years: 1000 }
+			],
 			ghostButtons: false
 		});
 
@@ -859,7 +864,7 @@ const errorFigure = {
 	}
 };
 
-/* The fitted eccentric, as an error-curve model (Figures 4 and 6). */
+/* The fitted eccentric, as an error-curve model (Figure 4). */
 function eccentricModel() {
 	return {
 		label: 'eccentric, fitted to 2026',
@@ -869,58 +874,6 @@ function eccentricModel() {
 	};
 }
 
-/* Figure 5: Ptolemy's Sun in his own time, and over 2000 years around it
-   (861 BC to AD 1141, inside the reference sky's range). */
-const ptolemyFigure = {
-	init() {
-		const start = Time.julianDay(140, 1, 1);
-		const curve = new ErrorCurve(byId('error-ptolemy'), {
-			body: 'sun',
-			start: start,
-			end: start + 365.25,
-			spans: [
-				{ label: '1 year', years: 1 },
-				{ label: '2000 years', years: 2000 }
-			],
-			ghostButtons: false
-		});
-
-		curve.addGhost({
-			label: "Ptolemy's uniform circle",
-			short: 'uniform circle',
-			color: COL.sun,
-			fn: MeanSun.make(MeanSun.PTOLEMY)
-		});
-		curve.addModel({
-			label: "Ptolemy's eccentric (<em>Almagest</em> III)",
-			short: "Ptolemy's eccentric",
-			color: COL.epicycle,
-			fn: SolarEccentric.make(SolarEccentric.PTOLEMY)
-		});
-	}
-};
-
-/* Figure 6: our eccentric over a century and a thousand years, centred on
-   the middle of 2026 (Figure 4 (b) shows the year itself). */
-const residualFigure = {
-	init() {
-		const middle = YEAR_START + 365.25 / 2;
-		const halfCentury = (100 * 365.25) / 2;
-		const curve = new ErrorCurve(byId('error-residual'), {
-			body: 'sun',
-			start: middle - halfCentury,
-			end: middle + halfCentury,
-			spans: [
-				{ label: '100 years', years: 100 },
-				{ label: '1000 years', years: 1000 }
-			],
-			ghostButtons: false
-		});
-
-		curve.addModel(eccentricModel());
-	}
-};
-
 /* ==========================================================================
    6. PAGE START
    Shared components first (they typeset the prose), then the figures.
@@ -928,5 +881,5 @@ const residualFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([motionFigure, eccentricFigure, fitFigure, errorFigure, ptolemyFigure, residualFigure]);
+	startFigures([motionFigure, eccentricFigure, fitFigure, errorFigure]);
 });
