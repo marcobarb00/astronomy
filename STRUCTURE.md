@@ -310,17 +310,19 @@ The first anomaly and the simplest complete model.
   and of the eccentric with and without a moving apogee over 2000 years;
   the thirteen records of Spica, Regulus and β Scorpii minus the real sky,
   with the error of Ptolemy's Sun (static).
-- **Fit:** Ptolemy's 1° in 100 years from Regulus (VII 2); the rate from
-  Spica's records over 18 centuries (50.6″ a year); $p = 50.29''$ a year
-  from the reference sky around 2026; Copernicus' mean rate (III 6); the
-  apogee's rate, 1.741° a century, from the seasons of seventeen years by
-  Hipparchus' method, of which 1.397° is precession.
+- **Fit:** a long baseline fixes the rate (an error of 1° is 14″ a year
+  over 265 years, 2″ over 18 centuries); the rate from Spica's records
+  (50.6″ a year, Figure 4); $p = 50.29''$ a year from the reference sky
+  around 2026; the apogee's rate, 1.741° a century, from the seasons of
+  seventeen years by Hipparchus' method, of which 1.397° is precession.
+  History block: Ptolemy's 1° in 100 years from Regulus (VII 2),
+  Hipparchus' lower bound, the III 1 remedy, Copernicus' mean rate (III 6).
 - **Test:** uniform precession within 2.6′ of Spica over 2000 years; the
   eccentric with a moving apogee within 6′ over 2000 years (38.5′ with the
   apogee fixed), and page 2.2's equation of time within 11 s over 1000
-  years; Ptolemy's slow rate comes mostly from his Sun: the records he
-  reduced err as his Sun does, and 49.9″ less the 14.9″ a year of his
-  Sun's drift gives 34.9″, near his 36″ (the full cause is debated).
+  years. History block, with Figure 6 (kept for Exercises 1 and 3):
+  Ptolemy's slow rate comes mostly from his Sun, the records he reduced
+  err as his Sun does (the full cause is debated).
 - **Exercises:** the rate from two records of Regulus (Hipparchus and
   al-Battani; Hipparchus and Ptolemy); the sidereal year from the
   tropical year and the rate, and Ptolemy's, nearly right because his
