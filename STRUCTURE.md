@@ -196,7 +196,7 @@ The first anomaly and the simplest complete model.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
   construction applied to the reference seasons of 2026 ($e = 0.03347$,
   $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one
-  hour moved between the seasons shifts the apogee 0.9°); the mean
+  hour moved between the seasons shifts the apogee 1.2°); the mean
   longitude at epoch $L_0$ from the timed spring equinox (page 1.3 used
   Meeus' value without deriving it). History block: equinoxes timed with
   bronze rings in the plane of the equator, solstices to a quarter of a

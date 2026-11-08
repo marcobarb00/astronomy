@@ -2601,6 +2601,7 @@ greatest q for 1/24: 2°23'17" at 92°23'17" (2;23 at 92;23)
 one hour from summer to spring: apogee -0.90°, e 0.00030
 one hour added to spring: apogee -0.24°, e 0.00048
 a quarter of a day from summer to spring: apogee -5.17°
+2026, one hour from summer to spring: apogee -1.20°, e -0.00016
 
 === Fit: the real seasons of 141 BC through the same method (Figure 3 preset) ===
 141 BC: spring 94.0142 d, summer 92.3412 d, year 365.24219 d

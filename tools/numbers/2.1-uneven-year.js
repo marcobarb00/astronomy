@@ -295,6 +295,14 @@ title('Fit: sensitivity to the timing');
 	const quarter = SolarEccentric.fitSeasons(94.5 + 0.25, 92.5 - 0.25, YEAR);
 
 	console.log(`a quarter of a day from summer to spring: apogee ${f(quarter.apogee - base.apogee, 2)}°`);
+
+	/* The same hour with the seasons of 2026 (the Fit's "Sun of 2026"). */
+	const base2026 = SolarEccentric.fitSeasons(92.7391, 93.6629, YEAR);
+	const moved2026 = SolarEccentric.fitSeasons(92.7391 + 1 / 24, 93.6629 - 1 / 24, YEAR);
+
+	console.log(
+		`2026, one hour from summer to spring: apogee ${f(moved2026.apogee - base2026.apogee, 2)}°, e ${f(moved2026.e - base2026.e, 5)}`
+	);
 }
 
 title('Fit: the real seasons of 141 BC through the same method (Figure 3 preset)');

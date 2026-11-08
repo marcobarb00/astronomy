@@ -827,7 +827,7 @@ const fitFigure = {
 
 /* Figure 4: 2026. (a) the fitted eccentric and the uniform circle of page
    1.3, on the scale of the uniform circle's error; (b) the eccentric
-   alone, on a scale about 60 times finer, where its own error shows, and
+   alone, on a scale about 100 times finer, where its own error shows, and
    over a century and a thousand years centred on 2026, where it grows
    (the Test of the eccentric fitted to 2026 over longer spans). */
 const errorFigure = {
