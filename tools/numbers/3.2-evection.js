@@ -425,7 +425,11 @@ title('Fit: c fitted to the quarters (golden section on the sum of squares)');
 	console.log(
 		`greatest equation: at the quarters ${f(asin(FIT.e / (1 - 2 * FIT.c)), 2)}°, at new and full Moon ${f(asin(FIT.e), 2)}°`
 	);
-	console.log(`the quarters of 2021 - 2030: c = ${f(fitC(QUARTERS), 4)}`);
+	const cDecade = fitC(QUARTERS);
+
+	console.log(
+		`the quarters of 2021 - 2030: c = ${f(cDecade, 4)}, ${f((100 * (cDecade - c2026)) / c2026, 1)}% from the fit to 2026`
+	);
 }
 
 /* ==========================================================================
@@ -448,7 +452,7 @@ title('Test: the error over 2026 (Figure 4)');
 	console.log(`the complete crank, 1976 - 2076: largest ${f(Math.abs(century.v) / 60, 2)}° on ${date(century.jd)}`);
 }
 
-title("Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (Figure 5)");
+title("Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (history block)");
 {
 	const from = Time.julianDay(139, 1, 20);
 	const to = from + 60;
@@ -471,11 +475,6 @@ title("Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (Figure 5
 	);
 	console.log(`his Sun over the same months: mean error ${f(mean(sunErrors), 0)}'`);
 	console.log(`both on average ${f(-mean(full) / 60, 1)}° behind`);
-	[1000, 2026].forEach(y => {
-		const a = Time.julianDay(y, 1, 1);
-
-		console.log(`   the year ${y}: mean error ${f(mean(errors(models.ptolemy, a, a + 365)) / 60, 1)}°`);
-	});
 }
 
 /* ==========================================================================
@@ -520,12 +519,12 @@ title("Test: the distances of Ptolemy's model (Almagest V 4, V 13)");
 	);
 }
 
-title('Test: the real Moon in 2026 (Figure 6)');
+title('Test: the real Moon in 2026 (Figure 5)');
 console.log(
 	`nearest ${f(REAL.near.v, 0)} km on ${date(REAL.near.jd)}, farthest ${f(REAL.far.v, 0)} km on ${date(REAL.far.jd)}; ratio ${f(REAL.far.v / REAL.near.v, 3)}; apparent diameter ${f(diameter(REAL.far.v), 1)}' .. ${f(diameter(REAL.near.v), 1)}'`
 );
 
-title('Test: the models with their greatest distance set to the real farthest of 2026 (Figure 6)');
+title('Test: the models with their greatest distance set to the real farthest of 2026 (Figure 5)');
 {
 	/* A model's diameter: the real smallest diameter of 2026, times its
 	   greatest distance over its distance. */

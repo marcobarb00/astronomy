@@ -427,22 +427,24 @@ The first anomaly and the simplest complete model.
   epicycle (date); the direction of the epicycle in Ptolemy's example of
   V 6 (static, the epicycle enlarged); the error curve of the crank with
   the epicycle and the crank without the direction as ghosts, dots at the
-  quarters; Ptolemy's complete Moon around AD 139 and over 2000 years; the
-  apparent diameter through 2026, the real Moon against the two models
+  quarters; the apparent diameter through 2026, the real Moon against the two models
   (static). No photo: no public-domain or CC0 photograph of the Moon at
   perigee and apogee side by side was found (2026-10-28).
-- **Fit:** Ptolemy's eccentric from 5.25 and 7⅔° (V 4: OG 39.37, radius
-  49.68, OC 10.32); ON = OC from Hipparchus' sightings of 127 BC (V 5);
-  ours keeps page 3.1's fit and fits $c = 0.1762$ to the 25 quarters of
-  2026 (Ptolemy 0.1719).
+- **Fit:** the quarters fix $c$ ($\sin q_\text{max} = r/\text{OG}$ with
+  the epicycle at the eccentric's perigee); the direction of the epicycle
+  shows near the octants and is kept as Ptolemy found it, so the octants
+  test the model; ours keeps page 3.1's fit and fits $c = 0.1762$ to the
+  25 quarters of 2026 (about 1% more for 2021–2030). History block:
+  Ptolemy's $c = 0.1719$ from 7⅔° at the quarters (V 4); ON = OC from two
+  of Hipparchus' sightings near the octants (V 5).
 - **Test:** over 2026 the largest error falls from 3.2° (epicycle) to 2.7°
   (crank alone) and 1.8° (with the direction); 2.0° over 1976–2076.
-  Ptolemy's complete Moon around AD 139 swings from −1.6° to +0.3°
-  against −3.6° to +1.8°, 0.9° behind on average (his Sun). Distances: 1.91
-  in the model, 1.14 in the real Moon (356·651 to 406·417 km in 2026); the
-  diameter up to 59.9′ on Ptolemy's 31⅓′ (V 14), 56.6′ for the fitted
-  crank, against 29.4′ to 33.5′; the Sun's eccentric of page 2.1 varies
-  twice as much as the real Sun too.
+  Distances: 1.91 in the model, 1.14 in the real Moon; the apparent
+  diameter of the crank nearly doubles at the quarters. History block, in
+  words: Ptolemy's complete Moon around AD 139 a third as wide as his
+  simple one, both a degree behind (his Sun); his diameter measured only
+  at greatest distance (V 14); Copernicus' objection (IV 2); the Sun's
+  eccentric errs the same way.
 - **Exercises:** Ptolemy's eccentric and the ratio of greatest to least
   distance (1.913; 64.16 and 33.55 Earth radii; 59.9′); derive that the
   direction cancels the term in $M + 2D$; Ptolemy's parallax of 135 (V 13),
@@ -460,8 +462,8 @@ The first anomaly and the simplest complete model.
   three-eclipse fit (its anomaly at the epoch 5° off), then the annual
   equation; at the syzygies
   the crank changes nothing (V 10). The distance: Copernicus' second
-  epicycle (IV 3, IV 8), 52.28 to 68.33 Earth radii for the Moon at the
-  quarters (IV 17); detour: Ibn al-Shatir.
+  epicycle (IV 3), a ratio of 1.31 at the quarters (IV 17) against the
+  real 1.14; detour: Ibn al-Shatir.
 - **Hands over:** at new and full Moon the crank changes nothing, so
   eclipses keep page 3.1's longitude; they still need latitude.
 

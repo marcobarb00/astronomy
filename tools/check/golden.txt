@@ -3338,7 +3338,7 @@ the point N from Hipparchus' sightings (V 5): ON = 10;18 = 10.30 and 10;20 = 10.
 the epicycle of page 3.1: e = 0.084402 (5.06 parts where OA = 60)
 the 25 quarters of 2026: c = 0.176153 (model file 0.176153) = 0.1762, 10.57 parts (Ptolemy 10.32)
 greatest equation: at the quarters 7.49°, at new and full Moon 4.84°
-the quarters of 2021 - 2030: c = 0.1778
+the quarters of 2021 - 2030: c = 0.1778, 1.0% from the fit to 2026
 
 === Test: the error over 2026 (Figure 4) ===
 epicycle  largest 3.24° on 10 Jun 2026, rms 85'; at the syzygies 40', quarters 2.90°, octants 2.88°
@@ -3346,23 +3346,21 @@ crank     largest 2.72° on 28 Jan 2026, rms 54'; at the syzygies 40', quarters 
 full      largest 1.80° on 16 Sep 2026, rms 43'; at the syzygies 42', quarters 1.08°, octants 1.51°
 the complete crank, 1976 - 2076: largest 1.99° on 9 Nov 1979
 
-=== Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (Figure 5) ===
+=== Test: Ptolemy's complete Moon (Almagest V), 20 Jan - 21 Mar 139 (history block) ===
 simple Moon from -3.63° to 1.83° (spread 5.45°, mean -0.87°)
 complete Moon from -1.58° to 0.27° (spread 1.85°, mean -0.87°)
 the complete Moon's spread is 0.34 of the simple Moon's
 his Sun over the same months: mean error -42'
 both on average 0.9° behind
-   the year 1000: mean error -4.8°
-   the year 2026: mean error -10.1°
 
 === Test: the distances of Ptolemy's model (Almagest V 4, V 13) ===
 where OA = 60: greatest 60 + 5.25 = 65.25, least 39.37 - 5.25 = 34.12; ratio 1.91
 in Earth radii (OA = 59): least 33.55; the real Moon's nearest of 2026 55.92, 1.67 times farther
 
-=== Test: the real Moon in 2026 (Figure 6) ===
+=== Test: the real Moon in 2026 (Figure 5) ===
 nearest 356651 km on 24 Dec 2026, farthest 406417 km on 11 Dec 2026; ratio 1.140; apparent diameter 29.4' .. 33.5'
 
-=== Test: the models with their greatest distance set to the real farthest of 2026 (Figure 6) ===
+=== Test: the models with their greatest distance set to the real farthest of 2026 (Figure 5) ===
 the crank: 29.4' .. 56.6' (x 1.92)
 page 3.1's epicycle: 29.4' .. 34.8' (x 1.18)
 Ptolemy's 31;20' at the greatest distance would become 59.9'

@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 3.2 · EVECTION AND THE DISTANCE PROBLEM - SCRIPT (page.js)
-   Six figures, each with its own init and draw (and update when it has
+   Five figures, each with its own init and draw (and update when it has
    controls):
 	 1. the equation at the phases   (2D, static: the real Moon's true
 									   minus mean longitude against its
@@ -14,8 +14,7 @@
 									   Almagest V 6, and the epicycle
 									   enlarged)
 	 4. the crank fitted to 2026     (error curve)
-	 5. Ptolemy's complete Moon      (error curve, AD 139 and 2000 years)
-	 6. the apparent diameter        (2D, static: the real Moon and the
+	 5. the apparent diameter        (2D, static: the real Moon and the
 									   two models through 2026)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, models/lunar-epicycle.js,
@@ -28,8 +27,8 @@
 	 1. Figure 1: the equation at the new and full Moons and the quarters
 	 2. Figure 2: Ptolemy's crank
 	 3. Figure 3: the direction of the epicycle
-	 4. Figures 4 and 5: the error curves
-	 5. Figure 6: the apparent diameter
+	 4. Figure 4: the error curve
+	 5. Figure 5: the apparent diameter
 	 6. Page start
    ========================================================================== */
 
@@ -582,7 +581,7 @@ const directionZoomFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURES 4 AND 5: THE ERROR CURVES
+   4. FIGURE 4: THE ERROR CURVE
    The models take JD(TT) and return a longitude (models/*.js); the widget
    compares them with the reference Moon (shared/errorcurve.js). No slider
    changes a model here, so the widget fits its scale to each span.
@@ -638,41 +637,8 @@ const ourErrorFigure = {
 	}
 };
 
-/* Figure 5: Ptolemy's complete Moon around his sighting of 9 February
-   139, with his simple Moon of page 3.1 as a ghost, and over 2000 years
-   (866 BC to AD 1134, inside the reference sky's range). */
-const ptolemyErrorFigure = {
-	init() {
-		const start = Time.julianDay(139, 1, 20);
-		const end = start + CRANK_DAYS;
-		const curve = new ErrorCurve(byId('error-ptolemy'), {
-			body: 'moon',
-			start: start,
-			end: end,
-			spans: [
-				{ label: '2 months', years: CRANK_DAYS / 365.25 },
-				{ label: '2000 years', years: 2000 }
-			],
-			ghostButtons: false
-		});
-
-		curve.addGhost({
-			label: "Ptolemy's simple Moon (<em>Almagest</em> IV)",
-			short: 'simple Moon',
-			color: COL.planet,
-			fn: LunarEpicycle.make(LunarEpicycle.PTOLEMY)
-		});
-		curve.addModel({
-			label: "Ptolemy's complete Moon (<em>Almagest</em> V)",
-			short: 'complete Moon',
-			color: COL.epicycle,
-			fn: LunarCrank.make(LunarCrank.PTOLEMY)
-		});
-	}
-};
-
 /* ==========================================================================
-   5. FIGURE 6: THE APPARENT DIAMETER
+   5. FIGURE 5: THE APPARENT DIAMETER
    Static. The real Moon's apparent diameter through 2026, from the
    reference Moon's distance, and the diameters the two models predict,
    each scaled so that at its greatest distance the Moon has the real
@@ -754,13 +720,5 @@ const diameterFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([
-		equationFigure,
-		crankFigure,
-		directionFigure,
-		directionZoomFigure,
-		ourErrorFigure,
-		ptolemyErrorFigure,
-		diameterFigure
-	]);
+	startFigures([equationFigure, crankFigure, directionFigure, directionZoomFigure, ourErrorFigure, diameterFigure]);
 });
