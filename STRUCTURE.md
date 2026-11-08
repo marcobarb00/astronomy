@@ -731,11 +731,13 @@ Every page follows the same rhythm:
    parameter, which observation fixes it and why that observation is the
    right one. The method comes first; the fitted values appear once, as
    its outcome, not as a stream of numbers.
-4. **Test.** The model against the reference sky in the current period
-   only (the fit year, at most the decade around it), with the error curve
-   from page 2.1 on. Longer spans are left out. Act I has no longitude
-   model: its pages test the quantity they predict (an altitude, a rising
-   time).
+4. **Test.** The model fitted to the current period against the
+   reference sky, with the error curve from page 2.1 on: around the fit
+   year, and over centuries or millennia when that shows something about
+   the model. It is tested once: the same test is not repeated in the
+   historical astronomer's own time (Hipparchus', Ptolemy's). Act I has no
+   longitude model: its pages test the quantity they predict (an
+   altitude, a rising time).
 5. **Residual.** In short prose with few numbers: what the model still
    lacks and why, ending with the question for the next page.
 
@@ -757,9 +759,8 @@ paragraphs, in a `<div class="history">` headed "History".
 
 Where his numbers were off, say so in words, without working through
 them. Every statement of how he measured or checked comes from the
-sources (book and chapter), like any historical claim. The style of the
-block is a pilot in page 3.3's `page.css`; it moves to `shared/theme.css`
-when a second page uses it.
+sources (book and chapter), like any historical claim. The block is
+styled by `shared/theme.css` (STYLE.md §4.8; see `templates/page.html`).
 
 Followed by:
 
