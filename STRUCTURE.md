@@ -358,30 +358,29 @@ The first anomaly and the simplest complete model.
   epicycle and its eccentric drawn together, the parallelogram O K Moon C
   (date, a month or nine years); the three-eclipse method on four sets of
   eclipses, with the two equations in the plane of $X, Y$; the error curve
-  of our epicycle (uniform Moon as ghost, dots at new and full Moon); the
-  error curve of Ptolemy's simple Moon. A photo: the eclipse of 7 September
-  2025 (Donatiello, CC0).
-- **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ (Ptolemy's from
-  his Sun and Hipparchus' synodic month, IV 2-3) and $n_M = 269 \times
-  360^\circ / (251\,P_s)$ (corrected in IV 7), ours from Meeus 47; the data
-  of a triple: the arcs of anomaly $a = n_M\,\Delta t$ from the intervals,
-  reckoned in mean solar days (the equation of time, III 9), and $d$ = the
-  Sun's true motion between the eclipses (the Moon's, beyond whole turns)
-  minus $n\,\Delta t$, worked through for the Babylonian eclipses (a
-  table); $e$ and the anomaly from three
-  eclipses: Ptolemy's Babylonian and Alexandrian triples give back 5.22
-  and 5.23 where the deferent is 60 (he uses 5.25, IV 6, IV 10), Copernicus' 0.08604 (*De Rev.*
-  IV 5); ours of 7 Sep 2025, 3 Mar 2026, 28 Aug 2026 give $e = 0.0844$;
-  consecutive triples of 2019 to 2030 range from 0.080 to 0.093, and a
-  least-squares fit to the 25 new and full Moons of 2026 gives 0.0864.
+  of our epicycle (uniform Moon as ghost, dots at new and full Moon). A
+  photo: the eclipse of 7 September 2025 (Donatiello, CC0).
+- **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ and $n_M = 269
+  \times 360^\circ / (251\,P_s)$, best fixed by eclipses centuries apart,
+  so ours from Meeus 47; why eclipses (the Moon opposite the Sun, parallax
+  does not move the moment, the second anomaly vanishes); the data of a
+  triple, $a = n_M\,\Delta t$ and $d$ = the Sun's true motion minus $n\,\Delta
+  t$, worked through for the eclipses of 7 Sep 2025, 3 Mar 2026 and 28 Aug
+  2026 (a table), which give $e = 0.0844$; consecutive triples of 2019 to
+  2030 range from 0.080 to 0.093. History block: eclipses "the only
+  observations" (IV 1); Hipparchus' month from Chaldaean and later
+  eclipses (IV 2); Ptolemy's two exact solutions, "very nearly the same",
+  5.25 (IV 6); Copernicus' almost the same (*De Rev.* IV 5).
 - **Test:** in 2026 within 40′ at the 25 new and full Moons, up to 2.9°
-  at the quarters and 3.2° overall (the uniform Moon 7.9°); no growth over
-  a thousand years. Ptolemy's simple Moon is a degree behind at his own
-  eclipses, as his Sun is, and 10° behind by 2026.
+  at the quarters and 3.2° overall (the uniform Moon 7.9°). History block,
+  in words: his check was the agreement of two epicycles from eclipses
+  nine centuries apart; his Moon about a degree behind at his own
+  eclipses, as his Sun is; drifting with his Sun, a little faster, by
+  Hipparchus' month.
 - **Exercises:** prove the equivalence in Ptolemy's general form, and
   judge Hipparchus' two ratios (IV 11); the anomalistic month from the
   beat of the fastest full Moons, 2001 to 2039; Ptolemy's Babylonian
-  triple, to first order and exactly.
+  triple, to first order and exactly (his values given in the statement).
 - **Code:** `models/lunar-epicycle.js` (`LunarEpicycle`: `make()`,
   `makeUniform()`, `construction` for the equivalence, `threeEclipses`,
   `fitEclipses`, `TRIPLES`, `PTOLEMY`, `MEEUS`, `FIT_2026`);

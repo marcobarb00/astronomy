@@ -3208,7 +3208,7 @@ at the eclipse of 14 Mar 2025 (outside the fit): -25.5'
    new and full Moons of 1526: largest 40.6'
    new and full Moons of 2526: largest 44.0'
 
-=== Test: Ptolemy's simple Moon (first anomaly only), Figure 6 ===
+=== Test: Ptolemy's simple Moon (first anomaly only), history block ===
 at the eclipses of Almagest IV 6 (at the real moments of opposition):
    721 BC Mar 19: opposition 20 Mar 721 BC 00:20 TT; his Moon 174.48°, real 171.79°, error 161'; his Sun's error 171'
    720 BC Mar 8: opposition 9 Mar 720 BC 02:41 TT; his Moon 163.64°, real 160.93°, error 163'; his Sun's error 170'
