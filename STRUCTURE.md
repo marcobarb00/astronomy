@@ -267,10 +267,10 @@ The first anomaly and the simplest complete model.
   $e = 0.0334$ and $\lambda_A = 103.4^\circ$.
 - **Test:** in time, not with the $\Delta\lambda$ widget (the longitude model
   is page 2.1's): within 6 s of the real $E$ in 2026, against page 1.3's
-  ±16 min; Ptolemy's total in *Almagest* III 9 ($3\tfrac23 + 4\tfrac23 =
-  8\tfrac13$ time-degrees, 33⅓ min), which his own model reproduces,
-  against the real 31 min of his time, and why he needed it (the Moon).
-  Keep the numbers in the prose few and rounded.
+  ±16 min. History block, in words: Ptolemy's equation of time in
+  time-degrees (*Almagest* III 9), about half an hour at most, a little
+  more than the real value of his time, and why he needed it (the Moon).
+  No history block in the Fit: Ptolemy did not fit the equation of time.
 - **Exercises:** compute the equation of time on a given date (3 November
   2026) and split it into its two parts; predict the dates when it vanishes
   with $e = 0$ and with $\varepsilon = 0$, then find the real ones; derive
