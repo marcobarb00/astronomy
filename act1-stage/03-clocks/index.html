@@ -865,17 +865,16 @@
 
 		<p>
 			Since $n = 360^\circ / Y$, the rate follows from the length of the
-			year, measured from one equinox to the next, and we take the modern
-			year of section 2. The clock barely depends on it, because the sidereal
-			day, $P_\text{sid} = 24\,\text{h} \times Y/(Y+1)$, hardly changes with
-			$Y$: an error $\Delta Y$ changes it by $\Delta Y \times
-			24\,\text{h}/(Y+1)^2$, a few thousandths of a second for an error of
-			minutes.
+			year, measured from one equinox to the next. We take the modern year
+			of section 2, which the Test checks against the stars.
 		</p>
 
 		<p>
-			The same error matters far more for the Sun's position, because there
-			it accumulates, day after day, for as long as the clock runs.
+			The year must be known closely, because an error in the rate
+			accumulates: after $d$ days the clock is off by $d \, \Delta n$, the
+			same angle by which the mean Sun is off, since the clock reads the sky
+			through the mean Sun. An error of one minute in the year shifts the
+			clock by about 16 s of time a century.
 		</p>
 
 		<h3>The constant, from the Sun</h3>
@@ -913,12 +912,10 @@
 			<div class="row">
 				<p>
 					Hipparchus and Ptolemy measured the year by comparing older
-					solstices and equinoxes with their own, centuries apart
-					(<em>Almagest</em> III 1), because an error in a timing is then
-					divided by the number of years between them. Their year still came
-					out about 6 minutes too long, yet the sidereal day it implies is
-					right to a few thousandths of a second, as the formula above
-					predicts.
+					solstices and equinoxes with their own, one to several centuries
+					apart (<em>Almagest</em> III 1), because an error in a timing is
+					then divided by the number of years between them. Their year still
+					came out about 6 minutes too long.
 				</p>
 				<aside>
 					<div class="note" data-origin="hipparchus"></div>
@@ -927,8 +924,9 @@
 			</div>
 
 			<p>
-				The Sun's position suffers more. Ptolemy's mean Sun falls behind the
-				real one by almost half a degree a century.
+				With that year, Ptolemy's mean Sun falls behind the real one by
+				almost half a degree a century, and a clock built on it falls behind
+				the stars by the same angle.
 			</p>
 		</div>
 
@@ -992,7 +990,7 @@
 			<figcaption>
 				Move the geographic latitude and notice that only the sunrise and
 				sunset curves change: the gap between them, the error in the length
-				of the day, widens as the latitude grows, while noon stays the same.
+				of the day, widens away from the equator, while noon stays the same.
 				Point at the plot to read the errors on a date.
 			</figcaption>
 			<div class="keys">
@@ -1019,9 +1017,10 @@
 
 		<p>
 			At every geographic latitude the uniform Sun's noon is off by up to
-			a quarter of an hour. Its day comes out too short, in the northern
-			hemisphere, by an error that grows with the geographic latitude, to 13
-			minutes at 65°; in the southern hemisphere the signs are reversed.
+			16.5 minutes. In the northern hemisphere its day comes out too short
+			almost all year, by an error that grows with the geographic latitude,
+			to 13 minutes at 65°; in the southern hemisphere the signs are
+			reversed.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
@@ -1033,17 +1032,17 @@
 			follows the rotation of the Earth, and the Earth does not turn at a
 			constant rate. The uniform time of the ephemeris, Terrestrial Time
 			(TT), is kept by atomic clocks, and the two differ by $\Delta T =
-			\text{TT} - \text{UT}$, about 69 s today, because the tides slowly
-			lengthen the day.
+			\text{TT} - \text{UT}$, about 69 s today, because the day slowly
+			lengthens, mostly through the friction of the tides.
 		</p>
 
 		<div class="row">
 			<p>
 				Each day falls short of a uniform day by more the further back it
-				lies, and the days add up, so $\Delta T$ grows as the square of the
-				time: about two and a half hours in Ptolemy's time, in which the sky
-				turns almost $39^\circ$. Every ancient record from page 2.1 on is
-				corrected by it.
+				lies, and the days add up, so $\Delta T$ grows roughly as the square
+				of the time since about 1820: it reaches about two and a half hours
+				in Ptolemy's time, in which the sky turns almost $39^\circ$. Every
+				ancient timing from page 2.1 on is corrected by it.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="deltaT"></div>
@@ -1055,8 +1054,9 @@
 			<p>
 				The atomic second was chosen to match the length of the day around
 				1820, so $\Delta T$ is the sum, day after day since then, of each
-				day's difference from 86·400 s. The friction of the tides raised by
-				the Moon lengthens the day by about 1.75 ms a century.
+				day's difference from 86·400 s. The day lengthens by about 1.75 ms
+				a century, mostly through the friction of the tides raised by the
+				Moon.
 			</p>
 			<p>
 				In AD 132, then, a day was only about 30 ms shorter than 86·400 s,
@@ -1070,13 +1070,15 @@
 
 		<p>
 			The right ascensions of the stars change too, so transit times
-			computed from an old catalogue drift by two to three seconds a year,
-			a slow turning of the frame itself that page 2.3 measures.
+			computed from an old catalogue drift by a few seconds a year for most
+			stars, and by more than a minute a year for Polaris. This slow turning
+			of the frame itself is measured on page 2.3.
 		</p>
 
 		<p>
-			The noon error has a cause that would remain even for a Sun moving
-			uniformly along the ecliptic: the ecliptic is tilted to the equator,
+			The noon error has two causes of about the same size. The first would
+			remain even for a Sun moving uniformly along the ecliptic: the ecliptic
+			is tilted to the equator,
 			so such a Sun would still not move uniformly in right ascension, as the
 			lag of $\alpha$ behind $\lambda$ in the table of page 1.2 showed. Page
 			2.2 combines this with the Sun's own unevenness into the equation of
@@ -1084,12 +1086,13 @@
 		</p>
 
 		<p>
-			The larger cause of both errors is the uniform Sun itself, whose
-			ecliptic longitude grows by the same angle every day. The real Sun
-			runs up to about $2^\circ$ ahead of it in spring and behind it in
-			autumn, so it spends longer north of the equator, which lengthens the
-			northern day. Page 2.1 measures this inequality and builds the first
-			model of it.
+			The second cause, and the only one of the error in the length of the
+			day, is the uniform Sun itself, whose ecliptic longitude grows by the
+			same angle every day. The real Sun runs ahead of it from January to
+			July, while it climbs north, and behind it from July to January, while
+			it descends, so its declination is almost always the higher of the
+			two, and the northern day longer. Page 2.1 measures this inequality and
+			builds the first model of it.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

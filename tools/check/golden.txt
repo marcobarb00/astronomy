@@ -2477,6 +2477,8 @@ Ptolemy's year 365;14,48 = 365.24667 d, 6.4 min longer than 365.24219
 his daily motion 0;59,8,17,13,12,31 = 0°59'08.29" = 0.985635 deg (360 / his year = 0.985635)
 sidereal day from his year: 23h56m04.093s; modern 23h56m04.091s: 2.9 ms
 his mean Sun falls behind by 0.44 deg per century
+  and a clock built on his year falls behind the stars by the same angle: 106 s of time a century
+an error of 1 min in the year: n changes by 1.87e-6 deg/day, the clock by 16.4 s of time a century
 
 === Fit: the longitude from a timed transit of Vega ===
 Vega of date: ra 279.4601 deg (18h37m50.43s), dec 38.810
@@ -2534,9 +2536,14 @@ the day lengthens by 1.75 ms a century; in AD 132 it was 29.6 ms shorter than 86
 from 132 to 1820: 616542 days, mean shortfall 14.8 ms, accumulated 9118 s = 2h31m58s (parabola: 9098 s)
 
 === Residual: the right ascensions of stars drift ===
-Vega    : ra 2000.0 -> 2026.0 changed by 52.8 s of time
-Sirius  : ra 2000.0 -> 2026.0 changed by 68.7 s of time
-Polaris : ra 2000.0 -> 2026.0 changed by 2048.4 s of time
+Vega    : ra 2000.0 -> 2026.0 changed by 52.8 s of time, 2.0 s a year
+Sirius  : ra 2000.0 -> 2026.0 changed by 68.7 s of time, 2.6 s a year
+Polaris : ra 2000.0 -> 2026.0 changed by 2048.4 s of time, 78.8 s a year
+
+=== Residual: the two causes, through 2026 ===
+tilt: from -9.9 to +9.9 min; unevenness: from -7.7 to +7.6 min
+the real Sun is ahead of the mean Sun from 4 Jan 2026 to 4 Jul 2026 (at noon UT)
+the real Sun's declination is the higher on 338 of 365 days
 
 === 9. tools/numbers/2.1-uneven-year.js ===
 

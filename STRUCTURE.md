@@ -145,14 +145,18 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (the modern 365.24219 days; the sidereal
-  day hardly depends on it, the Sun's position does), the constant from the
-  mean Sun at J2000, the longitude from one timed transit. History block:
-  Hipparchus' and Ptolemy's 365.24667 days from solstices and equinoxes
-  centuries apart (*Almagest* III 1), their sidereal day nearly exact, their
-  mean Sun 0.44° a century behind. No history block in the Test.
+- **Fit:** the rate from the year (the modern 365.24219 days; an error in
+  the rate accumulates, in the clock as in the mean Sun: 16 s a century for
+  a minute in the year), the constant from the mean Sun at J2000, the
+  longitude from one timed transit. History block: Hipparchus' and Ptolemy's
+  365.24667 days from solstices and equinoxes one to several centuries apart
+  (*Almagest* III 1), their mean Sun, and a clock built on it, 0.44° a
+  century behind. No history block in the Test.
 - **Residual:** ΔT in short prose (69 s today, about 2½ hours in Ptolemy's
-  time), the estimate from the lengthening day in a fold.
+  time; every ancient timing from page 2.1 on is corrected by it), the
+  estimate from the lengthening day in a fold; the stars' drift (page 2.3);
+  the two causes of the noon error, the tilt (page 2.2) and the uneven Sun,
+  the only cause of the day-length error (page 2.1).
 - **Test:** the stars, against apparent sidereal time (within 0.7 s, the
   nutation); the Sun, model minus real noon, sunrise and sunset through 2026
   (a figure): noon from −14 to +16 min at every latitude, the day up to
@@ -164,8 +168,9 @@ The language needed to state any prediction.
 - **Code:** `models/mean-sun.js` (the uniform Sun, `make()`) and
   `models/clock.js` (sidereal time, transits, the model Sun's day).
 - **Hands over:** we assumed the Sun moves uniformly along the ecliptic. It
-  does not. (Noon's second cause, the tilt, goes to page 2.2; $\Delta T$,
-  the drift of the Earth's rotation, to page 3.3 and a detour card.)
+  does not. (Noon's other cause, the tilt, goes to page 2.2; $\Delta T$,
+  the drift of the Earth's rotation, is applied to every ancient timing from
+  page 2.1 on, explained in a detour card.)
 
 ### Act II: The Sun
 
