@@ -864,33 +864,19 @@
 
 		<h3>The rate, from the length of the year</h3>
 
-		<div class="row">
-			<p>
-				Since $n = 360^\circ / Y$, the rate follows from the length of
-				the year, measured from one equinox to the next. Hipparchus and Ptolemy
-				found $Y = 365.24667$ days (<em>Almagest</em> III 1),
-				6.4 minutes longer than the modern 365.24219 days.
-			</p>
-			<aside>
-				<div class="note" data-origin="hipparchus"></div>
-			</aside>
-		</div>
-
 		<p>
-			From it Ptolemy derives the Sun's mean motion, $0^\circ 59' 08.29''$
-			(0.985635°) a day, the "$0^\circ 59'$" of his definition in section
-			1. With his year the sidereal day comes out as 23 h 56 min 04.093 s,
-			only 2.9 ms longer than the modern 23 h 56 min 04.091 s. An error of
-			6 minutes in the year does so little because $P_\text{sid} =
-			24\,\text{h} \times Y/(Y+1)$ hardly depends on $Y$: an error $\Delta
-			Y$ changes it by $\Delta Y \times 24\,\text{h}/(Y+1)^2$.
+			Since $n = 360^\circ / Y$, the rate follows from the length of the
+			year, measured from one equinox to the next; we take the modern
+			365.24219 days. The clock barely depends on it, because the sidereal
+			day, $P_\text{sid} = 24\,\text{h} \times Y/(Y+1)$, hardly changes with
+			$Y$: an error $\Delta Y$ changes it by $\Delta Y \times
+			24\,\text{h}/(Y+1)^2$, a few thousandths of a second for an error of
+			minutes.
 		</p>
 
 		<p>
-			The same error matters more for the Sun's position, because there it
-			accumulates. Ptolemy's mean Sun falls behind the modern one by
-			$0.44^\circ$ a century, an error that pages 2.1 and 2.3 take up
-			again.
+			The same error matters far more for the Sun's position, because there
+			it accumulates, day after day, for as long as the clock runs.
 		</p>
 
 		<h3>The constant, from the Sun</h3>
@@ -918,6 +904,31 @@
 			depends only on the timing, since one second of time is 15″ of
 			geographic longitude, 345 m on the parallel of Rome.
 		</p>
+
+		<!-- History block: Hipparchus' and Ptolemy's year -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Hipparchus' and Ptolemy's year</h3>
+
+			<div class="row">
+				<p>
+					Hipparchus and Ptolemy measured the year by comparing older
+					solstices and equinoxes with their own, centuries apart, and found
+					365.24667 days (<em>Almagest</em> III 1), 6.4 minutes too long. Their
+					sidereal day is still right to a few thousandths of a second, as the
+					formula above predicts.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Their Sun's position is another matter: Ptolemy's mean Sun falls
+				behind the modern one by 0.44° a century, an error that pages 2.1 and
+				2.3 take up again.
+			</p>
+		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The clock against the sky</h2>
@@ -1000,9 +1011,7 @@
 
 		<p>
 			At every geographic latitude the uniform Sun's noon is off by up to
-			a quarter of an hour: the real Sun crosses the meridian 14 minutes
-			after mean noon on 11 February, and 16½ minutes before it on 3
-			November.
+			a quarter of an hour.
 		</p>
 
 		<p>
@@ -1014,11 +1023,10 @@
 		</p>
 
 		<p>
-			The day comes out too short because the uniform Sun keeps a constant rate. On 5
-			April 2026, for instance, the real Sun is almost $2^\circ$ ahead of
-			the mean Sun. Its declination is therefore
-			$6.19^\circ$ instead of the uniform Sun's $5.45^\circ$, and in London its day
-			lasts 13 h 13 min instead of 13 h 06 min.
+			The day comes out too short because the uniform Sun keeps a constant
+			rate. In spring the real Sun runs almost $2^\circ$ ahead of the mean
+			Sun, so its declination is higher and its day, in the northern
+			hemisphere, longer.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
@@ -1050,34 +1058,36 @@
 		</p>
 
 		<p>
-			The atomic second was chosen to match the length of the day around
-			1820, so $\Delta T$ is the sum, day after day since then, of each day's
-			difference from 86 400 s. The friction of the tides raised by the Moon
-			lengthens the day by about 1.75 ms a century.
+			Both each day's shortfall and the number of days grow with the time
+			elapsed, so $\Delta T$ grows as its square, from about a minute today
+			to hours in antiquity. The formula used here, Espenak and Meeus'
+			polynomials fitted to ancient eclipse records, gives 2 h 35 min for
+			Ptolemy's time.
 		</p>
 
-		<p>
-			In AD 132, then, a day was only about 30 ms shorter than 86 400 s,
-			so the Earth turned at almost exactly today's rate. Between 132 and
-			1820, though, a shortfall of about 15 ms a day on average,
-			accumulated over more than 600 000 days, adds up to about 2 h 32
-			min.
-		</p>
-
-		<p>
-			Since both the daily shortfall and the number of days grow with the
-			time elapsed, $\Delta T$ grows as its square, from about a minute
-			today to hours in antiquity. The formula for $\Delta T$ used here,
-			Espenak and Meeus' polynomials, fitted to values of $\Delta T$
-			derived from ancient eclipse records, gives 2 h 35 min for Ptolemy's time, close to this estimate.
-		</p>
+		<details class="fold">
+			<summary>Why ΔT reaches hours in antiquity</summary>
+			<p>
+				The atomic second was chosen to match the length of the day around
+				1820, so $\Delta T$ is the sum, day after day since then, of each
+				day's difference from 86 400 s. The friction of the tides raised by
+				the Moon lengthens the day by about 1.75 ms a century.
+			</p>
+			<p>
+				In AD 132, then, a day was only about 30 ms shorter than 86 400 s,
+				so the Earth turned at almost exactly today's rate. Between 132 and
+				1820, though, a shortfall of about 15 ms a day on average,
+				accumulated over more than 600 000 days, adds up to about 2 h 32
+				min, close to the 2 h 35 min of the formula.
+			</p>
+		</details>
 
 		<div class="row">
 			<p>
 				In 2 h 35 min the sky turns almost $39^\circ$, so before we
 				compare a time recorded by Ptolemy with the reference sky, we
-				must correct it by $\Delta T$. We'll need this on page 3.3, for
-				ancient eclipses.
+				must correct it by $\Delta T$, as we will for every ancient record
+				from page 2.1 on.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="deltaT"></div>
@@ -1085,10 +1095,9 @@
 		</div>
 
 		<p>
-			Finally, the right ascensions of the stars change. Since 2000,
-			Vega's has grown by 53 s of time and Sirius's by 69 s, so transit
-			times computed from an old catalogue drift by two to three seconds a
-			year. Page 2.3 explains why.
+			Finally, the right ascensions of the stars change, so transit times
+			computed from an old catalogue drift by two to three seconds a year.
+			Page 2.3 explains why.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

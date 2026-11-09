@@ -145,9 +145,14 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (Ptolemy's 365.24667 days, *Almagest*
-  III 1), the constant from the mean Sun at J2000, the longitude from one
-  timed transit.
+- **Fit:** the rate from the year (the modern 365.24219 days; the sidereal
+  day hardly depends on it, the Sun's position does), the constant from the
+  mean Sun at J2000, the longitude from one timed transit. History block:
+  Hipparchus' and Ptolemy's 365.24667 days from solstices and equinoxes
+  centuries apart (*Almagest* III 1), their sidereal day nearly exact, their
+  mean Sun 0.44° a century behind. No history block in the Test.
+- **Residual:** ΔT in short prose (69 s today, about 2½ hours in Ptolemy's
+  time), the estimate from the lengthening day in a fold.
 - **Test:** the stars, against apparent sidereal time (within 0.7 s, the
   nutation); the Sun, model minus real noon, sunrise and sunset through 2026
   (a figure): noon from −14 to +16 min at every latitude, the day up to
