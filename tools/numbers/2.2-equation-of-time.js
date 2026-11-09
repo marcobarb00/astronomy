@@ -503,7 +503,7 @@ function fitHarmonics(samples) {
 		`coefficients (min): c ${f(c * R2D * 4, 3)}, sin L ${f(a1 * R2D * 4, 3)}, cos L ${f(b1 * R2D * 4, 3)}, sin 2L ${f(a2 * R2D * 4, 3)}, cos 2L ${f(b2 * R2D * 4, 3)}`
 	);
 	console.log(
-		`annual amplitude ${f(e * R2D * 4, 3)} min -> e = ${f(e, 5)} (page 2.1: ${FIT.e}), apogee ${f(apogee, 2)}° (page 2.1: ${FIT.apogee}°)`
+		`annual amplitude ${f(e * R2D * 4, 3)} min -> e = ${f(e, 5)} (page 2.1: ${FIT.e}), apogee ${f(apogee, 3)}° (page 2.1: ${FIT.apogee}°)`
 	);
 	console.log(
 		`semi-annual amplitude ${f(y * R2D * 4, 3)} min -> y = ${f(y, 5)}, eps = ${f(eps, 3)}° (mean obliquity ${f(EPS2026, 3)}°); phase of 2L term ${f(phase2, 2)}°`
@@ -604,6 +604,19 @@ function fitHarmonics(samples) {
 	console.log(
 		`   cross term e y: the semi-annual wave of the true lambda, y sin 2(lambdaBar + q), has an annual part of amplitude e y = ${f(FIT.e * y2026 * R2D * 4 * 60, 1)} s`
 	);
+	// why the first-order obliquity is high: the real E carries the Sun's
+	// second-order term, -(5/4) e_K^2 sin 2M in -q, which the first-order
+	// formula leaves out; its part along sin 2 lambdaBar is taken for e_eps
+	{
+		const eK = FIT.e / 2;
+		const second = 1.25 * eK * eK;
+		const along = -second * cos(2 * FIT.apogee);
+		const dEdEps = tan(EPS2026 / 2) / cos(EPS2026 / 2) ** 2;
+
+		console.log(
+			`   the Sun's second-order term (5/4) e_K^2 = ${f(second * R2D * 4 * 60, 1)} s, of which ${f(along * R2D * 4 * 60, 1)} s along sin 2 lambdaBar: it raises the first-order eps by ${f((along / dEdEps) * R2D * 60, 1)}'`
+		);
+	}
 }
 
 /* ==========================================================================

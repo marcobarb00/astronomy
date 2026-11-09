@@ -33,6 +33,19 @@ section.
   future material. → STRUCTURE.md §4
 - **One rhythm per page: observation, model, fit, test, residual.** Each
   page ends on the question the next one answers. → STRUCTURE.md §5
+- **Fit, Test and Residual narrowed; history in short blocks.** Fit says
+  which observation fixes each parameter and gives the fitted values once;
+  Test tests that model once, around the fit year and over longer spans
+  when they show something, but not again in the historical astronomer's
+  own time (clarified by Marco on 2026-11-08); Residual is short prose.
+  The historical astronomer's fit and test move to a short history block
+  at the end of each section: how he measured and how he checked his
+  model, with the results in words.
+  Both fits are kept: the modern one so that the error curve measures the
+  geometry, not parameters nineteen centuries old; the historical one for
+  how the ancients knew what they knew. Piloted on page 3.3 on 2026-11-07
+  at Marco's request, after its Fit and Test read as streams of facts and
+  numbers. → STRUCTURE.md §5
 - **The error curve is the thread of the course.** From page 2.1 on, every
   model is tested against the reference sky, with earlier models as
   ghosts. → STRUCTURE.md §7.3
@@ -223,6 +236,19 @@ section.
   2012) as packaged by the npm package d3-celestial, without proper
   motions (20″ at most over 26 years). Replace them by a SIMBAD query
   when CDS answers. → tools/numbers/data/fetch-plate-stars-xhip.sh
+- **ΔT is measured from 2005 to 2027, Espenak and Meeus' elsewhere.**
+  Their 2006 polynomial for 2005–2050 was a forecast and gives 75 s for
+  2026, against the 69 s measured. Since 2026-11-09 the reference sky
+  interpolates the USNO's measured values (and IERS Bulletin A's
+  prediction for 2027), and from 2027 to 2050 corrects their polynomial
+  by an amount that falls to zero in 2050; before 2005 it is unchanged. →
+  shared/time.js
+- **The clock's rate is the conventional one of Meeus 12.4**, 360° +
+  0.98564736629° a day of UT, and the year of page 1.3 is the one it
+  implies, $Y = 360^\circ / n = 365.2421873$ days. Meeus 25.2's mean
+  longitude of the Sun, in days of TT, implies a year 0.2 s longer; both
+  round to the 365.24219 days the pages quote. Decided on 2026-11-09. →
+  shared/models/clock.js, tools/numbers/1.3-clocks.js
 
 ## Workflow
 

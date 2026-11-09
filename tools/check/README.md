@@ -10,6 +10,7 @@ loaded by any page; the site runs without them.
 | `typecheck.js` | The site's JavaScript under the TypeScript checker (`// @ts-check`, non-strict, JSDoc types), once per page with the scripts that page loads. | — |
 | `crosscheck.js` | The reference sky (`shared/ephemeris.js`) against an independent library, astronomy-engine (a development dependency only), and both against the JPL Horizons values of `shared/tests.js`: per body and date range, the largest and RMS difference against the difference to expect. A report, not a pass or fail. | `crosscheck.txt` (the last report) |
 | `smoke.js` | The pages, in Chromium (Playwright): no console error or warning, no failed request or broken link, the tests of `shared/tests.html` pass; every slider moved, every button pressed, every plot pointed at, every sphere dragged. The read-outs after each action, and a full-page screenshot per page at desktop and phone width. | `readouts.txt`, and the screenshots of a commit (`--against`) or of a local baseline |
+| `section-counts.js` | How heavy a page's Fit, Test and Residual are: words, numbers, figures, tables and folds, with the running text, the history blocks and the folds apart (`--against <ref>` for before / after). Used by the `restructure-page` skill. A report, not a pass or fail. | — |
 
 `load.js` runs the site's scripts in Node for these checks and for
 `tools/numbers/`.

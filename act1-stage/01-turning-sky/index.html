@@ -628,8 +628,8 @@
 			To use the turning sphere at a given place, we have to measure it
 			there, and every measurement it needs is made on the meridian. A
 			star crosses that fixed line at a sharp moment, which a clock can
-			time, and it is then at its highest, where its altitude briefly
-			stops changing and can be read. The crossings give the rate of the
+			time, and it is then at its highest or its lowest, where its
+			altitude briefly stops changing and can be read. The crossings give the rate of the
 			turn, the geographic latitude $\varphi$, which is the altitude of
 			the pole, and each star's declination $\delta$.
 		</p>
@@ -637,9 +637,10 @@
 		<div class="row">
 			<p>
 				<strong>The rate.</strong> We time the same star crossing the
-				meridian on two nights. The modern value of the interval is 23 h
-				56 min 04.09 s of clock time, so the sky turns 15.0411° per
-				hour.
+				meridian on two nights, as many nights apart as possible, because
+				the error of each timing is then divided by the number of turns
+				between them. One turn takes 23 h 56 min 4 s of clock time, so the
+				sky turns 15.041° per hour.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -650,9 +651,10 @@
 			<p>
 				<strong>Geographic latitude and declination together.</strong>
 				For these we take a star that never sets and measure its
-				altitude at both meridian crossings, counted from the north
-				point (so the upper one may pass 90°). The formulas for
-				$a_\text{max}$ and $a_\text{min}$ then give
+				altitudes $h_\uparrow$ and $h_\downarrow$ at the upper and lower
+				meridian crossings. Both are counted from the north point, so that
+				one formula covers both, and the upper one may pass 90°. The
+				formulas for $a_\text{max}$ and $a_\text{min}$ then give
 			</p>
 			<aside>
 				<div class="note" data-origin="greek"></div>
@@ -664,35 +666,50 @@
 		<p>
 			Let's try it on Kochab from Alexandria, where the real sky shows it
 			47.166° and 15.309° above the north point. The fit gives $\varphi =
-			31.238^\circ$ and $\delta = 74.071^\circ$, 2.3′ and 1.3′ too large,
-			because the atmosphere raises the low crossing more than the high
-			one, an effect called refraction that section 4 measures.
+			31.238^\circ$ and $\delta = 74.071^\circ$, 2.3′ and 1.3′ too large.
+			The atmosphere raises both crossings, which makes their mean, and so
+			$\varphi$, too large; it raises the low one more, which shrinks their
+			difference and makes $\delta$ too large. This effect is refraction,
+			the subject of the Test.
 		</p>
 
-		<div class="row">
+		<!-- History block: how Ptolemy measured altitudes -->
+		<div class="history">
+			<h3><span class="history-label">History</span>How Ptolemy measured altitudes</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy measured the noon Sun's distance from the zenith on a
+					bronze ring, divided into degrees and set upright in the plane of
+					the meridian, with an inner ring turned until the shadow of one of
+					its plates falls on the other. He also used a plaque of stone or
+					wood with a quadrant drawn on it, on which a peg casts its noon
+					shadow (<em>Almagest</em> I 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+					<div class="note detour" data-topic="instruments"></div>
+				</aside>
+			</div>
+
 			<p>
-				Ptolemy measured the meridian altitudes of the noon Sun with a
-				bronze ring and a stone quadrant (<em>Almagest</em> I 12). For
-				Alexandria he gives the equator's distance from the zenith,
-				which is the geographic latitude, as 30°58′ (30.97°,
-				<em>Almagest</em> V 12), 14′ below the modern 31°12′.
+				The equator lies halfway between the noon Sun's positions at the
+				two solstices. For Alexandria, where he observed, Ptolemy gives its
+				distance from the zenith, which is the geographic latitude, as
+				30°58′ (<em>Almagest</em> V 12), about a quarter of a degree below
+				the modern value.
 			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-				<div class="note detour" data-topic="instruments"></div>
-			</aside>
 		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The model against the sky</h2>
 
 		<p>
-			We compare the model with the reference sky for one night, in which
-			each star's catalogue position is carried to 2026 for its proper
-			motion and precession and then turned by the Earth's rotation. The
-			model's star is fitted on that same night, so its $\delta$ is right,
-			and what remains is the effect of the atmosphere, which the model
-			leaves out.
+			We compare the model with the reference sky for one night of 2026,
+			in which each star's catalogue position is carried to that date and
+			turned by the Earth's rotation. The model's star is given the same
+			declination, so what remains is the effect of the atmosphere, which
+			the model leaves out.
 		</p>
 
 		<div class="row">
@@ -775,27 +792,16 @@
 		</figure>
 
 		<p>
-			For a star high in the sky the error is under 3′. Near the horizon,
-			though, the model puts the star up to 34′ too low, so real stars
-			rise earlier and set later than the model says. Seen from Rome,
-			Sirius rises 3.3 minutes earlier and sets as much later, so it stays
-			up 7 minutes longer than the model's star.
+			For a star high in the sky the error is under 3′, but on the horizon
+			it reaches 34′, so real stars rise earlier and set later than the
+			model's. Seen from Rome, Sirius stays up 7 minutes longer.
 		</p>
 
 		<p>
-			The effect on rising times is larger for a star that crosses the horizon
-			at a shallow angle. Canopus, seen from Rhodes, climbs only 1.3°, and
-			the same 34′ makes it rise 14 minutes earlier and set 14 minutes
-			later.
-		</p>
-
-		<p>
-			This page has no ecliptic longitude to test, so it has no error curve. The
-			error curve, the model's ecliptic longitude minus the real one plotted
-			against time, starts on
-			<a href="../../act2-sun/01-uneven-year/index.html">page 2.1</a>,
-			with the first model of the Sun's motion, and from there on every
-			page measures its model with it.
+			A star that crosses the horizon at a shallow angle takes longer to
+			climb those 34′. Canopus, seen from Rhodes, climbs only 1.3°, and
+			rises 14 minutes earlier and sets 14 minutes later than the model
+			predicts.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
@@ -810,24 +816,23 @@
 
 		<p>
 			The declinations we fit do not stay fitted, because the "fixed"
-			stars drift. Polaris is 0.63° from the pole now, will pass closest
-			(28′) around 2102, and was 12.5° away in Hipparchus' time. Page 2.3
-			finds the cause.
+			stars drift. Polaris, now less than a degree from the pole, was more
+			than 12° from it in Hipparchus' time. Page 2.3 finds the cause.
 		</p>
 
 		<p>
-			Most important, the Sun, the Moon and the planets move among the
-			stars. They turn with the sphere but do not keep their places on it,
-			a second motion that Ptolemy describes as "towards the east and opposite to [the motion
-			of] those stars which preserve their mutual distances" (<em>Almagest</em>
-			I 8). The rest of this site is about that motion.
+			The Sun, the Moon and the planets also move among the stars. They
+			turn with the sphere but do not keep their places on it, a second
+			motion that Ptolemy describes as "towards the east and opposite to
+			[the motion of] those stars which preserve their mutual distances"
+			(<em>Almagest</em> I 8).
 		</p>
 
 		<p>
-			To follow a body that moves on the sphere, the declination and the
-			hour angle are not enough. We need two coordinates for every
-			direction, and formulas to convert between coordinate systems, which
-			page 1.2 introduces.
+			To follow such a body we need two coordinates fixed to the sphere:
+			the declination, and a second one in place of the hour angle, which
+			changes as the sky turns. We also need formulas to convert between
+			coordinate systems. Page 1.2 asks how to choose them.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

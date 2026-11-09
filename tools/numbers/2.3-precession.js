@@ -631,12 +631,6 @@ console.log(
 	`Ptolemy 23;51,20 = ${f(fromSexagesimal(23, 51, 20), 4)}°; real ${f(Ephem.meanObliquity(jdOf(-250)), 4)}° (250 BC), ${f(Ephem.meanObliquity(jdOf(139)), 4)}° (AD 139): ${f((fromSexagesimal(23, 51, 20) - Ephem.meanObliquity(jdOf(139))) * 60, 1)}' too large`
 );
 console.log(
-	`al-Battani 23;35 = ${f(fromSexagesimal(23, 35), 4)}°; real ${f(Ephem.meanObliquity(jdOf(880)), 4)}° (880)`
-);
-console.log(
-	`Copernicus 23;28,30 = ${f(fromSexagesimal(23, 28, 30), 4)}°; real ${f(Ephem.meanObliquity(jdOf(1525)), 4)}° (1525)`
-);
-console.log(
 	`2026: ${f(EPS_2026, 4)}° = ${dms(EPS_2026)}, changing by ${f((Ephem.meanObliquity(jdOf(2076)) - Ephem.meanObliquity(jdOf(1976))) * 3600, 1)}" a century`
 );
 

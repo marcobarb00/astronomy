@@ -6,8 +6,7 @@
    number quoted on the page, in page order.
 
    Run from the repository root:  node tools/numbers/3.3-eclipses.js
-   (about a minute: it finds every new and full Moon of a century, and of
-   a century of Ptolemy's time)
+   (a few seconds: it finds every new and full Moon of 2021 - 2030)
 
    The reference eclipses are those of the reference sky (apparent
    positions of date), with the criteria of models/eclipses.js and the
@@ -23,10 +22,10 @@
 	 7. Model: the months
 	 8. Model: the shadow and the limits
 	 9. Model: the eclipse seasons
-	10. Fit
+	10. Fit, then Ptolemy's parameters (history block)
 	11. Test: the latitude
 	12. Test: the eclipses
-	13. Test: Ptolemy
+	13. Test: Ptolemy (history block)
 	14. Residual
 	15. Exercises
 	16. The scales of the figures
@@ -520,38 +519,6 @@ const SYZ_2026 = DECADE.filter(s => s.syzygy >= Y(2026) && s.syzygy < Y(2027));
 
 title('10. Fit');
 {
-	/* Ptolemy's inclination (V 12): the Moon 2 1/8° from the zenith at
-	   the northern limit near the summer solstice, the equator 30;58° and
-	   the solstice 23;51° from the equator. */
-	console.log(`Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = ${f(30 + 58 / 60 - 2.125 - (23 + 51 / 60), 2)}°, "about 5°"`);
-
-	/* Hipparchus' period and Ptolemy's motion in latitude. */
-	const synodicH = (126007 + 1 / 24) / 4267;
-	const draconiticH = (5458 * synodicH) / 5923;
-
-	console.log(
-		`Hipparchus' 5458 synodic = 5923 returns in latitude: ${f(draconiticH, 6)} d against ${f(P_DRACONITIC, 6)} d (${f((draconiticH - P_DRACONITIC) * 86400, 1)} s)`
-	);
-	console.log(
-		`  Ptolemy's corrected motion ${f(LunarLatitude.PTOLEMY.nF, 7)}° a day; reference ${f(RATES.nF, 7)}°: ${f((LunarLatitude.PTOLEMY.nF - RATES.nF) * 36525, 2)}° a century`
-	);
-	console.log(
-		`  Hipparchus' motion ${f(360 / draconiticH, 7)}° a day: ${f((360 / draconiticH - RATES.nF) * 36525, 3)}° a century from the reference; Ptolemy's ${f((LunarLatitude.PTOLEMY.nF - RATES.nF) * 36525, 3)}°`
-	);
-
-	/* Copernicus (De Revolutionibus IV 13): between the eclipses of 174 BC
-	   and 1509, 1683 Egyptian years, 88 days, 22 h 25 min, the uniform
-	   motion in latitude was 179;51° beyond whole turns. */
-	const copernicusDays = 1683 * 365 + 88 + (22 + 25 / 60) / 24;
-	const copernicusMotion = (RATES.nF * copernicusDays) % 360;
-
-	console.log(
-		`Copernicus IV 13: ${f(copernicusDays, 3)} days; the reference's motion in latitude ${f(copernicusMotion, 3)}° beyond whole turns, against his 179;51 = ${f(179 + 51 / 60, 3)}° (${arcmin(copernicusMotion - (179 + 51 / 60), 0)})`
-	);
-	console.log(
-		`  Ptolemy's eclipses for it (IV 9): -490 Apr 25 and 125 Apr 5, ${f(Y(125, 4, 6) - Y(-490, 4, 25), 0)} days apart`
-	);
-
 	const fit = fitLatitude(SYZ_2026);
 
 	console.log(
@@ -568,30 +535,15 @@ title('10. Fit');
 	console.log(
 		`  with the mean inclination 5.145° (Meeus' sin F term 5.128° and the Moon's whole range) the latitudes at the 25 are off by up to ${arcmin(maxAbs(meanResid))}`
 	);
+}
 
-	/* Ptolemy's sizes (VI 5): two eclipses near the perigee of the
-	   epicycle, the Moon 8;20° and 10;36° from the node, 7 and 3 digits
-	   eclipsed; their distances from the shadow's centre differ by 0;11,47°,
-	   a third of the diameter; the shadow's radius 46', 2 3/5 Moon radii. */
-	const b1 = LunarLatitude.latitude(8 + 20 / 60, 5);
-	const b2 = LunarLatitude.latitude(10 + 36 / 60, 5);
-	const difference = 11 + 47 / 60;
-
-	console.log(
-		`Ptolemy VI 5: latitudes at 8;20° and 10;36° from the node with i = 5°: ${arcmin(b1)} and ${arcmin(b2)}, ${arcmin(b2 - b1)} apart (his 0;11,47 = ${f(difference, 2)}')`
-	);
-	console.log(
-		`  diameter 3 x 11;47 = ${f(3 * difference, 2)}' (his 0;35,20 = ${f(35 + 20 / 60, 2)}'); shadow 46' = ${f(46 / ((35 + 20 / 60) / 2), 2)} Moon radii`
-	);
-
-	/* The shadow's radius from the second eclipse: 3 digits, a quarter of
-	   the diameter, in the shadow, so the Moon's centre was a quarter of
-	   the diameter outside the shadow's edge. */
-	const quarter = (35 + 20 / 60) / 4;
-
-	console.log(
-		`  shadow's radius: the second eclipse's ${arcmin(b2)} minus a quarter of the diameter, ${f(quarter, 2)}': ${f(b2 * 60 - quarter, 1)}' (his 46')`
-	);
+/* Ptolemy's parameters (the history block of the Fit). */
+title("10. Fit: Ptolemy's parameters");
+{
+	/* Ptolemy's inclination (V 12): the Moon 2 1/8° from the zenith at
+	   the northern limit near the summer solstice, the equator 30;58° and
+	   the solstice 23;51° from the equator. */
+	console.log(`Ptolemy V 12: 30;58 - 2 1/8 - 23;51 = ${f(30 + 58 / 60 - 2.125 - (23 + 51 / 60), 2)}°, "about 5°"`);
 }
 
 /* ==========================================================================
@@ -600,7 +552,6 @@ title('10. Fit');
 
 title('11. Test: the latitude');
 {
-	const P = LunarLatitude.PTOLEMY;
 	const meanI = Object.assign({}, LAT, { i: 5.145 });
 	const sets = [
 		['the fit', LAT],
@@ -619,23 +570,13 @@ title('11. Test: the latitude');
 		);
 	});
 
-	const all = [];
+	/* The other nine years of 2021-2030, which the fit did not use. */
+	const others = DECADE.filter(s => s.syzygy < Y(2026) || s.syzygy >= Y(2027));
+	const othersErr = others.map(s => LunarLatitude.state(LAT, s.syzygy).beta - s.betaSyzygy);
 
-	for (let jd = Y(1976); jd < Y(2076); jd += 1.3) {
-		all.push(LunarLatitude.state(LAT, jd).beta - Ephem.moon(jd).lat);
-	}
-	console.log(`the fit over 1976-2076: within ${arcmin(maxAbs(all))}`);
-
-	[Y(134), Y(2026)].forEach(jd => {
-		const theirs = LunarLatitude.state(P, jd).meanArgument;
-		const meeus = LunarLatitude.MEEUS.F0 + LunarLatitude.MEEUS.nF * (jd - 2451545);
-		const lon = LunarEpicycle.state(P, jd).meanLongitude;
-		const meeusLon = LunarEpicycle.MEEUS.L0 + LunarEpicycle.MEEUS.n * (jd - 2451545);
-
-		console.log(
-			`${date(jd)}: Ptolemy's mean argument of latitude minus Meeus' ${f(norm180(theirs - meeus), 2)}°; his mean longitude ${f(norm180(lon - meeusLon), 2)}°`
-		);
-	});
+	console.log(
+		`the fit at the other ${others.length} new and full Moons of 2021-2030: within ${arcmin(maxAbs(othersErr))}`
+	);
 }
 
 /* ==========================================================================
@@ -687,23 +628,6 @@ function printComparison(label, c) {
 title('12. Test: the eclipses');
 {
 	printComparison('2021-2030', compare(Eclipses.FIT_2026, Y(2021), Y(2031)));
-	printComparison('2001-2100', compare(Eclipses.FIT_2026, Y(2001), Y(2101)));
-
-	/* How far the middle of a real eclipse falls from the new or full
-	   Moon, 2001-2100. */
-	const offsets = referenceSyzygies(Y(2001), Y(2101))
-		.filter(r => r.kind)
-		.map(r => (r.jd - r.syzygy) * 1440);
-
-	console.log(`greatest eclipse minus the reference new or full Moon, 2001-2100: up to ${f(maxAbs(offsets), 0)} min`);
-
-	/* The model's own distances at the syzygies of 2021-2030. */
-	const model = DECADE.map(r => Eclipses.predict(Eclipses.FIT_2026, r.k));
-
-	console.log(
-		`the model's distances at new and full Moon 2021-2030: Moon ${f(Math.min(...model.map(m => m.moonKm)), 0)} to ${f(Math.max(...model.map(m => m.moonKm)), 0)} km, Sun ${f(Math.min(...model.map(m => m.sunAu)), 4)} to ${f(Math.max(...model.map(m => m.sunAu)), 4)} au`
-	);
-
 	/* The Moon's path relative to the Sun near a node: tan K = tan i n / (n - nSun). */
 	const K = Math.atan((tan(LAT.i) * RATES.n) / (RATES.n - RATES.nSun)) * (180 / Math.PI);
 
@@ -726,9 +650,18 @@ title('12. Test: the eclipses');
 		console.log(`  ${when}: reference ${r.kind}, NASA ${kind}`);
 	});
 
+	/* Where the time errors come from: the model's Moon and Sun against
+	   the reference at the middle of each eclipse of 2021-2030. */
+	const eclipses = DECADE.filter(r => r.kind);
+	const moonFit = LunarEpicycle.make(Eclipses.FIT_2026.moon);
+	const sunFit = SolarEccentric.make(Eclipses.FIT_2026.sun);
+	const moonErr = eclipses.map(r => norm180(moonFit(r.jd) - moonLon(r.jd)));
+	const sunErr = eclipses.map(r => norm180(sunFit(r.jd) - sunLon(r.jd)));
 	const rate = (RATES.n - RATES.nSun) / 24;
 
-	console.log(`page 3.1's 40' at the syzygies / ${f(rate, 4)}° an hour = ${f((40 / 60 / rate) * 60, 0)} min`);
+	console.log(
+		`at the ${eclipses.length} eclipses of 2021-2030: the epicycle's ecliptic longitude within ${arcmin(maxAbs(moonErr))}, the Sun's within ${arcmin(maxAbs(sunErr))} (${f((maxAbs(sunErr) / rate) * 60, 0)} min at the mean ${f(rate, 4)}° an hour)`
+	);
 
 	/* The eclipses of 2026, one by one (the table). */
 	eclipsesOf(SYZ_2026).forEach(r => {
@@ -790,28 +723,28 @@ title('13. Test: Ptolemy');
 		);
 	});
 
-	/* His lunar limit over AD 100-200. */
-	const ref = referenceSyzygies(Y(100), Y(200));
-	let flagged = 0;
-	let caught = 0;
-	const dt = [];
+	/* In 2026, his mean argument of latitude against his mean longitude,
+	   both from Meeus' mean elements. */
+	{
+		const jd = Y(2026);
+		const theirs = LunarLatitude.state(LunarLatitude.PTOLEMY, jd).meanArgument;
+		const meeus = LunarLatitude.MEEUS.F0 + LunarLatitude.MEEUS.nF * (jd - 2451545);
+		const lon = LunarEpicycle.state(LunarLatitude.PTOLEMY, jd).meanLongitude;
+		const meeusLon = LunarEpicycle.MEEUS.L0 + LunarEpicycle.MEEUS.n * (jd - 2451545);
 
-	ref.filter(r => !r.solar).forEach(r => {
-		const F = LunarLatitude.state(LunarLatitude.PTOLEMY, Eclipses.meanSyzygy(r.k)).meanArgument;
-		const possible = Eclipses.ptolemyPossible(F, false);
+		console.log(
+			`${date(jd)}: Ptolemy's mean argument of latitude minus Meeus' ${f(norm180(theirs - meeus), 2)}°; his mean longitude ${f(norm180(lon - meeusLon), 2)}°`
+		);
 
-		flagged += possible ? 1 : 0;
-		caught += possible && r.kind ? 1 : 0;
+		/* His motion in latitude (IV 9) against the reference, over the
+		   time since his epoch (Nabonassar, 747 BC). */
+		const centuries = (jd - LunarLatitude.PTOLEMY.epoch) / 36525;
+		const drift = (LunarLatitude.PTOLEMY.nF - RATES.nF) * 36525;
 
-		if (r.kind) {
-			dt.push((Eclipses.predict(Eclipses.PTOLEMY, r.k).jd - r.jd) * 24);
-		}
-	});
-
-	console.log(
-		`AD 100-200: ${ref.filter(r => !r.solar && r.kind).length} lunar eclipses of ${ref.filter(r => !r.solar).length} full Moons; his limit of 15;12° flags ${flagged} and holds ${caught}`
-	);
-	console.log(`  his true opposition minus greatest eclipse: rms ${f(rms(dt), 2)} h, largest ${f(maxAbs(dt), 2)} h`);
+		console.log(
+			`  since his epoch ${f(centuries * 100, 0)} years: ${f(drift, 3)}° a century x ${f(centuries, 2)} = ${f(drift * centuries, 2)}°`
+		);
+	}
 
 	const ptolemyNow = compare(Eclipses.PTOLEMY, Y(2021), Y(2031));
 
@@ -830,19 +763,11 @@ title('14. Residual');
 	   MOON_B). */
 	console.log(`the latitude term of the reference Moon: 0.173237° sin(2D - F), ${f(0.173237, 2)}°`);
 
-	/* Where in the year the Moon's greatest latitude is largest: the
-	   peaks of 2026 against the Sun's distance from the node. */
-	const near = [];
-	const far = [];
-
-	for (let jd = Y(2026); jd < Y(2027); jd += 27.2122 / 2) {
-		const [t, value] = minimise(x => -Math.abs(Ephem.moon(x).lat), jd, jd + 13.6);
-		const fromNode = Math.abs(Eclipses.nodeAngle(Ephem.sun(t).lon - meanNode(t)));
-
-		(fromNode < 30 ? near : fromNode > 60 ? far : []).push(-value);
-	}
+	/* With the main term 5.128122° sin F: at new and full Moon (2D = 0 or
+	   360°) the term is -0.173237° sin F, at the quarters (2D = 180°)
+	   +0.173237° sin F, so the circle seems inclined by their sum. */
 	console.log(
-		`greatest latitudes of 2026 with the Sun within 30° of a node: ${f(Math.min(...near), 2)}° to ${f(Math.max(...near), 2)}°; more than 60° from it: ${f(Math.min(...far), 2)}° to ${f(Math.max(...far), 2)}°`
+		`the inclination it gives: at new and full Moon 5.128122 - 0.173237 = ${f(5.128122 - 0.173237, 2)}°, at the quarters 5.128122 + 0.173237 = ${f(5.128122 + 0.173237, 2)}°`
 	);
 }
 

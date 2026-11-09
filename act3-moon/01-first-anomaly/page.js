@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 3.1 · THE FIRST ANOMALY - SCRIPT (page.js)
-   Six figures, each with its own init and draw (and update when it has
+   Five figures, each with its own init and draw (and update when it has
    controls):
 	 1. the Moon's daily motion      (2D, static: the real Moon through
 									   2026, with its full Moons)
@@ -14,7 +14,6 @@
 									   epicycle, (b) the plane of X, Y with
 									   the two equations; four data sets)
 	 5. the fitted epicycle against the Moon (error curve, 2026)
-	 6. Ptolemy's simple Moon        (error curve, AD 134 and 2000 years)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/solar-eccentric.js, models/lunar-epicycle.js, plot2d.js,
    errorcurve.js, components.js.
@@ -27,7 +26,7 @@
 	 2. Figure 2: the epicycle and the equation of anomaly
 	 3. Figure 3: the epicycle and its eccentric
 	 4. Figure 4: three eclipses
-	 5. Figures 5 and 6: the error curves
+	 5. Figure 5: the error curve
 	 6. Page start
    ========================================================================== */
 
@@ -667,7 +666,7 @@ const eclipsesFigure = {
 		});
 
 		this.wireChoice();
-		this.choose('babylon');
+		this.choose('ours');
 	},
 
 	/* Our triple: the three eclipses of FIT_2026 in the reference sky,
@@ -892,7 +891,7 @@ const eclipsesFigure = {
 };
 
 /* ==========================================================================
-   5. FIGURES 5 AND 6: THE ERROR CURVES
+   5. FIGURE 5: THE ERROR CURVE
    The models take JD(TT) and return a longitude (models/*.js); the widget
    compares them with the reference Moon (shared/errorcurve.js). No slider
    changes a model here, so the widget fits its scale to each span. The
@@ -940,41 +939,6 @@ const ourErrorFigure = {
 	}
 };
 
-/* Figure 6: Ptolemy's simple Moon around his eclipse of 20 October 134,
-   and over 2000 years (866 BC to AD 1134, inside the reference sky's
-   range). */
-const ptolemyErrorFigure = {
-	init() {
-		const start = Time.julianDay(134, 9, 20);
-		const end = start + EPICYCLE_DAYS;
-		const curve = new ErrorCurve(byId('error-ptolemy'), {
-			body: 'moon',
-			start: start,
-			end: end,
-			spans: [
-				{ label: '2 months', years: EPICYCLE_DAYS / 365.25 },
-				{ label: '2000 years', years: 2000 }
-			],
-			ghostButtons: false
-		});
-		const ptolemy = LunarEpicycle.make(LunarEpicycle.PTOLEMY);
-
-		curve.addModel({
-			label: "Ptolemy's simple Moon (<em>Almagest</em> IV)",
-			short: "Ptolemy's Moon",
-			color: COL.planet,
-			fn: ptolemy
-		});
-		curve.addMarks({
-			label: 'at new and full Moon (spans of a year or less)',
-			color: COL.planet,
-			fn: ptolemy,
-			dates: syzygies(start - 5, end + 5).map(s => s.jd),
-			maxYears: 1.01
-		});
-	}
-};
-
 /* ==========================================================================
    6. PAGE START
    Shared components first (they typeset the prose), then the figures.
@@ -982,5 +946,5 @@ const ptolemyErrorFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([motionFigure, epicycleFigure, equivalenceFigure, eclipsesFigure, ourErrorFigure, ptolemyErrorFigure]);
+	startFigures([motionFigure, epicycleFigure, equivalenceFigure, eclipsesFigure, ourErrorFigure]);
 });

@@ -602,7 +602,7 @@ title('Test: our epicycle over 100 and 1,000 years');
 	});
 }
 
-title("Test: Ptolemy's simple Moon (first anomaly only), Figure 6");
+title("Test: Ptolemy's simple Moon (first anomaly only), history block");
 {
 	/* The real moment of opposition nearest a date. */
 	const oppositionNear = (y, m, d) => {

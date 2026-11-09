@@ -191,10 +191,41 @@ const Time = (function () {
 	   4. DELTA T AND TIME SCALES
 	   Delta T = TT - UT in seconds, from the polynomials of Espenak & Meeus
 	   (NASA, Five Millennium Canon of Solar Eclipses, 2006), valid from
-	   -1999 to +3000. Outside 1600-2020 Delta T comes from historical
-	   eclipse records and its uncertainty grows to several minutes in
-	   antiquity (about +-5 min at -500, +-15 min at -2000).
+	   -1999 to +3000, except from 2005 on, where their polynomial was a
+	   forecast: it gives 75 s for 2026, against the 69 s measured. From
+	   2005 to 2027 Delta T is interpolated in the measured values below;
+	   from 2027 to 2050 Espenak & Meeus' polynomial is corrected by an
+	   amount that falls linearly to zero in 2050, as they join their own
+	   2050-2150 branch to the parabola. Before 1600 Delta T comes from
+	   historical eclipse records and its uncertainty grows to several
+	   minutes in antiquity (about +-5 min at -500, +-15 min at -2000).
 	   ====================================================================== */
+
+	/* Delta T on 1 January of each year from 2005 to 2027 (s): measured,
+	   from the USNO table (maia.usno.navy.mil/ser7/deltat.data, retrieved
+	   9 November 2026), to 2026; for 2027, IERS Bulletin A's prediction,
+	   TT - UTC = 32.184 s + 37 leap seconds minus UT1 - UTC = -0.116 s. */
+	const DELTA_T_TABLE_START = 2005;
+	// prettier-ignore
+	const DELTA_T_TABLE = [
+		64.69, 64.85, 65.15, 65.46, 65.78, 66.07, 66.32, 66.60, 66.91, 67.28,
+		67.64, 68.10, 68.59, 68.97, 69.22, 69.36, 69.36, 69.29, 69.20, 69.18,
+		69.14, 69.11, 69.30
+	];
+	const DELTA_T_TABLE_END = DELTA_T_TABLE_START + DELTA_T_TABLE.length - 1;
+
+	/* Linear interpolation in the table of measured values. */
+	function deltaTMeasured(y) {
+		const i = Math.min(Math.floor(y - DELTA_T_TABLE_START), DELTA_T_TABLE.length - 2);
+		const f = y - DELTA_T_TABLE_START - i;
+
+		return DELTA_T_TABLE[i] + f * (DELTA_T_TABLE[i + 1] - DELTA_T_TABLE[i]);
+	}
+
+	/* Espenak & Meeus' polynomial for 2005-2050 (their forecast). */
+	function deltaTForecast(y) {
+		return polynomial(y - 2000, [62.92, 0.32217, 0.005589]);
+	}
 
 	/* The long-term parabola, used before -500 and after 2150. */
 	function deltaTParabola(y) {
@@ -243,12 +274,17 @@ const Time = (function () {
 		if (y < 1986) {
 			return polynomial(y - 1975, [45.45, 1.067, -1 / 260, -1 / 718]);
 		}
-		if (y < 2005) {
+		if (y < DELTA_T_TABLE_START) {
 			return polynomial(y - 2000, [63.86, 0.3345, -0.060374, 0.0017275,
 				0.000651814, 0.00002373599]);
 		}
+		if (y < DELTA_T_TABLE_END) {
+			return deltaTMeasured(y);
+		}
 		if (y < 2050) {
-			return polynomial(y - 2000, [62.92, 0.32217, 0.005589]);
+			const offset = deltaTForecast(DELTA_T_TABLE_END) - DELTA_T_TABLE[DELTA_T_TABLE.length - 1];
+
+			return deltaTForecast(y) - (offset * (2050 - y)) / (2050 - DELTA_T_TABLE_END);
 		}
 		if (y < 2150) {
 			return deltaTParabola(y) - 0.5628 * (2150 - y);
