@@ -2771,12 +2771,13 @@ obliquity: hour angle -2.47° to 2.47°
 
 === Fit: e, the apogee and the obliquity from the real E of 2026 ===
 coefficients (min): c -0.007, sin L -1.851, cos L -7.135, sin 2L 9.922, cos 2L -0.038
-annual amplitude 7.371 min -> e = 0.03216 (page 2.1: 0.033473), apogee 104.55° (page 2.1: 103.732°)
+annual amplitude 7.371 min -> e = 0.03216 (page 2.1: 0.033473), apogee 104.547° (page 2.1: 103.732°)
 semi-annual amplitude 9.922 min -> y = 0.04329, eps = 23.508° (mean obliquity 23.436°); phase of 2L term -0.22°
 RMS of the fit: 16.5 s
 exact model fitted (Gauss-Newton): e = 0.03343, apogee 103.39°, eps = 23.389°, constant -0.44 s; RMS 0.91 s
    eccentric - ellipse in -q: 0.72' sin 2M, of which 0.64' along sin 2 lambdaBar; absorbed by e_eps it lowers eps by 3.0'
    cross term e y: the semi-annual wave of the true lambda, y sin 2(lambdaBar + q), has an annual part of amplitude e y = 19.8 s
+   the Sun's second-order term (5/4) e_K^2 = 4.8 s, of which 4.3 s along sin 2 lambdaBar: it raises the first-order eps by 4.9'
 
 === Test: the model against the real E at 12:00 UT, 2026 (Figure 5) ===
 model - real: -4.8 s (6 Aug 2026) to 6.0 s (20 Nov 2026)
