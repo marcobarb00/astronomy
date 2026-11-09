@@ -236,6 +236,19 @@ section.
   2012) as packaged by the npm package d3-celestial, without proper
   motions (20″ at most over 26 years). Replace them by a SIMBAD query
   when CDS answers. → tools/numbers/data/fetch-plate-stars-xhip.sh
+- **ΔT is measured from 2005 to 2027, Espenak and Meeus' elsewhere.**
+  Their 2006 polynomial for 2005–2050 was a forecast and gives 75 s for
+  2026, against the 69 s measured. Since 2026-11-09 the reference sky
+  interpolates the USNO's measured values (and IERS Bulletin A's
+  prediction for 2027), and from 2027 to 2050 corrects their polynomial
+  by an amount that falls to zero in 2050; before 2005 it is unchanged. →
+  shared/time.js
+- **The clock's rate is the conventional one of Meeus 12.4**, 360° +
+  0.98564736629° a day of UT, and the year of page 1.3 is the one it
+  implies, $Y = 360^\circ / n = 365.2421873$ days. Meeus 25.2's mean
+  longitude of the Sun, in days of TT, implies a year 0.2 s longer; both
+  round to the 365.24219 days the pages quote. Decided on 2026-11-09. →
+  shared/models/clock.js, tools/numbers/1.3-clocks.js
 
 ## Workflow
 

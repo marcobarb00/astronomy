@@ -264,6 +264,17 @@ function testSiderealTime() {
 		show: x => x.toFixed(1) + ' s'
 	});
 
+	// The measured value (USNO), which Espenak & Meeus' 2006 forecast missed by 6 s.
+	check({
+		name: 'ΔT on 2026 Jan 1',
+		source: 'USNO deltat.data',
+		expected: 69.11,
+		computed: Time.deltaT(2026),
+		tol: 0.05,
+		unit: 's',
+		show: x => x.toFixed(2) + ' s'
+	});
+
 	const jd0 = Time.julianDay(1987, 4, 10);
 	const hoursPerDegree = 1 / 15;
 

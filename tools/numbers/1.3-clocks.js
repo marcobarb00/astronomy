@@ -247,9 +247,15 @@ console.log(
    ========================================================================== */
 
 title('Model: the two days');
-const n = MeanSun.MODERN.n;
-const Y = MeanSun.yearLength();
-console.log(`mean Sun n = ${n.toFixed(8)} deg/day, Y = 360/n = ${Y.toFixed(5)} days`);
+/* The clock's rate is 360° + n with the conventional n of Meeus 12.4, and
+   the year is the one it implies, Y = 360° / n: the page's n and Y. */
+const n = Clock.RATE - 360;
+const Y = 360 / n;
+console.log(`the clock's n = ${n.toFixed(11)} deg/day, Y = 360/n = ${Y.toFixed(7)} days (${Y.toFixed(5)})`);
+console.log(
+	`the Sun's mean longitude (Meeus 25.2, days of TT): n = ${MeanSun.MODERN.n.toFixed(11)}, 360/n = ${MeanSun.yearLength().toFixed(7)} days,` +
+		` ${((MeanSun.yearLength() - Y) * 86400).toFixed(1)} s longer`
+);
 console.log(
 	`sidereal day = 24 h x Y/(Y+1) = ${hms((24 * Y) / (Y + 1), 3)}; turns in a year Y+1 = ${(Y + 1).toFixed(5)}`
 );
@@ -266,7 +272,7 @@ console.log(
 );
 
 title('Model: mean time and the sidereal clock');
-console.log(`rate ${Clock.RATE} = 360 + ${(Clock.RATE - 360).toFixed(11)}; n = ${n.toFixed(11)}`);
+console.log(`rate ${Clock.RATE} = 360 + n, n = ${n.toFixed(11)}`);
 console.log(
 	`theta_G at J2000.0 = ${Clock.THETA0} deg = ${hms(Clock.THETA0 / 15)}; mean Sun L0 = ${MeanSun.MODERN.L0}:` +
 		` difference ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(1)}" = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 240).toFixed(2)} s of time`
@@ -612,7 +618,7 @@ console.log(`real noon moves ${noonDrift.toFixed(1)} s later each day at the sol
 
 title('Residual: Delta T');
 [
-	[2026, 'now (polynomial)'],
+	[2026, 'now (reference sky)'],
 	[132, 'Ptolemy, AD 132'],
 	[-746, 'Nabonassar, 747 BC']
 ].forEach(([year, label]) => {

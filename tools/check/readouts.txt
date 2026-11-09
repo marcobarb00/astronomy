@@ -691,7 +691,7 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.34^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
   hover #day-curve at 0.6
     OUTPUT (day-lat): 69.7°
-    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.6^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
+    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.7^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
   hover #day-curve at 0.9
     OUTPUT (day-lat): 69.7°
     #day-readout: \text{3 Dec 2026:}\ \delta_\odot = -22.27^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
@@ -2874,7 +2874,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 157 tests pass.
+    #summary: All 158 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 
