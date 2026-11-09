@@ -542,11 +542,13 @@
 		<p>
 			Applied to the real $E$ of 2026, the averages give the first column
 			of the table. They are close, but not exact, because the first-order
-			formula leaves out a cross term: the half-yearly wave depends on the
-			true ecliptic longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$,
-			and the product of the two waves contains a yearly part of amplitude
-			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part
-			of the eccentricity.
+			formula leaves out two terms. The half-yearly wave depends on the true
+			ecliptic longitude, $e_\varepsilon \sin 2(\bar\lambda + q)$, and the
+			product of the two waves contains a yearly part of amplitude
+			$e\,e_\varepsilon$, worth about 20 s, which the fit takes for part of
+			the eccentricity and the apogee. The Sun's own second-order term falls
+			partly on the half-yearly wave and raises $\varepsilon$ by a few
+			arcminutes.
 		</p>
 
 		<details class="fold">
@@ -582,7 +584,7 @@
 				</tr>
 				<tr>
 					<td>$\lambda_A$</td>
-					<td>$104.6^\circ$</td>
+					<td>$104.5^\circ$</td>
 					<td>$103.4^\circ$</td>
 					<td>$103.7^\circ$ (2.1)</td>
 				</tr>
@@ -597,9 +599,11 @@
 		</div>
 
 		<p>
-			The exact fit recovers the eccentricity of page 2.1, and an apogee
-			closer to the reference Sun's than the one page 2.1 fitted to the
-			seasons. Its obliquity is 3′ too small, because the eccentric differs
+			The exact fit recovers the eccentricity of page 2.1, and an apogee a
+			third of a degree west of page 2.1's, close to the reference Sun's: the
+			fit to the seasons puts the eccentric's error of shape into the apogee,
+			the fit to $E$ into the half-yearly term. Its obliquity is therefore 3′
+			too small, because the eccentric differs
 			from the ellipse of the modern theory at second order (page 2.1). That
 			gives it a slightly wrong half-yearly term, and the fit makes up for
 			it by lowering $e_\varepsilon$.
@@ -610,7 +614,7 @@
 
 		<p>
 			Page 1.3's clock had no equation of time at all, so its noon was
-			wrong by the whole of $E$, up to a quarter of an hour. Here we predict
+			wrong by the whole of $E$, more than a quarter of an hour at times. Here we predict
 			$E$ from the seasons of 2026 and the mean obliquity alone, the check
 			of the Fit run forwards, and Figure 5 compares the prediction with the
 			real equation of time of the reference sky.
@@ -658,9 +662,10 @@
 				<p>
 					Ptolemy needed the equation of time for the Moon. His lunar tables
 					count mean solar days, while his eclipses were timed by the sky, and
-					in half an hour the Moon moves more than half the width of its disc.
-					He computed the two parts with his own Sun, in time-degrees, each the
-					4 minutes the sky takes to turn 1° (III 9).
+					between two observations the difference can exceed an hour, in which
+					the Moon moves more than its own width (III 9). He computed the two
+					parts with his own Sun, in time-degrees, each the 4 minutes the sky
+					takes to turn 1°.
 				</p>
 				<aside>
 					<div class="note" data-origin="ptolemy"></div>
@@ -668,11 +673,10 @@
 			</div>
 
 			<p>
-				The greatest change he found between two dates of the year, where the
-				two parts work in the same direction, is about half an hour, a little
-				more than the real change in his time, because his eccentricity is a
-				fifth too large (page 2.1). The preset "AD 140" of Figure 6 shows the
-				real curve of his time.
+				Over the stretches of the year where the two parts work in the same
+				direction, he found a change of 33 minutes, against 31 in his time,
+				because his eccentricity is a fifth too large (page 2.1). The preset
+				"AD 140" of Figure 6 shows the real curve of his time.
 			</p>
 		</div>
 
@@ -719,9 +723,10 @@
 				<div class="readout" id="centuries-readout" data-lines="3"></div>
 			</div>
 			<figcaption>
-				Move the year and notice which minimum is the deeper and which
-				maximum the higher: they change places around 1246, when the apogee
-				passed the summer solstice. The presets mark the times of
+				Move the year and compare the February minimum with the November
+				maximum: before 1246, when the apogee passed the summer solstice,
+				the minimum was the deeper, and since then the maximum has been the
+				higher. The presets mark the times of
 				Hipparchus, Ptolemy and Copernicus, the turn, today and AD 3000.
 			</figcaption>
 			<div class="keys">
@@ -863,10 +868,11 @@
 
 		<ul class="sources">
 			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984), III 9 (the
-				two causes of the inequality of the solar days; the accumulated
-				differences of 3⅔ and 4⅔ time-degrees, 8⅓ in all; the rule for
-				converting true into mean solar days), with Toomer's note on the
-				Moon's motion in an hour, 0° 32′ 56″ (IV 3).</li>
+				two causes of the inequality of the solar days, in time-degrees, 8⅓
+				in all between the middle of Aquarius and the end of Libra; the rule
+				for converting true into mean solar days, and why it matters for the
+				Moon), with Toomer's note on the Moon's motion in an hour, 0° 32′ 56″
+				(0.549°, IV 3).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 5.4 and Table 5.5 (the
 				mean sun and the equation of time; his first-order formula 5.17 is
 				written with Kepler's eccentricity and with $M$ counted from the
