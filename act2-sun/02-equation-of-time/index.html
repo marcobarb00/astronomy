@@ -510,15 +510,16 @@
 		<p>
 			The model has no parameter of its own, since $e$ and $\lambda_A$
 			come from the seasons (page 2.1) and $\varepsilon$ from the noon Sun
-			at the solstices (page 1.2). But the argument can be turned round. A
-			clock and a sundial, compared through one year, measure $E$, and
-			since $E$ carries the same three parameters, it should give them
-			back.
+			at the solstices (page 1.2). But we can run the argument the other
+			way. A clock and a sundial, compared through one year, measure $E$,
+			and if the two causes are all there is to $E$, it should give the
+			same three parameters back.
 		</p>
 
 		<div class="row">
 			<p>
-				In the first-order formula, expanding $e\sin M$ with $M =
+				The apogee sits inside the sine of the yearly wave, so we first bring
+				it out: in the first-order formula, expanding $e\sin M$ with $M =
 				\bar\lambda - \lambda_A$ splits the yearly wave into a sine and a
 				cosine of the mean ecliptic longitude:
 			</p>
@@ -596,10 +597,11 @@
 		</div>
 
 		<p>
-			The exact fit recovers the eccentricity of page 2.1 and the apogee of
-			the reference Sun. Its obliquity is 3′ too small, because the
-			eccentric is not quite the right shape: at second order it gets a
-			half-yearly term slightly wrong (page 2.1), and the fit makes up for
+			The exact fit recovers the eccentricity of page 2.1, and an apogee
+			closer to the reference Sun's than the one page 2.1 fitted to the
+			seasons. Its obliquity is 3′ too small, because the eccentric differs
+			from the ellipse of the modern theory at second order (page 2.1). That
+			gives it a slightly wrong half-yearly term, and the fit makes up for
 			it by lowering $e_\varepsilon$.
 		</p>
 
@@ -608,10 +610,10 @@
 
 		<p>
 			Page 1.3's clock had no equation of time at all, so its noon was
-			wrong by the whole of $E$, up to a quarter of an hour. The model of
-			this page puts together the eccentric fitted to the seasons of 2026
-			and the mean obliquity, and Figure 5 compares it with the real
-			equation of time of the reference sky.
+			wrong by the whole of $E$, up to a quarter of an hour. Here we predict
+			$E$ from the seasons of 2026 and the mean obliquity alone, the check
+			of the Fit run forwards, and Figure 5 compares the prediction with the
+			real equation of time of the reference sky.
 		</p>
 
 		<!-- Figure 5: the model against the real equation of time -->
@@ -619,7 +621,7 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the model and the real Sun</p>
+						<p class="panel-title">(a) the model and the real equation of time</p>
 						<canvas id="test-both"></canvas>
 					</div>
 					<div>
@@ -634,27 +636,18 @@
 				curve stays inside the broad band of the real one all year; (b)
 				magnifies the difference about a hundred times.
 			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In panel (a)</p>
-					<dl class="key">
-						<dt class="c-muted">broad band</dt>
-						<dd>the real equation of time, from the reference sky</dd>
-						<dt class="c-planet">curve</dt>
-						<dd>the model, $-q + (\lambda - \alpha)$</dd>
-					</dl>
-				</div>
-			</div>
 		</figure>
 
 		<p>
-			Through 2026 the model is never more than 6 s from the real equation
-			of time. Almost all of this comes from the eccentric's error in
-			ecliptic longitude, under 2′ (page 2.1), since 1′ of ecliptic
-			longitude is about 4 s of time. The small monthly ripples in (b) are
-			the Moon's, as on page 2.1: the Earth swings about the centre of
-			mass of the Earth and the Moon, and the Sun seen from it moves to
-			and fro.
+			Through 2026 the prediction is never more than 6 s from the real
+			equation of time, where page 1.3's clock was off by minutes. Almost all
+			of this comes from the eccentric's error in ecliptic longitude, under
+			2′ (page 2.1), since 1′ of ecliptic longitude is about 4 s of time.
+		</p>
+
+		<p>
+			The small monthly ripples in (b) are the Moon's, explained on page
+			2.1.
 		</p>
 
 		<!-- History block: Ptolemy's equation of time -->
@@ -663,12 +656,11 @@
 
 			<div class="row">
 				<p>
-					Ptolemy computed the two parts with his own Sun, and measured them in
-					time-degrees, each the 4 minutes the sky takes to turn 1° (III 9).
-					Where the two work in the same direction, from the middle of
-					Aquarius to the end of Libra, he found them together worth about half
-					an hour, a little more than the real value of his time, because his
-					eccentricity is a fifth too large (page 2.1).
+					Ptolemy needed the equation of time for the Moon. His lunar tables
+					count mean solar days, while his eclipses were timed by the sky, and
+					in half an hour the Moon moves more than half the width of its disc.
+					He computed the two parts with his own Sun, in time-degrees, each the
+					4 minutes the sky takes to turn 1° (III 9).
 				</p>
 				<aside>
 					<div class="note" data-origin="ptolemy"></div>
@@ -676,9 +668,11 @@
 			</div>
 
 			<p>
-				He needed the correction for the Moon rather than for the Sun. His
-				lunar tables count mean solar days, and in half an hour the Moon moves
-				more than half the width of its disc.
+				The greatest change he found between two dates of the year, where the
+				two parts work in the same direction, is about half an hour, a little
+				more than the real change in his time, because his eccentricity is a
+				fifth too large (page 2.1). The preset "AD 140" of Figure 6 shows the
+				real curve of his time.
 			</p>
 		</div>
 
@@ -686,18 +680,17 @@
 		<h2 id="residual"><span class="step">5 · Residual</span>The equation of time over the centuries</h2>
 
 		<p>
-			The model of this page holds its apogee fixed at its place of 2026, but page 2.1
-			found from the seasons that the apogee moves relative to γ, by about
-			1.75° a century. So the model's error grows, to about 13 s over the
-			century around 2026 and to more than a minute over a thousand
+			The model of this page holds its apogee fixed at its place of 2026,
+			while page 2.1 found from the seasons that the apogee moves. Its error
+			therefore grows away from 2026, to more than a minute over a thousand
 			years.
 		</p>
 
 		<p>
-			The real equation of time changes with it. Its half-yearly wave is
-			tied to the equinoxes and solstices, but its yearly wave is tied to
-			the apogee, so as the apogee moves the two waves meet at other
-			places, and the curve changes shape, as Figure 6 shows.
+			The real curve changes shape over the centuries. Its half-yearly wave
+			is tied to the equinoxes and solstices, but its yearly wave to the
+			apogee, so as the apogee moves the yearly wave slides along the year
+			against the half-yearly one, as Figure 6 shows.
 		</p>
 
 		<!-- Figure 6: the equation of time over the centuries -->
@@ -726,17 +719,15 @@
 				<div class="readout" id="centuries-readout" data-lines="3"></div>
 			</div>
 			<figcaption>
-				Move the year and watch the two minima and the two maxima trade
-				depth. In 141 BC the minimum after the winter solstice is the deep
-				one; in 1246 the curve is symmetric, its extremes equal and
-				opposite; by 3000 the late-autumn maximum dominates.
+				Move the year and notice which minimum is the deeper and which
+				maximum the higher: they change places around 1246, when the apogee
+				passed the summer solstice. The presets mark the times of
+				Hipparchus, Ptolemy and Copernicus, the turn, today and AD 3000.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-planet">curve</dt>
-						<dd>the real equation of time in the chosen year</dd>
 						<dt class="c-muted">dashed</dt>
 						<dd>the model of this page, with the apogee of 2026</dd>
 					</dl>
@@ -745,16 +736,11 @@
 		</figure>
 
 		<p>
-			The curve is symmetric when the apogee is at the summer solstice, as
-			it was around 1246. Before then the February minimum was the deeper,
-			and since then the November maximum has been the larger.
-		</p>
-
-		<p>
-			Most of the apogee's motion belongs to γ, the origin of every
-			ecliptic longitude, which slides westward along the ecliptic. The
-			whole frame we have used since page 1.2 is turning slowly, and page
-			2.3 measures how fast.
+			Most of the apogee's motion, as page 2.1 found, is that of γ itself,
+			the origin of every ecliptic longitude, so the slow change of the
+			equation of time is mostly precession: the whole frame we have used
+			since page 1.2 is turning. How fast it turns is the subject of page
+			2.3.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
