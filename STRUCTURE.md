@@ -86,8 +86,16 @@ The language needed to state any prediction.
   star; the fraction of the day a star of declination $\delta$ is above the
   horizon (and Ptolemy's longest day at Rhodes); the equinox day, 10 minutes
   longer than the model's 12 hours (refraction and the Sun's radius).
+- **Fit:** the rate from two timed meridian crossings; the geographic
+  latitude and a declination from the two meridian crossings of a
+  circumpolar star (Kochab from Alexandria). History block: Ptolemy's
+  meridian ring and plaque (*Almagest* I 12) and his latitude of Alexandria,
+  30°58′ (V 12).
 - **Test:** the model's altitude against the real sky; the residual is
-  refraction near the horizon (`Ephem.refraction`).
+  refraction near the horizon (`Ephem.refraction`). No history block.
+- **Residual:** refraction left out of the models; Polaris drifts (page
+  2.3); the Sun, the Moon and the planets move among the stars; two
+  coordinates and conversions are needed (page 1.2).
 - **Hands over:** "rotation about the pole" needs coordinates to be stated
   precisely.
 
