@@ -66,6 +66,7 @@ const SHARED_FILES = [
 	'shared/models/lunar-crank.js',
 	'shared/models/lunar-latitude.js',
 	'shared/models/eclipses.js',
+	'shared/models/planet-epicycle.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -81,7 +82,8 @@ const PAGE_FILES = [
 	'act2-sun/03-precession/index.html',
 	'act3-moon/01-first-anomaly/index.html',
 	'act3-moon/02-evection/index.html',
-	'act3-moon/03-eclipses/index.html'
+	'act3-moon/03-eclipses/index.html',
+	'act4-planets/01-going-backwards/index.html'
 ];
 
 /* ==========================================================================
@@ -739,6 +741,62 @@ function lunarLatitudeSection(c) {
 	});
 }
 
+function planetEpicycleSection(c) {
+	const { Time, PlanetEpicycle } = c;
+
+	title('6j. THE SIMPLE PLANETARY EPICYCLE (models/planet-epicycle.js)');
+	Object.entries(PlanetEpicycle.PTOLEMY).forEach(([name, p]) => {
+		const loop = PlanetEpicycle.loop(p.r, p.n, p.nMu);
+
+		row(
+			`PTOLEMY ${name}`,
+			String(p.kind),
+			num(p.n, 12),
+			num(p.nMu, 12),
+			num(p.r, 12),
+			num(PlanetEpicycle.loopThreshold(p.n, p.nMu)),
+			num(loop.mu),
+			num(loop.arc),
+			num(loop.days)
+		);
+	});
+
+	const sets = { MARS_FIT: PlanetEpicycle.MARS_FIT, VENUS_MEAN: PlanetEpicycle.VENUS_MEAN };
+
+	Object.entries(sets).forEach(([name, p]) => {
+		const m = PlanetEpicycle.motions(p);
+
+		row(name, String(p.kind), num(p.L0 ?? p.mu0), num(m.n, 12), num(m.nMu, 12), num(p.r, 12), num(p.epoch));
+	});
+	row(
+		'ratioForArc MARS_FIT 16.07',
+		num(PlanetEpicycle.ratioForArc(16.07, PlanetEpicycle.MARS_FIT.n, 0.98564736 - PlanetEpicycle.MARS_FIT.n))
+	);
+	row(
+		'dailyMotion PTOLEMY mars',
+		[0, 90, 131.2, 163.15, 180]
+			.map(mu =>
+				num(
+					PlanetEpicycle.dailyMotion(
+						mu,
+						PlanetEpicycle.PTOLEMY.mars.r,
+						PlanetEpicycle.PTOLEMY.mars.n,
+						PlanetEpicycle.PTOLEMY.mars.nMu
+					)
+				)
+			)
+			.join(' ')
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = PlanetEpicycle.state(PlanetEpicycle.MARS_FIT, jd);
+		const v = PlanetEpicycle.state(PlanetEpicycle.VENUS_MEAN, jd);
+
+		row(`${label}`, num(s.meanLongitude), num(s.mu), num(s.eta), num(s.lambda), num(v.mu), num(v.lambda));
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -1091,6 +1149,20 @@ function page33(c) {
 	);
 }
 
+function page41(c) {
+	title('8j. PAGE 4.1 (act4-planets/01-going-backwards/page.js)');
+	row('MARS_LOOP', JSON.stringify(inContext(c, 'MARS_LOOP')));
+	row('quarterTicks', JSON.stringify(c.quarterTicks()));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'PLATE_AREA')),
+		JSON.stringify(inContext(c, 'MOTION_VIEWS')),
+		JSON.stringify(Object.values(inContext(c, 'EPICYCLE_VIEWS')).map(view => view.y)),
+		JSON.stringify(inContext(c, 'ARC_RANGE')),
+		JSON.stringify(inContext(c, 'INTERVAL_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1158,6 +1230,7 @@ function buildTable() {
 	lunarEpicycleSection(shared);
 	lunarCrankSection(shared);
 	lunarLatitudeSection(shared);
+	planetEpicycleSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1168,6 +1241,7 @@ function buildTable() {
 	page31(pages[6]);
 	page32(pages[7]);
 	page33(pages[8]);
+	page41(pages[9]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

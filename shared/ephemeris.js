@@ -855,6 +855,7 @@ const Ephem = (function () {
 	return {
 		RANGE,
 		PLANETS,
+		ELEMENTS,
 		AU_KM,
 		inRange,
 		sun,

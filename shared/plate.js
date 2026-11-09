@@ -215,17 +215,50 @@ const Plate = (function () {
 				['tet Leo', 'bet Leo']
 			],
 			name: [165, 26]
+		},
+		'GEMINI': {
+			lines: [
+				['alf Gem', 'tau Gem'],
+				['tau Gem', 'tet Gem'],
+				['tau Gem', 'eps Gem'],
+				['eps Gem', 'mu. Gem'],
+				['mu. Gem', 'eta Gem'],
+				['eps Gem', 'nu. Gem'],
+				['tau Gem', 'iot Gem'],
+				['iot Gem', 'ups Gem'],
+				['ups Gem', 'bet Gem'],
+				['bet Gem', 'kap Gem'],
+				['ups Gem', 'del Gem'],
+				['del Gem', 'zet Gem'],
+				['zet Gem', 'gam Gem'],
+				['del Gem', 'lam Gem'],
+				['lam Gem', 'ksi Gem']
+			],
+			name: [104, 29]
+		},
+		'CANCER': {
+			lines: [
+				['iot Cnc', 'gam Cnc'],
+				['gam Cnc', 'del Cnc'],
+				['del Cnc', 'bet Cnc'],
+				['del Cnc', 'alf Cnc']
+			],
+			name: [134, 26]
 		}
 	};
 
-	/* Every star that a figure line touches (drawn whatever its magnitude). */
-	const FIGURE_STARS = new Set(Object.values(FIGURES).flatMap(figure => figure.lines.flat()));
+	/* The stars that the lines of the given figures touch (drawn whatever
+	   their magnitude, on the charts that draw those figures). */
+	const figureStars = names => new Set(names.flatMap(name => FIGURES[name].lines.flat()));
 
-	/* The stars brighter than MAG_LIMIT and those of the figures, through
-	   project(ra, dec) -> { x, y }, or null outside the chart. */
-	function drawStars(group, project) {
+	/* The stars brighter than MAG_LIMIT and those of the chart's figures
+	   ('names'), through project(ra, dec) -> { x, y }, or null outside the
+	   chart. */
+	function drawStars(group, project, names) {
+		const forced = figureStars(names);
+
 		STARS.forEach(star => {
-			if (star.mag > MAG_LIMIT && !FIGURE_STARS.has(star.id)) {
+			if (star.mag > MAG_LIMIT && !forced.has(star.id)) {
 				return;
 			}
 
@@ -590,7 +623,7 @@ const Plate = (function () {
 			options.figures,
 			project
 		);
-		drawStars(svgEl('g', { class: 'stars' }, svg), project);
+		drawStars(svgEl('g', { class: 'stars' }, svg), project, options.figures);
 		drawStarNames(chart, svgEl('g', { class: 'star-names' }, svg), options.names, at, options.keep);
 
 		const pole = svgText(svg, 'P', c - 16, c + 18, { class: 'symbol' });
@@ -659,7 +692,7 @@ const Plate = (function () {
 			options.figures,
 			project
 		);
-		drawStars(svgEl('g', { class: 'stars' }, layer), project);
+		drawStars(svgEl('g', { class: 'stars' }, layer), project, options.figures);
 		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
 
 		if (decMin < 0 && decMax > 0) {
