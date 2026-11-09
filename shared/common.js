@@ -1444,9 +1444,12 @@ function markChosen(buttons, chosen) {
    the slider or using its keys pauses it, so the thumb never moves
    under the pointer (CLAUDE.md). The position is kept here, not read back
    from the slider, so a slider with a coarse step (one day) still advances
-   by the small amount of each frame. options: playLabel, pauseLabel (the
-   two texts of the button), onPlay (called when it starts, e.g. to pause
-   another player of the same figure). The button shows a small play or
+   by the small amount of each frame. unitsPerSecond may be a function,
+   read at every frame, for a figure whose speed follows the view the
+   reader has chosen (pages 3.1 and 3.3: a month, or a turn of years).
+   options: playLabel, pauseLabel (the two texts of the button), onPlay
+   (called when it starts, e.g. to pause another player of the same
+   figure). The button shows a small play or
    pause icon (inline SVG, STYLE.md §8) before its label. While its figure
    is off the screen it stops drawing, and goes on from the same position
    when the figure comes back. Returns { pause }. */
@@ -1479,6 +1482,7 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 	let visible = true; // the figure is on the screen
 	let lastTime = null;
 	let position = 0;
+	const speed = () => (typeof unitsPerSecond === 'function' ? unitsPerSecond() : unitsPerSecond);
 
 	// one frame: move on by the time since the last one
 	const step = now => {
@@ -1490,7 +1494,7 @@ function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
 		if (lastTime !== null) {
 			const seconds = Math.min((now - lastTime) / 1000, PLAY_MAX_FRAME_SECONDS);
 
-			position = wrapIntoRange(position + seconds * unitsPerSecond, Number(slider.min), Number(slider.max));
+			position = wrapIntoRange(position + seconds * speed(), Number(slider.min), Number(slider.max));
 			slider.value = position;
 			slider.dispatchEvent(new Event('input'));
 		}

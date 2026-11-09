@@ -134,6 +134,10 @@ Everything that comments on a paragraph moves into the margin:
 - **Citations** ("Almagest I 3, transl. Toomer"): plain, 15 px, no rule.
 - **Detours**: heading "Detour · coming later" in `--accent`, a 1 px dashed
   `--accent` rule on top. Becomes a link when the page exists.
+- **Today notes** (STRUCTURE.md §7.5): heading "Today" in `--earth-text`,
+  the colour of the Modern origin, with a 1 px `--earth-text` rule on top,
+  then one or two sentences. Written `<div class="note today">…</div>`;
+  `shared/components.js` adds the heading.
 
 Inline badges in the text are no longer used.
 
@@ -161,6 +165,16 @@ Marco Barbieri. Text and figures under CC BY-NC-SA 4.0, code under MIT.",
 linked to `LICENSE-CONTENT.md` and `LICENSE`. Spectral 14 px, `--muted`,
 under a 1 px `--line` rule, as wide as the text column. `shared/components.js`
 adds it to any page that loads it; a page never writes its own.
+
+### 4.8 History blocks
+
+The historical astronomer's fit or test, at the end of the Fit or the Test
+(STRUCTURE.md §5): a `<div class="history">` between two 1 px rules in
+`--epicycle-text`, the colour of the author origins, with its `h3` under a
+small-caps label "History" (`<span class="history-label">`, Cormorant SC
+15 px, `--epicycle-text`). Its paragraphs, rows and figures follow the
+same grid as the rest of the article. Written in `templates/page.html`;
+styled by `shared/theme.css`.
 
 ## 5. Stars
 

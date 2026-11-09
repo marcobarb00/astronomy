@@ -17,7 +17,7 @@
 	 6. Fit: the year, the constant, the longitude
 	 7. Test: the stars; the Sun (Figure 6 and its scale)
 	 8. Exercises
-	 9. Residual: Delta T; the stars' right ascensions drift
+	 9. Residual: Delta T; the stars' right ascensions drift; the two causes of the Sun's errors
    ========================================================================== */
 
 const { loadFiles } = require('../check/load.js');
@@ -247,9 +247,15 @@ console.log(
    ========================================================================== */
 
 title('Model: the two days');
-const n = MeanSun.MODERN.n;
-const Y = MeanSun.yearLength();
-console.log(`mean Sun n = ${n.toFixed(8)} deg/day, Y = 360/n = ${Y.toFixed(5)} days`);
+/* The clock's rate is 360° + n with the conventional n of Meeus 12.4, and
+   the year is the one it implies, Y = 360° / n: the page's n and Y. */
+const n = Clock.RATE - 360;
+const Y = 360 / n;
+console.log(`the clock's n = ${n.toFixed(11)} deg/day, Y = 360/n = ${Y.toFixed(7)} days (${Y.toFixed(5)})`);
+console.log(
+	`the Sun's mean longitude (Meeus 25.2, days of TT): n = ${MeanSun.MODERN.n.toFixed(11)}, 360/n = ${MeanSun.yearLength().toFixed(7)} days,` +
+		` ${((MeanSun.yearLength() - Y) * 86400).toFixed(1)} s longer`
+);
 console.log(
 	`sidereal day = 24 h x Y/(Y+1) = ${hms((24 * Y) / (Y + 1), 3)}; turns in a year Y+1 = ${(Y + 1).toFixed(5)}`
 );
@@ -266,7 +272,7 @@ console.log(
 );
 
 title('Model: mean time and the sidereal clock');
-console.log(`rate ${Clock.RATE} = 360 + ${(Clock.RATE - 360).toFixed(11)}; n = ${n.toFixed(11)}`);
+console.log(`rate ${Clock.RATE} = 360 + n, n = ${n.toFixed(11)}`);
 console.log(
 	`theta_G at J2000.0 = ${Clock.THETA0} deg = ${hms(Clock.THETA0 / 15)}; mean Sun L0 = ${MeanSun.MODERN.L0}:` +
 		` difference ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(1)}" = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 240).toFixed(2)} s of time`
@@ -373,6 +379,16 @@ console.log(
 		` ${(((24 * yearPtolemy) / (yearPtolemy + 1) - (24 * Y) / (Y + 1)) * 3600 * 1000).toFixed(1)} ms`
 );
 console.log(`his mean Sun falls behind by ${((n - nPtolemy) * 36525).toFixed(2)} deg per century`);
+console.log(
+	`  and a clock built on his year falls behind the stars by the same angle: ${((n - nPtolemy) * 36525 * 240).toFixed(0)} s of time a century`
+);
+
+// An error in the year accumulates in the clock: after d days it is d times the error in n.
+const nOneMinute = 360 / (Y + 1 / 1440);
+console.log(
+	`an error of 1 min in the year: n changes by ${(n - nOneMinute).toExponential(2)} deg/day,` +
+		` the clock by ${((n - nOneMinute) * 36525 * 240).toFixed(1)} s of time a century`
+);
 
 title('Fit: the longitude from a timed transit of Vega');
 const night = Time.julianDay(2026, 8, 15);
@@ -602,7 +618,7 @@ console.log(`real noon moves ${noonDrift.toFixed(1)} s later each day at the sol
 
 title('Residual: Delta T');
 [
-	[2026, 'now (polynomial)'],
+	[2026, 'now (reference sky)'],
 	[132, 'Ptolemy, AD 132'],
 	[-746, 'Nabonassar, 747 BC']
 ].forEach(([year, label]) => {
@@ -639,6 +655,50 @@ title('Residual: the right ascensions of stars drift');
 	const now = Stars.ofDate(star(name), Y2026).ra;
 
 	console.log(
-		`${name.padEnd(8)}: ra 2000.0 -> 2026.0 changed by ${(norm180(now - then) * 240).toFixed(1)} s of time`
+		`${name.padEnd(8)}: ra 2000.0 -> 2026.0 changed by ${(norm180(now - then) * 240).toFixed(1)} s of time,` +
+			` ${((norm180(now - then) * 240) / 26).toFixed(1)} s a year`
 	);
 });
+
+/* The two causes of the errors through 2026, for the Residual: the tilt of the
+   ecliptic (a uniform Sun on the ecliptic, lambda_m minus its right ascension)
+   and the Sun's unevenness (real minus mean ecliptic longitude), both in
+   minutes of time; and on how many days the real Sun's declination is higher. */
+title('Residual: the two causes, through 2026');
+let tiltRange = { min: Infinity, max: -Infinity };
+let unevenRange = { min: Infinity, max: -Infinity };
+let higherDays = 0;
+let aheadFirst = null;
+let aheadLast = null;
+
+for (let day = 0; day < 365; day++) {
+	const jd = Y2026 + day + 0.5;
+	const lm = Clock.meanLongitude(Time.ttFromUt(jd));
+	const lr = Ephem.sun(Time.ttFromUt(jd)).lon;
+	const eps = Ephem.meanObliquity(Time.ttFromUt(jd));
+	const raMean = norm360(
+		(Math.atan2(Math.cos((eps * Math.PI) / 180) * Math.sin((lm * Math.PI) / 180), Math.cos((lm * Math.PI) / 180)) *
+			180) /
+			Math.PI
+	);
+	const tilt = norm180(lm - raMean) * 4;
+	const uneven = norm180(lr - lm) * 4;
+
+	tiltRange = { min: Math.min(tiltRange.min, tilt), max: Math.max(tiltRange.max, tilt) };
+	unevenRange = { min: Math.min(unevenRange.min, uneven), max: Math.max(unevenRange.max, uneven) };
+
+	if (sunEquatorial(jd).dec > Clock.sunDeclination(jd)) {
+		higherDays++;
+	}
+
+	if (uneven > 0) {
+		aheadFirst = aheadFirst === null ? jd : aheadFirst;
+		aheadLast = jd;
+	}
+}
+
+console.log(
+	`tilt: from ${tiltRange.min.toFixed(1)} to +${tiltRange.max.toFixed(1)} min; unevenness: from ${unevenRange.min.toFixed(1)} to +${unevenRange.max.toFixed(1)} min`
+);
+console.log(`the real Sun is ahead of the mean Sun from ${date(aheadFirst)} to ${date(aheadLast)} (at noon UT)`);
+console.log(`the real Sun's declination is the higher on ${higherDays} of 365 days`);

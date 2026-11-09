@@ -33,6 +33,19 @@ section.
   future material. → STRUCTURE.md §4
 - **One rhythm per page: observation, model, fit, test, residual.** Each
   page ends on the question the next one answers. → STRUCTURE.md §5
+- **Fit, Test and Residual narrowed; history in short blocks.** Fit says
+  which observation fixes each parameter and gives the fitted values once;
+  Test tests that model once, around the fit year and over longer spans
+  when they show something, but not again in the historical astronomer's
+  own time (clarified by Marco on 2026-11-08); Residual is short prose.
+  The historical astronomer's fit and test move to a short history block
+  at the end of each section: how he measured and how he checked his
+  model, with the results in words.
+  Both fits are kept: the modern one so that the error curve measures the
+  geometry, not parameters nineteen centuries old; the historical one for
+  how the ancients knew what they knew. Piloted on page 3.3 on 2026-11-07
+  at Marco's request, after its Fit and Test read as streams of facts and
+  numbers. → STRUCTURE.md §5
 - **The error curve is the thread of the course.** From page 2.1 on, every
   model is tested against the reference sky, with earlier models as
   ghosts. → STRUCTURE.md §7.3
@@ -51,6 +64,27 @@ section.
   the arrangement, and never speaks of a true centre. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
+- **The Sun and the Moon are connected to the models used today, without
+  new pages.** On 2026-11-02 Marco noted that Acts II and III end on
+  Hipparchus' and Ptolemy's circles, which are not used today, and that
+  the hub promised each astronomer fixing the last one's model, while the
+  pages show Hipparchus and Ptolemy refining their own. Two options were
+  set aside: a site limited to Hipparchus and Ptolemy, with Kepler on
+  another site (it drops the story's end and the objective), and full
+  Copernican and Keplerian treatments of the Sun and the Moon (too long;
+  Copernicus' Sun is page 2.1's eccentric and his Moon's second epicycle
+  is on page 3.2, and a bare ellipse is not today's Moon either).
+  Adopted instead: a "Today" margin note on pages 2.1, 3.1 and 3.2 giving
+  the modern counterpart of the page's model; a short section of page 4.5
+  and an epilogue entry on the Moon after Kepler (its remaining terms come
+  from the Sun's pull); the hub's opening rewritten to say where the
+  ellipse comes in and what is used as it is today. → STRUCTURE.md §4
+  (pages 2.1, 3.1, 3.2, 4.5, epilogue, hub), §7.5
+- **Page 4.5 applies the ellipse back to the Sun (on trial).** A section
+  fits Kepler's ellipse to the Sun of page 2.1 and closes its open
+  questions (the second-order error, the distance varying twice too
+  much). Adopted on 2026-11-02 on trial: Marco decides whether to keep it
+  once the page is built. → STRUCTURE.md §4 (page 4.5)
 
 ## Look
 
@@ -70,11 +104,17 @@ section.
 - **Blue plates only for static 2D charts of the sky, at most one per
   page, never for mathematics.** Page 1.1 has the sky around the pole,
   page 1.2 the zodiac around Taurus, page 2.3 the path of the pole (on
-  trial, 2026-10-24: Marco decides whether to keep it). → STYLE.md §7
+  trial, 2026-10-24: Marco decides whether to keep it), page 3.3 the
+  Moon's path near Regulus in August 2026 (approved by Marco on
+  2026-10-30). → STYLE.md §7
 - **Origin notes show the heading only** ("Origin · Greek"); the hub
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
 - **Detours are margin notes**, not cards. → STRUCTURE.md §7.4
+- **Today notes are a third kind of margin note**, headed "Today" in the
+  colour of the Modern origin, saying what replaces the page's model as
+  the modern first approximation (pages 2.1, 3.1, 3.2; 2026-11-02). →
+  STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md
@@ -92,9 +132,27 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **A fast and a slow motion in one figure: two views, not a faster
+  play.** Playing the slow motion at the speed it needs (years a second)
+  made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing
+  only every n-th frame, tried on 2026-11-02, looked wrong to Marco. On
+  2026-11-03 Marco chose a view switch: "A month" draws everything, the
+  slow view ("The eccentric's turn", "The nodes' turn") draws only what
+  moves slowly, and the play button plays the chosen view at its own
+  speed. What is drawn changes only when the reader changes the view. →
+  CLAUDE.md, "Rules for every figure"
 
 ## Writing
 
+- **Every longitude and latitude names its kind** (ecliptic, geographic,
+  heliocentric), even where the context seems to make it clear. Marco
+  asked for it on 2026-11-03, on page 3.3, where "the Sun's longitude"
+  and "the Moon's latitude" were left bare, and the same day on every
+  page, the templates and the site map. The names of quantities that are
+  not coordinates (the argument of latitude) keep their form; a general
+  frame of page 1.2 has "the frame's longitude". A slider label such as
+  "geographic latitude φ" wraps onto two lines, in a label column widened
+  to 82 px on a phone so that "geographic" fits. → CLAUDE.md "Writing"
 - **The voice of a good teacher writing a careful textbook.** "We" for the
   work done together, "you" for what the reader does with the page; why
   before what; no announced plans, verdict sentences or slogans. Adopted
@@ -164,6 +222,33 @@ section.
 - **The historical records of star longitudes live in the precession
   model** (`Precession.RECORDS`, with their sources), so the page, its
   numbers script and later pages read one copy. → shared/models/precession.js
+- **Eclipses: umbral only, with Danjon's rule.** A lunar eclipse counts
+  when part of the Moon enters the umbra, as with Ptolemy's limits; the
+  penumbral ones are not counted. The shadow is enlarged by 1% of the
+  Moon's parallax (Danjon), as in NASA's canon, with which the reference
+  sky's eclipses of 2021–2030 then agree in kind and, for the lunar ones,
+  within 0.002 in magnitude (the traditional 2% gave 0.008 too much).
+  Adopted on 2026-10-30 for page 3.3. → shared/models/eclipses.js
+- **The plate stars south of +20° from Gemini to Virgo are XHIP's, for
+  now.** On 2026-10-30 no CDS host (SIMBAD, VizieR and its mirrors)
+  answered from the session that built page 3.3, so its plate takes those
+  stars from the Extended Hipparcos Compilation (Anderson and Francis,
+  2012) as packaged by the npm package d3-celestial, without proper
+  motions (20″ at most over 26 years). Replace them by a SIMBAD query
+  when CDS answers. → tools/numbers/data/fetch-plate-stars-xhip.sh
+- **ΔT is measured from 2005 to 2027, Espenak and Meeus' elsewhere.**
+  Their 2006 polynomial for 2005–2050 was a forecast and gives 75 s for
+  2026, against the 69 s measured. Since 2026-11-09 the reference sky
+  interpolates the USNO's measured values (and IERS Bulletin A's
+  prediction for 2027), and from 2027 to 2050 corrects their polynomial
+  by an amount that falls to zero in 2050; before 2005 it is unchanged. →
+  shared/time.js
+- **The clock's rate is the conventional one of Meeus 12.4**, 360° +
+  0.98564736629° a day of UT, and the year of page 1.3 is the one it
+  implies, $Y = 360^\circ / n = 365.2421873$ days. Meeus 25.2's mean
+  longitude of the Sun, in days of TT, implies a year 0.2 s longer; both
+  round to the 365.24219 days the pages quote. Decided on 2026-11-09. →
+  shared/models/clock.js, tools/numbers/1.3-clocks.js
 
 ## Workflow
 
@@ -174,9 +259,12 @@ section.
   per commit.** Large changes are staged: plan, a sample, approval, then
   the rest.
 - **Sources through the `astronomy-sources` skill** (Toomer's *Almagest*,
-  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*, split by
-  chapter). The chapter files are not in the repository (`.gitignore`),
-  only on Marco's computer.
+  Rosen's *De Revolutionibus*, Fitzpatrick's *A Modern Almagest*,
+  Neugebauer's *A History of Ancient Mathematical Astronomy*, Part One, and
+  Voelkel's *Johannes Kepler and the New Astronomy*, split by chapter). The
+  chapter files are not in the repository (`.gitignore`), only on Marco's
+  computer and in the `astronomy_reference` repository. Voelkel is a short
+  biography, not Kepler's *Astronomia Nova*, whose text is still missing.
 - **Two review agents, no tester agent.** `math-reviewer` and
   `writing-reviewer` report before a page is merged; the mechanical tests
   are `npm run check`. → .claude/agents/
@@ -196,7 +284,9 @@ section.
   server error, so this is still open: page 3.1 fits and tests its
   epicycle on 2025 - 2026 and AD 133 - 136, and keeps the errors at
   Ptolemy's Babylonian eclipses of 721 - 720 BC out of its prose (they are
-  only in its numbers script).
+  only in its numbers script). On 2026-10-30 Horizons answered from a
+  cloud session again (page 3.3 did not need it: it uses AD 100–200 and
+  2001–2100).
 - **Sources in cloud sessions.** The `astronomy-sources` chapter files are
   not in the repository, so cloud sessions cannot read them. Options: a
   private repository for the sources, or attaching the needed chapters to
@@ -204,3 +294,9 @@ section.
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
 - **Where page 4.5 (Kepler) gets its yardstick** (see Course).
+- **Whether page 4.5 keeps its section on the Sun** (see Course), once the
+  page is built. If it goes, the hub's sentence on the Earth's orbit still
+  holds, since it states history, not the page's content.
+- **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
+  region right ascension 105° to 195°, declination −20° to +20°, and drop
+  the XHIP file.

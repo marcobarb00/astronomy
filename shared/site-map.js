@@ -106,7 +106,7 @@ const SITE_MAP = (function () {
 			act: 2,
 			ready: true,
 			title: 'Precession',
-			question: "Why do the stars' longitudes grow?",
+			question: "Why do the stars' ecliptic longitudes grow?",
 			path: 'act2-sun/03-precession/index.html'
 		},
 		{
@@ -128,7 +128,7 @@ const SITE_MAP = (function () {
 		{
 			number: '3.3',
 			act: 3,
-			ready: false,
+			ready: true,
 			title: 'Eclipses',
 			question: 'When does a new Moon become a solar eclipse?',
 			path: 'act3-moon/03-eclipses/index.html'
@@ -206,7 +206,7 @@ const SITE_MAP = (function () {
 			ready: false
 		},
 		latitudes: {
-			title: 'planetary latitudes',
+			title: 'planetary ecliptic latitudes',
 			sentence: 'how far the planets wander north and south of the ecliptic',
 			path: null,
 			ready: false

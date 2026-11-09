@@ -199,8 +199,9 @@ function watchErrors(page, problems) {
 	page.on('response', response => {
 		const url = response.url();
 
-		// browsers ask for a favicon by themselves; the site has none
-		if (response.status() >= 400 && !url.endsWith('/favicon.ico')) {
+		// every page links the site's icon (shared/favicon.svg), so a
+		// failed request, the icon's included, is a problem
+		if (response.status() >= 400) {
 			problems.push(`HTTP ${response.status()}: ${url}`);
 		}
 	});

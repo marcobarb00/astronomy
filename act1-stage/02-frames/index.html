@@ -11,6 +11,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>1.2 · Frames · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -94,12 +95,12 @@
 				</tr>
 				<tr>
 					<td>the ecliptic, the Sun's yearly path (2026)</td>
-					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
+					<td>ecliptic longitude $\lambda$, ecliptic latitude $\beta$</td>
 					<td>$70.153^\circ$, $-5.465^\circ$</td>
 				</tr>
 				<tr>
 					<td>the ecliptic: Ptolemy's catalogue (AD 137)</td>
-					<td>ecliptic longitude $\lambda$, latitude $\beta$</td>
+					<td>ecliptic longitude $\lambda$, ecliptic latitude $\beta$</td>
 					<td>$42^\circ 40'$ ($42.667^\circ$), $-5^\circ 10'$ ($-5.167^\circ$)</td>
 				</tr>
 			</tbody>
@@ -149,13 +150,13 @@
 
 		<div class="row">
 			<p>
-				Since Ptolemy, Aldebaran's longitude has grown by about 26° and
-				its declination has changed by almost 6°, but its latitude has
-				moved by only 8′. Ptolemy had noticed that the stars shift
-				parallel to the ecliptic, so that "their positions in latitude
-				with respect to the ecliptic must necessarily remain the same"
-				(<em>Almagest</em> VII 4), and this is why he gave his catalogue
-				in ecliptic coordinates.
+				Since Ptolemy, Aldebaran's ecliptic longitude has grown by about
+				26° and its declination has changed by almost 6°, but its
+				ecliptic latitude has moved by only 8′. Ptolemy had noticed that
+				the stars shift parallel to the ecliptic, so that "their
+				positions in latitude with respect to the ecliptic must
+				necessarily remain the same" (<em>Almagest</em> VII 4), and this
+				is why he gave his catalogue in ecliptic coordinates.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
@@ -172,8 +173,9 @@
 				To set up coordinates on the celestial sphere, a <em>frame</em>,
 				we make three choices: a great circle (the <em>fundamental
 				circle</em>), one of its two poles, and an origin on the circle.
-				The longitude is then counted along the circle from the origin,
-				and the latitude from the circle towards the pole.
+				The frame's longitude is then counted along the circle from the
+				origin, and its latitude from the circle towards the pole. In the
+				ecliptic frame they are the ecliptic longitude and latitude.
 			</p>
 			<aside>
 				<div class="note" data-origin="greek"></div>
@@ -183,9 +185,9 @@
 		<div class="row">
 			<p>
 				In vectors, we put $x$ towards the origin, $z$ towards the pole
-				and $y$ at longitude $90^\circ$, so that the frame is
-				right-handed. A direction at longitude $l$ and latitude $b$ is
-				then
+				and $y$ at the frame's longitude $90^\circ$, so that the frame
+				is right-handed. A direction at the frame's longitude $l$ and
+				latitude $b$ is then
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -379,13 +381,21 @@
 
 		<p>
 			The last line gives $\delta$ directly. The first two give
-			$\cos\delta$ times the cosine and the sine of $\alpha$, so
-			$\operatorname{atan2}$ gives $\alpha$ in the right quadrant, which
-			dividing them into $\tan\alpha$ would lose.
+			$\cos\delta$ times the cosine and the sine of $\alpha$, so $\alpha =
+			\operatorname{atan2}(\cos\delta\sin\alpha,\ \cos\delta\cos\alpha)$,
+			where $\operatorname{atan2}(y, x)$ is the angle from the $x$ axis of
+			the ray from $(0, 0)$ to $(x, y)$.
 		</p>
 
 		<p>
-			For the Sun, whose latitude is $\beta = 0$, they reduce to
+			Dividing the two lines into $\tan\alpha$ and taking the arctangent
+			would lose the quadrant, since $(x, y)$ and $(-x, -y)$ have the same
+			ratio $y/x$. The function $\operatorname{atan2}$ uses the signs of
+			both, and puts $\alpha$ in its correct quadrant.
+		</p>
+
+		<p>
+			For the Sun, whose ecliptic latitude is $\beta = 0$, they reduce to
 		</p>
 
 		$$\sin\delta = \sin\varepsilon \sin\lambda, \qquad \tan\alpha = \cos\varepsilon \tan\lambda.$$
@@ -504,7 +514,7 @@
 					<div>
 						<div class="presets" id="hor-frames"></div>
 						<div class="ctl">
-							<label for="hor-lat">latitude φ</label>
+							<label for="hor-lat">geographic latitude φ</label>
 							<input id="hor-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
 						</div>
@@ -598,105 +608,110 @@
 		<h3>Where the coordinates break</h3>
 
 		<p>
-			At a pole of a frame the longitude is undefined, since P has no
-			right ascension, Z has no azimuth, and $\operatorname{atan2}(0, 0)$
-			has no value. Near a pole, a small change in the star's position
-			produces a large change in its longitude. The unit vector has no
-			such singularity, which is why the code of this site works with
-			vectors and converts them to angles only at the end.
+			At a pole of a frame the frame's longitude is undefined, since P has
+			no right ascension, Z has no azimuth, and $\operatorname{atan2}(0,
+			0)$ has no value. Near a pole, a small change in the star's position
+			produces a large change in its longitude in that frame. The unit
+			vector has no such singularity, which is why the code of this site
+			works with vectors and converts them to angles only at the end.
 		</p>
 
 		<!-- =============================== 3. FIT ================================ -->
 		<h2 id="fit"><span class="step">3 · Fit</span>The obliquity and the origin</h2>
 
 		<p>
-			The horizon frame needs the latitude $\varphi$, which we measured on
-			page 1.1, and the angle $\theta$, which page 1.3 reads from a clock.
-			The equatorial and ecliptic frames need two quantities from the sky,
-			the angle $\varepsilon$ between them and their shared origin γ.
+			The horizon frame needs the geographic latitude $\varphi$, which we
+			measured on page 1.1, and the angle $\theta$, which page 1.3 reads
+			from a clock. The equatorial and ecliptic frames need two quantities
+			from the sky, the angle $\varepsilon$ between them and their shared
+			origin γ.
 		</p>
 
 		<h3>The obliquity from the noon Sun at the solstices</h3>
 
-		<div class="row">
-			<p>
-				At noon the Sun is on the meridian, at altitude $90^\circ - \varphi +
-				\delta$. Over the year $\delta$ swings between $+\varepsilon$ and
-				$-\varepsilon$, so the noon altitudes at the two solstices give
-				both $\varepsilon$ and $\varphi$, just as Kochab's two meridian
-				crossings did on page 1.1:
-			</p>
-			<aside>
-				<div class="note" data-origin="greek"></div>
-			</aside>
-		</div>
+		<p>
+			At noon the Sun is on the meridian, at altitude $90^\circ - \varphi +
+			\delta$. Over the year $\delta$ swings between $+\varepsilon$ and
+			$-\varepsilon$, so the noon altitudes at the two solstices give
+			both $\varepsilon$ and $\varphi$, just as Kochab's two meridian
+			crossings did on page 1.1:
+		</p>
 
 		$$\varepsilon = \frac{h_\text{summer} - h_\text{winter}}{2}, \qquad \varphi = 90^\circ - \frac{h_\text{summer} + h_\text{winter}}{2}.$$
 
 		<p>
-			At Alexandria in 2026 the real noon Sun stands 82.240° high on 21
-			June and 35.388° on 21 December. These give $\varepsilon =
-			23.426^\circ$ and $\varphi = 31.186^\circ$. The obliquity comes out
-			only 0.6′ below that of 2026, 23.436°, and most of the error comes
-			from refraction, which raises the low winter Sun much more than the
-			high summer Sun.
+			At Alexandria, where Ptolemy observed, the real noon Sun of 2026
+			stands 82.240° high at the June solstice and 35.388° at the December
+			solstice, which give $\varepsilon = 23.426^\circ$ and the geographic
+			latitude of the city within 1′.
 		</p>
-
-		<div class="row">
-			<p>
-				Ptolemy measured the same altitudes with his bronze ring and
-				stone quadrant, the instruments of page 1.1. He found the arc between the solstices "always greater
-				than 47⅔° and less than 47¾°" (<em>Almagest</em> I 12), and adopted
-				$2\varepsilon = 47^\circ 42' 40''$, eleven parts of a circle of
-				83, so that $\varepsilon = 23^\circ 51' 20''$ (23.856°).
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				He says this agrees with Eratosthenes and Hipparchus, but it is
-				uncertain whether the ratio 11 : 83 was theirs or Ptolemy's
-				rounding of an older 24° (Toomer's note to I 12).
-			</p>
-			<aside>
-				<div class="note" data-origin="debated"></div>
-			</aside>
-		</div>
 
 		<p>
-			The obliquity in AD 137 was $23^\circ 40' 40''$ (23.678°), so
-			Ptolemy's value is 10.7′ too large, and the real value lies outside
-			even the bounds he measured.
+			This obliquity is 0.6′ below the mean obliquity of 2026, and
+			refraction accounts for the difference: it raises the low winter Sun
+			much more than the high summer Sun, which shrinks the arc between
+			them.
 		</p>
 
-		<h3>The origin</h3>
+		<h3>The origin from the March equinox</h3>
 
 		<div class="row">
 			<p>
-				No star marks γ, which is defined by the Sun as the point where
-				it crosses the equator going north. To locate γ we therefore
-				time the March equinox, which in 2026 falls on the afternoon of
-				20 March (UT). Hipparchus collected such equinox times, some of
-				them read off a bronze ring set in the plane of the equator at
-				Alexandria (<em>Almagest</em> III 1).
-			</p>
-			<aside>
-				<div class="note" data-origin="hipparchus"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				Because γ is defined by the Sun, it can move relative to the
-				stars, and then the coordinates of every star change with it.
-				This is why a catalogue gives positions for its own date.
+				No star marks γ, which is defined by the Sun as the point where it
+				crosses the equator going north. We therefore time the March
+				equinox, the moment when the Sun's declination changes sign, which
+				the noon altitudes on the days around it show. At that moment the
+				Sun is at γ and its ecliptic longitude is 0°; in 2026 this happens
+				on 20 March at 14:31 UT.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="instruments"></div>
 			</aside>
+		</div>
+
+		<!-- History block: how Ptolemy measured the obliquity -->
+		<div class="history">
+			<h3><span class="history-label">History</span>How Ptolemy measured the obliquity</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy read the noon Sun's distance from the zenith on a bronze
+					ring set in the meridian, and on a plaque of stone or wood with a
+					quadrant drawn on it, the instruments of page 1.1. Readings taken
+					near the solstices over several years gave, at each solstice, the
+					same distance (<em>Almagest</em> I 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					He found the arc between the solstices "always greater than 47⅔°
+					and less than 47¾°", and adopted $\varepsilon = 23^\circ 51'
+					20''$. He says this agrees with Eratosthenes and Hipparchus, but
+					whether the value was theirs, or his own and only close to the
+					24° they used, is uncertain (Toomer's note to I 12). The real
+					obliquity of his time lay below even his lower bound.
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Equinoxes were timed with a bronze ring set in the plane of the
+					equator: the equinox is the day on which the inside of the ring
+					passes from being lit on one side to being lit on the other
+					(<em>Almagest</em> III 1). Hipparchus observed his at Rhodes,
+					and cites others read off such a ring at Alexandria.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
 		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
@@ -704,180 +719,20 @@
 
 		<p>
 			The conversion formulas involve no approximation, so what we can
-			test is the obliquity put into them, first Ptolemy's and then
-			today's.
+			test is the obliquity put into them. We use the frames of section 2
+			with the mean obliquity of date, the smooth part of the obliquity,
+			and compare them with the reference Sun of 2026.
 		</p>
 
-		<h3>Ptolemy's tables</h3>
+		<h3>The mean obliquity and nutation</h3>
 
 		<div class="row">
 			<p>
-				Ptolemy needed the Sun's declination for every point of the
-				ecliptic, because it gives the noon altitude of the Sun, the
-				length of the day and the shadow of a gnomon on any date
-				(<em>Almagest</em> II). He computed it once and printed it as
-				the <em>table of inclination</em> (I 15), which gives the
-				declination for each degree of longitude from 1° to 90°. A
-				second table (I 16) gives the right ascension every 10°.
-			</p>
-			<aside>
-				<div class="note" data-origin="ptolemy"></div>
-			</aside>
-		</div>
-
-		<p>
-			He worked with chords and with Menelaus' theorem, a relation between
-			the arcs of great circles that cross each other (I 13–14), so his
-			tables are an independent computation of the formulas we derived
-			with matrices, made with his obliquity $\varepsilon = 23^\circ 51'
-			20''$.
-		</p>
-
-		<p>
-			Our formulas, computed with the same $\varepsilon$, reproduce his 90
-			declinations, nine in ten of them within 3″, and the largest
-			difference, 9″, is in an entry that Toomer suspects was miscopied.
-			His right ascensions, which he rounds to the minute, agree within
-			that rounding. So any error in his tables comes from the obliquity
-			he put into them.
-		</p>
-
-		<p>
-			The table compares his values with the real Sun of his own time,
-			that is, with the declination and right ascension of the reference
-			Sun on the day of AD 137 when it stood at each longitude.
-		</p>
-
-		<div class="table-scroll">
-		<table class="prose-table">
-			<thead>
-				<tr>
-					<th rowspan="2">$\lambda$</th>
-					<th colspan="3">declination $\delta$</th>
-					<th colspan="3">right ascension $\alpha$</th>
-				</tr>
-				<tr>
-					<th>Ptolemy (I 15)</th>
-					<th>real, AD 137</th>
-					<th class="diff">Ptolemy − real</th>
-					<th>Ptolemy (I 16)</th>
-					<th>real, AD 137</th>
-					<th class="diff">Ptolemy − real</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>$10^\circ$</td>
-					<td>$4.027^\circ$</td>
-					<td>$4.000^\circ$</td>
-					<td class="diff">+1.6′</td>
-					<td>$9.167^\circ$</td>
-					<td>$9.173^\circ$</td>
-					<td class="diff">−0.4′</td>
-				</tr>
-				<tr>
-					<td>$20^\circ$</td>
-					<td>$7.951^\circ$</td>
-					<td>$7.895^\circ$</td>
-					<td class="diff">+3.3′</td>
-					<td>$18.417^\circ$</td>
-					<td>$18.434^\circ$</td>
-					<td class="diff">−1.1′</td>
-				</tr>
-				<tr>
-					<td>$30^\circ$</td>
-					<td>$11.666^\circ$</td>
-					<td>$11.584^\circ$</td>
-					<td class="diff">+4.9′</td>
-					<td>$27.833^\circ$</td>
-					<td>$27.867^\circ$</td>
-					<td class="diff">−2.0′</td>
-				</tr>
-				<tr>
-					<td>$40^\circ$</td>
-					<td>$15.068^\circ$</td>
-					<td>$14.960^\circ$</td>
-					<td class="diff">+6.4′</td>
-					<td>$37.500^\circ$</td>
-					<td>$37.541^\circ$</td>
-					<td class="diff">−2.4′</td>
-				</tr>
-				<tr>
-					<td>$50^\circ$</td>
-					<td>$18.048^\circ$</td>
-					<td>$17.917^\circ$</td>
-					<td class="diff">+7.8′</td>
-					<td>$47.467^\circ$</td>
-					<td>$47.503^\circ$</td>
-					<td class="diff">−2.2′</td>
-				</tr>
-				<tr>
-					<td>$60^\circ$</td>
-					<td>$20.503^\circ$</td>
-					<td>$20.353^\circ$</td>
-					<td class="diff">+9.0′</td>
-					<td>$57.733^\circ$</td>
-					<td>$57.772^\circ$</td>
-					<td class="diff">−2.3′</td>
-				</tr>
-				<tr>
-					<td>$70^\circ$</td>
-					<td>$22.336^\circ$</td>
-					<td>$22.171^\circ$</td>
-					<td class="diff">+9.9′</td>
-					<td>$68.300^\circ$</td>
-					<td>$68.326^\circ$</td>
-					<td class="diff">−1.5′</td>
-				</tr>
-				<tr>
-					<td>$80^\circ$</td>
-					<td>$23.471^\circ$</td>
-					<td>$23.297^\circ$</td>
-					<td class="diff">+10.5′</td>
-					<td>$79.083^\circ$</td>
-					<td>$79.102^\circ$</td>
-					<td class="diff">−1.1′</td>
-				</tr>
-				<tr>
-					<td>$90^\circ$</td>
-					<td>$23.856^\circ$</td>
-					<td>$23.678^\circ$</td>
-					<td class="diff">+10.7′</td>
-					<td>$90.000^\circ$</td>
-					<td>$90.000^\circ$</td>
-					<td class="diff">0.0′</td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-
-		<p>
-			His declinations are too large, by an amount that grows from 1.6′ at
-			$\lambda = 10^\circ$ to 10.7′ at the solstice, which is what the
-			error in his obliquity produces. From $\sin\delta = \sin\varepsilon\sin\lambda$, an error
-			$\Delta\varepsilon$ changes $\delta$ by $(\cos\varepsilon\sin\lambda /
-			\cos\delta)\,\Delta\varepsilon$, which is the whole $\Delta\varepsilon$
-			= 10.7′ at $\lambda = 90^\circ$.
-		</p>
-
-		<p>
-			His right ascensions are off by at most 2.4′, because $\alpha$
-			depends only weakly on $\varepsilon$. The table also shows $\alpha$
-			lagging behind $\lambda$ in this quadrant, by about 2.5° at $\lambda
-			= 40^\circ$ to $50^\circ$, a lag that page 2.2 identifies as one of
-			the two causes of the equation of time.
-		</p>
-
-		<h3>The right obliquity and nutation</h3>
-
-		<div class="row">
-			<p>
-				With the right obliquity, the fixed frames should reproduce the
-				real Sun except for one effect we have left out. This is
-				<em>nutation</em>, a small oscillation of the Earth's axis with
-				a period of 18.6 years, caused mainly by the Moon, which changes
-				the obliquity by a few arcseconds, $\varepsilon_\text{true} =
-				\varepsilon_\text{mean} + \Delta\varepsilon$.
+				The one effect these frames leave out is <em>nutation</em>, a
+				small oscillation of the Earth's axis caused mainly by the Moon.
+				Its main period is 18.6 years, and it changes the obliquity by a
+				few arcseconds: $\varepsilon_\text{true} = \varepsilon_\text{mean}
+				+ \Delta\varepsilon$.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
@@ -887,10 +742,10 @@
 		<p>
 			To isolate it, Figure 4 takes the reference Sun's ecliptic
 			coordinates for each day of 2026 and converts them with the mean
-			obliquity of date, as the frames of section 2 do. It then compares the result
-			with the reference Sun's own $(\alpha, \delta)$, computed with the
-			true obliquity. Since both sides start from the same $\lambda$ and
-			$\beta$, the difference is due to nutation alone.
+			obliquity of date, as the frames of section 2 do. It then compares
+			the result with the reference Sun's own $(\alpha, \delta)$, computed
+			with the true obliquity. Since both sides start from the same
+			$\lambda$ and $\beta$, the difference is due to nutation alone.
 		</p>
 
 		<!-- Figure 4: the nutation error (static, no controls) -->
@@ -917,62 +772,94 @@
 		</figure>
 
 		<p>
-			The shape of the curve follows from the formula we used for
-			Ptolemy's tables. A change $\Delta\varepsilon$ changes the
-			declination by $(\cos\varepsilon\sin\lambda / \cos\delta)\,
-			\Delta\varepsilon$, and the model leaves $\Delta\varepsilon$ out, so
-			$\Delta\delta = -(\cos\varepsilon\sin\lambda / \cos\delta)\,
-			\Delta\varepsilon$. At the June solstice $\Delta\delta$ and
-			$-\Delta\varepsilon$ both equal $-7.66''$.
+			The shape of the curve follows from $\sin\delta = \sin\varepsilon
+			\sin\lambda$, which on the ecliptic gives the declination. A change
+			$\Delta\varepsilon$ changes it by $(\cos\varepsilon\sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$. We leave $\Delta\varepsilon$ out,
+			so $\Delta\delta = -(\cos\varepsilon \sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$, and at the June solstice, where
+			the factor is 1, $\Delta\delta$ and $-\Delta\varepsilon$ are both
+			$-7.7''$.
 		</p>
 
 		<div class="row">
 			<p>
 				In 2026 the declination is off by at most 7.9″ and the right
-				ascension by at most 1.9″. The models on the following pages err by arcminutes
-				or more, so from now on we neglect nutation and use the mean
-				obliquity.
+				ascension by at most 1.9″. The models on the following pages err by
+				arcminutes or more, so from now on we neglect nutation and use the
+				mean obliquity.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="nutation"></div>
 			</aside>
 		</div>
 
+		<!-- History block: Ptolemy's tables of declination and right ascension -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's tables of declination and right ascension</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy needed the Sun's declination for every point of the
+					ecliptic, for the noon altitude of the Sun, the length of the day
+					and the shadow of a gnomon (<em>Almagest</em> II), so he printed
+					it for each degree of ecliptic longitude (I 15), with the right
+					ascension every 10° (I 16).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				The conversion formulas of section 2, computed with his obliquity,
+				reproduce his declinations within a few arcseconds and his right
+				ascensions within his rounding to the minute, so his tables add no
+				error of their own. His obliquity makes his declinations
+				too large, by an error that grows towards the solstices, where it
+				reaches 10.7′; the right ascensions depend only weakly on
+				$\varepsilon$ and are much closer.
+			</p>
+
+			<div class="row">
+				<p>
+					Copernicus, comparing his own measurements with Ptolemy's, found
+					a smaller obliquity and concluded "that the obliquity of the
+					ecliptic also is variable" (<em>De Revolutionibus</em> II 2 [f.
+					29r]). Part of the difference was Ptolemy's error, and the rest a
+					real change, which section 5 takes up.
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
+
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What the fixed frames leave out</h2>
 
 		<p>
-			The frames of section 2 are fixed, but the angle between them changes. The
-			obliquity was 23.678° in Ptolemy's time and is 23.436° now, so even
-			the correct obliquity of AD 137, used today, would put the Sun's
-			declination at the solstices wrong by the whole difference, 14.5′.
-		</p>
-
-		<div class="row">
-			<p>
-				Copernicus, comparing his measurements with Ptolemy's, concluded "that the
-				obliquity of the ecliptic also is variable" (<em>De Revolutionibus</em>
-				II 2 [f. 29r]).
-			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
-		</div>
-
-		<p>
-			The origin moves too. Aldebaran's longitude has grown by about 26°
-			since Ptolemy while its latitude stayed within 8′, because the
-			vernal point itself moves backwards along the ecliptic. Ptolemy's
-			own longitude for the star is also 71′ short of the real one in his
-			time. Page 2.3 takes up both problems.
+			The frames of section 2 are fixed, but the angle between them
+			changes. The obliquity has fallen by 14.5′ since Ptolemy's time, so
+			a frame built with the true obliquity of his time would put the
+			Sun's declination at the solstices wrong by as much today.
 		</p>
 
 		<p>
-			Finally, we still have no way to know $\theta$. In Figure 3 we set
-			it with a slider, but in the sky it depends on the time, since it is
-			the angle the sky has turned since γ last crossed the meridian. To
-			place a star in the observer's sky at a given moment we need
-			$\theta$ at that moment, and page 1.3 shows how to compute it.
+			The origin moves too. Because γ is defined by the Sun, it can move
+			relative to the stars, and it does: as section 1 showed for
+			Aldebaran, the ecliptic longitudes of the stars grow over the
+			centuries while their ecliptic latitudes hardly change, because γ
+			moves backwards along the ecliptic. This is why a catalogue gives
+			positions for its own date. Page 2.3 measures the motion of γ.
+		</p>
+
+		<p>
+			The angle $\theta$ is still set with a slider in Figure 3. In the
+			sky it depends on the time, since it is the angle the sky has turned
+			since γ last crossed the meridian, so placing a star in the
+			observer's sky at a given moment needs $\theta$ at that moment.
+			Page 1.3 asks how a clock can give it.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->
@@ -1022,8 +909,8 @@
 				On 21 May 2026 the Sun reaches $\lambda = 60^\circ$ ($\beta = 0$). Find
 				its declination and right ascension with $\varepsilon = 23.4359^\circ$.
 				Check them in Figure 2 on 21 May. Then repeat with Ptolemy's
-				$23^\circ 51' 20''$ and check the result against his values in the table
-				of section 4 (row $60^\circ$).
+				$23^\circ 51' 20''$ and check the result against his values,
+				$20^\circ 30' 09''$ in table I 15 and $57^\circ 44'$ in table I 16.
 			</p>
 			<details class="hint">
 				<p>
@@ -1034,14 +921,16 @@
 			</details>
 			<details class="answer">
 				<p>
-					$\sin\delta = \sin 23.4359^\circ \sin 60^\circ = 0.34444$, so
-					$\delta = 20.147^\circ$. And $\tan\alpha = \cos 23.4359^\circ \tan
-					60^\circ = 1.58917$, so $\alpha = 57.819^\circ$, or $3^\text{h}
-					51^\text{m}$. The right ascension lags the longitude by 2.181°.
+					$\sin\delta = \sin 23.4359^\circ \sin 60^\circ = 0.34444$,
+					so $\delta = 20.147^\circ$. And $\tan\alpha = \cos
+					23.4359^\circ \tan 60^\circ = 1.58917$, so $\alpha =
+					57.819^\circ$, or $3^\text{h} 51^\text{m}$. The right
+					ascension lags the ecliptic longitude by 2.181°.
 				</p>
 				<p>
-					The reference Sun on that day differs by 5.0″ in $\delta$ and 1.2″
-					in $\alpha$: its latitude is $-1.7''$, and nutation shifts it slightly.
+					The reference Sun on that day differs by 5.0″ in $\delta$
+					and 1.2″ in $\alpha$: its ecliptic latitude is $-1.7''$, and
+					nutation shifts it slightly.
 				</p>
 				<p>
 					With Ptolemy's obliquity, $\delta = 20^\circ 30' 09''$ (20.503°),
@@ -1111,8 +1000,8 @@
 				[ff. 28v–29r] (the obliquity, measured and variable); II 3–4
 				(declination and right ascension).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.3–2.5, 2.7, 2.9 and
-				2.16. He writes Q for the ecliptic pole (here K) and L for the latitude
-				(here $\varphi$).</li>
+				2.16. He writes Q for the ecliptic pole (here K) and L for the
+				geographic latitude (here $\varphi$).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 13
 				(transformation of coordinates; azimuth from the south) and 22
 				(obliquity).</li>

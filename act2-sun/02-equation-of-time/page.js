@@ -249,7 +249,7 @@ const reductionFigure = {
 		this.plot = new Plot2D(byId('reduction-plot'), {
 			x: [0, 360],
 			y: REDUCTION_RANGE,
-			xLabel: 'longitude λ',
+			xLabel: 'ecliptic longitude λ',
 			yLabel: 'λ − α (°)',
 			xTicks: longitudeTicks,
 			aspect: 0.95,
@@ -596,7 +596,7 @@ const analemmaFigure = {
    5. FIGURE 5: THE MODEL AGAINST THE REAL EQUATION OF TIME
    2026 at 12:00 UT. (a) The model's E and the real E (Ephem, Meeus
    28.1), on the scale of Figure 1 (b). (b) Model minus real, in seconds:
-   -4.6 to +6.0 s, fixed scale +-8 s. Pointing at either panel reads a
+   -4.8 to +6.0 s, fixed scale +-8 s. Pointing at either panel reads a
    date in both.
    ========================================================================== */
 
@@ -697,7 +697,7 @@ const centuriesFigure = {
 		this.plot = new Plot2D(byId('centuries-plot'), {
 			x: [0, 360],
 			y: CENTURIES_RANGE,
-			xLabel: 'the Sun’s longitude λ',
+			xLabel: 'the Sun’s ecliptic longitude λ',
 			yLabel: 'E (min)',
 			xTicks: longitudeTicks,
 			aspect: 0.5,

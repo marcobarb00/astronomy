@@ -21,6 +21,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Page template · Predicting the Sky</title>
+	<!-- The site's icon (STYLE.md §5: the four-pointed star), so that browsers
+	     never ask for /favicon.ico -->
+	<link rel="icon" type="image/svg+xml" href="../shared/favicon.svg">
 
 	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
 	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
@@ -127,7 +130,7 @@
 					<p class="key-title">In the figure</p>
 					<dl class="key">
 						<dt class="c-sun">curve</dt>
-						<dd>the Sun's declination $\delta$ against its longitude $\lambda$</dd>
+						<dd>the Sun's declination $\delta$ against its ecliptic longitude $\lambda$</dd>
 					</dl>
 				</div>
 				<div>
@@ -143,12 +146,31 @@
 		<!-- =============================== 3. FIT ================================ -->
 		<h2 id="fit"><span class="step">3 · Fit</span>Finding the parameters</h2>
 
-		<p>How the model's parameters are obtained from observations.</p>
+		<p>
+			For each parameter, which observation fixes it and why that observation
+			is the right one. The fitted values appear once, as the outcome.
+		</p>
 
 		<details class="fold">
 			<summary>Routine algebra (folded)</summary>
 			<p>Long routine steps may be folded; the key steps stay visible above.</p>
 		</details>
+
+		<!-- History block (STRUCTURE.md §5): how the astronomer measured each
+		     parameter, after the modern text, two or three short paragraphs -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's parameters</h3>
+
+			<div class="row">
+				<p>
+					The observation he chose, the instrument, and why that observation
+					was the right one; the result in words, compared with the fit.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>Against the real sky</h2>
@@ -165,6 +187,16 @@
 				Faint dashed curves are earlier models.
 			</figcaption>
 		</figure>
+
+		<!-- History block: how he checked his model and how it fared, in words -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's model against his observations</h3>
+
+			<p>
+				What he checked his model against, and how it fared, in words, with
+				at most one or two numbers.
+			</p>
+		</div>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What is still wrong</h2>

@@ -392,7 +392,7 @@ const dayFigure = {
 		this.map = new Plot2D(byId('day-map'), {
 			x: [-90, 90],
 			y: [-90, 90],
-			xLabel: 'latitude φ (°)',
+			xLabel: 'geographic latitude φ (°)',
 			yLabel: 'declination δ (°)',
 			aspect: 0.85,
 			xTicks: () => [-90, -45, 0, 45, 90].map(value => ({ value, label: String(value) })),

@@ -993,7 +993,7 @@ const dayLengthFigure = {
 			x: [0, DAYS_IN_YEAR],
 			y: [-90, 90],
 			xLabel: `date (${YEAR})`,
-			yLabel: 'latitude φ (°)',
+			yLabel: 'geographic latitude φ (°)',
 			xTicks: (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8 || i % 2 === 0),
 			aspect: 0.85,
 			onDraw: () => this.drawMap()

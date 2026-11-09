@@ -473,7 +473,7 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 114.2^\circ | \text{day } 15\,\text{h}\,14\,\text{min} | \text{sunrise } \text{04:23},\quad \text{sunset } \text{19:37}
     OUTPUT (test-lat): 41.9°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -13.0\,\text{min}\ \text{to}\ +18.8\,\text{min} | \text{set } -16.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{day } -5.3\,\text{min}\ \text{to}\ 0.0\,\text{min}
-  opened 7 hints and answers
+  opened 8 hints and answers
   slider #wheel-day = 0
     OUTPUT (wheel-day): 1 Jan 2026
     OUTPUT (wheel-time): 12:00
@@ -691,7 +691,7 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.34^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
   hover #day-curve at 0.6
     OUTPUT (day-lat): 69.7°
-    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.6^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
+    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.7^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
   hover #day-curve at 0.9
     OUTPUT (day-lat): 69.7°
     #day-readout: \text{3 Dec 2026:}\ \delta_\odot = -22.27^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
@@ -732,8 +732,6 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (fit-spring): 94.50 d
     OUTPUT (fit-summer): 92.50 d
     #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
@@ -839,11 +837,12 @@ Regenerate with: node tools/check/smoke.js --update
     #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
@@ -895,31 +894,15 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-2026-zoom-plot at 0.3
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 4 Apr 2026 · eccentric: −0.1′
+    .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
   hover #error-2026-zoom-plot at 0.6
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 1 Aug 2026 · eccentric: +0.9′
+    .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
   hover #error-2026-zoom-plot at 0.9
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 28 Nov 2026 · eccentric: −1.5′
+    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
   hover #error-2026-zoom-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-ptolemy-plot at 0.3
-    .errorcurve-readout: 18 Sep 347 BC · uniform circle: +169.5′ · Ptolemy's eccentric: +31.5′
-  hover #error-ptolemy-plot at 0.6
-    .errorcurve-readout: 9 Mar 306 · uniform circle: −227.3′ · Ptolemy's eccentric: −87.1′
-  hover #error-ptolemy-plot at 0.9
-    .errorcurve-readout: 28 Aug 957 · uniform circle: −159.8′ · Ptolemy's eccentric: −303.0′
-  hover #error-ptolemy-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-residual-plot at 0.3
-    .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
-  hover #error-residual-plot at 0.6
-    .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
-  hover #error-residual-plot at 0.9
-    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
-  hover #error-residual-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
@@ -1205,8 +1188,7 @@ Regenerate with: node tools/check/smoke.js --update
     #epicycle-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | q = +4.93^\circ,\quad \lambda = \bar\lambda + q = 72.90^\circ | \text{daily motion } 18.47^\circ \text{ (mean } 13.18^\circ)
     OUTPUT (eq-day): 1 Jan 2026
     #equivalence-readout: \text{1 Jan 2026:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | \lambda_A = \bar\lambda - M = 236.25^\circ | \text{epicycle: } \lambda = 72.90^\circ | \text{eccentric: } \lambda = 72.90^\circ
-    #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694,\ M_2 = 12^\circ 24'
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #epi-day = 0
@@ -1279,23 +1261,25 @@ Regenerate with: node tools/check/smoke.js --update
   button "next day ›"
     OUTPUT (eq-day): 5 Jun 2030
     #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+  button "A month"
+    OUTPUT (eq-day): 5 Jun 2030
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+  button "The eccentric's turn"
+    OUTPUT (eq-day): 5 Jun 2030
+    #equivalence-readout: \text{5 Jun 2030:}\quad \lambda_A = 56.28^\circ | \text{turned } 180.0^\circ \text{ east since 1 January 2026} |  | 
+  button "2025 – 2026"
+    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
   button "Babylon, 721 BC"
     #eclipses-readout: a_{12} = 306.42^\circ,\quad a_{23} = 150.43^\circ | d_{12} = +3.40^\circ,\quad d_{23} = -0.62^\circ | \text{first order: } r/R = 0.08324,\ M_2 = 10.9^\circ | \text{exact: } r/R = 0.08694,\ M_2 = 12.4^\circ | \text{Ptolemy: } 0.08694,\ M_2 = 12^\circ 24'
   button "Alexandria, AD 133"
     #eclipses-readout: a_{12} = 110.35^\circ,\quad a_{23} = 81.60^\circ | d_{12} = -7.70^\circ,\quad d_{23} = +1.35^\circ | \text{first order: } r/R = 0.08241,\ M_2 = 61.8^\circ | \text{exact: } r/R = 0.08707,\ M_2 = 64.6^\circ | \text{Ptolemy: } 0.08722,\ M_2 = 64^\circ 38'
   button "Copernicus, 1511"
     #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
-  button "2025 – 2026"
-    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
   button "2 months"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2 months"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
@@ -1318,13 +1302,13 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (epi-e): 0.0000
     #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   hover #eclipses-plot at 0.3
-    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #eclipses-plot at 0.6
-    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #eclipses-plot at 0.9
-    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #eclipses-plot left
-    #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
+    #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #error-ours-plot at 0.3
     .errorcurve-readout: 18 Mar 2002 · uniform Moon: +363.2′ · epicycle: +100.5′
   hover #error-ours-plot at 0.6
@@ -1333,21 +1317,12 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 11 May 2067 · uniform Moon: −293.2′ · epicycle: −2.7′
   hover #error-ours-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-ptolemy-plot at 0.3
-    .errorcurve-readout: 6 Jan 352 BC · Ptolemy's Moon: +60.9′
-  hover #error-ptolemy-plot at 0.6
-    .errorcurve-readout: 26 Jun 300 · Ptolemy's Moon: −4.4′
-  hover #error-ptolemy-plot at 0.9
-    .errorcurve-readout: 16 Dec 951 · Ptolemy's Moon: −270.7′
-  hover #error-ptolemy-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
 === act3-moon/02-evection/index.html ===
   as loaded
     OUTPUT (crank-day): 1 Jan, 00 h
     #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.30^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.49^\circ
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #crank-day = 0
@@ -1374,10 +1349,6 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2 months"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "2000 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #equation-plot at 0.3
   hover #equation-plot at 0.6
   hover #equation-plot at 0.9
@@ -1402,19 +1373,126 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 11 May 2067 · epicycle: −2.7′ · crank alone: +18.6′ · complete model: +17.3′
   hover #error-ours-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-ptolemy-plot at 0.3
-    .errorcurve-readout: 8 May 348 BC · simple Moon: +105.7′ · complete Moon: +24.9′
-  hover #error-ptolemy-plot at 0.6
-    .errorcurve-readout: 27 Oct 304 · simple Moon: −166.5′ · complete Moon: −87.6′
-  hover #error-ptolemy-plot at 0.9
-    .errorcurve-readout: 16 Apr 956 · simple Moon: −343.6′ · complete Moon: −300.3′
-  hover #error-ptolemy-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #diameter-plot at 0.3
   hover #diameter-plot at 0.6
   hover #diameter-plot at 0.9
   hover #diameter-plot left
   dragged 0 spheres
+
+=== act3-moon/03-eclipses/index.html ===
+  as loaded
+    OUTPUT (orbit-day): 12 Aug 2026
+    #orbit-readout: \text{12 Aug 2026:}\quad \Omega = 330.3^\circ | F = 170.0^\circ,\quad \beta = +0.87^\circ | \text{the Sun } 10.3^\circ \text{ before the nearest node}
+    OUTPUT (limits-node): −10.3°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = -53.6',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 8 hints and answers
+  slider #orbit-day = 0
+    OUTPUT (orbit-day): 1 Jan 2026
+    #orbit-readout: \text{1 Jan 2026:}\quad \Omega = 342.2^\circ | F = 86.9^\circ,\quad \beta = +4.99^\circ | \text{the Sun } 61.6^\circ \text{ before the nearest node}
+  slider #orbit-day = 6940
+    OUTPUT (orbit-day): 1 Jan 2045
+    #orbit-readout: \text{1 Jan 2045:}\quad \Omega = 334.7^\circ | F = 94.3^\circ,\quad \beta = +4.98^\circ | \text{the Sun } 53.7^\circ \text{ before the nearest node}
+  slider #orbit-day = 3470
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 270.5^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.5^\circ \text{ before the nearest node}
+  slider #orbit-day + one key step
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node}
+  slider #limits-node = -20
+    OUTPUT (limits-node): −20.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = -102.5',\ \gamma = −1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node = 20
+    OUTPUT (limits-node): +20.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +102.5',\ \gamma = +1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node = 0
+    OUTPUT (limits-node): +0.0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.0',\ \gamma = +0.00 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +0.0' | \text{lunar eclipse: total, magnitude 1.84} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-node + one key step
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  slider #limits-distance = 356400
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+  slider #limits-distance = 406700
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  slider #limits-distance = 381600
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 381·600 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.7',\ \pi = 57.5',\ u = 42.2'
+  slider #limits-distance + one key step
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 381·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.6',\ \pi = 57.4',\ u = 42.2'
+  button "‹ previous day"
+    OUTPUT (orbit-day): 2 Jul 2035
+    #orbit-readout: \text{2 Jul 2035:}\quad \Omega = 158.5^\circ | F = 256.8^\circ,\quad \beta = -4.87^\circ | \text{the Sun } 58.4^\circ \text{ before the nearest node}
+  button "next day ›"
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node}
+  button "A month"
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node}
+  button "The nodes' turn"
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{turned } 183.8^\circ \text{ west since 1 January 2026} | 
+  button "nearest"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: total} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.87} | s = 16.8',\ \pi = 61.5',\ u = 46.3'
+  button "mean"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+  button "farthest"
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  button "2 months"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #calendar-plot at 0.3
+  hover #calendar-plot at 0.6
+  hover #calendar-plot at 0.9
+  hover #calendar-plot left
+  hover #limits-plot at 0.3
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot at 0.6
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot at 0.9
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #limits-plot left
+    OUTPUT (limits-node): +0.1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.80} | s = 14.7',\ \pi = 53.9',\ u = 38.6'
+  hover #seasons-plot at 0.3
+  hover #seasons-plot at 0.6
+  hover #seasons-plot at 0.9
+  hover #seasons-plot left
+  hover #error-latitude-plot at 0.3
+    .errorcurve-readout: 4 Apr 2026 · mean inclination: −0.9′ · fitted: +7.2′
+  hover #error-latitude-plot at 0.6
+    .errorcurve-readout: 1 Aug 2026 · mean inclination: −3.9′ · fitted: −6.2′
+  hover #error-latitude-plot at 0.9
+    .errorcurve-readout: 28 Nov 2026 · mean inclination: +17.8′ · fitted: +14.4′
+  hover #error-latitude-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 1 spheres
 
 === archive/copernican_revolution/index.html ===
   as loaded
@@ -2796,7 +2874,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 149 tests pass.
+    #summary: All 158 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 
