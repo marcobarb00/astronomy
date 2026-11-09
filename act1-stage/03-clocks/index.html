@@ -855,19 +855,18 @@
 		<h2 id="fit"><span class="step">3 · Fit</span>The year, the epoch and the geographic longitude</h2>
 
 		<p>
-			To read the sky's angle from a clock, we have to fit the formula of
-			section 2 to the sky. Its rate $360^\circ + n$ comes from the mean
-			Sun's daily motion $n$, its constant $L_0$ from one moment at which
-			the sidereal and the solar clocks are compared, and the geographic
-			longitude $\ell$ from the place of the observer.
+			Before the formula of section 2 can read the sky's angle from a clock,
+			three numbers must be fixed by observation: its rate $360^\circ + n$,
+			its constant $L_0$, and the observer's geographic longitude $\ell$.
+			Each comes from a different observation.
 		</p>
 
 		<h3>The rate, from the length of the year</h3>
 
 		<p>
 			Since $n = 360^\circ / Y$, the rate follows from the length of the
-			year, measured from one equinox to the next; we take the modern
-			365.24219 days. The clock barely depends on it, because the sidereal
+			year, measured from one equinox to the next, and we take the modern
+			year of section 2. The clock barely depends on it, because the sidereal
 			day, $P_\text{sid} = 24\,\text{h} \times Y/(Y+1)$, hardly changes with
 			$Y$: an error $\Delta Y$ changes it by $\Delta Y \times
 			24\,\text{h}/(Y+1)^2$, a few thousandths of a second for an error of
@@ -883,9 +882,11 @@
 
 		<p>
 			The constant $L_0$ is the mean Sun's right ascension at the epoch,
-			which is also its mean ecliptic longitude. It is found from timed equinoxes,
-			as page 1.2 found the vernal point, and page 2.1 shows how. Here we
-			use the conventional value of section 2, $L_0 = 280.46061837^\circ$.
+			which is also its mean ecliptic longitude. A timed equinox fixes it,
+			because at that moment the real Sun's ecliptic longitude is exactly
+			0°; turning that into the mean Sun's needs a model of the Sun's uneven
+			motion, which page 2.1 builds. Until then we keep the conventional
+			value of section 2.
 		</p>
 
 		<h3>The geographic longitude, from a timed transit</h3>
@@ -912,10 +913,12 @@
 			<div class="row">
 				<p>
 					Hipparchus and Ptolemy measured the year by comparing older
-					solstices and equinoxes with their own, centuries apart, and found
-					365.24667 days (<em>Almagest</em> III 1), 6.4 minutes too long. Their
-					sidereal day is still right to a few thousandths of a second, as the
-					formula above predicts.
+					solstices and equinoxes with their own, centuries apart
+					(<em>Almagest</em> III 1), because an error in a timing is then
+					divided by the number of years between them. Their year still came
+					out about 6 minutes too long, yet the sidereal day it implies is
+					right to a few thousandths of a second, as the formula above
+					predicts.
 				</p>
 				<aside>
 					<div class="note" data-origin="hipparchus"></div>
@@ -924,14 +927,18 @@
 			</div>
 
 			<p>
-				Their Sun's position is another matter: Ptolemy's mean Sun falls
-				behind the modern one by 0.44° a century, an error that pages 2.1 and
-				2.3 take up again.
+				The Sun's position suffers more. Ptolemy's mean Sun falls behind the
+				real one by almost half a degree a century.
 			</p>
 		</div>
 
 		<!-- =============================== 4. TEST =============================== -->
 		<h2 id="test"><span class="step">4 · Test</span>The clock against the sky</h2>
+
+		<p>
+			The clock is meant to tell when the stars and the Sun cross the
+			meridian, rise and set, so we test it on both.
+		</p>
 
 		<h3>The stars</h3>
 
@@ -939,9 +946,9 @@
 			<p>
 				The reference sky computes the sidereal time with the full Meeus
 				formula and adds nutation, the small back-and-forth shift of the
-				equinox met on page 1.2. Through 2026 the sidereal time of section 2 differs
-				from it by at most 0.66 s, so the transits we predict for the
-				stars are right to within a second.
+				equinox met on page 1.2. Through 2026 the clock differs from it by
+				under 0.7 s, so the transits we predict for the stars are right to
+				within a second.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="nutation"></div>
@@ -983,9 +990,10 @@
 				</div>
 			</div>
 			<figcaption>
-				Move the geographic latitude and notice that only sunrise and sunset
-				change, spreading apart as the geographic latitude grows, while the noon
-				curve stays the same. Point at the plot to read a date.
+				Move the geographic latitude and notice that only the sunrise and
+				sunset curves change: the gap between them, the error in the length
+				of the day, widens as the latitude grows, while noon stays the same.
+				Point at the plot to read the errors on a date.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -1011,93 +1019,77 @@
 
 		<p>
 			At every geographic latitude the uniform Sun's noon is off by up to
-			a quarter of an hour.
-		</p>
-
-		<p>
-			The length of the day comes out better, but its error grows with the
-			geographic latitude. The uniform Sun's day is too short by up to 5
-			minutes at Rome, 7½ at London and 13 at $65^\circ$. In the northern
-			hemisphere it is almost never too long, and then by less than a
-			minute, while in the southern hemisphere the signs are reversed.
-		</p>
-
-		<p>
-			The day comes out too short because the uniform Sun keeps a constant
-			rate. In spring the real Sun runs almost $2^\circ$ ahead of the mean
-			Sun, so its declination is higher and its day, in the northern
-			hemisphere, longer.
+			a quarter of an hour. Its day comes out too short, in the northern
+			hemisphere, by an error that grows with the geographic latitude, to 13
+			minutes at 65°; in the southern hemisphere the signs are reversed.
 		</p>
 
 		<!-- ============================= 5. RESIDUAL ============================= -->
 		<h2 id="residual"><span class="step">5 · Residual</span>What the clock leaves out</h2>
 
 		<p>
-			Both errors of Figure 6 come from the model Sun, whose ecliptic
-			longitude grows by the same angle every day. The real Sun runs up to
-			about $2^\circ$ ahead of it in spring and behind it in autumn. Page
-			2.1 measures this inequality and builds the first model of it.
-		</p>
-
-		<p>
-			The error at noon has a second cause, which would remain even for a
-			Sun moving uniformly along the ecliptic. Because the ecliptic is
-			tilted to the equator, such a Sun would still not move uniformly in
-			right ascension, as the lag of $\alpha$ behind $\lambda$ in the
-			table of page 1.2 showed. Page 2.2 combines the two effects into the
-			equation of time.
-		</p>
-
-		<p>
-			Universal Time is itself not uniform, because it follows the
-			rotation of the Earth, and the Earth does not turn at a constant
-			rate. The uniform time used by the ephemeris, Terrestrial Time (TT),
-			is kept by atomic clocks, and the two differ by $\Delta T =
+			Before we compare a time recorded by Ptolemy with the reference sky, we
+			must correct it, because Universal Time is itself not uniform. It
+			follows the rotation of the Earth, and the Earth does not turn at a
+			constant rate. The uniform time of the ephemeris, Terrestrial Time
+			(TT), is kept by atomic clocks, and the two differ by $\Delta T =
 			\text{TT} - \text{UT}$, about 69 s today, because the tides slowly
 			lengthen the day.
 		</p>
 
-		<p>
-			Both each day's shortfall and the number of days grow with the time
-			elapsed, so $\Delta T$ grows as its square, from about a minute today
-			to hours in antiquity. The formula used here, Espenak and Meeus'
-			polynomials fitted to ancient eclipse records, gives 2 h 35 min for
-			Ptolemy's time.
-		</p>
-
-		<details class="fold">
-			<summary>Why ΔT reaches hours in antiquity</summary>
-			<p>
-				The atomic second was chosen to match the length of the day around
-				1820, so $\Delta T$ is the sum, day after day since then, of each
-				day's difference from 86 400 s. The friction of the tides raised by
-				the Moon lengthens the day by about 1.75 ms a century.
-			</p>
-			<p>
-				In AD 132, then, a day was only about 30 ms shorter than 86 400 s,
-				so the Earth turned at almost exactly today's rate. Between 132 and
-				1820, though, a shortfall of about 15 ms a day on average,
-				accumulated over more than 600 000 days, adds up to about 2 h 32
-				min, close to the 2 h 35 min of the formula.
-			</p>
-		</details>
-
 		<div class="row">
 			<p>
-				In 2 h 35 min the sky turns almost $39^\circ$, so before we
-				compare a time recorded by Ptolemy with the reference sky, we
-				must correct it by $\Delta T$, as we will for every ancient record
-				from page 2.1 on.
+				Each day falls short of a uniform day by more the further back it
+				lies, and the days add up, so $\Delta T$ grows as the square of the
+				time: about two and a half hours in Ptolemy's time, in which the sky
+				turns almost $39^\circ$. Every ancient record from page 2.1 on is
+				corrected by it.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="deltaT"></div>
 			</aside>
 		</div>
 
+		<details class="fold">
+			<summary>Why ΔT reaches hours in antiquity</summary>
+			<p>
+				The atomic second was chosen to match the length of the day around
+				1820, so $\Delta T$ is the sum, day after day since then, of each
+				day's difference from 86·400 s. The friction of the tides raised by
+				the Moon lengthens the day by about 1.75 ms a century.
+			</p>
+			<p>
+				In AD 132, then, a day was only about 30 ms shorter than 86·400 s,
+				so the Earth turned at almost exactly today's rate. Between 132 and
+				1820, though, a shortfall of about 15 ms a day on average,
+				accumulated over more than 600·000 days, adds up to about 2 h 32
+				min, close to the 2 h 35 min that Espenak and Meeus' formula, fitted
+				to ancient eclipse records, gives for Ptolemy's time.
+			</p>
+		</details>
+
 		<p>
-			Finally, the right ascensions of the stars change, so transit times
-			computed from an old catalogue drift by two to three seconds a year.
-			Page 2.3 explains why.
+			The right ascensions of the stars change too, so transit times
+			computed from an old catalogue drift by two to three seconds a year,
+			a slow turning of the frame itself that page 2.3 measures.
+		</p>
+
+		<p>
+			The noon error has a cause that would remain even for a Sun moving
+			uniformly along the ecliptic: the ecliptic is tilted to the equator,
+			so such a Sun would still not move uniformly in right ascension, as the
+			lag of $\alpha$ behind $\lambda$ in the table of page 1.2 showed. Page
+			2.2 combines this with the Sun's own unevenness into the equation of
+			time.
+		</p>
+
+		<p>
+			The larger cause of both errors is the uniform Sun itself, whose
+			ecliptic longitude grows by the same angle every day. The real Sun
+			runs up to about $2^\circ$ ahead of it in spring and behind it in
+			autumn, so it spends longer north of the equator, which lengthens the
+			northern day. Page 2.1 measures this inequality and builds the first
+			model of it.
 		</p>
 
 		<!-- ============================== EXERCISES ============================== -->

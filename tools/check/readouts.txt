@@ -473,7 +473,7 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 114.2^\circ | \text{day } 15\,\text{h}\,14\,\text{min} | \text{sunrise } \text{04:23},\quad \text{sunset } \text{19:37}
     OUTPUT (test-lat): 41.9°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -13.0\,\text{min}\ \text{to}\ +18.8\,\text{min} | \text{set } -16.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{day } -5.3\,\text{min}\ \text{to}\ 0.0\,\text{min}
-  opened 7 hints and answers
+  opened 8 hints and answers
   slider #wheel-day = 0
     OUTPUT (wheel-day): 1 Jan 2026
     OUTPUT (wheel-time): 12:00
