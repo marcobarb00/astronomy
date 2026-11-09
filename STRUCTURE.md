@@ -103,14 +103,18 @@ The language needed to state any prediction.
   equatorial grid and the ecliptic; one fixed direction shown in two
   frames at once; the axes rotate, the point does not (ecliptic and equator,
   drawn in the equatorial frame; equator and horizon, drawn in the horizon
-  frame, with buttons to redraw it in the equatorial frame). A table of Ptolemy's declinations and right
-  ascensions against the real Sun of AD 137.
-- **Fit:** the obliquity from the noon Sun at the two solstices (Ptolemy's
-  $23^\circ 51' 20''$, *Almagest* I 12); the origin γ from the March equinox.
-- **Test:** the formulas against Ptolemy's tables of declination and right
-  ascension (*Almagest* I 15–16), and his values against the real Sun of
-  AD 137 (a table); the model with the mean obliquity against the real Sun of
-  2026, where only nutation remains (a static figure).
+  frame, with buttons to redraw it in the equatorial frame).
+- **Fit:** the obliquity from the noon Sun at the two solstices (Alexandria,
+  2026); the origin γ from the March equinox. History block: Ptolemy's
+  meridian ring and plaque, his bounds and $23^\circ 51' 20''$ (*Almagest*
+  I 12); Hipparchus' equinoxes on the equatorial ring (III 1).
+- **Test:** the model with the mean obliquity against the real Sun of 2026,
+  where only nutation remains (a static figure). History block: Ptolemy's
+  tables of declination and right ascension (*Almagest* I 13–16), exact for
+  his obliquity, so his declinations are too large by up to 10.7′;
+  Copernicus finds the obliquity variable (*De Revolutionibus* II 2).
+- **Residual:** the obliquity changes (14.5′ since Ptolemy) and γ moves
+  (page 2.3); $\theta$ is still a slider (page 1.3).
 - **Exercises:** the inverse, equatorial → ecliptic, by transposing (the
   forward transformation is derived in the text, which needs it); the right
   ascension and declination of the Sun at $\lambda = 60^\circ$; the angle

@@ -369,29 +369,30 @@ Frames.ptolemyRightAscensions()
 	});
 console.log(`largest difference ${f(worstRA * 60, 2)}' (Ptolemy rounds to minutes)`);
 
-title('Test 1c: the table on the page, Ptolemy against the real Sun of AD 137');
+title("Test 1c (history block): Ptolemy's tables against the real Sun of AD 137");
 
 /* Every 10° of longitude: Ptolemy's declination (I 15) and right ascension
-   (I 16), and the real Sun's when it stood at that longitude in AD 137
-   (apparent, of date). Differences Ptolemy - real in arcminutes. */
+   (I 16) against the real Sun's when it stood at that longitude in AD 137
+   (apparent, of date). The history block quotes only the largest error in
+   declination, at the solstice, and says the right ascensions are closer. */
 const ptolemyRA = Frames.ptolemyRightAscensions();
 let jdGuess137 = Time.julianDay(137, 3, 21);
-
-console.log('lambda | Ptolemy delta        | real delta | d delta | Ptolemy alpha     | real alpha | d alpha');
+const decErrors = [];
+let worstRA137 = 0;
 
 for (let lon = 10; lon <= 90; lon += 10) {
 	const jd = sunAtLongitude(lon, jdGuess137);
 	const real = realSun(jd);
-	const ptDec = Frames.PTOLEMY_DECLINATIONS[lon - 1];
-	const ptRA = ptolemyRA[lon / 10];
 
 	jdGuess137 = jd + 10;
-	console.log(
-		`${String(lon).padStart(6)} | ${toDms(ptDec)} (${f(ptDec, 3)}) | ${f(real.dec, 3).padStart(10)} |` +
-			` ${((ptDec - real.dec) * 60).toFixed(1).padStart(7)}' | ${toDms(ptRA).slice(0, -3)} (${f(ptRA, 3)}) |` +
-			` ${f(real.ra, 3).padStart(10)} | ${((ptRA - real.ra) * 60).toFixed(1).padStart(6)}'  [${dateText(jd)}]`
-	);
+	decErrors.push((Frames.PTOLEMY_DECLINATIONS[lon - 1] - real.dec) * 60);
+	worstRA137 = Math.max(worstRA137, Math.abs(ptolemyRA[lon / 10] - real.ra) * 60);
 }
+
+console.log(
+	`Ptolemy - real declination, lambda 10 to 90: ${decErrors.map(x => x.toFixed(1)).join(', ')} arcmin (grows to the solstice)`
+);
+console.log(`largest |Ptolemy - real| right ascension: ${worstRA137.toFixed(1)} arcmin`);
 
 title('Test 2 (Figure 4): the nutation error over 2026');
 

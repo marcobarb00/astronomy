@@ -11,8 +11,6 @@
 								   a button switches to the equatorial frame)
 	 4. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
-   The comparison of Ptolemy's tables with the real Sun is a static table in
-   index.html (numbers from tools/numbers/1.2-frames.js).
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
    models/frames.js, plate-stars.js, plate.js, sphere3d.js, plot2d.js,
    components.js.
