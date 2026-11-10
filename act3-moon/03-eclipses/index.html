@@ -138,7 +138,7 @@
 
 		<p>
 			Every year has at least two solar eclipses, and 2029 has four, all of
-			them partial. Lunar eclipses are fewer, in 2027 there was none. The
+			them partial. Lunar eclipses are fewer, and 2027 has none. The
 			eclipses come in groups, the <em>eclipse seasons</em>, of one to three
 			eclipses each, about 173 days apart. Two seasons take 346 days, 19 days
 			less than a year, so each season comes 19 days earlier in the year
@@ -201,10 +201,6 @@
 						<dd>the Sun at the new Moon of 12 August</dd>
 						<dt>☋</dt>
 						<dd>the node, where the Moon crosses the ecliptic going south</dd>
-						<dt>grid</dt>
-						<dd>right ascension every hour, declination every 10°</dd>
-						<dt>stars</dt>
-						<dd>every star brighter than magnitude 4.6; the larger, the brighter</dd>
 					</dl>
 				</div>
 			</div>
@@ -242,7 +238,7 @@
 		</div>
 
 		<p>
-			To find the Moon's ecliptic coordinates we use the same methods as in act 1.
+			To find the Moon's ecliptic coordinates we use the same methods as in Act I.
 			Let $\Omega$ be the ecliptic longitude of the <em>ascending node</em> (☊ in the
 			figures), where the Moon crosses the ecliptic going north, opposite the
 			descending node ☋, and $F$ the
@@ -346,7 +342,7 @@
 			within about 18° of a node, it stays under 4′.
 		</p>
 
-		<!-- Figure 3: the Moon's inclined circle (3D, date) -->
+		<!-- Figure 3: the Moon's inclined circle (3D, date; a month, a year, the nodes' turn) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -374,10 +370,12 @@
 				</div>
 			</div>
 			<figcaption>
-				Play a month and watch the Moon L climb above the ecliptic and come
-				back down, crossing it at ☊ and ☋. Then choose the nodes' turn and
-				play it: the line of nodes turns westward, once round in 18.6
-				years.
+				Play a month and follow the triangle with its corners at ☊, at the
+				Moon L and on the ecliptic under L: $\beta$ grows with $F$, and
+				reaches $i$ when L is 90° from ☊. Then play a year: the Sun and the
+				nodes move towards each other, so the Sun is back at ☊ before it has
+				gone once round. In the nodes' turn the line of nodes goes round
+				westward in 18.6 years.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -385,8 +383,12 @@
 					<dl class="key">
 						<dt class="c-epicycle">purple</dt>
 						<dd>the Moon's circle, its inclination drawn three times larger</dd>
-						<dt class="c-planet">red arc</dt>
-						<dd>the Moon's ecliptic latitude $\beta$</dd>
+						<dt class="c-sun">gold</dt>
+						<dd>the ecliptic</dd>
+						<dt class="c-sun">thick gold arc</dt>
+						<dd>$\lambda - \Omega$, the Moon's ecliptic longitude counted from ☊</dd>
+						<dt>dark disc</dt>
+						<dd>the Earth's shadow, opposite the Sun, drawn larger than it is</dd>
 					</dl>
 				</div>
 			</div>
@@ -451,16 +453,45 @@
 			$\pi = 57.0'$; the Sun has $s_\odot = 16.0'$ and $\pi_\odot = 8.8''$.
 		</p>
 
-		<!-- Figure 4: the Earth's shadow (static, not to scale) -->
+		<!-- Figure 4: the two shadows (static, not to scale) -->
 		<figure class="fig">
 			<div class="frame">
-				<canvas id="shadow-canvas"></canvas>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the Earth's shadow at the Moon's distance</p>
+						<canvas id="shadow-canvas" role="img"
+							aria-label="The Sun, the Earth with centre O and the cone of its shadow; at the Moon's distance the Earth's radius, marked pi, is divided into the shadow's radius u and the rest."></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the Moon's shadow on the Earth</p>
+						<canvas id="moon-shadow-canvas" role="img"
+							aria-label="The Moon, north of the line from the Earth's centre O to the Sun, and its shadow, which widens towards the Earth; its axis meets the plane through O north of O."></canvas>
+					</div>
+				</div>
 			</div>
 			<figcaption>
-				Follow the ray that grazes the Sun and the Earth on the same side to
-				the tip of the shadow, then compare the two angles at O, $\pi$ and
-				$u$. The drawing is not to scale.
+				In (a), follow the ray that grazes the Sun and the Earth on the same
+				side to the tip of the shadow: at the Moon's distance it divides the
+				bracket $\pi$, the Earth's radius placed there and seen from O, into
+				the umbra's radius $u$ and the part $s_\odot - \pi_\odot$. In (b), follow the
+				shadow's axis from the Moon to the plane through O, which it meets
+				$\gamma$ Earth radii north of O. Neither drawing is to scale.
 			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>dark grey</dt>
+						<dd>the umbra</dd>
+						<dt>light grey</dt>
+						<dd>(b) the penumbra</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>(b) the plane through O, square to the direction of the Sun</dd>
+						<dt class="c-planet">$\beta$</dt>
+						<dd>(b) at the new Moon, the Moon's angle from the Sun seen from O</dd>
+					</dl>
+				</div>
+			</div>
 		</figure>
 
 		<p>
@@ -498,7 +529,7 @@
 				d$.
 			</p>
 			<p>
-				The ray of Figure 4 leaves the Sun's edge, $R_\odot$ from the axis,
+				The ray of Figure 4a leaves the Sun's edge, $R_\odot$ from the axis,
 				and grazes the Earth's edge on the same side, $R$ from the axis, a
 				distance $d_\odot$ further on. It therefore comes closer to the
 				axis by $R_\odot - R$ over $d_\odot$, and makes with the axis the
@@ -540,8 +571,9 @@
 			Earth. Seen from the Sun, the Earth is a disc, and the Moon's shadow
 			crosses it as two circles about one axis: the <em>penumbra</em>,
 			where the Moon hides part of the Sun, and inside it the much smaller
-			<em>umbra</em>, where it hides all of it (Figure 5a, drawn as the
-			Earth is seen from the Sun).
+			<em>umbra</em>, where it hides all of it (seen from the side in
+			Figure 4b, and on the Earth's disc, as seen from the Sun, in Figure
+			5a).
 		</p>
 
 		<p>
@@ -616,8 +648,8 @@
 						<canvas id="limits-lunar"></canvas>
 					</div>
 				</div>
-				<p class="panel-title">(c) the Moon's ecliptic latitude at the new Moon, against the Sun's angular distance from the node</p>
-				<canvas id="limits-plot"></canvas>
+				<!-- the sliders just under the two drawings: on a phone both stay
+				     on the screen while a slider moves -->
 				<div class="panel-controls">
 					<div>
 						<div class="ctl">
@@ -639,26 +671,30 @@
 						</div>
 					</div>
 				</div>
+				<p class="panel-title">(c) the Moon's ecliptic latitude near the node, and the eclipse limits</p>
+				<canvas id="limits-plot"></canvas>
 				<div class="readout" id="limits-readout" data-lines="5"></div>
 			</div>
 			<figcaption>
 				Move the Sun away from the node: the Moon's shadow slides off the
-				Earth in (a), and the Moon slides out of the Earth's shadow in (b).
-				The gold and red bands in (c) are the solar and lunar limits. Then
-				choose the nearest and the farthest Moon: the limits widen and
-				narrow, and the read-out's central eclipse turns from total to
-				annular.
+				Earth in (a) and the Moon slides out of the Earth's shadow in (b),
+				each where the Moon's path leaves its box in (c). Then choose the
+				nearest and the farthest Moon: the boxes widen and narrow, and the
+				umbra's dot in (a) turns into a ring, a total eclipse into an
+				annular one.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>black dot</dt>
-						<dd>(a) the umbra, drawn larger than it is</dd>
+						<dt>grey disc, dot</dt>
+						<dd>(a) the penumbra and the umbra; the umbra is drawn larger than it is, as a ring where the eclipse is annular</dd>
 						<dt class="c-epicycle">purple, dashed</dt>
 						<dd>the Moon's path; in (a), seen from the Sun, the path of its shadow</dd>
 						<dt class="c-sun">gold line</dt>
 						<dd>the ecliptic</dd>
+						<dt>gold, red box</dt>
+						<dd>(c) the solar and the lunar limits</dd>
 					</dl>
 				</div>
 			</div>
@@ -846,9 +882,11 @@
 				<div id="error-latitude"></div>
 			</div>
 			<figcaption>
-				Point at the plot to read the errors. Notice how the dots, at new and
-				full Moon, stay close to zero while the curve swings between them, and
-				compare the faint curve of the mean inclination at the dots.
+				The error of the fitted ecliptic latitude stays within 2′ at the new
+				and full Moons (red dots), while the curve swings by up to 26′
+				between them; with the mean inclination the purple dots are up to
+				10′ off. Switch to 100 years and notice that the error does not
+				grow.
 			</figcaption>
 		</figure>
 

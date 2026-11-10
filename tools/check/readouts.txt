@@ -1441,6 +1441,9 @@ Regenerate with: node tools/check/smoke.js --update
   button "A month"
     OUTPUT (orbit-day): 3 Jul 2035
     #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node}
+  button "A year"
+    OUTPUT (orbit-day): 3 Jul 2035
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node} | 
   button "The nodes' turn"
     OUTPUT (orbit-day): 3 Jul 2035
     #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{turned } 183.8^\circ \text{ west since 1 January 2026} | 
@@ -1485,11 +1488,11 @@ Regenerate with: node tools/check/smoke.js --update
   hover #seasons-plot at 0.9
   hover #seasons-plot left
   hover #error-latitude-plot at 0.3
-    .errorcurve-readout: 4 Apr 2026 · mean inclination: −0.9′ · fitted: +7.2′
+    .errorcurve-readout: 18 Mar 2002 · fitted: +5.2′
   hover #error-latitude-plot at 0.6
-    .errorcurve-readout: 1 Aug 2026 · mean inclination: −3.9′ · fitted: −6.2′
+    .errorcurve-readout: 14 Oct 2034 · fitted: −5.7′
   hover #error-latitude-plot at 0.9
-    .errorcurve-readout: 28 Nov 2026 · mean inclination: +17.8′ · fitted: +14.4′
+    .errorcurve-readout: 11 May 2067 · fitted: −5.2′
   hover #error-latitude-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 1 spheres

@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. The square drawings and panel (c) of Figure 5
+	 2. The drawings of Figures 4 and 5, and panel (c) of Figure 5
 	 3. The tables of the prose
 	 4. Phone width
    ========================================================================== */
@@ -29,24 +29,27 @@ button.play {
 }
 
 /* ==========================================================================
-   2. THE SQUARE DRAWINGS AND PANEL (C) OF FIGURE 5
-   The canvases set their own square size (page.js); centre them.
+   2. THE DRAWINGS OF FIGURES 4 AND 5, AND PANEL (C) OF FIGURE 5
+   The canvases set their own size (page.js); centre them in their column.
    ========================================================================== */
 
+#shadow-canvas,
+#moon-shadow-canvas,
 #limits-solar,
 #limits-lunar {
 	display: block;
 	margin: 0 auto;
 }
 
-/* Panel (c) runs under the two drawings, the width of the frame. */
+/* Panel (c) runs under the two drawings and their sliders, the width of
+   the frame. */
 #limits-plot {
 	display: block;
 	margin-top: 6px;
 }
 
-.frame > .panel-title {
-	margin-top: 14px;
+.panel-controls + .panel-title {
+	margin-top: 18px;
 }
 
 /* ==========================================================================

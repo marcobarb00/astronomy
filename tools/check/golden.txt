@@ -3603,7 +3603,9 @@ greatest eclipse 20 Oct 134 23:17 TT, partial, magnitude 0.82
   from Ptolemy's 23:00: local mean 22:47, UT 20:47; Delta T = 23:17 - 20:47 = 2.50 h against 2.57 h (-4 min)
 
 === 16. The scales of the figures ===
-Figure 4: |beta| at 20° from the node 1.708° (window +-2°); limits 84.4' to 94.1' solar
+Figure 5: |beta| at 20° from the node 1.708° (window +-2°); limits 84.4' to 94.1' solar
+Figure 5(c): the boxes reach 10.2° to 12.1° (lunar) and 16.4° to 18.3° (solar) from the node (axis +-20°)
+Figure 7: the fit over 1976-2077 within 28.9'; the dots of the mean inclination within 10.0' (scale +-40')
 
 === 9. tools/numbers/4.1-going-backwards.js ===
 
