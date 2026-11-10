@@ -234,7 +234,7 @@ const Plate = (function () {
 				['del Gem', 'lam Gem'],
 				['lam Gem', 'ksi Gem']
 			],
-			name: [104, 29]
+			name: [97, 33.5]
 		},
 		'CANCER': {
 			lines: [
@@ -733,9 +733,10 @@ const Plate = (function () {
 
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
 	   point given by nameAt [ra, dec, dx, dy]; with a short tick across it
-	   at each of 'marks' [{ ra, dec, text }] (page 3.3: the Moon's path,
-	   one tick a day), its text, if any, on the side 'side' (+1 below the
-	   curve, -1 above it). */
+	   at each of 'marks' [{ ra, dec, text, place }] (page 3.3: the Moon's
+	   path, one tick a day), its text, if any, on the side 'side' (+1 below
+	   the curve, -1 above it), or on the side 'place' of the mark ('left',
+	   'right', 'above', 'below'; page 4.1: the stations of Mars). */
 	function highlightCurve(chart, points, name, nameAt, marks = [], side = 1) {
 		const screen = points.map(p => chart.at(p.ra, p.dec));
 
@@ -761,6 +762,15 @@ const Plate = (function () {
 
 	/* A tick across a curve (screen points) at the point of 'mark', at
 	   right angles to the curve there, and the mark's text beside it. */
+	/* The sides a tick's label may be given (mark.place): a screen
+	   direction, and the text anchor that keeps the label on that side. */
+	const MARK_PLACES = {
+		left: { x: -1, y: 0, anchor: 'end' },
+		right: { x: 1, y: 0, anchor: 'start' },
+		above: { x: 0, y: -1, anchor: 'middle' },
+		below: { x: 0, y: 1, anchor: 'middle' }
+	};
+
 	function drawCurveTick(chart, screen, mark, side) {
 		const tickLength = 6;
 		const q = chart.at(mark.ra, mark.dec);
@@ -793,9 +803,13 @@ const Plate = (function () {
 
 		if (mark.text) {
 			const away = 3 * tickLength;
-			const element = svgText(chart.layer, mark.text, q.x + away * u.x, q.y + away * u.y, {
+			// the label beyond the tick, along the normal; or, where the curve
+			// turns back on itself (a planet's station), on the side the page
+			// gives (mark.place), so that it never lies on the curve
+			const place = MARK_PLACES[mark.place] ?? { x: u.x, y: u.y, anchor: 'middle' };
+			const element = svgText(chart.layer, mark.text, q.x + away * place.x, q.y + away * place.y, {
 				class: 'circle-name highlight-text',
-				'text-anchor': 'middle',
+				'text-anchor': place.anchor,
 				'dominant-baseline': 'central'
 			});
 

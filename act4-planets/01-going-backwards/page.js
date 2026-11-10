@@ -109,10 +109,11 @@ function nameAbove(plot, text, x) {
    from 15 October 2024 to 15 April 2025 (apparent positions of date, as
    seen from the Earth's centre), a tick on the first of each month.
    The area holds the path, right ascension 109° to 129°, declination
-   +21° to +26°, with Castor and Pollux above it.
+   +21° to +26°, and the whole figures of Gemini and Cancer, so that
+   none of their lines is cut by the border.
    ========================================================================== */
 
-const PLATE_AREA = { raMin: 100, raMax: 136, decMin: 15, decMax: 33 };
+const PLATE_AREA = { raMin: 89, raMax: 138, decMin: 7, decMax: 36 };
 const PLATE_FROM = Time.julianDay(2024, 10, 15);
 const PLATE_TO = Time.julianDay(2025, 4, 15);
 
@@ -120,9 +121,9 @@ const PLATE_TO = Time.julianDay(2025, 4, 15);
    16 January 2025 02:07, 24 February 2025 01:22, from
    tools/numbers/4.1-going-backwards.js). */
 const PLATE_EVENTS = [
-	Time.julianDayTime(2024, 12, 6, 23, 5),
-	Time.julianDayTime(2025, 1, 16, 2, 7),
-	Time.julianDayTime(2025, 2, 24, 1, 22)
+	{ jd: Time.julianDayTime(2024, 12, 6, 23, 5), place: 'left' },
+	{ jd: Time.julianDayTime(2025, 1, 16, 2, 7) },
+	{ jd: Time.julianDayTime(2025, 2, 24, 1, 22), place: 'right' }
 ];
 
 const plateFigure = {
@@ -132,7 +133,7 @@ const plateFigure = {
 			figures: ['GEMINI', 'CANCER'],
 			keep: ['bet Gem'], // Pollux, near the loop, stays on a phone
 			names: [
-				['bet Gem', 'Pollux', 9, 16],
+				['bet Gem', 'Pollux', -8, -10, 'end'],
 				['alf Gem', 'Castor', -9, -6, 'end']
 			],
 			label: 'Chart of the sky from Gemini to Cancer, with the ecliptic and, highlighted, the path of Mars from October 2024 to April 2025.'
@@ -140,11 +141,11 @@ const plateFigure = {
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const ecliptic = [];
 
-		for (let lon = 95; lon <= 140; lon += 1) {
+		for (let lon = 80; lon <= 145; lon += 1) {
 			ecliptic.push(Ephem.eclipticToEquatorial(lon, 0, eps));
 		}
 
-		const eclipticName = Ephem.eclipticToEquatorial(104, 0, eps);
+		const eclipticName = Ephem.eclipticToEquatorial(94, 0, eps);
 
 		Plate.line(chart, ecliptic, 'ecliptic', [eclipticName.ra, eclipticName.dec, -8, 18]);
 
@@ -164,10 +165,13 @@ const plateFigure = {
 			ticks.push({ ra: p.ra, dec: p.dec });
 		}
 
-		PLATE_EVENTS.forEach(jd => {
-			const p = at(jd);
+		// the dates of the stations outside the loop, at its eastern (left)
+		// and western ends; the opposition, inside the loop, between Pollux
+		// and the path, has a tick only (the side text gives its date)
+		PLATE_EVENTS.forEach(event => {
+			const p = at(event.jd);
 
-			ticks.push({ ra: p.ra, dec: p.dec, text: dateText(jd) });
+			ticks.push(event.place ? { ra: p.ra, dec: p.dec, text: dateText(event.jd), place: event.place } : p);
 		});
 
 		const nameAt = at(PLATE_FROM);
