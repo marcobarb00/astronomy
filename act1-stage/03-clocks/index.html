@@ -40,7 +40,6 @@
 	<script defer src="../../shared/models/frames.js"></script>
 	<script defer src="../../shared/models/mean-sun.js"></script>
 	<script defer src="../../shared/models/clock.js"></script>
-	<script defer src="../../shared/sphere3d.js"></script>
 	<script defer src="../../shared/plot2d.js"></script>
 	<script defer src="../../shared/site-map.js"></script>
 	<script defer src="../../shared/components.js"></script>
@@ -160,7 +159,7 @@
 							<button type="button" class="play" id="wheel-play-day">Play a day</button>
 							<button type="button" class="play" id="wheel-play-year">Play a year</button>
 						</div>
-						<div class="readout" id="wheel-readout" data-lines="3"></div>
+						<div class="readout" id="wheel-readout" data-lines="4"></div>
 					</div>
 				</div>
 			</div>
@@ -168,9 +167,10 @@
 				Press "Play a day" and watch everything turn once clockwise
 				about P, under the fixed meridian of Greenwich. Then play a year,
 				or step through the days with the time fixed: the Sun stays near
-				the meridian, while the stars, γ and K move about $1^\circ$
-				further each day, so that by 1 January 2027 the sky has made one
-				turn more than the Sun.
+				the meridian, while the stars and γ move about $1^\circ$ further
+				each day. The solid arc is the angle by which the Sun has fallen
+				behind them, the last line of the read-out, and it closes into
+				one whole turn by 1 January 2027.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -180,8 +180,8 @@
 						<dd>from outside the sphere, above P, down to declination $-60^\circ$ at the rim</dd>
 						<dt class="c-earth">blue</dt>
 						<dd>the celestial equator</dd>
-						<dt class="c-sun">dashed</dt>
-						<dd>the ecliptic, centred on its own pole K, so it appears off-centre</dd>
+						<dt class="c-sun">gold</dt>
+						<dd>the ecliptic, solid from the Sun's place on 1 January 2026 at 0 h UT (the ring) to the Sun</dd>
 					</dl>
 				</div>
 				<div>
@@ -494,7 +494,7 @@
 			moment.
 		</p>
 
-		<!-- Figure 3: sidereal time and the hour angle in the observer's sky -->
+		<!-- Figure 3: sidereal time and the hour angle, from above the pole -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="fig-row">
@@ -522,29 +522,28 @@
 							<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
 						</div>
 						<div class="presets star-choice" id="sid-stars"></div>
-						<div class="readout" id="sid-readout" data-lines="5"></div>
+						<div class="readout" id="sid-readout" data-lines="4"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Press play and watch the arcs θ and H grow together while α
-				stays fixed, in the sky of Rome on 1 January 2026.
-				Then move the geographic longitude with the time fixed: going east
-				increases θ by the same angle, and the star stands further west.
-				Drag the sphere to turn the view.
+				Press play and watch γ and the star turn together on 1 January
+				2026: $\theta_G$ and $H$ grow at the same rate, while $\alpha$
+				and $\ell$ stay fixed. Then move the geographic longitude with
+				the time fixed: only the observer's meridian moves, and $\ell$
+				and $H$ change by the same angle. Stop anywhere and check in the
+				read-out that $H = \theta_G + \ell - \alpha$.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-muted">dotted</dt>
-						<dd>the meridian, through N, Z and S</dd>
-						<dt class="c-earth">blue</dt>
-						<dd>the celestial equator, which crosses the meridian at M</dd>
-						<dt class="c-planet">dashed</dt>
-						<dd>the star's hour circle, from P to the equator</dd>
-						<dt><span class="c-epicycle">θ</span>, <span class="c-planet">H</span>, <span class="c-earth">α</span></dt>
-						<dd>θ and H counted west from M, α east from γ</dd>
+						<dt class="c-deferent">green</dt>
+						<dd>the meridian of Greenwich and, $\ell$ east of it, the observer's meridian</dd>
+						<dt><span class="c-epicycle">$\theta_G$</span>, <span class="c-planet">$H$</span></dt>
+						<dd>counted westward (clockwise in this view), $H$ from the observer's meridian</dd>
+						<dt><span class="c-earth">$\alpha$</span>, <span class="c-deferent">$\ell$</span></dt>
+						<dd>counted eastward</dd>
 					</dl>
 				</div>
 			</div>
@@ -804,11 +803,11 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the day through 2026 at geographic latitude φ</p>
+						<p class="panel-title">(a) through 2026, at one geographic latitude</p>
 						<canvas id="day-curve"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) every geographic latitude</p>
+						<p class="panel-title">(b) at every geographic latitude, on three dates</p>
 						<canvas id="day-map"></canvas>
 					</div>
 				</div>
@@ -835,20 +834,10 @@
 			<figcaption>
 				Move the geographic latitude and watch the curve in (a) flatten
 				towards the equator, and reach 0 h and 24 h beyond the polar
-				circles. In (b), notice that the southern half repeats the
-				northern half six months later.
+				circles. In (b), choose Alexandria, Rome or London and check the
+				three dots against that row of the table. Notice that the
+				December curve is the June curve with north and south exchanged.
 			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In panel (b)</p>
-					<dl class="key">
-						<dt class="c-sun">gold band</dt>
-						<dd>polar day, when the Sun does not set</dd>
-						<dt class="c-muted">grey band</dt>
-						<dd>polar night, when the Sun does not rise</dd>
-					</dl>
-				</div>
-			</div>
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -956,8 +945,9 @@
 		<h3>The Sun</h3>
 
 		<p>
-			To see how good the uniform Sun is, Figure 6 compares its noon,
-			sunrise and sunset with those of the reference Sun through 2026.
+			To see how good the uniform Sun is, Figure 6 compares its noon and
+			the length of its day with those of the reference Sun through 2026,
+			and its read-out adds sunrise and sunset.
 			The reference Sun's noon is its real meridian crossing, and its
 			sunrise and sunset use the same $h_0 = -50'$ as the uniform Sun's, so the figure
 			measures only the error in the Sun's motion.
@@ -969,6 +959,7 @@
 				<div class="fig-row">
 					<div>
 						<canvas id="test-plot"></canvas>
+						<div id="test-legend"></div>
 					</div>
 					<div>
 						<div class="ctl">
@@ -988,28 +979,24 @@
 				</div>
 			</div>
 			<figcaption>
-				Move the geographic latitude and notice that only the sunrise and
-				sunset curves change: the gap between them, the error in the length
-				of the day, widens away from the equator, while noon stays the same.
-				Point at the plot to read the errors on a date.
+				Move the geographic latitude and notice that only the curve of the
+				length of the day changes: its error grows away from the equator,
+				and changes sign in the southern hemisphere, while the noon error
+				stays the same. Point at the plot to read the errors on a date.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-sun">noon</dt>
-						<dd>model minus real time of noon, positive when the model is late</dd>
-						<dt class="c-earth">sunrise</dt>
-						<dd>the same for sunrise</dd>
-						<dt class="c-epicycle">sunset</dt>
-						<dd>the same for sunset</dd>
+						<dt>model − real</dt>
+						<dd>positive when the model's noon is late, or its day too long</dd>
 					</dl>
 				</div>
 				<div>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
-						<dt>day</dt>
-						<dd>model minus real length of the day</dd>
+						<dt>rise, set</dt>
+						<dd>model minus real time of sunrise and of sunset</dd>
 					</dl>
 				</div>
 			</div>

@@ -2520,7 +2520,7 @@ phi    60: day length [-10.4, 0.2], sunrise [-11.8, 21.4], sunset [-18.1, 12.7]
 phi    65: day length [-13.1, 0.6], sunrise [-11.0, 22.9], sunset [-19.2, 11.3]
 phi   -65: day length [-1.3, 13.6], sunrise [-17.7, 9.0], sunset [-8.9, 21.5]
 northern hemisphere: the model's day is at most 0.6 min too long (at 65)
-Figure 6 (|phi| <= 65, every 2.5 deg): every error within [-19.2, 22.9] min -> fixed range [-25, 25]
+Figure 6 (|phi| <= 65, every 2.5 deg): noon and day length within [-14.2, 16.5] min -> fixed range [-20, 20]
 
 === Test: why the day length is wrong (5 April 2026, London) ===
 longitude: mean 13.81, real 15.72 (1.91 deg ahead); declination: model 5.45, real 6.19
