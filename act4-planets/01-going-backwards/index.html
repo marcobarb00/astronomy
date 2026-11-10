@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.1 · GOING BACKWARDS
+     Act IV, the planets. Every planet goes back among the stars once in
+     every return to the same place relative to the Sun: the outer planets
+     at opposition, the inner ones at inferior conjunction. An epicycle
+     whose radius stays parallel to the line to the mean Sun (Almagest
+     IX 5, X 6) explains when and why; its stations follow from the speed
+     (XII 1). Fitted to Mars over 2018 - 2033, it places the planet within
+     35°, and its loops are all the same size, while Mars' are not.
+     Numbers: tools/numbers/4.1-going-backwards.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.1 · Going backwards · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Act III ended with the Moon placed well enough to find every eclipse
+			of a decade. The planets need something the Sun and the Moon did not:
+			once in every return to the same place relative to the Sun, each of
+			them stops among the stars, goes back westward for weeks, stops again
+			and goes on.
+		</p>
+
+		<p>
+			Ptolemy accounted for this with an epicycle that keeps step with the
+			Sun. With it we can follow how his model makes Mars, Jupiter and
+			Saturn go back when they are opposite the Sun, and how far. Fitted to Mars,
+			the epicycle places the planet within 35°, where a planet moving
+			uniformly would be up to 53° off, and it shows what is still missing:
+			the loops of Mars are not all the same size.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>Loops, and when they happen</h2>
+
+		<p>
+			Mars moves eastward along the zodiac by about half a degree a day on
+			average, once round in a little less than two years, but in the winter
+			of 2024–2025 it turned back. On 6 December 2024 it stopped among the
+			stars of Cancer, went back westward into Gemini, and stopped again on
+			24 February 2025, 19.2° further west and 79 days later, before going
+			on eastward. The two stops are the <em>stations</em>, and the westward
+			motion between them is the planet's <em>retrograde motion</em>.
+		</p>
+
+		<!-- Figure 1: Mars among the stars, autumn 2024 to spring 2025, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-mars"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">Mars turning back</div>
+					<p>
+						The sky from Gemini to Cancer, seen looking south, with north up
+						and east to the left, on the equatorial grid.
+					</p>
+					<p>
+						<span class="hl">The path of Mars</span> from 15 October 2024 to
+						15 April 2025, with a tick on the first day of each month, and
+						the dates of the two stations. Mars was opposite the Sun on 16
+						January, at the tick in the middle of the loop's upper side.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>grid</dt>
+						<dd>right ascension every hour, declination every 10°</dd>
+						<dt>stars</dt>
+						<dd>every star brighter than magnitude 4.6; the larger, the brighter</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				The path makes a loop because Mars also moves a little north and
+				south of the ecliptic, between about 0.9° and 4.3° north of it over
+				these six months. This page follows only its ecliptic longitude,
+				which goes forward, back and forward again, and leaves the
+				ecliptic latitude aside, as Ptolemy does in his theory of the
+				motion in longitude (<em>Almagest</em> IX 2).
+			</p>
+			<aside>
+				<div class="note detour" data-topic="latitudes"></div>
+			</aside>
+		</div>
+
+		<p>
+			Every planet goes back in this way, once in every return to the same
+			place relative to the Sun. The table gives the loops of the forty
+			years 2001 to 2040 in the reference sky: how far each planet went
+			back, for how long, and how often. The loops of Jupiter, Saturn and
+			Venus hardly change in size, those of Mars and Mercury change a
+			great deal.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table loops-table">
+			<thead>
+				<tr>
+					<th>Planet</th>
+					<th>goes back by</th>
+					<th>in</th>
+					<th>every</th>
+					<th>the middle of the loop</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Mars</td>
+					<td>10.0°–19.5°</td>
+					<td>60–81 d</td>
+					<td>764–810 d</td>
+					<td>opposition</td>
+				</tr>
+				<tr>
+					<td>Jupiter</td>
+					<td>9.8°–10.1°</td>
+					<td>118–124 d</td>
+					<td>395–403 d</td>
+					<td>opposition</td>
+				</tr>
+				<tr>
+					<td>Saturn</td>
+					<td>6.6°–7.0°</td>
+					<td>134–141 d</td>
+					<td>377–379 d</td>
+					<td>opposition</td>
+				</tr>
+				<tr>
+					<td>Venus</td>
+					<td>15.4°–16.5°</td>
+					<td>41–43 d</td>
+					<td>580–588 d</td>
+					<td>inferior conjunction</td>
+				</tr>
+				<tr>
+					<td>Mercury</td>
+					<td>8.6°–16.3°</td>
+					<td>20–24 d</td>
+					<td>106–129 d</td>
+					<td>inferior conjunction</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Mars, Jupiter and Saturn are in the middle of every loop when they are
+			opposite the Sun, at <em>opposition</em>: in each of the 93 loops of
+			the table the opposition falls within two days of the middle.
+		</p>
+
+		<div class="row">
+			<p>
+				These three can be seen at any angle from the Sun, while Venus and
+				Mercury never get far from it, Venus no more than about 47° in ecliptic
+				longitude and Mercury no more than about 28°. They pass
+				the Sun's ecliptic longitude twice in each return, once while going
+				back, at <em>inferior conjunction</em>, in the middle of the loop,
+				and once while moving fastest, at superior conjunction. Ptolemy
+				makes the same division, between the three planets "which can reach
+				any elongation from the sun" and the two that cannot (XII 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 2: the daily motion against the place relative to the Sun (static, a view per planet) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="motion-views"></div>
+				<canvas id="motion-plot"></canvas>
+			</div>
+			<figcaption>
+				Choose a planet. Each curve is one return to the same place
+				relative to the Sun, from 2011 to 2030, and every one of them drops
+				below zero, into retrograde motion, at the same place. For Mars,
+				notice that the curves do not lie on top of one another.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-muted">dashed</dt>
+						<dd>the planet's mean daily motion (for Venus and Mercury, the mean Sun's)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Two anomalies</h3>
+
+		<div class="row">
+			<p>
+				Figure 2 shows two kinds of unevenness, which Ptolemy calls the
+				planet's two anomalies, "one ... related to the sun, the other to
+				the position in the ecliptic" (IX 2). The anomaly related to the Sun
+				is the shape that every curve shares: the planet slows down, goes back and speeds up
+				again in the same way each time it comes round to the same place
+				relative to the Sun. The anomaly related to the ecliptic, the
+				<em>zodiacal anomaly</em>, is the spread between the curves: the
+				loops of Mars, and the times between them, depend on where in the
+				zodiac the opposition falls.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Ptolemy points out one more feature of the anomaly related to the
+				Sun: "the time from greatest speed to mean is always greater than the
+				time from mean speed to least" (IX 5). After its conjunction with the
+				Sun in November 2023, Mars took about ten and a half months to slow
+				to its mean motion, and then only three and a half months to reach
+				its least speed, going backwards, at the opposition of January 2025.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>The epicycle that keeps step with the Sun</h2>
+
+		<h3>Deferent and epicycle</h3>
+
+		<div class="row">
+			<p>
+				For the anomaly related to the Sun Ptolemy uses an epicycle, as for
+				the Moon on page 3.1. In its simplest form, the model of this page, it
+				is a small circle whose centre K moves uniformly round the Earth on a
+				larger circle, the <em>deferent</em>, while the planet P
+				moves uniformly round the epicycle (IX 5). The epicycle is older than
+				Ptolemy: he credits Apollonius of Perge, at the end of the third
+				century BC, and other mathematicians with a theorem on the stations
+				of a planet on an epicycle (XII 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				For Mars, Jupiter and Saturn, Ptolemy ties the epicycle to the Sun.
+				He finds that for each of them "the sum of the mean motions in
+				longitude and anomaly ... equals the mean motion of the sun", and
+				concludes that the radius from K to the planet stays parallel to the
+				line from the Earth to the mean Sun (X 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Let the deferent have radius 1, the unit of every length on this
+			page; Ptolemy makes it 60, so his radii are $60\,r$. The centre K moves
+			at the planet's mean ecliptic longitude $\bar\lambda = L_0 + n\,d$. The
+			planet's angle on the epicycle is its <em>anomaly</em> $\mu$, counted
+			from the epicycle's apogee, the point farthest from the Earth, in the
+			direction of the motion, eastward, at the rate $n_\mu$. With $\hat u(\lambda)$ the unit vector at
+			ecliptic longitude $\lambda$, as on page 3.1, the planet is at
+		</p>
+
+		$$\vec{OP} = \hat u(\bar\lambda) + r\,\hat u(\bar\lambda + \mu).$$
+
+		<p>
+			The radius KP points to the ecliptic longitude $\bar\lambda + \mu$, so
+			it stays parallel to the line to the mean Sun, at $\bar\lambda_\odot$,
+			if
+		</p>
+
+		$$\mu = \bar\lambda_\odot - \bar\lambda, \qquad n + n_\mu = n_\odot.$$
+
+		<p>
+			The second equation is Ptolemy's relation between the mean motions.
+			The motion in anomaly is what the mean Sun gains on the planet's
+			centre, so the planet comes round to the same place on its epicycle
+			each time the mean Sun comes round to the same place relative to K.
+		</p>
+
+		<h3>The equation of the epicycle</h3>
+
+		<p>
+			In a frame turned to the direction of K, the planet is at $(1 + r\cos\mu,\
+			r\sin\mu)$, and it is seen from the Earth at
+		</p>
+
+		<div class="box">
+			$$\lambda = \bar\lambda + \eta, \qquad \eta = \operatorname{atan2}(r\sin\mu,\ 1 + r\cos\mu).$$
+		</div>
+
+		<p>
+			We call $\eta$ the <em>equation of the epicycle</em>. It is the function
+			of pages 2.1 and 3.1 with the sign reversed, because $\mu$ is counted the
+			other way: $\eta$ is positive from the apogee to the perigee. Its
+			greatest value is $\arcsin r$, where the line of sight touches the
+			epicycle, at $\cos\mu = -r$. Ptolemy's epicycle of Mars is 39.5 where the
+			deferent is 60, $r = 0.658$, so in his model Mars can be seen up to
+			41.2° from K.
+		</p>
+
+		<h3>The speed, and the direction of the motion</h3>
+
+		<p>
+			To see how the planet's speed varies we differentiate $\lambda =
+			\bar\lambda + \eta$ with respect to time, with $d\bar\lambda/dt = n$ and
+			$d\mu/dt = n_\mu$:
+		</p>
+
+		$$\frac{d\lambda}{dt} = n + n_\mu\,\frac{r\,(r + \cos\mu)}{1 + 2r\cos\mu + r^2}.$$
+
+		<p>
+			The planet is fastest at the apogee of the epicycle, where the speed is
+			$n + n_\mu\,r/(1 + r)$, and slowest at the perigee, $n - n_\mu\,r/(1 - r)$.
+			It moves at its mean rate $n$ where the fraction vanishes, at $\cos\mu =
+			-r$. From the apogee to that point the anomaly grows by $\arccos(-r)$,
+			more than 90°, and from there to the perigee by less than 90°, so the
+			time from the greatest speed to the mean is the longer, as Ptolemy
+			observed.
+		</p>
+
+		<div class="row">
+			<p>
+				This fixes the direction of the motion on the epicycle. Had the planet
+				moved westward near the apogee, as the Moon does, it would be slowest
+				at the apogee and fastest at the perigee, and the longer time would
+				come between the least speed and the mean. Ptolemy reasons the same
+				way: the planet must move "not as the moon does, in advance [with
+				respect to the motion] of the universe, but instead towards the rear"
+				(IX 5), that is, eastward.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>Why the planet goes back at opposition</h3>
+
+		<p>
+			At the perigee the planet's motion on the epicycle runs against the
+			motion of K, and the planet goes back if the first is the faster:
+		</p>
+
+		$$n_\mu\,\frac{r}{1 - r} > n \quad\Longleftrightarrow\quad r > \frac{n}{n + n_\mu}.$$
+
+		<div class="row">
+			<p>
+				Ptolemy states this condition (XII 1). For Mars the right side is
+				0.532, and Ptolemy's 0.658 is well above it, so his Mars goes back
+				once in every turn of the anomaly.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			The perigee is at $\mu = 180^\circ$, where K is opposite the mean Sun.
+			Since KP points to the mean Sun, the planet then lies on the line from
+			the Earth through K, opposite the mean Sun too. So in the model every
+			loop is centred on the opposition to the mean Sun. From 2018 to 2033
+			each opposition of Mars to the mean Sun came within a day and a half
+			of its opposition to the real Sun.
+		</p>
+
+		<h3>The stations</h3>
+
+		<p>
+			The stations are where the speed is zero. Writing $k = n_\mu / n$,
+			the condition $d\lambda/dt = 0$ becomes $1 + 2r\cos\mu + r^2 + k\,r\,(r +
+			\cos\mu) = 0$, so the first station is at
+		</p>
+
+		$$\cos\mu_s = -\frac{1 + r^2\,(1 + k)}{r\,(2 + k)},$$
+
+		<p>
+			and the second at $360^\circ - \mu_s$, symmetric about the perigee.
+			Between them the anomaly advances by $2\,(180^\circ - \mu_s)$, in
+			$2\,(180^\circ - \mu_s)/n_\mu$ days, while K advances $n$ times that and
+			the equation of the epicycle falls from $\eta(\mu_s)$ to $-\eta(\mu_s)$.
+			The planet goes back from the ecliptic longitude $\lambda_1$ of the
+			first station to the $\lambda_2$ of the second, the arc
+		</p>
+
+		$$\lambda_1 - \lambda_2 = 2\,\eta(\mu_s) - 2\,(180^\circ - \mu_s)\,\frac{n}{n_\mu}.$$
+
+		<p>
+			The arc grows with $r$, and vanishes at the threshold $r = n/(n + n_\mu)$,
+			where the two stations meet at the perigee. Figure 3 starts with
+			Ptolemy's epicycle of Mars.
+		</p>
+
+		<!-- Figure 3: the epicycle of Mars or Venus; date and r -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="epicycle-views"></div>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the deferent and the epicycle</p>
+						<canvas id="epicycle-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the daily motion against the anomaly</p>
+						<canvas id="epicycle-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="epi-day">date</label>
+							<input id="epi-day" type="range" min="0" max="1600" step="0.25" value="300">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="epi-play">Play</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="epi-r">epicycle $r$</label>
+							<input id="epi-r" type="range" min="0" max="0.8" step="0.001" value="0.658">
+							<output></output>
+						</div>
+						<div class="presets" id="epicycle-ratios">
+							<button type="button" data-target="epi-r" data-value="0.6583" data-ratio="ptolemy">Ptolemy</button>
+							<button type="button" data-target="epi-r" data-value="0.531" data-ratio="threshold">no loop</button>
+							<button type="button" data-target="epi-r" data-value="0" data-ratio="none">no epicycle</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="epicycle-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Play, and watch the planet P go round the epicycle while K goes round
+				the deferent: P always keeps the direction of the mean Sun from K, and
+				goes back in the sky, in the shaded part of (b), when it is near the
+				perigee. Then make the epicycle smaller and see the loops in (a) and the
+				shaded part shrink to nothing at "no loop". Choose Venus and notice that
+				K stays on the line to the mean Sun.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-sun">☉, dashed</dt>
+						<dd>the direction of the mean Sun from the Earth O</dd>
+						<dt class="c-planet">faint</dt>
+						<dd>the path of P over the last synodic period</dd>
+						<dt class="c-deferent">dotted</dt>
+						<dd>from O through K to the apogee of the epicycle</dd>
+						<dt class="c-epicycle">$\mu$</dt>
+						<dd>counted eastward (anticlockwise) from the apogee</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Venus and Mercury</h3>
+
+		<div class="row">
+			<p>
+				For the two planets that stay near the Sun, Ptolemy puts K on the line
+				to the mean Sun: their mean motion in ecliptic longitude is the mean
+				Sun's (IX 3), $\bar\lambda = \bar\lambda_\odot$, and the anomaly
+				$\mu$ goes round at a rate of its own. The same equation of the
+				epicycle applies. Seen from the Earth, the planet can then be at most
+				$\arcsin r$ from the mean Sun, where the line of sight touches the
+				epicycle. Ptolemy's epicycle of Venus, 43.17 where the deferent is 60,
+				gives 46.0°, close to the greatest elongations of section 1. The
+				perigee comes at inferior conjunction, and there the planet goes
+				back.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>The synodic period</h3>
+
+		<p>
+			The time from one opposition to the next, or from one inferior
+			conjunction to the next, is the <em>synodic period</em> $S$, and the
+			anomaly makes one turn in it, $n_\mu = 360^\circ/S$. For an outer
+			planet, with $P_\lambda$ its period in ecliptic longitude and $Y$ the
+			year, $n + n_\mu = n_\odot$ becomes
+		</p>
+
+		$$\frac{1}{P_\lambda} + \frac{1}{S} = \frac{1}{Y}.$$
+
+		<p>
+			For Mars, $P_\lambda$ = 686.93 days, and $S$ = 779.9 days, the
+			long-run mean around which the intervals of section 1, from 764 to 810
+			days, scatter. Exercise 2 finds the
+			synodic period of every planet.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>Mars from its oppositions and its loops</h2>
+
+		<p>
+			The model of Mars has three parameters: the mean motion $n$, the mean
+			ecliptic longitude $L_0$ at one moment, and the epicycle $r$, with the
+			mean Sun of page 1.3. Mars has no opposition in 2026, so we fit the model to
+			the eight oppositions from 2018 to 2033, which take Mars once round the
+			zodiac.
+		</p>
+
+		<h3>The mean motion</h3>
+
+		<p>
+			A rate is fixed best by two observations far apart, since the error of
+			each is divided by the time between them. Sixteen years are too few for
+			this, so we take the mean motion of the reference Mars, $n$ = 0.52407° a
+			day, a period in ecliptic longitude of 686.93 days.
+		</p>
+
+		<h3>The mean ecliptic longitude from the oppositions</h3>
+
+		<div class="row">
+			<p>
+				At an opposition to the mean Sun the planet lies on the line from the
+				Earth through K, so the ecliptic longitude observed there is
+				$\bar\lambda$ itself, whatever the size of the epicycle. Ptolemy chose
+				these observations for that reason: at them "the planet is viewed, in
+				theory, [along the line] through the centre of the epicycle, just as if
+				its motion on the epicycle did not exist" (X 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Each of the eight oppositions of Mars to the mean Sun, carried back to
+			J2000.0 at the rate $n$, gives a value of $L_0$. They lie from 11° below
+			their mean to 12° above it, because the zodiacal anomaly of section 1 moves the planet
+			away from $\bar\lambda$ by different amounts in different parts of the
+			zodiac. Their mean is $L_0$ = 354.79°, 38′ from the mean ecliptic
+			longitude of the reference Mars.
+		</p>
+
+		<h3>The epicycle from the loops</h3>
+
+		<p>
+			The epicycle shows most clearly in the loops: the larger it is, the
+			farther the planet goes back. The arc of a loop is also the difference
+			of two positions only weeks apart, so an error in $\bar\lambda$ hardly
+			changes it. The formula of section 2 gives the arc for each $r$, and
+			inverted it gives $r$ from an observed arc.
+		</p>
+
+		<p>
+			The eight loops of 2018–2033 went back by 16.1° on average, which gives
+			$r$ = 0.657, or 39.4 where the deferent is 60, against Ptolemy's 39.5.
+		</p>
+
+		<p>
+			Each loop on its own gives a different epicycle, from about 0.63 for
+			the short loop of 2018 to 0.67 for the long one of 2027, so no single
+			epicycle fits them all.
+		</p>
+
+		<!-- History block: Ptolemy's mean motions and oppositions -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's mean motions and oppositions</h3>
+
+			<div class="row">
+				<p>
+					For the mean motions Ptolemy starts from period relations "computed
+					by Hipparchus": for Mars, 37 returns in anomaly in 79 years, in which
+					the planet goes 42 times round the zodiac (IX 3). Toomer notes that
+					these are relations "well-known (to us)" from Babylonian astronomy,
+					which Ptolemy seems not to have recognised as such. Ptolemy corrected
+					them by comparing positions centuries apart, adding 3.22 days to the
+					79 years and 3°10′ (3.17°) to the 42 turns; Exercise 2 works out his
+					corrected relation.
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					In the older records, "the more continuous series of observations
+					concern stations and phases", first and last visibilities near the
+					Sun (IX 2). Toomer takes them to be Babylonian observations, probably
+					known to Ptolemy only through Hipparchus' compilation. Ptolemy found
+					the stations hard to use: they "cannot be fixed at an exact moment,
+					since the local motion of the planet for several days both before
+					and after the actual station is too small to be observable" (IX 2).
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					He built the theory of each outer planet on three oppositions to the
+					mean Sun that he observed himself (X 7 for Mars), since only there
+					"we find the ecliptic anomaly isolated", the conjunctions being
+					invisible (X 6). He took the size of the epicycle from one further
+					position away from opposition, sighted three days after the third
+					(X 8).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The epicycle against the real Mars</h2>
+
+		<p>
+			To see how much one epicycle explains, Figure 4 gives the error curve of
+			the model fitted to 2018–2033, $\Delta\lambda = \lambda_\text{model} -
+			\lambda_\text{ref}$, now in degrees, beside that of the uniform planet,
+			one that moves at $\bar\lambda$ with no epicycle.
+		</p>
+
+		<!-- Figure 4: the epicycle fitted to 2018 - 2033 against the reference Mars -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Point at the oppositions, the dots, where the epicycle's error changes
+				fastest. Switch to sixteen years and notice that the error there is
+				positive at some oppositions and negative at others. Then switch to two
+				hundred years: the band does not widen.
+			</figcaption>
+		</figure>
+
+		<p>
+			Over 2018–2033 the epicycle is wrong by up to 35°, a fortnight before
+			the opposition of December 2022, against 53° for the uniform planet, and its root mean square error is a third of the
+			uniform planet's. We took its mean motion from the reference, so the
+			error stays the same size over the two centuries around 2026.
+		</p>
+
+		<p>
+			The errors are largest near the oppositions, 32° at the opposition of
+			December 2022 itself, and stay within 7.3° at the conjunctions. Near the perigee an error in the place of K is
+			magnified. Since $\mu = \bar\lambda_\odot - \bar\lambda$, the equation of
+			the epicycle gives there
+		</p>
+
+		$$\frac{\partial\lambda}{\partial\bar\lambda} = 1 - \frac{d\eta}{d\mu} = \frac{1}{1 - r},$$
+
+		<p>
+			almost 3. At the opposition of December 2022 the real Mars was 12° ahead
+			of K, and the model put it 32° behind the real planet.
+		</p>
+
+		<!-- History block: Hipparchus and the simple models -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Hipparchus and the models of his time</h3>
+
+			<div class="row">
+				<p>
+					Before Ptolemy, the astronomers who used epicycles and eccentrics for
+					the planets had built their proofs, he says, "on the basis of a
+					single unvarying anomaly and retrograde arc" (IX 2). Hipparchus, he
+					says, did not even begin a theory of the planets, "not at least in his
+					writings which have come down to us". He compiled the planetary
+					observations, and showed "by means of these that the phenomena were
+					not in agreement with the hypotheses of the astronomers of that time"
+					(IX 2): each planet had two anomalies, and retrograde arcs "which are
+					not constant".
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>Loops of different sizes</h2>
+
+		<p>
+			The loops of Mars are long in one part of the zodiac and short in the
+			opposite part, while the model's loop never changes. Figure 5 sets each
+			loop of 2001–2040 against the ecliptic longitude of its opposition: Mars
+			goes back by about 10° in one part and almost 20° in the other, where
+			the model always goes back by 16°. The times between oppositions change
+			with the loops.
+		</p>
+
+		<!-- Figure 5: the loops of Mars against the ecliptic longitude (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) how far Mars goes back</p>
+						<canvas id="arcs-plot"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the time to the next opposition</p>
+						<canvas id="intervals-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Follow the dots, one for each loop of 2001–2040, round the zodiac. Both
+				the arc and the time to the next opposition rise and fall once in a turn
+				of Mars, while the line of the model fitted to 2018–2033 stays level
+				through the middle of each.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				So the zodiacal anomaly changes the loops as well as the place of K, and
+				a simple epicycle cannot follow it: without an eccentricity its arcs
+				are all of one length, as Neugebauer remarks (<em>HAMA</em> p. 191).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			To make the loops change size round the zodiac, the model needs an
+			unevenness that depends on the planet's ecliptic longitude, in the
+			distance of K from the Earth and in its speed. Page 4.2 gives Ptolemy's,
+			an eccentric deferent and the equant.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Show Apollonius' form of the condition for a station (XII 1): at a
+				station, half the chord that the line of sight cuts from the epicycle,
+				divided by the distance from the Earth to the planet, equals $n/n_\mu$,
+				the speed of K over the speed of the planet on the epicycle. Then take
+				Ptolemy's Mars, $r = 39.5/60$ with his mean motions $n$ = 0.5240597°
+				and $n_\mu$ = 0.4615756° a day (IX 3). Find the stations from the formula
+				of section 2, how far Mars goes back and for how long, and compare with
+				Ptolemy's 16°18′44″ (16.312°) and about 73 days at mean distance (XII 4).
+				How small could the epicycle be before Mars stopped going back?
+			</p>
+			<details class="hint">
+				<p>
+					Work in a frame that turns with the line OK, at the rate $n$. There K
+					stands still and the planet goes round the epicycle at $n_\mu$. How
+					fast does the planet turn about O in that frame?
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					In the turning frame the planet moves at the speed $n_\mu r$,
+					perpendicular to KP. Let T be the foot of the perpendicular from K to
+					the line of sight, the midpoint of the chord. The component of the
+					velocity across the line of sight is $n_\mu r\cos\alpha$, where
+					$\alpha$ is the angle between KP and the line, and $r\cos\alpha$ =
+					TP, half the chord. So in that frame the planet turns about O at
+					$n_\mu\,\text{TP}/\text{OP}$, backwards on the near side of the
+					epicycle. In the sky it stands still when this cancels the turning
+					of the frame, $n_\mu\,\text{TP}/\text{OP} = n$:
+				</p>
+				$$\frac{\text{TP}}{\text{OP}} = \frac{n}{n_\mu}.$$
+				<p>
+					With Ptolemy's numbers $k = n_\mu/n$ = 0.88077 (his ratio is 0.88083,
+					XII 4), so $\cos\mu_s = -0.95709$ and $\mu_s$ = 163.15°, 16.85°
+					before the perigee. There $\eta(\mu_s)$ = 27.28°. Between the stations
+					the anomaly advances 33.69°, in 73.0 days, during which K advances
+					38.25°, so Mars goes back $2 \times 27.28^\circ - 38.25^\circ$ =
+					16.312° = 16°18.7′ in 73.0 days: Ptolemy's 16°18′44″ and about 73 days.
+					At the station OP = 0.4162 and TP = 0.4726, and TP/OP = 1.1354 =
+					$n/n_\mu$.
+				</p>
+				<p>
+					Mars stops going back when $r = n/(n + n_\mu)$ = 0.5317, 31.9 where the
+					deferent is 60. Ptolemy's Jupiter and Saturn, with epicycles of 11.5 and
+					6.5, are far above their thresholds, 0.0843 and 0.0340, and go back by
+					9.9° in 120 days and 7.2° in 138 days, against 10.0° in 121 days and
+					6.8° in 137 days on average in 2001–2040.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Measured against the stars rather than from γ, the relation $n + n_\mu
+				= n_\odot$ holds with the periods of return to the same star. The mean
+				Sun comes back to the same star every 365.256 days, the mean ecliptic
+				longitude of Mars every 686.98 days, of Jupiter every 4332.59 days and
+				of Saturn every 10·759.22 days. For Venus and Mercury, whose K follows
+				the mean Sun, the radius KP of the epicycle comes back to the same star
+				every 224.70 and 87.97 days. Find the five synodic periods and compare
+				them with the intervals of section 1. Then take Ptolemy's relation for
+				Mars (IX 3; <em>HAMA</em> p. 151): 37 returns in anomaly in 79 years and
+				3.217 days, years of 365.24667 days, during which Mars goes 42 times
+				round the zodiac and 3°10′ (3.167°) more. Find the synodic period
+				and the period in ecliptic longitude, and compare them with 779.936 and
+				686.930 days. Why must the number of years be the sum of the other two
+				numbers?
+			</p>
+			<details class="hint">
+				<p>
+					For Venus and Mercury, KP turns at $n_\odot + n_\mu$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With $Y_\text{s}$ the sidereal year and $P_\lambda$ the period
+					against the stars, for an outer planet $1/S = 1/Y_\text{s} -
+					1/P_\lambda$, and for an inner one, whose KP turns at $n_\odot +
+					n_\mu$, $1/S = 1/P_\lambda - 1/Y_\text{s}$. Mercury: 115.88 days;
+					Venus: 583.92 days; Mars: 779.94 days; Jupiter: 398.88 days; Saturn:
+					378.09 days. Each lies within the intervals of section 1.
+				</p>
+				<p>
+					Ptolemy's 79 years and 3.217 days are 28·857.70 days (he writes
+					28·857.72), so his synodic
+					period is $28857.70 / 37 = 779.938$ days, 2.6 minutes from the modern
+					779.936, and his period in ecliptic longitude $28857.70 / 42.0088 =
+					686.944$ days, 21 minutes longer than 686.930. Multiplying $n + n_\mu =
+					n_\odot$ by the length of the period gives the turns of K plus the turns
+					of the anomaly equal to the turns of the mean Sun, that is, to the
+					years: $42 + 37 = 79$, a rule Ptolemy states himself (IX 3). The
+					fractions agree as well: in 3.217 days his mean Sun moves 3.170°,
+					the 3°10′ by which Mars goes beyond its 42 turns.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Use the model fitted to 2018–2033 ($L_0$ = 354.79° at J2000.0, $n$ =
+				0.524071° a day, $r$ = 0.657, and page 1.3's mean Sun) to predict the
+				oppositions of Mars of 2018 and of 2027: the moment when K is opposite
+				the mean Sun, the ecliptic longitude there, and the loop. Compare with
+				the reference sky, where Mars was at opposition on 27 July 2018 at
+				304.1° and went back by 10.6° in 62 days, and on 19 February 2027 at
+				150.7°, going back by 19.5° in 81 days. Why are the two predictions
+				wrong by different amounts?
+			</p>
+			<details class="hint">
+				<p>
+					The model's opposition is where $\bar\lambda = \bar\lambda_\odot -
+					180^\circ$, and its loop is the same at every opposition.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The model puts the opposition of 2018 on 4 August at 313.5°, 8.8 days
+					late and 9.4° too far east, and that of 2027 on 18 February at 148.5°,
+					0.9 days early and 2.3° too far west. Both of its loops go back by
+					16.1° in 73 days, too far in 2018 and not far enough in 2027.
+				</p>
+				<p>
+					The model has K move uniformly, while the real Mars runs ahead of the
+					uniform motion in some parts of the zodiac and behind it in others. At
+					its opposition to the mean Sun of 2018 the real Mars was 4.3° behind
+					K, so the mean Sun reached K's opposite point about nine days after it
+					reached the real planet's; in 2027 the real Mars was only 0.9° from K.
+					That unevenness, and the loops that change with it, is the zodiacal
+					anomaly, which the model leaves out.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): IX 2 (the two
+				anomalies, stations and phases hard to observe, Hipparchus' compilation
+				and his verdict on the earlier models, with Toomer's notes); IX 3 (the
+				period relations "computed by Hipparchus" and the mean motions, with
+				Toomer's note on their Babylonian origin); IX 5 (the time from greatest
+				to mean speed, the direction of the motion on the epicycle); X 6
+				(oppositions to the mean Sun, the epicycle's radius parallel to the line
+				to the mean Sun); X 7–8 (the oppositions of Mars, the size of its
+				epicycle); X 2, XI 2, XI 6 (the epicycles of Venus, Jupiter and Saturn);
+				XII 1 (Apollonius' theorem on the stations, the condition for
+				retrogradation, the planets that reach any elongation); XII 4 (the
+				retrogradation of Mars at mean distance).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Part One: I C 1 (pp. 145–152: the radii of the epicycles, the two
+				anomalies, the period relations from the Babylonian goal-year texts); I
+				C 6 (pp. 190–191: Apollonius' theorem, constant arcs without an
+				eccentricity); I D 3 (pp. 267–268: the stations).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 8.1 and § 8.3 (the
+				epicycle of an outer planet, its conjunctions, oppositions and
+				stations).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): the reference planets, their mean motions and
+				sidereal periods.</li>
+			<li>Every number on this page: <code>tools/numbers/4.1-going-backwards.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

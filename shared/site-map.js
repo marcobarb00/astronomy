@@ -136,7 +136,7 @@ const SITE_MAP = (function () {
 		{
 			number: '4.1',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'Going backwards',
 			question: 'Why do planets loop, and why always at opposition?',
 			path: 'act4-planets/01-going-backwards/index.html'

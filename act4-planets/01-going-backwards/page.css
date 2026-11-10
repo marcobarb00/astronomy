@@ -1,0 +1,70 @@
+/* ==========================================================================
+   PAGE 4.1 · GOING BACKWARDS - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The square drawing
+	 3. The table of the loops
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* Slider values here run up to "31 Dec 2027"; the label "epicycle r"
+   needs a wider first column. */
+figure.fig {
+	--ctl-output: 7.4em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* The choice of a planet, above the plot of Figure 2 and the panels of
+   Figure 3. */
+#motion-views,
+#epicycle-views {
+	justify-content: center;
+	margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   2. THE SQUARE DRAWING
+   The canvas sets its own square size (page.js); centre it.
+   ========================================================================== */
+
+#epicycle-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. THE TABLE OF THE LOOPS
+   A narrow table: the planet and the middle of the loop, words, on the
+   left; the numbers centred, as in the shared tables.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child,
+table.prose-table th:last-child,
+table.prose-table td:last-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+}
