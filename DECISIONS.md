@@ -85,6 +85,17 @@ section.
   questions (the second-order error, the distance varying twice too
   much). Adopted on 2026-11-02 on trial: Marco decides whether to keep it
   once the page is built. → STRUCTURE.md §4 (page 4.5)
+- **Page 4.1 fits Mars to 2018–2033, not 2026.** Mars has no opposition
+  in 2026, and the loops are what the page is about, so the fit and the
+  test use the eight oppositions of 2018–2033, once round the zodiac
+  (16 years); the error curve opens on 2024–2027 and offers the 16 years
+  and two centuries. Approved by Marco on 2026-11-09 with the plan of the
+  page. → STRUCTURE.md §4 (page 4.1)
+- **No Today note on page 4.1.** The modern counterpart of the simple
+  epicycle is two orbits about the Sun, which would answer "why does
+  every epicycle turn with the Sun?", page 4.2's closing question, before
+  page 4.3 takes it up. Approved by Marco on 2026-11-09. → STRUCTURE.md
+  §4 (page 4.1), §7.5
 
 ## Look
 
@@ -184,6 +195,17 @@ section.
   raised dot there reads as a product. Marco asked for it on 2026-10-28,
   after reading "4,267" on page 3.1 as a number with decimals. → WRITING.md
   §4
+- **The planets' epicycle: $\mu$ eastward, $\eta$ positive from apogee to
+  perigee.** A planet moves eastward at its epicycle's apogee (*Almagest*
+  IX 5), the opposite of the Moon, so its anomaly $\mu$ counts eastward
+  and the equation of the epicycle $\eta$, page 2.1's function with the
+  sign reversed, is positive from the apogee to the perigee; $S$ and
+  $P_\lambda$ are a planet's synodic period and period in ecliptic
+  longitude ($P_s$ is the synodic month, P the planet in the figures);
+  $e$ is left for page 4.2's eccentricity; the anomaly related to the Sun
+  and the zodiacal anomaly are named so, not first and second, which
+  the Moon's pages use the other way round.
+  Approved by Marco on 2026-11-09. → STRUCTURE.md §6
 
 ## Code
 
@@ -249,6 +271,14 @@ section.
   longitude of the Sun, in days of TT, implies a year 0.2 s longer; both
   round to the 365.24219 days the pages quote. Decided on 2026-11-09. →
   shared/models/clock.js, tools/numbers/1.3-clocks.js
+- **The figures of page 4.1 find the reference loops from geometric
+  positions every two days.** The apparent positions the numbers script
+  quotes cost four times as much (the Moon's series, for the Earth, twice
+  per call), and the loops of forty years took about five seconds in the
+  page; the geometric arcs are within 0.05′ of the quoted ones
+  (tools/numbers/4.1-going-backwards.js). One function,
+  `PlanetEpicycle.referenceEvents`, with the option `apparent`, serves
+  both. Decided on 2026-11-09. → shared/models/planet-epicycle.js
 
 ## Workflow
 

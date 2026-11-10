@@ -574,15 +574,72 @@ The first anomaly and the simplest complete model.
 #### 4.1 · Going backwards
 
 - **Question:** why do planets loop, and why always at opposition?
-- **Learn:** retrograde motion; the two anomalies of a planet (zodiacal and
-  solar); the epicycle as the carrier of the solar anomaly; superior versus
-  inferior planets; synodic period.
-- **Figures:** the loop seen from the Earth; the epicycle model; the error
-  curve of the simple model for Mars (degrees).
-- **Exercises:** the condition for a stationary point; synodic period from
-  sidereal periods.
-- **Hands over:** the loops come out the wrong size in different parts of the
-  zodiac.
+- **Learn:** retrograde motion and the stations (Mars' loop of 2024–2025,
+  19.2° in 79 days); the loops of the five planets in 2001–2040 (a table),
+  centred on opposition for Mars, Jupiter and Saturn and on inferior
+  conjunction for Venus and Mercury, which never pass 47° and 28° from the
+  Sun (XII 1); the two anomalies, related to the Sun and to the place in
+  the ecliptic, the zodiacal anomaly (IX 2); Ptolemy's asymmetry, longer from greatest speed to
+  mean than from mean to least (IX 5). The epicycle (Apollonius, XII 1),
+  its radius KP parallel to the line to the mean Sun (X 6):
+  $\vec{OP} = \hat u(\bar\lambda) + r\,\hat u(\bar\lambda + \mu)$ with
+  $\mu = \bar\lambda_\odot - \bar\lambda$, $n + n_\mu = n_\odot$; the
+  equation of the epicycle $\eta = \operatorname{atan2}(r\sin\mu, 1 +
+  r\cos\mu)$, page 2.1's function with the sign reversed; the speed, and
+  why the planet moves eastward at the epicycle's apogee (IX 5, the
+  opposite of the Moon); retrogradation iff $r > n/(n + n_\mu)$ (XII 1),
+  centred on the opposition to the mean Sun; the stations, $\cos\mu_s =
+  -(1 + r^2(1 + k))/(r(2 + k))$, $k = n_\mu/n$, and the arc; inner planets
+  (K on the mean Sun, greatest elongation $\arcsin r$); the synodic
+  period, $1/P_\lambda + 1/S = 1/Y$.
+- **Notation:** $\mu$, $\eta$, $n_\mu$, $S$, $P_\lambda$ (§6); $n$ is
+  the planet's mean motion and $n_\odot$ the mean Sun's; lengths in units of
+  the deferent's radius (Ptolemy's 60); $e$ is left free for page 4.2.
+- **Figures:** a blue plate of Mars' path among the stars of Gemini and
+  Cancer, 15 October 2024 to 15 April 2025, with the stations and the
+  opposition dated; the daily motion against the place relative to the
+  Sun, one curve per synodic period of 2011–2030 (a view per planet,
+  static); the epicycle and the daily motion against $\mu$ (date and $r$,
+  presets Ptolemy's, no loop, no epicycle; views Mars and Venus); the
+  error curve of Mars in degrees (the uniform planet as ghost, dots at the
+  oppositions; 4 years, 16 years, 200 years); the arcs and the intervals
+  of the loops of 2001–2040 against the ecliptic longitude of opposition
+  (static).
+- **Fit:** Mars has no opposition in 2026, so the eight oppositions of
+  2018–2033, once round the zodiac. $n$ from the reference (Standish's
+  mean longitude of date); $L_0$ from the oppositions to the mean Sun,
+  where the planet is seen through K (X 6), 354.79°, 38′ from the
+  reference, each opposition 11° to 12° off; $r$ from the mean arc of
+  retrogradation, 16.07°, so 0.657 (39.4 in 60; Ptolemy 39.5), each loop
+  alone 0.626 to 0.674. History block: the period relations "computed by
+  Hipparchus", Babylonian (IX 3, Toomer), and Ptolemy's corrections;
+  stations hard to time (IX 2); Ptolemy's oppositions, where the ecliptic
+  anomaly is isolated (X 6), and his epicycle of Mars (X 7–8).
+- **Test:** within 34.5° over 2018–2033 (the uniform planet 53.2°), rms
+  9.9°; the same over 1926–2126; largest near the oppositions (32° at
+  that of December 2022), an
+  error in K multiplied by $1/(1 - r)$ there. History block: Hipparchus'
+  verdict on the models of a "single unvarying anomaly and retrograde arc"
+  (IX 2).
+- **Residual:** the arcs follow the zodiac, 10.0° to 19.5° against the
+  model's 16.1°, and the intervals 764 to 810 days against 779.9;
+  Neugebauer's remark on constant arcs (HAMA p. 191). Detour: planetary
+  latitudes (the shape of the loop).
+- **Exercises:** Apollonius' form of the station (TP/OP = $n/n_\mu$) and
+  Ptolemy's Mars at mean distance, 16°18′44″ in about 73 days (XII 4),
+  with Jupiter and Saturn; the synodic periods from the periods of return
+  to the same star, and Ptolemy's 79-year relation for Mars (IX 3);
+  the oppositions of 2018 and 2027 in the model (break the model).
+- **Code:** `models/planet-epicycle.js` (`PlanetEpicycle`: `make`,
+  `makeUniform`, `state`, `dailyMotion`, `loopThreshold`,
+  `stationAnomaly`, `loop`, `ratioForArc`, `construction`,
+  `referenceEvents` (the reference sky's stations and loops); `PTOLEMY`
+  (the mean motions of IX 3 and the epicycles, five planets),
+  `MARS_FIT`, `VENUS_MEAN`); the figures GEMINI and CANCER in `plate.js`.
+- **No Today note:** its modern counterpart (two orbits about the Sun)
+  would answer page 4.2's closing question before page 4.3 asks it.
+- **Hands over:** the loops come out the wrong size in different parts of
+  the zodiac.
 
 #### 4.2 · The equant
 
@@ -822,7 +879,7 @@ once on the page.
 | $\theta_G$ | the sidereal time at Greenwich, $\theta = \theta_G + \ell$ |
 | $\ell$ | geographic longitude, positive east (Meeus counts it positive west; Fitzpatrick writes $\varphi$) |
 | $d$ | days since J2000.0, $\text{JD} - 2451545.0$ |
-| $n$ | the mean Sun's daily motion, $360^\circ / Y$ |
+| $n$ | the mean Sun's daily motion, $360^\circ / Y$; for the Moon and a planet, their mean daily motion in ecliptic longitude, the Sun's then $n_\odot$ (pages 3.1, 4.1) |
 | γ | the vernal point, origin of $\alpha$ and $\lambda$ (♈ in older books) |
 | P, K, Z | north celestial pole, north ecliptic pole, zenith |
 | $\bar\lambda$ | mean longitude |
@@ -850,6 +907,10 @@ once on the page.
 | $s,\ s_\odot$ | the apparent radii of the Moon and the Sun (page 3.3) |
 | $\pi,\ \pi_\odot$ | the horizontal parallaxes of the Moon and the Sun (page 3.3) |
 | $u$ | the radius of the Earth's umbra at the Moon's distance (page 3.3) |
+| $\mu$ | a planet's anomaly on its epicycle, counted from the epicycle's apogee eastward, in the direction of the motion (page 4.1); for an outer planet $\mu = \bar\lambda_\odot - \bar\lambda$ |
+| $\eta$ | the equation of the epicycle, $\lambda = \bar\lambda + \eta$, positive from the apogee to the perigee (page 4.1) |
+| $n_\mu$ | a planet's daily motion in anomaly; for an outer planet $n + n_\mu = n_\odot$ (page 4.1) |
+| $S,\ P_\lambda$ | a planet's synodic period and its period in ecliptic longitude (page 4.1) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -957,7 +1018,7 @@ of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
 at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
-reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The mean Sun (`models/mean-sun.js`, page 1.3)
+reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The simple planetary epicycle (`models/planet-epicycle.js`, page 4.1) carries a planet on an epicycle whose radius keeps the direction of the mean Sun, and finds the reference sky's stations and loops (`PlanetEpicycle.referenceEvents`). The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,

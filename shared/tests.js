@@ -6,7 +6,7 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 3.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   pages 1.1 to 4.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
    solar-eccentric.js, equation-of-time.js, precession.js,
    lunar-epicycle.js).
 
@@ -29,7 +29,8 @@
 	16. Precession and the moving apogee (Almagest VII 2; page 2.3)
 	17. The lunar epicycle (Almagest IV 5-10; De Rev. IV 5; page 3.1)
 	18. Ptolemy's crank (Almagest V 4-7, V 13; page 3.2)
-	19. Run
+	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
+	20. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -1953,7 +1954,108 @@ function testLunarLatitude() {
 }
 
 /* ==========================================================================
-   19. RUN
+   19. THE SIMPLE PLANETARY EPICYCLE (Almagest IX 3, XII 1, XII 4; page 4.1)
+   ========================================================================== */
+
+function testPlanetEpicycle() {
+	group('The simple planetary epicycle · models/planet-epicycle.js (page 4.1)');
+
+	const mars = PlanetEpicycle.PTOLEMY.mars;
+	const loop = PlanetEpicycle.loop(mars.r, mars.n, mars.nMu);
+
+	// IX 3: for an outer planet the motions in longitude and in anomaly
+	// add up to the mean Sun's
+	check({
+		name: "Mars' motions in longitude and anomaly, their sum",
+		source: "Almagest IX 3 (the mean Sun's 0;59,8,17,13,12,31°)",
+		expected: polynomial(1 / 60, [0, 59, 8, 17, 13, 12, 31]),
+		computed: mars.n + mars.nMu,
+		tol: 1e-6,
+		unit: '°/day',
+		show: x => x.toFixed(9)
+	});
+
+	// XII 4: Mars' retrogradation at mean distance, 16;18,44° in about 73 days
+	check({
+		name: "Mars' arc of retrogradation at mean distance",
+		source: 'Almagest XII 4 (16;18,44°)',
+		expected: 16 + 18 / 60 + 44 / 3600,
+		computed: loop.arc,
+		tol: 0.2,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	check({
+		name: "Mars' days of retrogradation at mean distance",
+		source: 'Almagest XII 4 (about 73 days)',
+		expected: 73,
+		computed: loop.days,
+		tol: 0.5,
+		unit: 'days',
+		show: x => x.toFixed(2)
+	});
+
+	// XII 1: at the station, half the chord of the epicycle on the line of
+	// sight over the distance to the nearer intersection is n / nMu
+	const P = [1 + mars.r * cos(loop.mu), mars.r * sin(loop.mu)];
+	const distance = Math.hypot(P[0], P[1]);
+	const along = P[0] / distance;
+	const halfChord = Math.sqrt(along * along - (1 - mars.r * mars.r));
+
+	check({
+		name: "Apollonius' ratio at the station",
+		source: 'Almagest XII 1 (= n / n_mu)',
+		expected: mars.n / mars.nMu,
+		computed: halfChord / distance,
+		tol: 1e-9,
+		show: x => x.toFixed(9)
+	});
+
+	// the daily motion is zero at the station
+	check({
+		name: 'The daily motion at the station',
+		source: 'dλ/dt = 0',
+		expected: 0,
+		computed: PlanetEpicycle.dailyMotion(loop.mu, mars.r, mars.n, mars.nMu),
+		tol: 1e-9,
+		unit: '°/day',
+		show: x => x.toExponential(2)
+	});
+
+	// the model's longitude is the direction of its constructed planet
+	const s = PlanetEpicycle.state(PlanetEpicycle.MARS_FIT, Time.julianDay(2025, 1, 16));
+	const point = PlanetEpicycle.construction(s, PlanetEpicycle.MARS_FIT.r).planet;
+
+	check({
+		name: 'The longitude against the construction, 16 January 2025',
+		source: 'OP = u(λ̄) + r u(λ̄ + μ)',
+		expected: atan2d(point[1], point[0]),
+		computed: s.lambda,
+		tol: 1e-9,
+		unit: '°',
+		angle: true,
+		show: showDeg
+	});
+
+	// the greatest equation of the epicycle is arcsin r, at cos mu = -r
+	check({
+		name: "The greatest equation of Venus' epicycle",
+		source: 'arcsin(43;10 / 60)',
+		expected: asin(PlanetEpicycle.PTOLEMY.venus.r),
+		computed: PlanetEpicycle.equationOfEpicycle(
+			acos(-PlanetEpicycle.PTOLEMY.venus.r),
+			PlanetEpicycle.PTOLEMY.venus.r
+		),
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+}
+
+/* ==========================================================================
+   20. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1977,5 +2079,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testLunarEpicycle();
 	testLunarCrank();
 	testLunarLatitude();
+	testPlanetEpicycle();
 	render();
 });

@@ -27,6 +27,7 @@ const PAGES = [
 	'act3-moon/01-first-anomaly/index.html',
 	'act3-moon/02-evection/index.html',
 	'act3-moon/03-eclipses/index.html',
+	'act4-planets/01-going-backwards/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',
