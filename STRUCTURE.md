@@ -146,12 +146,15 @@ The language needed to state any prediction.
   of stars. Day length counts the Sun's upper limb with refraction
   ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
 - **Figures:** the sky from above the pole through 2026 (date and time:
-  366 turns of the sky in 365 days; play a day or a year); the three angles of
+  366 turns of the sky in 365 days, the solid part of the ecliptic showing
+  the extra turn; play a day or a year); the three angles of
   $\theta_G = H_m + \alpha_m$ on the equator (static, one worked moment);
-  $\theta$, $\alpha$ and $H$ as arcs of the
-  equator in the observer's sky (3D, time and longitude); a star calendar of
-  transits and nights; the length of the day at one latitude and at every
-  latitude; the model Sun against the real one.
+  $\theta_G$, $\ell$, $\alpha$ and $H$ as arcs of the equator seen from
+  above the pole (2D, time and longitude: the time turns the sky, the
+  longitude the observer's meridian); a star calendar of transits and
+  nights; the length of the day through the year at one latitude, and
+  against the latitude on three dates; the model Sun against the real one
+  (noon and the length of the day).
 - **Model:** $Y$ solar days are $Y + 1$ sidereal days; $\theta = \theta_G +
   \ell$; mean solar time from the mean Sun ($\alpha_m = \bar\lambda$), which
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
