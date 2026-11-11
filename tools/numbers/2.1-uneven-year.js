@@ -196,7 +196,23 @@ console.log(
 console.log(
 	`mean n = ${f(N_MODERN * 60, 2)}'; swing +${f((fastest.motion / (N_MODERN * 60) - 1) * 100, 1)}% / ${f((slowest.motion / (N_MODERN * 60) - 1) * 100, 1)}%`
 );
-console.log(`Figure 1 range: ${f(slowest.motion, 2)}' to ${f(fastest.motion, 2)}' (axis 56' to 62')`);
+{
+	/* Figure 1 runs from the March equinox of 2026 to that of 2027, with
+	   the four seasons of the table above it. */
+	let low = 99;
+	let high = 0;
+
+	for (let jd = s2026.times[0]; jd <= s2026.times[4]; jd += 0.25) {
+		const motion = norm180(sunLongitude(jd + 0.5) - sunLongitude(jd - 0.5)) * 60;
+
+		low = Math.min(low, motion);
+		high = Math.max(high, motion);
+	}
+
+	console.log(
+		`Figure 1, ${date(s2026.times[0])} to ${date(s2026.times[4])}: range ${f(low, 2)}' to ${f(high, 2)}' (axis 56' to 62'); seasons ${s2026.lengths.map(x => f(x, 2)).join(', ')} d`
+	);
+}
 
 title("Observation: the seasons of Hipparchus' and Ptolemy's time");
 const s141BC = seasons(Time.julianDay(-140, 3, 1));
@@ -230,9 +246,11 @@ console.log(
 	`Ptolemy III 5, M = 30°, e = 2;30/60: q = ${dms(qAt30)} (his 1;9); seen from the Earth ${dms(30 + qAt30)} (his 28;51)`
 );
 
-title('Model: the seasons of the 2026 eccentric (Figure 2 default)');
+title('Model: the seasons of the 2026 eccentric (Figure 4 (b))');
 const fit2026Lengths = SolarEccentric.seasonLengths(SolarEccentric.FIT_2026.e, SolarEccentric.FIT_2026.apogee, YEAR);
-console.log(`FIT_2026: ${fit2026Lengths.map(x => f(x, 2)).join(', ')} d`);
+console.log(
+	`FIT_2026: ${fit2026Lengths.map(x => f(x, 2)).join(', ')} d; summer - winter = ${f(fit2026Lengths[1] - fit2026Lengths[3], 2)} d (real ${f(s2026.lengths[1] - s2026.lengths[3], 2)} d)`
+);
 console.log(
 	`with e = 0.1: ${SolarEccentric.seasonLengths(0.1, SolarEccentric.FIT_2026.apogee, YEAR)
 		.map(x => f(x, 2))
@@ -271,7 +289,7 @@ console.log(
 	`mean motion in 94 1/2 d: ${dms(94.5 * N_PTOLEMY)} (Ptolemy 93;9); in 92 1/2 d: ${dms(92.5 * N_PTOLEMY)} (91;11)`
 );
 const fitHipparchus = printFit("Hipparchus' seasons, Ptolemy's year", 94.5, 92.5, Y_PTOLEMY);
-printFit("Hipparchus' seasons, modern year (Figure 3 preset)", 94.5, 92.5, YEAR);
+printFit("Hipparchus' seasons, modern year (Figure 5 preset)", 94.5, 92.5, YEAR);
 console.log(
 	"Ptolemy's chords: EX = 2;16, ZX = 1;2 (x 60 on a diameter of 120: halve), EZ = 2;29 1/2 -> 1 : 24, apogee 24;30 before the solstice"
 );
@@ -305,13 +323,13 @@ title('Fit: sensitivity to the timing');
 	);
 }
 
-title('Fit: the real seasons of 141 BC through the same method (Figure 3 preset)');
+title('Fit: the real seasons of 141 BC through the same method (Figure 5 preset)');
 const fit141BC = printFit('141 BC', s141BC.lengths[0], s141BC.lengths[1], YEAR);
 console.log(
 	`Hipparchus' spring + summer is ${f(187 - s141BC.lengths[0] - s141BC.lengths[1], 2)} d too long; his e is ${f((fitHipparchus.e / fit141BC.e - 1) * 100, 0)}% too large`
 );
 
-title('Fit: 2026 (Figure 3 preset, and the model of the page)');
+title('Fit: 2026 (Figure 5 preset, and the model of the page)');
 const fit2026 = printFit('2026', s2026.lengths[0], s2026.lengths[1], YEAR);
 console.log(
 	`   real autumn ${f(s2026.lengths[2], 3)} d, winter ${f(s2026.lengths[3], 3)} d: predicted - real ${f((fit2026.lengths[2] - s2026.lengths[2]) * 24, 2)} h, ${f((fit2026.lengths[3] - s2026.lengths[3]) * 24, 2)} h`
@@ -379,7 +397,7 @@ function printStats(label, s, unit = 'arcmin') {
 	);
 }
 
-title('Test: Figure 4, 2026');
+title('Test: Figure 6, 2026, and the uniform circle of page 1.3');
 const meanSun = MeanSun.make();
 const ours = SolarEccentric.make(SolarEccentric.FIT_2026);
 printStats('uniform circle (MeanSun.MODERN)', errorStats(meanSun, Y2026, Y2027, 0.25));
@@ -393,7 +411,7 @@ printStats('eccentric (FIT_2026)', errorStats(ours, Y2026, Y2027, 0.25));
 	console.log(`  largest error / the Sun's diameter ${f(1919.26 / 60, 2)}': ${f(largest / (1919.26 / 60), 3)}`);
 }
 
-title('Test: the eccentric over longer spans, Figure 4 (b)');
+title('Test: the eccentric over longer spans, Figure 6');
 printStats('2026', errorStats(ours, Y2026, Y2027, 0.25));
 [
 	[1976, 2076],
@@ -572,7 +590,7 @@ console.log(`spring equinox 140: real ${when(atAlexandria(real140s))}; Ptolemy 2
 console.log(`summer solstice 140: real ${when(atAlexandria(real140ss))}; Ptolemy 25 Jun, 2 h after midnight (02h)`);
 const sAD140fit = SolarEccentric.fitSeasons(sAD140.lengths[0], sAD140.lengths[1], YEAR);
 console.log(
-	`AD 140 real: spring ${f(sAD140.lengths[0], 2)}, summer ${f(sAD140.lengths[1], 2)} -> apogee ${f(sAD140fit.apogee, 2)}°, e ${f(sAD140fit.e, 4)}`
+	`AD 140 real (Figure 5 preset): spring ${f(sAD140.lengths[0], 2)}, summer ${f(sAD140.lengths[1], 2)} -> apogee ${f(sAD140fit.apogee, 2)}°, e ${f(sAD140fit.e, 4)}`
 );
 
 /* The answer's "one hour moved between two seasons", with the real
@@ -587,10 +605,13 @@ console.log(`  one hour from summer to spring: apogee ${f(sAD140hour.apogee - sA
 
 title('Scales');
 console.log(
-	`Figure 2: e up to 0.2 -> |q| up to ${f(SolarEccentric.greatestEquation(0.2).q, 2)}° (axis +-12°); 0.2 / e(2026) = ${f(0.2 / SolarEccentric.FIT_2026.e, 2)}`
+	`Figure 3, view e = 0.2: |q| up to ${f(SolarEccentric.greatestEquation(0.2).q, 2)}° (axis +-12°); 0.2 / e(2026) = ${f(0.2 / SolarEccentric.FIT_2026.e, 2)}`
 );
 console.log(
-	`Figure 2 at e = 0.2: seasons ${SolarEccentric.seasonLengths(0.2, SolarEccentric.FIT_2026.apogee, YEAR)
+	`Figure 3, view e = ${f(SolarEccentric.FIT_2026.e, 4)}: |q| up to ${f(SolarEccentric.greatestEquation(SolarEccentric.FIT_2026.e).q, 2)}° (axis +-2.5°)`
+);
+console.log(
+	`Figure 4 (a), e = 0.2: seasons ${SolarEccentric.seasonLengths(0.2, SolarEccentric.FIT_2026.apogee, YEAR)
 		.map(x => f(x, 2))
 		.join(', ')} d`
 );
@@ -603,5 +624,5 @@ for (let a = 90; a <= 96; a += 0.5) {
 }
 
 console.log(
-	`Figure 3: spring and summer from 90 to 96 d -> e up to ${f(largestE, 4)} (zoom panel +-0.1); drawn six times farther out in (a): ${f(6 * largestE, 3)}`
+	`Figure 5: spring and summer from 90 to 96 d -> e up to ${f(largestE, 4)} (zoom panel +-0.1); drawn six times farther out in (a): ${f(6 * largestE, 3)}`
 );
