@@ -409,11 +409,15 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
     #hor-readout: \text{K:}\ \alpha = 270^\circ,\quad \delta = 66.56^\circ | a_\text{K} = 25.3^\circ | I = 90^\circ - |a_\text{K}| = 64.7^\circ
+  hover #noon-plot at 0.3
+  hover #noon-plot at 0.6
+  hover #noon-plot at 0.9
+  hover #noon-plot left
   hover #nutation-plot at 0.3
   hover #nutation-plot at 0.6
   hover #nutation-plot at 0.9
   hover #nutation-plot left
-  dragged 2 spheres
+  dragged 3 spheres
 
 === act1-stage/03-clocks/index.html ===
   as loaded

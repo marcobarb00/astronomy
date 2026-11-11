@@ -564,15 +564,32 @@
 		<div class="row">
 			<p>
 				The same formulas can be read as spherical trigonometry. The
-				pole P, the zenith Z and the star S make a spherical triangle,
-				with sides $90^\circ - \varphi$ (from P to Z), $90^\circ -
-				\delta$ and $90^\circ - a$, and with the hour angle $H$ as its
-				angle at P.
+				pole P, the zenith Z and the star S make a spherical triangle
+				(Figure 4), with sides $90^\circ - \varphi$ (from P to Z),
+				$90^\circ - \delta$ and $90^\circ - a$, and with the hour angle
+				$H$ as its angle at P.
 			</p>
 			<aside>
 				<div class="note" data-origin="modern"></div>
 			</aside>
 		</div>
+
+		<!-- Figure 4: the triangle pole, zenith, star (static, no controls) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="sphere-box">
+					<canvas id="triangle-canvas"></canvas>
+				</div>
+			</div>
+			<figcaption>
+				Find the triangle whose corners are the pole P, the zenith Z and
+				the star S, here Aldebaran in the observation of section 1 (the
+				green S on the horizon is the south point). Notice the angle at
+				P, between the side to Z, which lies on the meridian, and the
+				side to the star: it is the hour angle $H$, here to the east of
+				the meridian.
+			</figcaption>
+		</figure>
 
 		<p>
 			The three rows above are the three classical rules for that
@@ -629,9 +646,9 @@
 
 		<p>
 			At Alexandria, where Ptolemy observed, the real noon Sun of 2026
-			stands 82.240° high at the June solstice and 35.388° at the December
-			solstice, which give $\varepsilon = 23.426^\circ$ and the geographic
-			latitude of the city within 1′.
+			(Figure 5) stands 82.240° high at the June solstice and 35.388° at
+			the December solstice, which give $\varepsilon = 23.426^\circ$ and
+			the geographic latitude of the city within 1′.
 		</p>
 
 		<p>
@@ -640,6 +657,22 @@
 			much more than the high summer Sun, which shrinks the arc between
 			them.
 		</p>
+
+		<!-- Figure 5: the noon Sun through the year (static, no controls) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="noon-plot"></canvas>
+			</div>
+			<figcaption>
+				Read the obliquity off the curve of the noon Sun at Alexandria:
+				its highest and lowest points lie $\varepsilon$ above and below
+				the dashed line, the altitude $90^\circ - \varphi$ of the
+				equator. The curve is flat at the solstices, so a reading there
+				repeats for days, and steepest where it crosses the line, so the
+				noon altitudes fix the day of an equinox. The dot marks the
+				March crossing, when the Sun is at γ.
+			</figcaption>
+		</figure>
 
 		<h3>The origin from the March equinox</h3>
 
@@ -728,7 +761,7 @@
 		</div>
 
 		<p>
-			To isolate it, Figure 4 takes the reference Sun's ecliptic
+			To isolate it, Figure 6 takes the reference Sun's ecliptic
 			coordinates for each day of 2026 and converts them with the mean
 			obliquity of date, as the frames of section 2 do. It then compares
 			the result with the reference Sun's own $(\alpha, \delta)$, computed
@@ -736,7 +769,7 @@
 			$\lambda$ and $\beta$, the difference is due to nutation alone.
 		</p>
 
-		<!-- Figure 4: the nutation error (static, no controls) -->
+		<!-- Figure 6: the nutation error (static, no controls) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="nutation-plot"></canvas>

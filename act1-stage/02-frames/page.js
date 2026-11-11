@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 1.2 · FRAMES - SCRIPT (page.js)
-   Four figures, each with its own init and draw (and update when it has
+   Six figures, each with its own init and draw (and update when it has
    controls):
 	 1. the zodiac around Taurus  (a blue plate: a static chart of the stars)
 	 2. ecliptic and equator      (3D, equatorial frame: the stars never move;
@@ -10,7 +10,11 @@
 								   of the sky move the sky, never the ground;
 								   the arcs theta, alpha and H of a star, or
 								   the ecliptic and its angle to the horizon)
-	 4. the nutation error        (2D, static: mean against true obliquity
+	 4. the triangle P, Z, star   (3D, static: the horizon frame at the
+								   observation of section 1)
+	 5. the noon Sun              (2D, static: its altitude at Alexandria
+								   through 2026, for the fit)
+	 6. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
    models/frames.js, plate-stars.js, plate.js, sphere3d.js, plot2d.js,
@@ -22,8 +26,10 @@
 	 1. Figure 1: the zodiac around Taurus
 	 2. Figure 2: ecliptic and equator
 	 3. Figure 3: equator and horizon
-	 4. Figure 4: the nutation error
-	 5. Page start
+	 4. Figure 4: the triangle pole, zenith, star
+	 5. Figure 5: the noon Sun through the year
+	 6. Figure 6: the nutation error
+	 7. Page start
    ========================================================================== */
 
 /* ==========================================================================
@@ -37,6 +43,17 @@ const EPS_TODAY = Ephem.meanObliquity(STAR_EPOCH);
 
 /* The axes are drawn a little beyond the sphere. */
 const AXIS_LENGTH = 1.25;
+
+/* x ticks at the first of every other month (day of the year 2026). */
+const MONTH_TICKS = [
+	[0, 'Jan'],
+	[59, 'Mar'],
+	[120, 'May'],
+	[181, 'Jul'],
+	[243, 'Sep'],
+	[304, 'Nov'],
+	[365, '']
+];
 
 /* Text of an angle with two decimals: "−5.47°". */
 const formatDegrees = value => `${value.toFixed(2).replace('-', '−')}°`;
@@ -89,8 +106,9 @@ const ARROW_MIN_SWEEP = 3;
 /* A symbol centred 'distance' px from a point of the sphere, on the screen
    side that faces the 3D point 'toward' (a negative distance: on the
    opposite side). The place follows the point smoothly, so the symbol
-   never jumps round it. */
-function labelBeside(sphere, text, point, toward, distance, color) {
+   never jumps round it. With 'always', it is not faded on the far side of
+   the sphere. */
+function labelBeside(sphere, text, point, toward, distance, color, always = false) {
 	const q = sphere.project(point);
 	const t = sphere.project(toward);
 	const length = Math.hypot(t.x - q.x, t.y - q.y) || 1;
@@ -101,6 +119,7 @@ function labelBeside(sphere, text, point, toward, distance, color) {
 
 	sphere.label(text, point, {
 		color: color,
+		always: always,
 		dx: (distance * (t.x - q.x)) / length - width / 2,
 		dy: (distance * (t.y - q.y)) / length + SYMBOL_HALF_HEIGHT
 	});
@@ -739,7 +758,232 @@ const horizonFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE NUTATION ERROR
+   4. FIGURE 4: THE TRIANGLE POLE, ZENITH, STAR
+   A static figure: no controls. The horizon frame at the observation of
+   section 1 (Aldebaran from Rome), with the spherical triangle whose
+   corners are the pole P, the zenith Z and the star S. Its sides are the
+   complements of the geographic latitude, the declination and the
+   altitude; its angle at P is the hour angle.
+   ========================================================================== */
+
+/* The sides of the triangle are drawn with this many segments. */
+const TRIANGLE_SIDE_STEPS = 30;
+
+/* The hour angle is marked by a small arc between the two sides that
+   leave P, this far from P (deg), and named this much further on. */
+const HOUR_ANGLE_MARK = 13;
+const HOUR_ANGLE_NAME = 22;
+
+/* The names of the corners P and S are this far from them (px), on the
+   side away from the triangle. */
+const CORNER_NAME_GAP = 18;
+
+/* The great-circle arc from the unit vector a to the unit vector b, as a
+   list of points. */
+function greatArc(a, b, steps = TRIANGLE_SIDE_STEPS) {
+	const angle = acos(clamp(dot3(a, b), -1, 1));
+	const across = normalize3(sub3(b, scale(a, dot3(a, b))));
+	const points = [];
+
+	for (let i = 0; i <= steps; i++) {
+		points.push(arcPoint(a, across, (angle * i) / steps));
+	}
+
+	return points;
+}
+
+/* The point at 'degrees' from the unit vector a along the great circle
+   towards the unit vector b. */
+function alongGreatArc(a, b, degrees) {
+	const across = normalize3(sub3(b, scale(a, dot3(a, b))));
+
+	return arcPoint(a, across, degrees);
+}
+
+const triangleFigure = {
+	sphere: null,
+	corners: null,
+
+	init() {
+		const eq = Stars.ofDateByName(OBSERVATION.star, STAR_EPOCH);
+		const matrix = Frames.equatorialToHorizonMatrix(OBSERVATION.phi, OBSERVATION.theta);
+
+		this.corners = {
+			P: matApply(matrix, [0, 0, 1]),
+			Z: [0, 0, 1],
+			S: matApply(matrix, fromLonLat(eq.ra, eq.dec))
+		};
+
+		// seen from the east and from high up, so that the triangle, which
+		// lies round the zenith, faces the reader
+		this.sphere = new Sphere3D(byId('triangle-canvas'), {
+			yaw: 200,
+			pitch: 62,
+			onDraw: () => this.draw()
+		});
+		this.sphere.redraw();
+	},
+
+	draw() {
+		const s = this.sphere;
+		const { P, Z, S } = this.corners;
+		const sidePZ = greatArc(P, Z);
+		const sidePS = greatArc(P, S);
+		const sideZS = greatArc(Z, S);
+		const middle = normalize3(add3(add3(P, Z), S));
+		const middleOf = points => points[Math.floor(points.length / 2)];
+
+		s.outline();
+		s.ground();
+
+		// the triangle, lightly shaded, and its three sides: along the
+		// meridian, along the star's hour circle, along its vertical circle
+		s.fill([...sidePZ, ...sideZS, ...sidePS.slice().reverse()], { color: COL.muted, alpha: 0.16 });
+		s.path(sidePZ, { color: COL.ink, width: 3 });
+		s.path(sidePS, { color: COL.earth, width: 3 });
+		s.path(sideZS, { color: COL.deferent, width: 3 });
+
+		// the hour angle, between the two sides that leave P
+		s.path(greatArc(alongGreatArc(P, Z, HOUR_ANGLE_MARK), alongGreatArc(P, S, HOUR_ANGLE_MARK), 8), {
+			color: COL.ink,
+			width: 1.5
+		});
+		labelBeside(s, 'H', alongGreatArc(P, middle, HOUR_ANGLE_NAME), middle, 0, COL.ink);
+
+		// the corners (Z is named by the ground)
+		// P is just on the far side in this view: drawn at full strength
+		s.point(P, { color: COL.earth, radius: 4, always: true });
+		labelBeside(s, 'P', P, middle, -CORNER_NAME_GAP, COL.earth, true);
+		s.star(S, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
+		labelBeside(s, 'S', S, middle, -CORNER_NAME_GAP, COL.planet);
+
+		// each side is named on its outer side, away from the triangle
+		s.labelAway('90° − φ', middleOf(sidePZ), middle, COL.ink);
+		s.labelAway('90° − δ', middleOf(sidePS), middle, COL.earth);
+		s.labelAway('90° − a', middleOf(sideZS), middle, COL.deferent);
+	}
+};
+
+/* ==========================================================================
+   5. FIGURE 5: THE NOON SUN THROUGH THE YEAR
+   A static figure: no controls. The altitude of the reference Sun at noon
+   at Alexandria on each day of 2026, as seen (with refraction). The
+   highest and the lowest value are the obliquity above and below the
+   altitude of the equator, 90° - phi, and the curve crosses that altitude
+   at the equinoxes. Fixed scale: every value lies between 35.39° and
+   82.24° (tools/numbers/1.2-frames.js).
+   ========================================================================== */
+
+/* Alexandria, where Ptolemy observed (deg; longitude positive east), as in
+   tools/numbers/1.2-frames.js. */
+const ALEXANDRIA = { lat: 31.2, lon: 29.9 };
+
+const NOON_YEAR = 2026;
+const NOON_Y_RANGE = [25, 95]; // degrees
+
+/* The altitude of the equator is named under its line on this day of the
+   year, below the hump of the curve, where there is room on a phone too.
+   The lower mark of the obliquity is drawn this many days before the
+   December solstice, so that it does not sit on the edge of the plot. */
+const NOON_EQUATOR_NAME_DAY = 172;
+const NOON_LOWER_MARK_BEFORE = 9;
+
+/* The seen altitude (deg) of the Sun at noon on each day of a year at a
+   place: the declination of the reference Sun when it crosses the
+   meridian of the place, raised by refraction. */
+function noonAltitudes(year, place) {
+	const start = Time.julianDay(year, 1, 1);
+	const days = [];
+
+	for (let day = 0; day <= 365; day++) {
+		const jdTT = Time.ttFromUt(start + day + 0.5 - place.lon / 360);
+		const dec = Ephem.equatorial(Ephem.sun(jdTT), jdTT).dec;
+		const altitude = Diurnal.upperCulmination(dec, place.lat);
+
+		days.push({ day: day, altitude: altitude + Ephem.refraction(altitude) });
+	}
+
+	return days;
+}
+
+/* The day of the year, with its fraction, on which the noon altitudes
+   first rise through 'level' (deg): between two noons the altitude is
+   taken to change evenly. */
+function risesThrough(days, level) {
+	const after = days.findIndex((d, i) => i > 0 && days[i - 1].altitude < level && d.altitude >= level);
+	const before = days[after - 1];
+
+	return before.day + (level - before.altitude) / (days[after].altitude - before.altitude);
+}
+
+const noonFigure = {
+	plot: null,
+	days: null,
+
+	init() {
+		this.days = noonAltitudes(NOON_YEAR, ALEXANDRIA);
+		this.plot = new Plot2D(byId('noon-plot'), {
+			x: [0, 365],
+			y: NOON_Y_RANGE,
+			xLabel: `date (${NOON_YEAR})`,
+			yLabel: 'altitude of the Sun at noon (°)',
+			aspect: 0.5,
+			xTicks: () => MONTH_TICKS.map(([value, label]) => ({ value, label })),
+			onDraw: () => this.draw()
+		});
+		this.plot.redraw();
+	},
+
+	draw() {
+		const p = this.plot;
+		const equator = 90 - ALEXANDRIA.lat;
+		const highest = this.days.reduce((best, d) => (d.altitude > best.altitude ? d : best));
+		const lowest = this.days.reduce((best, d) => (d.altitude < best.altitude ? d : best));
+		const lowerMarkDay = lowest.day - NOON_LOWER_MARK_BEFORE;
+		const mark = { color: COL.ink, width: 1.5 };
+
+		p.frame();
+		p.hline(equator, { color: COL.muted, width: 1.5, dash: [5, 4] });
+		p.curve(
+			this.days.map(d => d.day),
+			this.days.map(d => d.altitude),
+			{ color: COL.sun, width: 2.5 }
+		);
+
+		// the obliquity, twice: from the equator's altitude up to the
+		// highest noon Sun, and down to the lowest
+		p.curve([highest.day, highest.day], [equator, highest.altitude], mark);
+		p.curve([lowerMarkDay, lowerMarkDay], [lowest.altitude, equator], mark);
+		p.text('ε', highest.day, (equator + highest.altitude) / 2, {
+			color: COL.ink,
+			baseline: 'middle',
+			dx: 8,
+			dy: 0
+		});
+		p.text('ε', lowerMarkDay, (equator + lowest.altitude) / 2, {
+			color: COL.ink,
+			align: 'right',
+			baseline: 'middle',
+			dx: -8,
+			dy: 0
+		});
+
+		p.text('90° − φ', NOON_EQUATOR_NAME_DAY, equator, {
+			color: COL.muted,
+			kind: 'symbol',
+			align: 'center',
+			baseline: 'top',
+			dx: 0,
+			dy: 6
+		});
+
+		// the March equinox: where the curve rises through the equator's altitude
+		p.marker(risesThrough(this.days, equator), equator, { color: COL.sun, radius: 5 });
+	}
+};
+
+/* ==========================================================================
+   6. FIGURE 6: THE NUTATION ERROR
    A static figure: no controls. Each day of 2026, the reference Sun's
    apparent (lambda, beta) is turned into (alpha, delta) with the MEAN
    obliquity of date, and compared with the reference Sun's own
@@ -751,17 +995,6 @@ const horizonFigure = {
 
 const NUTATION_YEAR = 2026;
 const NUTATION_Y_RANGE = [-12, 12]; // arcseconds
-
-/* x ticks at the first of every other month (day of the year 2026). */
-const MONTH_TICKS = [
-	[0, 'Jan'],
-	[59, 'Mar'],
-	[120, 'May'],
-	[181, 'Jul'],
-	[243, 'Sep'],
-	[304, 'Nov'],
-	[365, '']
-];
 
 /* The name of each curve: the day of the year it is written at, the
    curve's value there, and whether it goes above or below the curve, this
@@ -863,11 +1096,11 @@ const nutationFigure = {
 };
 
 /* ==========================================================================
-   5. PAGE START
+   7. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([zodiacFigure, eclipticFigure, horizonFigure, nutationFigure]);
+	startFigures([zodiacFigure, eclipticFigure, horizonFigure, triangleFigure, noonFigure, nutationFigure]);
 });
