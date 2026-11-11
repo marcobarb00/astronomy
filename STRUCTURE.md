@@ -217,16 +217,24 @@ The first anomaly and the simplest complete model.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
   eccentric between the lines from the Earth to the equinoxes and solstices.
-- **Figures:** the real Sun's daily motion through 2026 (static); the
-  eccentric with its four seasons beside $q(t)$ over a year (date and $e$,
-  starting at the exaggerated $e = 0.2$); Hipparchus' construction, with
-  the centre $C = (h, k)$ drawn six times farther out to show the angles
-  $\arcsin h$, $\arcsin k$ and the arcs $a_1$, $a_2$, and C at its true
-  place magnified (spring and summer, with presets). **First appearance of
-  the error curve:** (a) the uniform circle (ghost) against the eccentric
-  fitted to 2026 and (b) the eccentric alone on a scale a hundred times
-  finer, over 1, 100 and 1000 years. A photo: Peurbach's woodcut of the
-  Sun's eccentric orbs.
+- **Figures:** the real Sun's daily motion from the March equinox of 2026
+  to that of 2027, with the four seasons and their lengths above it
+  (static); the same arrow from the Earth to the Sun with the Earth at
+  rest and with the Sun at rest (static); the equation of centre, the
+  eccentric with M and q beside $q(t)$ over a year (date, and two views:
+  the exaggerated $e = 0.2$ and the Sun's $e$), next to the definition of
+  q; the four seasons as the arcs between the lines to the equinoxes and
+  solstices, at $e = 0.2$ and to scale (static); Hipparchus' construction,
+  with the centre $C = (h, k)$ drawn six times farther out to show the two
+  right triangles of the text (legs $h$ and $k$, angles $\arcsin h$,
+  $\arcsin k$) and the arcs $a_1$, $a_2$, and C at its true place
+  magnified (spring and summer, with presets including AD 140 for
+  Exercise 3). **First appearance of the error curve:** the eccentric
+  fitted to 2026, over 1, 100 and 1000 years. The uniform circle is not
+  drawn as a ghost: its error is about seventy times larger, so on any
+  scale that showed it the eccentric's error would be a flat line; the
+  text gives both numbers. A photo: Peurbach's woodcut of the Sun's
+  eccentric orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
   construction applied to the reference seasons of 2026 ($e = 0.03347$,
   $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one

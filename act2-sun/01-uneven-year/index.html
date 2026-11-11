@@ -138,15 +138,6 @@
 				July and fastest around New Year, and the seasons in which it
 				moves faster than its mean, autumn and winter, are the short ones.
 			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In the figure</p>
-					<dl class="key">
-						<dt class="c-muted">dashed</dt>
-						<dd>the mean daily motion, $n = 59.14'$ (page 1.3)</dd>
-					</dl>
-				</div>
-			</div>
 		</figure>
 
 		<p>
@@ -235,13 +226,34 @@
 		<p>
 			The eccentric can therefore be turned into a <em>heliostatic</em>
 			description. An equal circle, its centre offset the opposite way,
-			carries the Earth about a resting Sun, and the line from the Earth
+			carries the Earth about a resting Sun (Figure 2), and the line from the Earth
 			to the Sun is at every moment the same, in length and direction, as
 			in Hipparchus' eccentric. The Sun is seen exactly where the eccentric
 			puts it, so the choice of the body at rest does not change a single
 			prediction. Copernicus, who chose the Sun, explains the Sun's
 			inequality in this way, with the Earth on an eccentric (III 15).
 		</p>
+
+		<!-- Figure 2: the same line from the Earth to the Sun, with either body at rest (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the Earth at rest</p>
+						<canvas id="rest-earth"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the Sun at rest</p>
+						<canvas id="rest-sun"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two arrows from the Earth to the Sun: they have the
+				same length and the same direction. The dotted lines, from each
+				body at rest to the centre of its circle, are equal and opposite.
+			</figcaption>
+		</figure>
 
 		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
 		<figure class="photo">
@@ -282,8 +294,69 @@
 			angle from the apogee, the <em>mean anomaly</em> $M = \bar\lambda -
 			\lambda_A$. Seen from O, it is the true ecliptic longitude
 			$\lambda$, and the difference $q = \lambda - \bar\lambda$ is called
-			the <em>equation of centre</em>.
+			the <em>equation of centre</em> (Figure 3).
 		</p>
+
+		<!-- Figure 3: the eccentric with M and q, and q through the year -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the eccentric</p>
+						<canvas id="eoc-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the equation of centre through 2026</p>
+						<canvas id="eoc-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="eoc-day">date</label>
+							<input id="eoc-day" type="range" min="0" max="364" step="1" value="247">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="eoc-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="eoc-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="eoc-play">Play a year</button>
+						</div>
+					</div>
+					<div>
+						<div class="presets" id="eoc-views"></div>
+					</div>
+				</div>
+				<div class="readout" id="eoc-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Step through the year, or play it, and watch the Sun S run ahead
+				of its mean ecliptic longitude as it goes from the perigee to the
+				apogee, from January to early July, and fall behind for the rest
+				of the year. Then choose the Sun's own eccentricity: $q$ stays
+				under 2°, and the two curves of (b) merge.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">dashed</dt>
+						<dd>the direction of the mean ecliptic longitude $\bar\lambda$, from C to S and parallel to it from O</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-muted">dashed</dt>
+						<dd>the first-order approximation, $-e \sin M$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
 
 		<div class="row">
 			<p>
@@ -364,80 +437,31 @@
 
 		<p>
 			The Sun's eccentricity is so small that, drawn to scale, the circle
-			looks centred on the Earth. Figure 2 therefore starts with $e =
-			0.2$, six times the Sun's, which shows the same geometry with
-			larger angles and less equal seasons.
+			looks centred on the Earth. In Figure 4 it is therefore drawn beside
+			a circle with $e = 0.2$, six times the Sun's, on which the same
+			geometry gives seasons that differ far more.
 		</p>
 
-		<!-- Figure 2: the eccentric, and q through the year -->
+		<!-- Figure 4: the four seasons, at e = 0.2 and to scale (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the eccentric</p>
-						<canvas id="eccentric-canvas"></canvas>
+						<p class="panel-title">(a) exaggerated, $e = 0.2$</p>
+						<canvas id="seasons-wide"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) the equation of centre through 2026</p>
-						<canvas id="eccentric-plot"></canvas>
+						<p class="panel-title">(b) the Sun, to scale</p>
+						<canvas id="seasons-sun"></canvas>
 					</div>
 				</div>
-				<div class="panel-controls">
-					<div>
-						<div class="ctl stepper">
-							<label for="ecc-day">date</label>
-							<input id="ecc-day" type="range" min="0" max="364" step="1" value="92">
-							<output></output>
-							<span class="stepper-buttons">
-								<button type="button" class="stepper-btn" data-target="ecc-day" data-step="-1"
-									aria-label="previous day">‹ previous day</button>
-								<button type="button" class="stepper-btn" data-target="ecc-day" data-step="1"
-									aria-label="next day">next day ›</button>
-							</span>
-						</div>
-						<div class="presets">
-							<button type="button" class="play" id="ecc-play">Play a year</button>
-						</div>
-					</div>
-					<div>
-						<div class="ctl">
-							<label for="ecc-e">eccentricity e</label>
-							<input id="ecc-e" type="range" min="0" max="0.2" step="0.0005" value="0.2">
-							<output></output>
-						</div>
-						<div class="presets">
-							<button type="button" data-target="ecc-e" data-value="0.033473">the Sun, 2026</button>
-							<button type="button" data-target="ecc-e" data-value="0.2">exaggerated, 0.2</button>
-							<button type="button" data-target="ecc-e" data-value="0">no eccentricity</button>
-						</div>
-					</div>
-				</div>
-				<div class="readout" id="eccentric-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Step through the year, or play it, and watch the Sun run ahead of
-				its mean place from January to early July, while it goes from the
-				perigee to the apogee, and fall behind for the rest of the year.
-				Then press "the Sun, 2026": the angles $M$ and $q$ close up in
-				(a), the seasons become nearly equal, and in (b) the dashed
-				first-order curve merges with the exact one.
+				Compare the two circles: in each, the arc that holds the apogee is
+				the longest and the arc that holds the perigee the shortest. In
+				(b) the offset can hardly be seen, yet the Sun's summer is almost
+				five days longer than its winter.
 			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In panel (a)</p>
-					<dl class="key">
-						<dt class="c-deferent">dashed</dt>
-						<dd>the mean direction $\bar\lambda$, from C to the Sun and parallel to it from the Earth</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">In panel (b)</p>
-					<dl class="key">
-						<dt class="c-muted">dashed</dt>
-						<dd>the first-order approximation, $-e \sin M$</dd>
-					</dl>
-				</div>
-			</div>
 		</figure>
 
 		<!-- =============================== 3. FIT ================================ -->
@@ -472,58 +496,12 @@
 			On the eccentric the Sun moves uniformly as seen from C, so the
 			time it takes over a season is proportional to the angle, at C,
 			between the two points where the circle meets the axes at the start
-			and at the end of that season. Figure 3 (a) draws these angles with C six times farther
+			and at the end of that season. Figure 5 (a) draws these angles with C six times farther
 			from the Earth than the fit puts it, so that they can be seen, and
-			Figure 3 (b) shows C at the fitted distance.
+			Figure 5 (b) shows C at the fitted distance.
 		</p>
 
-		<p>
-			The $x$ axis runs at the distance $k$ below C. The radius from C to
-			the point where it meets the circle towards γ has length 1 and
-			drops by $k$, so it makes the angle $\arcsin k$ with the parallel to
-			the $x$ axis through C, and C sees that point at $-\arcsin k$. On
-			the other side, towards 180°, the same axis meets the circle at
-			$180^\circ + \arcsin k$ as seen from C.
-		</p>
-
-		<p>
-			In the same way the $y$ axis runs at the distance $h$ to the left of
-			C, which puts its point towards the summer solstice at $90^\circ +
-			\arcsin h$ and its point towards the winter solstice at $270^\circ -
-			\arcsin h$. The formulas hold for either sign. When the apogee is
-			beyond 90°, as it is today, $h$ is negative: C lies to the left of
-			the $y$ axis, the radius to the summer solstice leans towards γ, and
-			the angle $90^\circ + \arcsin h$ is less than 90°, as in Figure 2
-			and in the preset "2026" of Figure 3.
-		</p>
-
-		<p>
-			Seen from C the Sun moves $360^\circ/Y$ a day, so the lengths $T_1$
-			and $T_2$ of spring and summer give the arcs between these points,
-			the thick arcs of Figure 3 (a):
-		</p>
-
-		$$a_1 = \frac{360^\circ\, T_1}{Y} = 90^\circ + \arcsin h + \arcsin k, \qquad a_2 = \frac{360^\circ\, T_2}{Y} = 90^\circ - \arcsin h + \arcsin k.$$
-
-		<p>
-			Adding and subtracting the two equations separates the unknowns,
-			and the centre then gives the eccentricity and the direction of
-			the apogee:
-		</p>
-
-		<div class="box">
-			$$\arcsin k = \frac{a_1 + a_2 - 180^\circ}{2}, \qquad \arcsin h = \frac{a_1 - a_2}{2}, \qquad e = \sqrt{h^2 + k^2}, \qquad \lambda_A = \operatorname{atan2}(k, h).$$
-		</div>
-
-		<p>
-			The other two seasons follow from the same centre, with the arcs
-			$a_3 = 90^\circ - \arcsin h - \arcsin k$ for autumn and $a_4 =
-			90^\circ + \arcsin h - \arcsin k$ for winter. Two seasons therefore
-			predict the other two, which makes the model testable even before
-			we compare it with the sky.
-		</p>
-
-		<!-- Figure 3: Hipparchus' construction -->
+		<!-- Figure 5: Hipparchus' construction -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -553,6 +531,7 @@
 						<div class="presets" id="fit-presets">
 							<button type="button" data-spring="94.5" data-summer="92.5">Hipparchus</button>
 							<button type="button" data-spring="94.01" data-summer="92.34">141 BC</button>
+							<button type="button" data-spring="93.90" data-summer="92.56">AD 140</button>
 							<button type="button" data-spring="92.74" data-summer="93.66">2026</button>
 							<button type="button" data-spring="91.31" data-summer="91.31">equal</button>
 						</div>
@@ -584,6 +563,52 @@
 				</div>
 			</div>
 		</figure>
+
+		<p>
+			The $x$ axis runs at the distance $k$ below C. The radius from C to
+			the point where it meets the circle towards γ has length 1 and
+			drops by $k$, so it makes the angle $\arcsin k$ with the parallel to
+			the $x$ axis through C, and C sees that point at $-\arcsin k$. On
+			the other side, towards 180°, the same axis meets the circle at
+			$180^\circ + \arcsin k$ as seen from C.
+		</p>
+
+		<p>
+			In the same way the $y$ axis runs at the distance $h$ to the left of
+			C, which puts its point towards the summer solstice at $90^\circ +
+			\arcsin h$ and its point towards the winter solstice at $270^\circ -
+			\arcsin h$. The formulas hold for either sign. When the apogee is
+			beyond 90°, as it is today, $h$ is negative: C lies to the left of
+			the $y$ axis, the radius to the summer solstice leans towards γ, and
+			the angle $90^\circ + \arcsin h$ is less than 90°, as in Figure 4
+			and in the preset "2026" of Figure 5.
+		</p>
+
+		<p>
+			Seen from C the Sun moves $360^\circ/Y$ a day, so the lengths $T_1$
+			and $T_2$ of spring and summer give the arcs between these points,
+			the thick arcs of Figure 5 (a):
+		</p>
+
+		$$a_1 = \frac{360^\circ\, T_1}{Y} = 90^\circ + \arcsin h + \arcsin k, \qquad a_2 = \frac{360^\circ\, T_2}{Y} = 90^\circ - \arcsin h + \arcsin k.$$
+
+		<p>
+			Adding and subtracting the two equations separates the unknowns,
+			and the centre then gives the eccentricity and the direction of
+			the apogee:
+		</p>
+
+		<div class="box">
+			$$\arcsin k = \frac{a_1 + a_2 - 180^\circ}{2}, \qquad \arcsin h = \frac{a_1 - a_2}{2}, \qquad e = \sqrt{h^2 + k^2}, \qquad \lambda_A = \operatorname{atan2}(k, h).$$
+		</div>
+
+		<p>
+			The other two seasons follow from the same centre, with the arcs
+			$a_3 = 90^\circ - \arcsin h - \arcsin k$ for autumn and $a_4 =
+			90^\circ + \arcsin h - \arcsin k$ for winter. Two seasons therefore
+			predict the other two, which makes the model testable even before
+			we compare it with the sky.
+		</p>
 
 		<h3>The Sun of 2026</h3>
 
@@ -649,7 +674,7 @@
 				With his seasons the method puts the apogee within half a degree of
 				the one the real seasons of his time give, but makes the eccentricity
 				a fifth too large: his spring and summer together are over half a day
-				too long. The presets "Hipparchus" and "141 BC" of Figure 3 and
+				too long. The presets "Hipparchus" and "141 BC" of Figure 5 and
 				Exercise 1 follow the difference.
 			</p>
 
@@ -670,28 +695,20 @@
 		<h2 id="test"><span class="step">4 · Test</span>The eccentric against the real Sun</h2>
 
 		<p>
-			To see how much the eccentric gains over the uniform Sun of page
-			1.3, we plot the error of each through 2026, model minus sky,
-			$\Delta\lambda = \lambda_\text{model} - \lambda_\text{ref}$, in
-			arcminutes, as on page 1.1. The two errors differ so much that one
-			scale cannot show both, so Figure 4 (a) shows them together and (b)
-			the eccentric alone, on a much finer scale.
+			We test the eccentric by plotting its error through 2026 in Figure
+			6. As on page 1.1, the error is the model minus the sky, $\Delta\lambda
+			= \lambda_\text{model} - \lambda_\text{ref}$, in arcminutes.
 		</p>
 
-		<!-- Figure 4: the first error curve, at two scales -->
+		<!-- Figure 6: the first error curve -->
 		<figure class="fig">
 			<div class="frame">
-				<p class="panel-title">(a) the eccentric and the uniform circle</p>
 				<div id="error-2026"></div>
-				<p class="panel-title panel-gap">(b) the eccentric alone, on a finer scale</p>
-				<div id="error-2026-zoom"></div>
 			</div>
 			<figcaption>
-				Point at either plot to read the errors on a date. In (a) the
-				uniform circle swings far to either side while the eccentric stays
-				on the zero line; (b) magnifies that line, where the eccentric's own
-				error shows, with small monthly ripples. Then switch (b) to 100 and
-				1000 years and watch its error grow on either side of 2026.
+				Follow the error through 2026, with its small monthly ripples,
+				then switch to 100 and 1000 years and watch it grow on either side
+				of 2026.
 			</figcaption>
 		</figure>
 
@@ -777,7 +794,7 @@
 		</div>
 
 		<p>
-			The small monthly ripples of Figure 4 (b) come from the Moon. The
+			The small monthly ripples of Figure 6 come from the Moon. The
 			Earth and the Moon both turn about their common centre of mass, so
 			the Earth swings a little to and fro every month, and the Sun, seen
 			from the Earth, moves the opposite way by a few arcseconds.
@@ -841,7 +858,7 @@
 				$C = (h, k)$ of his eccentric, then $e$, $\lambda_A$, the lengths
 				of autumn and winter and the greatest equation of centre, and
 				compare them with Ptolemy's values. Check with the preset
-				"Hipparchus" of Figure 3, then with "141 BC", the real seasons of
+				"Hipparchus" of Figure 5, then with "141 BC", the real seasons of
 				his time.
 			</p>
 			<details class="hint">
@@ -947,8 +964,9 @@
 			</p>
 			<details class="hint">
 				<p>
-					Compare the delays of the three observations, then use Figure 3
-					with the real lengths of spring and summer.
+					Compare the delays of the three observations, then work out the
+					real lengths of spring and summer and check them with the preset
+					"AD 140" of Figure 5.
 				</p>
 			</details>
 			<details class="answer">

@@ -686,47 +686,25 @@ Regenerate with: node tools/check/smoke.js --update
 
 === act2-sun/01-uneven-year/index.html ===
   as loaded
-    OUTPUT (ecc-day): 3 Apr
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{3 Apr:}\quad \bar\lambda = 11.34^\circ,\quad M = 267.61^\circ | q = +11.39^\circ,\quad \lambda = \bar\lambda + q = 22.73^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
+    OUTPUT (eoc-day): 5 Sep
+    #eoc-readout: \text{5 Sep:}\quad \bar\lambda = 164.11^\circ,\quad M = 60.38^\circ | q = -8.99^\circ,\quad \lambda = \bar\lambda + q = 155.12^\circ
     OUTPUT (fit-spring): 94.50 d
     OUTPUT (fit-summer): 92.50 d
     #fit-readout: a_1 = 93.14^\circ,\quad a_2 = 91.17^\circ | h = 0.0172,\ k = 0.0377,\quad e = 0.0414 | \lambda_A = 65.4^\circ,\quad |q|_\text{max} = 2.37^\circ | \text{autumn } 88.12\,\text{d},\quad \text{winter } 90.12\,\text{d}
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
-  slider #ecc-day = 0
-    OUTPUT (ecc-day): 1 Jan
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{1 Jan:}\quad \bar\lambda = 280.66^\circ,\quad M = 176.93^\circ | q = -0.77^\circ,\quad \lambda = \bar\lambda + q = 279.89^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  slider #ecc-day = 364
-    OUTPUT (ecc-day): 31 Dec
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{31 Dec:}\quad \bar\lambda = 279.43^\circ,\quad M = 175.70^\circ | q = -1.07^\circ,\quad \lambda = \bar\lambda + q = 278.36^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  slider #ecc-day = 182
-    OUTPUT (ecc-day): 2 Jul
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.61^\circ,\quad \lambda = \bar\lambda + q = 100.66^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  slider #ecc-day + one key step
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  slider #ecc-e = 0
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
-  slider #ecc-e = 0.2
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  slider #ecc-e = 0.1
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.1000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.59\,\text{d},\quad \text{summer } 98.35\,\text{d} | \text{autumn } 87.03\,\text{d},\quad \text{winter } 84.27\,\text{d}
-  slider #ecc-e + one key step
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.1005
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
+  slider #eoc-day = 0
+    OUTPUT (eoc-day): 1 Jan
+    #eoc-readout: \text{1 Jan:}\quad \bar\lambda = 280.66^\circ,\quad M = 176.93^\circ | q = -0.77^\circ,\quad \lambda = \bar\lambda + q = 279.89^\circ
+  slider #eoc-day = 364
+    OUTPUT (eoc-day): 31 Dec
+    #eoc-readout: \text{31 Dec:}\quad \bar\lambda = 279.43^\circ,\quad M = 175.70^\circ | q = -1.07^\circ,\quad \lambda = \bar\lambda + q = 278.36^\circ
+  slider #eoc-day = 182
+    OUTPUT (eoc-day): 2 Jul
+    #eoc-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.61^\circ,\quad \lambda = \bar\lambda + q = 100.66^\circ
+  slider #eoc-day + one key step
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ
   slider #fit-spring = 90
     OUTPUT (fit-spring): 90.00 d
     OUTPUT (fit-summer): 92.50 d
@@ -760,25 +738,17 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (fit-summer): 93.01 d
     #fit-readout: a_1 = 91.68^\circ,\quad a_2 = 91.68^\circ | h = 0.0000,\ k = 0.0292,\quad e = 0.0292 | \lambda_A = 90.0^\circ,\quad |q|_\text{max} = 1.68^\circ | \text{autumn } 89.61\,\text{d},\quad \text{winter } 89.61\,\text{d}
   button "‹ previous day"
-    OUTPUT (ecc-day): 2 Jul
-    OUTPUT (ecc-e): 0.1005
-    #eccentric-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.34^\circ,\quad \lambda = \bar\lambda + q = 100.38^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
+    OUTPUT (eoc-day): 2 Jul
+    #eoc-readout: \text{2 Jul:}\quad \bar\lambda = 100.05^\circ,\quad M = 356.31^\circ | q = +0.61^\circ,\quad \lambda = \bar\lambda + q = 100.66^\circ
   button "next day ›"
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.1005
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.25^\circ,\quad \lambda = \bar\lambda + q = 101.28^\circ | \text{spring } 95.61\,\text{d},\quad \text{summer } 98.38\,\text{d} | \text{autumn } 87.01\,\text{d},\quad \text{winter } 84.24\,\text{d}
-  button "the Sun, 2026"
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0335
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ | \text{spring } 92.74\,\text{d},\quad \text{summer } 93.66\,\text{d} | \text{autumn } 89.88\,\text{d},\quad \text{winter } 88.96\,\text{d}
-  button "exaggerated, 0.2"
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.2000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ | \text{spring } 99.92\,\text{d},\quad \text{summer } 105.44\,\text{d} | \text{autumn } 82.71\,\text{d},\quad \text{winter } 77.18\,\text{d}
-  button "no eccentricity"
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ
+  button "exaggerated, e = 0.2"
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.45^\circ,\quad \lambda = \bar\lambda + q = 101.48^\circ
+  button "the Sun, e = 0.0335"
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ
   button "Hipparchus"
     OUTPUT (fit-spring): 94.50 d
     OUTPUT (fit-summer): 92.50 d
@@ -787,6 +757,10 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (fit-spring): 94.01 d
     OUTPUT (fit-summer): 92.34 d
     #fit-readout: a_1 = 92.66^\circ,\quad a_2 = 91.01^\circ | h = 0.0144,\ k = 0.0321,\quad e = 0.0351 | \lambda_A = 65.9^\circ,\quad |q|_\text{max} = 2.01^\circ | \text{autumn } 88.61\,\text{d},\quad \text{winter } 90.28\,\text{d}
+  button "AD 140"
+    OUTPUT (fit-spring): 93.90 d
+    OUTPUT (fit-summer): 92.56 d
+    #fit-readout: a_1 = 92.55^\circ,\quad a_2 = 91.23^\circ | h = 0.0115,\ k = 0.0330,\quad e = 0.0350 | \lambda_A = 70.8^\circ,\quad |q|_\text{max} = 2.00^\circ | \text{autumn } 88.72\,\text{d},\quad \text{winter } 90.06\,\text{d}
   button "2026"
     OUTPUT (fit-spring): 92.74 d
     OUTPUT (fit-summer): 93.66 d
@@ -797,33 +771,26 @@ Regenerate with: node tools/check/smoke.js --update
     #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "100 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1000 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
   hover #motion-plot at 0.6
   hover #motion-plot at 0.9
   hover #motion-plot left
-  hover #eccentric-plot at 0.3
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
-  hover #eccentric-plot at 0.6
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
-  hover #eccentric-plot at 0.9
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
-  hover #eccentric-plot left
-    OUTPUT (ecc-day): 3 Jul
-    OUTPUT (ecc-e): 0.0000
-    #eccentric-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 101.03^\circ | \text{spring } 91.31\,\text{d},\quad \text{summer } 91.31\,\text{d} | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
+  hover #eoc-plot at 0.3
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ
+  hover #eoc-plot at 0.6
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ
+  hover #eoc-plot at 0.9
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ
+  hover #eoc-plot left
+    OUTPUT (eoc-day): 3 Jul
+    #eoc-readout: \text{3 Jul:}\quad \bar\lambda = 101.03^\circ,\quad M = 357.30^\circ | q = +0.09^\circ,\quad \lambda = \bar\lambda + q = 101.12^\circ
   hover #fit-plot at 0.3
     OUTPUT (fit-spring): 91.31 d
     OUTPUT (fit-summer): 91.31 d
@@ -841,28 +808,12 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (fit-summer): 91.31 d
     #fit-readout: a_1 = 90.00^\circ,\quad a_2 = 90.00^\circ | h = 0.0000,\ k = 0.0000,\quad e = 0.0000 | \text{no apogee (C at the Earth)},\quad |q|_\text{max} = 0.00^\circ | \text{autumn } 91.31\,\text{d},\quad \text{winter } 91.31\,\text{d}
   hover #error-2026-plot at 0.3
-    .errorcurve-readout: 4 Apr 2026 · uniform circle: −114.7′ · eccentric: −0.1′
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-2026-plot at 0.6
-    .errorcurve-readout: 1 Aug 2026 · uniform circle: +51.6′ · eccentric: +0.9′
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-2026-plot at 0.9
-    .errorcurve-readout: 28 Nov 2026 · uniform circle: +68.4′ · eccentric: −1.5′
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-2026-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  hover #error-2026-zoom-plot at 0.3
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: 2 Aug 1783 · eccentric: +8.3′
-  hover #error-2026-zoom-plot at 0.6
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot at 0.6
     .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
-  hover #error-2026-zoom-plot at 0.9
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot at 0.9
     .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
-  hover #error-2026-zoom-plot left
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-2026-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
