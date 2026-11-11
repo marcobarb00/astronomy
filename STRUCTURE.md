@@ -109,9 +109,14 @@ The language needed to state any prediction.
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** a blue plate of the zodiac around Aldebaran, with the
   equatorial grid and the ecliptic; one fixed direction shown in two
-  frames at once; the axes rotate, the point does not (ecliptic and equator,
-  drawn in the equatorial frame; equator and horizon, drawn in the horizon
-  frame, with buttons to redraw it in the equatorial frame).
+  frames at once: ecliptic and equator, drawn in the equatorial frame,
+  with the obliquity marked between the two poles, the fixed stars, and
+  the Sun moved along the ecliptic by the date; equator and horizon, drawn
+  in the horizon frame, with $\theta$, $\alpha$ and $H$ as three arcs
+  ($H$ on the equator, the other two beside it), then $A$ and $a$, and
+  the ecliptic and its angle to the horizon as a second choice (exercise
+  3). The horizon figure is not redrawn in the equatorial frame: page
+  1.1 shows that pair of views.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Alexandria,
   2026); the origin γ from the March equinox. History block: Ptolemy's
   meridian ring and plaque, his bounds and $23^\circ 51' 20''$ (*Almagest*
