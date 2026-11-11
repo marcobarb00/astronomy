@@ -446,6 +446,33 @@ console.log(
 	`Figure 4 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`
 );
 
+/* The ripple on the curves of Figure 4 (its key): the period of the
+   short-period term of d eps, counted on the curve itself. The slow terms
+   are removed with a running mean over 27 days; two changes of sign of
+   what is left make one ripple. */
+const RIPPLE_WINDOW = 13; // days on each side of the running mean
+const rippleDays = [];
+
+for (let day = RIPPLE_WINDOW; day <= 365 - RIPPLE_WINDOW; day++) {
+	const around = nutationDays.slice(day - RIPPLE_WINDOW, day + RIPPLE_WINDOW + 1);
+	const mean = around.reduce((sum, d) => sum + d.deps, 0) / around.length;
+
+	rippleDays.push(nutationDays[day].deps - mean);
+}
+
+const rippleCrossings = rippleDays.filter((value, i) => i > 0 && value * rippleDays[i - 1] < 0).length;
+const ripplePeriod = (2 * (rippleDays.length - 1)) / rippleCrossings;
+
+/* The Moon's tropical month (days), from the rate of its mean longitude
+   in the nutation series of Ephem.nutation (Meeus ch. 22), deg / century. */
+const MOON_MEAN_MOTION = 481267.8813;
+const tropicalMonth = (360 * 36525) / MOON_MEAN_MOTION;
+
+console.log(
+	`ripple of Figure 4: ${rippleCrossings} changes of sign in ${rippleDays.length - 1} days -> period ${f(ripplePeriod, 1)} days,` +
+		` half the Moon's tropical month of ${f(tropicalMonth, 2)} days (${f(tropicalMonth / 2, 2)} days)`
+);
+
 title('Residual: an old obliquity used today');
 
 /* Largest |d delta| (deg) over one year starting 1 January of 'year' when

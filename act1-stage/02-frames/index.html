@@ -130,8 +130,6 @@
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>grid</dt>
-						<dd>right ascension every hour, declination every 10°</dd>
 						<dt>stars</dt>
 						<dd>every star brighter than magnitude 4.6; the larger, the brighter</dd>
 						<dt>stipple</dt>
@@ -430,10 +428,11 @@
 			<figcaption>
 				Press play, or step through the days, and watch the Sun go once
 				round the ecliptic while the stars stay where they are. Notice
-				that $\lambda$ grows steadily, $\beta$ stays near zero and
-				$\delta$ swings between $+\varepsilon$ and $-\varepsilon$, while a
-				star's coordinates do not change at all. Drag the sphere to turn
-				the view.
+				that $\lambda$ grows steadily, while the arc $\delta$ grows to
+				$\varepsilon$ at the June solstice and no further, then shrinks
+				and reaches $-\varepsilon$ in December. Choose a star to see its
+				$(\alpha, \delta)$ and $(\lambda, \beta)$, which the date does not
+				change, and drag the sphere to turn the view.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -443,8 +442,8 @@
 						<dd>the celestial equator and the equatorial frame's axes</dd>
 						<dt class="c-sun">gold</dt>
 						<dd>the ecliptic and the ecliptic frame's axes; both frames share the $x$ axis, towards γ</dd>
-						<dt>arrow</dt>
-						<dd>by the Sun, its yearly motion eastward, about 1° a day</dd>
+						<dt>dot and arrow</dt>
+						<dd>the Sun and its yearly motion eastward</dd>
 					</dl>
 				</div>
 			</div>
@@ -512,18 +511,10 @@
 						<canvas id="hor-canvas"></canvas>
 					</div>
 					<div>
-						<div class="presets" id="hor-frames"></div>
 						<div class="ctl">
 							<label for="hor-lat">geographic latitude φ</label>
 							<input id="hor-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
 							<output></output>
-						</div>
-						<div class="presets">
-							<button type="button" data-target="hor-lat" data-value="90">north pole</button>
-							<button type="button" data-target="hor-lat" data-value="51.5">London</button>
-							<button type="button" data-target="hor-lat" data-value="41.9">Rome</button>
-							<button type="button" data-target="hor-lat" data-value="31.2">Alexandria</button>
-							<button type="button" data-target="hor-lat" data-value="0">equator</button>
 						</div>
 						<div class="ctl">
 							<label for="hor-theta">angle θ</label>
@@ -534,38 +525,35 @@
 							<button type="button" class="play" id="hor-play">Play</button>
 							<button type="button" id="hor-observation">the observation</button>
 						</div>
-						<div class="presets star-choice" id="hor-stars"></div>
-						<div class="readout" id="hor-readout" data-lines="4"></div>
+						<div class="presets star-choice" id="hor-subjects"></div>
+						<div class="readout" id="hor-readout" data-lines="3"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
 				Press "the observation" and the read-out gives Aldebaran's
-				azimuth and altitude from the table of section 1. Then press play and watch
-				the sky turn about P above a fixed horizon: $H$, $A$ and $a$
-				change, while $\alpha$ and $\delta$ do not. Switch to the
-				equatorial frame to see the same motion with the stars held
-				still and the horizon turning instead.
+				azimuth and altitude from the table of section 1. Then press
+				play and watch the sky turn about P above a fixed horizon.
+				Because γ and the star turn together, the arc $\alpha$ keeps its
+				length while $\theta$ and $H$ grow by the same amount.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
 						<dt class="c-earth">blue</dt>
-						<dd>the celestial equator; the dot on it marks where the meridian crosses it, at $\alpha = \theta$</dd>
-						<dt class="c-sun">gold</dt>
-						<dd>the ecliptic</dd>
+						<dd>the celestial equator</dd>
 						<dt class="c-muted">dotted</dt>
 						<dd>the meridian, through N, Z and S</dd>
-						<dt><span class="c-earth">H</span>, <span class="c-deferent">A</span></dt>
-						<dd>$H$ counted west along the equator from the meridian, $A$ along the horizon from N through E</dd>
+						<dt><span class="c-epicycle">θ</span>, <span class="c-earth">α</span></dt>
+						<dd>arcs of the equator, drawn beside it</dd>
 					</dl>
 				</div>
 				<div>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
 						<dt>$I$</dt>
-						<dd>the angle between the ecliptic and the horizon (exercise 3)</dd>
+						<dd>the angle between the ecliptic and the horizon, when "the ecliptic" is chosen (exercise 3)</dd>
 					</dl>
 				</div>
 			</div>
@@ -755,17 +743,15 @@
 			</div>
 			<figcaption>
 				Follow $\Delta\delta$ through the year: it crosses zero at the equinoxes
-				and touches the dashed lines at the solstices, $-\Delta\varepsilon$ in
-				June and $+\Delta\varepsilon$ in December.
+				and touches $-\Delta\varepsilon$ at the June solstice and
+				$+\Delta\varepsilon$ at the December solstice.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-planet">red</dt>
-						<dd>$\Delta\delta = \delta_\text{model} - \delta_\text{real}$</dd>
-						<dt class="c-epicycle">purple</dt>
-						<dd>$\Delta\alpha = \alpha_\text{model} - \alpha_\text{real}$</dd>
+						<dt>ripple</dt>
+						<dd>a term of the nutation with a period of two weeks, half the Moon's month</dd>
 					</dl>
 				</div>
 			</div>
@@ -945,7 +931,7 @@
 				As the sky turns, the ecliptic meets the horizon at an angle $I$ that
 				changes. At Rome ($\varphi = 41.9^\circ$), predict the smallest and the
 				largest $I$, and which point of the ecliptic is rising at each. Check
-				with Figure 3 and its read-out. Then explain why a thin crescent Moon
+				with Figure 3: choose "the ecliptic" and read $I$. Then explain why a thin crescent Moon
 				after sunset is easier to see in March than in September.
 			</p>
 			<details class="hint">

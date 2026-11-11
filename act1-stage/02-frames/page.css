@@ -37,7 +37,7 @@ table.prose-table td:first-child {
    ========================================================================== */
 
 @media (max-width: 800px) {
-	/* "obliquity ε" needs a little more than the shared 74px label column */
+	/* "geographic latitude φ" needs a little more than the shared label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 	}

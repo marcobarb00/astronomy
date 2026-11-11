@@ -2414,6 +2414,7 @@ largest |d delta| = 7.92" (day 0, lambda 281), largest |d alpha| = 1.87" (day 35
 June solstice (day 171): d delta = -7.66", -d eps = -7.66"
 December solstice (day 355): d delta = 6.72", +d eps = 6.72"
 Figure 4 scale: every value within 9.14" -> fixed range [-12", +12"]
+ripple of Figure 4: 49 changes of sign in 339 days -> period 13.8 days, half the Moon's tropical month of 27.32 days (13.66 days)
 
 === Residual: an old obliquity used today ===
 the mean obliquity of AD 137 used in 2026: max |d delta| = 14.46'

@@ -8,7 +8,8 @@
 								   the date moves the Sun along the ecliptic)
 	 3. equator and horizon       (3D, horizon frame: latitude and the turn
 								   of the sky move the sky, never the ground;
-								   a button switches to the equatorial frame)
+								   the arcs theta, alpha and H of a star, or
+								   the ecliptic and its angle to the horizon)
 	 4. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
@@ -67,25 +68,82 @@ function texVector(name, v) {
 	return `${name} = (${v.map(x => fixed(x, 4)).join(',\\ ')})`;
 }
 
-/* A coordinate path in a frame: along the fundamental circle from the
-   origin to the foot of the point (longitude), then up to the point
-   (latitude). axes = [x, y, z] of the frame in the drawing's components.
-   Both arcs are labelled at their middle, away from the sphere's centre. */
-function drawCoordinatePath(sphere, axes, lon, lat, names, color) {
-	const [x, y, z] = axes;
-	const foot = lin2(x, y, cos(lon), sin(lon));
-	const lonMiddle = arcPoint(x, y, lon / 2);
-	const latMiddle = arcPoint(foot, z, lat / 2);
-	const centre = { x: sphere.cx, y: sphere.cy };
+/* The name of a chosen star is written on its right, this far from it
+   (px), with its baseline this far below the star, or this far above it
+   for a star whose own arcs leave towards the lower right. It keeps its
+   place beside the star whatever moves (CLAUDE.md, "A label never
+   jumps"). */
+const STAR_NAME_GAP = 12;
+const STAR_NAME_DROP = 5;
+const STAR_NAME_RAISE = 8;
 
-	sphere.arc(x, y, lon, { color: color, width: 3 });
-	sphere.arc(foot, z, lat, { color: color, width: 3, dash: [6, 4] });
-	sphere.point(foot, { color: color, radius: 3 });
-	sphere.labelAway(names[0], lonMiddle, centre, color);
+/* The symbol of an arc is centred this far from the arc (px), and this far
+   below its own middle (half the height of a symbol at the label font). */
+const ARC_NAME_GAP = 13;
+const SYMBOL_HALF_HEIGHT = 5;
 
-	if (Math.abs(lat) > 4) {
-		sphere.labelAway(names[1], latMiddle, foot, color);
+/* An arc shorter than this (deg) gets no arrowhead: the head would be
+   longer than the arc. */
+const ARROW_MIN_SWEEP = 3;
+
+/* A symbol centred 'distance' px from a point of the sphere, on the screen
+   side that faces the 3D point 'toward' (a negative distance: on the
+   opposite side). The place follows the point smoothly, so the symbol
+   never jumps round it. */
+function labelBeside(sphere, text, point, toward, distance, color) {
+	const q = sphere.project(point);
+	const t = sphere.project(toward);
+	const length = Math.hypot(t.x - q.x, t.y - q.y) || 1;
+
+	sphere.ctx.font = labelFont(text);
+
+	const width = sphere.ctx.measureText(text).width;
+
+	sphere.label(text, point, {
+		color: color,
+		dx: (distance * (t.x - q.x)) / length - width / 2,
+		dy: (distance * (t.y - q.y)) / length + SYMBOL_HALF_HEIGHT
+	});
+}
+
+/* Where the symbol of an arc is written, as an angle along it: near its
+   start while the arc is short, further along as it grows, and at its end
+   when it closes. 'full' is the sweep of the closed arc: 360 for an angle
+   counted from 0° to 360°, 180 for one counted from -180° to 180°. The end
+   of a closed arc is the start of an empty one, so the symbol does not jump
+   when the angle wraps (CLAUDE.md, "A label never jumps"). */
+function arcNameAngle(sweep, full) {
+	return (sweep * Math.abs(sweep)) / full;
+}
+
+/* An arc that ends in an arrowhead, which shows which way its angle is
+   counted. pointAt(t) is the 3D point at the angle t along the arc, from
+   0 to 'sweep' (deg, either sign). */
+function drawArrowArc(sphere, pointAt, sweep, style) {
+	const steps = Math.max(2, Math.ceil(Math.abs(sweep) / 2));
+	const points = [];
+
+	for (let i = 0; i <= steps; i++) {
+		points.push(pointAt((sweep * i) / steps));
 	}
+
+	sphere.path(points, style);
+
+	if (Math.abs(sweep) >= ARROW_MIN_SWEEP) {
+		sphere.arrow(points[steps - 1], points[steps], style);
+	}
+}
+
+/* The four-pointed star of a chosen star, with its name on its right:
+   level with the star, or raised above it when 'raised' is true. */
+function drawNamedStar(sphere, name, point, color, raised = false) {
+	sphere.star(point, { color: color, size: STAR_SIZE_CHOSEN, ring: true });
+	sphere.label(name, point, {
+		color: color,
+		kind: 'name',
+		dx: STAR_NAME_GAP,
+		dy: raised ? -STAR_NAME_RAISE : STAR_NAME_DROP
+	});
 }
 
 /* ==========================================================================
@@ -135,7 +193,9 @@ const zodiacFigure = {
    Drawn in the equatorial frame with the obliquity of 2026.0: the stars,
    the equator and the ecliptic never move. The date moves only the Sun,
    along the ecliptic, about 1° a day: the yearly motion. The daily
-   rotation does not appear, since the frame turns with the sky.
+   rotation does not appear, since the frame turns with the sky. The two
+   coordinate paths drawn are those of the chosen object: the Sun, or one
+   of three stars.
    ========================================================================== */
 
 /* The year shown by the date slider (day 0 = 1 January, 0h TT). */
@@ -151,6 +211,24 @@ const PLAY_DAYS_PER_SECOND = 15;
 const SUN_ARROW_DEGREES = 20;
 const SUN_ARROW_RADIUS = 1.1;
 
+/* The obliquity is marked between the two poles, P and K, at these
+   distances from the centre (the arc, and its symbol). */
+const OBLIQUITY_ARC_RADIUS = 0.62;
+const OBLIQUITY_NAME_RADIUS = 0.74;
+
+/* The symbol of a longitude is written this far behind the end of its arc
+   (deg), where the arc is on the near side whenever its object is. */
+const LONGITUDE_NAME_BEHIND = 14;
+
+/* The symbols of the two longitudes sit on opposite sides of their
+   circles, each on the side away from the other circle. The side changes
+   where the circles cross, over this many degrees of ecliptic longitude,
+   so that a symbol glides across its arc there. */
+const SIDE_CHANGE_DEGREES = 8;
+
+/* Opacity of the stars that are not chosen (STYLE.md §5). */
+const BACKGROUND_STAR_ALPHA = 0.55;
+
 /* Day of the year (slider value) -> "21 May". */
 function formatDay(day) {
 	const date = Time.calendarDate(SUN_YEAR_START + Math.floor(day));
@@ -158,21 +236,67 @@ function formatDay(day) {
 	return `${Math.floor(date.day)} ${Time.MONTH_NAMES[date.month - 1]}`;
 }
 
-/* The objects the read-out can follow: the Sun first, then the stars. */
-const ECLIPTIC_CHOICES = ['Sun', 'Aldebaran', 'Spica', 'Antares', 'Vega', 'Polaris', 'Sirius', 'Canopus'];
+/* Where the symbol of a longitude is written, as an angle along its arc:
+   a little behind the end, and at the origin when the arc is empty or
+   closed, so that it does not jump when the longitude wraps. */
+function longitudeNameAngle(lon) {
+	return lon - Math.min(LONGITUDE_NAME_BEHIND, lon / 2, 360 - lon);
+}
+
+/* A coordinate path in a frame: along the fundamental circle from the
+   origin to the foot of the point (longitude), then up to the point
+   (latitude). axes = [x, y, z] of the frame in the drawing's components.
+   names = [longitude, latitude]; a latitude without a name gets no symbol
+   (the Sun's ecliptic latitude, which is zero). lonSide is the distance
+   (px) of the longitude's symbol from the circle, positive towards the
+   frame's pole. The latitude's symbol is on the eastern side of its arc. */
+function drawFramePath(sphere, axes, lon, lat, names, color, lonSide) {
+	const [x, y, z] = axes;
+	const foot = arcPoint(x, y, lon);
+	const east = arcPoint(x, y, lon + 90);
+	const lonName = arcPoint(x, y, longitudeNameAngle(lon));
+	const latName = arcPoint(foot, z, lat / 2);
+
+	sphere.arc(x, y, lon, { color: color, width: 3 });
+	sphere.arc(foot, z, lat, { color: color, width: 3, dash: [6, 4] });
+	sphere.point(foot, { color: color, radius: 3 });
+	labelBeside(sphere, names[0], lonName, add3(lonName, scale(z, 0.2)), lonSide, color);
+
+	if (names[1]) {
+		labelBeside(sphere, names[1], latName, add3(latName, scale(east, 0.2)), ARC_NAME_GAP, color);
+	}
+}
+
+/* The objects whose coordinates the figure can show: the Sun first, then
+   the star of section 1, a star well north of both circles and one next
+   to the pole. The arcs of Polaris leave it towards the lower right, so
+   its name is raised above them. */
+const ECLIPTIC_STARS = ['Aldebaran', 'Capella', 'Polaris'];
+const ECLIPTIC_CHOICES = ['Sun', ...ECLIPTIC_STARS];
+const RAISED_NAMES = ['Polaris'];
 
 const eclipticFigure = {
 	sphere: null,
 	chosen: 'Sun',
+	stars: null,
 	state: null,
 
 	init() {
 		const figure = byId('ecl-canvas').closest('figure');
 
+		// the vernal point at the front left; Aldebaran far enough from the
+		// right edge for its name to fit beside it on a phone
 		this.sphere = new Sphere3D(byId('ecl-canvas'), {
-			yaw: 240,
+			yaw: 230,
 			pitch: 20,
 			onDraw: () => this.draw()
+		});
+
+		// the stars of 2026.0, as equatorial vectors: they never move
+		this.stars = Stars.LIST.map(star => {
+			const eq = Stars.ofDate(star, STAR_EPOCH);
+
+			return { name: star.name, mag: star.mag, vector: fromLonLat(eq.ra, eq.dec) };
 		});
 
 		wireSlider(byId('ecl-day'), () => this.update(), formatDay);
@@ -199,9 +323,7 @@ const eclipticFigure = {
 		let sEcl = sunEcl;
 
 		if (this.chosen !== 'Sun') {
-			const eq = Stars.ofDateByName(this.chosen, STAR_EPOCH);
-
-			sEq = fromLonLat(eq.ra, eq.dec);
+			sEq = this.stars.find(star => star.name === this.chosen).vector;
 			sEcl = matApply(Frames.equatorialToEclipticMatrix(EPS_TODAY), sEq);
 		}
 
@@ -246,12 +368,7 @@ const eclipticFigure = {
 		}
 
 		const s = this.sphere;
-		const { eq, ecl, sEq, eclipticAxes } = this.state;
-		const equatorAxes = [
-			[1, 0, 0],
-			[0, 1, 0],
-			[0, 0, 1]
-		];
+		const { eclipticAxes } = this.state;
 		const [, yEcl, K] = eclipticAxes;
 
 		s.outline();
@@ -268,20 +385,65 @@ const eclipticFigure = {
 		s.arrow(ORIGIN, scale(yEcl, AXIS_LENGTH), { color: COL.sun });
 		s.axis(scale(K, AXIS_LENGTH), 'K', { color: COL.sun, labelColor: COL.sun });
 
-		// the chosen object's two sets of coordinates
-		drawCoordinatePath(s, equatorAxes, eq.lon, eq.lat, ['α', 'δ'], COL.earth);
-		drawCoordinatePath(s, eclipticAxes, ecl.lon, ecl.lat, ['λ', 'β'], COL.sun);
-
-		if (this.chosen !== 'Sun') {
-			s.star(sEq, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
-			s.labelAway(this.chosen, sEq, { x: s.cx, y: s.cy }, COL.planet);
-		}
-
+		this.drawObliquity();
+		this.drawStars();
+		this.drawPaths();
 		this.drawSun();
 	},
 
+	/* The obliquity: the angle between the two poles, from P to K (K is
+	   at right ascension 270°, so the arc goes from z towards -y). */
+	drawObliquity() {
+		const s = this.sphere;
+		const name = arcPoint([0, 0, 1], [0, -1, 0], EPS_TODAY / 2, OBLIQUITY_NAME_RADIUS);
+
+		s.arc([0, 0, 1], [0, -1, 0], EPS_TODAY, { color: COL.ink, width: 1.5 }, OBLIQUITY_ARC_RADIUS);
+		labelBeside(s, 'ε', name, name, 0, COL.ink);
+	},
+
+	/* The fixed stars, sized by magnitude; the ones the reader can choose
+	   are named, and the chosen one is in the colour of the object of
+	   interest. */
+	drawStars() {
+		const s = this.sphere;
+
+		this.stars.forEach(star => {
+			if (!ECLIPTIC_STARS.includes(star.name)) {
+				s.star(star.vector, { color: COL.ink, size: starSize(star.mag), alpha: BACKGROUND_STAR_ALPHA });
+			}
+		});
+
+		this.stars.forEach(star => {
+			if (ECLIPTIC_STARS.includes(star.name)) {
+				const color = star.name === this.chosen ? COL.planet : COL.ink;
+
+				drawNamedStar(s, star.name, star.vector, color, RAISED_NAMES.includes(star.name));
+			}
+		});
+	},
+
+	/* The chosen object's two sets of coordinates. Where the ecliptic is
+	   north of the equator (ecliptic longitude 0° to 180°) the symbol of
+	   lambda is on the northern side of the ecliptic and that of alpha on
+	   the southern side of the equator; elsewhere the other way round. */
+	drawPaths() {
+		const s = this.sphere;
+		const { eq, ecl, eclipticAxes } = this.state;
+		const equatorAxes = [
+			[1, 0, 0],
+			[0, 1, 0],
+			[0, 0, 1]
+		];
+		const side = ARC_NAME_GAP * clamp(sin(ecl.lon) / sin(SIDE_CHANGE_DEGREES / 2), -1, 1);
+		const latitudeName = this.chosen === 'Sun' ? null : 'β';
+
+		drawFramePath(s, equatorAxes, norm360(eq.lon), eq.lat, ['α', 'δ'], COL.earth, -side);
+		drawFramePath(s, eclipticAxes, norm360(ecl.lon), ecl.lat, ['λ', latitudeName], COL.sun, side);
+	},
+
 	/* The Sun on the ecliptic, with an arrow along its yearly motion
-	   (eastward, towards greater longitude). */
+	   (eastward, towards greater ecliptic longitude). It has no name in
+	   the figure: the key and the read-out say what it is. */
 	drawSun() {
 		const s = this.sphere;
 		const { sunLon, sunEq, eclipticAxes } = this.state;
@@ -296,20 +458,20 @@ const eclipticFigure = {
 		s.path(shaft, { color: COL.ink, width: 2 });
 		s.arrow(along(SUN_ARROW_DEGREES - 3), along(SUN_ARROW_DEGREES), { color: COL.ink, width: 2 });
 		s.point(sunEq, { color: COL.sun, radius: 8, ring: true });
-		// the label on the side away from the arrow, so the two never overlap
-		s.labelAway('Sun', sunEq, along(SUN_ARROW_DEGREES / 2), COL.ink);
 	}
 };
 
 /* ==========================================================================
    3. FIGURE 3: EQUATOR AND HORIZON
-   Drawn by default in the horizon frame, as Figure 2 of page 1.1: the
-   ground never moves, and the latitude and the turn of the sky move the
-   equator, the ecliptic and the stars. A pair of buttons redraws the same
-   scene in the equatorial frame, as Figure 3 of page 1.1: then the stars
-   stay still and the horizon moves. Everything is computed in equatorial
-   coordinates and carried into the chosen frame by fromEq (an equatorial
-   vector) and fromHor (a horizon vector).
+   Drawn in the horizon frame, as Figure 2 of page 1.1: the ground never
+   moves, and the latitude and the turn of the sky move the equator and
+   what it carries. The reader chooses what the sky carries (buildChoice):
+	 - a star: its hour angle H = theta - alpha as three arcs, H on the
+	   equator, alpha and theta beside it, then its azimuth and altitude;
+	 - the ecliptic: its pole K and its angle I to the horizon (exercise 3).
+   The arc theta, from the meridian to the vernal point, is drawn in both.
+   Everything is computed in equatorial coordinates and carried into the
+   horizon frame by fromEq.
    ========================================================================== */
 
 /* The observation of section 1: Aldebaran from Rome, 1 January 2026,
@@ -319,17 +481,31 @@ const OBSERVATION = { star: 'Aldebaran', phi: PLACES.rome.lat, theta: 38.94 };
 /* Degrees of turn per second when playing (one turn in 24 s). */
 const PLAY_DEGREES_PER_SECOND = 15;
 
-/* The two frames the figure can be drawn in (the labels of its buttons). */
-const HORIZON_VIEW = 'horizon frame';
-const EQUATORIAL_VIEW = 'equatorial frame';
+/* What the sky can carry: a star (the star of section 1, a southern star
+   or one next to the pole), or the ecliptic. */
+const ECLIPTIC_SUBJECT = 'the ecliptic';
+const HORIZON_SUBJECTS = ['Aldebaran', 'Sirius', 'Polaris', ECLIPTIC_SUBJECT];
 
-/* A vector that stays as it is: the map into the frame it is given in. */
-const sameVector = v => v;
+/* theta, alpha and H are three arcs of the equator, which would cover one
+   another. H is drawn on the equator, alpha and theta on the parallels of
+   these declinations (deg), just south of it, with ticks down from the
+   points of the equator where they begin and end. */
+const TRACK_DEC = { alpha: -8, theta: -16 };
+
+/* The symbol of the azimuth is written inside the horizon circle, at this
+   fraction of its radius, clear of N, E, S and W. */
+const AZIMUTH_NAME_RADIUS = 0.86;
+
+/* The arcs of the declination and the altitude meet at the star, and lie
+   on top of each other when the star is on the meridian. Their symbols
+   are on the outer sides of the two arcs, and change sides as the star
+   crosses the meridian, over this many degrees of hour angle, so that
+   they glide across their arcs there. */
+const MERIDIAN_SIDE_CHANGE_DEGREES = 16;
 
 const horizonFigure = {
 	sphere: null,
-	starName: OBSERVATION.star,
-	view: HORIZON_VIEW,
+	subject: OBSERVATION.star,
 	state: null,
 
 	init() {
@@ -341,18 +517,13 @@ const horizonFigure = {
 			onDraw: () => this.draw()
 		});
 
-		buildChoice(byId('hor-frames'), [HORIZON_VIEW, EQUATORIAL_VIEW], this.view, name => {
-			this.view = name;
-			this.update();
-		});
-
 		wireSlider(byId('hor-lat'), () => this.update(), formatAngle);
 		wireSlider(byId('hor-theta'), () => this.update(), formatAngle);
 		wirePresets(figure);
 		this.player = wirePlayButton(byId('hor-play'), byId('hor-theta'), PLAY_DEGREES_PER_SECOND);
 
-		buildChoice(byId('hor-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Polaris', 'Canopus'], this.starName, name => {
-			this.starName = name;
+		buildChoice(byId('hor-subjects'), HORIZON_SUBJECTS, this.subject, name => {
+			this.subject = name;
 			this.update();
 		});
 
@@ -360,11 +531,11 @@ const horizonFigure = {
 		this.update();
 	},
 
-	/* Back to the observation of section 1 (the frame stays as chosen). */
+	/* Back to the observation of section 1. */
 	showObservation() {
 		this.player.pause();
-		this.starName = OBSERVATION.star;
-		const buttons = [...byId('hor-stars').querySelectorAll('button')];
+		this.subject = OBSERVATION.star;
+		const buttons = [...byId('hor-subjects').querySelectorAll('button')];
 
 		markChosen(
 			buttons,
@@ -379,35 +550,48 @@ const horizonFigure = {
 	update() {
 		const phi = readNumber('hor-lat');
 		const theta = readNumber('hor-theta');
-		const eq = Stars.ofDateByName(this.starName, STAR_EPOCH);
 		const matrix = Frames.equatorialToHorizonMatrix(phi, theta);
-		const toHorizon = v => matApply(matrix, v);
-		const toEquatorial = v => matApply(transpose(matrix), v);
-		const inHorizonFrame = this.view === HORIZON_VIEW;
+		const showsEcliptic = this.subject === ECLIPTIC_SUBJECT;
 
 		this.state = {
 			phi: phi,
 			theta: theta,
-			eq: eq,
-			hor: Frames.equatorialToHorizontal(eq.ra, eq.dec, phi, theta),
-			angle: Frames.eclipticHorizonAngle(EPS_TODAY, phi, theta),
-			// the maps from each frame into the frame of the drawing
-			fromEq: inHorizonFrame ? toHorizon : sameVector,
-			fromHor: inHorizonFrame ? sameVector : toEquatorial
+			showsEcliptic: showsEcliptic,
+			// the map from the equatorial frame into the frame of the drawing
+			fromEq: v => matApply(matrix, v),
+			poleAltitude: Frames.eclipticPoleAltitude(EPS_TODAY, phi, theta),
+			angle: Frames.eclipticHorizonAngle(EPS_TODAY, phi, theta)
 		};
+
+		if (!showsEcliptic) {
+			const eq = Stars.ofDateByName(this.subject, STAR_EPOCH);
+
+			this.state.eq = eq;
+			this.state.hor = Frames.equatorialToHorizontal(eq.ra, eq.dec, phi, theta);
+		}
 
 		this.showReadout();
 		this.sphere.redraw();
 	},
 
+	/* Three lines for a star, three for the ecliptic. */
 	showReadout() {
-		const { eq, hor, angle } = this.state;
+		const { showsEcliptic, eq, hor, poleAltitude, angle } = this.state;
+
+		if (showsEcliptic) {
+			showLines('hor-readout', [
+				`\\text{K:}\\ \\alpha = 270^\\circ,\\quad \\delta = ${texDegrees(90 - EPS_TODAY)}`,
+				`a_\\text{K} = ${texDegrees(poleAltitude, 1)}`,
+				`I = 90^\\circ - |a_\\text{K}| = ${texDegrees(angle, 1)}`
+			]);
+
+			return;
+		}
 
 		showLines('hor-readout', [
-			`\\text{${this.starName}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
+			`\\text{${this.subject}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
 			`H = \\theta - \\alpha = ${texDegrees(hor.H)}`,
-			`A = ${texAngle360(hor.A)},\\quad a = ${texDegrees(hor.a)}`,
-			`I = ${texDegrees(angle, 1)}`
+			`A = ${texAngle360(hor.A)},\\quad a = ${texDegrees(hor.a)}`
 		]);
 	},
 
@@ -419,67 +603,138 @@ const horizonFigure = {
 		const s = this.sphere;
 
 		s.outline();
+		s.ground();
 		this.drawSky();
-		this.drawGround();
-		this.drawStar();
+
+		if (this.state.showsEcliptic) {
+			this.drawEcliptic();
+		} else {
+			this.drawStar();
+		}
 	},
 
-	/* The sky: equator, pole, vernal point, ecliptic. */
+	/* A point of the sky by its hour angle (westward from the meridian)
+	   and declination, in the frame of the drawing. */
+	hourPoint(H, dec) {
+		const { theta, fromEq } = this.state;
+
+		return fromEq(fromLonLat(theta - H, dec));
+	},
+
+	/* A tick from a point of the equator down to a parallel beside it. */
+	drawTick(H, dec) {
+		this.sphere.path([this.hourPoint(H, 0), this.hourPoint(H, dec)], { color: COL.muted, width: 1 });
+	},
+
+	/* The sky: the equator and its pole, the vernal point, and the turn
+	   theta, from the meridian westward to the vernal point. */
 	drawSky() {
 		const s = this.sphere;
-		const { fromEq } = this.state;
+		const { theta, fromEq } = this.state;
 		const gamma = fromEq([1, 0, 0]);
-		const yEcl = [0, cos(EPS_TODAY), sin(EPS_TODAY)];
+		const nameAt = arcNameAngle(theta, 360);
+		const name = this.hourPoint(nameAt, TRACK_DEC.theta);
 
 		s.circle(gamma, fromEq([0, 1, 0]), { color: COL.earth, width: 2 });
 		s.axis(fromEq([0, 0, AXIS_LENGTH]), 'P', { color: COL.earth, labelColor: COL.earth });
-		s.circle(gamma, fromEq(yEcl), { color: COL.sun, width: 1.5, dash: [8, 5] });
+
+		this.drawTick(0, TRACK_DEC.theta);
+		this.drawTick(theta, TRACK_DEC.theta);
+		drawArrowArc(s, H => this.hourPoint(H, TRACK_DEC.theta), theta, { color: COL.epicycle, width: 2.5 });
+		labelBeside(s, 'θ', name, this.hourPoint(nameAt, TRACK_DEC.theta - 10), ARC_NAME_GAP, COL.epicycle);
+
+		s.point(this.hourPoint(0, 0), { color: COL.earth, radius: 3.5 });
 		s.point(gamma, { color: COL.ink, radius: 4 });
-		s.label('γ', gamma, { color: COL.ink, dx: 6, dy: 16 });
+		labelBeside(s, 'γ', gamma, fromEq(fromLonLat(0, 10)), ARC_NAME_GAP, COL.ink);
 	},
 
-	/* The observer's frame: horizon, cardinal points, zenith, meridian. */
-	drawGround() {
-		const s = this.sphere;
-		const { fromHor } = this.state;
-		const south = fromHor([1, 0, 0]);
-		const east = fromHor([0, 1, 0]);
-		const zenith = fromHor([0, 0, 1]);
-
-		s.fillPlane(south, east, { color: COL.deferent, alpha: 0.14 });
-		s.circle(south, east, { color: COL.deferent, width: 2 });
-		s.circle(south, zenith, { color: COL.muted, width: 1, dash: [2, 4] });
-
-		[
-			['S', south],
-			['E', east],
-			['N', negate(south)],
-			['W', negate(east)]
-		].forEach(([name, point]) => {
-			s.label(name, scale(point, 1.09), { color: COL.deferent, kind: 'name', dx: -5, dy: 5 });
-		});
-
-		s.point(zenith, { color: COL.deferent, radius: 5 });
-		s.labelAway('Z', zenith, { x: s.cx, y: s.cy }, COL.deferent);
-	},
-
-	/* The star and its two sets of coordinates: (H, delta) from the
-	   meridian along the equator, (A, a) from the north point along the
-	   horizon. */
+	/* The star and its coordinates: alpha eastward from the vernal point,
+	   H westward from the meridian and the declination up to the star;
+	   then the azimuth from the north point through east, and the
+	   altitude. */
 	drawStar() {
 		const s = this.sphere;
-		const { theta, eq, hor, fromEq, fromHor } = this.state;
-		const meridianPoint = fromEq(fromLonLat(theta, 0));
-		const hourAxes = [meridianPoint, fromEq(fromLonLat(theta - 90, 0)), fromEq([0, 0, 1])];
-		const horizonAxes = [fromHor([-1, 0, 0]), fromHor([0, 1, 0]), fromHor([0, 0, 1])];
-		const starPoint = fromEq(fromLonLat(eq.ra, eq.dec));
+		const { eq, hor, fromEq } = this.state;
+		const star = fromEq(fromLonLat(eq.ra, eq.dec));
+		const raPoint = (ra, dec) => fromEq(fromLonLat(ra, dec));
+		const azimuthPoint = (A, radius = 1) => arcPoint([-1, 0, 0], [0, 1, 0], A, radius);
+		const horizonFoot = azimuthPoint(hor.A);
+		const nameH = arcNameAngle(hor.H, 180);
+		const nameDec = this.hourPoint(hor.H, eq.dec / 2);
+		const nameAlt = arcPoint(horizonFoot, [0, 0, 1], hor.a / 2);
+		// +1 west of the meridian, -1 east of it, in between near it
+		const westward = clamp(sin(hor.H) / sin(MERIDIAN_SIDE_CHANGE_DEGREES / 2), -1, 1);
+		// a northern star's declination arc is on the meridian's side of
+		// its altitude arc; a southern star's is the other way round
+		const decSide = ARC_NAME_GAP * westward * (eq.dec >= 0 ? 1 : -1);
 
-		s.point(meridianPoint, { color: COL.earth, radius: 3.5 });
-		drawCoordinatePath(s, hourAxes, hor.H, eq.dec, ['H', 'δ'], COL.earth);
-		drawCoordinatePath(s, horizonAxes, hor.A, hor.a, ['A', 'a'], COL.deferent);
+		// alpha, beside the equator
+		this.drawTick(hor.H, TRACK_DEC.alpha);
+		drawArrowArc(s, ra => raPoint(ra, TRACK_DEC.alpha), eq.ra, { color: COL.earth, width: 2.5 });
+		labelBeside(
+			s,
+			'α',
+			raPoint(eq.ra / 2, TRACK_DEC.alpha),
+			raPoint(eq.ra / 2, TRACK_DEC.alpha - 10),
+			ARC_NAME_GAP,
+			COL.earth
+		);
 
-		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
-		s.labelAway(this.starName, starPoint, { x: s.cx, y: s.cy }, COL.planet);
+		// H on the equator, then the declination
+		drawArrowArc(s, H => this.hourPoint(H, 0), hor.H, { color: COL.earth, width: 3 });
+		s.arc(this.hourPoint(hor.H, 0), fromEq([0, 0, 1]), eq.dec, { color: COL.earth, width: 3, dash: [6, 4] });
+		s.point(this.hourPoint(hor.H, 0), { color: COL.earth, radius: 3 });
+		labelBeside(s, 'H', this.hourPoint(nameH, 0), this.hourPoint(nameH, 10), ARC_NAME_GAP, COL.earth);
+		labelBeside(s, 'δ', nameDec, this.hourPoint(hor.H - 10, eq.dec / 2), decSide, COL.earth);
+
+		// the azimuth along the horizon, then the altitude
+		drawArrowArc(s, A => azimuthPoint(A), hor.A, { color: COL.deferent, width: 3 });
+		s.arc(horizonFoot, [0, 0, 1], hor.a, { color: COL.deferent, width: 3, dash: [6, 4] });
+		s.point(horizonFoot, { color: COL.deferent, radius: 3 });
+		s.label('A', azimuthPoint(arcNameAngle(hor.A, 360), AZIMUTH_NAME_RADIUS), {
+			color: COL.deferent,
+			dx: -6,
+			dy: SYMBOL_HALF_HEIGHT
+		});
+		labelBeside(
+			s,
+			'a',
+			nameAlt,
+			add3(nameAlt, scale(azimuthPoint(hor.A + 90), 0.2)),
+			ARC_NAME_GAP * westward,
+			COL.deferent
+		);
+
+		drawNamedStar(s, this.subject, star, COL.planet);
+	},
+
+	/* The ecliptic, its pole K, and the angle I between the ecliptic and
+	   the horizon: the arc from the zenith to the pole of the ecliptic
+	   that is above the horizon (K, or the opposite pole when K is below). */
+	drawEcliptic() {
+		const s = this.sphere;
+		const { fromEq, poleAltitude, angle } = this.state;
+		const K = fromEq(Frames.eclipticPole(EPS_TODAY));
+		const upperPole = poleAltitude >= 0 ? K : negate(K);
+		const flat = [upperPole[0], upperPole[1], 0];
+
+		s.circle(fromEq([1, 0, 0]), fromEq([0, cos(EPS_TODAY), sin(EPS_TODAY)]), { color: COL.sun, width: 2 });
+		s.axis(scale(K, AXIS_LENGTH), 'K', { color: COL.sun, labelColor: COL.sun });
+
+		// the pole exactly at the zenith: no arc to draw
+		if (length3(flat) < 1e-9) {
+			return;
+		}
+
+		// the symbol at the middle of the arc, and drawn back to the zenith
+		// as I nears 90°, where the arc passes from one pole to the other:
+		// there the symbol does not jump
+		const towardsPole = normalize3(flat);
+		const nameAt = (angle / 2) * (1 - Math.pow(angle / 90, 6));
+		const name = arcPoint([0, 0, 1], towardsPole, nameAt);
+
+		s.arc([0, 0, 1], towardsPole, angle, { color: COL.sun, width: 3 });
+		labelBeside(s, 'I', name, add3(name, [0, 0, 0.2]), ARC_NAME_GAP, COL.sun);
 	}
 };
 
@@ -506,6 +761,19 @@ const MONTH_TICKS = [
 	[243, 'Sep'],
 	[304, 'Nov'],
 	[365, '']
+];
+
+/* The name of each curve: the day of the year it is written at, the
+   curve's value there, and whether it goes above or below the curve, this
+   many px away. The days are chosen where the four curves are far apart,
+   on a phone too; the two dashed lines are named on their inner side,
+   where there is room at any width. */
+const NUTATION_NAME_GAP = 6;
+const NUTATION_NAMES = [
+	{ text: 'Δδ', day: 40, value: d => d.dDec, above: false, align: 'right', color: COL.planet },
+	{ text: 'Δα', day: 135, value: d => d.dRA, above: true, align: 'center', color: COL.epicycle },
+	{ text: '+Δε', day: 275, value: d => d.deps, above: false, align: 'center', color: COL.muted },
+	{ text: '−Δε', day: 275, value: d => -d.deps, above: true, align: 'center', color: COL.muted }
 ];
 
 /* The errors of each day of the year (arcseconds). */
@@ -575,6 +843,22 @@ const nutationFigure = {
 			this.days.map(d => d.dRA),
 			{ color: COL.epicycle, width: 2.5 }
 		);
+		this.drawNames();
+	},
+
+	/* Each curve is named beside it, in the text colour of its line, on
+	   the day and the side of NUTATION_NAMES. */
+	drawNames() {
+		NUTATION_NAMES.forEach(({ text, day, value, above, align, color }) => {
+			this.plot.text(text, day, value(this.days[day]), {
+				color: color,
+				kind: 'symbol',
+				align: align,
+				baseline: above ? 'bottom' : 'top',
+				dx: 0,
+				dy: above ? -NUTATION_NAME_GAP : NUTATION_NAME_GAP
+			});
+		});
 	}
 };
 
