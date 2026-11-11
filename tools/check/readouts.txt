@@ -463,12 +463,12 @@ Regenerate with: node tools/check/smoke.js --update
   as loaded
     OUTPUT (wheel-day): 1 Jan 2026
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns} | \text{sky} - \text{Sun: } 0.002\ \text{turns}
     OUTPUT (sid-time): 19:00
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.2917 | \theta_G = 26.44^\circ = 1^\text{h}45^\text{m}46^\text{s} | \theta = \theta_G +12.50^\circ = 38.94^\circ | \alpha = 69.35^\circ,\quad H = -30.41^\circ | a = 53.7^\circ
+    #sid-readout: d = 9497.2917 | \theta_G = 26.44^\circ = 1^\text{h}45^\text{m}46^\text{s} | \theta = \theta_G +12.50^\circ = 38.94^\circ | \alpha = 69.35^\circ,\quad H = -30.41^\circ
     OUTPUT (transit-lat): 41.9°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 31.3^\circ
     OUTPUT (day-lat): 41.9°
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 114.2^\circ | \text{day } 15\,\text{h}\,14\,\text{min} | \text{sunrise } \text{04:23},\quad \text{sunset } \text{19:37}
     OUTPUT (test-lat): 41.9°
@@ -477,79 +477,79 @@ Regenerate with: node tools/check/smoke.js --update
   slider #wheel-day = 0
     OUTPUT (wheel-day): 1 Jan 2026
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns} | \text{sky} - \text{Sun: } 0.002\ \text{turns}
   slider #wheel-day = 365
     OUTPUT (wheel-day): 1 Jan 2027
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 365\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 366.501\ \text{turns} | \text{Sun: } 365.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 365\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 366.501\ \text{turns} | \text{Sun: } 365.500\ \text{turns} | \text{sky} - \text{Sun: } 1.001\ \text{turns}
   slider #wheel-day = 183
     OUTPUT (wheel-day): 3 Jul 2026
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 184.002\ \text{turns} | \text{Sun: } 183.499\ \text{turns}
+    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 184.002\ \text{turns} | \text{Sun: } 183.499\ \text{turns} | \text{sky} - \text{Sun: } 0.503\ \text{turns}
   slider #wheel-day + one key step
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns}
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #wheel-time = 0
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 00:00
-    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 184.504\ \text{turns} | \text{Sun: } 183.999\ \text{turns}
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 184.504\ \text{turns} | \text{Sun: } 183.999\ \text{turns} | \text{sky} - \text{Sun: } 0.504\ \text{turns}
   slider #wheel-time = 24
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 00:00
-    #wheel-readout: \text{elapsed: } 185\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 185.507\ \text{turns} | \text{Sun: } 184.999\ \text{turns}
+    #wheel-readout: \text{elapsed: } 185\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 185.507\ \text{turns} | \text{Sun: } 184.999\ \text{turns} | \text{sky} - \text{Sun: } 0.507\ \text{turns}
   slider #wheel-time = 12
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 12:00
-    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns}
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #wheel-time + one key step
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 12:01
-    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #sid-time = 0
     OUTPUT (sid-time): 00:00
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9496.5000 | \theta_G = 100.66^\circ = 6^\text{h}42^\text{m}39^\text{s} | \theta = \theta_G +12.50^\circ = 113.16^\circ | \alpha = 69.35^\circ,\quad H = 43.81^\circ | a = 44.8^\circ
+    #sid-readout: d = 9496.5000 | \theta_G = 100.66^\circ = 6^\text{h}42^\text{m}39^\text{s} | \theta = \theta_G +12.50^\circ = 113.16^\circ | \alpha = 69.35^\circ,\quad H = 43.81^\circ
   slider #sid-time = 24
     OUTPUT (sid-time): 00:00
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.5000 | \theta_G = 101.65^\circ = 6^\text{h}46^\text{m}35^\text{s} | \theta = \theta_G +12.50^\circ = 114.15^\circ | \alpha = 69.35^\circ,\quad H = 44.79^\circ | a = 44.2^\circ
+    #sid-readout: d = 9497.5000 | \theta_G = 101.65^\circ = 6^\text{h}46^\text{m}35^\text{s} | \theta = \theta_G +12.50^\circ = 114.15^\circ | \alpha = 69.35^\circ,\quad H = 44.79^\circ
   slider #sid-time = 12
     OUTPUT (sid-time): 12:00
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0000 | \theta_G = 281.15^\circ = 18^\text{h}44^\text{m}37^\text{s} | \theta = \theta_G +12.50^\circ = 293.65^\circ | \alpha = 69.35^\circ,\quad H = -135.70^\circ | a = -18.7^\circ
+    #sid-readout: d = 9497.0000 | \theta_G = 281.15^\circ = 18^\text{h}44^\text{m}37^\text{s} | \theta = \theta_G +12.50^\circ = 293.65^\circ | \alpha = 69.35^\circ,\quad H = -135.70^\circ
   slider #sid-time + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ | a = -18.6^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   slider #sid-lon = -180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ | a = 52.7^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ | a = 52.7^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 0
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ | a = -24.5^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   slider #sid-lon + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.01° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ | a = -24.5^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ
   slider #transit-lat = -60
     OUTPUT (transit-lat): −60.0°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 46.8^\circ
   slider #transit-lat = 60
     OUTPUT (transit-lat): 60.0°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 13.2^\circ
   slider #transit-lat = 0
     OUTPUT (transit-lat): 0.0°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 73.2^\circ
   slider #transit-lat + one key step
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 73.1^\circ
   slider #day-lat = -90
     OUTPUT (day-lat): −90.0°
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
@@ -577,73 +577,73 @@ Regenerate with: node tools/check/smoke.js --update
   button "‹ previous day"
     OUTPUT (wheel-day): 3 Jul 2026
     OUTPUT (wheel-time): 12:01
-    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 184.003\ \text{turns} | \text{Sun: } 183.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 184.003\ \text{turns} | \text{Sun: } 183.500\ \text{turns} | \text{sky} - \text{Sun: } 0.503\ \text{turns}
   button "next day ›"
     OUTPUT (wheel-day): 4 Jul 2026
     OUTPUT (wheel-time): 12:01
-    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns}
+    #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   button "Greenwich"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ | a = -24.5^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   button "Rome"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ | a = -18.6^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   button "Alexandria"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 29.92° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.22^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ | a = -8.4^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.22^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ
   button "New York"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ | a = -19.8^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Aldebaran"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ | a = -19.8^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Vega"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ | a = 36.6^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ
   button "Sirius"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ | a = -22.7^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ
   button "Arcturus"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ | a = 66.4^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ
   button "Sirius"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Sirius: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 73.1^\circ
   button "Betelgeuse"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Betelgeuse: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Betelgeuse, night of 20 Dec 2026} | \text{transit } \text{23:58},\quad \text{sky: dark} |  | a = 82.7^\circ
   button "Vega"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Vega: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Vega, night of 30 Jun 2026} | \text{transit } \text{00:02},\quad \text{sky: dark} |  | a = 51.3^\circ
   button "Antares"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Antares: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Antares, night of 29 May 2026} | \text{transit } \text{00:01},\quad \text{sky: dark} |  | a = 63.4^\circ
   button "Arcturus"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Arcturus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Arcturus, night of 25 Apr 2026} | \text{transit } \text{00:01},\quad \text{sky: dark} |  | a = 71.1^\circ
   button "Canopus"
     OUTPUT (transit-lat): 0.1°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = 37.2^\circ
   button "Alexandria"
     OUTPUT (transit-lat): 31.2°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = 6.1^\circ
   button "Rome"
     OUTPUT (transit-lat): 41.9°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = -4.6^\circ\ \text{(below the horizon)}
   button "London"
     OUTPUT (transit-lat): 51.5°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = -14.2^\circ\ \text{(below the horizon)}
   button "Sydney"
     OUTPUT (transit-lat): −33.9°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = 71.2^\circ
   button "equator"
     OUTPUT (day-lat): 0.0°
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 90.9^\circ | \text{day } 12\,\text{h}\,07\,\text{min} | \text{sunrise } \text{05:56},\quad \text{sunset } \text{18:04}
@@ -685,7 +685,7 @@ Regenerate with: node tools/check/smoke.js --update
     #transit-readout: \text{Canopus, night of 28 Nov 2026} | \text{transit } \text{01:53},\quad \text{sky: dark} |  | a = 71.2^\circ
   hover #transit-plot left
     OUTPUT (transit-lat): −33.9°
-    #transit-readout: \text{Canopus: point at the plot to read a night} |  |  | 
+    #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = 71.2^\circ
   hover #day-curve at 0.3
     OUTPUT (day-lat): 69.7°
     #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.34^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
@@ -722,7 +722,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-plot left
     OUTPUT (test-lat): −33.9°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
-  dragged 1 spheres
+  dragged 0 spheres
 
 === act2-sun/01-uneven-year/index.html ===
   as loaded
