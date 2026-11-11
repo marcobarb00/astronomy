@@ -3,18 +3,25 @@
    Layout only: every colour comes from shared/theme.css.
 
    TABLE OF CONTENTS
-	 1. Controls
+	 1. Controls and canvases
 	 2. The tables of the prose
 	 3. Phone width
    ========================================================================== */
 
 /* ==========================================================================
-   1. CONTROLS
+   1. CONTROLS AND CANVASES
    ========================================================================== */
 
 /* Slider values here are short ("23.44°", "38.9°"). */
 figure.fig {
 	--ctl-output: 5.5em;
+}
+
+/* A sphere drawn once, with no controls beside it (Figure 4): as wide as
+   the spheres of the other figures, in the middle of its frame. */
+.sphere-box {
+	max-width: 480px;
+	margin: 0 auto;
 }
 
 /* ==========================================================================
@@ -37,7 +44,7 @@ table.prose-table td:first-child {
    ========================================================================== */
 
 @media (max-width: 800px) {
-	/* "obliquity ε" needs a little more than the shared 74px label column */
+	/* "geographic latitude φ" needs a little more than the shared label column */
 	.ctl {
 		grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 	}

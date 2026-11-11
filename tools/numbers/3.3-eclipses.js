@@ -911,6 +911,29 @@ title('16. The scales of the figures');
 	const near = limitsFor(MOON_NEAREST, 1);
 
 	console.log(
-		`Figure 4: |beta| at 20° from the node ${f(LunarLatitude.latitude(20, LAT.i), 3)}° (window +-2°); limits ${arcmin(far.l.solar)} to ${arcmin(near.l.solar)} solar`
+		`Figure 5: |beta| at 20° from the node ${f(LunarLatitude.latitude(20, LAT.i), 3)}° (window +-2°); limits ${arcmin(far.l.solar)} to ${arcmin(near.l.solar)} solar`
+	);
+
+	/* Figure 5(c): the boxes of the limits, in the Sun's distance from the
+	   node, stay inside the slider's range of +-20°. */
+	console.log(
+		`Figure 5(c): the boxes reach ${f(far.F.lunar, 1)}° to ${f(near.F.lunar, 1)}° (lunar) and ${f(far.F.solar, 1)}° to ${f(near.F.solar, 1)}° (solar) from the node (axis +-20°)`
+	);
+
+	/* Figure 7: the scale of the error curve of the latitude, the same for
+	   its three spans. The longest, a century about the middle of 2026, is
+	   sampled here every half day; the dots of the mean inclination are at
+	   the new and full Moons of 2026. */
+	const meanI = Object.assign({}, LAT, { i: 5.145 });
+	const century = [];
+
+	for (let jd = Y(1976); jd < Y(2077); jd += 0.5) {
+		century.push(LunarLatitude.state(LAT, jd).beta - Ephem.moon(jd).lat);
+	}
+
+	const meanDots = SYZ_2026.map(s => LunarLatitude.state(meanI, s.syzygy).beta - s.betaSyzygy);
+
+	console.log(
+		`Figure 7: the fit over 1976-2077 within ${arcmin(maxAbs(century))}; the dots of the mean inclination within ${arcmin(maxAbs(meanDots))} (scale +-40')`
 	);
 }

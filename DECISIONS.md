@@ -48,7 +48,8 @@ section.
   numbers. → STRUCTURE.md §5
 - **The error curve is the thread of the course.** From page 2.1 on, every
   model is tested against the reference sky, with earlier models as
-  ghosts. → STRUCTURE.md §7.3
+  ghosts where the scales allow (not on page 2.1, see below). →
+  STRUCTURE.md §7.3
 - **Exercises of four kinds: compute then check, predict then play,
   derive, break the model.** Two or three per page, with hint and worked
   answer, every number from a script. → STRUCTURE.md §7.2
@@ -96,6 +97,14 @@ section.
   every epicycle turn with the Sun?", page 4.2's closing question, before
   page 4.3 takes it up. Approved by Marco on 2026-11-09. → STRUCTURE.md
   §4 (page 4.1), §7.5
+- **Page 2.1's error curve has no ghost of the uniform circle.** Its
+  error (115′ in 2026) is about seventy times the eccentric's (1.7′), so
+  on any scale that shows both the eccentric's error is a flat line; the
+  figure that drew them together (a ghost and a line on zero) showed
+  nothing. Page 2.1 plots the eccentric alone, over 1, 100 and 1000
+  years, and the text gives both numbers. Later pages keep earlier models
+  as ghosts where the scales allow. Decided by Marco on 2026-11-11. →
+  STRUCTURE.md §4 (page 2.1), §7.3
 
 ## Look
 

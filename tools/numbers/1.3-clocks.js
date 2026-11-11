@@ -481,13 +481,12 @@ console.log(
 
 	console.log(`phi ${String(phi).padStart(5)}: day length ${f(r.day)}, sunrise ${f(r.rise)}, sunset ${f(r.set)}`);
 });
+// the two curves of Figure 6: the noon and the length of the day
 let all = [0, 0];
 
 SCAN.forEach(phi => {
-	['day', 'rise', 'set'].forEach(key => {
-		widen(all, ranges[phi][key][0]);
-		widen(all, ranges[phi][key][1]);
-	});
+	widen(all, ranges[phi].day[0]);
+	widen(all, ranges[phi].day[1]);
 });
 widen(all, noonRange.min);
 widen(all, noonRange.max);
@@ -502,7 +501,7 @@ console.log(
 	`northern hemisphere: the model's day is at most ${northLong.value.toFixed(1)} min too long (at ${northLong.phi})`
 );
 console.log(
-	`Figure 6 (|phi| <= 65, every 2.5 deg): every error within [${all[0].toFixed(1)}, ${all[1].toFixed(1)}] min -> fixed range [-25, 25]`
+	`Figure 6 (|phi| <= 65, every 2.5 deg): noon and day length within [${all[0].toFixed(1)}, ${all[1].toFixed(1)}] min -> fixed range [-20, 20]`
 );
 
 title('Test: why the day length is wrong (5 April 2026, London)');

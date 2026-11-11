@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. Figures 1 and 2: the square views from above the pole
+	 2. Figures 1 to 3: the square views from above the pole
 	 3. The tables of the prose (the panels of Figures 4 and 5: theme.css)
 	 4. Phone width
    ========================================================================== */
@@ -25,12 +25,13 @@ button.play {
 }
 
 /* ==========================================================================
-   2. FIGURES 1 AND 2: THE SQUARE VIEWS FROM ABOVE THE POLE
+   2. FIGURES 1 TO 3: THE SQUARE VIEWS FROM ABOVE THE POLE
    The canvases set their own square size (page.js); centre them.
    ========================================================================== */
 
 #wheel-canvas,
-#angles-canvas {
+#angles-canvas,
+#sid-canvas {
 	display: block;
 	margin: 0 auto;
 }

@@ -109,9 +109,18 @@ The language needed to state any prediction.
   trigonometry formulas obtained by multiplying out the matrices.
 - **Figures:** a blue plate of the zodiac around Aldebaran, with the
   equatorial grid and the ecliptic; one fixed direction shown in two
-  frames at once; the axes rotate, the point does not (ecliptic and equator,
-  drawn in the equatorial frame; equator and horizon, drawn in the horizon
-  frame, with buttons to redraw it in the equatorial frame).
+  frames at once: ecliptic and equator, drawn in the equatorial frame,
+  with the obliquity marked between the two poles, the fixed stars, and
+  the Sun moved along the ecliptic by the date; equator and horizon, drawn
+  in the horizon frame, with $\theta$, $\alpha$ and $H$ as three arcs
+  ($H$ on the equator, the other two beside it), then $A$ and $a$, and
+  the ecliptic and its angle to the horizon as a second choice (exercise
+  3). The horizon figure is not redrawn in the equatorial frame: page
+  1.1 shows that pair of views. Two static figures: the spherical
+  triangle of the pole, the zenith and the star, for the observation of
+  section 1; and, in the Fit, the noon altitude of the Sun at Alexandria
+  through 2026, with the obliquity above and below the altitude of the
+  equator and the March equinox where the curve crosses it.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Alexandria,
   2026); the origin γ from the March equinox. History block: Ptolemy's
   meridian ring and plaque, his bounds and $23^\circ 51' 20''$ (*Almagest*
@@ -146,12 +155,15 @@ The language needed to state any prediction.
   of stars. Day length counts the Sun's upper limb with refraction
   ($h_0 = -50'$, `Ephem.refraction`), as found on page 1.1.
 - **Figures:** the sky from above the pole through 2026 (date and time:
-  366 turns of the sky in 365 days; play a day or a year); the three angles of
+  366 turns of the sky in 365 days, the solid part of the ecliptic showing
+  the extra turn; play a day or a year); the three angles of
   $\theta_G = H_m + \alpha_m$ on the equator (static, one worked moment);
-  $\theta$, $\alpha$ and $H$ as arcs of the
-  equator in the observer's sky (3D, time and longitude); a star calendar of
-  transits and nights; the length of the day at one latitude and at every
-  latitude; the model Sun against the real one.
+  $\theta_G$, $\ell$, $\alpha$ and $H$ as arcs of the equator seen from
+  above the pole (2D, time and longitude: the time turns the sky, the
+  longitude the observer's meridian); a star calendar of transits and
+  nights; the length of the day through the year at one latitude, and
+  against the latitude on three dates; the model Sun against the real one
+  (noon and the length of the day).
 - **Model:** $Y$ solar days are $Y + 1$ sidereal days; $\theta = \theta_G +
   \ell$; mean solar time from the mean Sun ($\alpha_m = \bar\lambda$), which
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
@@ -205,16 +217,24 @@ The first anomaly and the simplest complete model.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
   eccentric between the lines from the Earth to the equinoxes and solstices.
-- **Figures:** the real Sun's daily motion through 2026 (static); the
-  eccentric with its four seasons beside $q(t)$ over a year (date and $e$,
-  starting at the exaggerated $e = 0.2$); Hipparchus' construction, with
-  the centre $C = (h, k)$ drawn six times farther out to show the angles
-  $\arcsin h$, $\arcsin k$ and the arcs $a_1$, $a_2$, and C at its true
-  place magnified (spring and summer, with presets). **First appearance of
-  the error curve:** (a) the uniform circle (ghost) against the eccentric
-  fitted to 2026 and (b) the eccentric alone on a scale a hundred times
-  finer, over 1, 100 and 1000 years. A photo: Peurbach's woodcut of the
-  Sun's eccentric orbs.
+- **Figures:** the real Sun's daily motion from the March equinox of 2026
+  to that of 2027, with the four seasons and their lengths above it
+  (static); the same arrow from the Earth to the Sun with the Earth at
+  rest and with the Sun at rest (static); the equation of centre, the
+  eccentric with M and q beside $q(t)$ over a year (date, and two views:
+  the exaggerated $e = 0.2$ and the Sun's $e$), next to the definition of
+  q; the four seasons as the arcs between the lines to the equinoxes and
+  solstices, at $e = 0.2$ and to scale (static); Hipparchus' construction,
+  with the centre $C = (h, k)$ drawn six times farther out to show the two
+  right triangles of the text (legs $h$ and $k$, angles $\arcsin h$,
+  $\arcsin k$) and the arcs $a_1$, $a_2$, and C at its true place
+  magnified (spring and summer, with presets including AD 140 for
+  Exercise 3). **First appearance of the error curve:** the eccentric
+  fitted to 2026, over 1, 100 and 1000 years. The uniform circle is not
+  drawn as a ghost: its error is about seventy times larger, so on any
+  scale that showed it the eccentric's error would be a flat line; the
+  text gives both numbers. A photo: Peurbach's woodcut of the Sun's
+  eccentric orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
   construction applied to the reference seasons of 2026 ($e = 0.03347$,
   $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one
@@ -525,30 +545,35 @@ The first anomaly and the simplest complete model.
   (NASA, public domain); a blue plate of the Moon's path near Regulus,
   11–15 August 2026, crossing the ecliptic at the node 16 hours after the
   total eclipse of 12 August; the Moon's inclined circle (3D, ecliptic
-  frame, inclination drawn three times larger; date, a month or 19
-  years); the Earth's shadow (static, not to scale); the Sun, the Moon and
-  the shadow near a node, with the latitude and the limits (the Sun's
+  frame, inclination drawn three times larger; date; three views: a
+  month, with the triangle of $F$, $\lambda - \Omega$, $\beta$ and $i$,
+  a year, with the Sun, the Earth's shadow and the nodes, and the nodes'
+  turn over 19 years); the two shadows (static, not to scale: the
+  Earth's shadow at the Moon's distance, with $\pi$ divided into $u$ and
+  $s_\odot - \pi_\odot$, and the Moon's shadow on the Earth from the
+  side, with $\beta$ and $\gamma$); the Sun, the Moon and the shadow
+  near a node, with the Moon's path and a box for each limit (the Sun's
   distance from the node and the Moon's distance); the eclipse seasons of
-  2026–2027 (static); the error curve of the latitude (the mean
-  inclination as ghost, dots at new and full Moon; 2026, two months or
-  the year). Table: the eclipses of 2026, model against real.
-- **Fit:** which observation fixes each parameter. $n_F$ from
-  observations far apart, so taken from the reference Moon (Meeus 47);
-  the node from the latitudes near the nodes and $i$ from those near $F =
-  \pm 90^\circ$, fitted by least squares to the 25 new and full Moons of
-  2026: $i = 5.00^\circ$, the node at J2000 125.05° (Meeus 125.04°); the
-  mean inclination 5.145° would be up to 10′ off there. The sizes from the
-  model's own distances. History block: Ptolemy's inclination from the
-  Moon near the zenith of Alexandria (V 12), 5°; his motion in latitude
-  from a Babylonian period of centuries (IV 2), in words.
-- **Test:** 2026 and 2021–2030 only. The latitude within 1.9′ at the new
-  and full Moons of 2026 and 2.6′ at the others of 2021–2030, 26′ between
-  them; all 38 eclipses of 2021–2030, each of the right kind; times about
-  45 min typical and 95 min at worst, from the epicycle's error in
-  ecliptic longitude (43′ at these eclipses). History block: Ptolemy's
-  three eclipses at Alexandria (IV 6), the ones he fitted his epicycle to,
-  his latitudes within a few arcminutes and his times within half an hour;
-  run to 2021–2030, all but one of the 38 found, times off by hours.
+  2026–2027 (static); the error curve of the latitude (dots at new and
+  full Moon, and those of the mean inclination); Ptolemy's latitude
+  around AD 134 and over 2000 years. Tables: the eclipses of 2026, model
+  against real; Ptolemy's three eclipses at Alexandria (IV 6).
+- **Fit:** Ptolemy's 5° (V 12, 4.99° from his figures); Hipparchus' 5458
+  months = 5923 returns in latitude (IV 2, Babylonian), 0.1 s from the
+  reference; Ptolemy's correction and epoch (IV 9); his diameter and
+  shadow from two eclipses (VI 5); Copernicus' motion in latitude from
+  eclipses at opposite nodes (IV 13). Ours: Meeus' $n_F$, and $i$ and $F_0$
+  fitted to the latitudes at the 25 new and full Moons of 2026: $i =
+  5.00^\circ$ (the mean inclination 5.145° would be up to 10′ off
+  there), the node at J2000 125.05° (Meeus 125.04°); the sizes from the
+  model's distances.
+- **Test:** the latitude within 1.9′ at the new and full Moons of 2026, 26′
+  over the year, 29′ over a century; the eclipses: all 38 of 2021–2030,
+  364 of 366 in 2001–2100 (two missed and three added, all grazing
+  partials), times rms 45 min, worst 97 min (page 3.1's 40′). Ptolemy: his
+  latitudes within 2.3′ and his times within half an hour at his three
+  eclipses; his lunar limit holds all 157 lunar eclipses of AD 100–200;
+  in 2021–2030 still 37 of 38 eclipses, times wrong by up to 4.3 h.
 - **Exercises:** decide whether the new Moon of 12 August 2026 is an
   eclipse, central, total or annular (and 11 September); derive the saros
   from the three months by continued fractions, the exeligmos, the length

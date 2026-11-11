@@ -12,7 +12,7 @@
 	 3. Observation: The three coordinate systems
 	 4. Model: the matrices, checked
 	 5. Fit: the obliquity from the solstices; the equinox
-	 6. Test: Ptolemy's tables; the nutation error (Figure 4)
+	 6. Test: Ptolemy's tables; the nutation error (Figure 6)
 	 7. Exercises
 	 8. Residual: the angle between the frames drifts
    ========================================================================== */
@@ -292,6 +292,30 @@ console.log(
 		` phi = ${f(phiFit, 4)} (${arcmin(phiFit - ALEXANDRIA.phi, 2)} from ${ALEXANDRIA.phi})`
 );
 
+/* Figure 5 plots these noon altitudes through 2026 on a fixed scale, and
+   marks the March equinox where they rise through 90° - phi: between the
+   noons of two days, taken to change evenly. */
+const equatorAltitude = 90 - ALEXANDRIA.phi;
+let equinoxDay = null;
+
+for (let day = 1; day < 365 && equinoxDay === null; day++) {
+	const before = noonAltitude(Time.julianDay(2026, 1, 1) + day - 1, ALEXANDRIA);
+	const after = noonAltitude(Time.julianDay(2026, 1, 1) + day, ALEXANDRIA);
+
+	if (before < equatorAltitude && after >= equatorAltitude) {
+		equinoxDay = day - 1 + (equatorAltitude - before) / (after - before);
+	}
+}
+
+console.log(
+	`Figure 5 scale: noon altitudes from ${f(lowest.a, 2)} to ${f(highest.a, 2)} -> fixed range [25, 95];` +
+		` the equator's altitude is ${f(equatorAltitude, 1)}`
+);
+console.log(
+	`Figure 5 dot: the noon Sun rises through ${f(equatorAltitude, 1)} ${f(equinoxDay % 1, 2)} of the way from the noon of` +
+		` ${dateText(Time.julianDay(2026, 1, 1) + Math.floor(equinoxDay))} to the next`
+);
+
 title('Ptolemy and the others');
 console.log(
 	`Ptolemy: 2 eps = 47°42'40" -> eps = ${toDms(Frames.PTOLEMY_OBLIQUITY)} = ${f(Frames.PTOLEMY_OBLIQUITY, 4)}`
@@ -394,7 +418,7 @@ console.log(
 );
 console.log(`largest |Ptolemy - real| right ascension: ${worstRA137.toFixed(1)} arcmin`);
 
-title('Test 2 (Figure 4): the nutation error over 2026');
+title('Test 2 (Figure 6): the nutation error over 2026');
 
 /* Each day of 2026 at 0h TT: the reference Sun's apparent (lambda, beta)
    turned into (alpha, delta) with the MEAN obliquity of date (the model:
@@ -443,7 +467,34 @@ console.log(
 	`December solstice (day ${december.day}): d delta = ${f(december.dDec, 2)}", +d eps = ${f(december.deps, 2)}"`
 );
 console.log(
-	`Figure 4 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`
+	`Figure 6 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`
+);
+
+/* The ripple on the curves of Figure 6 (its key): the period of the
+   short-period term of d eps, counted on the curve itself. The slow terms
+   are removed with a running mean over 27 days; two changes of sign of
+   what is left make one ripple. */
+const RIPPLE_WINDOW = 13; // days on each side of the running mean
+const rippleDays = [];
+
+for (let day = RIPPLE_WINDOW; day <= 365 - RIPPLE_WINDOW; day++) {
+	const around = nutationDays.slice(day - RIPPLE_WINDOW, day + RIPPLE_WINDOW + 1);
+	const mean = around.reduce((sum, d) => sum + d.deps, 0) / around.length;
+
+	rippleDays.push(nutationDays[day].deps - mean);
+}
+
+const rippleCrossings = rippleDays.filter((value, i) => i > 0 && value * rippleDays[i - 1] < 0).length;
+const ripplePeriod = (2 * (rippleDays.length - 1)) / rippleCrossings;
+
+/* The Moon's tropical month (days), from the rate of its mean longitude
+   in the nutation series of Ephem.nutation (Meeus ch. 22), deg / century. */
+const MOON_MEAN_MOTION = 481267.8813;
+const tropicalMonth = (360 * 36525) / MOON_MEAN_MOTION;
+
+console.log(
+	`ripple of Figure 6: ${rippleCrossings} changes of sign in ${rippleDays.length - 1} days -> period ${f(ripplePeriod, 1)} days,` +
+		` half the Moon's tropical month of ${f(tropicalMonth, 2)} days (${f(tropicalMonth / 2, 2)} days)`
 );
 
 title('Residual: an old obliquity used today');

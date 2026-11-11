@@ -7,16 +7,17 @@
 									   through 2026)
 	 2. the three angles              (2D, static: theta_G = H_m + alpha_m on
 									   the equator at one moment)
-	 3. sidereal time and hour angle  (3D, horizon frame: the time and the
-									   longitude turn the sky, never the ground)
+	 3. sidereal time and hour angle  (2D, from above P: the time turns the
+									   sky, the longitude the observer's
+									   meridian)
 	 4. the star calendar             (2D: transit times through 2026)
 	 5. the length of the day         (2D: one latitude through the year, and
-									   the map of every latitude)
-	 6. the clock against the Sun     (2D: model minus real noon, sunrise,
-									   sunset through 2026)
+									   every latitude on three dates)
+	 6. the clock against the Sun     (2D: model minus real noon and length
+									   of the day through 2026)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
-   models/frames.js, models/mean-sun.js, models/clock.js, sphere3d.js,
-   plot2d.js, components.js.
+   models/frames.js, models/mean-sun.js, models/clock.js, plot2d.js,
+   components.js.
    Every number quoted in the prose comes from tools/numbers/1.3-clocks.js.
 
    TABLE OF CONTENTS
@@ -103,19 +104,95 @@ function clockwisePoint(owner, angle, r) {
 	return { x: owner.cx + r * sin(angle), y: owner.cy - r * cos(angle) };
 }
 
+/* The longest arrowhead of an arc (px); a shorter arc has a head of its
+   own length, so the head shrinks to nothing with the arc. */
+const ARROW_SIZE = 10;
+
+/* An arc of a view from above P, about its centre at radius r: from the
+   angle 'from' (clockwise from the top) through 'sweep' degrees, clockwise
+   when positive (westward) and anticlockwise when negative (eastward),
+   with an arrowhead at its end. */
+function polarArc(owner, from, sweep, r, color) {
+	const ctx = owner.ctx;
+	const toCanvas = angle => (angle - 90) * D2R;
+
+	ctx.strokeStyle = color;
+	ctx.lineWidth = 3;
+	ctx.beginPath();
+	ctx.arc(owner.cx, owner.cy, r, toCanvas(from), toCanvas(from + sweep), sweep < 0);
+	ctx.stroke();
+
+	polarArrowHead(owner, from + sweep, r, sweep < 0 ? -1 : 1, color, Math.min(ARROW_SIZE, Math.abs(sweep) * D2R * r));
+}
+
+/* A filled arrowhead of length 'size' px at the angle 'at' on the circle
+   of radius r, pointing clockwise (sense = 1) or anticlockwise (-1). */
+function polarArrowHead(owner, at, r, sense, color, size) {
+	const ctx = owner.ctx;
+	const tip = clockwisePoint(owner, at, r);
+	const back = clockwisePoint(owner, at - sense * 4, r);
+	const ux = tip.x - back.x;
+	const uy = tip.y - back.y;
+	const length = Math.hypot(ux, uy) || 1;
+	const ax = ux / length;
+	const ay = uy / length;
+
+	ctx.fillStyle = color;
+	ctx.beginPath();
+	ctx.moveTo(tip.x, tip.y);
+	ctx.lineTo(tip.x - size * ax - size * 0.5 * ay, tip.y - size * ay + size * 0.5 * ax);
+	ctx.lineTo(tip.x - size * ax + size * 0.5 * ay, tip.y - size * ay - size * 0.5 * ax);
+	ctx.closePath();
+	ctx.fill();
+}
+
+/* A straight line of a view from above P, from its centre outwards to the
+   radius r at an angle (clockwise from the top). */
+function polarRay(owner, angle, r, style) {
+	segment(owner.ctx, { x: owner.cx, y: owner.cy }, clockwisePoint(owner, angle, r), style);
+}
+
+/* The name of an angle, a symbol with or without a subscript ("H",
+   ["θ", "G"]), centred at a canvas point in the text colour of its arc.
+   It is drawn where it is asked: it never steps aside. */
+function angleName(owner, name, point, color) {
+	const ctx = owner.ctx;
+
+	if (Array.isArray(name)) {
+		subscriptLabel(ctx, name[0], name[1], point, color);
+		return;
+	}
+
+	ctx.fillStyle = textColor(color);
+	ctx.font = FONT_SYMBOL;
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillText(name, point.x, point.y);
+}
+
 /* ==========================================================================
    1. FIGURE 1: THE SKY FROM ABOVE THE POLE
    A polar view from outside the sphere, above P, from declination +90° at
    the centre to -60° at the rim (equidistant in declination). The
    meridian of Greenwich is fixed and points up; a point at hour angle H
-   is drawn H clockwise from it, so the sky turns clockwise.
+   is drawn H clockwise from it, so the sky turns clockwise. The part of
+   the ecliptic the Sun has covered since 1 January is drawn solid: seen
+   from P it is the angle by which the Sun has fallen behind the stars,
+   one whole turn by the end of the year.
    ========================================================================== */
 
 /* Declination at the rim of the wheel. */
 const WHEEL_RIM_DEC = -60;
 
 /* Stars named on the wheel. */
-const WHEEL_NAMES = ['Sirius', 'Betelgeuse', 'Vega', 'Arcturus'];
+const WHEEL_NAMES = ['Betelgeuse', 'Vega', 'Arcturus'];
+
+/* The Sun's name stands beside it in the direction away from P, turned
+   by this angle (deg, anticlockwise): clear of the meridian and of the
+   ecliptic when the Sun is on both, on the side away from the names of
+   the stars (written to their right) when the Sun is near the meridian,
+   and turning smoothly round the Sun as the sky turns. */
+const WHEEL_SUN_NAME_TURN = 45;
 
 const wheelFigure = {
 	labels: new LabelPlacer(), // keeps the labels of one drawing apart
@@ -150,39 +227,46 @@ const wheelFigure = {
 			onPlay: () => players.day.pause()
 		});
 
-		this.sunAtStart = this.sunRightAscension(YEAR_START);
+		this.sunAtStart = this.sunAt(YEAR_START);
 		this.update();
 	},
 
-	/* The real Sun's right ascension (deg) at JD(UT). */
-	sunRightAscension(jdUT) {
-		return this.sunEquatorial(jdUT).ra;
+	/* The real Sun at JD(UT): its ecliptic longitude lon, and its ra and
+	   dec (deg). */
+	sunAt(jdUT) {
+		const jdTT = Time.ttFromUt(jdUT);
+		const ecliptic = Ephem.sun(jdTT);
+		const equatorial = Ephem.equatorial(ecliptic, jdTT);
+
+		return { lon: ecliptic.lon, ra: equatorial.ra, dec: equatorial.dec };
 	},
 
-	/* The real Sun's { ra, dec } (deg) at JD(UT). */
-	sunEquatorial(jdUT) {
-		const jdTT = Time.ttFromUt(jdUT);
+	/* An angle of the Sun (deg) since the start of the year, unwrapped:
+	   the mean motion plus the (small) difference of the real Sun from it. */
+	sunAdvance(now, atStart, elapsed) {
+		const mean = MeanSun.MODERN.n * elapsed;
 
-		return Ephem.equatorial(Ephem.sun(jdTT), jdTT);
+		return mean + norm180(now - atStart - mean);
 	},
 
 	update() {
 		const elapsed = readNumber('wheel-day') + readNumber('wheel-time') / 24;
 		const jd = YEAR_START + elapsed;
-		const sun = this.sunEquatorial(jd);
-		const sunRa = sun.ra;
-		const n = MeanSun.MODERN.n;
+		const sun = this.sunAt(jd);
 
-		// the Sun's right ascension, unwrapped: the mean motion plus the
-		// (small) difference of the real Sun from it
-		const sunMoved = n * elapsed + norm180(sunRa - this.sunAtStart - n * elapsed);
+		// how far the Sun has moved since the start of the year: in right
+		// ascension (the turns it has lost on the sky) and along the ecliptic
+		// (the solid arc, at most the whole circle)
+		const sunMoved = this.sunAdvance(sun.ra, this.sunAtStart.ra, elapsed);
+		const travelled = clamp(this.sunAdvance(sun.lon, this.sunAtStart.lon, elapsed), 0, 360);
 
 		this.state = {
 			jd: jd,
 			elapsed: elapsed,
 			theta: Clock.gmst(jd),
-			sunRa: sunRa,
+			sunRa: sun.ra,
 			sunDec: sun.dec,
+			travelled: travelled,
 			skyTurns: (Clock.RATE * elapsed) / 360,
 			sunTurns: (Clock.RATE * elapsed - sunMoved) / 360
 		};
@@ -199,7 +283,8 @@ const wheelFigure = {
 		showLines('wheel-readout', [
 			`\\text{elapsed: } ${days}\\,\\text{d}\\ ${hmTex(hours)}`,
 			`\\text{sky: } ${skyTurns.toFixed(3)}\\ \\text{turns}`,
-			`\\text{Sun: } ${sunTurns.toFixed(3)}\\ \\text{turns}`
+			`\\text{Sun: } ${sunTurns.toFixed(3)}\\ \\text{turns}`,
+			`\\text{sky} - \\text{Sun: } ${(skyTurns - sunTurns).toFixed(3)}\\ \\text{turns}`
 		]);
 	},
 
@@ -226,8 +311,7 @@ const wheelFigure = {
 		this.drawStars();
 		this.drawPoint(0, 0, COL.ink, 4, 'γ');
 		this.drawPoint(0, 90, COL.ink, 3.5, 'P');
-		this.drawPoint(270, 90 - EPS_YEAR, COL.sun, 3.5, 'K');
-		this.drawPoint(this.state.sunRa, this.state.sunDec, COL.sun, 8, 'Sun');
+		this.drawSun();
 	},
 
 	/* A circle of constant declination. */
@@ -243,22 +327,46 @@ const wheelFigure = {
 		ctx.setLineDash([]);
 	},
 
-	/* The ecliptic, dashed, from Frames.eclipticPoint. It is the great
-	   circle 90° from its pole K (alpha = 270°, delta = 90° - eps), so in
-	   this view centred on P it is centred near K, off the centre. */
+	/* The ecliptic, from Frames.eclipticPoint: dashed, and solid from the
+	   Sun's place at the start of the year (a small ring) to the Sun. It is
+	   the great circle 90° from its own pole, 23.4° from P, so in this view
+	   centred on P it is off the centre. */
 	drawEcliptic() {
+		const start = this.sunAtStart.lon;
+		const from = this.eclipticScreen(start);
+
+		this.strokeEcliptic(0, 360, { width: 2, dash: [6, 5] });
+		this.strokeEcliptic(start, this.state.travelled, { width: 3.5, dash: [] });
+		drawDot(this.ctx, from.x, from.y, 4, COL.card, false);
+		circle(this.ctx, from, 4, { color: COL.sun, width: 2 });
+	},
+
+	/* Screen position of the point of the ecliptic at longitude lon. */
+	eclipticScreen(lon) {
+		const p = Frames.eclipticPoint(lon, EPS_YEAR);
+
+		return this.toScreen(p.ra, p.dec);
+	},
+
+	/* The arc of the ecliptic from the longitude 'from' through 'length'
+	   degrees eastward, with a line style { width, dash }. */
+	strokeEcliptic(from, length, style) {
 		const ctx = this.ctx;
+		const steps = Math.ceil(length / 2);
+
+		if (steps === 0) {
+			return;
+		}
 
 		ctx.strokeStyle = COL.sun;
-		ctx.lineWidth = 2;
-		ctx.setLineDash([6, 5]);
+		ctx.lineWidth = style.width;
+		ctx.setLineDash(style.dash);
 		ctx.beginPath();
 
-		for (let lon = 0; lon <= 360; lon += 2) {
-			const p = Frames.eclipticPoint(lon, EPS_YEAR);
-			const q = this.toScreen(p.ra, p.dec);
+		for (let i = 0; i <= steps; i++) {
+			const q = this.eclipticScreen(from + (length * i) / steps);
 
-			if (lon === 0) {
+			if (i === 0) {
 				ctx.moveTo(q.x, q.y);
 			} else {
 				ctx.lineTo(q.x, q.y);
@@ -316,8 +424,19 @@ const wheelFigure = {
 		});
 	},
 
-	/* A dot (a point that is not a star: γ, P, K, the Sun) with an
-	   optional label beside it. */
+	/* The Sun, with its name beside it in the direction away from P turned
+	   by WHEEL_SUN_NAME_TURN: the name keeps that side of the Sun as the
+	   sky turns, and only slides inside the canvas. */
+	drawSun() {
+		const q = this.toScreen(this.state.sunRa, this.state.sunDec);
+		const outward = atan2d(this.cy - q.y, q.x - this.cx);
+
+		drawDot(this.ctx, q.x, q.y, 8, COL.sun);
+		labelOutside(this.ctx, 'Sun', q, 8, outward + WHEEL_SUN_NAME_TURN, COL.ink, this.labels);
+	},
+
+	/* A dot (a point that is not a star: γ, P) with an optional label
+	   beside it. */
 	drawPoint(ra, dec, color, radius, label = null) {
 		const ctx = this.ctx;
 		const q = this.toScreen(ra, dec);
@@ -369,6 +488,10 @@ const ANGLES_LABELS = {
 	alpha: { at: 134, r: 0.44 }
 };
 
+/* The name of the mean Sun keeps these distances (px) from the equator
+   circle and from the dashed line under it; half its height. */
+const ANGLES_NAME_GAP = { circle: 8, line: 4, halfHeight: 8 };
+
 const anglesFigure = {
 	labels: new LabelPlacer(), // keeps the labels of one drawing apart
 	init() {
@@ -407,44 +530,16 @@ const anglesFigure = {
 		this.guide(this.theta);
 
 		// the three angles
-		this.drawAngle({
-			from: 0,
-			to: this.H,
-			r: ANGLES_RING.H * R,
-			color: COL.sun,
-			name: ['H', 'm'],
-			label: ANGLES_LABELS.H
-		});
-		this.drawAngle({
-			from: this.theta,
-			to: this.H,
-			r: ANGLES_RING.alpha * R,
-			color: COL.earth,
-			name: ['α', 'm'],
-			label: ANGLES_LABELS.alpha,
-			anticlockwise: true
-		});
-		this.drawAngle({
-			from: 0,
-			to: this.theta,
-			r: ANGLES_RING.theta * R,
-			color: COL.epicycle,
-			name: ['θ', 'G'],
-			label: ANGLES_LABELS.theta
-		});
+		this.drawAngle({ from: 0, sweep: this.H, ring: 'H', color: COL.sun, name: ['H', 'm'] });
+		this.drawAngle({ from: this.theta, sweep: -this.alpha, ring: 'alpha', color: COL.earth, name: ['α', 'm'] });
+		this.drawAngle({ from: 0, sweep: this.theta, ring: 'theta', color: COL.epicycle, name: ['θ', 'G'] });
 
 		// the points
 		this.dot(sunPoint, COL.sun, 7);
 		this.dot(gammaPoint, COL.ink, 4.5);
 		this.dot({ x: this.cx, y: this.cy }, COL.ink, 3.5);
+		centredLabel(ctx, 'mean Sun', this.meanSunLabelPlace(), COL.sun, this.labels);
 		centredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink, this.labels);
-		centredLabel(
-			ctx,
-			'mean Sun',
-			clockwisePoint(this, this.H - 24, ANGLES_RING.equator * R - 22),
-			COL.ink,
-			this.labels
-		);
 		centredLabel(
 			ctx,
 			'γ',
@@ -452,6 +547,23 @@ const anglesFigure = {
 			COL.ink,
 			this.labels
 		);
+	},
+
+	/* Where the name of the mean Sun is centred: inside the equator, which
+	   it must not cross, and above the dashed line from P to the mean Sun,
+	   as near the mean Sun as the two allow. Drawn before the name of P,
+	   which steps aside on a phone, where the circle is small. */
+	meanSunLabelPlace() {
+		const ctx = this.ctx;
+
+		ctx.font = labelFont('mean Sun');
+
+		const width = ctx.measureText('mean Sun').width;
+		const right = ANGLES_RING.equator * this.R - ANGLES_NAME_GAP.circle;
+		const slope = -cos(this.H) / sin(this.H); // of the dashed line, downwards to the right
+		const bottom = slope * (right - width) - ANGLES_NAME_GAP.line;
+
+		return { x: this.cx + right - width / 2, y: this.cy + bottom - ANGLES_NAME_GAP.halfHeight };
 	},
 
 	/* A dashed line from P outwards at an angle (clockwise from the top). */
@@ -483,73 +595,31 @@ const anglesFigure = {
 		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
 	},
 
-	/* An arc { from, to, r, color, name, label, anticlockwise }: from
-	   angle 'from' to angle 'to' (clockwise from the top, or anticlockwise
-	   when 'anticlockwise'), at radius r, with an arrowhead at its end and
-	   its name ([base, subscript]) at the place given in 'label'. */
+	/* An arc { from, sweep, ring, color, name }: from the angle 'from'
+	   through 'sweep' degrees (clockwise from the top when positive), on
+	   its ring, with an arrowhead at its end and its name ([base,
+	   subscript]) at the place ANGLES_LABELS gives it. */
 	drawAngle(arc) {
-		const { from, to, r, color, name, label, anticlockwise = false } = arc;
-		const ctx = this.ctx;
-		const toCanvas = angle => (angle - 90) * D2R;
+		const { from, sweep, ring, color, name } = arc;
+		const label = ANGLES_LABELS[ring];
+		const point = clockwisePoint(this, label.at, label.r * this.R);
 
-		ctx.strokeStyle = color;
-		ctx.lineWidth = 3;
-		ctx.beginPath();
-		ctx.arc(this.cx, this.cy, r, toCanvas(from), toCanvas(to), anticlockwise);
-		ctx.stroke();
-
-		this.arrowHead(to, r, anticlockwise ? -1 : 1, color);
-		this.subscriptLabel(name, clockwisePoint(this, label.at, label.r * this.R), color);
+		polarArc(this, from, sweep, ANGLES_RING[ring] * this.R, color);
+		angleName(this, name, point, color);
+		this.reserveName(name, point);
 	},
 
-	/* A filled arrowhead at angle 'at' on the circle of radius r, pointing
-	   clockwise (sense = 1) or anticlockwise (sense = -1). */
-	arrowHead(at, r, sense, color) {
+	/* The other labels keep clear of the name of an angle. */
+	reserveName([base, sub], point) {
 		const ctx = this.ctx;
-		const tip = clockwisePoint(this, at, r);
-		const back = clockwisePoint(this, at - sense * 4, r);
-		const ux = tip.x - back.x;
-		const uy = tip.y - back.y;
-		const length = Math.hypot(ux, uy) || 1;
-		const size = 10;
-		const ax = ux / length;
-		const ay = uy / length;
 
-		ctx.fillStyle = color;
-		ctx.beginPath();
-		ctx.moveTo(tip.x, tip.y);
-		ctx.lineTo(tip.x - size * ax - size * 0.5 * ay, tip.y - size * ay + size * 0.5 * ax);
-		ctx.lineTo(tip.x - size * ax + size * 0.5 * ay, tip.y - size * ay - size * 0.5 * ax);
-		ctx.closePath();
-		ctx.fill();
-	},
-
-	/* "θ_G" with a real subscript, centred at a point. */
-	subscriptLabel([base, sub], point, color) {
-		const ctx = this.ctx;
-		const baseFont = FONT_SYMBOL;
-		const smallFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
-
-		ctx.font = baseFont;
-		const baseWidth = ctx.measureText(base).width;
-		ctx.font = smallFont;
-		const subWidth = ctx.measureText(sub).width;
-		const x = point.x - (baseWidth + subWidth) / 2;
-
-		ctx.fillStyle = textColor(color);
-		ctx.textAlign = 'left';
+		ctx.font = FONT_SYMBOL;
+		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		ctx.font = baseFont;
-		ctx.fillText(base, x, point.y);
-		ctx.font = smallFont;
-		ctx.fillText(sub, x + baseWidth, point.y + 5);
 
-		// the other labels keep clear of it
-		ctx.font = baseFont;
+		const box = LabelPlacer.boxOf(ctx, base + sub, point.x, point.y);
 
-		const box = LabelPlacer.boxOf(ctx, base, x, point.y);
-
-		this.labels.reserve({ x0: box.x0, y0: box.y0, x1: x + baseWidth + subWidth, y1: box.y1 + 5 });
+		this.labels.reserve({ x0: box.x0, y0: box.y0, x1: box.x1, y1: box.y1 + 5 });
 	},
 
 	dot(point, color, radius) {
@@ -559,32 +629,47 @@ const anglesFigure = {
 
 /* ==========================================================================
    3. FIGURE 3: SIDEREAL TIME AND HOUR ANGLE
-   Drawn in the horizon frame of an observer at Rome's latitude on
-   1 January 2026: the clock and the longitude turn the sky, never the
-   ground. Three arcs along the equator: theta (from the meridian point M
-   westward to the vernal point), alpha (from the vernal point eastward to
-   the star's circle), H (from M westward to the star's circle).
+   The equator seen from above P, as in Figures 1 and 2, on 1 January 2026.
+   The meridian of Greenwich is fixed and points up; the observer's
+   meridian stands l east of it (anticlockwise); the vernal point and the
+   star turn clockwise with the time. Four arcs, one ring each:
+	 theta_G  from the meridian of Greenwich westward to the vernal point,
+	 l        from the meridian of Greenwich eastward to the observer's,
+	 alpha    from the vernal point eastward to the star's hour circle,
+	 H        from the observer's meridian westward to the star's hour circle,
+   so that H = theta_G + l - alpha can be followed round the figure. The
+   time moves only the sky, the longitude only the observer's meridian.
    ========================================================================== */
 
-/* The arcs are drawn just outside the sphere, one ring each, so they do
-   not hide one another. */
-const ARC_RADIUS = { H: 1.0, alpha: 1.08, theta: 1.16 };
+/* Radii of the drawing, as fractions of R: the equator, then one ring per
+   angle so the four arcs do not hide one another. */
+const SID_RING = { equator: 0.3, alpha: 0.49, H: 0.66, lon: 0.83, theta: 1.0 };
+
+/* Each name is written between its ring and the ring inside it, so two
+   names never share a place. */
+const SID_NAME_RADIUS = {
+	alpha: (SID_RING.equator + SID_RING.alpha) / 2,
+	H: (SID_RING.alpha + SID_RING.H) / 2,
+	lon: (SID_RING.H + SID_RING.lon) / 2,
+	theta: (SID_RING.lon + SID_RING.theta) / 2
+};
+
+/* A name written at the end of its arc stands this far (px, along its
+   ring) to the east of the line that ends the arc, clear of that line;
+   a name with a subscript is wider and stands further. */
+const SID_NAME_ASIDE = 15;
+const SID_SUBSCRIPT_ASIDE = 22;
 
 const siderealFigure = {
-	sphere: null,
+	canvas: null,
+	ctx: null,
 	starName: 'Aldebaran',
 	state: null,
 
 	init() {
 		const figure = byId('sid-canvas').closest('figure');
 
-		// seen from the south, a little below the horizon: the equator is an
-		// open ellipse, with the meridian point M on the near side
-		this.sphere = new Sphere3D(byId('sid-canvas'), {
-			yaw: 250,
-			pitch: -20,
-			onDraw: () => this.draw()
-		});
+		squareCanvas(this, byId('sid-canvas'), 480, 30);
 
 		wireSlider(byId('sid-time'), () => this.update(), clockText);
 		wireSlider(byId('sid-lon'), () => this.update(), formatLongitude);
@@ -612,17 +697,15 @@ const siderealFigure = {
 			thetaG: thetaG,
 			theta: theta,
 			star: star,
-			H: norm180(theta - star.ra),
-			matrix: Diurnal.equatorialToHorizon(ROME.lat, theta)
+			H: norm180(theta - star.ra)
 		};
 
 		this.showReadout();
-		this.sphere.redraw();
+		this.draw();
 	},
 
 	showReadout() {
 		const { jd, lon, thetaG, theta, star, H } = this.state;
-		const a = Diurnal.altitude(star.dec, H, ROME.lat);
 		const lonValue = fixed(lon, 2);
 		const lonText = `${lonValue.startsWith('-') ? lonValue : `+${lonValue}`}^\\circ`;
 
@@ -630,8 +713,7 @@ const siderealFigure = {
 			`d = ${(jd - Time.J2000).toFixed(4)}`,
 			`\\theta_G = ${fixedAngle(thetaG, 2)}^\\circ = ${texHms(thetaG)}`,
 			`\\theta = \\theta_G ${lonText} = ${fixedAngle(theta, 2)}^\\circ`,
-			`\\alpha = ${fixedAngle(star.ra, 2)}^\\circ,\\quad H = ${fixed(H, 2)}^\\circ`,
-			`a = ${fixed(a, 1)}^\\circ`
+			`\\alpha = ${fixedAngle(star.ra, 2)}^\\circ,\\quad H = ${fixed(H, 2)}^\\circ`
 		]);
 	},
 
@@ -640,60 +722,98 @@ const siderealFigure = {
 			return;
 		}
 
-		const s = this.sphere;
-		const toHor = v => matApply(this.state.matrix, v);
-		const pole = toHor([0, 0, 1]);
+		const ctx = this.ctx;
+		const R = this.R;
+		const { lon, thetaG, star, H } = this.state;
 
-		s.outline();
-		s.ground();
-		s.circle(toHor([1, 0, 0]), toHor([0, 1, 0]), { color: COL.earth, width: 2 });
-		this.drawArcs(toHor);
-		this.drawStar(toHor, pole);
+		// where each line stands, clockwise from the meridian of Greenwich
+		const at = { observer: -lon, gamma: thetaG, star: thetaG - star.ra };
 
-		s.point(toHor([1, 0, 0]), { color: COL.ink, radius: 5, always: true });
-		s.labelAway('γ', toHor([1, 0, 0]), ORIGIN, COL.ink);
-		s.axis(scale(pole, 1.25), 'P', { color: COL.ink });
+		ctx.clearRect(0, 0, this.width, this.width);
+
+		circle(ctx, { x: this.cx, y: this.cy }, SID_RING.equator * R, { color: COL.earth, width: 2 });
+		this.drawLines(at);
+
+		// the four angles
+		polarArc(this, at.gamma, -star.ra, SID_RING.alpha * R, COL.earth);
+		polarArc(this, at.observer, H, SID_RING.H * R, COL.planet);
+		polarArc(this, 0, -lon, SID_RING.lon * R, COL.deferent);
+		polarArc(this, 0, thetaG, SID_RING.theta * R, COL.epicycle);
+		this.drawNames(at);
+
+		this.drawPoints(at);
 	},
 
-	/* The arcs theta, alpha and H along the equator, with the point M. */
-	drawArcs(toHor) {
-		const s = this.sphere;
-		const { theta, star, H } = this.state;
-		const meridianPoint = toHor(fromLonLat(theta, 0));
-		const westOfMeridian = toHor(fromLonLat(theta - 90, 0));
-		const gamma = toHor([1, 0, 0]);
-		const eastOfGamma = toHor([0, 1, 0]);
+	/* The two meridians, and the lines from P through the vernal point and
+	   the star (its hour circle), each as far as the rings that end on it. */
+	drawLines(at) {
+		const R = this.R;
+		const meridian = { color: COL.deferent, width: 2.5 };
 
-		this.labelledArc('θ', meridianPoint, westOfMeridian, theta, ARC_RADIUS.theta, COL.epicycle);
-		this.labelledArc('α', gamma, eastOfGamma, star.ra, ARC_RADIUS.alpha, COL.earth);
-		this.labelledArc('H', meridianPoint, westOfMeridian, H, ARC_RADIUS.H, COL.planet);
-
-		s.point(meridianPoint, { color: COL.earth, radius: 4, always: true });
-		s.labelAway('M', meridianPoint, ORIGIN, COL.earth);
+		polarRay(this, at.gamma, SID_RING.theta * R, { color: COL.muted, width: 1, dash: [4, 4] });
+		polarRay(this, at.star, SID_RING.H * R, { color: COL.planet, width: 1.5, dash: [5, 4] });
+		polarRay(this, at.observer, SID_RING.lon * R, meridian);
+		polarRay(this, 0, R + 8, meridian);
+		centredLabel(this.ctx, 'Greenwich', { x: this.cx, y: this.cy - R - 20 }, COL.deferent);
 	},
 
-	/* One arc of the equator at radius r, labelled at its middle. */
-	labelledArc(text, from, toward, angle, r, color) {
-		const s = this.sphere;
-
-		s.arc(from, toward, angle, { color: color, width: 3 }, r);
-
-		if (Math.abs(angle) > 6) {
-			s.labelAway(text, scale(arcPoint(from, toward, angle / 2), r + 0.04), ORIGIN, color);
-		}
-	},
-
-	/* The star, and the great circle from P through it to the equator. */
-	drawStar(toHor, pole) {
-		const s = this.sphere;
+	/* The names of the four angles. That of alpha stands a quarter of the
+	   way along its arc, which only turns with the sky (at the middle it
+	   would sit between the two meridians in the first position of the
+	   figure). The other arcs change length, and theta_G and H wrap round
+	   as the sky turns, so their names stand at the end of their arcs,
+	   which never jumps. */
+	drawNames(at) {
 		const { star } = this.state;
-		const foot = toHor(fromLonLat(star.ra, 0));
-		const point = toHor(fromLonLat(star.ra, star.dec));
 
-		s.arc(pole, foot, 90, { color: COL.planet, width: 1.5, dash: [5, 4] });
-		s.point(foot, { color: COL.planet, radius: 3 });
-		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
-		s.labelAway(this.starName, point, pole, COL.planet);
+		this.nameOnRing('α', 'alpha', at.gamma - star.ra / 4, COL.earth);
+		this.nameOnRing('ℓ', 'lon', at.observer - this.aside('lon'), COL.deferent);
+		this.nameOnRing('H', 'H', at.star - this.aside('H'), COL.planet);
+		this.nameOnRing(['θ', 'G'], 'theta', at.gamma - this.aside('theta', SID_SUBSCRIPT_ASIDE), COL.epicycle);
+	},
+
+	/* A distance along a ring's names (px) as an angle (deg). */
+	aside(ring, distance = SID_NAME_ASIDE) {
+		return (distance / (SID_NAME_RADIUS[ring] * this.R)) * R2D;
+	},
+
+	/* The name of an angle, at an angle (clockwise from the top) in the
+	   room inside its ring. */
+	nameOnRing(name, ring, angle, color) {
+		angleName(this, name, clockwisePoint(this, angle, SID_NAME_RADIUS[ring] * this.R), color);
+	},
+
+	/* The pole, the vernal point and the star. */
+	drawPoints(at) {
+		const ctx = this.ctx;
+		const R = this.R;
+		const equator = SID_RING.equator * R;
+		const gamma = clockwisePoint(this, at.gamma, equator);
+		const star = clockwisePoint(this, at.star, (equator * (90 - this.state.star.dec)) / 90);
+
+		drawDot(ctx, gamma.x, gamma.y, 4.5, COL.ink);
+		angleName(this, 'γ', clockwisePoint(this, at.gamma + this.gammaAside(), equator - 15), COL.ink);
+
+		ctx.fillStyle = COL.planet;
+		drawStar(ctx, star.x, star.y, STAR_SIZE_CHOSEN, COL.card);
+
+		this.drawPole(at);
+	},
+
+	/* The angle (deg) by which the name of the vernal point stands west of
+	   it, inside the equator, clear of the line from P. */
+	gammaAside() {
+		return (SID_NAME_ASIDE / (SID_RING.equator * this.R - 15)) * R2D;
+	},
+
+	/* P, named on the side farthest from the four lines that leave it (a
+	   single letter may move round its point). */
+	drawPole(at) {
+		const centre = { x: this.cx, y: this.cy };
+		const rays = [0, at.observer, at.gamma, at.star].map(angle => 90 - angle);
+
+		drawDot(this.ctx, centre.x, centre.y, 3.5, COL.ink);
+		angleName(this, 'P', towards(centre, clearestDirection(rays), 14), COL.ink);
 	}
 };
 
@@ -727,6 +847,7 @@ const calendarFigure = {
 	starName: 'Sirius',
 	nights: [],
 	hoverDay: null,
+	midnightDay: 0, // the night the star crosses nearest midnight
 
 	init() {
 		const figure = byId('transit-plot').closest('figure');
@@ -771,14 +892,36 @@ const calendarFigure = {
 			dec: dec,
 			inside: inside,
 			upHalf: (Diurnal.risingHourAngle(dec, phi) / Clock.RATE) * 24,
+			neverSets: Diurnal.classify(dec, phi) === 'circumpolar',
 			dusk: this.dusk(sunDays[day]),
 			dawn: 24 + this.dawn(sunDays[day + 1])
 		}));
 
 		this.unwrapTransits();
+		this.midnightDay = this.nightOfMidnightTransit();
 		this.phi = phi;
 		this.showReadout();
 		this.plot.redraw();
+	},
+
+	/* The night on which the star crosses the meridian nearest midnight
+	   (24 h on the night axis): the night the read-out starts on. */
+	nightOfMidnightTransit() {
+		let best = 0;
+
+		this.nights.forEach((night, day) => {
+			if (Math.abs(night.inside[0] - 24) < Math.abs(this.nights[best].inside[0] - 24)) {
+				best = day;
+			}
+		});
+
+		return best;
+	},
+
+	/* The night the read-out and the dot show: the one under the pointer,
+	   or the night of the midnight transit. */
+	shownNight() {
+		return this.nights[this.hoverDay ?? this.midnightDay];
 	},
 
 	/* For each night of the year, the star's declination of date and its
@@ -859,14 +1002,9 @@ const calendarFigure = {
 	},
 
 	showReadout() {
-		if (this.hoverDay === null) {
-			showLines('transit-readout', [`\\text{${this.starName}: point at the plot to read a night}`]);
-			return;
-		}
-
 		// always four lines (data-lines): the night, two places for transits
 		// (the second is empty on all nights but one a year), the altitude
-		const night = this.nights[this.hoverDay];
+		const night = this.shownNight();
 		const a = Diurnal.upperCulmination(night.dec, this.phi);
 		const transitLine = hours => {
 			if (hours === undefined) {
@@ -893,6 +1031,7 @@ const calendarFigure = {
 		this.drawNights();
 		this.drawStarHours();
 		this.drawTransits();
+		this.drawShownNight();
 	},
 
 	/* The nights of the model Sun, as one band. */
@@ -913,15 +1052,24 @@ const calendarFigure = {
 	},
 
 	/* The star's hours above the horizon: a band of half-width upHalf
-	   around each copy of the transit line. */
+	   around each copy of the transit line. A star that never sets is up
+	   at every hour: one band over the whole plot, since the copies would
+	   leave a thin gap between them (they are one solar day apart, and the
+	   star is up for one turn of the sky, four minutes less). */
 	drawStarHours() {
 		const xs = this.nights.map(night => night.day + 0.5);
+		const style = { color: COL.planet, alpha: 0.16 };
+
+		if (this.nights.every(night => night.neverSets)) {
+			this.plot.band([0, DAYS_IN_YEAR], [12, 12], [36, 36], style);
+			return;
+		}
 
 		[-24, 0, 24, 48].forEach(shift => {
 			const lows = this.nights.map((night, i) => this.unwrapped[i] + shift - night.upHalf);
 			const highs = this.nights.map((night, i) => this.unwrapped[i] + shift + night.upHalf);
 
-			this.plot.band(xs, lows, highs, { color: COL.planet, alpha: 0.16 });
+			this.plot.band(xs, lows, highs, style);
 		});
 	},
 
@@ -936,28 +1084,43 @@ const calendarFigure = {
 				{ color: COL.planet, width: 2.5, clip: true }
 			);
 		});
+	},
+
+	/* A dot on each transit of the night the read-out shows. */
+	drawShownNight() {
+		const night = this.shownNight();
+
+		night.inside.forEach(hours => {
+			this.plot.marker(night.day + 0.5, hours, { color: COL.planet, radius: 5 });
+		});
 	}
 };
 
 /* ==========================================================================
    5. FIGURE 5: THE LENGTH OF THE DAY
    (a) the model Sun's day through the year at the chosen latitude;
-   (b) the plane of date and latitude: polar day and night, and lines of
-	   equal length of the day. Fixed scales: 0 to 24 h, and +-90°.
+   (b) its day against the latitude on three dates, those of the table
+	   above the figure (the March equinox and the two solstices), with a
+	   line at the chosen latitude: the table's rows are read where the
+	   line crosses the curves. Fixed scales: 0 to 24 h, and +-90°.
    ========================================================================== */
 
-/* Lines of equal length of the day in panel (b). No 12 h line: with the
-   50' horizon the day is longer than 12 h at the equator all year, and
-   that line runs off to the poles at the equinoxes. */
-const DAY_LEVELS = [6, 9, 15, 18];
+/* The dates of panel (b), as in the table of the prose
+   (tools/numbers/1.3-clocks.js). Each curve is named by its date, at a
+   fixed place of the plot where no curve passes, beside its southern
+   half (the places of the page are all in the north, so the line of the
+   chosen latitude seldom crosses a name): the geographic latitude (deg)
+   where the name starts, and the length of the day (h) it stands on, or
+   hangs below ('below'), on the side its curve leaves free. */
+const DAY_DATES = [
+	{ name: '21 Dec', month: 12, day: 21, label: { phi: -56, hours: 19.3, below: false } },
+	{ name: '20 Mar', month: 3, day: 20, label: { phi: -78, hours: 12, below: true } },
+	{ name: '21 Jun', month: 6, day: 21, label: { phi: -56, hours: 4.7, below: true } }
+];
 
-/* Days from the June solstice where a curve's label may go instead (on a
-   phone, when its own place is taken), the nearest first. */
-const CONTOUR_LABEL_SHIFTS = [-20, 20, -40, 40, -60, 60];
-
-/* The lines are searched for between these latitudes (deg), just short
-   of the poles, where the day's length has no limit. */
-const CONTOUR_LATITUDE = 89.9;
+/* Panel (b) samples the latitude every quarter of a degree: the curves
+   are steep where the day reaches 0 h or 24 h. */
+const DAY_LATITUDE_STEP = 0.25;
 
 /* The default date of the read-out: the June solstice. */
 const JUNE_SOLSTICE_DAY = Time.julianDay(YEAR, 6, 21) - YEAR_START;
@@ -970,13 +1133,7 @@ const dayLengthFigure = {
 	init() {
 		const figure = byId('day-curve').closest('figure');
 
-		this.declinations = [];
-
-		for (let day = 0; day <= DAYS_IN_YEAR; day++) {
-			this.declinations.push(Clock.sunDeclination(YEAR_START + day + 0.5));
-		}
-
-		this.contours = DAY_LEVELS.map(hours => this.contour(hours));
+		this.tabulateDates();
 
 		this.curve = new Plot2D(byId('day-curve'), {
 			x: [0, DAYS_IN_YEAR],
@@ -984,17 +1141,19 @@ const dayLengthFigure = {
 			xLabel: `date (${YEAR})`,
 			yLabel: 'length of the day (h)',
 			xTicks: (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8 || i % 2 === 0),
+			yTicks: () => this.hourTicks(),
 			aspect: 0.85,
 			onDraw: () => this.drawCurve(),
 			onHover: day => this.hover(day)
 		});
 
 		this.map = new Plot2D(byId('day-map'), {
-			x: [0, DAYS_IN_YEAR],
-			y: [-90, 90],
-			xLabel: `date (${YEAR})`,
-			yLabel: 'geographic latitude φ (°)',
-			xTicks: (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8 || i % 2 === 0),
+			x: [-90, 90],
+			y: [0, 24],
+			xLabel: 'geographic latitude φ (°)',
+			yLabel: 'length of the day (h)',
+			xTicks: () => this.latitudeTicks(),
+			yTicks: () => this.hourTicks(),
 			aspect: 0.85,
 			onDraw: () => this.drawMap()
 		});
@@ -1002,6 +1161,41 @@ const dayLengthFigure = {
 		wireSlider(byId('day-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
 		this.update();
+	},
+
+	/* The same ticks on both panels: every 6 hours, and every 30°. */
+	hourTicks() {
+		return [0, 6, 12, 18, 24].map(value => ({ value: value, label: String(value) }));
+	},
+
+	latitudeTicks() {
+		return [-90, -60, -30, 0, 30, 60, 90].map(value => ({ value: value, label: String(value).replace('-', '−') }));
+	},
+
+	/* For each date of panel (b): the model Sun's declination, and the
+	   length of its day at every latitude. */
+	tabulateDates() {
+		this.latitudes = [];
+
+		for (let phi = -90; phi <= 90; phi += DAY_LATITUDE_STEP) {
+			this.latitudes.push(phi);
+		}
+
+		this.dates = DAY_DATES.map(date => {
+			const dec = Clock.sunDeclination(Time.julianDay(YEAR, date.month, date.day) + 0.5);
+
+			return {
+				name: date.name,
+				label: date.label,
+				dec: dec,
+				hours: this.latitudes.map(phi => this.dayHours(dec, phi))
+			};
+		});
+	},
+
+	/* The length of the day (h) of a Sun at declination dec, at latitude phi. */
+	dayHours(dec, phi) {
+		return (2 * Diurnal.risingHourAngle(dec, phi, Clock.SUN_HORIZON)) / Clock.SUN_DEGREES_PER_HOUR;
 	},
 
 	update() {
@@ -1038,17 +1232,6 @@ const dayLengthFigure = {
 		]);
 	},
 
-	/* The latitude (deg) where the day lasts 'hours' on each date: the day
-	   is monotonic in the latitude for a given declination, so bisect. */
-	contour(hours) {
-		const h0 = Clock.SUN_HORIZON;
-
-		return this.declinations.map(dec => {
-			const f = phi => (2 * Diurnal.risingHourAngle(dec, phi, h0)) / 15 - hours;
-			return bisect(f, -CONTOUR_LATITUDE, CONTOUR_LATITUDE);
-		});
-	},
-
 	/* Panel (a). */
 	drawCurve() {
 		const p = this.curve;
@@ -1062,81 +1245,44 @@ const dayLengthFigure = {
 		);
 	},
 
-	/* Panel (b). */
+	/* Panel (b): the three dates, each named beside its curve, and the
+	   chosen latitude, with a dot where it crosses each curve. */
 	drawMap() {
 		const p = this.map;
-		const xs = this.declinations.map((d, i) => i);
-		const h0 = Clock.SUN_HORIZON;
-		const top = xs.map(() => 90);
-		const bottom = xs.map(() => -90);
-		const sunBand = { color: COL.sun, alpha: 0.3 };
-		const nightBand = { color: COL.muted, alpha: 0.3 };
 
 		p.frame();
 
-		// polar day: north of 90° + h0 - dec, south of -(90° + h0) - dec;
-		// polar night: north of 90° - h0 + dec, south of dec - 90° + h0
-		p.band(
-			xs,
-			this.declinations.map(dec => Math.min(90, 90 + h0 - dec)),
-			top,
-			sunBand
-		);
-		p.band(
-			xs,
-			bottom,
-			this.declinations.map(dec => Math.max(-90, -90 - h0 - dec)),
-			sunBand
-		);
-		p.band(
-			xs,
-			this.declinations.map(dec => Math.min(90, 90 - h0 + dec)),
-			top,
-			nightBand
-		);
-		p.band(
-			xs,
-			bottom,
-			this.declinations.map(dec => Math.max(-90, dec - 90 + h0)),
-			nightBand
-		);
-
-		this.contours.forEach((ys, i) => {
-			p.curve(xs, ys, { color: COL.earth, width: 1.5 });
-			this.labelContour(xs, ys, `${DAY_LEVELS[i]} h`);
+		this.dates.forEach(date => {
+			p.curve(this.latitudes, date.hours, { color: COL.sun, width: 2.5 });
+			p.text(date.name, date.label.phi, date.label.hours, {
+				color: COL.sun,
+				kind: 'name',
+				baseline: date.label.below ? 'top' : 'bottom',
+				dy: date.label.below ? 4 : -4
+			});
 		});
 
-		p.hline(this.phi, { color: COL.planet, width: 2 });
-	},
+		p.vline(this.phi, { color: COL.planet, width: 2 });
 
-	/* Label a line of equal day length at the June solstice, where the
-	   lines are furthest apart. */
-	labelContour(xs, ys, text) {
-		const day = JUNE_SOLSTICE_DAY;
-
-		// if the place is taken (on a phone), other days of the same curve,
-		// the nearest to the solstice first
-		const alternatives = CONTOUR_LABEL_SHIFTS.map(shift => day + shift)
-			.filter(d => d >= 0 && d < ys.length && !Number.isNaN(ys[d]))
-			.map(d => ({ x: xs[d], y: ys[d] }));
-
-		if (!Number.isNaN(ys[day])) {
-			this.map.text(text, xs[day], ys[day], { color: COL.earth, dx: 4, dy: -3, alternatives: alternatives });
-		}
+		this.dates.forEach(date => {
+			p.marker(this.phi, this.dayHours(date.dec, this.phi), { color: COL.planet, radius: 4 });
+		});
 	}
 };
 
 /* ==========================================================================
    6. FIGURE 6: THE CLOCK AGAINST THE SUN
-   Model minus real time of noon, sunrise and sunset through 2026, at the
-   chosen latitude, on the meridian of Greenwich. The reference Sun is
+   Model minus real, through 2026, at the chosen latitude, on the meridian
+   of Greenwich: the time of noon and the length of the day as curves (the
+   two errors the text discusses; the latitude moves only the second), and
+   the times of sunrise and sunset in the read-out. The reference Sun is
    tabulated every 6 hours at the start and interpolated linearly (under
-   0.2" from the full ephemeris). Fixed scale +-25 min: the largest error
-   over every latitude the slider allows is -19.2 / +22.9 min
-   (tools/numbers/1.3-clocks.js).
+   0.2" from the full ephemeris). Fixed scale +-20 min: over every
+   latitude the slider allows, the two curves stay within -14.2 / +16.5
+   min (tools/numbers/1.3-clocks.js).
    ========================================================================== */
 
-const TEST_RANGE = [-25, 25];
+const TEST_RANGE = [-20, 20];
 
 /* The searches for the real Sun's events: noon within NOON_SEARCH days of
    12:00 UT (the equation of time stays under 17 min = 0.012 d), sunrise
@@ -1173,6 +1319,11 @@ const testFigure = {
 			onDraw: () => this.draw(),
 			onHover: day => this.hover(day)
 		});
+
+		Plot2D.legend(byId('test-legend'), [
+			{ label: 'noon', color: COL.sun },
+			{ label: 'length of the day', color: COL.earth }
+		]);
 
 		wireSlider(byId('test-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
@@ -1299,8 +1450,7 @@ const testFigure = {
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
-		p.curve(xs, this.errors.rise, { color: COL.earth, width: 2 });
-		p.curve(xs, this.errors.set, { color: COL.epicycle, width: 2 });
+		p.curve(xs, this.errors.day, { color: COL.earth, width: 2.5 });
 		p.curve(xs, this.errors.noon, { color: COL.sun, width: 2.5 });
 	}
 };
