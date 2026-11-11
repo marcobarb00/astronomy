@@ -1463,6 +1463,8 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #calendar-plot at 0.3
   hover #calendar-plot at 0.6
   hover #calendar-plot at 0.9

@@ -1443,7 +1443,8 @@ const latitudeErrorFigure = {
 			end: end,
 			spans: [
 				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '1 year', years: 1 }
+				{ label: '1 year', years: 1 },
+				{ label: '100 years', years: 100 }
 			],
 			yMax: LATITUDE_ERROR_MAX,
 			ghostButtons: false
