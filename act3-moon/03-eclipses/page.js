@@ -24,7 +24,8 @@
 											   Moon's distance)
 	 6. the eclipse seasons of 2026 - 2027    (2D, static)
 	 7. the latitude fitted to 2026           (error curve of the latitude,
-											   two months and the year)
+											   two months, the year and a
+											   century)
    Shared code: common.js, time.js, ephemeris.js, stars.js, plate-stars.js,
    plate.js, models/mean-sun.js, models/solar-eccentric.js,
    models/lunar-epicycle.js, models/lunar-latitude.js, models/eclipses.js,
@@ -1476,43 +1477,6 @@ const latitudeErrorFigure = {
 	}
 };
 
-/* Figure 8: Ptolemy's latitude around his eclipse of 20 October 134, and
-   over 2000 years (866 BC to AD 1134, inside the reference sky's range). */
-const ptolemyErrorFigure = {
-	init() {
-		const start = Time.julianDay(134, 9, 21);
-		const end = start + 60;
-		const middle = (start + end) / 2;
-		const curve = new ErrorCurve(byId('error-ptolemy'), {
-			body: 'moon',
-			reference: moonLatitude,
-			quantity: 'β',
-			start: start,
-			end: end,
-			spans: [
-				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '2000 years', years: 2000 }
-			],
-			ghostButtons: false
-		});
-		const ptolemy = LunarLatitude.make(LunarLatitude.PTOLEMY);
-		const syzygies = syzygyIndices(middle - 40, middle + 40).map(k => Eclipses.reference(k).syzygy);
-
-		curve.addModel({
-			label: "Ptolemy's ecliptic latitude (<em>Almagest</em> IV 9, V 12)",
-			short: 'Ptolemy',
-			color: COL.epicycle,
-			fn: ptolemy
-		});
-		curve.addMarks({
-			label: 'at the new and full Moons (spans of a year or less)',
-			color: COL.epicycle,
-			fn: ptolemy,
-			dates: syzygies,
-			maxYears: 1.01
-		});
-	}
-};
 /* ==========================================================================
    8. PAGE START
    Shared components first (they typeset the prose), then the figures.
