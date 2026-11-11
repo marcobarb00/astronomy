@@ -325,7 +325,7 @@ Regenerate with: node tools/check/smoke.js --update
     #ecl-readout: \text{the Sun, 21 May 2026} | \alpha = 57.80^\circ\ (3^\text{h}51^\text{m}),\quad \delta = 20.14^\circ | \lambda = 59.98^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (0.5002,\ 0.7945,\ 0.3444) | \mathbf s_\text{ecl} = (0.5002,\ 0.8659,\ 0.0000)
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ
   opened 6 hints and answers
   slider #ecl-day = 0
     OUTPUT (ecl-day): 1 Jan
@@ -342,35 +342,35 @@ Regenerate with: node tools/check/smoke.js --update
   slider #hor-lat = -90
     OUTPUT (hor-lat): −90.0°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 30.41^\circ,\quad a = -16.56^\circ | I = 23.4^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 30.41^\circ,\quad a = -16.56^\circ
   slider #hor-lat = 90
     OUTPUT (hor-lat): 90.0°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 149.59^\circ,\quad a = 16.56^\circ | I = 23.4^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 149.59^\circ,\quad a = 16.56^\circ
   slider #hor-lat = 0
     OUTPUT (hor-lat): 0.0°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.57^\circ,\quad a = 55.75^\circ | I = 75.5^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.57^\circ,\quad a = 55.75^\circ
   slider #hor-lat + one key step
     OUTPUT (hor-lat): 0.1°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.70^\circ,\quad a = 55.80^\circ | I = 75.6^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 59.70^\circ,\quad a = 55.80^\circ
   slider #hor-theta = 0
     OUTPUT (hor-lat): 0.1°
     OUTPUT (hor-theta): 0.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ | I = 89.9^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ
   slider #hor-theta = 360
     OUTPUT (hor-lat): 0.1°
     OUTPUT (hor-theta): 360.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ | I = 89.9^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -69.35^\circ | A = 72.41^\circ,\quad a = 19.78^\circ
   slider #hor-theta = 180
     OUTPUT (hor-lat): 0.1°
     OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.65^\circ | A = 287.66^\circ,\quad a = -19.72^\circ | I = 89.9^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.65^\circ | A = 287.66^\circ,\quad a = -19.72^\circ
   slider #hor-theta + one key step
     OUTPUT (hor-lat): 0.1°
     OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ
   button "‹ previous day"
     OUTPUT (ecl-day): 1 Jul
     #ecl-readout: \text{the Sun, 1 Jul 2026} | \alpha = 100.03^\circ\ (6^\text{h}40^\text{m}),\quad \delta = 23.11^\circ | \lambda = 99.22^\circ,\quad \beta = 0.00^\circ | \mathbf s_\text{eq} = (-0.1602,\ 0.9057,\ 0.3926) | \mathbf s_\text{ecl} = (-0.1602,\ 0.9871,\ 0.0000)
@@ -383,81 +383,41 @@ Regenerate with: node tools/check/smoke.js --update
   button "Aldebaran"
     OUTPUT (ecl-day): 2 Jul
     #ecl-readout: \text{Aldebaran} | \alpha = 69.35^\circ\ (4^\text{h}37^\text{m}),\quad \delta = 16.56^\circ | \lambda = 70.15^\circ,\quad \beta = -5.47^\circ | \mathbf s_\text{eq} = (0.3380,\ 0.8970,\ 0.2850) | \mathbf s_\text{ecl} = (0.3380,\ 0.9363,\ -0.0952)
-  button "Spica"
+  button "Capella"
     OUTPUT (ecl-day): 2 Jul
-    #ecl-readout: \text{Spica} | \alpha = 201.64^\circ\ (13^\text{h}27^\text{m}),\quad \delta = -11.30^\circ | \lambda = 204.20^\circ,\quad \beta = -2.06^\circ | \mathbf s_\text{eq} = (-0.9115,\ -0.3617,\ -0.1959) | \mathbf s_\text{ecl} = (-0.9115,\ -0.4097,\ -0.0359)
-  button "Antares"
-    OUTPUT (ecl-day): 2 Jul
-    #ecl-readout: \text{Antares} | \alpha = 247.75^\circ\ (16^\text{h}31^\text{m}),\quad \delta = -26.49^\circ | \lambda = 250.13^\circ,\quad \beta = -4.57^\circ | \mathbf s_\text{eq} = (-0.3389,\ -0.8284,\ -0.4460) | \mathbf s_\text{ecl} = (-0.3389,\ -0.9374,\ -0.0797)
-  button "Vega"
-    OUTPUT (ecl-day): 2 Jul
-    #ecl-readout: \text{Vega} | \alpha = 279.45^\circ\ (18^\text{h}38^\text{m}),\quad \delta = 38.81^\circ | \lambda = 285.68^\circ,\quad \beta = 61.73^\circ | \mathbf s_\text{eq} = (0.1280,\ -0.7687,\ 0.6267) | \mathbf s_\text{ecl} = (0.1280,\ -0.4560,\ 0.8807)
+    #ecl-readout: \text{Capella} | \alpha = 79.65^\circ\ (5^\text{h}19^\text{m}),\quad \delta = 46.02^\circ | \lambda = 82.22^\circ,\quad \beta = 22.86^\circ | \mathbf s_\text{eq} = (0.1247,\ 0.6831,\ 0.7196) | \mathbf s_\text{ecl} = (0.1247,\ 0.9129,\ 0.3886)
   button "Polaris"
     OUTPUT (ecl-day): 2 Jul
     #ecl-readout: \text{Polaris} | \alpha = 46.49^\circ\ (3^\text{h}06^\text{m}),\quad \delta = 89.37^\circ | \lambda = 88.93^\circ,\quad \beta = 66.10^\circ | \mathbf s_\text{eq} = (0.0076,\ 0.0080,\ 0.9999) | \mathbf s_\text{ecl} = (0.0076,\ 0.4050,\ 0.9143)
-  button "Sirius"
-    OUTPUT (ecl-day): 2 Jul
-    #ecl-readout: \text{Sirius} | \alpha = 101.57^\circ\ (6^\text{h}46^\text{m}),\quad \delta = -16.75^\circ | \lambda = 104.44^\circ,\quad \beta = -39.61^\circ | \mathbf s_\text{eq} = (-0.1921,\ 0.9381,\ -0.2883) | \mathbf s_\text{ecl} = (-0.1921,\ 0.7461,\ -0.6376)
-  button "Canopus"
-    OUTPUT (ecl-day): 2 Jul
-    #ecl-readout: \text{Canopus} | \alpha = 96.13^\circ\ (6^\text{h}25^\text{m}),\quad \delta = -52.71^\circ | \lambda = 105.32^\circ,\quad \beta = -75.82^\circ | \mathbf s_\text{eq} = (-0.0647,\ 0.6024,\ -0.7956) | \mathbf s_\text{ecl} = (-0.0647,\ 0.2363,\ -0.9695)
-  button "horizon frame"
-    OUTPUT (hor-lat): 0.1°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
-  button "equatorial frame"
-    OUTPUT (hor-lat): 0.1°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.66^\circ,\quad a = -19.73^\circ | I = 89.9^\circ
-  button "north pole"
-    OUTPUT (hor-lat): 90.0°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 290.66^\circ,\quad a = 16.56^\circ | I = 23.4^\circ
-  button "London"
-    OUTPUT (hor-lat): 51.5°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 296.24^\circ,\quad a = 0.72^\circ | I = 44.1^\circ
-  button "Rome"
-    OUTPUT (hor-lat): 41.9°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 296.03^\circ,\quad a = -3.52^\circ | I = 52.2^\circ
-  button "Alexandria"
-    OUTPUT (hor-lat): 31.2°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 295.04^\circ,\quad a = -8.14^\circ | I = 61.6^\circ
-  button "equator"
-    OUTPUT (hor-lat): 0.0°
-    OUTPUT (hor-theta): 180.0°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = 110.66^\circ | A = 287.63^\circ,\quad a = -19.76^\circ | I = 90.0^\circ
   button "the observation"
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ
   button "Aldebaran"
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ | I = 64.7^\circ
-  button "Vega"
-    OUTPUT (hor-lat): 41.9°
-    OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Vega:}\ \alpha = 279.45^\circ,\quad \delta = 38.81^\circ | H = \theta - \alpha = 119.49^\circ | A = 316.81^\circ,\quad a = 7.65^\circ | I = 64.7^\circ
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69.35^\circ,\quad \delta = 16.56^\circ | H = \theta - \alpha = -30.41^\circ | A = 125.01^\circ,\quad a = 53.67^\circ
   button "Sirius"
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Sirius:}\ \alpha = 101.57^\circ,\quad \delta = -16.75^\circ | H = \theta - \alpha = -62.63^\circ | A = 120.88^\circ,\quad a = 7.77^\circ | I = 64.7^\circ
+    #hor-readout: \text{Sirius:}\ \alpha = 101.57^\circ,\quad \delta = -16.75^\circ | H = \theta - \alpha = -62.63^\circ | A = 120.88^\circ,\quad a = 7.77^\circ
   button "Polaris"
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Polaris:}\ \alpha = 46.49^\circ,\quad \delta = 89.37^\circ | H = \theta - \alpha = -7.55^\circ | A = 0.11^\circ,\quad a = 42.52^\circ | I = 64.7^\circ
-  button "Canopus"
+    #hor-readout: \text{Polaris:}\ \alpha = 46.49^\circ,\quad \delta = 89.37^\circ | H = \theta - \alpha = -7.55^\circ | A = 0.11^\circ,\quad a = 42.52^\circ
+  button "the ecliptic"
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
-    #hor-readout: \text{Canopus:}\ \alpha = 96.13^\circ,\quad \delta = -52.71^\circ | H = \theta - \alpha = -57.19^\circ | A = 147.89^\circ,\quad a = -16.68^\circ | I = 64.7^\circ
+    #hor-readout: \text{K:}\ \alpha = 270^\circ,\quad \delta = 66.56^\circ | a_\text{K} = 25.3^\circ | I = 90^\circ - |a_\text{K}| = 64.7^\circ
+  hover #noon-plot at 0.3
+  hover #noon-plot at 0.6
+  hover #noon-plot at 0.9
+  hover #noon-plot left
   hover #nutation-plot at 0.3
   hover #nutation-plot at 0.6
   hover #nutation-plot at 0.9
   hover #nutation-plot left
-  dragged 2 spheres
+  dragged 3 spheres
 
 === act1-stage/03-clocks/index.html ===
   as loaded
