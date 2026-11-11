@@ -2094,23 +2094,23 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   PTOLEMY mars                   outer  0.524059711355  0.461575567087  0.658333333333  0.531697396  163.154912413  16.311949382  72.989511525
   PTOLEMY venus                  inner  0.985635278442  0.616508733882  0.719444444444  0.615197679  167.118038381  15.285810971  41.790037711
   PTOLEMY mercury                inner  0.985635278442  3.106699042996  0.375000000000  0.240849159  145.066090961  12.286551771  22.489406638
-  MARS_FIT                       outer  354.793635000  0.524071080911  0.461576279254  0.657064000000  2451545.000000000
+  MARS_FIT                       outer  355.837484000  0.524070392000  0.461576968164  0.660150000000  2451545.000000000
   VENUS_MEAN                     inner  261.513248500  0.985647360164  0.616521359629  0.719444444444  2451545.000000000
-  ratioForArc MARS_FIT 16.07     0.657071964
+  ratioForArc MARS_FIT 16.07     0.657071402
   dailyMotion PTOLEMY mars       0.707298253 0.663621414 0.523868560 0.000142539 -0.365317601
-  range start                    348.343026028  266.699459795  -34.284792562  314.058233465  292.733561522  227.604121607
-  Thales eclipse                 97.476453518  321.294000589  -15.195525155  82.280928363  243.906581159  15.383534616
-  Ptolemy                        279.584947829  196.744275426  -27.045472265  252.539475565  4.768517802  118.324232498
-  last Julian day                53.959934888  148.140722799  38.124726499  92.084661388  272.597600827  167.262315574
-  first Gregorian day            54.484005969  148.602299078  37.936229086  92.420235055  273.214122187  168.462729833
-  Sputnik (Meeus 7.a)            189.063389665  4.155501043  1.647571263  190.710960928  109.396312413  234.940752312
-  Meeus 12.a                     78.125144306  299.573914610  -23.341285763  54.783858543  274.997186907  343.701621599
-  Meeus 47.a                     316.651151291  63.796929365  24.558621891  341.209773182  322.614753668  4.915284520
-  Meeus 25.a                     53.080230179  148.726964748  37.884034669  90.964264848  76.054683839  232.562608617
-  J2000.0                        354.793635000  285.672825000  -28.247727745  326.545907255  261.513248500  241.943424142
-  2026 January 1                 291.634654868  349.031960932  -4.345751052  287.288903816  356.308340212  279.122064780
-  2026 June solstice             21.512845244  68.192292824  26.121024348  47.633869592  102.041753389  129.325544895
-  range end                      78.587277964  200.960765935  -31.311416224  47.275861740  305.729717527  257.193013912
+  range start                    350.644737372  264.397748450  -35.078591005  315.566146367  292.733561522  227.604121607
+  Thales eclipse                 99.170389964  319.600064142  -15.892660525  83.277729439  243.906581159  15.383534616
+  Ptolemy                        281.096923336  195.232299919  -25.536133390  255.560789946  4.768517802  118.324232498
+  last Julian day                55.108763884  146.991893803  38.854913411  93.963677295  272.597600827  167.262315574
+  first Gregorian day            55.632834276  147.453470772  38.685924306  94.318758582  273.214122187  168.462729833
+  Sputnik (Meeus 7.a)            190.117867654  3.101023054  1.233031409  191.350899063  109.396312413  234.940752312
+  Meeus 12.a                     79.172196396  298.526862520  -23.796386726  55.375809670  274.997186907  343.701621599
+  Meeus 47.a                     317.696943364  62.751137293  24.259804981  341.956748345  322.614753668  4.915284520
+  Meeus 25.a                     54.125895492  147.681299435  38.599888399  92.725783891  76.054683839  232.562608617
+  J2000.0                        355.837484000  284.628976000  -28.699425502  327.138058498  261.513248500  241.943424142
+  2026 January 1                 292.671961628  347.994654172  -4.769538037  287.902423591  356.308340212  279.122064780
+  2026 June solstice             22.550033856  67.155104212  25.838821626  48.388855482  102.041753389  129.325544895
+  range end                      79.379256748  200.168787151  -30.898714200  48.480542548  305.729717527  257.193013912
 
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
@@ -2275,9 +2275,9 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   fixed ranges                   [-20,20]  2  40  {"raMin":105,"raMax":180,"decMin":-5,"decMax":30}
 
 === 8j. PAGE 4.1 (act4-planets/01-going-backwards/page.js) ===
-  MARS_LOOP                      {"mu":163.19286898664922,"arc":16.068481184457326,"days":72.8249339005407}
+  MARS_LOOP                      {"mu":163.10290837664954,"arc":16.660788815665697,"days":73.21462199707047}
   quarterTicks                   [{"value":0,"label":"0°"},{"value":90,"label":"90°"},{"value":180,"label":"180°"},{"value":270,"label":"270°"},{"value":360,"label":"360°"}]
-  fixed ranges                   {"raMin":89,"raMax":138,"decMin":7,"decMax":36}  {"Mars":{"body":"mars","kind":"outer","step":2,"x":[0,360],"y":[-0.5,0.9]},"Jupiter":{"body":"jupiter","kind":"outer","step":2,"x":[0,360],"y":[-0.15,0.25]},"Saturn":{"body":"saturn","kind":"outer","step":2,"x":[0,360],"y":[-0.1,0.15]},"Venus":{"body":"venus","kind":"inner","step":2,"x":[-50,50],"y":[-0.7,1.3]},"Mercury":{"body":"mercury","kind":"inner","step":1,"x":[-30,30],"y":[-1.5,2.3]}}  [[-1.4,0.8],[-1.6,1.4]]  [8,22]  [750,825]
+  fixed ranges                   {"raMin":87,"raMax":139.5,"decMin":7,"decMax":37}  {"Mars":{"body":"mars","kind":"outer","step":2,"x":[0,360],"y":[-0.5,0.9]},"Jupiter":{"body":"jupiter","kind":"outer","step":2,"x":[0,360],"y":[-0.15,0.25]},"Saturn":{"body":"saturn","kind":"outer","step":2,"x":[0,360],"y":[-0.1,0.15]},"Venus":{"body":"venus","kind":"inner","step":2,"x":[-50,50],"y":[-0.7,1.3]},"Mercury":{"body":"mercury","kind":"inner","step":1,"x":[-30,30],"y":[-1.5,2.3]}}  [[-1.4,0.8],[-1.6,1.4]]  [8,22]  [750,825]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -3622,13 +3622,13 @@ elongation from the Sun at the stations -129.2°, 131.3°
 distance at opposition 0.644 au
 ecliptic latitude, 15 Oct 2024 - 15 Apr 2025 (the path of the plate): 0.88 to 4.33°
 
-=== Observation: five planets, 2001 - 2040 ===
-mars     19 loops; back 10.0 to 19.5° (mean 16.0) in 60 to 81 days; every 764 to 810 days; |elongation| at the stations 129 to 146°; opposition within 1.8 days of the loop's middle
-jupiter  36 loops; back 9.8 to 10.1° (mean 10.0) in 118 to 124 days; every 395 to 403 days; |elongation| at the stations 114 to 117°; opposition within 1.1 days of the loop's middle
-saturn   38 loops; back 6.6 to 7.0° (mean 6.8) in 134 to 141 days; every 377 to 379 days; |elongation| at the stations 109 to 109°; opposition within 1.2 days of the loop's middle
+=== Observation: five planets, 1986 - 2025 ===
+mars     19 loops; back 10.0 to 19.5° (mean 16.1) in 60 to 81 days; every 764 to 811 days; |elongation| at the stations 129 to 146°; opposition within 1.8 days of the loop's middle
+jupiter  36 loops; back 9.8 to 10.1° (mean 9.9) in 118 to 124 days; every 395 to 403 days; |elongation| at the stations 114 to 117°; opposition within 1.1 days of the loop's middle
+saturn   39 loops; back 6.6 to 7.0° (mean 6.7) in 134 to 141 days; every 377 to 379 days; |elongation| at the stations 109 to 109°; opposition within 1.2 days of the loop's middle
 venus    25 loops; back 15.4 to 16.5° (mean 16.0) in 41 to 43 days; every 580 to 588 days; |elongation| at the stations 28 to 29°; inferior conjunction within 0.1 days of the loop's middle
-mercury  126 loops; back 8.6 to 16.3° (mean 13.4) in 20 to 24 days; every 106 to 129 days; |elongation| at the stations 15 to 22°; inferior conjunction within 2.1 days of the loop's middle
-the outer planets: 93 loops in all
+mercury  126 loops; back 8.5 to 16.3° (mean 13.4) in 20 to 24 days; every 106 to 129 days; |elongation| at the stations 15 to 22°; inferior conjunction within 2.1 days of the loop's middle
+the outer planets: 94 loops in all
 venus: greatest elongations, in ecliptic longitude, 45.3 to 47.2°
 mercury: greatest elongations, in ecliptic longitude, 17.8 to 27.8°
 
@@ -3646,40 +3646,73 @@ no loop when r <= n / (n + n_mu) = 0.532
 an error in K is multiplied at the perigee by 1 / (1 - r) = 2.93
 Venus: r = 43;10 / 60 = 0.7194, greatest elongation arcsin r = 46.0°
 
-=== Fit: the oppositions of Mars to the mean Sun, 2018 - 2033 ===
-n = 0.524071081°/day (Standish's L of date); period in ecliptic longitude 686.930 days
-26 Jul 2018  ecliptic longitude 304.24°  L0 350.46°  ( -4.3°; the opposition to the true Sun -0.6 days away)
-12 Oct 2020  ecliptic longitude  21.49°  L0   3.81°  (  9.0°; the opposition to the true Sun -1.5 days away)
-7 Dec 2022   ecliptic longitude  76.31°  L0   6.66°  ( 11.9°; the opposition to the true Sun -0.6 days away)
-16 Jan 2025  ecliptic longitude 116.07°  L0   2.45°  (  7.7°; the opposition to the true Sun 0.3 days away)
-20 Feb 2027  ecliptic longitude 150.35°  L0 355.68°  (  0.9°; the opposition to the true Sun 1.0 days away)
-26 Mar 2029  ecliptic longitude 184.38°  L0 348.79°  ( -6.0°; the opposition to the true Sun 1.4 days away)
-5 May 2031   ecliptic longitude 223.35°  L0 344.22°  (-10.6°; the opposition to the true Sun 1.2 days away)
-28 Jun 2033  ecliptic longitude 276.59°  L0 346.32°  ( -8.5°; the opposition to the true Sun 0.2 days away)
-the oppositions to the mean Sun within 1.5 days of those to the true Sun
-L0 = 354.793635° (the mean of 8); Standish's mean longitude at J2000 355.43°, 38' away
+=== Fit: the mean motion from oppositions 79 years apart ===
+28 Jan 1931  -> 30 Jan 2010  28857.1 days = 79.008 years; 42 turns + 2.88°; n = 0.5240618°/day
+3 Mar 1933   -> 5 Mar 2012   28857.0 days = 79.008 years; 42 turns + 2.84°; n = 0.5240611°/day
+8 Apr 1935   -> 10 Apr 2014  28857.2 days = 79.008 years; 42 turns + 2.99°; n = 0.5240636°/day
+20 May 1937  -> 23 May 2016  28857.7 days = 79.010 years; 42 turns + 3.49°; n = 0.5240716°/day
+22 Jul 1939  -> 26 Jul 2018  28858.8 days = 79.013 years; 42 turns + 4.57°; n = 0.5240892°/day
+9 Oct 1941   -> 12 Oct 2020  28858.4 days = 79.012 years; 42 turns + 4.25°; n = 0.5240840°/day
+5 Dec 1943   -> 7 Dec 2022   28857.5 days = 79.009 years; 42 turns + 3.33°; n = 0.5240690°/day
+14 Jan 1946  -> 16 Jan 2025  28857.1 days = 79.008 years; 42 turns + 2.95°; n = 0.5240629°/day
+beyond the 42 turns: 2.8 to 4.6°
+n = 0.524070392°/day (the mean of 8), from 0.5240611 to 0.5240892; period in ecliptic longitude 686.93 days; synodic period 779.93 days
+(check: the reference's mean motion 0.524071081°/day; difference -0.025° a century)
 
-=== Fit: the epicycle from the arcs of retrogradation, 2018 - 2033 ===
+=== Fit: the mean ecliptic longitude from the oppositions to the mean Sun, 2010 - 2025 ===
+30 Jan 2010  ecliptic longitude 129.53°  L0 359.95°  (  4.1°; the opposition to the true Sun 0.6 days away)
+5 Mar 2012   ecliptic longitude 163.17°  L0 352.88°  ( -3.0°; the opposition to the true Sun 1.2 days away)
+10 Apr 2014  ecliptic longitude 198.41°  L0 346.56°  ( -9.3°; the opposition to the true Sun 1.4 days away)
+23 May 2016  ecliptic longitude 241.44°  L0 343.88°  (-12.0°; the opposition to the true Sun 1.0 days away)
+26 Jul 2018  ecliptic longitude 304.24°  L0 350.47°  ( -5.4°; the opposition to the true Sun -0.6 days away)
+12 Oct 2020  ecliptic longitude  21.49°  L0   3.82°  (  8.0°; the opposition to the true Sun -1.5 days away)
+7 Dec 2022   ecliptic longitude  76.31°  L0   6.66°  ( 10.8°; the opposition to the true Sun -0.6 days away)
+16 Jan 2025  ecliptic longitude 116.07°  L0   2.46°  (  6.6°; the opposition to the true Sun 0.3 days away)
+the oppositions to the mean Sun within 1.5 days of those to the true Sun
+L0 = 355.837484° (the mean of 8); each from -12.0 to 10.8°
+
+=== Fit: the epicycle from the arcs of retrogradation, 2010 - 2025 ===
+29 Jan 2010  ecliptic longitude 129.8°  back 19.40° in 80.2 days  -> r 0.674
+3 Mar 2012   ecliptic longitude 163.6°  back 19.41° in 81.1 days  -> r 0.674
+8 Apr 2014   ecliptic longitude 198.9°  back 18.50° in 79.4 days  -> r 0.670
+22 May 2016  ecliptic longitude 241.8°  back 15.84° in 73.5 days  -> r 0.656
 27 Jul 2018  ecliptic longitude 304.1°  back 10.60° in 61.7 days  -> r 0.626
 13 Oct 2020  ecliptic longitude  21.0°  back 12.90° in 65.1 days  -> r 0.640
 8 Dec 2022   ecliptic longitude  76.1°  back 17.48° in 74.3 days  -> r 0.664
 16 Jan 2025  ecliptic longitude 116.2°  back 19.15° in 79.1 days  -> r 0.673
-19 Feb 2027  ecliptic longitude 150.7°  back 19.50° in 81.0 days  -> r 0.674
-25 Mar 2029  ecliptic longitude 184.9°  back 18.99° in 80.4 days  -> r 0.672
-4 May 2031   ecliptic longitude 223.8°  back 17.20° in 76.5 days  -> r 0.663
-28 Jun 2033  ecliptic longitude 276.6°  back 12.72° in 66.6 days  -> r 0.639
 r from each loop 0.626 to 0.674
-mean arc 16.07° -> r = 0.657064 (39.4 where R = 60; Ptolemy 39.5)
-stations at mu = 163.2° and 196.8°; the loop 16.07° in 72.8 days (real mean 73.1 days)
-MARS_FIT in planet-epicycle.js: L0 354.793635, r 0.657064
+mean arc 16.66° -> r = 0.660150 (39.6 where R = 60; Ptolemy 39.5)
+stations at mu = 163.1° and 196.9°; the loop 16.66° in 73.2 days (real mean 74.3 days)
+trial r = 0.6: mu_s = 165.99°, arc 6.52°
+trial r = 0.66: mu_s = 163.11°, arc 16.63°
+trial r = 0.7: mu_s = 162.35°, arc 24.95°
+around the station of 6 Dec 2024, Mars moves 3.6, 10.2, 41.0' in 3, 5 and 10 days
+a station 5 days off moves mu_s by 2.3°; from r = 0.6 to 0.7 mu_s moves by 3.6°, the arc by 18.4°
+MARS_FIT in planet-epicycle.js: L0 355.837484, n 0.524070392, r 0.66015
+this fit:                       L0 355.837484, n 0.524070392, r 0.660150
 
-=== Test: the model fitted to 2018 - 2033 against the reference Mars ===
-2018 - 2033: the epicycle within 34.5° (rms 9.9°); the uniform planet within 53.2° (rms 29.9°)
-1926 - 2126: the epicycle within 34.9° (rms 9.8°); the uniform planet within 53.8° (rms 29.7°)
-at the oppositions: 12.5, -25.2, -32.4, -21.8, -2.6, 17.1, 29.2, 23.9°
-at the conjunctions: 0.7, 4.6, 6.6, 4.1, -3.6, -7.3, -5.3°
+=== Test: the model fitted to 2010 - 2025 against the reference Mars ===
+2010 - 2025: the epicycle within 34.4° (rms 9.8°); the uniform planet within 53.7° (rms 29.5°)
+1926 - 2126: the epicycle within 34.6° (rms 9.8°); the uniform planet within 54.1° (rms 29.7°)
+at the oppositions: -12.0, 8.6, 26.0, 32.9, 15.6, -22.7, -30.1, -19.1°
+  29 Jan 2010: -12.0° at the opposition, -12.3° on 20 Jan 2010
+  3 Mar 2012: 8.6° at the opposition, 8.8° on 12 Mar 2012
+  8 Apr 2014: 26.0° at the opposition, 27.2° on 21 Apr 2014
+  22 May 2016: 32.9° at the opposition, 34.4° on 5 Jun 2016
+  27 Jul 2018: 15.6° at the opposition, 15.7° on 20 Jul 2018
+  13 Oct 2020: -22.7° at the opposition, -23.0° on 7 Oct 2020
+  8 Dec 2022: -30.1° at the opposition, -31.7° on 24 Nov 2022
+  16 Jan 2025: -19.1° at the opposition, -19.7° on 5 Jan 2025
+at the conjunctions: 2.0, -5.3, -6.3, -3.1, 1.3, 5.3, 7.2°
 
-=== Residual: the loops of Mars, 2001 - 2040 (Figure 5) ===
+=== Residual: the loops of Mars, 1986 - 2025 (Figure 5) ===
+10 Jul 1986  ecliptic longitude 287.6°  back 11.70° in 64.4 days  0.407 au  next after 811 days
+28 Sep 1988  ecliptic longitude   5.2°  back 11.58° in 62.6 days  0.396 au  next after 791 days
+27 Nov 1990  ecliptic longitude  65.3°  back 16.80° in 72.7 days  0.522 au  next after 772 days
+7 Jan 1993   ecliptic longitude 107.6°  back 18.94° in 78.3 days  0.628 au  next after 765 days
+12 Feb 1995  ecliptic longitude 142.9°  back 19.50° in 80.8 days  0.676 au  next after 764 days
+17 Mar 1997  ecliptic longitude 176.7°  back 19.18° in 80.8 days  0.661 au  next after 768 days
+24 Apr 1999  ecliptic longitude 214.1°  back 17.76° in 77.7 days  0.583 au  next after 781 days
 13 Jun 2001  ecliptic longitude 262.7°  back 13.95° in 69.3 days  0.456 au  next after 806 days
 28 Aug 2003  ecliptic longitude 335.0°  back 10.03° in 60.0 days  0.373 au  next after 802 days
 7 Nov 2005   ecliptic longitude  45.0°  back 15.14° in 69.3 days  0.470 au  next after 778 days
@@ -3691,16 +3724,9 @@ at the conjunctions: 0.7, 4.6, 6.6, 4.1, -3.6, -7.3, -5.3°
 27 Jul 2018  ecliptic longitude 304.1°  back 10.60° in 61.7 days  0.386 au  next after 810 days
 13 Oct 2020  ecliptic longitude  21.0°  back 12.90° in 65.1 days  0.419 au  next after 785 days
 8 Dec 2022   ecliptic longitude  76.1°  back 17.48° in 74.3 days  0.549 au  next after 770 days
-16 Jan 2025  ecliptic longitude 116.2°  back 19.15° in 79.1 days  0.644 au  next after 765 days
-19 Feb 2027  ecliptic longitude 150.7°  back 19.50° in 81.0 days  0.678 au  next after 765 days
-25 Mar 2029  ecliptic longitude 184.9°  back 18.99° in 80.4 days  0.649 au  next after 770 days
-4 May 2031   ecliptic longitude 223.8°  back 17.20° in 76.5 days  0.559 au  next after 786 days
-28 Jun 2033  ecliptic longitude 276.6°  back 12.72° in 66.6 days  0.427 au  next after 810 days
-15 Sep 2035  ecliptic longitude 352.8°  back 10.67° in 60.9 days  0.382 au  next after 796 days
-19 Nov 2037  ecliptic longitude  57.3°  back 16.13° in 71.3 days  0.499 au  next after 774 days
-2 Jan 2040   ecliptic longitude 101.8°  back 18.72° in 77.6 days  0.613 au
-19 loops: back 10.0 to 19.5°; the model 16.1° every time
-intervals 764 to 810 days; the model's synodic period 779.9 days
+16 Jan 2025  ecliptic longitude 116.2°  back 19.15° in 79.1 days  0.644 au
+19 loops: back 10.0 to 19.5°; the model 16.7° every time
+intervals 764 to 811 days; the model's synodic period 779.9 days
 
 === Exercise 1: the stations; Ptolemy's Mars at mean distance (XII 4) ===
 n = 0.5240597, n_mu = 0.4615756; n_mu / n = 0.88077 (0;52,51 = 0.88083)
@@ -3710,8 +3736,8 @@ eta(mu_s) = 27.28°; the anomaly advances 33.69°; mean motion over the loop 38.
 back 16.312° = 16°18.7' in 73.0 days; Ptolemy 16.312° and about 73 days
 Apollonius: planet at 0.4162, nearer intersection 0.4162, half chord 0.4726; ratio 1.1354; n / n_mu = 1.1354
 no loop for r <= 0.5317, 31.9 where R = 60
-jupiter: r = 0.1917 (threshold 0.0843): back 9.9° in 120 days; reference mean, 2001 - 2040, 10.0° in 121 days
-saturn: r = 0.1083 (threshold 0.0340): back 7.2° in 138 days; reference mean, 2001 - 2040, 6.8° in 137 days
+jupiter: r = 0.1917 (threshold 0.0843): back 9.9° in 120 days; reference mean, 1986 - 2025, 9.9° in 120 days
+saturn: r = 0.1083 (threshold 0.0340): back 7.2° in 138 days; reference mean, 1986 - 2025, 6.7° in 138 days
 
 === Exercise 2: synodic periods from sidereal periods; Ptolemy's Mars (IX 3) ===
 the Earth's sidereal period 365.256 days (Standish)
@@ -3722,20 +3748,20 @@ jupiter  sidereal period 4332.59 days; synodic period 398.88 days
 saturn   sidereal period 10759.22 days; synodic period 378.09 days
 Ptolemy's year 365.24667 days; 79 years + 3;13 days (3.217 days) = 28857.70 days (Toomer: 28857;43 = 28857.72)
 3;10° = 3.167°; the mean Sun in 3;13 days, at Ptolemy's rate, 3.170°
-synodic period 779.938 days (modern 779.936); period in ecliptic longitude 686.944 days (modern 686.930)
-turns 42.0088; differences 2.6 minutes and 21 minutes
+synodic period 779.938 days (this page's fit 779.935); period in ecliptic longitude 686.944 days (this page's fit 686.931)
+turns 42.0088; differences 4.3 minutes and 20 minutes
 
-=== Exercise 3: the oppositions of 2018 and 2027 in the model ===
-2018: model opposition 4 Aug 2018 23:40 at 313.5°; real 27 Jul 2018 03:45 at 304.1° (8.8 days, 9.4°); real loop 10.6° in 62 days, model 16.1° in 73 days; distance 0.39 au; the real Mars -4.3° from K at its opposition to the mean Sun
-2027: model opposition 18 Feb 2027 17:31 at 148.5°; real 19 Feb 2027 15:17 at 150.7° (-0.9 days, -2.3°); real loop 19.5° in 81 days, model 16.1° in 73 days; distance 0.68 au; the real Mars 0.9° from K at its opposition to the mean Sun
+=== Exercise 3: the oppositions of 1999 and 2003 in the model ===
+1999: model opposition 19 May 1999 19:45 at 237.0°; real 24 Apr 1999 16:25 at 214.1° (25.1 days, 23.0°); real loop 17.8° in 78 days, model 16.7° in 73 days; distance 0.58 au; the real Mars -11.0° from K at its opposition to the mean Sun
+2003: model opposition 26 Aug 2003 16:37 at 334.5°; real 28 Aug 2003 16:16 at 335.0° (-2.0 days, -0.4°); real loop 10.0° in 60 days, model 16.7° in 73 days; distance 0.37 au; the real Mars 0.4° from K at its opposition to the mean Sun
 
 === Scales ===
 Figure 2, mars: daily motion -0.400 to 0.791°
-Figure 2, jupiter: daily motion -0.136 to 0.242°
+Figure 2, jupiter: daily motion -0.137 to 0.242°
 Figure 2, saturn: daily motion -0.083 to 0.130°
-Figure 2, venus: daily motion -0.630 to 1.259°
+Figure 2, venus: daily motion -0.631 to 1.259°
 Figure 2, mercury: daily motion -1.386 to 2.202°
 Figure 3(b), mars: r in [0, 0.8], daily motion -1.322 to 0.729°; Ptolemy's r 0.6583, no loop below 0.5317
 Figure 3(b), venus: r in [0, 0.8], daily motion -1.480 to 1.260°; Ptolemy's r 0.7194, no loop below 0.6152
 VENUS_MEAN: mu0 261.5132°, nMu 0.6165214°/day, synodic 583.92 days
-Figure 5: arcs 10.03 to 19.50°; 19 loops; the figure's arcs within 0.05' of the quoted ones
+Figure 5: arcs 10.03 to 19.50°; 19 loops; the figure's arcs within 0.07' of the quoted ones

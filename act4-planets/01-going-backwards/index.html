@@ -6,7 +6,7 @@
      at opposition, the inner ones at inferior conjunction. An epicycle
      whose radius stays parallel to the line to the mean Sun (Almagest
      IX 5, X 6) explains when and why; its stations follow from the speed
-     (XII 1). Fitted to Mars over 2018 - 2033, it places the planet within
+     (XII 1). Fitted to Mars over 2010 - 2025, it places the planet within
      35°, and its loops are all the same size, while Mars' are not.
      Numbers: tools/numbers/4.1-going-backwards.js.
      ========================================================================== -->
@@ -72,7 +72,7 @@
 			Sun. With it we can follow how his model makes Mars, Jupiter and
 			Saturn go back when they are opposite the Sun, and how far. Fitted to Mars,
 			the epicycle places the planet within 35°, where a planet moving
-			uniformly would be up to 53° off, and it shows what is still missing:
+			uniformly would be up to 54° off, and it shows what is still missing:
 			the loops of Mars are not all the same size.
 		</p>
 
@@ -138,7 +138,7 @@
 		<p>
 			Every planet goes back in this way, once in every return to the same
 			place relative to the Sun. The table gives the loops of the forty
-			years 2001 to 2040 in the reference sky: how far each planet went
+			years 1986 to 2025 in the reference sky: how far each planet went
 			back, for how long, and how often. The loops of Jupiter, Saturn and
 			Venus hardly change in size, those of Mars and Mercury change a
 			great deal.
@@ -160,7 +160,7 @@
 					<td>Mars</td>
 					<td>10.0°–19.5°</td>
 					<td>60–81 d</td>
-					<td>764–810 d</td>
+					<td>764–811 d</td>
 					<td>opposition</td>
 				</tr>
 				<tr>
@@ -186,7 +186,7 @@
 				</tr>
 				<tr>
 					<td>Mercury</td>
-					<td>8.6°–16.3°</td>
+					<td>8.5°–16.3°</td>
 					<td>20–24 d</td>
 					<td>106–129 d</td>
 					<td>inferior conjunction</td>
@@ -197,7 +197,7 @@
 
 		<p>
 			Mars, Jupiter and Saturn are in the middle of every loop when they are
-			opposite the Sun, at <em>opposition</em>: in each of the 93 loops of
+			opposite the Sun, at <em>opposition</em>: in each of the 94 loops of
 			the table the opposition falls within two days of the middle.
 		</p>
 
@@ -225,7 +225,7 @@
 			</div>
 			<figcaption>
 				Choose a planet. Each curve is one return to the same place
-				relative to the Sun, from 2011 to 2030, and every one of them drops
+				relative to the Sun, from 2006 to 2025, and every one of them drops
 				below zero, into retrograde motion, at the same place. For Mars,
 				notice that the curves do not lie on top of one another.
 			</figcaption>
@@ -414,7 +414,7 @@
 			The perigee is at $\mu = 180^\circ$, where K is opposite the mean Sun.
 			Since KP points to the mean Sun, the planet then lies on the line from
 			the Earth through K, opposite the mean Sun too. So in the model every
-			loop is centred on the opposition to the mean Sun. From 2018 to 2033
+			loop is centred on the opposition to the mean Sun. From 2010 to 2025
 			each opposition of Mars to the mean Sun came within a day and a half
 			of its opposition to the real Sun.
 		</p>
@@ -562,18 +562,51 @@
 		<p>
 			The model of Mars has three parameters: the mean motion $n$, the mean
 			ecliptic longitude $L_0$ at one moment, and the epicycle $r$, with the
-			mean Sun of page 1.3. Mars has no opposition in 2026, so we fit the model to
-			the eight oppositions from 2018 to 2033, which take Mars once round the
-			zodiac.
+			mean Sun of page 1.3. We fit all three to observations already made, the
+			positions of Mars in the reference sky up to 2025, taking as many years
+			as each parameter needs.
 		</p>
 
 		<h3>The mean motion</h3>
 
 		<p>
 			A rate is fixed best by two observations far apart, since the error of
-			each is divided by the time between them. Sixteen years are too few for
-			this, so we take the mean motion of the reference Mars, $n$ = 0.52407° a
-			day, a period in ecliptic longitude of 686.93 days.
+			each is divided by the time between them. They should also find the
+			planet in the same place in the zodiac and in the same configuration
+			with the Sun, so that both anomalies are the same at the two ends and
+			cancel. Oppositions 79 years apart do both: in 79 years Mars comes to
+			opposition 37 times and goes round the zodiac 42 times and a little
+			more, the period that Ptolemy took from Hipparchus (IX 3).
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table pairs-table">
+			<thead>
+				<tr>
+					<th>Opposition</th>
+					<th>79 years later</th>
+					<th>beyond 42 turns</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>28 Jan 1931</td><td>30 Jan 2010</td><td>2.88°</td></tr>
+				<tr><td>3 Mar 1933</td><td>5 Mar 2012</td><td>2.84°</td></tr>
+				<tr><td>8 Apr 1935</td><td>10 Apr 2014</td><td>2.99°</td></tr>
+				<tr><td>20 May 1937</td><td>23 May 2016</td><td>3.49°</td></tr>
+				<tr><td>22 Jul 1939</td><td>26 Jul 2018</td><td>4.57°</td></tr>
+				<tr><td>9 Oct 1941</td><td>12 Oct 2020</td><td>4.25°</td></tr>
+				<tr><td>5 Dec 1943</td><td>7 Dec 2022</td><td>3.33°</td></tr>
+				<tr><td>14 Jan 1946</td><td>16 Jan 2025</td><td>2.95°</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The table pairs each opposition of Mars to the mean Sun from 2010 to 2025
+			with the one 79 years earlier. Each pair gives the angle Mars covered,
+			42 turns and the excess in the table, and the time it took, so a value of
+			$n$. Their mean is $n$ = 0.524070° a day, a period in ecliptic
+			longitude of 686.93 days.
 		</p>
 
 		<h3>The mean ecliptic longitude from the oppositions</h3>
@@ -593,33 +626,47 @@
 		</div>
 
 		<p>
-			Each of the eight oppositions of Mars to the mean Sun, carried back to
-			J2000.0 at the rate $n$, gives a value of $L_0$. They lie from 11° below
-			their mean to 12° above it, because the zodiacal anomaly of section 1 moves the planet
-			away from $\bar\lambda$ by different amounts in different parts of the
-			zodiac. Their mean is $L_0$ = 354.79°, 38′ from the mean ecliptic
-			longitude of the reference Mars.
+			Each of the eight oppositions to the mean Sun of 2010–2025, carried back
+			to J2000.0 at the rate $n$, gives a value of $L_0$. They lie from 12°
+			below their mean to 11° above it, because the zodiacal anomaly of
+			section 1 moves the planet away from $\bar\lambda$ by different amounts
+			in different parts of the zodiac. Their mean is $L_0$ = 355.84°.
 		</p>
 
 		<h3>The epicycle from the loops</h3>
 
 		<p>
-			The epicycle shows most clearly in the loops: the larger it is, the
-			farther the planet goes back. The arc of a loop is also the difference
-			of two positions only weeks apart, so an error in $\bar\lambda$ hardly
-			changes it. The formula of section 2 gives the arc for each $r$, and
-			inverted it gives $r$ from an observed arc.
+			The size of the epicycle shows most clearly in the loops: the larger it
+			is, the farther the planet goes back. What we measure is the arc of each
+			loop, the difference between the ecliptic longitudes at which the planet
+			stops, $\lambda_1 - \lambda_2$. The moment of a station is hard to fix,
+			because the planet hardly moves for days around it: in the five days
+			after its station of 6 December 2024 Mars moved 10′. For the same
+			reason its place at the station is easy to measure, and the arc, the
+			difference of two places only weeks apart, hardly depends on
+			$\bar\lambda$.
 		</p>
 
 		<p>
-			The eight loops of 2018–2033 went back by 16.1° on average, which gives
-			$r$ = 0.657, or 39.4 where the deferent is 60, against Ptolemy's 39.5.
+			The anomaly at the stations, $\mu_s$, is not measured: it follows from
+			$r$. For a trial value of $r$, the condition of section 2 gives $\mu_s$,
+			and with it the arc. With $r$ = 0.6 the stations are at $\mu_s$ =
+			166.0° and the arc is 6.5°; with $r$ = 0.7, at 162.4° and about 25°.
+			The fitted $r$ is the one whose arc equals the arc observed. Timing the
+			stations to find $\mu_s$ would not do: a station five days off moves
+			$\mu_s$ by 2.3°, while all the values of $r$ from 0.6 to 0.7 move it by
+			only 3.6°.
+		</p>
+
+		<p>
+			The eight loops of 2010–2025 went back by 16.7° on average, which gives
+			$r$ = 0.660, or 39.6 where the deferent is 60, against Ptolemy's 39.5.
 		</p>
 
 		<p>
 			Each loop on its own gives a different epicycle, from about 0.63 for
-			the short loop of 2018 to 0.67 for the long one of 2027, so no single
-			epicycle fits them all.
+			the short loop of 2018 to 0.67 for the long ones of 2010 and 2012, so no
+			single epicycle fits them all.
 		</p>
 
 		<!-- History block: Ptolemy's mean motions and oppositions -->
@@ -679,34 +726,36 @@
 
 		<p>
 			To see how much one epicycle explains, Figure 4 gives the error curve of
-			the model fitted to 2018–2033, $\Delta\lambda = \lambda_\text{model} -
+			the model fitted to 2010–2025, $\Delta\lambda = \lambda_\text{model} -
 			\lambda_\text{ref}$, now in degrees, beside that of the uniform planet,
 			one that moves at $\bar\lambda$ with no epicycle.
 		</p>
 
-		<!-- Figure 4: the epicycle fitted to 2018 - 2033 against the reference Mars -->
+		<!-- Figure 4: the epicycle fitted to 2010 - 2025 against the reference Mars -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-mars"></div>
 			</div>
 			<figcaption>
-				Point at the oppositions, the dots, where the epicycle's error changes
-				fastest. Switch to sixteen years and notice that the error there is
-				positive at some oppositions and negative at others. Then switch to two
-				hundred years: the band does not widen.
+				Point at the oppositions of 2016 and 2018, the dots, where the
+				epicycle's error changes fastest. Switch to sixteen years, the years of
+				the fit, and notice that the error there is positive at some
+				oppositions and negative at others. Then switch to two hundred years:
+				the band does not widen.
 			</figcaption>
 		</figure>
 
 		<p>
-			Over 2018–2033 the epicycle is wrong by up to 35°, a fortnight before
-			the opposition of December 2022, against 53° for the uniform planet, and its root mean square error is a third of the
-			uniform planet's. We took its mean motion from the reference, so the
-			error stays the same size over the two centuries around 2026.
+			Over 2010–2025 the epicycle is wrong by up to 34°, a fortnight after
+			the opposition of May 2016, against 54° for the uniform planet, and its
+			root mean square error is a third of the uniform planet's. Its mean
+			motion came from oppositions 79 years apart, so the error stays the same
+			size over the two centuries around 2026.
 		</p>
 
 		<p>
-			The errors are largest near the oppositions, 32° at the opposition of
-			December 2022 itself, and stay within 7.3° at the conjunctions. Near the perigee an error in the place of K is
+			The errors are largest near the oppositions, 33° at the opposition of
+			May 2016 itself, and stay within 7.2° at the conjunctions. Near the perigee an error in the place of K is
 			magnified. Since $\mu = \bar\lambda_\odot - \bar\lambda$, the equation of
 			the epicycle gives there
 		</p>
@@ -714,8 +763,8 @@
 		$$\frac{\partial\lambda}{\partial\bar\lambda} = 1 - \frac{d\eta}{d\mu} = \frac{1}{1 - r},$$
 
 		<p>
-			almost 3. At the opposition of December 2022 the real Mars was 12° ahead
-			of K, and the model put it 32° behind the real planet.
+			almost 3. At the opposition of May 2016 the real Mars was 12° behind K,
+			and the model put it 33° ahead of the real planet.
 		</p>
 
 		<!-- History block: Hipparchus and the simple models -->
@@ -746,9 +795,9 @@
 		<p>
 			The loops of Mars are long in one part of the zodiac and short in the
 			opposite part, while the model's loop never changes. Figure 5 sets each
-			loop of 2001–2040 against the ecliptic longitude of its opposition: Mars
+			loop of 1986–2025 against the ecliptic longitude of its opposition: Mars
 			goes back by about 10° in one part and almost 20° in the other, where
-			the model always goes back by 16°. The times between oppositions change
+			the model always goes back by about 17°. The times between oppositions change
 			with the loops.
 		</p>
 
@@ -767,9 +816,9 @@
 				</div>
 			</div>
 			<figcaption>
-				Follow the dots, one for each loop of 2001–2040, round the zodiac. Both
+				Follow the dots, one for each loop of 1986–2025, round the zodiac. Both
 				the arc and the time to the next opposition rise and fall once in a turn
-				of Mars, while the line of the model fitted to 2018–2033 stays level
+				of Mars, while the line of the model fitted to 2010–2025 stays level
 				through the middle of each.
 			</figcaption>
 		</figure>
@@ -841,8 +890,8 @@
 					Mars stops going back when $r = n/(n + n_\mu)$ = 0.5317, 31.9 where the
 					deferent is 60. Ptolemy's Jupiter and Saturn, with epicycles of 11.5 and
 					6.5, are far above their thresholds, 0.0843 and 0.0340, and go back by
-					9.9° in 120 days and 7.2° in 138 days, against 10.0° in 121 days and
-					6.8° in 137 days on average in 2001–2040.
+					9.9° in 120 days and 7.2° in 138 days, against 9.9° in 120 days and
+					6.7° in 138 days on average in 1986–2025.
 				</p>
 			</details>
 		</div>
@@ -860,8 +909,8 @@
 				Mars (IX 3; <em>HAMA</em> p. 151): 37 returns in anomaly in 79 years and
 				3.217 days, years of 365.24667 days, during which Mars goes 42 times
 				round the zodiac and 3°10′ (3.167°) more. Find the synodic period
-				and the period in ecliptic longitude, and compare them with 779.936 and
-				686.930 days. Why must the number of years be the sum of the other two
+				and the period in ecliptic longitude, and compare them with those of the
+				fit of section 3, 779.935 and 686.931 days. Why must the number of years be the sum of the other two
 				numbers?
 			</p>
 			<details class="hint">
@@ -881,9 +930,9 @@
 				<p>
 					Ptolemy's 79 years and 3.217 days are 28·857.70 days (he writes
 					28·857.72), so his synodic
-					period is $28857.70 / 37 = 779.938$ days, 2.6 minutes from the modern
-					779.936, and his period in ecliptic longitude $28857.70 / 42.0088 =
-					686.944$ days, 21 minutes longer than 686.930. Multiplying $n + n_\mu =
+					period is $28857.70 / 37 = 779.938$ days, 4.3 minutes from the 779.935
+					of section 3, and his period in ecliptic longitude $28857.70 / 42.0088 =
+					686.944$ days, 20 minutes longer than 686.931. Multiplying $n + n_\mu =
 					n_\odot$ by the length of the period gives the turns of K plus the turns
 					of the anomaly equal to the turns of the mean Sun, that is, to the
 					years: $42 + 37 = 79$, a rule Ptolemy states himself (IX 3). The
@@ -895,14 +944,14 @@
 
 		<div class="exercise" data-kind="break">
 			<p>
-				Use the model fitted to 2018–2033 ($L_0$ = 354.79° at J2000.0, $n$ =
-				0.524071° a day, $r$ = 0.657, and page 1.3's mean Sun) to predict the
-				oppositions of Mars of 2018 and of 2027: the moment when K is opposite
-				the mean Sun, the ecliptic longitude there, and the loop. Compare with
-				the reference sky, where Mars was at opposition on 27 July 2018 at
-				304.1° and went back by 10.6° in 62 days, and on 19 February 2027 at
-				150.7°, going back by 19.5° in 81 days. Why are the two predictions
-				wrong by different amounts?
+				Use the model fitted to 2010–2025 ($L_0$ = 355.84° at J2000.0, $n$ =
+				0.524070° a day, $r$ = 0.660, and page 1.3's mean Sun) to predict the
+				oppositions of Mars of 1999 and of 2003, outside the years of the fit:
+				the moment when K is opposite the mean Sun, the ecliptic longitude
+				there, and the loop. Compare with the reference sky, where Mars was at
+				opposition on 24 April 1999 at 214.1° and went back by 17.8° in 78
+				days, and on 28 August 2003 at 335.0°, going back by 10.0° in 60 days.
+				Why is the model wrong in a different way each time?
 			</p>
 			<details class="hint">
 				<p>
@@ -912,19 +961,21 @@
 			</details>
 			<details class="answer">
 				<p>
-					The model puts the opposition of 2018 on 4 August at 313.5°, 8.8 days
-					late and 9.4° too far east, and that of 2027 on 18 February at 148.5°,
-					0.9 days early and 2.3° too far west. Both of its loops go back by
-					16.1° in 73 days, too far in 2018 and not far enough in 2027.
+					The model puts the opposition of 1999 on 19 May at 237.0°, 25.1 days
+					late and 23.0° too far east, though its loop, 16.7° in 73 days, is
+					close to the real one. It puts that of 2003 on 26 August at 334.5°,
+					only 2.0 days early and 0.4° off, but its loop goes back 16.7°
+					instead of 10.0°.
 				</p>
 				<p>
 					The model has K move uniformly, while the real Mars runs ahead of the
 					uniform motion in some parts of the zodiac and behind it in others. At
-					its opposition to the mean Sun of 2018 the real Mars was 4.3° behind
-					K, so the mean Sun reached K's opposite point about nine days after it
-					reached the real planet's; in 2027 the real Mars was only 0.9° from K.
-					That unevenness, and the loops that change with it, is the zodiacal
-					anomaly, which the model leaves out.
+					its opposition to the mean Sun of 1999 the real Mars was 11.0° behind
+					K, so the mean Sun reached K's opposite point more than three weeks
+					after it reached the real planet's; in 2003 the real Mars was only
+					0.4° from K, but in the part of the zodiac where its loops are
+					shortest. That unevenness, and the loops that change with it, is the
+					zodiacal anomaly, which the model leaves out.
 				</p>
 			</details>
 		</div>

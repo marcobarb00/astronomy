@@ -86,12 +86,21 @@ section.
   questions (the second-order error, the distance varying twice too
   much). Adopted on 2026-11-02 on trial: Marco decides whether to keep it
   once the page is built. → STRUCTURE.md §4 (page 4.5)
-- **Page 4.1 fits Mars to 2018–2033, not 2026.** Mars has no opposition
-  in 2026, and the loops are what the page is about, so the fit and the
-  test use the eight oppositions of 2018–2033, once round the zodiac
-  (16 years); the error curve opens on 2024–2027 and offers the 16 years
-  and two centuries. Approved by Marco on 2026-11-09 with the plan of the
-  page. → STRUCTURE.md §4 (page 4.1)
+- **Fits use documented, modern observations, fitted rather than
+  copied.** On 2026-11-11 Marco rejected page 4.1's first fit, which took
+  Mars' mean motion from the reference sky's theory and fitted the rest
+  to 2018–2033, because Mars has no opposition in 2026. Three rules
+  replace that reading of "the current period": every parameter is
+  fitted from observations (the reference sky's positions stand in for
+  them), never copied from the theory behind the reference (Meeus',
+  Standish's mean motions); the observations are already documented, with
+  no date after the time of writing, and only the test runs into the
+  future; "current" means modern observations as against the historical
+  astronomer's, over as many years as a parameter needs (a century for a
+  rate), not the years around 2026. Page 4.1 now fits $n$ to oppositions
+  79 years apart (1931–1946 and 2010–2025) and $L_0$ and $r$ to those of
+  2010–2025. Pages 1.3 to 3.3 predate the rules (3.1 and 3.3 take their
+  mean motions from Meeus). → STRUCTURE.md §5, §4 (page 4.1)
 - **No Today note on page 4.1.** The modern counterpart of the simple
   epicycle is two orbits about the Sun, which would answer "why does
   every epicycle turn with the Sun?", page 4.2's closing question, before

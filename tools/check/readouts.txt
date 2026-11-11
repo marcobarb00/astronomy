@@ -1414,41 +1414,41 @@ Regenerate with: node tools/check/smoke.js --update
   as loaded
     OUTPUT (epi-day): 27 Oct 2024
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{27 Oct 2024:}\quad \bar\lambda = 65.8^\circ,\quad \mu = 150.1^\circ | \eta = +37.4^\circ,\quad \lambda = \bar\lambda + \eta = 103.1^\circ | \text{daily motion } +0.307^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{27 Oct 2024:}\quad \bar\lambda = 66.8^\circ,\quad \mu = 149.1^\circ | \eta = +37.8^\circ,\quad \lambda = \bar\lambda + \eta = 104.6^\circ | \text{daily motion } +0.325^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #epi-day = 0
     OUTPUT (epi-day): 1 Jan 2024
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{1 Jan 2024:}\quad \bar\lambda = 268.5^\circ,\quad \mu = 11.6^\circ | \eta = +4.6^\circ,\quad \lambda = \bar\lambda + \eta = 273.1^\circ | \text{daily motion } +0.707^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{1 Jan 2024:}\quad \bar\lambda = 269.6^\circ,\quad \mu = 10.6^\circ | \eta = +4.2^\circ,\quad \lambda = \bar\lambda + \eta = 273.8^\circ | \text{daily motion } +0.707^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
   slider #epi-day = 1600
     OUTPUT (epi-day): 19 May 2028
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{19 May 2028:}\quad \bar\lambda = 27.1^\circ,\quad \mu = 30.1^\circ | \eta = +11.9^\circ,\quad \lambda = \bar\lambda + \eta = 38.9^\circ | \text{daily motion } +0.704^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{19 May 2028:}\quad \bar\lambda = 28.1^\circ,\quad \mu = 29.1^\circ | \eta = +11.5^\circ,\quad \lambda = \bar\lambda + \eta = 39.6^\circ | \text{daily motion } +0.704^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
   slider #epi-day = 800
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.8^\circ,\quad \mu = 20.9^\circ | \eta = +8.3^\circ,\quad \lambda = \bar\lambda + \eta = 336.1^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 328.8^\circ,\quad \mu = 19.8^\circ | \eta = +7.9^\circ,\quad \lambda = \bar\lambda + \eta = 336.7^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
   slider #epi-day + one key step
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +8.3^\circ,\quad \lambda = \bar\lambda + \eta = 336.2^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +7.9^\circ,\quad \lambda = \bar\lambda + \eta = 336.9^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
   slider #epi-r = 0
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 327.9^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   slider #epi-r = 0.8
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.800
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +9.3^\circ,\quad \lambda = \bar\lambda + \eta = 337.2^\circ | \text{daily motion } +0.728^\circ \text{ (forward)} | \text{stations at } \mu = 163.0^\circ, 197.0^\circ;\ \text{back } 51.1^\circ
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +8.9^\circ,\quad \lambda = \bar\lambda + \eta = 337.8^\circ | \text{daily motion } +0.728^\circ \text{ (forward)} | \text{stations at } \mu = 163.0^\circ, 197.0^\circ;\ \text{back } 51.1^\circ
   slider #epi-r = 0.4
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.400
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +6.0^\circ,\quad \lambda = \bar\lambda + \eta = 333.9^\circ | \text{daily motion } +0.653^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +5.7^\circ,\quad \lambda = \bar\lambda + \eta = 334.6^\circ | \text{daily motion } +0.653^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   slider #epi-r + one key step
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.401
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +6.0^\circ,\quad \lambda = \bar\lambda + \eta = 333.9^\circ | \text{daily motion } +0.653^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +5.7^\circ,\quad \lambda = \bar\lambda + \eta = 334.6^\circ | \text{daily motion } +0.654^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   button "Mars"
   button "Jupiter"
   button "Saturn"
@@ -1457,7 +1457,7 @@ Regenerate with: node tools/check/smoke.js --update
   button "Mars"
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.658
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 327.9^\circ,\quad \mu = 21.0^\circ | \eta = +8.3^\circ,\quad \lambda = \bar\lambda + \eta = 336.2^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +7.9^\circ,\quad \lambda = \bar\lambda + \eta = 336.9^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
   button "Venus"
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.719
@@ -1509,11 +1509,11 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (epi-r): 0.000
     #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
   hover #error-mars-plot at 0.3
-    .errorcurve-readout: 3 Jun 1977 · uniform planet: −35.28° · epicycle: −5.42°
+    .errorcurve-readout: 3 Jun 1969 · uniform planet: +13.61° · epicycle: +32.79°
   hover #error-mars-plot at 0.6
-    .errorcurve-readout: 27 Jul 2042 · uniform planet: +41.20° · epicycle: +5.67°
+    .errorcurve-readout: 27 Jul 2034 · uniform planet: +0.88° · epicycle: −2.07°
   hover #error-mars-plot at 0.9
-    .errorcurve-readout: 19 Sep 2107 · uniform planet: −36.92° · epicycle: −5.13°
+    .errorcurve-readout: 19 Sep 2099 · uniform planet: −29.12° · epicycle: −21.04°
   hover #error-mars-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #arcs-plot at 0.3

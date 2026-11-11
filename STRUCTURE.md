@@ -600,7 +600,7 @@ The first anomaly and the simplest complete model.
 
 - **Question:** why do planets loop, and why always at opposition?
 - **Learn:** retrograde motion and the stations (Mars' loop of 2024–2025,
-  19.2° in 79 days); the loops of the five planets in 2001–2040 (a table),
+  19.2° in 79 days); the loops of the five planets in 1986–2025 (a table),
   centred on opposition for Mars, Jupiter and Saturn and on inferior
   conjunction for Venus and Mercury, which never pass 47° and 28° from the
   Sun (XII 1); the two anomalies, related to the Sun and to the place in
@@ -621,40 +621,45 @@ The first anomaly and the simplest complete model.
   the planet's mean motion and $n_\odot$ the mean Sun's; lengths in units of
   the deferent's radius (Ptolemy's 60); $e$ is left free for page 4.2.
 - **Figures:** a blue plate of Mars' path among the stars of Gemini and
-  Cancer, 15 October 2024 to 15 April 2025, with the stations and the
-  opposition dated; the daily motion against the place relative to the
-  Sun, one curve per synodic period of 2011–2030 (a view per planet,
+  Cancer (the whole of both figures), 15 October 2024 to 15 April 2025,
+  with the stations dated outside the ends of the loop; the daily motion against the place relative to the
+  Sun, one curve per synodic period of 2006–2025 (a view per planet,
   static); the epicycle and the daily motion against $\mu$ (date and $r$,
   presets Ptolemy's, no loop, no epicycle; views Mars and Venus); the
   error curve of Mars in degrees (the uniform planet as ghost, dots at the
-  oppositions; 4 years, 16 years, 200 years); the arcs and the intervals
-  of the loops of 2001–2040 against the ecliptic longitude of opposition
+  oppositions; 2016–2019, the 16 years of the fit, 200 years); the arcs
+  and the intervals of the loops of 1986–2025 against the ecliptic
+  longitude of opposition
   (static).
-- **Fit:** Mars has no opposition in 2026, so the eight oppositions of
-  2018–2033, once round the zodiac. $n$ from the reference (Standish's
-  mean longitude of date); $L_0$ from the oppositions to the mean Sun,
-  where the planet is seen through K (X 6), 354.79°, 38′ from the
-  reference, each opposition 11° to 12° off; $r$ from the mean arc of
-  retrogradation, 16.07°, so 0.657 (39.4 in 60; Ptolemy 39.5), each loop
-  alone 0.626 to 0.674. History block: the period relations "computed by
+- **Fit:** documented oppositions only (§5). $n$ from the eight
+  oppositions to the mean Sun of 2010–2025 and those 79 years earlier
+  (1931–1946: 37 synodic periods, 42 turns and 2.8° to 4.6° more, so
+  both anomalies cancel), 0.524070° a day; $L_0$ from the eight of
+  2010–2025, where the planet is seen through K (X 6), 355.84°, each
+  opposition 11° to 12° off; $r$ from the mean arc of retrogradation of
+  their loops, 16.7°, so 0.660 (39.6 in 60; Ptolemy 39.5), each loop
+  alone 0.63 to 0.67. The arc is measured, not $\mu_s$: a station's
+  place is easy to measure and its moment is not, and for a trial $r$
+  the station condition gives $\mu_s$ and the arc. History block: the period relations "computed by
   Hipparchus", Babylonian (IX 3, Toomer), and Ptolemy's corrections;
   stations hard to time (IX 2); Ptolemy's oppositions, where the ecliptic
   anomaly is isolated (X 6), and his epicycle of Mars (X 7–8).
-- **Test:** within 34.5° over 2018–2033 (the uniform planet 53.2°), rms
-  9.9°; the same over 1926–2126; largest near the oppositions (32° at
-  that of December 2022), an
+- **Test:** within 34° over 2010–2025 (the uniform planet 54°), rms a
+  third of the uniform planet's; the same over 1926–2126; largest near
+  the oppositions (33° at that of May 2016), an
   error in K multiplied by $1/(1 - r)$ there. History block: Hipparchus'
   verdict on the models of a "single unvarying anomaly and retrograde arc"
   (IX 2).
 - **Residual:** the arcs follow the zodiac, 10.0° to 19.5° against the
-  model's 16.1°, and the intervals 764 to 810 days against 779.9;
+  model's 16.7°, and the intervals 764 to 811 days against 779.9;
   Neugebauer's remark on constant arcs (HAMA p. 191). Detour: planetary
   latitudes (the shape of the loop).
 - **Exercises:** Apollonius' form of the station (TP/OP = $n/n_\mu$) and
   Ptolemy's Mars at mean distance, 16°18′44″ in about 73 days (XII 4),
   with Jupiter and Saturn; the synodic periods from the periods of return
   to the same star, and Ptolemy's 79-year relation for Mars (IX 3);
-  the oppositions of 2018 and 2027 in the model (break the model).
+  the oppositions of 1999 and 2003 in the model, outside the fit (break
+  the model).
 - **Code:** `models/planet-epicycle.js` (`PlanetEpicycle`: `make`,
   `makeUniform`, `state`, `dailyMotion`, `loopThreshold`,
   `stationAnomaly`, `loop`, `ratioForArc`, `construction`,
@@ -844,8 +849,24 @@ Every page follows the same rhythm:
 3. **Fit.** How the model's parameters could be obtained: for each
    parameter, which observation fixes it and why that observation is the
    right one. The method comes first; the fitted values appear once, as
-   its outcome, not as a stream of numbers.
-4. **Test.** The model fitted to the current period against the
+   its outcome, not as a stream of numbers. The data of the fit follow
+   three rules:
+   - **Fitted, not copied.** Every parameter is fitted from observations
+     (the reference sky's positions, standing in for modern
+     observations). A value is never taken from the theory behind the
+     reference sky (Meeus' or Standish's mean motions, a mean node): that
+     would put the answer into the fit.
+   - **Documented.** The observations are ones already made: no date
+     after the time of writing. Only the test runs the model into the
+     future, as a prediction.
+   - **Modern, over the span the parameter needs.** "The current period"
+     means modern observations, as against the historical astronomer's
+     (the model is never fitted to Ptolemy's or Hipparchus' data; their
+     fits go in the history block). It does not mean the years around
+     2026: a rate takes observations decades or a century apart, an
+     anomaly a full turn of it.
+   Adopted on 2026-11-11 (DECISIONS.md); pages 1.3 to 3.3 predate it.
+4. **Test.** The model fitted to modern observations against the
    reference sky, with the error curve from page 2.1 on: around the fit
    year, and over centuries or millennia when that shows something about
    the model. It is tested once: the same test is not repeated in the
