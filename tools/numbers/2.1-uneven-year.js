@@ -178,6 +178,30 @@ console.log(
 	`   a uniform Sun: every season ${f(YEAR / 4, 2)} d; the half from March to September is ${f(OBS.lengths[2] + OBS.lengths[3] - OBS.lengths[0] - OBS.lengths[1], 2)} d longer`
 );
 
+/* The same moments from the US Naval Observatory (aa.usno.navy.mil/api/
+   seasons, years 2025 and 2026, retrieved 2026-11-12), in UT: the
+   reference sky's Sun is accurate to about 0.7', a quarter of an hour of
+   its motion. What the differences do to the lengths and to the fit. */
+{
+	const usno = [
+		[2025, 9, 22, 18, 19],
+		[2025, 12, 21, 15, 3],
+		[2026, 3, 20, 14, 46],
+		[2026, 6, 21, 8, 24],
+		[2026, 9, 23, 0, 5]
+	].map(([y, m, d, h, min]) => Time.julianDayTime(y, m, d, h, min, 0));
+	const offsets = OBS.times.map((t, i) => (Time.utFromTt(t) - usno[i]) * 1440);
+	const usnoLengths = [0, 1, 2, 3].map(i => usno[i + 1] - usno[i]);
+	const ours = SolarEccentric.fitSeasons(OBS.lengths[2], OBS.lengths[3], YEAR);
+	const theirs = SolarEccentric.fitSeasons(usnoLengths[2], usnoLengths[3], YEAR);
+
+	console.log(`   reference minus USNO: ${offsets.map(x => f(x, 0)).join(', ')} min`);
+	console.log(
+		`   lengths minus USNO's: ${[0, 1, 2, 3].map(i => f((OBS.lengths[i] - usnoLengths[i]) * 1440, 0)).join(', ')} min;` +
+			` the Fit on USNO's spring and summer: e ${f(theirs.e, 5)} (ours ${f(ours.e, 5)}), apogee ${f(theirs.apogee, 2)}° (ours ${f(ours.apogee, 2)}°)`
+	);
+}
+
 /* The spring and summer of 2026, in the order of the old 'seasons'. */
 const s2026 = { times: OBS.times.slice(2), lengths: [OBS.lengths[2], OBS.lengths[3]] };
 

@@ -1155,14 +1155,15 @@ function testClock() {
 		show: showHours
 	});
 
-	// The site's clock, from the mean Sun fitted on page 1.3: within the
-	// fit's 2.7" (0.18 s of time) of UT's constants
+	// The site's clock, from the mean Sun fitted on page 1.3 and carried
+	// to days of UT: 5.3" (0.35 s of time) from UT's conventional
+	// constant at J2000.0, a little more in 1987 through the rates
 	check({
 		name: 'The fitted clock, 1987 Apr 10, 0h UT',
 		source: 'Ex. 12.a, page 1.3',
 		expected: 13 + 10 / 60 + 46.3668 / 3600,
 		computed: Clock.gmst(Time.julianDay(1987, 4, 10)) / 15,
-		tol: 0.3,
+		tol: 0.5,
 		unit: 's',
 		scale: 3600,
 		show: showHours

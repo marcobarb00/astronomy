@@ -47,12 +47,14 @@ const Clock = (function () {
 
 	/* Greenwich sidereal time at J2000.0 (deg) and its rate per day of UT,
 	   from the mean Sun fitted on page 1.3 (models/mean-sun.js): theta_G
-	   = L0 + (360° + n) d. The days of the fit are of TT and the clock's of
-	   UT; the 64 s between them at J2000.0 move the mean Sun by 2.6", a
-	   fifth of a second of time, which the site neglects. The constants
-	   that define UT (MeanSun.UT_CONVENTION) are within a fraction of a
-	   second of time of these. */
-	const THETA0 = MeanSun.MODERN.L0;
+	   = L0 + n DT + (360° + n) d. The mean Sun was fitted in days of TT
+	   and the clock counts days of UT, which at J2000.0 ran DT = 64 s
+	   behind: the mean Sun moves 2.6" in that time. The change of DT since
+	   (5 s by 2026) is left out, 0.2". The constants that define UT
+	   (MeanSun.UT_CONVENTION) differ by 5.3", 0.35 s of time
+	   (tools/numbers/1.3-clocks.js). */
+	const DT_AT_J2000 = Time.ttFromUt(Time.J2000) - Time.J2000; // days
+	const THETA0 = MeanSun.MODERN.L0 + MeanSun.MODERN.n * DT_AT_J2000;
 	const RATE = 360 + MeanSun.MODERN.n;
 
 	/* One turn of the sky (a sidereal day) in hours of mean solar time:

@@ -276,8 +276,8 @@ console.log(
 title('Model: mean time and the sidereal clock');
 console.log(`rate ${Clock.RATE} = 360 + n, n = ${n.toFixed(11)}`);
 console.log(
-	`theta_G at J2000.0 = ${Clock.THETA0} deg = ${hms(Clock.THETA0 / 15)}; mean Sun L0 = ${MeanSun.MODERN.L0}:` +
-		` difference ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(1)}" = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 240).toFixed(2)} s of time`
+	`theta_G at J2000.0 = ${Clock.THETA0.toFixed(6)} deg = ${hms(Clock.THETA0 / 15)}; mean Sun L0 = ${MeanSun.MODERN.L0} in days of TT:` +
+		` the clock is ${((Clock.THETA0 - MeanSun.MODERN.L0) * 3600).toFixed(1)}" ahead, the mean Sun's motion in DT (section 6)`
 );
 const example = Time.julianDayTime(2026, 4, 20, 20, 0, 0);
 const dExample = example - Time.J2000;
@@ -476,6 +476,40 @@ title('Fit: the constant L0, from the Sun of 2007 - 2025 (19 whole years)');
 	);
 	console.log(`MeanSun.MODERN in mean-sun.js: L0 ${MeanSun.MODERN.L0}, n ${MeanSun.MODERN.n}`);
 	console.log(`this fit:                      L0 ${L0Fit.toFixed(6)}, n ${nFit.toFixed(11)}`);
+
+	// The fit counts days of TT, the clock days of UT: at J2000.0 UT ran
+	// DT behind, so at 0 days of UT the mean Sun had moved n DT further.
+	const dtJ2000 = (Time.ttFromUt(Time.J2000) - Time.J2000) * 86400;
+	const theta0 = L0Fit + (nFit * dtJ2000) / 86400;
+
+	console.log(
+		`DT at J2000.0 ${dtJ2000.toFixed(1)} s: the mean Sun moves ${(((nFit * dtJ2000) / 86400) * 3600).toFixed(2)}" -> the clock's constant ${theta0.toFixed(6)} (Clock.THETA0 ${Clock.THETA0.toFixed(6)});` +
+			` minus UT's: ${((theta0 - MeanSun.UT_CONVENTION.L0) * 3600).toFixed(1)}" = ${((theta0 - MeanSun.UT_CONVENTION.L0) * 240).toFixed(2)} s of time`
+	);
+
+	// The check of mean solar time: over 2007 - 2025, the real Sun's mean
+	// hour angle at 12:00 of each clock (the clock's mean Sun on the
+	// meridian of Greenwich); zero for a clock that keeps mean solar time.
+	const meanHourAngle = (constant, rate) => {
+		let sum = 0;
+		let count = 0;
+
+		for (let jd = Time.julianDay(2007, 1, 1) + 0.5; jd < Time.julianDay(2026, 1, 1); jd += 1) {
+			const jdTT = Time.ttFromUt(jd);
+			const sun = Ephem.equatorial(Ephem.sun(jdTT), jdTT);
+			const theta = constant + rate * (jd - Time.J2000) + Ephem.apparentSiderealTime(jd) - Time.gmst(jd);
+
+			sum += norm180(theta - sun.ra);
+			count++;
+		}
+
+		return ((sum / count) * 240).toFixed(2);
+	};
+
+	console.log(
+		`the real Sun's mean hour angle at 12:00, 2007 - 2025: the clock ${meanHourAngle(Clock.THETA0, Clock.RATE)} s,` +
+			` the clock without DT ${meanHourAngle(L0Fit, Clock.RATE)} s, UT ${meanHourAngle(MeanSun.UT_CONVENTION.L0, 360 + MeanSun.UT_CONVENTION.n)} s`
+	);
 }
 
 title("Fit: Ptolemy's year and the error in the rate");

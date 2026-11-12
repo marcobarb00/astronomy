@@ -175,7 +175,8 @@ The language needed to state any prediction.
   solstices of 1926–2025 (365.24219 days; an error in the rate
   accumulates, in the clock as in the mean Sun: 16 s a century for a
   minute in the year), the constant $L_0$ as the mean of $\lambda_\odot -
-  n\,d$ over the 19 whole years 2007–2025, the longitude from one timed
+  n\,d$ over the 19 whole years 2007–2025, carried from days of TT to the
+  days of UT the clock counts (+2.6″), the longitude from one timed
   transit. UT's own constants (Meeus 12.4) are a convention, quoted in the
   Model for the worked example. History block: Hipparchus' and Ptolemy's
   365.24667 days from solstices and equinoxes one to several centuries apart

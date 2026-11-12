@@ -288,9 +288,14 @@ section.
   the reference sky (365.2421940 days, $n = 0.98564734824^\circ$ a day),
   and $L_0 = 280.461355^\circ$ at J2000 from the mean of $\lambda_\odot
   - n\,d$ over the 19 whole years 2007–2025, which average out nutation.
-  The clock of page 1.3 uses them: $\theta_G = L_0 + (360^\circ + n)\,d$.
-  The constants of UT (Meeus 12.4) differ by 2.7″ and 0.16 s a century;
-  they are a convention, kept as `MeanSun.UT_CONVENTION` for the worked
+  The clock of page 1.3 uses them, carried from the days of TT of the
+  fit to the days of UT it counts: $\theta_G = L_0 + n\,\Delta T_{2000} +
+  (360^\circ + n)\,d$, with $\Delta T_{2000}$ = 64 s, 2.6″ (decided
+  2026-11-12 after a check: over 2007–2025 the real Sun then crosses at
+  the clock's noon within 0.08 s on average, against 0.25 s without the
+  2.6″ and 0.40 s by UT's own constant). The constants of UT (Meeus 12.4)
+  differ by 5.3″ and 0.16 s a century; they are a convention tied to the
+  Earth's rotation, kept as `MeanSun.UT_CONVENTION` for the worked
   example and its test. Replaces the decision of 2026-11-09 that took the
   clock's rate from Meeus 12.4. Decided on 2026-11-12 (STRUCTURE.md §5).
   → shared/models/mean-sun.js, shared/models/clock.js,

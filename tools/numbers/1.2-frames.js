@@ -350,6 +350,23 @@ const equinox = sunAtLongitude(0, Time.julianDay(FIT_YEAR, 3, 20));
 console.log(
 	`reference Sun at lambda = 0: ${dateText(Time.utFromTt(equinox))} UT; delta there = ${arcsec(realSun(equinox).dec, 1)}`
 );
+{
+	/* The published moment (US Naval Observatory, aa.usno.navy.mil/api/
+	   seasons?year=2025, retrieved 2026-11-12) is for the apparent Sun
+	   and the true equinox; the reference sky's apparent Sun, with
+	   nutation and aberration, for comparison. */
+	const usno = Time.julianDayTime(2025, 3, 20, 9, 1, 0);
+	let apparent = equinox;
+
+	for (let i = 0; i < 20; i++) {
+		apparent += norm180(-Ephem.longitude('sun', apparent)) / 0.9856;
+	}
+
+	console.log(
+		`USNO 20 Mar 2025 09:01 UT: the mean equinox above ${f((Time.utFromTt(equinox) - usno) * 1440, 0)} min from it;` +
+			` the reference's apparent Sun ${dateText(Time.utFromTt(apparent))} UT, ${f((Time.utFromTt(apparent) - usno) * 1440, 0)} min`
+	);
+}
 
 /* ==========================================================================
    6. TEST: PTOLEMY'S TABLES; THE REAL SUN; FIGURE SCALES

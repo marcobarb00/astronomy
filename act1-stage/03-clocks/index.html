@@ -871,14 +871,24 @@
 			<p>
 				This is the mean Sun of the Sun as we see it, which lags behind its
 				geometric place by the 20″ it moves while its light reaches us, the
-				aberration of light. UT's convention follows the same Sun: our $L_0$
-				is 2.7″ from its 280.46061837°, a fifth of a second of time, and our
-				$n$ moves the clock away from it by 0.16 s of time a century.
+				aberration of light. Its days are those of Terrestrial Time, in which
+				the reference sky gives the Sun (TT, section 5), while the clock counts
+				days of UT, which at J2000.0 ran 64 s behind. In 64 s the mean Sun
+				moves 2.6″, so the clock's constant is $L_0$ + 2.6″ = 280.4621°.
 			</p>
 			<aside>
 				<div class="note detour" data-topic="aberration"></div>
 			</aside>
 		</div>
+
+		<p>
+			With it, the real Sun of 2007–2025 crosses the meridian of Greenwich
+			on average 0.08 s after the clock's noon, as it should for a clock
+			of mean solar time. UT's own constant, 280.46061837°, is a
+			convention tied to the turning Earth and lies 5.3″ lower: by it the
+			real Sun crosses on average 0.40 s after 12:00. Our $n$ moves the
+			clock away from UT by a further 0.16 s of time a century.
+		</p>
 
 		<h3>The geographic longitude, from a timed transit</h3>
 
@@ -891,8 +901,8 @@
 		</p>
 
 		<p>
-			At that moment the clock gives $\theta_G = 266.9632^\circ$, so
-			$\ell = 12.4970^\circ$, against the true 12.4964°. How close we get
+			At that moment the clock gives $\theta_G = 266.9639^\circ$, so
+			$\ell = 12.4962^\circ$, against the true 12.4964°. How close we get
 			depends only on the timing, since one second of time is 15″ of
 			geographic longitude, 345 m on the parallel of Rome.
 		</p>
@@ -937,7 +947,7 @@
 				The reference sky computes the sidereal time with the full Meeus
 				formula and adds nutation, the small back-and-forth shift of the
 				equinox met on page 1.2. Through 2026 the clock differs from it by
-				under 0.6 s, so the transits we predict for the stars are right to
+				under 0.4 s, so the transits we predict for the stars are right to
 				within a second.
 			</p>
 			<aside>
@@ -1146,12 +1156,12 @@
 			<details class="answer">
 				<p>
 					On 31 December 2026 at 0 h UT, JD = 2461405.5 and $d = 9860.5$, so
-					$\theta_{G,0} = 99.4370^\circ$ ($6^\text{h}37^\text{m}44.89^\text{s}$).
+					$\theta_{G,0} = 99.4378^\circ$ ($6^\text{h}37^\text{m}45.06^\text{s}$).
 				</p>
 				<p>
 					The sky still has to turn $(101.5845^\circ - 12.4964^\circ -
-					99.4370^\circ) \bmod 360^\circ = 349.6510^\circ$. At
-					$360.9856^\circ$ a day that takes 23.24642 h: the transit is at
+					99.4378^\circ) \bmod 360^\circ = 349.6503^\circ$. At
+					$360.9856^\circ$ a day that takes 23.24637 h: the transit is at
 					23:14:47 UT, which is 00:14:47 CET on 1 January, a quarter of an hour
 					into the new year, and 00:04:46 local mean time.
 				</p>
