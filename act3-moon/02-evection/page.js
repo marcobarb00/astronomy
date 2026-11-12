@@ -5,7 +5,7 @@
    controls):
 	 1. the equation at the phases   (2D, static: the real Moon's true
 									   minus mean longitude against its
-									   anomaly, 2021 - 2030)
+									   anomaly, 2016 - 2025)
 	 2. Ptolemy's crank              (2D: (a) the epicycle on the turning
 									   eccentric, seen from the north
 									   ecliptic pole, (b) q over two
@@ -106,14 +106,14 @@ const toCanvas = (origin, scale, point) => ({ x: origin.x + scale * point[0], y:
 /* ==========================================================================
    1. FIGURE 1: THE EQUATION AT THE NEW AND FULL MOONS AND THE QUARTERS
    Static. The reference Moon's true minus mean longitude at every new and
-   full Moon and every quarter of 2021 - 2030, against its anomaly M from
+   full Moon and every quarter of 2016 - 2025, against its anomaly M from
    the apogee (Meeus' mean motions). Fixed scale +-9° (the equation reaches
    7.92°, tools/numbers/3.2-evection.js).
    ========================================================================== */
 
 const EQUATION_RANGE = [-9, 9];
-const EQUATION_FROM = Time.julianDay(2021, 1, 1);
-const EQUATION_TO = Time.julianDay(2031, 1, 1);
+const EQUATION_FROM = Time.julianDay(2016, 1, 1);
+const EQUATION_TO = Time.julianDay(2026, 1, 1);
 
 /* Ticks of the anomaly axis, every 90°. */
 const anomalyTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));

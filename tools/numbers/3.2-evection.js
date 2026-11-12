@@ -127,15 +127,23 @@ function phases(target, from, to) {
 }
 
 const J2000 = 2451545.0;
+const Y2025 = Time.julianDay(2025, 1, 1);
 const Y2026 = Time.julianDay(2026, 1, 1);
 const Y2027 = Time.julianDay(2027, 1, 1);
-const FROM = Time.julianDay(2021, 1, 1);
-const TO = Time.julianDay(2031, 1, 1);
+
+/* The observation and the fit use the documented decade 2016 - 2025 and
+   its last year (STRUCTURE.md §5); the Test runs over 2026. */
+const FROM = Time.julianDay(2016, 1, 1);
+const TO = Y2026;
 
 const SYZYGIES = phases(0, FROM, TO).concat(phases(180, FROM, TO));
 const QUARTERS = phases(90, FROM, TO).concat(phases(270, FROM, TO));
-const OCTANTS = [45, 135, 225, 315].flatMap(t => phases(t, FROM, TO));
-const in2026 = list => list.filter(jd => jd >= Y2026 && jd < Y2027);
+const in2025 = list => list.filter(jd => jd >= Y2025 && jd < Y2026);
+const TEST_FROM = Y2026;
+const TEST_TO = Y2027;
+const TEST_SYZYGIES = phases(0, TEST_FROM, TEST_TO).concat(phases(180, TEST_FROM, TEST_TO));
+const TEST_QUARTERS = phases(90, TEST_FROM, TEST_TO).concat(phases(270, TEST_FROM, TEST_TO));
+const TEST_OCTANTS = [45, 135, 225, 315].flatMap(t => phases(t, TEST_FROM, TEST_TO));
 
 /* The real Moon's whole equation, true minus mean longitude (Meeus'
    linear mean motions, as on page 3.1), and its anomaly from the apogee
@@ -206,7 +214,7 @@ title("Introduction: page 3.1's epicycle and the crank in 2026");
 	const full = largest(models.full, Y2026, Y2027);
 
 	console.log(
-		`the epicycle: at the syzygies within ${f(maxAbs(in2026(SYZYGIES).map(jd => error(models.epicycle, jd))), 1)}', largest ${f(Math.abs(epicycle.v) / 60, 2)}°; the complete crank: largest ${f(Math.abs(full.v) / 60, 2)}°`
+		`the epicycle: at the syzygies within ${f(maxAbs(TEST_SYZYGIES.map(jd => error(models.epicycle, jd))), 1)}', largest ${f(Math.abs(epicycle.v) / 60, 2)}°; the complete crank: largest ${f(Math.abs(full.v) / 60, 2)}°`
 	);
 }
 
@@ -214,7 +222,7 @@ title("Introduction: page 3.1's epicycle and the crank in 2026");
    5. OBSERVATION
    ========================================================================== */
 
-title('Observation: the whole equation at the syzygies and at the quarters, 2021 - 2030 (Figure 1)');
+title('Observation: the whole equation at the syzygies and at the quarters, 2016 - 2025 (Figure 1)');
 console.log(`${SYZYGIES.length} new and full Moons, ${QUARTERS.length} quarters`);
 console.log(
 	`greatest |true - mean|: at the syzygies ${f(maxAbs(SYZYGIES.map(realEquation)), 2)}°, at the quarters ${f(maxAbs(QUARTERS.map(realEquation)), 2)}°`
@@ -223,9 +231,9 @@ console.log(
 	`least-squares amplitude of -a sin M: at the syzygies ${f(amplitude(SYZYGIES, realEquation), 2)}°, at the quarters ${f(amplitude(QUARTERS, realEquation), 2)}°`
 );
 
-title("Observation: page 3.1's epicycle at the quarters of 2026");
+title("Observation: page 3.1's epicycle at the quarters of 2025");
 {
-	const qs = in2026(QUARTERS);
+	const qs = in2025(QUARTERS);
 	const errorDeg = jd => error(models.epicycle, jd) / 60;
 
 	/* At the quarters the error follows +a sin M: the epicycle's equation
@@ -416,11 +424,11 @@ title('Fit: c fitted to the quarters (golden section on the sum of squares)');
 
 		return (a + b) / 2;
 	};
-	const c2026 = fitC(in2026(QUARTERS));
+	const c2026 = fitC(in2025(QUARTERS));
 
 	console.log(`the epicycle of page 3.1: e = ${f(FIT.e, 6)} (${f(60 * FIT.e, 2)} parts where OA = 60)`);
 	console.log(
-		`the ${in2026(QUARTERS).length} quarters of 2026: c = ${f(c2026, 6)} (model file ${FIT.c}) = ${f(c2026, 4)}, ${f(60 * c2026, 2)} parts (Ptolemy ${f(60 * P.c, 2)})`
+		`the ${in2025(QUARTERS).length} quarters of 2025: c = ${f(c2026, 6)} (model file ${FIT.c}) = ${f(c2026, 4)}, ${f(60 * c2026, 2)} parts (Ptolemy ${f(60 * P.c, 2)})`
 	);
 	console.log(
 		`greatest equation: at the quarters ${f(asin(FIT.e / (1 - 2 * FIT.c)), 2)}°, at new and full Moon ${f(asin(FIT.e), 2)}°`
@@ -428,7 +436,7 @@ title('Fit: c fitted to the quarters (golden section on the sum of squares)');
 	const cDecade = fitC(QUARTERS);
 
 	console.log(
-		`the quarters of 2021 - 2030: c = ${f(cDecade, 4)}, ${f((100 * (cDecade - c2026)) / c2026, 1)}% from the fit to 2026`
+		`the quarters of 2016 - 2025: c = ${f(cDecade, 4)}, ${f((100 * (cDecade - c2026)) / c2026, 1)}% from the fit to 2025`
 	);
 }
 
@@ -440,10 +448,10 @@ title('Test: the error over 2026 (Figure 4)');
 ['epicycle', 'crank', 'full'].forEach(name => {
 	const fn = models[name];
 	const all = largest(fn, Y2026, Y2027);
-	const at = list => maxAbs(in2026(list).map(jd => error(fn, jd)));
+	const at = list => maxAbs(list.map(jd => error(fn, jd)));
 
 	console.log(
-		`${name.padEnd(9)} largest ${f(Math.abs(all.v) / 60, 2)}° on ${date(all.jd)}, rms ${f(rms(errors(fn, Y2026, Y2027)), 0)}'; at the syzygies ${f(at(SYZYGIES), 0)}', quarters ${f(at(QUARTERS) / 60, 2)}°, octants ${f(at(OCTANTS) / 60, 2)}°`
+		`${name.padEnd(9)} largest ${f(Math.abs(all.v) / 60, 2)}° on ${date(all.jd)}, rms ${f(rms(errors(fn, Y2026, Y2027)), 0)}'; at the syzygies ${f(at(TEST_SYZYGIES), 0)}', quarters ${f(at(TEST_QUARTERS) / 60, 2)}°, octants ${f(at(TEST_OCTANTS) / 60, 2)}°`
 	);
 });
 {
@@ -602,7 +610,7 @@ title("Residual: what remains of the crank's error in 2026");
 		`share of the variance removed: ${f(100 * (1 - rms(errs.map((v, i) => v - k * variation[i])) ** 2 / rms(errs) ** 2), 0)}%`
 	);
 	console.log(
-		`at the syzygies of 2026: the crank ${f(maxAbs(in2026(SYZYGIES).map(jd => error(models.full, jd))), 0)}', the epicycle ${f(maxAbs(in2026(SYZYGIES).map(jd => error(models.epicycle, jd))), 0)}'`
+		`at the syzygies of 2026: the crank ${f(maxAbs(TEST_SYZYGIES.map(jd => error(models.full, jd))), 0)}', the epicycle ${f(maxAbs(TEST_SYZYGIES.map(jd => error(models.epicycle, jd))), 0)}'`
 	);
 
 	/* The error regressed on the terms of the reference Moon it may hold:
