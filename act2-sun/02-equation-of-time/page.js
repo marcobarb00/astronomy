@@ -5,10 +5,10 @@
    controls):
 	 1. the sundial and the clock      (2D, static: (a) the true solar day
 										 minus 24 h, (b) its running sum, E,
-										 through 2026)
+										 through 2025)
 	 2. the reduction to the equator   (3D sphere and 2D plot: longitude
 										 and obliquity)
-	 3. the two parts and their sum    (2D, through 2026, pointer read-out)
+	 3. the two parts and their sum    (2D, through 2025, pointer read-out)
 	 4. the analemma                   (2D: date; both causes, eccentricity
 										 only, obliquity only)
 	 5. the model against the real E   (2D, two panels, pointer read-out)
@@ -39,8 +39,10 @@
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
 
-/* The year of the figures, and 0 h UT of its first day (JD). */
-const YEAR = 2026;
+/* The year of the figures, and 0 h UT of its first day (JD): the last
+   whole year before today, so that every noon is documented
+   (STRUCTURE.md §5). */
+const YEAR = 2025;
 const YEAR_START = Time.julianDay(YEAR, 1, 1);
 const DAYS_IN_YEAR = 365;
 
@@ -97,7 +99,7 @@ function yearText(year) {
 const texSigned = (x, digits = 2) => `{${signed(x, digits).replace('−', '-')}}`;
 
 /* The real equation of time (minutes) at 12:00 UT on every day from
-   1 January 2026 to 1 January 2027 (Meeus 28.1, Ephem), computed once
+   1 January 2025 to 1 January 2026 (Meeus 28.1, Ephem), computed once
    and shared by Figures 1, 3 and 5. Within 0.22 s of the value from the
    real Sun's meridian crossings (tools/numbers/2.2-equation-of-time.js). */
 let realEquationCache = null;
@@ -114,7 +116,7 @@ function realEquation() {
 	return realEquationCache;
 }
 
-/* The model's parts at 12:00 UT on every day of 2026, computed once:
+/* The model's parts at 12:00 UT on every day of 2025, computed once:
    [{ eccentricity, obliquity, total (minutes), lambda, ... }]. */
 let modelPartsCache = null;
 
@@ -388,7 +390,7 @@ const reductionFigure = {
 
 /* ==========================================================================
    3. FIGURE 3: THE TWO PARTS AND THEIR SUM
-   Through 2026 at 12:00 UT: the eccentricity part -q (amplitude 7.67
+   Through 2025 at 12:00 UT: the eccentricity part -q (amplitude 7.67
    min), the obliquity part lambda - alpha (9.86 min) and their sum E
    (-14.22 to +16.52 min): fixed scale +-18 min. Pointing at the plot
    reads a date; otherwise the read-out gives the whole year.
@@ -448,7 +450,7 @@ const partsFigure = {
 
 /* ==========================================================================
    4. FIGURE 4: THE ANALEMMA
-   The Sun at mean noon (12:00 UT at Greenwich) each day of 2026: its
+   The Sun at mean noon (12:00 UT at Greenwich) each day of 2025: its
    hour angle H = E (as an angle, E / 4 degrees, west to the right) and
    its declination. Three versions: both causes (the page's model); the
    eccentricity only (H = -q, the obliquity left out of E, the
@@ -594,7 +596,7 @@ const analemmaFigure = {
 
 /* ==========================================================================
    5. FIGURE 5: THE MODEL AGAINST THE REAL EQUATION OF TIME
-   2026 at 12:00 UT. (a) The model's E and the real E (Ephem, Meeus
+   2025 at 12:00 UT. (a) The model's E and the real E (Ephem, Meeus
    28.1), on the scale of Figure 1 (b). (b) Model minus real, in seconds:
    -4.8 to +6.0 s, fixed scale +-8 s. Pointing at either panel reads a
    date in both.
