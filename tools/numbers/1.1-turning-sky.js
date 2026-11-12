@@ -128,7 +128,9 @@ function measuredTurn(name) {
 
 const vega = measuredTurn('Vega');
 
-console.log(`Vega crosses at ${clock(vega.first)} UT on 1 Jun 1925 and ${clock(vega.last)} UT on 1 Jun 2025`);
+console.log(
+	`Vega crosses at ${hms(((vega.first + 0.5) % 1) * 24)} UT on 1 Jun 1925 and ${hms(((vega.last + 0.5) % 1) * 24)} UT on 1 Jun 2025`
+);
 console.log(`${vega.turns} turns: one turn = ${hms(vega.turn * 24)}, rate ${(360 / vega.turn).toFixed(8)} deg/day`);
 console.log(
 	`= ${(360 / vega.turn / 24).toFixed(4)} deg per clock hour, ${((24 - vega.turn * 24) * 60).toFixed(2)} min short of 24 h`

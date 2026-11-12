@@ -255,7 +255,7 @@ const n = Clock.RATE - 360;
 const Y = 360 / n;
 console.log(`the clock's n = ${n.toFixed(11)} deg/day, Y = 360/n = ${Y.toFixed(7)} days (${Y.toFixed(5)})`);
 console.log(
-	`the Sun's mean longitude (Meeus 25.2, days of TT): n = ${MeanSun.MODERN.n.toFixed(11)}, 360/n = ${MeanSun.yearLength().toFixed(7)} days,` +
+	`the Sun's mean longitude (MeanSun.MODERN, fitted above, days of TT): n = ${MeanSun.MODERN.n.toFixed(11)}, 360/n = ${MeanSun.yearLength().toFixed(7)} days,` +
 		` ${((MeanSun.yearLength() - Y) * 86400).toFixed(1)} s longer`
 );
 console.log(
@@ -641,7 +641,7 @@ console.log(
 console.log(
 	`Ptolemy: one turn = 360 / (360 + ${nPtolemy.toFixed(6)}) mean days = ${hms((24 * 360) / (360 + nPtolemy), 3)}`
 );
-const synodicMonth = 29.530589;
+const synodicMonth = 29.530586; // measured on page 3.1 (new Moons of 1926 - 2025)
 const moonDay = 1 / (1 - 1 / synodicMonth);
 console.log(
 	`the Moon: 1 / (1 - 1/${synodicMonth}) = ${moonDay.toFixed(6)} d = ${hms(24 * moonDay, 0)}, ${((moonDay - 1) * 1440).toFixed(1)} min later each day`

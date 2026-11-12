@@ -314,8 +314,9 @@ section.
   the 251 : 269 relation; $n_F$ from the latitudes at the new and full
   Moons of 1926–2025; the Moon's mean distance as the reference Moon's
   average over 1926–2025. Observations move to the last documented year
-  or decade (2025, September 2025 – September 2026, 2016–2025); the Tests
-  keep 2026 and 2021–2030, which may run into the future. NASA's eclipse
+  or decade (2025, September 2025 – September 2026, 2016–2025); the
+  Tests of 2.1, 3.1 to 3.3 keep 2026 and 2021–2030, which may run into
+  the future, and 2.2 tests on 2025, the year before its fit. NASA's eclipse
   lists for 2016–2020 were added to check the reference decade. Decided
   on 2026-11-12. → shared/models/, tools/numbers/2.*.js, 3.*.js
 - **The figures of page 4.1 find the reference loops from geometric

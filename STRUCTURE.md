@@ -578,7 +578,7 @@ The first anomaly and the simplest complete model.
   125.05° (Meeus 125.04°); the sizes from the model's distances, the mean
   distance the reference Moon's average over 1926–2025.
 - **Test:** the latitude within 1.7′ at the fitted new and full Moons,
-  2.7′ at the others of 2021–2030, 26′ over 2026, 29′ over a century; the
+  2.6′ at the others of 2021–2030, 26′ over 2026, 29′ over a century; the
   eclipses: all 38 of 2021–2030 and no other, one of another kind (the
   deep partial solar eclipse of 29 March 2025 comes out total), times rms
   43 min, worst 95 min (page 3.1's 40′). Ptolemy: his
@@ -876,7 +876,8 @@ Every page follows the same rhythm:
      fits go in the history block). It does not mean the years around
      2026: a rate takes observations decades or a century apart, an
      anomaly a full turn of it.
-   Adopted on 2026-11-11 (DECISIONS.md); pages 1.3 to 3.3 predate it.
+   Adopted on 2026-11-11 (DECISIONS.md); pages 1.1 to 3.3 were refitted
+   to it on 2026-11-12.
 4. **Test.** The model fitted to modern observations against the
    reference sky, with the error curve from page 2.1 on: around the fit
    year, and over centuries or millennia when that shows something about

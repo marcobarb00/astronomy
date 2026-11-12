@@ -858,9 +858,9 @@ title("Residual: the page's model (fixed apogee) over the centuries");
    9. EXERCISES
    ========================================================================== */
 
-title('Exercise 1: the equation of time on 3 November 2026, 12:00 UT, step by step');
+title(`Exercise 1: the equation of time on 3 November ${YEAR}, 12:00 UT, step by step`);
 {
-	const jdUT = Time.julianDay(2026, 11, 3) + 0.5;
+	const jdUT = Time.julianDay(YEAR, 11, 3) + 0.5;
 	const jdTT = Time.ttFromUt(jdUT);
 	const d = jdTT - Time.J2000;
 	const p = modelParts(jdTT);
@@ -873,7 +873,7 @@ title('Exercise 1: the equation of time on 3 November 2026, 12:00 UT, step by st
 		`E = -q - R = ${f(-p.q, 4)}° + ${f(-p.R, 4)}° = ${f(-p.q - p.R, 4)}° -> ${f(p.ecc, 2)} + ${f(p.obl, 2)} = ${f(p.E, 2)} min (${minSec(p.E)})`
 	);
 	console.log(
-		`real: ${f(ephemE(jdTT), 2)} min (${minSec(ephemE(jdTT))}); real noon at Greenwich ${when(realNoon(Time.julianDay(2026, 11, 3)))} UT`
+		`real: ${f(ephemE(jdTT), 2)} min (${minSec(ephemE(jdTT))}); real noon at Greenwich ${when(realNoon(Time.julianDay(YEAR, 11, 3)))} UT`
 	);
 	console.log(
 		`first order: e sin M + y sin 2 lambdaBar = ${f(FIT.e * sin(p.M) * R2D * 4, 2)} + ${f(yYear * sin(2 * p.meanLongitude) * R2D * 4, 2)} = ${f((FIT.e * sin(p.M) + yYear * sin(2 * p.meanLongitude)) * R2D * 4, 2)} min`

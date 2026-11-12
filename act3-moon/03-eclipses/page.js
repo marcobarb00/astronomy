@@ -23,7 +23,7 @@
 											   distance from the node, the
 											   Moon's distance)
 	 6. the eclipse seasons of 2026 - 2027    (2D, static)
-	 7. the latitude fitted to 2026           (error curve of the latitude,
+	 7. the latitude fitted to 2025 - 2026           (error curve of the latitude,
 											   two months, the year and a
 											   century)
    Shared code: common.js, time.js, ephemeris.js, stars.js, plate-stars.js,
@@ -1425,7 +1425,7 @@ const seasonsFigure = {
    "The scales of the figures"). */
 const LATITUDE_ERROR_MAX = 40;
 
-/* Figure 7: the latitude fitted to 2026, over 2026, two months and a
+/* Figure 7: the latitude fitted to 2025 - 2026, over 2026, two months and a
    century, with dots at the new and full Moons (spans of a year or
    less); and, at the same new and full Moons, the dots of the mean
    inclination 5.145°, which the fit does not use: there they are up to
@@ -1455,7 +1455,7 @@ const latitudeErrorFigure = {
 		const syzygies = syzygyIndices(middle - 190, middle + 190).map(k => Eclipses.reference(k).syzygy);
 
 		curve.addModel({
-			label: 'fitted to the new and full Moons of 2026',
+			label: 'fitted to the new and full Moons of 2025–2026',
 			short: 'fitted',
 			color: COL.planet,
 			fn: fit

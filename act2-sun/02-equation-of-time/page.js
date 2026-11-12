@@ -100,7 +100,7 @@ const texSigned = (x, digits = 2) => `{${signed(x, digits).replace('−', '-')}}
 
 /* The real equation of time (minutes) at 12:00 UT on every day from
    1 January 2025 to 1 January 2026 (Meeus 28.1, Ephem), computed once
-   and shared by Figures 1, 3 and 5. Within 0.22 s of the value from the
+   and shared by Figures 1, 3 and 5. Within 0.20 s of the value from the
    real Sun's meridian crossings (tools/numbers/2.2-equation-of-time.js). */
 let realEquationCache = null;
 
@@ -598,7 +598,7 @@ const analemmaFigure = {
    5. FIGURE 5: THE MODEL AGAINST THE REAL EQUATION OF TIME
    2025 at 12:00 UT. (a) The model's E and the real E (Ephem, Meeus
    28.1), on the scale of Figure 1 (b). (b) Model minus real, in seconds:
-   -4.8 to +6.0 s, fixed scale +-8 s. Pointing at either panel reads a
+   -4.8 to +6.4 s, fixed scale +-8 s. Pointing at either panel reads a
    date in both.
    ========================================================================== */
 

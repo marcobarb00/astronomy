@@ -34,9 +34,11 @@ const shared = loadFiles([
 	'shared/models/mean-sun.js',
 	'shared/models/solar-eccentric.js',
 	'shared/models/precession.js',
-	'shared/models/lunar-epicycle.js'
+	'shared/models/lunar-epicycle.js',
+	'shared/models/lunar-latitude.js'
 ]);
-const { norm180, sin, asin, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession, LunarEpicycle } = shared;
+const { norm180, sin, asin, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession, LunarEpicycle, LunarLatitude } =
+	shared;
 const { MEEUS, PTOLEMY, TRIPLES } = LunarEpicycle;
 
 /* ==========================================================================
@@ -281,12 +283,18 @@ const MEASURED = {
 	anomalistic: periodFit(CENTURY_FASTEST),
 	draconitic: periodFit(CENTURY_NODE)
 };
+/* The table of the page: the synodic and the anomalistic month as
+   measured; the tropical from the synodic and the mean Sun (n of section
+   6), the sidereal from it with the precession of page 2.3, and the
+   draconitic from page 3.3's fit to the latitudes at the new and full
+   Moons. The straight lines through the returns to gamma and to the node
+   are pulled by the 8.85-year beat of the anomaly, and are only checks. */
 const MONTHS = {
-	tropical: MEASURED.tropical.P,
-	sidereal: 360 / (360 / MEASURED.tropical.P - p),
+	tropical: 360 / N_FIT,
+	sidereal: 360 / (N_FIT - p),
 	synodic: MEASURED.synodic.P,
 	anomalistic: MEASURED.anomalistic.P,
-	draconitic: MEASURED.draconitic.P
+	draconitic: 360 / LunarLatitude.FIT_2026.nF
 };
 
 Object.entries(MEASURED).forEach(([name, m]) =>
@@ -427,7 +435,7 @@ title('Fit: the mean motions from the synodic month and the Sun (Almagest IV 2, 
 		`n = n_sun + 360°/P_s = ${f(n, 8)}°/d (Ptolemy 13;10,34,58,33,30,30 = ${f(PTOLEMY.n, 8)}°/d; reference ${f(MEEUS.n, 8)}°/d)`
 	);
 	console.log(
-		`   Ptolemy's n minus the reference's: ${f((PTOLEMY.n - MEEUS.n) * 3600, 4)}"/d = ${f((PTOLEMY.n - MEEUS.n) * 3600 * 365.25, 1)}" a year`
+		`   Ptolemy's n minus the reference's: ${f((PTOLEMY.n - MEEUS.n) * 3600, 4)}"/d = ${f((PTOLEMY.n - MEEUS.n) * 3600 * 365.25, 1)}" a year; minus ours ${f((PTOLEMY.n - N_FIT) * 3600 * 365.25, 1)}" a year (his Sun's ${f((MeanSun.PTOLEMY.n - MeanSun.MODERN.n) * 3600 * 365.25, 1)}")`
 	);
 	console.log(
 		`n_M = 269 x 360° / (251 P_s) = ${f(nMRaw, 8)}°/d (Ptolemy before correction 13;3,53,56,29,38,38 = ${f(nMRawSource, 8)}°/d)`
