@@ -14,9 +14,9 @@ range start: -2999-1-1
   Delta T (s)                    74292.835200
   JD(TT), utFromTt(JD(TT))       625674.359870778  625673.500000841
   GMST Time.gmst (deg)           75.998117089
-  GMST Clock.gmst (deg)          75.059152961
+  GMST Clock.gmst (deg)          75.059881449
   GAST (deg)                     75.999634061
-  LST at 12.4964 E, -74.0 E      88.494517089  1.059152961
+  LST at 12.4964 E, -74.0 E      88.494517089  1.059881449
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -3.115109682
   formatDate                     "1 Jan 3000 BC"  "1 Jan 3000 BC 00:00"  "1 Jan -2999"
@@ -33,9 +33,9 @@ Thales eclipse: -584-5-28
   Delta T (s)                    18467.270224
   JD(TT), utFromTt(JD(TT))       1507899.713741553  1507899.500000104
   GMST Time.gmst (deg)           239.018214405
-  GMST Clock.gmst (deg)          238.776601374
+  GMST Clock.gmst (deg)          238.777329922
   GAST (deg)                     239.014288579
-  LST at 12.4964 E, -74.0 E      251.514614405  164.776601374
+  LST at 12.4964 E, -74.0 E      251.514614405  164.777329922
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         9.175244434
   formatDate                     "28 May 585 BC"  "28 May 585 BC 00:00"  "28 May -584"
@@ -52,9 +52,9 @@ Ptolemy: 139-7-20.5
   Delta T (s)                    9217.113862
   JD(TT), utFromTt(JD(TT))       1772028.106679559  1772028.000000032
   GMST Time.gmst (deg)           116.453654826
-  GMST Clock.gmst (deg)          116.332221001
+  GMST Clock.gmst (deg)          116.332949519
   GAST (deg)                     116.449718006
-  LST at 12.4964 E, -74.0 E      128.950054826  42.332221001
+  LST at 12.4964 E, -74.0 E      128.950054826  42.332949519
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -2.371197698
   formatDate                     "20 Jul 139"  "20 Jul 139 12:00"  "20 Jul 139"
@@ -71,9 +71,9 @@ last Julian day: 1582-10-4
   Delta T (s)                    129.120230
   JD(TT), utFromTt(JD(TT))       2299159.501494447  2299159.500000000
   GMST Time.gmst (deg)           22.100636952
-  GMST Clock.gmst (deg)          22.097369775
+  GMST Clock.gmst (deg)          22.098098293
   GAST (deg)                     22.104704093
-  LST at 12.4964 E, -74.0 E      34.597036952  308.097369775
+  LST at 12.4964 E, -74.0 E      34.597036952  308.098098293
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.698775272
   formatDate                     "4 Oct 1582"  "4 Oct 1582 00:00"  "4 Oct 1582"
@@ -90,9 +90,9 @@ first Gregorian day: 1582-10-15
   Delta T (s)                    129.118584
   JD(TT), utFromTt(JD(TT))       2299160.501494428  2299160.500000000
   GMST Time.gmst (deg)           23.086284228
-  GMST Clock.gmst (deg)          23.083017126
+  GMST Clock.gmst (deg)          23.083745643
   GAST (deg)                     23.090351133
-  LST at 12.4964 E, -74.0 E      35.582684228  309.083017126
+  LST at 12.4964 E, -74.0 E      35.582684228  309.083745643
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.919602802
   formatDate                     "15 Oct 1582"  "15 Oct 1582 00:00"  "15 Oct 1582"
@@ -109,9 +109,9 @@ Sputnik (Meeus 7.a): 1957-10-4.81
   Delta T (s)                    32.152677
   JD(TT), utFromTt(JD(TT))       2436116.310372137  2436116.310000000
   GMST Time.gmst (deg)           304.813023808
-  GMST Clock.gmst (deg)          304.813969703
+  GMST Clock.gmst (deg)          304.814698221
   GAST (deg)                     304.815919174
-  LST at 12.4964 E, -74.0 E      317.309423808  230.813969703
+  LST at 12.4964 E, -74.0 E      317.309423808  230.814698221
   local mean time at 12.4964 E (h) 20.273093335
   equation of time (min)         11.314038954
   formatDate                     "4 Oct 1957"  "4 Oct 1957 19:26"  "4 Oct 1957"
@@ -128,9 +128,9 @@ Meeus 12.a: 1987-4-10
   Delta T (s)                    55.437206
   JD(TT), utFromTt(JD(TT))       2446895.500641634  2446895.500000000
   GMST Time.gmst (deg)           197.693195091
-  GMST Clock.gmst (deg)          197.694009358
+  GMST Clock.gmst (deg)          197.694737875
   GAST (deg)                     197.692210658
-  LST at 12.4964 E, -74.0 E      210.189595091  123.694009358
+  LST at 12.4964 E, -74.0 E      210.189595091  123.694737875
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -1.600699348
   formatDate                     "10 Apr 1987"  "10 Apr 1987 00:00"  "10 Apr 1987"
@@ -147,9 +147,9 @@ Meeus 47.a: 1992-4-12
   Delta T (s)                    58.547952
   JD(TT), utFromTt(JD(TT))       2448724.500677638  2448724.500000000
   GMST Time.gmst (deg)           200.442224062
-  GMST Clock.gmst (deg)          200.443009289
+  GMST Clock.gmst (deg)          200.443737806
   GAST (deg)                     200.446424782
-  LST at 12.4964 E, -74.0 E      212.938624062  126.443009289
+  LST at 12.4964 E, -74.0 E      212.938624062  126.443737806
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -0.861033221
   formatDate                     "12 Apr 1992"  "12 Apr 1992 00:00"  "12 Apr 1992"
@@ -166,9 +166,9 @@ Meeus 25.a: 1992-10-13
   Delta T (s)                    58.954231
   JD(TT), utFromTt(JD(TT))       2448908.500682340  2448908.500000000
   GMST Time.gmst (deg)           21.801339168
-  GMST Clock.gmst (deg)          21.802121365
+  GMST Clock.gmst (deg)          21.802849882
   GAST (deg)                     21.805424253
-  LST at 12.4964 E, -74.0 E      34.297739168  307.802121365
+  LST at 12.4964 E, -74.0 E      34.297739168  307.802849882
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         13.709371209
   formatDate                     "13 Oct 1992"  "13 Oct 1992 00:00"  "13 Oct 1992"
@@ -185,9 +185,9 @@ J2000.0: 2000-1-1.5
   Delta T (s)                    63.860457
   JD(TT), utFromTt(JD(TT))       2451545.000739126  2451545.000000000
   GMST Time.gmst (deg)           280.460618370
-  GMST Clock.gmst (deg)          280.461355000
+  GMST Clock.gmst (deg)          280.462083517
   GAST (deg)                     280.457042351
-  LST at 12.4964 E, -74.0 E      292.957018370  206.461355000
+  LST at 12.4964 E, -74.0 E      292.957018370  206.462083517
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -3.296195918
   formatDate                     "1 Jan 2000"  "1 Jan 2000 12:00"  "1 Jan 2000"
@@ -204,9 +204,9 @@ J2000.0: 2000-1-1.5
   Delta T (s)                    69.110000
   JD(TT), utFromTt(JD(TT))       2461041.500799884  2461041.500000000
   GMST Time.gmst (deg)           100.660858567
-  GMST Clock.gmst (deg)          100.661397561
+  GMST Clock.gmst (deg)          100.662126078
   GAST (deg)                     100.662251283
-  LST at 12.4964 E, -74.0 E      113.157258567  26.661397561
+  LST at 12.4964 E, -74.0 E      113.157258567  26.662126078
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -3.341603974
   formatDate                     "1 Jan 2026"  "1 Jan 2026 00:00"  "1 Jan 2026"
@@ -223,9 +223,9 @@ J2000.0: 2000-1-1.5
   Delta T (s)                    69.199274
   JD(TT), utFromTt(JD(TT))       2461213.000800917  2461213.000000000
   GMST Time.gmst (deg)           89.699382842
-  GMST Clock.gmst (deg)          89.699917784
+  GMST Clock.gmst (deg)          89.700646301
   GAST (deg)                     89.701344658
-  LST at 12.4964 E, -74.0 E      102.195782842  15.699917784
+  LST at 12.4964 E, -74.0 E      102.195782842  15.700646301
   local mean time at 12.4964 E (h) 12.833093333
   equation of time (min)         -1.839979186
   formatDate                     "21 Jun 2026"  "21 Jun 2026 12:00"  "21 Jun 2026"
@@ -242,9 +242,9 @@ range end: 3000-12-31
   Delta T (s)                    4443.214492
   JD(TT), utFromTt(JD(TT))       2817151.551426094  2817151.499999987
   GMST Time.gmst (deg)           99.583285034
-  GMST Clock.gmst (deg)          99.538579300
+  GMST Clock.gmst (deg)          99.539307818
   GAST (deg)                     99.585262978
-  LST at 12.4964 E, -74.0 E      112.079685034  25.538579300
+  LST at 12.4964 E, -74.0 E      112.079685034  25.539307818
   local mean time at 12.4964 E (h) 0.833093333
   equation of time (min)         -0.458968659
   formatDate                     "31 Dec 3000"  "31 Dec 3000 00:00"  "31 Dec 3000"
@@ -1686,7 +1686,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 === 6c. THE MEAN SUN AND THE CLOCKS (models/mean-sun.js, models/clock.js) ===
   MeanSun.MODERN                 280.461355000  0.985647348240  2451545.000000000
   year length (days)             365.242194019
-  Clock constants                280.461355000  360.985647348240  23.934469593095  -0.833333333333
+  Clock constants                280.462083517  360.985647348240  23.934469593095  -0.833333333333
   mean Sun, range start          255.059153009  255.059153009  -23.254593738
   mean Sun, Thales eclipse       58.776601391  58.776601391  20.205554412
   mean Sun, Ptolemy              116.332221000  116.332221000  21.075150119
@@ -1894,17 +1894,17 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026-12-21, 89, 0              2461396.000000000  NaN  NaN  0.000000000  0.000000000  -23.435763436  polar night
   2026-12-21, 89, 12.4964        2461395.965287778  NaN  NaN  0.000000000  0.000000000  -23.435778220  polar night
   transits of a right ascension within a day (ra, jd0, lon)
-  0, 2461041.5                   2461042.183800600  |  2461042.218418043
-  0, 2461305.5                   2461306.460235691  |  2461306.494853134
-  68.98, 2461041.5               2461042.374888530  |  2461042.409505973
-  68.98, 2461305.5               2461305.654054054  |  2461306.685941063
-  101.29, 2461041.5              2461042.464393474  |  2461042.499010917
-  101.29, 2461305.5              2461305.743558998  |  2461306.775446007
-  279.23, 2461041.5              2461041.960052093  |  2461042.991939102
-  279.23, 2461305.5              2461306.236487183  |  2461306.271104626
-  359.99, 2461041.5              2461042.183772899  |  2461042.218390341
-  359.99, 2461305.5              2461306.460207989  |  2461306.494825432
-  hourAngle(2026-01-01 19h, 12.4964, 68.98) -30.041898345
+  0, 2461041.5                   2461042.183798582  |  2461042.218416025
+  0, 2461305.5                   2461306.460233673  |  2461306.494851116
+  68.98, 2461041.5               2461042.374886512  |  2461042.409503955
+  68.98, 2461305.5               2461305.654052036  |  2461306.685939045
+  101.29, 2461041.5              2461042.464391456  |  2461042.499008899
+  101.29, 2461305.5              2461305.743556980  |  2461306.775443989
+  279.23, 2461041.5              2461041.960050074  |  2461042.991937084
+  279.23, 2461305.5              2461306.236485165  |  2461306.271102608
+  359.99, 2461041.5              2461042.183770881  |  2461042.218388323
+  359.99, 2461305.5              2461306.460205971  |  2461306.494823414
+  hourAngle(2026-01-01 19h, 12.4964, 68.98) -30.041169827
   fromLocalMeanTime(2026-01-01, 12, 12.4964) 2461041.965287778
 
 === 6d. THE SOLAR ECCENTRIC (models/solar-eccentric.js, MeanSun.PTOLEMY) ===
@@ -2389,6 +2389,7 @@ Copernicus (De Rev. II 2): "not more than 23°29'" = 23.4833
 
 === The origin: the March equinox 2025 ===
 reference Sun at lambda = 0: 2025-03-20 08:48 UT; delta there = -0.7"
+USNO 20 Mar 2025 09:01 UT: the mean equinox above -13 min from it; the reference's apparent Sun 2025-03-20 08:48 UT, -13 min
 
 === Test 1: Ptolemy's table of inclination (Almagest I 15) against sin d = sin e sin l ===
 90 entries: median |table - formula| = 1.0", 90% within 3.0", largest 9.0"
@@ -2477,7 +2478,7 @@ theta in hours at Rome: 2h35m45s; Aldebaran's H = -30.42 deg
 
 === Model: mean time and the sidereal clock ===
 rate 360.98564734824 = 360 + n, n = 0.98564734824
-theta_G at J2000.0 = 280.461355 deg = 18h41m50.73s; mean Sun L0 = 280.461355: difference 0.0" = 0.00 s of time
+theta_G at J2000.0 = 280.462084 deg = 18h41m50.90s; mean Sun L0 = 280.461355 in days of TT: the clock is 2.6" ahead, the mean Sun's motion in DT (section 6)
 worked example (Figure 2), 20 Apr 2026 20:00 UT: d = 9606.3333 = 9606 + 0.3333; H_m = 15 x 8 = 120; 360 d = 9606 turns + 120.0000 deg
   alpha_m = L0 + n d (the clock's L0 and n) = 28.92; theta_G = H_m + alpha_m = 148.92; the clock formula gives 148.92
 UT's convention: L0 = 280.46061837, rate 360.98564736629; worked example alpha_m = 28.92, theta_G = 148.92
@@ -2515,6 +2516,8 @@ UT's conventional constants (Meeus 12.4): L0 = 280.46061837, n = 0.98564736629; 
 the aberration: the Sun's motion in the 499.0 s of light-time, 20.49"
 MeanSun.MODERN in mean-sun.js: L0 280.461355, n 0.98564734824
 this fit:                      L0 280.461355, n 0.98564734824
+DT at J2000.0 63.9 s: the mean Sun moves 2.62" -> the clock's constant 280.462084 (Clock.THETA0 280.462084); minus UT's: 5.3" = 0.35 s of time
+the real Sun's mean hour angle at 12:00, 2007 - 2025: the clock -0.08 s, the clock without DT -0.25 s, UT -0.40 s
 
 === Fit: Ptolemy's year and the error in the rate ===
 Ptolemy's year 365;14,48 = 365.24667 d, 6.44 min longer than 365.24219
@@ -2527,11 +2530,11 @@ an error of 1 min in the year: n changes by 1.87e-6 deg/day, the clock by 16.4 s
 === Fit: the longitude from a timed transit of Vega ===
 Vega of date: ra 279.4601 deg (18h37m50.43s), dec 38.810
 crosses Rome's meridian on 15 Aug 2026 at 20:10:52 UT, timed to the second 20:10:52
-theta_G then = 266.9632 deg, so lon = ra - theta_G = 12.4970 deg (true 12.4964)
+theta_G then = 266.9639 deg, so lon = ra - theta_G = 12.4962 deg (true 12.4964)
 1 s of time = 15" of longitude = 345 m at latitude 41.9
 
 === Test: the stars ===
-|apparent sidereal time - the linear clock| in 2026 <= 0.52 s
+|apparent sidereal time - the linear clock| in 2026 <= 0.35 s
 
 === Test: the Sun in 2026 (model - real, minutes); scale of Figure 6 ===
 noon: from -14.2 (11 Feb 2026) to +16.5 (3 Nov 2026)
@@ -2556,11 +2559,11 @@ the Moon: 1 / (1 - 1/29.530586) = 1.035050 d = 24h50m28s, 50.5 min later each da
 === Exercise 2: Sirius at Rome on New Year's Eve 2026 ===
 31 Dec 2026, 0h UT: JD 2461405.5, d = 9860.5
 Sirius of date: ra 101.5845 deg = 6h46m20.27s, dec -16.755
-theta_G at 0h UT on 31 Dec = 99.4370 deg = 6h37m44.89s
-alpha - lon - theta_G0 = 349.6510 deg; / 360.9856 deg per day = 23.24642 h
+theta_G at 0h UT on 31 Dec = 99.4378 deg = 6h37m45.06s
+alpha - lon - theta_G0 = 349.6503 deg; / 360.9856 deg per day = 23.24637 h
 transit 23:14:47 UT = 0:14:47 CET = 0:04:46 local mean time
 altitude at transit = 90 - |phi - dec| = 31.3 deg
-Sirius crosses at local mean midnight on the night of 1 Jan 2026 (-0h00m09s)
+Sirius crosses at local mean midnight on the night of 1 Jan 2026 (-0h00m10s)
 UT days of 2026 with two transits of Sirius at Rome: 20 Dec 2026
 
 === Exercise 3: the earliest sunset and the latest sunrise at Rome, winter 2025 - 2026 ===
@@ -2598,6 +2601,8 @@ the real Sun's declination is the higher on 338 of 365 days
    spring  starts 20 Mar 2026 14:32 TT = 20 Mar 2026 14:31 UT, lasts 92.739 d
    summer  starts 21 Jun 2026 08:17 TT = 21 Jun 2026 08:15 UT, lasts 93.663 d
    a uniform Sun: every season 91.31 d; the half from March to September is 7.56 d longer
+   reference minus USNO: 6, -3, -15, -9, 5 min
+   lengths minus USNO's: -10, -12, 6, 14 min; the Fit on USNO's spring and summer: e 0.03335 (ours 0.03347), apogee 103.71° (ours 103.73°)
 
 === Observation: the Sun's daily motion, September 2025 to September 2026 (Figure 1) ===
 slowest 57.19' a day on 3 Jul 2026, fastest 61.14' on 12 Jan 2026
