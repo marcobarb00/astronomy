@@ -646,7 +646,7 @@ The first anomaly and the simplest complete model.
   oppositions to the mean Sun of 2010–2025 and those 79 years earlier
   (1931–1946: 37 synodic periods, 42 turns and 2.8° to 4.6° more, so
   both anomalies cancel), 0.524070° a day; $L_0$ from the eight of
-  2010–2025, where the planet is seen through K (X 6), 355.84°, each
+  2010–2025, where the planet is seen through K (X 6), 355.83°, each
   opposition 11° to 12° off; $r$ from the mean arc of retrogradation of
   their loops, 16.7°, so 0.660 (39.6 in 60; Ptolemy 39.5), each loop
   alone 0.63 to 0.67. The arc is measured, not $\mu_s$: a station's

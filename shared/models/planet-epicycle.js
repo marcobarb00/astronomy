@@ -120,8 +120,8 @@ const PlanetEpicycle = (function () {
 	   16.66°. Epoch J2000.0. */
 	const MARS_FIT = {
 		kind: 'outer',
-		L0: 355.837484,
-		n: 0.524070392,
+		L0: 355.834128,
+		n: 0.524070384,
 		epoch: 2451545.0,
 		r: 0.66015,
 		sun: MeanSun.MODERN
