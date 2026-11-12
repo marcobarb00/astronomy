@@ -63,6 +63,11 @@ const monthTicks = () => MONTH_STARTS;
 /* "1 Jan 2026" for a day index of the year. */
 const dayText = day => Time.formatDate(YEAR_START + day);
 
+/* Figure 1 shows the real sky, an observation, so it shows a year already
+   past (STRUCTURE.md §5); the model's figures keep YEAR. */
+const OBSERVED_YEAR_START = Time.julianDay(2025, 1, 1);
+const observedDayText = day => Time.formatDate(OBSERVED_YEAR_START + day);
+
 /* A longitude: "12.50° E", "74.01° W". */
 function formatLongitude(lon) {
 	if (Math.abs(lon) < 0.005) {
@@ -206,12 +211,12 @@ const wheelFigure = {
 		this.stars = Stars.LIST.map(star => ({
 			name: star.name,
 			mag: star.mag,
-			position: Stars.ofDate(star, YEAR_START)
+			position: Stars.ofDate(star, OBSERVED_YEAR_START)
 		}));
 
 		squareCanvas(this, byId('wheel-canvas'), 480, 34);
 
-		wireSlider(byId('wheel-day'), () => this.update(), dayText);
+		wireSlider(byId('wheel-day'), () => this.update(), observedDayText);
 		wireSlider(byId('wheel-time'), () => this.update(), clockText);
 		wirePresets(figure);
 		// two players: the time (the turn of one day) and the date at a fixed
@@ -227,7 +232,7 @@ const wheelFigure = {
 			onPlay: () => players.day.pause()
 		});
 
-		this.sunAtStart = this.sunAt(YEAR_START);
+		this.sunAtStart = this.sunAt(OBSERVED_YEAR_START);
 		this.update();
 	},
 
@@ -251,7 +256,7 @@ const wheelFigure = {
 
 	update() {
 		const elapsed = readNumber('wheel-day') + readNumber('wheel-time') / 24;
-		const jd = YEAR_START + elapsed;
+		const jd = OBSERVED_YEAR_START + elapsed;
 		const sun = this.sunAt(jd);
 
 		// how far the Sun has moved since the start of the year: in right

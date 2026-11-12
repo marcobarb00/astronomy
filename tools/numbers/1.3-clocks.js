@@ -101,16 +101,17 @@ const CET = 1; // Rome's winter time zone, UT + 1 h
 /* ==========================================================================
    3. THE REFERENCE SUN
    Apparent right ascension and declination tabulated every hour from
-   2025 Dec 1 and interpolated linearly (error under 0.01"). Its noon is
+   2024 Dec 1 (the observations of 2025, the model of 2026) and
+   interpolated linearly (error under 0.01"). Its noon is
    where its hour angle (apparent sidereal time) is zero; sunrise and
    sunset where its centre is 50' below the horizon, as in the model.
    ========================================================================== */
 
-const TABLE_START = Time.julianDay(2025, 12, 1);
+const TABLE_START = Time.julianDay(2024, 12, 1);
 const TABLE_STEP = 1 / 24;
 const TABLE = [];
 
-for (let i = 0; i < 24 * 440; i++) {
+for (let i = 0; i < 24 * 805; i++) {
 	const jdUT = TABLE_START + i * TABLE_STEP;
 	const jdTT = Time.ttFromUt(jdUT);
 
@@ -210,11 +211,12 @@ function dateOfTransitAt(name, targetHours, place = PLACES.rome) {
 	);
 });
 
-title("Observation: the Sun's day (true noon to noon, Greenwich, 2026)");
+title("Observation: the Sun's day (true noon to noon, Greenwich, 2025)");
 const noons = [];
+const Y2025 = Time.julianDay(2025, 1, 1);
 
-for (let d = 0; d <= 366; d++) {
-	noons.push(realDay(Y2026 + d, 0, 0).noon);
+for (let d = 0; d <= 365; d++) {
+	noons.push(realDay(Y2025 + d, 0, 0).noon);
 }
 
 let shortest = { length: 99 };
@@ -289,16 +291,20 @@ console.log(
 	`  alpha_m = L0 + n d (the clock's L0 and n) = ${alphaExample.toFixed(2)}; theta_G = H_m + alpha_m = ${norm360(hExample + alphaExample).toFixed(2)};` +
 		` the clock formula gives ${Clock.gmst(example).toFixed(2)}`
 );
-const aberration = 20.4898 / 3600;
-console.log(
-	`Sun's geometric L0 minus the clock's L0 = ${((MeanSun.MODERN.L0 - Clock.THETA0) * 3600).toFixed(2)}":` +
-		` aberration ${(aberration * 3600).toFixed(2)}" (the Sun's motion in the 499.0 s of light-time:` +
-		` ${(((n * 499.005) / 86400) * 3600).toFixed(2)}"), remainder ${((MeanSun.MODERN.L0 - aberration - Clock.THETA0) * 3600).toFixed(2)}"`
-);
-console.log(`light-time 499.0 s = ${(499.005 / 60).toFixed(1)} min`);
-console.log(
-	`linear clock minus full Meeus 12.4 in 2026: ${((Clock.gmst(Y2026) - Time.gmst(Y2026)) * 240 * 1000).toFixed(1)} ms`
-);
+{
+	// UT's own constants (Meeus 12.4): the worked example with them, and
+	// the terms in T^2 and T^3 that the linear formula leaves out
+	const U = MeanSun.UT_CONVENTION;
+	const linear = jd => norm360(U.L0 + (360 + U.n) * (jd - Time.J2000));
+
+	console.log(
+		`UT's convention: L0 = ${U.L0}, rate ${(360 + U.n).toFixed(11)}; worked example alpha_m = ${norm360(U.L0 + U.n * dExample).toFixed(2)},` +
+			` theta_G = ${norm360(hExample + U.L0 + U.n * dExample).toFixed(2)}`
+	);
+	console.log(
+		`linear UT formula minus full Meeus 12.4 in 2026: ${((linear(Y2026) - Time.gmst(Y2026)) * 240 * 1000).toFixed(1)} ms`
+	);
+}
 console.log(
 	`Rome: local mean time = UT + ${hms(PLACES.rome[1] / 15, 0)}; CET = UT + 1 h, so local mean noon at Rome is ${clock(Clock.fromLocalMeanTime(Y2026, 12, PLACES.rome[1]), CET)} CET`
 );
@@ -365,11 +371,118 @@ console.log(`Tromso (69.65 N): ${polar.day} days without sunset, ${polar.night} 
    6. FIT
    ========================================================================== */
 
-title('Fit: the year and the rate');
+title('Fit: the year, from the equinoxes and solstices of 1926 - 2025');
+
+/* The moment the reference Sun reaches the ecliptic longitude L, within
+   twenty days of jd (bisection on the Sun's apparent longitude). */
+function sunReaches(L, jd) {
+	let a = jd - 20;
+	let b = jd + 20;
+	const off = t => norm180(Ephem.sun(t).lon - L);
+	let fa = off(a);
+
+	for (let i = 0; i < 50; i++) {
+		const m = (a + b) / 2;
+		const fm = off(m);
+
+		if (fa * fm <= 0) {
+			b = m;
+		} else {
+			a = m;
+			fa = fm;
+		}
+	}
+
+	return (a + b) / 2;
+}
+
+/* The slope of the least-squares line through (x, y). */
+function slope(xs, ys) {
+	const mx = xs.reduce((a, b) => a + b, 0) / xs.length;
+	const my = ys.reduce((a, b) => a + b, 0) / ys.length;
+	let sxy = 0;
+	let sxx = 0;
+
+	xs.forEach((x, i) => {
+		sxy += (x - mx) * (ys[i] - my);
+		sxx += (x - mx) * (x - mx);
+	});
+
+	return sxy / sxx;
+}
+
+const CARDINAL = [
+	['March equinox', 0, 3, 20],
+	['June solstice', 90, 6, 21],
+	['September equinox', 180, 9, 23],
+	['December solstice', 270, 12, 21]
+];
+const FIT_YEARS = [];
+
+for (let year = 1926; year <= 2025; year++) {
+	FIT_YEARS.push(year);
+}
+
+const yearsByPoint = CARDINAL.map(([name, L, month, day]) => {
+	const times = FIT_YEARS.map(year => sunReaches(L, Time.julianDay(year, month, day)));
+	const length = slope(FIT_YEARS, times);
+
+	console.log(`${name}: a line through its ${times.length} moments gives a year of ${length.toFixed(5)} days`);
+
+	return length;
+});
+const yearFit = yearsByPoint.reduce((a, b) => a + b, 0) / yearsByPoint.length;
+const nFit = 360 / yearFit;
+
+console.log(
+	`the mean of the four: Y = ${yearFit.toFixed(7)} days (${yearFit.toFixed(5)}), n = 360 / Y = ${nFit.toFixed(11)} deg/day`
+);
+console.log(
+	`spread of the four: ${(Math.min(...yearsByPoint) * 1).toFixed(5)} to ${Math.max(...yearsByPoint).toFixed(5)} days,` +
+		` ${((Math.max(...yearsByPoint) - Math.min(...yearsByPoint)) * 1440).toFixed(1)} min apart`
+);
+
+title('Fit: the constant L0, from the Sun of 2007 - 2025 (19 whole years)');
+{
+	// over whole years the real Sun is as often ahead of the mean Sun as
+	// behind it: the mean of lambda - n d is L0 (a circular mean, every
+	// quarter of a day)
+	const meanL0 = (from, to) => {
+		let sx = 0;
+		let sy = 0;
+
+		for (let t = Time.julianDay(from, 1, 1); t < Time.julianDay(to + 1, 1, 1); t += 0.25) {
+			const v = ((Ephem.sun(t).lon - nFit * (t - Time.J2000)) * Math.PI) / 180;
+
+			sx += Math.cos(v);
+			sy += Math.sin(v);
+		}
+
+		return norm360((Math.atan2(sy, sx) * 180) / Math.PI);
+	};
+	const L0Fit = meanL0(2007, 2025);
+	const L0Short = meanL0(2016, 2025);
+
+	console.log(
+		`L0 = ${L0Fit.toFixed(6)} deg (2007 - 2025); from 2016 - 2025 alone ${L0Short.toFixed(6)}, ${((L0Short - L0Fit) * 3600).toFixed(1)}" off`
+	);
+	console.log(
+		`UT's conventional constants (Meeus 12.4): L0 = ${MeanSun.UT_CONVENTION.L0}, n = ${MeanSun.UT_CONVENTION.n};` +
+			` the fit minus them: L0 ${((L0Fit - MeanSun.UT_CONVENTION.L0) * 3600).toFixed(1)}" = ${((L0Fit - MeanSun.UT_CONVENTION.L0) * 240).toFixed(2)} s of time,` +
+			` n ${((nFit - MeanSun.UT_CONVENTION.n) * 3600 * 1e3).toFixed(3)} mas/day = ${((nFit - MeanSun.UT_CONVENTION.n) * 36525 * 240).toFixed(2)} s of time a century`
+	);
+	console.log(
+		`the aberration: the Sun's motion in the 499.0 s of light-time, ${(((nFit * 499.005) / 86400) * 3600).toFixed(2)}"`
+	);
+	console.log(`MeanSun.MODERN in mean-sun.js: L0 ${MeanSun.MODERN.L0}, n ${MeanSun.MODERN.n}`);
+	console.log(`this fit:                      L0 ${L0Fit.toFixed(6)}, n ${nFit.toFixed(11)}`);
+}
+
+title("Fit: Ptolemy's year and the error in the rate");
 const yearPtolemy = fromSexagesimal(365, 14, 48);
 const nPtolemy = fromSexagesimal(0, 59, 8, 17, 13, 12, 31);
 console.log(
-	`Ptolemy's year 365;14,48 = ${yearPtolemy.toFixed(5)} d, ${((yearPtolemy - Y) * 1440).toFixed(1)} min longer than ${Y.toFixed(5)}`
+	`Ptolemy's year 365;14,48 = ${yearPtolemy.toFixed(5)} d, ${((yearPtolemy - Y) * 1440).toFixed(2)} min longer than ${Y.toFixed(5)}`
 );
 console.log(
 	`his daily motion 0;59,8,17,13,12,31 = ${dms(nPtolemy, 2)} = ${nPtolemy.toFixed(6)} deg (360 / his year = ${(360 / yearPtolemy).toFixed(6)})`
@@ -567,13 +680,14 @@ for (let d = 0; d < 365; d++) {
 
 console.log(`UT days of 2026 with two transits of Sirius at Rome: ${twice.join(', ')}`);
 
-title('Exercise 3: the earliest sunset and the latest sunrise at Rome');
+title('Exercise 3: the earliest sunset and the latest sunrise at Rome, winter 2025 - 2026');
 let early = null;
 let late = null;
 let shortestDay = null;
 
+// the real Sun of a winter already past (STRUCTURE.md §5)
 for (let d = 300; d < 400; d++) {
-	const jd0 = Y2026 + d;
+	const jd0 = Y2025 + d;
 	const real = realDay(jd0, PLACES.rome[0], PLACES.rome[1]);
 
 	if (!early || real.set - jd0 < early.value) {
@@ -593,11 +707,14 @@ console.log(
 	`real: earliest sunset ${date(early.jd0)} ${clock(early.real.set, CET)} CET; latest sunrise ${date(late.jd0)} ${clock(late.real.rise, CET)} CET;` +
 		` shortest day ${date(shortestDay.jd0)} (${hms(shortestDay.real.hours, 0)})`
 );
-const solstice = Clock.sunDay(DAYS['December solstice'], PLACES.rome[0], PLACES.rome[1]);
+const solstice = Clock.sunDay(shortestDay.jd0, PLACES.rome[0], PLACES.rome[1]);
 console.log(
 	`model, on the solstice: sunrise ${clock(solstice.rise, CET)} CET, sunset ${clock(solstice.set, CET)} CET, day ${hms(solstice.hours, 0)}`
 );
-[Time.julianDay(2026, 12, 8), DAYS['December solstice'], Time.julianDay(2027, 1, 4)].forEach(jd0 => {
+console.log(
+	`model noon: 12:00 local mean time = ${clock(Clock.fromLocalMeanTime(shortestDay.jd0, 12, PLACES.rome[1]), CET)} CET`
+);
+[early.jd0, shortestDay.jd0, late.jd0].forEach(jd0 => {
 	const real = realDay(jd0, PLACES.rome[0], PLACES.rome[1]);
 
 	console.log(
@@ -605,10 +722,7 @@ console.log(
 	);
 });
 const noonDrift =
-	(realDay(Time.julianDay(2026, 12, 22), 41.9, 12.4964).noon -
-		realDay(Time.julianDay(2026, 12, 21), 41.9, 12.4964).noon -
-		1) *
-	86400;
+	(realDay(shortestDay.jd0 + 1, 41.9, 12.4964).noon - realDay(shortestDay.jd0, 41.9, 12.4964).noon - 1) * 86400;
 console.log(`real noon moves ${noonDrift.toFixed(1)} s later each day at the solstice`);
 
 /* ==========================================================================
