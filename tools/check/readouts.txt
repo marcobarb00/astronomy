@@ -421,7 +421,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === act1-stage/03-clocks/index.html ===
   as loaded
-    OUTPUT (wheel-day): 1 Jan 2026
+    OUTPUT (wheel-day): 1 Jan 2025
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns} | \text{sky} - \text{Sun: } 0.002\ \text{turns}
     OUTPUT (sid-time): 19:00
@@ -435,35 +435,35 @@ Regenerate with: node tools/check/smoke.js --update
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -13.0\,\text{min}\ \text{to}\ +18.8\,\text{min} | \text{set } -16.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{day } -5.3\,\text{min}\ \text{to}\ 0.0\,\text{min}
   opened 8 hints and answers
   slider #wheel-day = 0
-    OUTPUT (wheel-day): 1 Jan 2026
+    OUTPUT (wheel-day): 1 Jan 2025
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 0.501\ \text{turns} | \text{Sun: } 0.500\ \text{turns} | \text{sky} - \text{Sun: } 0.002\ \text{turns}
   slider #wheel-day = 365
-    OUTPUT (wheel-day): 1 Jan 2027
+    OUTPUT (wheel-day): 1 Jan 2026
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 365\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 366.501\ \text{turns} | \text{Sun: } 365.500\ \text{turns} | \text{sky} - \text{Sun: } 1.001\ \text{turns}
   slider #wheel-day = 183
-    OUTPUT (wheel-day): 3 Jul 2026
+    OUTPUT (wheel-day): 3 Jul 2025
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 184.002\ \text{turns} | \text{Sun: } 183.499\ \text{turns} | \text{sky} - \text{Sun: } 0.503\ \text{turns}
   slider #wheel-day + one key step
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #wheel-time = 0
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 00:00
     #wheel-readout: \text{elapsed: } 184\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 184.504\ \text{turns} | \text{Sun: } 183.999\ \text{turns} | \text{sky} - \text{Sun: } 0.504\ \text{turns}
   slider #wheel-time = 24
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 00:00
     #wheel-readout: \text{elapsed: } 185\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{sky: } 185.507\ \text{turns} | \text{Sun: } 184.999\ \text{turns} | \text{sky} - \text{Sun: } 0.507\ \text{turns}
   slider #wheel-time = 12
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 12:00
     #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{sky: } 185.005\ \text{turns} | \text{Sun: } 184.499\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #wheel-time + one key step
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 12:01
     #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   slider #sid-time = 0
@@ -524,10 +524,10 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 91.0^\circ | \text{day } 12\,\text{h}\,08\,\text{min} | \text{sunrise } \text{05:56},\quad \text{sunset } \text{18:04}
   slider #test-lat = -65
     OUTPUT (test-lat): −65.0°
-    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -17.7\,\text{min}\ \text{to}\ +9.0\,\text{min} | \text{set } -8.9\,\text{min}\ \text{to}\ +21.5\,\text{min} | \text{day } -1.3\,\text{min}\ \text{to}\ +13.6\,\text{min}
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -17.7\,\text{min}\ \text{to}\ +9.0\,\text{min} | \text{set } -8.8\,\text{min}\ \text{to}\ +21.5\,\text{min} | \text{day } -1.3\,\text{min}\ \text{to}\ +13.5\,\text{min}
   slider #test-lat = 65
     OUTPUT (test-lat): 65.0°
-    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.2\,\text{min}\ \text{to}\ +11.3\,\text{min} | \text{day } -13.1\,\text{min}\ \text{to}\ +0.6\,\text{min}
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.3\,\text{min}\ \text{to}\ +11.4\,\text{min} | \text{day } -13.2\,\text{min}\ \text{to}\ +0.6\,\text{min}
   slider #test-lat = 0
     OUTPUT (test-lat): 0.0°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -14.2\,\text{min}\ \text{to}\ +16.4\,\text{min} | \text{set } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{day } -0.3\,\text{min}\ \text{to}\ +0.2\,\text{min}
@@ -535,11 +535,11 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (test-lat): 0.1°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -14.2\,\text{min}\ \text{to}\ +16.4\,\text{min} | \text{set } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{day } -0.3\,\text{min}\ \text{to}\ +0.2\,\text{min}
   button "‹ previous day"
-    OUTPUT (wheel-day): 3 Jul 2026
+    OUTPUT (wheel-day): 3 Jul 2025
     OUTPUT (wheel-time): 12:01
     #wheel-readout: \text{elapsed: } 183\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 184.003\ \text{turns} | \text{Sun: } 183.500\ \text{turns} | \text{sky} - \text{Sun: } 0.503\ \text{turns}
   button "next day ›"
-    OUTPUT (wheel-day): 4 Jul 2026
+    OUTPUT (wheel-day): 4 Jul 2025
     OUTPUT (wheel-time): 12:01
     #wheel-readout: \text{elapsed: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{sky: } 185.006\ \text{turns} | \text{Sun: } 184.500\ \text{turns} | \text{sky} - \text{Sun: } 0.506\ \text{turns}
   button "Greenwich"
@@ -630,7 +630,7 @@ Regenerate with: node tools/check/smoke.js --update
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -12.5\,\text{min}\ \text{to}\ +19.9\,\text{min} | \text{set } -16.9\,\text{min}\ \text{to}\ +13.9\,\text{min} | \text{day } -7.5\,\text{min}\ \text{to}\ 0.0\,\text{min}
   button "65° N"
     OUTPUT (test-lat): 65.0°
-    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.2\,\text{min}\ \text{to}\ +11.3\,\text{min} | \text{day } -13.1\,\text{min}\ \text{to}\ +0.6\,\text{min}
+    #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -11.0\,\text{min}\ \text{to}\ +22.9\,\text{min} | \text{set } -19.3\,\text{min}\ \text{to}\ +11.4\,\text{min} | \text{day } -13.2\,\text{min}\ \text{to}\ +0.6\,\text{min}
   button "Sydney"
     OUTPUT (test-lat): −33.9°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
@@ -648,10 +648,10 @@ Regenerate with: node tools/check/smoke.js --update
     #transit-readout: \text{Canopus, night of 27 Dec 2026} | \text{transit } \text{23:59},\quad \text{sky: dark} |  | a = 71.2^\circ
   hover #day-curve at 0.3
     OUTPUT (day-lat): 69.7°
-    #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.34^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
+    #day-readout: \text{16 Mar 2026:}\ \delta_\odot = -2.35^\circ,\quad H_0 = 86.1^\circ | \text{day } 11\,\text{h}\,28\,\text{min} | \text{sunrise } \text{06:16},\quad \text{sunset } \text{17:44}
   hover #day-curve at 0.6
     OUTPUT (day-lat): 69.7°
-    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.43^\circ,\quad H_0 = 176.7^\circ | \text{day } 23\,\text{h}\,33\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
+    #day-readout: \text{25 Jul 2026:}\ \delta_\odot = 19.44^\circ,\quad H_0 = 176.7^\circ | \text{day } 23\,\text{h}\,34\,\text{min} | \text{sunrise } \text{00:13},\quad \text{sunset } \text{23:47}
   hover #day-curve at 0.9
     OUTPUT (day-lat): 69.7°
     #day-readout: \text{3 Dec 2026:}\ \delta_\odot = -22.27^\circ,\quad H_0 = 0.0^\circ | \text{day } 0\,\text{h}\,00\,\text{min}\ \text{(polar night)} | \text{no sunrise or sunset}
@@ -672,13 +672,13 @@ Regenerate with: node tools/check/smoke.js --update
     #day-readout: \text{21 Jun 2026:}\ \delta_\odot = 23.44^\circ,\quad H_0 = 180.0^\circ | \text{day } 24\,\text{h}\,00\,\text{min}\ \text{(polar day)} | \text{no sunrise or sunset}
   hover #test-plot at 0.3
     OUTPUT (test-lat): −33.9°
-    #test-readout: \text{21 Mar 2026} | \text{noon } -7.2\,\text{min} | \text{rise } -9.0\,\text{min} | \text{set } -4.8\,\text{min} | \text{day } +4.1\,\text{min}
+    #test-readout: \text{21 Mar 2026} | \text{noon } -7.2\,\text{min} | \text{rise } -9.0\,\text{min} | \text{set } -4.8\,\text{min} | \text{day } +4.2\,\text{min}
   hover #test-plot at 0.6
     OUTPUT (test-lat): −33.9°
     #test-readout: \text{26 Jul 2026} | \text{noon } -6.6\,\text{min} | \text{rise } -7.2\,\text{min} | \text{set } -6.2\,\text{min} | \text{day } +1.0\,\text{min}
   hover #test-plot at 0.9
     OUTPUT (test-lat): −33.9°
-    #test-readout: \text{1 Dec 2026} | \text{noon } +11.0\,\text{min} | \text{rise } +10.4\,\text{min} | \text{set } +11.3\,\text{min} | \text{day } +0.8\,\text{min}
+    #test-readout: \text{1 Dec 2026} | \text{noon } +11.0\,\text{min} | \text{rise } +10.4\,\text{min} | \text{set } +11.2\,\text{min} | \text{day } +0.8\,\text{min}
   hover #test-plot left
     OUTPUT (test-lat): −33.9°
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
@@ -812,7 +812,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #error-2026-plot at 0.6
     .errorcurve-readout: 3 May 2109 · eccentric: −1.5′
   hover #error-2026-plot at 0.9
-    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.8′
+    .errorcurve-readout: 1 Feb 2435 · eccentric: +12.6′
   hover #error-2026-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
@@ -822,10 +822,10 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (red-lon): 30°
     OUTPUT (red-eps): 45.00°
     #reduction-readout: \lambda = 30^\circ,\quad \alpha = 22.21^\circ | \lambda - \alpha = {+7.79}^\circ = {+31.17}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.1716 | \text{greatest } 9.88^\circ \text{ at } \lambda = 49.9^\circ
-    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+    #parts-readout: \text{2025:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
     OUTPUT (ana-day): 3 Nov
-    #analemma-readout: \text{3 Nov:}\quad E = +16\,\text{min}\ 31\,\text{s} | H = {+4.13}^\circ,\quad \delta = {-15.1}^\circ
-    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+    #analemma-readout: \text{3 Nov:}\quad E = +16\,\text{min}\ 31\,\text{s} | H = {+4.13}^\circ,\quad \delta = {-15.2}^\circ
+    #test-readout: \text{2025: model} - \text{real from } {-4.8} \text{ to } {+6.4}\,\text{s} | \text{Point at either plot to read a date.}
     OUTPUT (cent-year): 2026
     #centuries-readout: \text{minimum } {-14.20}\,\text{min at } \lambda = 323^\circ | \text{maximum } {+16.46}\,\text{min at } \lambda = 221^\circ | \text{range } 30.66\,\text{min} = 7.66\ \text{time-degrees}
   opened 7 hints and answers
@@ -863,16 +863,16 @@ Regenerate with: node tools/check/smoke.js --update
     #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180.92^\circ | \lambda - \alpha = {+0.08}^\circ = {+0.30}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0396 | \text{greatest } 2.27^\circ \text{ at } \lambda = 46.1^\circ
   slider #ana-day = 0
     OUTPUT (ana-day): 1 Jan
-    #analemma-readout: \text{1 Jan:}\quad E = -3\,\text{min}\ 31\,\text{s} | H = {-0.88}^\circ,\quad \delta = {-23.0}^\circ
+    #analemma-readout: \text{1 Jan:}\quad E = -3\,\text{min}\ 37\,\text{s} | H = {-0.91}^\circ,\quad \delta = {-23.0}^\circ
   slider #ana-day = 364
     OUTPUT (ana-day): 31 Dec
-    #analemma-readout: \text{31 Dec:}\quad E = -2\,\text{min}\ 55\,\text{s} | H = {-0.73}^\circ,\quad \delta = {-23.1}^\circ
+    #analemma-readout: \text{31 Dec:}\quad E = -3\,\text{min}\ 02\,\text{s} | H = {-0.76}^\circ,\quad \delta = {-23.1}^\circ
   slider #ana-day = 182
     OUTPUT (ana-day): 2 Jul
-    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 11\,\text{s} | H = {-1.05}^\circ,\quad \delta = {+23.0}^\circ
   slider #ana-day + one key step
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1.09}^\circ,\quad \delta = {+22.9}^\circ
   slider #cent-year = -1000
     OUTPUT (cent-year): 1001 BC
     #centuries-readout: \text{minimum } {-18.29}\,\text{min at } \lambda = 315^\circ | \text{maximum } {+11.75}\,\text{min at } \lambda = 215^\circ | \text{range } 30.04\,\text{min} = 7.51\ \text{time-degrees}
@@ -899,19 +899,19 @@ Regenerate with: node tools/check/smoke.js --update
     #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
   button "‹ previous day"
     OUTPUT (ana-day): 2 Jul
-    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 09\,\text{s} | H = {-1.04}^\circ,\quad \delta = {+23.0}^\circ
+    #analemma-readout: \text{2 Jul:}\quad E = -4\,\text{min}\ 11\,\text{s} | H = {-1.05}^\circ,\quad \delta = {+23.0}^\circ
   button "next day ›"
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1.09}^\circ,\quad \delta = {+22.9}^\circ
   button "both causes"
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 20\,\text{s} | H = {-1.08}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1.09}^\circ,\quad \delta = {+22.9}^\circ
   button "eccentricity only"
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -0\,\text{min}\ 17\,\text{s} | H = {-0.07}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -0\,\text{min}\ 15\,\text{s} | H = {-0.06}^\circ,\quad \delta = {+22.9}^\circ
   button "obliquity only"
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1.02}^\circ,\quad \delta = {+22.9}^\circ
   button "141 BC"
     OUTPUT (cent-year): 141 BC
     #centuries-readout: \text{minimum } {-17.57}\,\text{min at } \lambda = 317^\circ | \text{maximum } {+13.49}\,\text{min at } \lambda = 216^\circ | \text{range } 31.07\,\text{min} = 7.77\ \text{time-degrees}
@@ -955,41 +955,41 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (red-eps): 0.00°
     #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181.00^\circ | \lambda - \alpha = {+0.00}^\circ = {+0.00}\,\text{min of time} | e_\varepsilon = \tan^2(\varepsilon/2) = 0.0000 | \text{greatest } 0.00^\circ \text{ at } \lambda = 45.0^\circ
   hover #parts-plot at 0.3
-    #parts-readout: \text{5 Apr:}\quad E = -2\,\text{min}\ 42\,\text{s} | -q = {-7.67},\quad \lambda - \alpha = {+4.96}\,\text{min}
+    #parts-readout: \text{5 Apr:}\quad E = -2\,\text{min}\ 38\,\text{s} | -q = {-7.67},\quad \lambda - \alpha = {+5.03}\,\text{min}
   hover #parts-plot at 0.6
-    #parts-readout: \text{2 Aug:}\quad E = -6\,\text{min}\ 22\,\text{s} | -q = {+3.42},\quad \lambda - \alpha = {-9.79}\,\text{min}
+    #parts-readout: \text{2 Aug:}\quad E = -6\,\text{min}\ 21\,\text{s} | -q = {+3.45},\quad \lambda - \alpha = {-9.80}\,\text{min}
   hover #parts-plot at 0.9
-    #parts-readout: \text{29 Nov:}\quad E = +11\,\text{min}\ 49\,\text{s} | -q = {+4.56},\quad \lambda - \alpha = {+7.25}\,\text{min}
+    #parts-readout: \text{29 Nov:}\quad E = +11\,\text{min}\ 44\,\text{s} | -q = {+4.54},\quad \lambda - \alpha = {+7.19}\,\text{min}
   hover #parts-plot left
-    #parts-readout: \text{2026:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
+    #parts-readout: \text{2025:}\quad E \text{ from } {-14.22} \text{ to } {+16.52}\,\text{min} | \text{amplitudes: } -q\ \ 7.67,\quad \lambda - \alpha\ \ 9.86\,\text{min}
   hover #analemma-plot at 0.3
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1.02}^\circ,\quad \delta = {+22.9}^\circ
   hover #analemma-plot at 0.6
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1.02}^\circ,\quad \delta = {+22.9}^\circ
   hover #analemma-plot at 0.9
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1.02}^\circ,\quad \delta = {+22.9}^\circ
   hover #analemma-plot left
     OUTPUT (ana-day): 3 Jul
-    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 01\,\text{s} | H = {-1.00}^\circ,\quad \delta = {+22.9}^\circ
+    #analemma-readout: \text{3 Jul:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1.02}^\circ,\quad \delta = {+22.9}^\circ
   hover #test-both at 0.3
-    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 35\,\text{s},\quad \text{real } -8\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-1.2}\,\text{s}
   hover #test-both at 0.6
-    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-4.2}\,\text{s}
   hover #test-both at 0.9
-    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 13\,\text{s},\quad \text{real } +10\,\text{min}\ 07\,\text{s} | \text{model} - \text{real} = {+6.1}\,\text{s}
   hover #test-both left
-    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+    #test-readout: \text{2025: model} - \text{real from } {-4.8} \text{ to } {+6.4}\,\text{s} | \text{Point at either plot to read a date.}
   hover #test-error at 0.3
-    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 39\,\text{s},\quad \text{real } -8\,\text{min}\ 38\,\text{s} | \text{model} - \text{real} = {-1.3}\,\text{s}
+    #test-readout: \text{16 Mar:}\quad \text{model } -8\,\text{min}\ 35\,\text{s},\quad \text{real } -8\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-1.2}\,\text{s}
   hover #test-error at 0.6
-    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-3.7}\,\text{s}
+    #test-readout: \text{25 Jul:}\quad \text{model } -6\,\text{min}\ 38\,\text{s},\quad \text{real } -6\,\text{min}\ 34\,\text{s} | \text{model} - \text{real} = {-4.2}\,\text{s}
   hover #test-error at 0.9
-    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 19\,\text{s},\quad \text{real } +10\,\text{min}\ 13\,\text{s} | \text{model} - \text{real} = {+5.5}\,\text{s}
+    #test-readout: \text{3 Dec:}\quad \text{model } +10\,\text{min}\ 13\,\text{s},\quad \text{real } +10\,\text{min}\ 07\,\text{s} | \text{model} - \text{real} = {+6.1}\,\text{s}
   hover #test-error left
-    #test-readout: \text{2026: model} - \text{real from } {-4.8} \text{ to } {+6.0}\,\text{s} | \text{Point at either plot to read a date.}
+    #test-readout: \text{2025: model} - \text{real from } {-4.8} \text{ to } {+6.4}\,\text{s} | \text{Point at either plot to read a date.}
   hover #centuries-plot at 0.3
     OUTPUT (cent-year): 3000
     #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
@@ -1013,10 +1013,10 @@ Regenerate with: node tools/check/smoke.js --update
   opened 6 hints and answers
   slider #model-year = -11000
     OUTPUT (model-year): 11·001 BC
-    #model-readout: \text{11}{\cdotp}\text{001 BC: shift } -181.98^\circ | \text{Spica: } \lambda = 22.22^\circ,\ \delta = +6.74^\circ | \text{nearest P: Vega, } 7.7^\circ
+    #model-readout: \text{11}{\cdotp}\text{001 BC: shift } -181.94^\circ | \text{Spica: } \lambda = 22.26^\circ,\ \delta = +6.76^\circ | \text{nearest P: Vega, } 7.7^\circ
   slider #model-year = 15000
     OUTPUT (model-year): AD 15·000
-    #model-readout: \text{AD 15}{\cdotp}\text{000: shift } +181.25^\circ | \text{Spica: } \lambda = 25.45^\circ,\ \delta = +7.93^\circ | \text{nearest P: Vega, } 8.8^\circ
+    #model-readout: \text{AD 15}{\cdotp}\text{000: shift } +181.21^\circ | \text{Spica: } \lambda = 25.41^\circ,\ \delta = +7.91^\circ | \text{nearest P: Vega, } 8.8^\circ
   slider #model-year = 2000
     OUTPUT (model-year): 2000
     #model-readout: \text{2000: shift } -0.36^\circ | \text{Spica: } \lambda = 203.84^\circ,\ \delta = -11.16^\circ | \text{nearest P: Polaris, } 0.7^\circ
@@ -1025,16 +1025,16 @@ Regenerate with: node tools/check/smoke.js --update
     #model-readout: \text{2001: shift } -0.35^\circ | \text{Spica: } \lambda = 203.86^\circ,\ \delta = -11.17^\circ | \text{nearest P: Polaris, } 0.7^\circ
   button "2831 BC"
     OUTPUT (model-year): 2831 BC
-    #model-readout: \text{2831 BC: shift } -67.84^\circ | \text{Spica: } \lambda = 136.36^\circ,\ \delta = +13.97^\circ | \text{nearest P: Thuban, } 0.2^\circ
+    #model-readout: \text{2831 BC: shift } -67.83^\circ | \text{Spica: } \lambda = 136.38^\circ,\ \delta = +13.96^\circ | \text{nearest P: Thuban, } 0.2^\circ
   button "128 BC"
     OUTPUT (model-year): 128 BC
-    #model-readout: \text{128 BC: shift } -30.08^\circ | \text{Spica: } \lambda = 174.13^\circ,\ \delta = +0.44^\circ | \text{nearest P: Polaris, } 12.4^\circ
+    #model-readout: \text{128 BC: shift } -30.07^\circ | \text{Spica: } \lambda = 174.13^\circ,\ \delta = +0.44^\circ | \text{nearest P: Polaris, } 12.4^\circ
   button "2026"
     OUTPUT (model-year): 2026
     #model-readout: \text{2026: shift } +0.00^\circ | \text{Spica: } \lambda = 204.20^\circ,\ \delta = -11.30^\circ | \text{nearest P: Polaris, } 0.6^\circ
   button "AD 13·790"
     OUTPUT (model-year): AD 13·790
-    #model-readout: \text{AD 13}{\cdotp}\text{790: shift } +164.35^\circ | \text{Spica: } \lambda = 8.55^\circ,\ \delta = +1.50^\circ | \text{nearest P: Vega, } 4.8^\circ
+    #model-readout: \text{AD 13}{\cdotp}\text{790: shift } +164.31^\circ | \text{Spica: } \lambda = 8.51^\circ,\ \delta = +1.49^\circ | \text{nearest P: Vega, } 4.8^\circ
   button "2000 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
@@ -1063,26 +1063,26 @@ Regenerate with: node tools/check/smoke.js --update
   hover #records-plot at 0.9
   hover #records-plot left
   hover #error-spica-plot at 0.3
-    .errorcurve-readout: 19 Feb 569 · uniform precession: −4.9′
+    .errorcurve-readout: 19 Feb 569 · uniform precession: −4.7′
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-spica-plot at 0.6
-    .errorcurve-readout: 31 Jul 2523 · uniform precession: −0.1′
+    .errorcurve-readout: 31 Jul 2523 · uniform precession: −0.2′
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-spica-plot at 0.9
-    .errorcurve-readout: 9 Jan 4478 · uniform precession: −9.2′
+    .errorcurve-readout: 9 Jan 4478 · uniform precession: −9.7′
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-spica-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-sun-plot at 0.3
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 10 Sep 1540 · fixed apogee: +4.3′ · moving apogee: +0.8′
+    .errorcurve-readout: 10 Sep 1540 · fixed apogee: +4.4′ · moving apogee: +0.9′
   hover #error-sun-plot at 0.6
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: 7 Mar 2192 · fixed apogee: +3.3′ · moving apogee: +0.6′
   hover #error-sun-plot at 0.9
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-    .errorcurve-readout: 3 Sep 2843 · fixed apogee: −19.2′ · moving apogee: −1.4′
+    .errorcurve-readout: 3 Sep 2843 · fixed apogee: −19.4′ · moving apogee: −1.5′
   hover #error-sun-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
@@ -1117,35 +1117,35 @@ Regenerate with: node tools/check/smoke.js --update
   slider #epi-day + one key step
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.3000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
   slider #epi-e = 0
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   slider #epi-e = 0.3
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.3000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
   slider #epi-e = 0.15
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.1500
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.70^\circ,\quad \lambda = \bar\lambda + q = 110.62^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +6.70^\circ,\quad \lambda = \bar\lambda + q = 110.62^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
   slider #epi-e + one key step
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.1505
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
   slider #eq-day = 0
     OUTPUT (eq-day): 1 Jan 2026
     #equivalence-readout: \text{1 Jan 2026:}\quad \bar\lambda = 67.97^\circ,\quad M = 191.72^\circ | \lambda_A = \bar\lambda - M = 236.25^\circ | \text{epicycle: } \lambda = 72.90^\circ | \text{eccentric: } \lambda = 72.90^\circ
   slider #eq-day = 3232
     OUTPUT (eq-day): 7 Nov 2034
-    #equivalence-readout: \text{7 Nov 2034:}\quad \bar\lambda = 174.08^\circ,\quad M = 297.78^\circ | \lambda_A = \bar\lambda - M = 236.31^\circ | \text{epicycle: } \lambda = 187.19^\circ | \text{eccentric: } \lambda = 187.19^\circ
+    #equivalence-readout: \text{7 Nov 2034:}\quad \bar\lambda = 174.09^\circ,\quad M = 297.76^\circ | \lambda_A = \bar\lambda - M = 236.32^\circ | \text{epicycle: } \lambda = 187.20^\circ | \text{eccentric: } \lambda = 187.20^\circ
   slider #eq-day = 1616
     OUTPUT (eq-day): 5 Jun 2030
-    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.03^\circ,\quad M = 64.75^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 107.50^\circ | \text{eccentric: } \lambda = 107.50^\circ
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.03^\circ,\quad M = 64.74^\circ | \lambda_A = \bar\lambda - M = 56.29^\circ | \text{epicycle: } \lambda = 107.50^\circ | \text{eccentric: } \lambda = 107.50^\circ
   slider #eq-day + one key step
     OUTPUT (eq-day): 5 Jun 2030
-    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.29^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
   button "‹ previous day"
     OUTPUT (epi-day): 30 Jan, 01 h
     OUTPUT (epi-e): 0.1505
@@ -1153,31 +1153,31 @@ Regenerate with: node tools/check/smoke.js --update
   button "next day ›"
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.1505
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +6.72^\circ,\quad \lambda = \bar\lambda + q = 110.64^\circ | \text{daily motion } 14.55^\circ \text{ (mean } 13.18^\circ)
   button "Ptolemy, 0.0875"
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0875
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +3.73^\circ,\quad \lambda = \bar\lambda + q = 107.65^\circ | \text{daily motion } 13.99^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +3.73^\circ,\quad \lambda = \bar\lambda + q = 107.65^\circ | \text{daily motion } 13.99^\circ \text{ (mean } 13.18^\circ)
   button "exaggerated, 0.3"
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.3000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +14.94^\circ,\quad \lambda = \bar\lambda + q = 118.86^\circ | \text{daily motion } 15.64^\circ \text{ (mean } 13.18^\circ)
   button "no epicycle"
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   button "‹ previous day"
     OUTPUT (eq-day): 4 Jun 2030
-    #equivalence-readout: \text{4 Jun 2030:}\quad \bar\lambda = 108.51^\circ,\quad M = 52.34^\circ | \lambda_A = \bar\lambda - M = 56.17^\circ | \text{epicycle: } \lambda = 97.16^\circ | \text{eccentric: } \lambda = 97.16^\circ
+    #equivalence-readout: \text{4 Jun 2030:}\quad \bar\lambda = 108.51^\circ,\quad M = 52.33^\circ | \lambda_A = \bar\lambda - M = 56.18^\circ | \text{epicycle: } \lambda = 97.16^\circ | \text{eccentric: } \lambda = 97.16^\circ
   button "next day ›"
     OUTPUT (eq-day): 5 Jun 2030
-    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.29^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
   button "A month"
     OUTPUT (eq-day): 5 Jun 2030
-    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.28^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
+    #equivalence-readout: \text{5 Jun 2030:}\quad \bar\lambda = 121.69^\circ,\quad M = 65.40^\circ | \lambda_A = \bar\lambda - M = 56.29^\circ | \text{epicycle: } \lambda = 108.06^\circ | \text{eccentric: } \lambda = 108.06^\circ
   button "The eccentric's turn"
     OUTPUT (eq-day): 5 Jun 2030
-    #equivalence-readout: \text{5 Jun 2030:}\quad \lambda_A = 56.28^\circ | \text{turned } 180.0^\circ \text{ east since 1 January 2026} |  | 
+    #equivalence-readout: \text{5 Jun 2030:}\quad \lambda_A = 56.29^\circ | \text{turned } 180.0^\circ \text{ east since 1 January 2026} |  | 
   button "2025 – 2026"
     #eclipses-readout: a_{12} = 148.97^\circ,\quad a_{23} = 161.57^\circ | d_{12} = +8.88^\circ,\quad d_{23} = -9.38^\circ | \text{first order: } r/R = 0.08378,\ M_2 = 270.8^\circ | \text{exact: } r/R = 0.08440,\ M_2 = 275.0^\circ | \text{the reference sky, 2025 – 2026}
   button "Babylon, 721 BC"
@@ -1199,19 +1199,19 @@ Regenerate with: node tools/check/smoke.js --update
   hover #epicycle-plot at 0.3
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   hover #epicycle-plot at 0.6
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   hover #epicycle-plot at 0.9
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   hover #epicycle-plot left
     OUTPUT (epi-day): 31 Jan, 01 h
     OUTPUT (epi-e): 0.0000
-    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.32^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
+    #epicycle-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad M = 224.33^\circ | q = +0.00^\circ,\quad \lambda = \bar\lambda + q = 103.92^\circ | \text{daily motion } 13.18^\circ \text{ (mean } 13.18^\circ)
   hover #eclipses-plot at 0.3
     #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #eclipses-plot at 0.6
@@ -1221,11 +1221,11 @@ Regenerate with: node tools/check/smoke.js --update
   hover #eclipses-plot left
     #eclipses-readout: a_{12} = 250.60^\circ,\quad a_{23} = 306.72^\circ | d_{12} = -5.00^\circ,\quad d_{23} = +2.98^\circ | \text{first order: } r/R = 0.08561,\ M_2 = 73.9^\circ | \text{exact: } r/R = 0.08605,\ M_2 = 74.5^\circ | \text{Copernicus: } 0.08604,\ M_2 = 74^\circ 27'
   hover #error-ours-plot at 0.3
-    .errorcurve-readout: 18 Mar 2002 · uniform Moon: +363.2′ · epicycle: +100.5′
+    .errorcurve-readout: 18 Mar 2002 · uniform Moon: +362.7′ · epicycle: +99.8′
   hover #error-ours-plot at 0.6
-    .errorcurve-readout: 14 Oct 2034 · uniform Moon: −68.7′ · epicycle: −12.0′
+    .errorcurve-readout: 14 Oct 2034 · uniform Moon: −68.5′ · epicycle: −11.7′
   hover #error-ours-plot at 0.9
-    .errorcurve-readout: 11 May 2067 · uniform Moon: −293.2′ · epicycle: −2.7′
+    .errorcurve-readout: 11 May 2067 · uniform Moon: −292.2′ · epicycle: −1.8′
   hover #error-ours-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
@@ -1233,27 +1233,27 @@ Regenerate with: node tools/check/smoke.js --update
 === act3-moon/02-evection/index.html ===
   as loaded
     OUTPUT (crank-day): 1 Jan, 00 h
-    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.30^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.49^\circ
+    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.31^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.50^\circ
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #crank-day = 0
     OUTPUT (crank-day): 1 Jan, 00 h
-    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.30^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.49^\circ
+    #crank-readout: \text{1 Jan, 00 h:}\quad \bar\lambda = 67.97^\circ,\quad D = 147.31^\circ | \rho = \text{OK} = 0.881,\quad M = 191.72^\circ | q = +1.23^\circ,\quad \arcsin(e/\rho) = 5.50^\circ
   slider #crank-day = 60
     OUTPUT (crank-day): 2 Mar, 00 h
-    #crank-readout: \text{2 Mar, 00 h:}\quad \bar\lambda = 138.55^\circ,\quad D = 158.75^\circ | \rho = \text{OK} = 0.945,\quad M = 255.62^\circ | q = +5.06^\circ,\quad \arcsin(e/\rho) = 5.12^\circ
+    #crank-readout: \text{2 Mar, 00 h:}\quad \bar\lambda = 138.55^\circ,\quad D = 158.75^\circ | \rho = \text{OK} = 0.945,\quad M = 255.62^\circ | q = +5.06^\circ,\quad \arcsin(e/\rho) = 5.13^\circ
   slider #crank-day = 30
     OUTPUT (crank-day): 31 Jan, 00 h
-    #crank-readout: \text{31 Jan, 00 h:}\quad \bar\lambda = 103.26^\circ,\quad D = 153.03^\circ | \rho = \text{OK} = 0.915,\quad M = 223.67^\circ | q = +3.90^\circ,\quad \arcsin(e/\rho) = 5.29^\circ
+    #crank-readout: \text{31 Jan, 00 h:}\quad \bar\lambda = 103.26^\circ,\quad D = 153.03^\circ | \rho = \text{OK} = 0.915,\quad M = 223.67^\circ | q = +3.91^\circ,\quad \arcsin(e/\rho) = 5.29^\circ
   slider #crank-day + one key step
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   button "‹ previous day"
     OUTPUT (crank-day): 30 Jan, 01 h
-    #crank-readout: \text{30 Jan, 01 h:}\quad \bar\lambda = 90.74^\circ,\quad D = 141.44^\circ | \rho = \text{OK} = 0.845,\quad M = 211.26^\circ | q = +3.24^\circ,\quad \arcsin(e/\rho) = 5.73^\circ
+    #crank-readout: \text{30 Jan, 01 h:}\quad \bar\lambda = 90.74^\circ,\quad D = 141.45^\circ | \rho = \text{OK} = 0.844,\quad M = 211.26^\circ | q = +3.25^\circ,\quad \arcsin(e/\rho) = 5.74^\circ
   button "next day ›"
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   button "2 months"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "1 year"
@@ -1266,22 +1266,22 @@ Regenerate with: node tools/check/smoke.js --update
   hover #equation-plot left
   hover #crank-plot at 0.3
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   hover #crank-plot at 0.6
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   hover #crank-plot at 0.9
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   hover #crank-plot left
     OUTPUT (crank-day): 31 Jan, 01 h
-    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.919,\quad M = 224.32^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
+    #crank-readout: \text{31 Jan, 01 h:}\quad \bar\lambda = 103.92^\circ,\quad D = 153.64^\circ | \rho = \text{OK} = 0.918,\quad M = 224.33^\circ | q = +3.93^\circ,\quad \arcsin(e/\rho) = 5.27^\circ
   hover #error-ours-plot at 0.3
-    .errorcurve-readout: 18 Mar 2002 · epicycle: +100.5′ · crank alone: +1.3′ · complete model: −30.7′
+    .errorcurve-readout: 18 Mar 2002 · epicycle: +99.8′ · crank alone: −0.1′ · complete model: −32.2′
   hover #error-ours-plot at 0.6
-    .errorcurve-readout: 14 Oct 2034 · epicycle: −12.0′ · crank alone: −9.6′ · complete model: −36.2′
+    .errorcurve-readout: 14 Oct 2034 · epicycle: −11.7′ · crank alone: −9.4′ · complete model: −36.1′
   hover #error-ours-plot at 0.9
-    .errorcurve-readout: 11 May 2067 · epicycle: −2.7′ · crank alone: +18.6′ · complete model: +17.3′
+    .errorcurve-readout: 11 May 2067 · epicycle: −1.8′ · crank alone: +19.6′ · complete model: +18.3′
   hover #error-ours-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #diameter-plot at 0.3
@@ -1296,7 +1296,7 @@ Regenerate with: node tools/check/smoke.js --update
     #orbit-readout: \text{12 Aug 2026:}\quad \Omega = 330.3^\circ | F = 170.0^\circ,\quad \beta = +0.87^\circ | \text{the Sun } 10.3^\circ \text{ before the nearest node}
     OUTPUT (limits-node): −10.3°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = -53.6',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.6' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = -53.5',\ \gamma = −0.94 | \text{solar eclipse: annular} | \text{full Moon: } \beta = +53.5' | \text{lunar eclipse: partial, magnitude 0.12} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 8 hints and answers
   slider #orbit-day = 0
@@ -1314,11 +1314,11 @@ Regenerate with: node tools/check/smoke.js --update
   slider #limits-node = -20
     OUTPUT (limits-node): −20.0°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = -102.5',\ \gamma = −1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = -102.4',\ \gamma = −1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = +102.4' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-node = 20
     OUTPUT (limits-node): +20.0°
     OUTPUT (limits-distance): 385·000 km
-    #limits-readout: \text{new Moon: } \beta = +102.5',\ \gamma = +1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.5' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
+    #limits-readout: \text{new Moon: } \beta = +102.4',\ \gamma = +1.80 | \text{solar eclipse: none} | \text{full Moon: } \beta = -102.4' | \text{lunar eclipse: none} | s = 15.5',\ \pi = 57.0',\ u = 41.7'
   slider #limits-node = 0
     OUTPUT (limits-node): +0.0°
     OUTPUT (limits-distance): 385·000 km
@@ -1345,7 +1345,7 @@ Regenerate with: node tools/check/smoke.js --update
     #limits-readout: \text{new Moon: } \beta = +0.5',\ \gamma = +0.01 | \text{solar eclipse: annular} | \text{full Moon: } \beta = -0.5' | \text{lunar eclipse: total, magnitude 1.83} | s = 15.6',\ \pi = 57.4',\ u = 42.2'
   button "‹ previous day"
     OUTPUT (orbit-day): 2 Jul 2035
-    #orbit-readout: \text{2 Jul 2035:}\quad \Omega = 158.5^\circ | F = 256.8^\circ,\quad \beta = -4.87^\circ | \text{the Sun } 58.4^\circ \text{ before the nearest node}
+    #orbit-readout: \text{2 Jul 2035:}\quad \Omega = 158.5^\circ | F = 256.8^\circ,\quad \beta = -4.86^\circ | \text{the Sun } 58.4^\circ \text{ before the nearest node}
   button "next day ›"
     OUTPUT (orbit-day): 3 Jul 2035
     #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | F = 271.2^\circ,\quad \beta = -5.00^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node}
@@ -1357,7 +1357,7 @@ Regenerate with: node tools/check/smoke.js --update
     #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{the Sun } 57.4^\circ \text{ before the nearest node} | 
   button "The nodes' turn"
     OUTPUT (orbit-day): 3 Jul 2035
-    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{turned } 183.8^\circ \text{ west since 1 January 2026} | 
+    #orbit-readout: \text{3 Jul 2035:}\quad \Omega = 158.4^\circ | \text{turned } 183.7^\circ \text{ west since 1 January 2026} | 
   button "nearest"
     OUTPUT (limits-node): +0.1°
     OUTPUT (limits-distance): 356·400 km
@@ -1403,9 +1403,9 @@ Regenerate with: node tools/check/smoke.js --update
   hover #error-latitude-plot at 0.3
     .errorcurve-readout: 18 Mar 2002 · fitted: +5.2′
   hover #error-latitude-plot at 0.6
-    .errorcurve-readout: 14 Oct 2034 · fitted: −5.7′
+    .errorcurve-readout: 14 Oct 2034 · fitted: −5.8′
   hover #error-latitude-plot at 0.9
-    .errorcurve-readout: 11 May 2067 · fitted: −5.2′
+    .errorcurve-readout: 11 May 2067 · fitted: −5.3′
   hover #error-latitude-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 1 spheres
@@ -1511,7 +1511,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #error-mars-plot at 0.3
     .errorcurve-readout: 3 Jun 1969 · uniform planet: +13.61° · epicycle: +32.79°
   hover #error-mars-plot at 0.6
-    .errorcurve-readout: 27 Jul 2034 · uniform planet: +0.88° · epicycle: −2.07°
+    .errorcurve-readout: 27 Jul 2034 · uniform planet: +0.88° · epicycle: −2.08°
   hover #error-mars-plot at 0.9
     .errorcurve-readout: 19 Sep 2099 · uniform planet: −29.12° · epicycle: −21.04°
   hover #error-mars-plot left
@@ -2906,7 +2906,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 165 tests pass.
+    #summary: All 166 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 
@@ -3050,10 +3050,10 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 19 Jan 1905 · Hipparchus' year: −0.16° · uniform circle: +0.20°
   hover #fig-error-plot at 0.6
     OUTPUT (year-length): 365.2505 d
-    .errorcurve-readout: 3 Dec 2067 · Hipparchus' year: +0.72° · uniform circle: +0.46°
+    .errorcurve-readout: 3 Dec 2067 · Hipparchus' year: +0.71° · uniform circle: +0.46°
   hover #fig-error-plot at 0.9
     OUTPUT (year-length): 365.2505 d
-    .errorcurve-readout: 17 Oct 2230 · Hipparchus' year: +0.87° · uniform circle: +0.00°
+    .errorcurve-readout: 17 Oct 2230 · Hipparchus' year: +0.87° · uniform circle: −0.01°
   hover #fig-error-plot left
     OUTPUT (year-length): 365.2505 d
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
