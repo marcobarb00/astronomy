@@ -37,11 +37,11 @@ const Precession = (function () {
 	const DAYS_PER_YEAR = 365.25;
 
 	/* Fitted to the reference sky (Vondrák, Capitaine & Wallace 2011, in
-	   ephemeris.js): the shift of the equinox over the century centred on
-	   2026.0, 50.294" a year, and the mean obliquity of 2026.0 (page 1.2)
-	   (tools/numbers/2.3-precession.js). */
+	   ephemeris.js): the shift of the equinox along the ecliptic over the
+	   last documented century, 1926.0 to 2026.0, 50.283" a year, and the
+	   mean obliquity of 2026.0 (page 1.2) (tools/numbers/2.3-precession.js). */
 	const MODERN = {
-		rate: 50.294 / 3600,
+		rate: 50.283 / 3600,
 		epoch: 2461041.5,
 		obliquity: 23.43591
 	};

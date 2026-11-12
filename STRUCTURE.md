@@ -222,8 +222,8 @@ The first anomaly and the simplest complete model.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
   eccentric between the lines from the Earth to the equinoxes and solstices.
-- **Figures:** the real Sun's daily motion from the March equinox of 2026
-  to that of 2027, with the four seasons and their lengths above it
+- **Figures:** the real Sun's daily motion from the September equinox of
+  2025 to that of 2026, with the four seasons and their lengths above it
   (static); the same arrow from the Earth to the Sun with the Earth at
   rest and with the Sun at rest (static); the equation of centre, the
   eccentric with M and q beside $q(t)$ over a year (date, and two views:
@@ -241,8 +241,9 @@ The first anomaly and the simplest complete model.
   text gives both numbers. A photo: Peurbach's woodcut of the Sun's
   eccentric orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
-  construction applied to the reference seasons of 2026 ($e = 0.03347$,
-  $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one
+  construction applied to the reference spring and summer of 2026 ($e =
+  0.03347$, $\lambda_A = 103.73^\circ$, the autumn and winter of 2025–26
+  within half an hour; one
   hour moved between the seasons shifts the apogee 1.2°); the mean
   longitude at epoch $L_0$ from the timed spring equinox (page 1.3 used
   Meeus' value without deriving it). History block: equinoxes timed with
@@ -294,14 +295,14 @@ The first anomaly and the simplest complete model.
   their
   sum to first order, $E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda$
   (radians); the analemma.
-- **Figures:** the true solar day and its running sum, $E$, through 2026
+- **Figures:** the true solar day and its running sum, $E$, through 2025
   (static); a photo of an analemma in the sky (Donatiello, CC0); the
   reduction to the equator (3D: the uniform Sun on the ecliptic, its hour
   circle, the mean Sun on the equator; with $\lambda - \alpha$ against
   $\lambda$; longitude and obliquity, starting at an exaggerated 45°, with
-  a preset for today's); the two components and their sum over 2026; the analemma drawn as the Sun's
+  a preset for today's); the two components and their sum over 2025; the analemma drawn as the Sun's
   position at mean noon (date; both causes, eccentricity only, obliquity
-  only); the model against the real $E$ in 2026; the real $E$ against the
+  only); the model against the real $E$ in 2025; the real $E$ against the
   Sun's longitude in a chosen year, 1000 BC to AD 3000.
 - **When building:** the obliquity part is the reduction to the equator,
   $\alpha - \lambda$, computed by `Frames.reduction` in
@@ -311,9 +312,9 @@ The first anomaly and the simplest complete model.
   pages 1.2 and 2.1: its yearly and half-yearly terms (averages over a year)
   give $e$, $\lambda_A$ and $\varepsilon$ to first order (biased by the cross
   term $e\,e_\varepsilon$); the exact model fitted by least squares gives
-  $e = 0.0334$ and $\lambda_A = 103.4^\circ$.
+  $e = 0.0334$ and $\lambda_A = 103.4^\circ$ from the real $E$ of 2025.
 - **Test:** in time, not with the $\Delta\lambda$ widget (the longitude model
-  is page 2.1's): within 6 s of the real $E$ in 2026, against page 1.3's
+  is page 2.1's): within 6.4 s of the real $E$ in 2025, against page 1.3's
   ±16 min. History block, in words: Ptolemy's equation of time in
   time-degrees (*Almagest* III 9), about half an hour at most, a little
   more than the real value of his time, and why he needed it (the Moon).
@@ -359,14 +360,15 @@ The first anomaly and the simplest complete model.
   with the error of Ptolemy's Sun (static).
 - **Fit:** a long baseline fixes the rate (an error of 1° is 14″ a year
   over 265 years, 2″ over 18 centuries); the rate from Spica's records
-  (50.6″ a year, Figure 4); $p = 50.29''$ a year from the reference sky
-  around 2026; the apogee's rate, 1.741° a century, from the seasons of
-  seventeen years by Hipparchus' method, of which 1.397° is precession.
+  (50.6″ a year, Figure 4); $p = 50.28''$ a year from the reference sky
+  of 1926.0–2026.0; the apogee's rate, 1.751° a century, from the seasons
+  of every year from 1826 to 2025 by Hipparchus' method, of which 1.397°
+  is precession.
   History block: Ptolemy's 1° in 100 years from Regulus (VII 2),
   Hipparchus' lower bound, the III 1 remedy, Copernicus' mean rate (III 6).
-- **Test:** uniform precession within 2.6′ of Spica over 2000 years; the
-  eccentric with a moving apogee within 6′ over 2000 years (38.5′ with the
-  apogee fixed), and page 2.2's equation of time within 11 s over 1000
+- **Test:** uniform precession within 2.4′ of Spica over 2000 years; the
+  eccentric with a moving apogee within 6.4′ over 2000 years (38.2′ with
+  the apogee fixed), and page 2.2's equation of time within 12 s over 1000
   years. History block, with Figure 6 (kept for Exercises 1 and 3):
   Ptolemy's slow rate comes mostly from his Sun, the records he reduced
   err as his Sun does (the full cause is debated).
