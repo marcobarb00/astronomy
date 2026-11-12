@@ -86,14 +86,15 @@
 
 		<p>
 			To see which new and full Moons become eclipses, and how often, we
-			take all of them over ten years of the reference sky, from 2021 to
-			2030. Of the 247, 38 are eclipses, 22 of the Sun and 16 of the Moon.
+			take all of them over the last ten years of the reference sky, from
+			2016 to 2025. Of the 247, 35 are eclipses, 22 of the Sun and 13 of
+			the Moon.
 			We count a lunar eclipse only when part of the Moon enters the full
 			shadow of the Earth, the <em>umbra</em>; the Moon also passes, more
 			often, through the half-shadow around it, where it only dims slightly.
 		</p>
 
-		<!-- Figure 1: the new and full Moons of 2021 - 2030 (static) -->
+		<!-- Figure 1: the new and full Moons of 2016 - 2025 (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="calendar-plot"></canvas>
@@ -126,7 +127,7 @@
 			<p>
 				The eclipses are those of the reference sky, found by the criteria of
 				section 2 at each of its new and full Moons. They agree with NASA's
-				list of the same ten years: the same 38 eclipses, each of the same
+				list of the same ten years: the same 35 eclipses, each of the same
 				kind (the hybrid eclipse of 20 April 2023, total along most of its
 				path, counted as total), with its middle within two minutes of
 				NASA's.
@@ -137,12 +138,12 @@
 		</div>
 
 		<p>
-			Every year has at least two solar eclipses, and 2029 has four, all of
-			them partial. Lunar eclipses are fewer, and 2027 has none. The
-			eclipses come in groups, the <em>eclipse seasons</em>, of one to three
-			eclipses each, about 173 days apart. Two seasons take 346 days, 19 days
-			less than a year, so each season comes 19 days earlier in the year
-			than the season a year before.
+			Every year has at least two solar eclipses, and 2018 has three, all of
+			them partial. Lunar eclipses are fewer, and 2016 and 2020 have none.
+			The eclipses come in groups, the <em>eclipse seasons</em>, of one to
+			three eclipses each, about 174 days apart on average. Two seasons take
+			348 days, 18 days less than a year, so each season comes about 18
+			days earlier in the year than the season a year before.
 		</p>
 
 		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
@@ -167,8 +168,8 @@
 		<p>
 			What decides which new and full Moons are eclipses is the Moon's ecliptic latitude. The Moon does not move along the ecliptic, as the Sun does,
 			but on a path tilted against it, which takes it about 5° north of the
-			ecliptic and 5° south each month: from 4.99° to 5.30° at the greatest,
-			over 2021–2030. Twice a month it crosses the ecliptic, at the
+			ecliptic and 5° south each month: from 4.98° to 5.30° at the greatest,
+			over 2016–2025. Twice a month it crosses the ecliptic, at the
 			<em>nodes</em>. They are not fixed: they move westward along the
 			ecliptic, and go round in 18.61 years.
 		</p>
@@ -630,7 +631,7 @@
 			A limit on $|\beta|$ becomes a limit on the Sun's angular distance from a node
 			through $\sin\beta = \sin i \sin F$. The sizes change with the Moon's
 			distance, from 356·400 to 406·700 km, and so do the limits: a lunar
-			eclipse needs the Sun within 10.2° to 12.1° of a node, and a solar one
+			eclipse needs the Sun within 10.3° to 12.2° of a node, and a solar one
 			within 16.4° to 18.3°. The Sun's own distance changes the limits by
 			half an arcminute.
 		</p>
@@ -704,7 +705,7 @@
 			<p>
 				Ptolemy computes the same limits (VI 5). For the Moon at its least
 				distance his lunar limit is 12°12′ (12.20°), where the nearest Moon
-				of this page gives 12.1°. His solar limits are lopsided, 17°41′ with
+				of this page gives 12.2°. His solar limits are lopsided, 17°41′ with
 				the Moon north of the ecliptic and only 8°22′ with it south, because
 				he takes the parallax of observers in his own part of the world.
 			</p>
@@ -807,16 +808,19 @@
 
 		<p>
 			We therefore fit $i$ and the argument of latitude at J2000.0 by least
-			squares to the reference Moon's ecliptic latitude at the 25 new and full
-			Moons of 2026. The fit gives $i = 5.00^\circ$, and puts the ascending
-			node at the ecliptic longitude 125.05° at J2000.0, where Meeus' mean
-			node is at 125.04°.
+			squares to the reference Moon's ecliptic latitude at the last 25
+			documented new and full Moons, from 5 November 2025 to 26 October
+			2026. The motion in latitude $n_F$ comes from the same kind of fit over
+			the 2473 new and full Moons of 1926 to 2025, which fixes it to 0.02° a
+			century. The fit gives $i = 5.00^\circ$, and puts the ascending node at
+			the ecliptic longitude 125.05° at J2000.0, where Meeus' mean node is at
+			125.04°.
 		</p>
 
 		<p>
 			The Moon's greatest ecliptic latitudes, which vary from month to month
 			(section 1), would suggest a larger inclination. With 5.145°, their
-			mean, the ecliptic latitudes at the new and full Moons of 2026 would be
+			mean, the ecliptic latitudes at these new and full Moons would be
 			off by up to 10′, so what eclipses need is the inclination that holds at
 			new and full Moon.
 		</p>
@@ -891,10 +895,9 @@
 		</figure>
 
 		<p>
-			At the 25 new and full Moons of 2026, to which it was fitted, the
-			ecliptic latitude is within 1.9′ of the reference Moon's, and at the
-			other new and full Moons of 2021–2030, which the fit did not use, within
-			2.6′. Between them the error reaches 26′, but no eclipse happens there.
+			At the 25 new and full Moons to which it was fitted, the ecliptic
+			latitude is within 1.7′ of the reference Moon's, and at the other new
+			and full Moons of 2021–2030, which the fit did not use, within 2.7′. Between them the error reaches 26′, but no eclipse happens there.
 		</p>
 
 		<h3>The eclipses</h3>
@@ -902,8 +905,9 @@
 		<p>
 			We let the model find its own new and full Moons, from its Sun and its
 			Moon, and decide at each whether there is an eclipse and of what kind.
-			All 38 eclipses of 2021–2030 come out, each of the right kind, and no
-			other.
+			All 38 eclipses of 2021–2030 come out, and no other. All but one are of
+			the right kind: the deep partial eclipse of the Sun of 29 March 2025
+			comes out total.
 		</p>
 
 		<p>
@@ -1109,25 +1113,25 @@
 				<p>
 					$P_s/P_d = 1.0851958$. For the series, find how much $F$ changes in
 					one period, and compare with the solar limit at the mean distances,
-					17.1°.
+					17.2°.
 				</p>
 			</details>
 			<details class="answer">
 				<p>
-					$P_s/P_d = 1.0851958 = [1; 11, 1, 2, 1, 4, 3, 5, \dots]$, whose
+					$P_s/P_d = 1.0851958 = [1; 11, 1, 2, 1, 4, 3, 8, \dots]$, whose
 					convergents are 12/11, 13/12, 38/35, 51/47, 242/223, 777/716. The
 					fraction $p/q$ means $q$ synodic months against $p$ draconitic
 					months: 47 synodic months, 1387.94 days, miss 51 draconitic months by
 					2.7 hours, while 223 synodic months, 6585.321 days, miss 242
-					draconitic months by only 0.87 hours.
+					draconitic months by only 0.88 hours.
 				</p>
 				<p>
-					The same 6585.321 days hold 238.992 anomalistic months, 5.2 hours
+					The same 6585.321 days hold 238.992 anomalistic months, 5.3 hours
 					short of 239, so the Moon is back at the same distance and the
 					eclipse has nearly the same size and kind. They hold 18.999 eclipse
 					years, so the Sun is back near the same node, and the eclipse falls
 					in the same season, 18 years and about 11 days later. The 0.321 of a
-					day means that the Earth has turned 116° more, so the eclipse is seen
+					day means that the Earth has turned 115° more, so the eclipse is seen
 					a third of the way round the Earth to the west. Three periods,
 					19755.96 days, are almost a whole number of days. The ancient
 					astronomers tripled the Periodic "in order to obtain a period with an
@@ -1135,17 +1139,17 @@
 					2), after which an eclipse also comes back to nearly the same geographic longitude.
 				</p>
 				<p>
-					Over one period $F$ changes by $-0.478^\circ$, so the Sun's place at
+					Over one period $F$ changes by $-0.485^\circ$, so the Sun's place at
 					the eclipse moves slowly across the limits. A series runs for about
-					$2 \times 17.1 / 0.478 = 72$ periods, some 1300 years: the total
+					$2 \times 17.2 / 0.485 = 71$ periods, some 1300 years: the total
 					eclipses of 1 August 2008 and 12 August 2026 and 23 August 2044
 					belong to one, and its eclipse of 3 September 2062 is only partial.
 				</p>
 				<p>
 					Hipparchus' 5458 months are $7 \times 716 + 2 \times 223$, and his
 					5923 returns $7 \times 777 + 2 \times 242$: a combination of the last
-					two convergents, which misses by 0.72 hours, a little better than
-					the Periodic's 0.87 hours.
+					two convergents, which misses by 1.0 hours, about as much as the
+					Periodic's 0.88 hours.
 				</p>
 			</details>
 		</div>

@@ -412,13 +412,14 @@ The first anomaly and the simplest complete model.
   of our epicycle (uniform Moon as ghost, dots at new and full Moon). A
   photo: the eclipse of 7 September 2025 (Donatiello, CC0).
 - **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ and $n_M = 269
-  \times 360^\circ / (251\,P_s)$, best fixed by eclipses centuries apart,
-  so ours from Meeus 47; why eclipses (the Moon opposite the Sun, parallax
+  \times 360^\circ / (251\,P_s)$, best fixed by observations far apart,
+  so ours from the 1237 new Moons of 1926–2025 (the five months of
+  section 1 measured the same way); why eclipses (the Moon opposite the Sun, parallax
   does not move the moment, the second anomaly vanishes); the data of a
   triple, $a = n_M\,\Delta t$ and $d$ = the Sun's true motion minus $n\,\Delta
   t$, worked through for the eclipses of 7 Sep 2025, 3 Mar 2026 and 28 Aug
-  2026 (a table), which give $e = 0.0844$; consecutive triples of 2019 to
-  2030 range from 0.080 to 0.093. History block: eclipses "the only
+  2026 (a table), which give $e = 0.0844$; consecutive triples of 2014 to
+  2026 range from 0.075 to 0.093. History block: eclipses "the only
   observations" (IV 1); Hipparchus' month from Chaldaean and later
   eclipses (IV 2); Ptolemy's two exact solutions, "very nearly the same",
   5.25 (IV 6); Copernicus' almost the same (*De Rev.* IV 5).
@@ -453,7 +454,7 @@ The first anomaly and the simplest complete model.
 - **Question:** what goes wrong at the quarters?
 - **Learn:** the second anomaly, largest at the quarters: the real Moon's
   whole equation reaches 4.96° at new and full Moon and 7.68° at the
-  quarters (2021–2030); Ptolemy's description (*Almagest* V 2), his and
+  quarters (2016–2025); Ptolemy's description (*Almagest* V 2), his and
   Hipparchus' sightings of 7⅔° (V 3); Ptolemy's crank mechanism (V 2): K
   seen from the Earth at the mean longitude, carried on an eccentric whose
   centre C turns westward, its apogee A at $\bar\lambda - 2D$, so that
@@ -473,7 +474,7 @@ The first anomaly and the simplest complete model.
   elongation; lengths in units of OA (Ptolemy's 60); $c = \text{OC}$; the
   points O, C, A, K, N, L.
 - **Figures:** the real Moon's equation against $M$ at the new and full
-  Moons and at the quarters of 2021–2030 (static); the crank fitted to
+  Moons and at the quarters of 2016–2025 (static); the crank fitted to
   2026, without the direction, with $q$ over two months against page 3.1's
   epicycle (date); the direction of the epicycle in Ptolemy's example of
   V 6 (static, the epicycle enlarged); the error curve of the crank with
@@ -484,8 +485,8 @@ The first anomaly and the simplest complete model.
 - **Fit:** the quarters fix $c$ ($\sin q_\text{max} = r/\text{OG}$ with
   the epicycle at the eccentric's perigee); the direction of the epicycle
   shows near the octants and is kept as Ptolemy found it, so the octants
-  test the model; ours keeps page 3.1's fit and fits $c = 0.1762$ to the
-  25 quarters of 2026 (about 1% more for 2021–2030). History block:
+  test the model; ours keeps page 3.1's fit and fits $c = 0.1769$ to the
+  25 quarters of 2025 (0.6% more for 2016–2025); the Test runs over 2026. History block:
   Ptolemy's $c = 0.1719$ from 7⅔° at the quarters (V 4); ON = OC from two
   of Hipparchus' sightings near the octants (V 5).
 - **Test:** over 2026 the largest error falls from 3.2° (epicycle) to 2.7°
@@ -521,10 +522,10 @@ The first anomaly and the simplest complete model.
 #### 3.3 · Eclipses
 
 - **Question:** when does a new Moon become a solar eclipse?
-- **Learn:** the eclipses of 2021–2030 from the reference sky, which match
-  NASA's list (22 solar, 16 umbral lunar; penumbral eclipses not counted),
-  in 21 seasons 173.1 days apart on average, each about 19 days earlier in
-  the year; the Moon's greatest latitude, 4.99° to 5.30°; the nodes
+- **Learn:** the eclipses of 2016–2025 from the reference sky, which match
+  NASA's list (22 solar, 13 umbral lunar; penumbral eclipses not counted),
+  in 21 seasons 173.8 days apart on average, each about 18 days earlier in
+  the year; the Moon's greatest latitude, 4.98° to 5.30°; the nodes
   moving westward 19.34° a year (18.61 years); Ptolemy's "Periodic" of
   223 months (IV 2, Babylonian; "wrongly" called the saros, Toomer). The
   inclined circle (V 12): from $R_z(\Omega)R_x(i)$, $\sin\beta = \sin
@@ -539,15 +540,15 @@ The first anomaly and the simplest complete model.
   \pi - \pi_\odot$, total or annular by the Moon's radius from the
   point where the shadow's axis meets the Earth (non-central total and
   annular eclipses included); the least distance taken as $|\beta|$ at the
-  syzygy (0.9956 of it). The limits from the node (lunar 10.2° to
-  12.1°, solar 16.4° to 18.3°, with the Moon's distance); Ptolemy's
+  syzygy (0.9956 of it). The limits from the node (lunar 10.3° to
+  12.2°, solar 16.4° to 18.3°, with the Moon's distance); Ptolemy's
   (VI 5). The eclipse seasons: the solar limits take 31.5 to 35.3 days to
   cross, more than a month, so at least two solar eclipses a year; the
   lunar 19.7 to 23.4 days (VI 6). Capstone of Acts II and III.
 - **Notation:** $i$, $F$ and $\bar F$, $\Omega$ (☊ ☋ in figures),
   $n_F$, $P_s$, $P_d$, $P_a$, $Y_\text{e}$; $s$, $s_\odot$, $\pi$,
   $\pi_\odot$, $u$ (§6).
-- **Figures:** a calendar of the new and full Moons of 2021–2030 with the
+- **Figures:** a calendar of the new and full Moons of 2016–2025 with the
   eclipses (static); a photo of the total eclipse of 21 August 2017
   (NASA, public domain); a blue plate of the Moon's path near Regulus,
   11–15 August 2026, crossing the ecliptic at the node 16 hours after the
@@ -569,15 +570,18 @@ The first anomaly and the simplest complete model.
   months = 5923 returns in latitude (IV 2, Babylonian), 0.1 s from the
   reference; Ptolemy's correction and epoch (IV 9); his diameter and
   shadow from two eclipses (VI 5); Copernicus' motion in latitude from
-  eclipses at opposite nodes (IV 13). Ours: Meeus' $n_F$, and $i$ and $F_0$
-  fitted to the latitudes at the 25 new and full Moons of 2026: $i =
-  5.00^\circ$ (the mean inclination 5.145° would be up to 10′ off
-  there), the node at J2000 125.05° (Meeus 125.04°); the sizes from the
-  model's distances.
-- **Test:** the latitude within 1.9′ at the new and full Moons of 2026, 26′
-  over the year, 29′ over a century; the eclipses: all 38 of 2021–2030,
-  364 of 366 in 2001–2100 (two missed and three added, all grazing
-  partials), times rms 45 min, worst 97 min (page 3.1's 40′). Ptolemy: his
+  eclipses at opposite nodes (IV 13). Ours: $n_F$ from the latitudes at
+  the 2473 new and full Moons of 1926–2025 (±0.02° a century), and $i$
+  and $F_0$ fitted to the latitudes at the last 25 documented ones, 5
+  November 2025 to 26 October 2026: $i = 5.00^\circ$ (the mean
+  inclination 5.145° would be up to 10′ off there), the node at J2000
+  125.05° (Meeus 125.04°); the sizes from the model's distances, the mean
+  distance the reference Moon's average over 1926–2025.
+- **Test:** the latitude within 1.7′ at the fitted new and full Moons,
+  2.7′ at the others of 2021–2030, 26′ over 2026, 29′ over a century; the
+  eclipses: all 38 of 2021–2030 and no other, one of another kind (the
+  deep partial solar eclipse of 29 March 2025 comes out total), times rms
+  43 min, worst 95 min (page 3.1's 40′). Ptolemy: his
   latitudes within 2.3′ and his times within half an hour at his three
   eclipses; his lunar limit holds all 157 lunar eclipses of AD 100–200;
   in 2021–2030 still 37 of 38 eclipses, times wrong by up to 4.3 h.

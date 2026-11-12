@@ -3,7 +3,7 @@
    PAGE 3.3 · ECLIPSES - SCRIPT (page.js)
    Seven figures, each with its own init and draw (and update when it has
    controls):
-	 1. the new and full Moons of 2021 - 2030  (2D, static: a calendar,
+	 1. the new and full Moons of 2016 - 2025  (2D, static: a calendar,
 											   the eclipses marked)
 	 2. the Moon near Regulus                 (blue plate, static: the
 											   Moon's path of August 2026)
@@ -35,7 +35,7 @@
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
-	 1. Figure 1: the new and full Moons of 2021 - 2030
+	 1. Figure 1: the new and full Moons of 2016 - 2025
 	 2. Figure 2: the Moon near Regulus (blue plate)
 	 3. Figure 3: the Moon's inclined circle
 	 4. Figure 4: the two shadows, and the parallax triangle
@@ -181,18 +181,18 @@ function putLabel(ctx, text, point, color, align = 'center') {
 }
 
 /* ==========================================================================
-   1. FIGURE 1: THE NEW AND FULL MOONS OF 2021 - 2030
+   1. FIGURE 1: THE NEW AND FULL MOONS OF 2016 - 2025
    Static. One row a year, the day of the year across: every new and full
    Moon of the reference sky, the eclipses marked (Eclipses.reference,
-   the eclipses NASA lists for those years).
+   the eclipses NASA lists for those years). The last documented decade
+   (STRUCTURE.md §5).
    ========================================================================== */
 
-const CALENDAR_FIRST = 2021;
-const CALENDAR_LAST = 2030;
+const CALENDAR_FIRST = 2016;
+const CALENDAR_LAST = 2025;
 
 /* The days shown: a year, and a few days more at each end, so that a mark
-   on 1 January or 31 December (the eclipse of 31 December 2028) stays
-   inside the box. */
+   near 1 January or 31 December stays inside the box. */
 const CALENDAR_DAYS = [-8, 374];
 
 const calendarFigure = {

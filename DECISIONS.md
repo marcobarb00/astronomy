@@ -307,6 +307,17 @@ section.
   is still ahead; the other pages move their observations the same way.
   Only a Test may run into the future. Decided on 2026-11-12. →
   STRUCTURE.md §5
+- **The rates of Acts II and III are fitted from documented spans.**
+  Precession from the shift of γ over 1926.0–2026.0 (50.283″ a year); the
+  Sun's apogee from Hipparchus' method on every year 1826–2025 (1.751° a
+  century); the Moon's $n$ and $n_M$ from the new Moons of 1926–2025 and
+  the 251 : 269 relation; $n_F$ from the latitudes at the new and full
+  Moons of 1926–2025; the Moon's mean distance as the reference Moon's
+  average over 1926–2025. Observations move to the last documented year
+  or decade (2025, September 2025 – September 2026, 2016–2025); the Tests
+  keep 2026 and 2021–2030, which may run into the future. NASA's eclipse
+  lists for 2016–2020 were added to check the reference decade. Decided
+  on 2026-11-12. → shared/models/, tools/numbers/2.*.js, 3.*.js
 - **The figures of page 4.1 find the reference loops from geometric
   positions every two days.** The apparent positions the numbers script
   quotes cost four times as much (the Moon's series, for the Earth, twice
