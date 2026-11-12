@@ -283,12 +283,30 @@ section.
   prediction for 2027), and from 2027 to 2050 corrects their polynomial
   by an amount that falls to zero in 2050; before 2005 it is unchanged. →
   shared/time.js
-- **The clock's rate is the conventional one of Meeus 12.4**, 360° +
-  0.98564736629° a day of UT, and the year of page 1.3 is the one it
-  implies, $Y = 360^\circ / n = 365.2421873$ days. Meeus 25.2's mean
-  longitude of the Sun, in days of TT, implies a year 0.2 s longer; both
-  round to the 365.24219 days the pages quote. Decided on 2026-11-09. →
-  shared/models/clock.js, tools/numbers/1.3-clocks.js
+- **The mean Sun and the clock are fitted, not taken from Meeus.** The
+  year comes from lines through each equinox and solstice of 1926–2025 in
+  the reference sky (365.2421940 days, $n = 0.98564734824^\circ$ a day),
+  and $L_0 = 280.461355^\circ$ at J2000 from the mean of $\lambda_\odot
+  - n\,d$ over the 19 whole years 2007–2025, which average out nutation.
+  The clock of page 1.3 uses them: $\theta_G = L_0 + (360^\circ + n)\,d$.
+  The constants of UT (Meeus 12.4) differ by 2.7″ and 0.16 s a century;
+  they are a convention, kept as `MeanSun.UT_CONVENTION` for the worked
+  example and its test. Replaces the decision of 2026-11-09 that took the
+  clock's rate from Meeus 12.4. Decided on 2026-11-12 (STRUCTURE.md §5).
+  → shared/models/mean-sun.js, shared/models/clock.js,
+  tools/numbers/1.3-clocks.js
+- **The sky's rate on page 1.1 is fitted from Vega's meridian crossings**
+  at Greenwich on 1 June 1925 and 1 June 2025, 36·625 turns apart:
+  360.98562418° a day, one turn in 23 h 56 min 4.10 s. It is the rate
+  against the stars, so it differs from the clock's rate against γ by
+  precession (page 2.3); other bright stars give the same turn within
+  0.005 s. Decided on 2026-11-12. → shared/models/diurnal.js,
+  tools/numbers/1.1-turning-sky.js
+- **Observations and fits use documented years only.** Page 1.2 fits the
+  obliquity from the solstices of 2025, not 2026, whose December solstice
+  is still ahead; the other pages move their observations the same way.
+  Only a Test may run into the future. Decided on 2026-11-12. →
+  STRUCTURE.md §5
 - **The figures of page 4.1 find the reference loops from geometric
   positions every two days.** The apparent positions the numbers script
   quotes cost four times as much (the Moon's series, for the Earth, twice

@@ -86,7 +86,8 @@ The language needed to state any prediction.
   star; the fraction of the day a star of declination $\delta$ is above the
   horizon (and Ptolemy's longest day at Rhodes); the equinox day, 10 minutes
   longer than the model's 12 hours (refraction and the Sun's radius).
-- **Fit:** the rate from two timed meridian crossings; the geographic
+- **Fit:** the rate from two timed meridian crossings (Vega at Greenwich,
+  1 June 1925 and 1 June 2025, 36·625 turns apart); the geographic
   latitude and a declination from the two meridian crossings of a
   circumpolar star (Kochab from Alexandria). History block: Ptolemy's
   meridian ring and plaque (*Almagest* I 12) and his latitude of Alexandria,
@@ -119,10 +120,11 @@ The language needed to state any prediction.
   1.1 shows that pair of views. Two static figures: the spherical
   triangle of the pole, the zenith and the star, for the observation of
   section 1; and, in the Fit, the noon altitude of the Sun at Alexandria
-  through 2026, with the obliquity above and below the altitude of the
+  through 2025, with the obliquity above and below the altitude of the
   equator and the March equinox where the curve crosses it.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Alexandria,
-  2026); the origin γ from the March equinox. History block: Ptolemy's
+  2025, the last whole year before today); the origin γ from the March
+  equinox of 2025. History block: Ptolemy's
   meridian ring and plaque, his bounds and $23^\circ 51' 20''$ (*Almagest*
   I 12); Hipparchus' equinoxes on the equatorial ring (III 1).
 - **Test:** the model with the mean obliquity against the real Sun of 2026,
@@ -169,10 +171,13 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (the modern 365.24219 days; an error in
-  the rate accumulates, in the clock as in the mean Sun: 16 s a century for
-  a minute in the year), the constant from the mean Sun at J2000, the
-  longitude from one timed transit. History block: Hipparchus' and Ptolemy's
+- **Fit:** the rate from the year, measured from the equinoxes and
+  solstices of 1926–2025 (365.24219 days; an error in the rate
+  accumulates, in the clock as in the mean Sun: 16 s a century for a
+  minute in the year), the constant $L_0$ as the mean of $\lambda_\odot -
+  n\,d$ over the 19 whole years 2007–2025, the longitude from one timed
+  transit. UT's own constants (Meeus 12.4) are a convention, quoted in the
+  Model for the worked example. History block: Hipparchus' and Ptolemy's
   365.24667 days from solstices and equinoxes one to several centuries apart
   (*Almagest* III 1), their mean Sun, and a clock built on it, 0.44° a
   century behind. No history block in the Test.
