@@ -146,6 +146,9 @@ section.
   STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
+- **The link back to the hub is sticky and starts with «**, so it can
+  be clicked from anywhere on a long page and reads as a way back
+  (2026-11-12). → STYLE.md §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md
   §4.6
 - **Figures follow strict rules**: one size whatever the controls,

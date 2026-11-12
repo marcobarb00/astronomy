@@ -98,7 +98,9 @@ Rules:
 
 ### 4.2 Header
 
-1. "Predicting the Sky" link (small caps).
+1. "« Predicting the Sky" link (small caps), the way back to the hub. It
+   stays at the top of the window while the page scrolls, on a parchment
+   band as wide as the window.
 2. The act line, h1 title, italic subtitle. In the contents column on the
    left (§4.1): the table of contents, small caps, with a 1 px `--ink` rule
    on its left; the current section in `--accent`. Each entry is the
