@@ -125,6 +125,17 @@ function seasons(from) {
 
 const SEASON_NAMES = ['spring', 'summer', 'autumn', 'winter'];
 
+/* The four seasons starting with the first September equinox after
+   'from' (JD(TT)), in the order autumn, winter, spring, summer: the
+   documented year of the page's table and Figure 1. */
+function seasonsFromAutumn(from) {
+	const times = [sunReaches(180, from)];
+
+	[270, 0, 90, 180].forEach(target => times.push(sunReaches(target, times[times.length - 1])));
+
+	return { times, lengths: [0, 1, 2, 3].map(i => times[i + 1] - times[i]) };
+}
+
 function printSeasons(label, s) {
 	console.log(`${label}:`);
 	s.times
@@ -151,26 +162,56 @@ const N_PTOLEMY = MeanSun.PTOLEMY.n;
    4. OBSERVATION
    ========================================================================== */
 
-title('Observation: the seasons of 2026 (reference Sun)');
-const s2026 = seasons(Time.julianDay(2026, 3, 1));
-printSeasons('2026', s2026);
+/* The table and Figure 1 show the last documented year of seasons, from
+   the September equinox of 2025 to that of 2026 (STRUCTURE.md §5); its
+   spring and summer are those of 2026, which the Fit uses. */
+title('Observation: the seasons from September 2025 to September 2026 (reference Sun)');
+const OBS = seasonsFromAutumn(Time.julianDay(2025, 9, 1));
+const OBS_NAMES = ['autumn', 'winter', 'spring', 'summer'];
+
+OBS.times.slice(0, 4).forEach((t, i) => {
+	console.log(
+		`   ${OBS_NAMES[i].padEnd(7)} starts ${when(t)} TT = ${when(Time.utFromTt(t))} UT, lasts ${f(OBS.lengths[i], 3)} d`
+	);
+});
 console.log(
-	`   in UT: ${s2026.times
-		.slice(0, 4)
-		.map(t => when(Time.utFromTt(t)))
-		.join('; ')}`
-);
-console.log(
-	`   a uniform Sun: every season ${f(YEAR / 4, 2)} d; the half from March to September is ${f(s2026.lengths[0] + s2026.lengths[1] - s2026.lengths[2] - s2026.lengths[3], 2)} d longer`
+	`   a uniform Sun: every season ${f(YEAR / 4, 2)} d; the half from March to September is ${f(OBS.lengths[2] + OBS.lengths[3] - OBS.lengths[0] - OBS.lengths[1], 2)} d longer`
 );
 
-title("Observation: the Sun's daily motion in 2026 (Figure 1)");
+/* The same moments from the US Naval Observatory (aa.usno.navy.mil/api/
+   seasons, years 2025 and 2026, retrieved 2026-11-12), in UT: the
+   reference sky's Sun is accurate to about 0.7', a quarter of an hour of
+   its motion. What the differences do to the lengths and to the fit. */
+{
+	const usno = [
+		[2025, 9, 22, 18, 19],
+		[2025, 12, 21, 15, 3],
+		[2026, 3, 20, 14, 46],
+		[2026, 6, 21, 8, 24],
+		[2026, 9, 23, 0, 5]
+	].map(([y, m, d, h, min]) => Time.julianDayTime(y, m, d, h, min, 0));
+	const offsets = OBS.times.map((t, i) => (Time.utFromTt(t) - usno[i]) * 1440);
+	const usnoLengths = [0, 1, 2, 3].map(i => usno[i + 1] - usno[i]);
+	const ours = SolarEccentric.fitSeasons(OBS.lengths[2], OBS.lengths[3], YEAR);
+	const theirs = SolarEccentric.fitSeasons(usnoLengths[2], usnoLengths[3], YEAR);
+
+	console.log(`   reference minus USNO: ${offsets.map(x => f(x, 0)).join(', ')} min`);
+	console.log(
+		`   lengths minus USNO's: ${[0, 1, 2, 3].map(i => f((OBS.lengths[i] - usnoLengths[i]) * 1440, 0)).join(', ')} min;` +
+			` the Fit on USNO's spring and summer: e ${f(theirs.e, 5)} (ours ${f(ours.e, 5)}), apogee ${f(theirs.apogee, 2)}° (ours ${f(ours.apogee, 2)}°)`
+	);
+}
+
+/* The spring and summer of 2026, in the order of the old 'seasons'. */
+const s2026 = { times: OBS.times.slice(2), lengths: [OBS.lengths[2], OBS.lengths[3]] };
+
+title("Observation: the Sun's daily motion, September 2025 to September 2026 (Figure 1)");
 let slowest = { motion: 99 };
 let fastest = { motion: 0 };
 const motions = [];
 
-for (let d = 0; d <= 365; d++) {
-	const jd = Y2026 + d;
+for (let d = 0; d <= Math.ceil(OBS.times[4] - OBS.times[0]); d++) {
+	const jd = Math.floor(OBS.times[0] - 0.5) + 0.5 + d;
 	const motion = norm180(sunLongitude(jd + 0.5) - sunLongitude(jd - 0.5)) * 60;
 
 	motions.push(motion);
@@ -188,21 +229,15 @@ console.log(
 	`slowest ${f(slowest.motion, 2)}' a day on ${date(slowest.jd)}, fastest ${f(fastest.motion, 2)}' on ${date(fastest.jd)}`
 );
 console.log(
-	`first days of 2026: ${motions
-		.slice(0, 5)
-		.map(m => f(m, 2))
-		.join(', ')}`
-);
-console.log(
 	`mean n = ${f(N_MODERN * 60, 2)}'; swing +${f((fastest.motion / (N_MODERN * 60) - 1) * 100, 1)}% / ${f((slowest.motion / (N_MODERN * 60) - 1) * 100, 1)}%`
 );
 {
-	/* Figure 1 runs from the March equinox of 2026 to that of 2027, with
-	   the four seasons of the table above it. */
+	/* Figure 1 runs from the September equinox of 2025 to that of 2026,
+	   with the four seasons of the table above it. */
 	let low = 99;
 	let high = 0;
 
-	for (let jd = s2026.times[0]; jd <= s2026.times[4]; jd += 0.25) {
+	for (let jd = OBS.times[0]; jd <= OBS.times[4]; jd += 0.25) {
 		const motion = norm180(sunLongitude(jd + 0.5) - sunLongitude(jd - 0.5)) * 60;
 
 		low = Math.min(low, motion);
@@ -210,7 +245,7 @@ console.log(
 	}
 
 	console.log(
-		`Figure 1, ${date(s2026.times[0])} to ${date(s2026.times[4])}: range ${f(low, 2)}' to ${f(high, 2)}' (axis 56' to 62'); seasons ${s2026.lengths.map(x => f(x, 2)).join(', ')} d`
+		`Figure 1, ${date(OBS.times[0])} to ${date(OBS.times[4])}: range ${f(low, 2)}' to ${f(high, 2)}' (axis 56' to 62'); seasons ${OBS.lengths.map(x => f(x, 2)).join(', ')} d`
 	);
 }
 
@@ -249,7 +284,7 @@ console.log(
 title('Model: the seasons of the 2026 eccentric (Figure 4 (b))');
 const fit2026Lengths = SolarEccentric.seasonLengths(SolarEccentric.FIT_2026.e, SolarEccentric.FIT_2026.apogee, YEAR);
 console.log(
-	`FIT_2026: ${fit2026Lengths.map(x => f(x, 2)).join(', ')} d; summer - winter = ${f(fit2026Lengths[1] - fit2026Lengths[3], 2)} d (real ${f(s2026.lengths[1] - s2026.lengths[3], 2)} d)`
+	`FIT_2026: ${fit2026Lengths.map(x => f(x, 2)).join(', ')} d; summer - winter = ${f(fit2026Lengths[1] - fit2026Lengths[3], 2)} d (real summer 2026 - winter 2025-26 ${f(OBS.lengths[3] - OBS.lengths[1], 2)} d)`
 );
 console.log(
 	`with e = 0.1: ${SolarEccentric.seasonLengths(0.1, SolarEccentric.FIT_2026.apogee, YEAR)
@@ -332,13 +367,15 @@ console.log(
 title('Fit: 2026 (Figure 5 preset, and the model of the page)');
 const fit2026 = printFit('2026', s2026.lengths[0], s2026.lengths[1], YEAR);
 console.log(
-	`   real autumn ${f(s2026.lengths[2], 3)} d, winter ${f(s2026.lengths[3], 3)} d: predicted - real ${f((fit2026.lengths[2] - s2026.lengths[2]) * 24, 2)} h, ${f((fit2026.lengths[3] - s2026.lengths[3]) * 24, 2)} h`
+	`   real autumn 2025 ${f(OBS.lengths[0], 3)} d, winter 2025-26 ${f(OBS.lengths[1], 3)} d: predicted - real ${f((fit2026.lengths[2] - OBS.lengths[0]) * 24, 2)} h, ${f((fit2026.lengths[3] - OBS.lengths[1]) * 24, 2)} h`
 );
 const L0fit = norm360(fit2026.meanLongitudeAtEquinox - N_MODERN * (s2026.times[0] - Time.J2000));
 console.log(
 	`   spring equinox ${f(s2026.times[0] - Time.J2000, 4)} d after J2000; L0 = ${f(fit2026.meanLongitudeAtEquinox, 4)}° - n x that = ${f(L0fit, 5)}°`
 );
-console.log(`   Meeus 25.2: ${MeanSun.MODERN.L0}°, ours - Meeus = ${f((L0fit - MeanSun.MODERN.L0) * 60, 2)}'`);
+console.log(
+	`   the mean Sun of page 1.3: ${MeanSun.MODERN.L0}°, ours - that = ${f((L0fit - MeanSun.MODERN.L0) * 60, 2)}'`
+);
 console.log(
 	`   FIT_2026 in solar-eccentric.js: L0 ${SolarEccentric.FIT_2026.L0}, e ${SolarEccentric.FIT_2026.e}, apogee ${SolarEccentric.FIT_2026.apogee}`
 );

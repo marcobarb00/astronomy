@@ -61,13 +61,16 @@ const LunarLatitude = (function () {
 	});
 
 	/* Our fit (page 3.3, section 3): the epicycle of page 3.1
-	   (LunarEpicycle.FIT_2026) with Meeus' motion in latitude, and i and
-	   F0 fitted by least squares to the reference Moon's latitude at the
-	   25 new and full Moons of 2026 (tools/numbers/3.3-eclipses.js). */
+	   (LunarEpicycle.FIT_2026); the motion in latitude fitted by least
+	   squares to the latitude at every new and full Moon of 1926 - 2025;
+	   and i and F0 fitted by least
+	   squares to the reference Moon's latitude at the last 25 documented
+	   new and full Moons, 5 November 2025 to 26 October 2026
+	   (tools/numbers/3.3-eclipses.js). */
 	const FIT_2026 = Object.assign({}, LunarEpicycle.FIT_2026, {
-		F0: 93.266574,
-		nF: MEEUS.nF,
-		i: 4.999207
+		F0: 93.261428,
+		nF: 13.229350305,
+		i: 4.996479
 	});
 
 	/* ======================================================================

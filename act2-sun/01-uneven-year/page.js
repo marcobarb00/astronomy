@@ -4,8 +4,8 @@
    Six figures, each with its own init and draw (and update when it has
    controls):
 	 1. the Sun's daily motion       (2D, static: the real Sun from the
-									   March equinox of 2026 to that of
-									   2027, with its four seasons)
+									   September equinox of 2025 to that
+									   of 2026, with its four seasons)
 	 2. the Earth or the Sun at rest (2D, static: the eccentric and the
 									   equal circle that carries the Earth)
 	 3. the equation of centre       (2D: (a) the eccentric with M and q,
@@ -63,9 +63,10 @@ const CARDINAL_POINTS = [
 	{ lon: 270, label: '270°' }
 ];
 
-/* First day of each month of the year and of the next, as a day index
-   from 1 January of YEAR (Figure 1 runs into the next year). */
-const MONTH_STARTS = [YEAR, YEAR + 1].flatMap(year =>
+/* First day of each month of the year before YEAR, of YEAR and of the
+   next, as a day index from 1 January of YEAR (Figure 1 starts in the
+   year before). */
+const MONTH_STARTS = [YEAR - 1, YEAR, YEAR + 1].flatMap(year =>
 	Time.MONTH_NAMES.map((name, i) => ({
 		value: Time.julianDay(year, i + 1, 1) - YEAR_START,
 		label: name
@@ -117,19 +118,23 @@ function drawArrow(ctx, from, to, style, gap = 0) {
 
 /* ==========================================================================
    1. FIGURE 1: THE SUN'S DAILY MOTION
-   Static. For each day from the March equinox of 2026 to that of 2027,
-   the arc (arcmin) the reference Sun moves between 0 h the day before and
-   0 h the day after, divided by two (centred on the day); the mean daily
+   Static. For each day from the September equinox of 2025 to that of
+   2026, the last documented year of seasons (STRUCTURE.md §5), the arc
+   (arcmin) the reference Sun moves between 0 h the day before and 0 h
+   the day after, divided by two (centred on the day); the mean daily
    motion n; the four seasons, with their names and lengths above the
-   plot. Fixed scale 56' to 62' (the motion ranges from 57.19' to 61.16',
+   plot. Fixed scale 56' to 62' (the motion ranges from 57.19' to 61.14',
    tools/numbers/2.1-uneven-year.js).
    ========================================================================== */
 
 const MOTION_RANGE = [56, 62];
 
-/* The curve is computed to this day index, past the March equinox of the
-   next year. */
-const MOTION_LAST_DAY = DAYS_IN_YEAR + 90;
+/* The curve is computed between these day indices (from 1 January of
+   YEAR), a little before the September equinox of the year before and a
+   little after that of YEAR; the first season begins at that equinox. */
+const MOTION_FIRST_DAY = -110;
+const MOTION_LAST_DAY = 275;
+const MOTION_FIRST_SEASON = 2; // autumn, in SEASON_NAMES
 
 /* The room above the plot box for the names and lengths of the seasons
    (px), and the baselines of the two lines, up from the box. */
@@ -148,7 +153,7 @@ const motionFigure = {
 		this.plot = new Plot2D(byId('motion-plot'), {
 			x: [this.seasons[0], this.seasons[4]],
 			y: MOTION_RANGE,
-			xLabel: `date (${YEAR}–${YEAR + 1})`,
+			xLabel: `date (${YEAR - 1}–${YEAR})`,
 			yLabel: 'daily motion (′)',
 			xTicks: monthTicks,
 			aspect: 0.42,
@@ -157,16 +162,17 @@ const motionFigure = {
 		});
 	},
 
-	/* The reference Sun's daily motion on every day to MOTION_LAST_DAY,
-	   and the moments (day index) of the spring equinox of the year, the
-	   solstices and equinoxes after it, and the next spring equinox. */
+	/* The reference Sun's daily motion on every day from MOTION_FIRST_DAY
+	   to MOTION_LAST_DAY, and the moments (day index) of the September
+	   equinox of the year before, the solstices and equinoxes after it,
+	   and the September equinox of YEAR. */
 	computeMotion() {
 		const longitude = day => Ephem.longitude('sun', YEAR_START + day);
 
 		this.days = [];
 		this.motion = [];
 
-		for (let day = 0; day <= MOTION_LAST_DAY; day++) {
+		for (let day = MOTION_FIRST_DAY; day <= MOTION_LAST_DAY; day++) {
 			this.days.push(day);
 			this.motion.push((norm180(longitude(day + 1) - longitude(day - 1)) * 60) / 2);
 		}
@@ -176,10 +182,10 @@ const motionFigure = {
 		// a day of the day found by stepping, and is then bisected
 		this.seasons = [];
 
-		let day = 0;
+		let day = MOTION_FIRST_DAY;
 
 		for (let i = 0; i <= 4; i++) {
-			const target = 90 * (i % 4);
+			const target = 90 * ((i + MOTION_FIRST_SEASON) % 4);
 			const ahead = d => norm180(longitude(d) - target);
 
 			while (ahead(day + 1) < 0) {
@@ -200,9 +206,9 @@ const motionFigure = {
 		p.hline(mean, { color: COL.muted, width: 1.5, dash: [6, 5] });
 		p.curve(this.days, this.motion, { color: COL.sun, width: 2.5 });
 
-		// the mean, named above its line in the middle of summer, where the
-		// curve runs well below it
-		p.text(`mean, ${fixed(mean, 2)}′`, (this.seasons[1] + this.seasons[2]) / 2, mean, {
+		// the mean, named above its line in the middle of summer (the last
+		// season), where the curve runs well below it
+		p.text(`mean, ${fixed(mean, 2)}′`, (this.seasons[3] + this.seasons[4]) / 2, mean, {
 			align: 'center',
 			baseline: 'bottom',
 			dx: 0,
@@ -228,7 +234,7 @@ const motionFigure = {
 			const x = (left + right) / 2;
 
 			ctx.font = right - left >= SEASON_NAME_ROOM ? FONT_NAME : FONT_NAME_SMALL;
-			ctx.fillText(SEASON_NAMES[i], x, p.box.top - SEASON_HEADER.name);
+			ctx.fillText(SEASON_NAMES[(i + MOTION_FIRST_SEASON) % 4], x, p.box.top - SEASON_HEADER.name);
 			ctx.font = FONT_TICK;
 			ctx.fillText(`${fixed(this.seasons[i + 1] - this.seasons[i], 2)} d`, x, p.box.top - SEASON_HEADER.length);
 		}

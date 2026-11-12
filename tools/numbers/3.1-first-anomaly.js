@@ -34,9 +34,11 @@ const shared = loadFiles([
 	'shared/models/mean-sun.js',
 	'shared/models/solar-eccentric.js',
 	'shared/models/precession.js',
-	'shared/models/lunar-epicycle.js'
+	'shared/models/lunar-epicycle.js',
+	'shared/models/lunar-latitude.js'
 ]);
-const { norm180, sin, asin, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession, LunarEpicycle } = shared;
+const { norm180, sin, asin, R2D, D2R, Time, Ephem, MeanSun, SolarEccentric, Precession, LunarEpicycle, LunarLatitude } =
+	shared;
 const { MEEUS, PTOLEMY, TRIPLES } = LunarEpicycle;
 
 /* ==========================================================================
@@ -121,28 +123,113 @@ function phases(target, from, to) {
 	return found;
 }
 
+/* Every moment in [from, to] when g (deg, continuous near its zeros)
+   goes from negative to positive, stepping by 'step' days and bisecting. */
+function upCrossings(g, from, to, step = 0.5) {
+	const found = [];
+
+	for (let jd = from; jd < to; jd += step) {
+		if (g(jd) < 0 && g(jd + step) >= 0) {
+			found.push(bisect(g, jd, jd + step));
+		}
+	}
+
+	return found;
+}
+
+/* Every moment of greatest daily motion in [from, to]: a local maximum
+   on a grid of a quarter of a day, refined by golden-section search. */
+function fastestMoments(from, to) {
+	const found = [];
+
+	for (let jd = from; jd < to; jd += 0.25) {
+		if (moonMotion(jd) > moonMotion(jd - 0.25) && moonMotion(jd) >= moonMotion(jd + 0.25)) {
+			let a = jd - 0.25;
+			let b = jd + 0.25;
+
+			for (let k = 0; k < 30; k++) {
+				const m1 = a + (b - a) / 3;
+				const m2 = b - (b - a) / 3;
+
+				if (moonMotion(m1) < moonMotion(m2)) {
+					a = m1;
+				} else {
+					b = m2;
+				}
+			}
+			found.push((a + b) / 2);
+		}
+	}
+
+	return found;
+}
+
+/* Least-squares line through the moments of successive events,
+   t_k = a + P k: the period P (days), its standard error (days) and the
+   scatter of the moments about the line (days). */
+function periodFit(moments) {
+	const n = moments.length;
+	const meanK = (n - 1) / 2;
+	const meanT = moments.reduce((sum, t) => sum + t, 0) / n;
+	let skt = 0;
+	let skk = 0;
+
+	moments.forEach((t, k) => {
+		skt += (k - meanK) * (t - meanT);
+		skk += (k - meanK) * (k - meanK);
+	});
+
+	const P = skt / skk;
+	const residuals = moments.map((t, k) => t - meanT - P * (k - meanK));
+	const scatter = Math.sqrt(residuals.reduce((sum, r) => sum + r * r, 0) / (n - 2));
+
+	return { P, error: scatter / Math.sqrt(skk), scatter, count: n };
+}
+
+const Y2025 = Time.julianDay(2025, 1, 1);
 const Y2026 = Time.julianDay(2026, 1, 1);
 const Y2027 = Time.julianDay(2027, 1, 1);
 const J2000 = 2451545.0;
 
-/* Every new and full Moon of 2019 - 2030, and the lunar eclipses among
-   the full Moons: the Moon within 0.9° of the ecliptic, about the limit
-   for an eclipse by the umbra. */
-const FULL = phases(180, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
-const NEW = phases(0, Time.julianDay(2019, 1, 1), Time.julianDay(2031, 1, 1));
-const ECLIPSES = FULL.filter(jd => Math.abs(moonLat(jd)) < 0.9);
-const in2026 = list => list.filter(jd => jd >= Y2026 && jd < Y2027);
+/* Observations and fits use documented moments only, up to the start of
+   November 2026 (STRUCTURE.md §5); the Test may run into the future. */
+const DOCUMENTED_END = Time.julianDay(2026, 11, 1);
+
+/* Every new and full Moon of 2014 - 2026, and the lunar eclipses among
+   the documented full Moons: the Moon within 0.9° of the ecliptic, about
+   the limit for an eclipse by the umbra. */
+const FULL = phases(180, Time.julianDay(2014, 1, 1), Y2027);
+const NEW = phases(0, Time.julianDay(2014, 1, 1), Y2027);
+const ECLIPSES = FULL.filter(jd => jd < DOCUMENTED_END && Math.abs(moonLat(jd)) < 0.9);
+const inYear = (list, start) => list.filter(jd => jd >= start && jd < start + 365);
+const in2026 = list => inYear(list, Y2026);
+
+/* The century of the months and of the mean motions, 1926.0 - 2026.0:
+   the new Moons, the Moon's crossings of gamma and of the ascending node,
+   and its fastest moments (sections 4 and 6). */
+const CENTURY = [Time.julianDay(1926, 1, 1), Y2026];
+const CENTURY_NEW = phases(0, CENTURY[0], CENTURY[1]);
+const CENTURY_GAMMA = upCrossings(jd => norm180(moonLon(jd)), CENTURY[0], CENTURY[1]);
+const CENTURY_NODE = upCrossings(moonLat, CENTURY[0], CENTURY[1]);
+const CENTURY_FASTEST = fastestMoments(CENTURY[0], CENTURY[1]);
+
+/* The fitted mean motions (section 6): n from the synodic month and the
+   mean Sun of page 1.3, n_M from 251 synodic = 269 anomalistic months. */
+const SYNODIC_FIT = periodFit(CENTURY_NEW).P;
+const N_FIT = MeanSun.MODERN.n + 360 / SYNODIC_FIT;
+const NM_FIT = (269 * 360) / (251 * SYNODIC_FIT);
+const MOTIONS = { n: N_FIT, nM: NM_FIT };
 
 /* ==========================================================================
    4. OBSERVATION
    ========================================================================== */
 
-title("Observation: the Moon's daily motion in 2026 (Figure 1)");
+title("Observation: the Moon's daily motion in 2025 (Figure 1)");
 {
 	let slowest = { v: 99 };
 	let fastest = { v: 0 };
 
-	for (let jd = Y2026; jd <= Y2027; jd += 0.05) {
+	for (let jd = Y2025; jd <= Y2026; jd += 0.05) {
 		const v = moonMotion(jd);
 
 		if (v < slowest.v) {
@@ -152,26 +239,26 @@ title("Observation: the Moon's daily motion in 2026 (Figure 1)");
 			fastest = { v, jd };
 		}
 	}
-	console.log(`mean daily motion (Meeus L'): ${f(MEEUS.n, 4)}°/d`);
+	console.log(`mean daily motion (section 6): ${f(N_FIT, 4)}°/d`);
 	console.log(
 		`slowest ${f(slowest.v, 2)}°/d on ${date(slowest.jd)}; fastest ${f(fastest.v, 2)}°/d on ${date(fastest.jd)}`
 	);
 	console.log(
-		`swing about the mean: +${f((100 * (fastest.v - MEEUS.n)) / MEEUS.n, 1)}% / ${f((100 * (slowest.v - MEEUS.n)) / MEEUS.n, 1)}% (the Sun: 3.4%, page 2.1)`
+		`swing about the mean: +${f((100 * (fastest.v - N_FIT)) / N_FIT, 1)}% / ${f((100 * (slowest.v - N_FIT)) / N_FIT, 1)}% (the Sun: 3.4%, page 2.1)`
 	);
 }
 
-title('Observation: the fastest moments of 2026 against the full Moons');
+title('Observation: the fastest moments of 2025 against the full Moons');
 {
-	const full = phases(180, Y2026 - 40, Y2027);
+	const full = phases(180, Y2025 - 40, Y2026);
 	const maxima = [];
 
-	for (let jd = Y2026; jd < Y2027; jd += 0.1) {
+	for (let jd = Y2025; jd < Y2026; jd += 0.1) {
 		if (moonMotion(jd) > moonMotion(jd - 0.1) && moonMotion(jd) >= moonMotion(jd + 0.1)) {
 			maxima.push(jd);
 		}
 	}
-	console.log('fastest moments of 2026, and the days since the last full Moon:');
+	console.log('fastest moments of 2025, and the days since the last full Moon:');
 	maxima.forEach(jd => {
 		const lastFull = full.filter(t => t <= jd).pop();
 
@@ -180,21 +267,44 @@ title('Observation: the fastest moments of 2026 against the full Moons');
 	console.log(
 		`mean interval between maxima: ${f((maxima[maxima.length - 1] - maxima[0]) / (maxima.length - 1), 2)} d`
 	);
-	console.log('the full Moons of 2026 and the speed at each:');
-	in2026(FULL).forEach(jd => console.log(`   ${when(jd)} TT  ${f(moonMotion(jd), 2)}°/d`));
+	console.log('the full Moons of 2025 and the speed at each:');
+	inYear(FULL, Y2025).forEach(jd => console.log(`   ${when(jd)} TT  ${f(moonMotion(jd), 2)}°/d`));
 }
 
-title('Observation: the months (mean motions, Meeus 47)');
+/* The months measured over the century 1926.0 - 2026.0 of the reference
+   sky: a straight line through the moments of each kind of return. The
+   sidereal month is the tropical one with the precession of page 2.3. */
+title('Observation: the months, measured over 1926.0 - 2026.0');
 const p = Precession.MODERN.rate / 365.25; // deg a day
 const nSun = MeanSun.MODERN.n;
-const nF = 483202.0175233 / 36525; // Meeus 47.5, the argument of latitude
-const MONTHS = {
-	tropical: 360 / MEEUS.n,
-	sidereal: 360 / (MEEUS.n - p),
-	synodic: 360 / (MEEUS.n - nSun),
-	anomalistic: 360 / MEEUS.nM,
-	draconitic: 360 / nF
+const MEASURED = {
+	synodic: periodFit(CENTURY_NEW),
+	tropical: periodFit(CENTURY_GAMMA),
+	anomalistic: periodFit(CENTURY_FASTEST),
+	draconitic: periodFit(CENTURY_NODE)
 };
+/* The table of the page: the synodic and the anomalistic month as
+   measured; the tropical from the synodic and the mean Sun (n of section
+   6), the sidereal from it with the precession of page 2.3, and the
+   draconitic from page 3.3's fit to the latitudes at the new and full
+   Moons. The straight lines through the returns to gamma and to the node
+   are pulled by the 8.85-year beat of the anomaly, and are only checks. */
+const MONTHS = {
+	tropical: 360 / N_FIT,
+	sidereal: 360 / (N_FIT - p),
+	synodic: MEASURED.synodic.P,
+	anomalistic: MEASURED.anomalistic.P,
+	draconitic: 360 / LunarLatitude.FIT_2026.nF
+};
+
+Object.entries(MEASURED).forEach(([name, m]) =>
+	console.log(
+		`${name.padEnd(12)} ${m.count} returns; scatter ${f(m.scatter * 24, 2)} h; month ${f(m.P, 6)} d +- ${f(m.error * 86400, 1)} s`
+	)
+);
+console.log(
+	`the reference's mean motions (Meeus 47), for comparison: tropical ${f(360 / MEEUS.n, 6)} d, anomalistic ${f(360 / MEEUS.nM, 6)} d, synodic ${f(360 / (MEEUS.n - nSun), 6)} d, draconitic ${f((36525 / 483202.0175233) * 360, 6)} d`
+);
 const dhm = days => {
 	const d = Math.floor(days);
 	const hours = (days - d) * 24;
@@ -290,7 +400,7 @@ console.log(
 
 title('Model: the equivalent eccentric');
 {
-	const rate = MEEUS.n - MEEUS.nM;
+	const rate = N_FIT - NM_FIT;
 	const rateP = PTOLEMY.n - PTOLEMY.nM;
 
 	console.log(
@@ -325,7 +435,7 @@ title('Fit: the mean motions from the synodic month and the Sun (Almagest IV 2, 
 		`n = n_sun + 360°/P_s = ${f(n, 8)}°/d (Ptolemy 13;10,34,58,33,30,30 = ${f(PTOLEMY.n, 8)}°/d; reference ${f(MEEUS.n, 8)}°/d)`
 	);
 	console.log(
-		`   Ptolemy's n minus the reference's: ${f((PTOLEMY.n - MEEUS.n) * 3600, 4)}"/d = ${f((PTOLEMY.n - MEEUS.n) * 3600 * 365.25, 1)}" a year`
+		`   Ptolemy's n minus the reference's: ${f((PTOLEMY.n - MEEUS.n) * 3600, 4)}"/d = ${f((PTOLEMY.n - MEEUS.n) * 3600 * 365.25, 1)}" a year; minus ours ${f((PTOLEMY.n - N_FIT) * 3600 * 365.25, 1)}" a year (his Sun's ${f((MeanSun.PTOLEMY.n - MeanSun.MODERN.n) * 3600 * 365.25, 1)}")`
 	);
 	console.log(
 		`n_M = 269 x 360° / (251 P_s) = ${f(nMRaw, 8)}°/d (Ptolemy before correction 13;3,53,56,29,38,38 = ${f(nMRawSource, 8)}°/d)`
@@ -333,11 +443,22 @@ title('Fit: the mean motions from the synodic month and the Sun (Almagest IV 2, 
 	console.log(
 		`   corrected (IV 7) by ${f(correction * 3600, 5)}" a day: ${f(nMRawSource - correction, 8)}°/d (PTOLEMY.nM ${f(PTOLEMY.nM, 8)}; reference ${f(MEEUS.nM, 8)}°/d)`
 	);
-	console.log(
-		`the same with the modern Sun and month: n = ${f(MeanSun.MODERN.n + 360 / MONTHS.synodic, 8)}°/d, n_M = ${f((269 * 360) / (251 * MONTHS.synodic), 8)}°/d`
-	);
-	console.log(`the Moon moves ${f(MEEUS.n / 24, 3)}° in an hour`);
+	console.log(`the Moon moves ${f(N_FIT / 24, 3)}° in an hour`);
 }
+
+title('Fit: the mean motions from the new Moons of 1926 - 2025 and the Sun of page 1.3');
+console.log(
+	`P_s = ${f(MONTHS.synodic, 7)} d (+- ${f(MEASURED.synodic.error * 86400, 1)} s, from ${MEASURED.synodic.count} new Moons)`
+);
+console.log(`n = n_sun + 360°/P_s = ${f(MeanSun.MODERN.n, 9)} + ${f(360 / MONTHS.synodic, 9)} = ${f(N_FIT, 9)}°/d`);
+console.log(`n_M = 269 x 360° / (251 P_s) = ${f(NM_FIT, 9)}°/d, an anomalistic month of ${f(360 / NM_FIT, 6)} d`);
+console.log(
+	`   the fastest moments alone: ${f(MONTHS.anomalistic, 6)} d +- ${f(MEASURED.anomalistic.error * 86400, 1)} s -> n_M = ${f(360 / MONTHS.anomalistic, 9)}°/d`
+);
+console.log(`   FIT_2026 in lunar-epicycle.js: n ${LunarEpicycle.FIT_2026.n}, nM ${LunarEpicycle.FIT_2026.nM}`);
+console.log(
+	`   against the reference's mean motions (Meeus 47): n ${f((N_FIT - MEEUS.n) * 36525, 3)}° a century, n_M ${f((NM_FIT - MEEUS.nM) * 36525, 3)}° a century`
+);
 
 title("Fit: the data of Ptolemy's Babylonian triple (Almagest IV 6)");
 {
@@ -379,7 +500,7 @@ Object.entries(TRIPLES).forEach(([name, data]) => {
 	);
 });
 
-title('Fit: the lunar eclipses of the reference sky, 2019 - 2030');
+title('Fit: the lunar eclipses of the reference sky, 2014 - 2026');
 ECLIPSES.forEach(jd =>
 	console.log(`   ${when(jd)} TT  JD ${f(jd, 6)}  lambda ${f(moonLon(jd), 3)}°  beta ${f(moonLat(jd), 3)}°`)
 );
@@ -388,9 +509,9 @@ ECLIPSES.forEach(jd =>
 const pick = (y, m, d) => ECLIPSES.find(jd => Math.abs(jd - Time.julianDay(y, m, d)) < 2);
 const OURS = [pick(2025, 9, 7), pick(2026, 3, 3), pick(2026, 8, 28)];
 const OURS_LON = OURS.map(moonLon);
-const OURS_DATA = LunarEpicycle.tripleFromObservations(OURS, OURS_LON, MEEUS);
+const OURS_DATA = LunarEpicycle.tripleFromObservations(OURS, OURS_LON, MOTIONS);
 const OURS_SOLUTION = LunarEpicycle.threeEclipses(OURS_DATA);
-const FIT = LunarEpicycle.fitEclipses(OURS, OURS_LON, MEEUS, J2000);
+const FIT = LunarEpicycle.fitEclipses(OURS, OURS_LON, MOTIONS, J2000);
 
 title('Fit: our three eclipses, 7 Sep 2025, 3 Mar 2026, 28 Aug 2026');
 console.log(`moments (TT): ${OURS.map(when).join('; ')}`);
@@ -416,8 +537,8 @@ title('Fit: the data of the eclipses of 2025 - 2026, from the Sun');
 		const days = t2 - t1;
 		const sunMotion = norm180(sunLon(t2) - sunLon(t1) - 180) + 180;
 		const moonMotionTrue = norm180(moonLon(t2) - moonLon(t1) - 180) + 180;
-		const mean = (((MEEUS.n * days) % 360) + 360) % 360;
-		const a = (((MEEUS.nM * days) % 360) + 360) % 360;
+		const mean = (((N_FIT * days) % 360) + 360) % 360;
+		const a = (((NM_FIT * days) % 360) + 360) % 360;
 
 		console.log(
 			`interval ${i + 1}: ${f(days, 4)} d = ${Math.floor(days)} d ${f((days % 1) * 24, 1)} h; Sun's true motion ${f(sunMotion, 3)}° (the Moon's ${f(moonMotionTrue, 3)}°); mean n dt = ${f(mean, 3)}°; a = nM dt = ${f(a, 2)}°; d = ${f(sunMotion - mean, 3)}°`
@@ -425,13 +546,13 @@ title('Fit: the data of the eclipses of 2025 - 2026, from the Sun');
 	});
 }
 
-title('Fit: every three consecutive eclipses, 2019 - 2030');
+title('Fit: every three consecutive eclipses, 2014 - 2026');
 {
 	const values = [];
 
 	for (let i = 0; i + 2 < ECLIPSES.length; i++) {
 		const times = ECLIPSES.slice(i, i + 3);
-		const s = LunarEpicycle.threeEclipses(LunarEpicycle.tripleFromObservations(times, times.map(moonLon), MEEUS));
+		const s = LunarEpicycle.threeEclipses(LunarEpicycle.tripleFromObservations(times, times.map(moonLon), MOTIONS));
 
 		values.push(s.e);
 		console.log(`   ${date(times[0])} .. ${date(times[2])}: r/R = ${f(s.e, 4)}, greatest ${f(asin(s.e), 2)}°`);
@@ -441,9 +562,9 @@ title('Fit: every three consecutive eclipses, 2019 - 2030');
 	);
 }
 
-title('Fit: least squares on every new and full Moon of 2026 (a check)');
+title('Fit: least squares on every new and full Moon of 2025 (a check)');
 {
-	const times = in2026(FULL.concat(NEW));
+	const times = inYear(FULL.concat(NEW), Y2025);
 
 	/* To first order, lambda - n d = L - X sin(nM d) - Y cos(nM d), with
 	   X = e cos M0 and Y = e sin M0 and d from J2000: linear in (L, X, Y).
@@ -452,8 +573,8 @@ title('Fit: least squares on every new and full Moon of 2026 (a check)');
 		const d = jd - J2000;
 
 		return {
-			x: [1, -sin(MEEUS.nM * d), -Math.cos(MEEUS.nM * d * D2R)],
-			y: norm180(moonLon(jd) - (FIT.L0 + MEEUS.n * d)) * D2R
+			x: [1, -sin(NM_FIT * d), -Math.cos(NM_FIT * d * D2R)],
+			y: norm180(moonLon(jd) - (FIT.L0 + N_FIT * d)) * D2R
 		};
 	});
 	const N = [0, 1, 2].map(i => [0, 1, 2].map(j => rows.reduce((s, r) => s + r.x[i] * r.x[j], 0)));
@@ -487,7 +608,7 @@ title('Fit: least squares on every new and full Moon of 2026 (a check)');
 
 title('Fit: the exact epicycle by least squares on the same new and full Moons (a check)');
 {
-	const times = in2026(FULL.concat(NEW));
+	const times = inYear(FULL.concat(NEW), Y2025);
 	const residualsOf = q => {
 		const model = LunarEpicycle.make(Object.assign({}, FIT, { L0: q[0], M0: q[1], e: q[2] }));
 
@@ -709,7 +830,7 @@ title('Exercise 2: the anomalistic month from the beat');
 {
 	/* The full Moons nearest the perigee: those faster than the full
 	   Moons on either side. */
-	const full = phases(180, Time.julianDay(2000, 1, 1), Time.julianDay(2040, 1, 1));
+	const full = phases(180, Time.julianDay(1986, 1, 1), DOCUMENTED_END);
 	const speeds = full.map(jd => ({ jd, v: moonMotion(jd) }));
 	const peaks = speeds.filter(
 		(s, i) => i > 0 && i < speeds.length - 1 && s.v > speeds[i - 1].v && s.v > speeds[i + 1].v
@@ -720,12 +841,16 @@ title('Exercise 2: the anomalistic month from the beat');
 		console.log(`   ${date(s.jd)} ${f(s.v, 2)}°/d${i ? `  +${f(s.jd - peaks[i - 1].jd, 1)} d` : ''}`)
 	);
 
-	const span = peaks[peaks.length - 1].jd - peaks[0].jd;
-	const beats = peaks.length - 1;
+	/* The exercise counts the beats between the fastest full Moons of 2001
+	   and of 2020, both at the middle of a run of 413-day intervals, where
+	   the full Moon falls closest to the fastest moment. */
+	const chosen = peaks.filter(s => s.jd >= Time.julianDay(2001, 1, 1) && s.jd < Time.julianDay(2021, 1, 1));
+	const span = chosen[chosen.length - 1].jd - chosen[0].jd;
+	const beats = chosen.length - 1;
 	const beat = span / beats;
 
 	console.log(
-		`${beats} beats in ${f(span, 1)} d, from ${date(peaks[0].jd)} to ${date(peaks[peaks.length - 1].jd)}: one beat = ${f(beat, 2)} d`
+		`${beats} beats in ${f(span, 1)} d, from ${date(chosen[0].jd)} to ${date(chosen[chosen.length - 1].jd)}: one beat = ${f(beat, 2)} d`
 	);
 	console.log(
 		`anomalistic month 1/(1/${f(MONTHS.synodic, 6)} + 1/${f(beat, 2)}) = ${f(1 / (1 / MONTHS.synodic + 1 / beat), 4)} d (real ${f(MONTHS.anomalistic, 4)} d, difference ${f((1 / (1 / MONTHS.synodic + 1 / beat) - MONTHS.anomalistic) * 86400, 0)} s)`

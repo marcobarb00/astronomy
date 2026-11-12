@@ -8,14 +8,14 @@
 									   October 2024 - April 2025)
 	 2. the daily motion             (2D, static per view: each planet's
 									   daily motion against its place
-									   relative to the Sun, 2011 - 2030)
+									   relative to the Sun, 2006 - 2025)
 	 3. the epicycle                 (2D: (a) the deferent and the epicycle
 									   seen from the north ecliptic pole,
 									   (b) the daily motion against the
 									   anomaly; date and r; Mars or Venus)
-	 4. the epicycle against Mars    (error curve, fitted to 2018 - 2033)
+	 4. the epicycle against Mars    (error curve, fitted to 2010 - 2025)
 	 5. the loops of Mars            (2D, static: the arcs and the
-									   intervals of 2001 - 2040 against the
+									   intervals of 1986 - 2025 against the
 									   ecliptic longitude of opposition)
    Shared code: common.js, time.js, ephemeris.js, stars.js, plate-stars.js,
    plate.js, models/mean-sun.js, models/planet-epicycle.js, plot2d.js,
@@ -37,31 +37,28 @@
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
 
-/* The forty years of the loops (Figure 5, section 1 of the text). */
-const LOOPS_START = Time.julianDay(2001, 1, 1);
-const LOOPS_END = Time.julianDay(2041, 1, 1);
+/* The forty years of the loops (Figure 5, section 1 of the text): the
+   page's observations all come from years already past (STRUCTURE.md §5). */
+const LOOPS_START = Time.julianDay(1986, 1, 1);
+const LOOPS_END = Time.julianDay(2026, 1, 1);
 
 /* The reference loops of Mars, computed once for Figures 4 and 5: from
    geometric positions every two days, under 1' from the apparent ones
-   the numbers script quotes (planet-epicycle.js, section 5), reaching
-   past 2040 for the interval after the last loop. */
+   the numbers script quotes (planet-epicycle.js, section 5). */
 let marsEventsCache = null;
 
 function marsEvents() {
 	if (!marsEventsCache) {
-		marsEventsCache = PlanetEpicycle.referenceEvents(
-			'mars',
-			'outer',
-			LOOPS_START - 200,
-			Time.julianDay(2043, 3, 1),
-			{ apparent: false, step: 2 }
-		);
+		marsEventsCache = PlanetEpicycle.referenceEvents('mars', 'outer', LOOPS_START - 200, LOOPS_END, {
+			apparent: false,
+			step: 2
+		});
 	}
 
 	return marsEventsCache;
 }
 
-/* The loops of Mars of 2001 - 2040, each with the time to the next
+/* The loops of Mars of 1986 - 2025, each with the time to the next
    opposition (days). */
 function marsLoops() {
 	const loops = marsEvents().loops;
@@ -113,7 +110,11 @@ function nameAbove(plot, text, x) {
    none of their lines is cut by the border.
    ========================================================================== */
 
-const PLATE_AREA = { raMin: 89, raMax: 138, decMin: 7, decMax: 36 };
+const PLATE_AREA = { raMin: 87, raMax: 139.5, decMin: 7, decMax: 37 };
+
+/* The room beside the border (units of the drawing): the declinations on
+   the left, nothing on the right, so that the chart fills the plate. */
+const PLATE_MARGINS = { left: 64, right: 24 };
 const PLATE_FROM = Time.julianDay(2024, 10, 15);
 const PLATE_TO = Time.julianDay(2025, 4, 15);
 
@@ -130,6 +131,7 @@ const plateFigure = {
 	init() {
 		const chart = Plate.rectangular(byId('plate-mars'), {
 			area: PLATE_AREA,
+			margins: PLATE_MARGINS,
 			figures: ['GEMINI', 'CANCER'],
 			keep: ['bet Gem'], // Pollux, near the loop, stays on a phone
 			names: [
@@ -184,19 +186,19 @@ const plateFigure = {
    2. FIGURE 2: THE DAILY MOTION
    Static, a view per planet: the reference planet's daily motion
    against its place relative to the Sun, one curve per synodic period
-   of 2011 - 2030. Outer planets: the Sun's ecliptic longitude minus the
+   of 2006 - 2025. Outer planets: the Sun's ecliptic longitude minus the
    planet's, 0° at conjunction and 180° at opposition (it grows with
    time, as the anomaly of the model does). Inner planets: the
    elongation, the planet's ecliptic longitude minus the Sun's; each
    synodic period is a closed curve, cut at superior conjunction.
    Geometric positions every two days (every day for Mercury), and the
    motion from the samples on either side. The scales hold the
-   reference's daily motions of 2001 - 2040
+   reference's daily motions of 1986 - 2025
    (tools/numbers/4.1-going-backwards.js).
    ========================================================================== */
 
-const MOTION_START = Time.julianDay(2011, 1, 1);
-const MOTION_END = Time.julianDay(2031, 1, 1);
+const MOTION_START = Time.julianDay(2006, 1, 1);
+const MOTION_END = Time.julianDay(2026, 1, 1);
 
 const MOTION_VIEWS = {
 	Mars: { body: 'mars', kind: 'outer', step: 2, x: [0, 360], y: [-0.5, 0.9] },
@@ -329,7 +331,7 @@ const motionFigure = {
 /* ==========================================================================
    3. FIGURE 3: THE EPICYCLE
    (a) the deferent and the epicycle of the model (Mars fitted to
-   2018 - 2033, or Venus with the reference's motions) with the r of the
+   2010 - 2025, or Venus with the reference's motions) with the r of the
    slider, at the chosen moment, seen from the north ecliptic pole: the
    direction of the mean Sun from the Earth O, the line from O through K
    to the apogee of the epicycle, the anomaly mu at K, and the path of P
@@ -622,12 +624,12 @@ const epicycleFigure = {
 
 /* ==========================================================================
    4. FIGURE 4: THE ERROR CURVE
-   The model fitted to 2018 - 2033 and the uniform planet against the
-   reference Mars, in degrees, over four years, 2024 - 2027, and the
+   The model fitted to 2010 - 2025 and the uniform planet against the
+   reference Mars, in degrees, over four years, 2016 - 2019, and the
    sixteen years of the fit and two centuries centred on them (a curve
    over four years; over the longer spans one pixel covers more than the
    sampling step, so the curves become bands); dots at the oppositions of
-   2001 - 2040, on spans of the fit or less. No slider changes a model, so
+   1986 - 2025, on spans of the fit or less. No slider changes a model, so
    the widget fits its scale to each span.
    ========================================================================== */
 
@@ -635,8 +637,8 @@ const errorFigure = {
 	init() {
 		const curve = new ErrorCurve(byId('error-mars'), {
 			body: 'mars',
-			start: Time.julianDay(2024, 1, 1),
-			end: Time.julianDay(2028, 1, 1),
+			start: Time.julianDay(2016, 1, 1),
+			end: Time.julianDay(2020, 1, 1),
 			spans: [
 				{ label: '4 years', years: 4 },
 				{ label: '16 years', years: 16 },
@@ -653,7 +655,7 @@ const errorFigure = {
 			fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT)
 		});
 		curve.addModel({
-			label: 'the epicycle, fitted to 2018–2033',
+			label: 'the epicycle, fitted to 2010–2025',
 			short: 'epicycle',
 			color: COL.epicycle,
 			fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT)
@@ -670,11 +672,12 @@ const errorFigure = {
 
 /* ==========================================================================
    5. FIGURE 5: THE LOOPS OF MARS
-   Static. (a) how far Mars went back in each loop of 2001 - 2040, and
-   (b) the time from its opposition to the next, against the ecliptic
-   longitude of the opposition; the model's constant arc and synodic
-   period as lines. Fixed scales: the arcs run from 10.0° to 19.5°, the
-   intervals from 764 to 810 days (tools/numbers/4.1-going-backwards.js).
+   Static. (a) how far Mars went back in each loop of 1986 - 2025, and
+   (b) the time from its opposition to the next (for the last, in 2025,
+   the next is still to come), against the ecliptic longitude of the
+   opposition; the model's constant arc and synodic period as lines.
+   Fixed scales: the arcs run from 10.0° to 19.5°, the intervals from 764
+   to 811 days (tools/numbers/4.1-going-backwards.js).
    ========================================================================== */
 
 const ARC_RANGE = [8, 22];
@@ -718,7 +721,9 @@ const loopsFigure = {
 
 		p.frame();
 		p.hline(model, { color: COL.epicycle, width: 2 });
-		this.loops.forEach(loop => p.marker(loop.lon, value(loop), { color: COL.planet, radius: 4.5 }));
+		this.loops
+			.filter(loop => Number.isFinite(value(loop)))
+			.forEach(loop => p.marker(loop.lon, value(loop), { color: COL.planet, radius: 4.5 }));
 	}
 };
 

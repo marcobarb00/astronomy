@@ -6,7 +6,8 @@
    number quoted on the page, in page order.
 
    Run from the repository root:  node tools/numbers/3.3-eclipses.js
-   (a few seconds: it finds every new and full Moon of 2021 - 2030)
+   (about a minute: it finds every new and full Moon of 2016 - 2030, and
+   the Moon's node crossings and distances over 1926 - 2025)
 
    The reference eclipses are those of the reference sky (apparent
    positions of date), with the criteria of models/eclipses.js and the
@@ -111,13 +112,32 @@ function referenceSyzygies(from, to) {
 	return list;
 }
 
+/* Two decades: the Observation's, 2016 - 2025, the last documented one
+   (STRUCTURE.md §5), and the Test's, 2021 - 2030, which may run into the
+   future. Fits use documented moments only, up to DOCUMENTED_END. */
+const OBS_DECADE = referenceSyzygies(Y(2016), Y(2026));
 const DECADE = referenceSyzygies(Y(2021), Y(2031));
+const DOCUMENTED_END = Y(2026, 11, 1);
 const eclipsesOf = list => list.filter(s => s.kind);
 
-/* NASA's eclipses of 2021-2030 (F. Espenak, eclipse.gsfc.nasa.gov,
-   SEdecade2021 and LEdecade2021, retrieved 2026-10-30): the time (TD) of
-   greatest eclipse, the kind (hybrid as total) and, for the lunar ones,
-   the umbral magnitude. NASA lists 7 penumbral eclipses besides. */
+/* NASA's eclipses of 2016-2030 (F. Espenak, eclipse.gsfc.nasa.gov,
+   SEdecade2011 and LEdecade2011, retrieved 2026-11-12, and SEdecade2021
+   and LEdecade2021, retrieved 2026-10-30): the time (TD) of greatest
+   eclipse, the kind (hybrid as total) and, for the lunar ones, the
+   umbral magnitude. NASA lists penumbral eclipses besides. */
+// prettier-ignore
+const NASA_SOLAR_2016 = [
+	['2016-03-09 01:58', 'total'], ['2016-09-01 09:08', 'annular'], ['2017-02-26 14:54', 'annular'],
+	['2017-08-21 18:26', 'total'], ['2018-02-15 20:52', 'partial'], ['2018-07-13 03:02', 'partial'],
+	['2018-08-11 09:47', 'partial'], ['2019-01-06 01:42', 'partial'], ['2019-07-02 19:24', 'total'],
+	['2019-12-26 05:18', 'annular'], ['2020-06-21 06:41', 'annular'], ['2020-12-14 16:14', 'total']
+];
+// prettier-ignore
+const NASA_LUNAR_2016 = [
+	['2017-08-07 18:21', 'partial', 0.246], ['2018-01-31 13:31', 'total', 1.315],
+	['2018-07-27 20:22', 'total', 1.609], ['2019-01-21 05:13', 'total', 1.195],
+	['2019-07-16 21:31', 'partial', 0.653]
+];
 // prettier-ignore
 const NASA_SOLAR = [
 	['2021-06-10 10:43', 'annular'], ['2021-12-04 07:34', 'total'], ['2022-04-30 20:42', 'partial'],
@@ -150,9 +170,8 @@ function nasaJd(text) {
 	return Time.julianDayTime(y, m, day, h, min);
 }
 
-title('3. The reference eclipses of 2021-2030 against NASA');
+title('3. The reference eclipses of 2016-2025 and of 2021-2030 against NASA');
 {
-	const ours = eclipsesOf(DECADE);
 	const check = (list, nasa) => {
 		let agree = 0;
 		const dt = [];
@@ -179,18 +198,124 @@ title('3. The reference eclipses of 2021-2030 against NASA');
 		);
 	};
 
-	console.log(
-		`solar eclipses ${ours.filter(s => s.solar).length}, umbral lunar eclipses ${ours.filter(s => !s.solar).length}, together ${ours.length}`
-	);
-	check(
-		ours.filter(s => s.solar),
-		NASA_SOLAR
-	);
-	check(
-		ours.filter(s => !s.solar),
-		NASA_LUNAR
-	);
+	const inSpan = (nasa, from, to) => nasa.filter(([when]) => nasaJd(when) >= from && nasaJd(when) < to);
+	const nasaSolar = NASA_SOLAR_2016.concat(NASA_SOLAR);
+	const nasaLunar = NASA_LUNAR_2016.concat(NASA_LUNAR);
+
+	[
+		['2016-2025', OBS_DECADE, Y(2016), Y(2026)],
+		['2021-2030', DECADE, Y(2021), Y(2031)]
+	].forEach(([label, decade, from, to]) => {
+		const ours = eclipsesOf(decade);
+
+		console.log(
+			`${label}: solar eclipses ${ours.filter(s => s.solar).length}, umbral lunar eclipses ${ours.filter(s => !s.solar).length}, together ${ours.length}`
+		);
+		check(
+			ours.filter(s => s.solar),
+			inSpan(nasaSolar, from, to)
+		);
+		check(
+			ours.filter(s => !s.solar),
+			inSpan(nasaLunar, from, to)
+		);
+	});
 }
+
+/* ==========================================================================
+   THE MOON'S RATES AND MEAN DISTANCE, FITTED (sections 4, 7, 8 and 10)
+   n and n_M are page 3.1's. n_F, with i and F0, by least squares on the
+   reference Moon's ecliptic latitude at every new and full Moon of
+   1926.0 - 2026.0 (the Fit then refits i and F0 to the last 25 documented
+   ones with this n_F); the mean distance, the average of the reference
+   Moon's distance every quarter of a day over the same century.
+   ========================================================================== */
+
+const CENTURY = [Y(1926), Y(2026)];
+const CENTURY_SYZ = referenceSyzygies(CENTURY[0], CENTURY[1]);
+
+/* Gauss-Newton on (i, F0, nF) against the latitudes at 'syzygies'; the
+   Jacobian by differences, the 3 x 3 normal equations by Cramer. Returns
+   the parameters, the rms residual (deg) and the standard error of nF. */
+function fitLatitudeRate(syzygies) {
+	let q = [5, LunarLatitude.MEEUS.F0, 13.23]; // starting values only
+	const resid = v =>
+		syzygies.map(
+			s =>
+				LunarLatitude.state(
+					Object.assign({}, LunarEpicycle.FIT_2026, { i: v[0], F0: v[1], nF: v[2] }),
+					s.syzygy
+				).beta - s.betaSyzygy
+		);
+	const det3 = m =>
+		m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) -
+		m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) +
+		m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+	let N = null;
+
+	for (let step = 0; step < 6; step++) {
+		const r = resid(q);
+		const J = [1e-5, 1e-5, 1e-9].map((h, k) => {
+			const moved = q.slice();
+
+			moved[k] += h;
+
+			return resid(moved).map((v, i) => (v - r[i]) / h);
+		});
+
+		N = [0, 1, 2].map(a => [0, 1, 2].map(b => J[a].reduce((sum, v, i) => sum + v * J[b][i], 0)));
+
+		const g = [0, 1, 2].map(a => J[a].reduce((sum, v, i) => sum + v * r[i], 0));
+		const D = det3(N);
+		const delta = [0, 1, 2].map(k => det3(N.map((row, i) => row.map((v, j) => (j === k ? g[i] : v)))) / D);
+
+		q = q.map((v, k) => v - delta[k]);
+	}
+
+	const r = resid(q);
+	const scatter = Math.sqrt(r.reduce((sum, v) => sum + v * v, 0) / (r.length - 3));
+	const inverse22 = (N[0][0] * N[1][1] - N[0][1] * N[1][0]) / det3(N);
+
+	return { i: q[0], F0: norm360(q[1]), nF: q[2], rms: scatter, nFError: scatter * Math.sqrt(inverse22) };
+}
+
+const RATE_FIT = fitLatitudeRate(CENTURY_SYZ);
+
+const MEAN_DISTANCE_FIT = (() => {
+	let sum = 0;
+	let count = 0;
+
+	for (let jd = CENTURY[0]; jd < CENTURY[1]; jd += 0.25) {
+		sum += Ephem.moon(jd).dist;
+		count++;
+	}
+
+	return sum / count;
+})();
+
+const RATES = {
+	n: LunarEpicycle.FIT_2026.n,
+	nM: LunarEpicycle.FIT_2026.nM,
+	nF: RATE_FIT.nF,
+	nSun: MeanSun.MODERN.n
+};
+const P_SYNODIC = 360 / (RATES.n - RATES.nSun);
+const P_DRACONITIC = 360 / RATES.nF;
+const P_ANOMALISTIC = 360 / RATES.nM;
+const NODE_RATE = RATES.nF - RATES.n; // westward, deg a day
+const SUN_FROM_NODE_RATE = RATES.nSun + NODE_RATE;
+const ECLIPSE_YEAR = 360 / SUN_FROM_NODE_RATE;
+
+title('The rates and the mean distance, fitted over 1926.0 - 2026.0');
+console.log(
+	`${CENTURY_SYZ.length} new and full Moons: n_F = ${f(RATE_FIT.nF, 9)}° a day +- ${f(RATE_FIT.nFError * 36525, 3)}° a century (i ${f(RATE_FIT.i, 4)}°, rms ${arcmin(RATE_FIT.rms, 2)}); draconitic month ${f(360 / RATE_FIT.nF, 6)} d`
+);
+console.log(
+	`   FIT_2026 in lunar-latitude.js: ${LunarLatitude.FIT_2026.nF}; Meeus ${f(LunarLatitude.MEEUS.nF, 9)}, ours - Meeus ${f((RATE_FIT.nF - LunarLatitude.MEEUS.nF) * 36525, 4)}° a century`
+);
+console.log(
+	`the reference Moon's mean distance ${f(MEAN_DISTANCE_FIT, 1)} km (Eclipses.MOON_MEAN_DISTANCE ${Eclipses.MOON_MEAN_DISTANCE}; Meeus' constant term 385000.56)`
+);
 
 /* ==========================================================================
    4. OBSERVATION
@@ -234,11 +359,11 @@ function seasonsOf(list) {
 
 title('4. Observation');
 {
-	const ours = eclipsesOf(DECADE);
+	const ours = eclipsesOf(OBS_DECADE);
 
-	console.log(`new and full Moons 2021-2030: ${DECADE.length}; eclipses ${ours.length}`);
+	console.log(`new and full Moons 2016-2025: ${OBS_DECADE.length}; eclipses ${ours.length}`);
 
-	for (let year = 2021; year <= 2030; year++) {
+	for (let year = 2016; year <= 2025; year++) {
 		const inYear = ours.filter(s => s.jd >= Y(year) && s.jd < Y(year + 1));
 		const text = inYear.map(s => `${date(s.jd).replace(/ \d{4}$/, '')} ${s.solar ? 'S' : 'L'}-${s.kind}`);
 
@@ -259,13 +384,16 @@ title('4. Observation');
 		`  a year later the season comes 365.24 - 2 x ${f(mean(gaps), 1)} = ${f(365.2422 - 2 * mean(gaps), 0)} days earlier`
 	);
 
-	const peaks = latitudePeaks(Y(2021), Y(2031));
+	const peaks = latitudePeaks(Y(2016), Y(2026));
 
 	console.log(
-		`the Moon's greatest latitude, 2021-2030: ${f(Math.min(...peaks), 2)}° to ${f(Math.max(...peaks), 2)}°`
+		`the Moon's greatest latitude, 2016-2025: ${f(Math.min(...peaks), 2)}° to ${f(Math.max(...peaks), 2)}°`
 	);
 
-	const nodeRate = 1934.1362891 / 36525;
+	/* The node's motion from the measured months (section 7): the Moon
+	   returns to the node before it returns to the same ecliptic
+	   longitude. */
+	const nodeRate = NODE_RATE;
 
 	console.log(
 		`the mean node moves west ${f(nodeRate, 5)}° a day, ${f(nodeRate * 365.25, 2)}° a year; a turn in ${f(360 / nodeRate, 1)} days = ${f(360 / nodeRate / 365.25, 2)} years`
@@ -280,7 +408,7 @@ title('4. Observation');
 		`the Sun from the nearest node at the eclipses: solar up to ${f(Math.max(...solar), 1)}°, lunar up to ${f(Math.max(...lunar), 1)}°`
 	);
 	console.log(
-		`  full Moons with the Sun nearest the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
+		`  full Moons with the Sun nearest the node than ${f(Math.max(...lunar), 1)}° and no eclipse: ${OBS_DECADE.filter(s => !s.solar && !s.kind && fromNode(s) < Math.max(...lunar)).length}`
 	);
 }
 
@@ -362,19 +490,6 @@ title('6. Model: the latitude');
    7. MODEL: THE MONTHS
    ========================================================================== */
 
-const RATES = {
-	n: LunarEpicycle.MEEUS.n,
-	nM: LunarEpicycle.MEEUS.nM,
-	nF: LunarLatitude.MEEUS.nF,
-	nSun: MeanSun.MODERN.n
-};
-const P_SYNODIC = 360 / (RATES.n - RATES.nSun);
-const P_DRACONITIC = 360 / RATES.nF;
-const P_ANOMALISTIC = 360 / RATES.nM;
-const NODE_RATE = RATES.nF - RATES.n; // westward, deg a day
-const SUN_FROM_NODE_RATE = RATES.nSun + NODE_RATE;
-const ECLIPSE_YEAR = 360 / SUN_FROM_NODE_RATE;
-
 title('7. Model: the months');
 console.log(`n_F = ${f(RATES.nF, 5)}° a day, n = ${f(RATES.n, 5)}°: the node moves west ${f(NODE_RATE, 5)}° a day`);
 console.log(
@@ -403,7 +518,6 @@ function limitsFor(moonKm, sunAu) {
 	};
 }
 
-const DISTANCES = DECADE.filter(s => s.kind).concat(DECADE.filter(s => !s.kind));
 const MOON_NEAREST = 356400; // rounded, below the least distance at a syzygy (printed below)
 const MOON_FARTHEST = 406700;
 
@@ -411,14 +525,13 @@ title('8. Model: the shadow and the limits');
 {
 	const moonKm = [];
 
-	for (let jd = Y(2021); jd < Y(2031); jd += 0.25) {
+	for (let jd = Y(2016); jd < Y(2026); jd += 0.25) {
 		moonKm.push(Ephem.moon(jd).dist);
 	}
 
 	console.log(
-		`the Moon's distance 2021-2030: ${f(Math.min(...moonKm), 0)} to ${f(Math.max(...moonKm), 0)} km (slider ${MOON_NEAREST} to ${MOON_FARTHEST})`
+		`the Moon's distance 2016-2025: ${f(Math.min(...moonKm), 0)} to ${f(Math.max(...moonKm), 0)} km (slider ${MOON_NEAREST} to ${MOON_FARTHEST})`
 	);
-	void DISTANCES;
 
 	const cases = [
 		['mean', Eclipses.MOON_MEAN_DISTANCE, 1],
@@ -484,12 +597,12 @@ title('9. Model: the eclipse seasons');
    10. FIT
    ========================================================================== */
 
-/* Least squares (Gauss-Newton) for i and F0, with Meeus' nF, to the
+/* Least squares (Gauss-Newton) for i and F0, with the fitted nF, to the
    reference latitudes at the reference syzygies. */
 function fitLatitude(syzygies) {
 	let i = 5;
-	let F0 = LunarLatitude.MEEUS.F0;
-	const nF = LunarLatitude.MEEUS.nF;
+	let F0 = LunarLatitude.MEEUS.F0; // a starting value only
+	const nF = RATES.nF;
 	const resid = (ii, ff) =>
 		syzygies.map(s => {
 			const p = Object.assign({}, LunarEpicycle.FIT_2026, { F0: ff, nF, i: ii });
@@ -515,14 +628,18 @@ function fitLatitude(syzygies) {
 	return { F0: norm360(F0), i, residuals: resid(i, F0) };
 }
 
+/* The fit uses the last 25 documented new and full Moons, from the end
+   of October 2025 to October 2026; the Test's table and dots keep the
+   new and full Moons of 2026. */
+const FIT_SYZ = DECADE.filter(s => s.syzygy < DOCUMENTED_END).slice(-25);
 const SYZ_2026 = DECADE.filter(s => s.syzygy >= Y(2026) && s.syzygy < Y(2027));
 
 title('10. Fit');
 {
-	const fit = fitLatitude(SYZ_2026);
+	const fit = fitLatitude(FIT_SYZ);
 
 	console.log(
-		`fit to the 25 new and full Moons of 2026: i = ${f(fit.i, 6)}°, F0 = ${f(fit.F0, 6)}° (FIT_2026: i ${LAT.i}, F0 ${LAT.F0})`
+		`fit to the ${FIT_SYZ.length} new and full Moons from ${date(FIT_SYZ[0].syzygy)} to ${date(FIT_SYZ[FIT_SYZ.length - 1].syzygy)}: i = ${f(fit.i, 6)}°, F0 = ${f(fit.F0, 6)}° (FIT_2026: i ${LAT.i}, F0 ${LAT.F0})`
 	);
 	console.log(
 		`  i = ${f(fit.i, 2)}°; node at J2000 ${f(norm360(LunarEpicycle.FIT_2026.L0 - fit.F0), 2)}° (Meeus' mean node ${f(meanNode(2451545), 2)}°)`
@@ -530,7 +647,7 @@ title('10. Fit');
 	console.log(`  residuals: largest ${arcmin(maxAbs(fit.residuals))}, rms ${arcmin(rms(fit.residuals))}`);
 
 	const meanI = Object.assign({}, LAT, { i: 5.145 });
-	const meanResid = SYZ_2026.map(s => LunarLatitude.state(meanI, s.syzygy).beta - s.betaSyzygy);
+	const meanResid = FIT_SYZ.map(s => LunarLatitude.state(meanI, s.syzygy).beta - s.betaSyzygy);
 
 	console.log(
 		`  with the mean inclination 5.145° (Meeus' sin F term 5.128° and the Moon's whole range) the latitudes at the 25 are off by up to ${arcmin(maxAbs(meanResid))}`
@@ -559,19 +676,19 @@ title('11. Test: the latitude');
 	];
 
 	sets.forEach(([name, p]) => {
-		const atSyzygies = SYZ_2026.map(s => LunarLatitude.state(p, s.syzygy).beta - s.betaSyzygy);
+		const atSyzygies = FIT_SYZ.map(s => LunarLatitude.state(p, s.syzygy).beta - s.betaSyzygy);
 		const all = [];
 
 		for (let jd = Y(2026); jd < Y(2027); jd += 0.25) {
 			all.push(LunarLatitude.state(p, jd).beta - Ephem.moon(jd).lat);
 		}
 		console.log(
-			`${name}: at the 25 new and full Moons of 2026 within ${arcmin(maxAbs(atSyzygies))}; over the year within ${arcmin(maxAbs(all))}`
+			`${name}: at the 25 fitted new and full Moons within ${arcmin(maxAbs(atSyzygies))}; over 2026 within ${arcmin(maxAbs(all))}`
 		);
 	});
 
-	/* The other nine years of 2021-2030, which the fit did not use. */
-	const others = DECADE.filter(s => s.syzygy < Y(2026) || s.syzygy >= Y(2027));
+	/* The new and full Moons of 2021-2030 that the fit did not use. */
+	const others = DECADE.filter(s => !FIT_SYZ.includes(s));
 	const othersErr = others.map(s => LunarLatitude.state(LAT, s.syzygy).beta - s.betaSyzygy);
 
 	console.log(
@@ -586,7 +703,7 @@ title('11. Test: the latitude');
 /* The model's eclipses against the reference over [from, to). */
 function compare(model, from, to) {
 	const ref = referenceSyzygies(from, to);
-	const result = { real: 0, found: 0, missed: [], added: [], kind: 0, dt: [], dmag: [], dbeta: [] };
+	const result = { real: 0, found: 0, missed: [], added: [], kind: 0, otherKind: [], dt: [], dmag: [], dbeta: [] };
 
 	ref.forEach(r => {
 		const m = Eclipses.predict(model, r.k);
@@ -598,6 +715,9 @@ function compare(model, from, to) {
 			result.found++;
 			result.dt.push((m.jd - r.jd) * 1440);
 			result.kind += r.kind !== m.kind ? 1 : 0;
+			if (r.kind !== m.kind) {
+				result.otherKind.push(`${date(r.jd)} ${r.solar ? 'solar' : 'lunar'} ${r.kind}, the model ${m.kind}`);
+			}
 			if (!r.solar) {
 				result.dmag.push(m.magnitude - r.magnitude);
 			}
@@ -623,6 +743,7 @@ function printComparison(label, c) {
 	);
 	console.log(`  missed: ${c.missed.join('; ') || '-'}`);
 	console.log(`  added: ${c.added.join('; ') || '-'}`);
+	console.log(`  of another kind: ${c.otherKind.join('; ') || '-'}`);
 }
 
 title('12. Test: the eclipses');

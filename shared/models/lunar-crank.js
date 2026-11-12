@@ -56,10 +56,10 @@ const LunarCrank = (function () {
 
 	/* Our fit (page 3.2, section 3): the epicycle of page 3.1, fitted to
 	   three eclipses (LunarEpicycle.FIT_2026), with the modern mean Sun,
-	   and c fitted by least squares to the 25 quarter Moons of 2026
-	   (tools/numbers/3.2-evection.js). */
+	   and c fitted by least squares to the 25 quarter Moons of 2025, the
+	   last documented year (tools/numbers/3.2-evection.js). */
 	const FIT_2026 = Object.assign({}, LunarEpicycle.FIT_2026, {
-		c: 0.176153,
+		c: 0.176912,
 		sun: MeanSun.MODERN
 	});
 

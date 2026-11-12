@@ -227,7 +227,7 @@ const Plate = (function () {
 				['tau Gem', 'iot Gem'],
 				['iot Gem', 'ups Gem'],
 				['ups Gem', 'bet Gem'],
-				['bet Gem', 'kap Gem'],
+				['ups Gem', 'kap Gem'],
 				['ups Gem', 'del Gem'],
 				['del Gem', 'zet Gem'],
 				['zet Gem', 'gam Gem'],
@@ -470,8 +470,10 @@ const Plate = (function () {
 			svgEl('rect', { x: x, y: y, width: w, height: h, class: light ? 'light' : 'dark' }, border);
 		};
 
+		// the last band of each side stops at the corner, when the side is
+		// not a whole number of steps long
 		for (let ra = raMin, i = 0; ra < raMax - 1e-9; ra += raStep, i++) {
-			const x = at(ra + raStep, 0).x;
+			const x = at(Math.min(ra + raStep, raMax), 0).x;
 			const w = at(ra, 0).x - x;
 
 			box(x, topLeft.y - band, w, band, i % 2 === 0);
@@ -479,7 +481,7 @@ const Plate = (function () {
 		}
 
 		for (let dec = decMin, i = 0; dec < decMax - 1e-9; dec += decStep, i++) {
-			const y = at(0, dec + decStep).y;
+			const y = at(0, Math.min(dec + decStep, decMax)).y;
 			const h = at(0, dec).y - y;
 
 			box(topLeft.x - band, y, band, h, i % 2 === 0);
@@ -637,7 +639,10 @@ const Plate = (function () {
 	/* A rectangular (equirectangular) chart as seen looking south: north
 	   up, east (greater right ascension) to the left, with a graduated
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
-	   figures, names, keep (as for polar), label. The equator is drawn, and
+	   figures, names, keep (as for polar), label, margins { left, right }
+	   (the room beside the border in units of the drawing, 108 each by
+	   default; a chart with nothing to name on its right, page 4.1, keeps
+	   less there, so that the chart fills the plate). The equator is drawn, and
 	   named at the
 	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
 	   highlight in 'layer', clipped to the chart. */
@@ -645,12 +650,13 @@ const Plate = (function () {
 		const area = options.area;
 		const { raMin, raMax, decMin, decMax } = area;
 		const scale = 8;
-		const left = 108;
+		const left = options.margins?.left ?? 108;
+		const right = options.margins?.right ?? left;
 		const top = 40;
 		const band = 10;
 		const width = (raMax - raMin) * scale;
 		const height = (decMax - decMin) * scale;
-		const svg = newSvg(container, width + 2 * left, height + top + 70, options.label);
+		const svg = newSvg(container, width + left + right, height + top + 70, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
 		const project = (ra, dec) => {
 			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
@@ -716,7 +722,7 @@ const Plate = (function () {
 		}
 
 		drawBorder(svg, area, at, { band: band, raStep: 7.5, decStep: 5 });
-		fitText(chart, width + 2 * left);
+		fitText(chart, width + left + right);
 
 		return chart;
 	}

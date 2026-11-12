@@ -24,13 +24,12 @@
 	 Mean solar time is the hour angle of the mean Sun, a point moving
 	 along the equator with right ascension equal to the mean longitude,
 	 alpha_m = L0 + n d, plus 12 h. With d = JD(UT) - 2451545.0,
-		 theta_G = H_m + alpha_m = 280.46061837° + 360.98564736629° d,
-	 the linear part of Meeus 12.4: L0 = 280.46061837° and n =
-	 0.98564736629° a day, the values fixed by convention for UT.
-	 The Sun's geometric mean longitude of models/mean-sun.js (Meeus 25.2)
-	 is 21" (1.4 s) larger at J2000.0: 20.5" is the aberration of light (the
-	 clock's mean Sun follows the Sun as seen), 0.5" the difference between
-	 the two fits. The site neglects it: mean noon is 12:00 local mean time.
+		 theta_G = H_m + alpha_m = L0 + (360° + n) d,
+	 with L0 and n the mean Sun fitted on page 1.3 to the Sun as it is
+	 seen (MeanSun.MODERN). UT itself is defined by the conventional
+	 values of Meeus 12.4, L0 = 280.46061837° and n = 0.98564736629° a day
+	 (MeanSun.UT_CONVENTION), which the reference sky's sidereal time uses;
+	 page 1.3's Test compares the two. Mean noon is 12:00 local mean time.
 
    TABLE OF CONTENTS
 	 1. Constants
@@ -46,14 +45,20 @@ const Clock = (function () {
 	   1. CONSTANTS
 	   ====================================================================== */
 
-	/* Greenwich mean sidereal time at J2000.0 (deg) and its rate per day
-	   of UT, Meeus 12.4 (linear part). The rate is 360° + n, with n the
-	   mean Sun's daily motion (models/mean-sun.js). */
-	const THETA0 = Time.GMST_AT_J2000;
-	const RATE = Time.SIDEREAL_RATE;
+	/* Greenwich sidereal time at J2000.0 (deg) and its rate per day of UT,
+	   from the mean Sun fitted on page 1.3 (models/mean-sun.js): theta_G
+	   = L0 + n DT + (360° + n) d. The mean Sun was fitted in days of TT
+	   and the clock counts days of UT, which at J2000.0 ran DT = 64 s
+	   behind: the mean Sun moves 2.6" in that time. The change of DT since
+	   (5 s by 2026) is left out, 0.2". The constants that define UT
+	   (MeanSun.UT_CONVENTION) differ by 5.3", 0.35 s of time
+	   (tools/numbers/1.3-clocks.js). */
+	const DT_AT_J2000 = Time.ttFromUt(Time.J2000) - Time.J2000; // days
+	const THETA0 = MeanSun.MODERN.L0 + MeanSun.MODERN.n * DT_AT_J2000;
+	const RATE = 360 + MeanSun.MODERN.n;
 
 	/* One turn of the sky (a sidereal day) in hours of mean solar time:
-	   23 h 56 min 04.09 s. */
+	   23 h 56 min 4 s. */
 	const SIDEREAL_DAY_HOURS = (24 * 360) / RATE;
 
 	/* The Sun's hour angle grows 15° per hour of mean solar time. */

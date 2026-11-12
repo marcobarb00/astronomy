@@ -952,8 +952,8 @@ function testDiurnal() {
 
 	check({
 		name: 'One turn of the sky',
-		source: 'Meeus 12.4',
-		expected: 23 + 56 / 60 + 4.0905 / 3600,
+		source: 'page 1.1 (Vega, 1925 and 2025)',
+		expected: 23 + 56 / 60 + 4.0961 / 3600,
 		computed: Diurnal.TURN_HOURS,
 		tol: 0.01,
 		unit: 's',
@@ -1138,24 +1138,41 @@ function testFrames() {
 function testClock() {
 	group('The clocks · models/mean-sun.js, models/clock.js (page 1.3)');
 
-	// The linear sidereal clock against Meeus' worked example (the T^2 and
-	// T^3 terms he includes are a few milliseconds in 1987).
+	// The linear sidereal clock with UT's own constants against Meeus'
+	// worked example (the T^2 and T^3 terms he includes are a few
+	// milliseconds in 1987)
+	const U = MeanSun.UT_CONVENTION;
+	const utClock = jd => norm360(U.L0 + (360 + U.n) * (jd - Time.J2000));
+
 	check({
-		name: 'Linear mean sidereal time, 1987 Apr 10, 0h UT',
+		name: "Linear mean sidereal time with UT's constants, 1987 Apr 10, 0h UT",
 		source: 'Ex. 12.a',
 		expected: 13 + 10 / 60 + 46.3668 / 3600,
-		computed: Clock.gmst(Time.julianDay(1987, 4, 10)) / 15,
+		computed: utClock(Time.julianDay(1987, 4, 10)) / 15,
 		tol: 0.01,
 		unit: 's',
 		scale: 3600,
 		show: showHours
 	});
 
-	// The clock's rate is 360° plus the mean Sun's daily motion; the two
-	// published values differ by 2e-5" a day.
+	// The site's clock, from the mean Sun fitted on page 1.3 and carried
+	// to days of UT: 5.3" (0.35 s of time) from UT's conventional
+	// constant at J2000.0, a little more in 1987 through the rates
+	check({
+		name: 'The fitted clock, 1987 Apr 10, 0h UT',
+		source: 'Ex. 12.a, page 1.3',
+		expected: 13 + 10 / 60 + 46.3668 / 3600,
+		computed: Clock.gmst(Time.julianDay(1987, 4, 10)) / 15,
+		tol: 0.5,
+		unit: 's',
+		scale: 3600,
+		show: showHours
+	});
+
+	// The clock's rate is 360° plus the mean Sun's daily motion.
 	check({
 		name: "Sidereal rate − 360° = mean Sun's n",
-		source: 'Meeus 12.4, 25.2',
+		source: 'page 1.3',
 		expected: MeanSun.MODERN.n,
 		computed: Clock.RATE - 360,
 		tol: 1e-4, // 0.8" a century: UT and TT days, rounding

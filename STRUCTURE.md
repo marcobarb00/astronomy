@@ -86,7 +86,8 @@ The language needed to state any prediction.
   star; the fraction of the day a star of declination $\delta$ is above the
   horizon (and Ptolemy's longest day at Rhodes); the equinox day, 10 minutes
   longer than the model's 12 hours (refraction and the Sun's radius).
-- **Fit:** the rate from two timed meridian crossings; the geographic
+- **Fit:** the rate from two timed meridian crossings (Vega at Greenwich,
+  1 June 1925 and 1 June 2025, 36·625 turns apart); the geographic
   latitude and a declination from the two meridian crossings of a
   circumpolar star (Kochab from Alexandria). History block: Ptolemy's
   meridian ring and plaque (*Almagest* I 12) and his latitude of Alexandria,
@@ -119,10 +120,11 @@ The language needed to state any prediction.
   1.1 shows that pair of views. Two static figures: the spherical
   triangle of the pole, the zenith and the star, for the observation of
   section 1; and, in the Fit, the noon altitude of the Sun at Alexandria
-  through 2026, with the obliquity above and below the altitude of the
+  through 2025, with the obliquity above and below the altitude of the
   equator and the March equinox where the curve crosses it.
 - **Fit:** the obliquity from the noon Sun at the two solstices (Alexandria,
-  2026); the origin γ from the March equinox. History block: Ptolemy's
+  2025, the last whole year before today); the origin γ from the March
+  equinox of 2025. History block: Ptolemy's
   meridian ring and plaque, his bounds and $23^\circ 51' 20''$ (*Almagest*
   I 12); Hipparchus' equinoxes on the equatorial ring (III 1).
 - **Test:** the model with the mean obliquity against the real Sun of 2026,
@@ -169,10 +171,14 @@ The language needed to state any prediction.
   gives $\theta_G = L_0 + (360^\circ + n)\,d$, the linear part of Meeus 12.4.
   The payoffs (transits, day length) are the model's predictions, derived
   in the Model section and checked in Test.
-- **Fit:** the rate from the year (the modern 365.24219 days; an error in
-  the rate accumulates, in the clock as in the mean Sun: 16 s a century for
-  a minute in the year), the constant from the mean Sun at J2000, the
-  longitude from one timed transit. History block: Hipparchus' and Ptolemy's
+- **Fit:** the rate from the year, measured from the equinoxes and
+  solstices of 1926–2025 (365.24219 days; an error in the rate
+  accumulates, in the clock as in the mean Sun: 16 s a century for a
+  minute in the year), the constant $L_0$ as the mean of $\lambda_\odot -
+  n\,d$ over the 19 whole years 2007–2025, carried from days of TT to the
+  days of UT the clock counts (+2.6″), the longitude from one timed
+  transit. UT's own constants (Meeus 12.4) are a convention, quoted in the
+  Model for the worked example. History block: Hipparchus' and Ptolemy's
   365.24667 days from solstices and equinoxes one to several centuries apart
   (*Almagest* III 1), their mean Sun, and a clock built on it, 0.44° a
   century behind. No history block in the Test.
@@ -217,8 +223,8 @@ The first anomaly and the simplest complete model.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
   eccentric between the lines from the Earth to the equinoxes and solstices.
-- **Figures:** the real Sun's daily motion from the March equinox of 2026
-  to that of 2027, with the four seasons and their lengths above it
+- **Figures:** the real Sun's daily motion from the September equinox of
+  2025 to that of 2026, with the four seasons and their lengths above it
   (static); the same arrow from the Earth to the Sun with the Earth at
   rest and with the Sun at rest (static); the equation of centre, the
   eccentric with M and q beside $q(t)$ over a year (date, and two views:
@@ -236,8 +242,9 @@ The first anomaly and the simplest complete model.
   text gives both numbers. A photo: Peurbach's woodcut of the Sun's
   eccentric orbs.
 - **Fit:** $e$ and $\lambda_A$ from spring and summer, by Hipparchus'
-  construction applied to the reference seasons of 2026 ($e = 0.03347$,
-  $\lambda_A = 103.73^\circ$, autumn and winter within half an hour; one
+  construction applied to the reference spring and summer of 2026 ($e =
+  0.03347$, $\lambda_A = 103.73^\circ$, the autumn and winter of 2025–26
+  within half an hour; one
   hour moved between the seasons shifts the apogee 1.2°); the mean
   longitude at epoch $L_0$ from the timed spring equinox (page 1.3 used
   Meeus' value without deriving it). History block: equinoxes timed with
@@ -289,14 +296,14 @@ The first anomaly and the simplest complete model.
   their
   sum to first order, $E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda$
   (radians); the analemma.
-- **Figures:** the true solar day and its running sum, $E$, through 2026
+- **Figures:** the true solar day and its running sum, $E$, through 2025
   (static); a photo of an analemma in the sky (Donatiello, CC0); the
   reduction to the equator (3D: the uniform Sun on the ecliptic, its hour
   circle, the mean Sun on the equator; with $\lambda - \alpha$ against
   $\lambda$; longitude and obliquity, starting at an exaggerated 45°, with
-  a preset for today's); the two components and their sum over 2026; the analemma drawn as the Sun's
+  a preset for today's); the two components and their sum over 2025; the analemma drawn as the Sun's
   position at mean noon (date; both causes, eccentricity only, obliquity
-  only); the model against the real $E$ in 2026; the real $E$ against the
+  only); the model against the real $E$ in 2025; the real $E$ against the
   Sun's longitude in a chosen year, 1000 BC to AD 3000.
 - **When building:** the obliquity part is the reduction to the equator,
   $\alpha - \lambda$, computed by `Frames.reduction` in
@@ -306,9 +313,9 @@ The first anomaly and the simplest complete model.
   pages 1.2 and 2.1: its yearly and half-yearly terms (averages over a year)
   give $e$, $\lambda_A$ and $\varepsilon$ to first order (biased by the cross
   term $e\,e_\varepsilon$); the exact model fitted by least squares gives
-  $e = 0.0334$ and $\lambda_A = 103.4^\circ$.
+  $e = 0.0334$ and $\lambda_A = 103.4^\circ$ from the real $E$ of 2025.
 - **Test:** in time, not with the $\Delta\lambda$ widget (the longitude model
-  is page 2.1's): within 6 s of the real $E$ in 2026, against page 1.3's
+  is page 2.1's): within 6.4 s of the real $E$ in 2025, against page 1.3's
   ±16 min. History block, in words: Ptolemy's equation of time in
   time-degrees (*Almagest* III 9), about half an hour at most, a little
   more than the real value of his time, and why he needed it (the Moon).
@@ -354,14 +361,15 @@ The first anomaly and the simplest complete model.
   with the error of Ptolemy's Sun (static).
 - **Fit:** a long baseline fixes the rate (an error of 1° is 14″ a year
   over 265 years, 2″ over 18 centuries); the rate from Spica's records
-  (50.6″ a year, Figure 4); $p = 50.29''$ a year from the reference sky
-  around 2026; the apogee's rate, 1.741° a century, from the seasons of
-  seventeen years by Hipparchus' method, of which 1.397° is precession.
+  (50.6″ a year, Figure 4); $p = 50.28''$ a year from the reference sky
+  of 1926.0–2026.0; the apogee's rate, 1.751° a century, from the seasons
+  of every year from 1826 to 2025 by Hipparchus' method, of which 1.397°
+  is precession.
   History block: Ptolemy's 1° in 100 years from Regulus (VII 2),
   Hipparchus' lower bound, the III 1 remedy, Copernicus' mean rate (III 6).
-- **Test:** uniform precession within 2.6′ of Spica over 2000 years; the
-  eccentric with a moving apogee within 6′ over 2000 years (38.5′ with the
-  apogee fixed), and page 2.2's equation of time within 11 s over 1000
+- **Test:** uniform precession within 2.4′ of Spica over 2000 years; the
+  eccentric with a moving apogee within 6.4′ over 2000 years (38.2′ with
+  the apogee fixed), and page 2.2's equation of time within 12 s over 1000
   years. History block, with Figure 6 (kept for Exercises 1 and 3):
   Ptolemy's slow rate comes mostly from his Sun, the records he reduced
   err as his Sun does (the full cause is debated).
@@ -405,13 +413,14 @@ The first anomaly and the simplest complete model.
   of our epicycle (uniform Moon as ghost, dots at new and full Moon). A
   photo: the eclipse of 7 September 2025 (Donatiello, CC0).
 - **Fit:** the mean motions, $n = n_\odot + 360^\circ/P_s$ and $n_M = 269
-  \times 360^\circ / (251\,P_s)$, best fixed by eclipses centuries apart,
-  so ours from Meeus 47; why eclipses (the Moon opposite the Sun, parallax
+  \times 360^\circ / (251\,P_s)$, best fixed by observations far apart,
+  so ours from the 1237 new Moons of 1926–2025 (the five months of
+  section 1 measured the same way); why eclipses (the Moon opposite the Sun, parallax
   does not move the moment, the second anomaly vanishes); the data of a
   triple, $a = n_M\,\Delta t$ and $d$ = the Sun's true motion minus $n\,\Delta
   t$, worked through for the eclipses of 7 Sep 2025, 3 Mar 2026 and 28 Aug
-  2026 (a table), which give $e = 0.0844$; consecutive triples of 2019 to
-  2030 range from 0.080 to 0.093. History block: eclipses "the only
+  2026 (a table), which give $e = 0.0844$; consecutive triples of 2014 to
+  2026 range from 0.075 to 0.093. History block: eclipses "the only
   observations" (IV 1); Hipparchus' month from Chaldaean and later
   eclipses (IV 2); Ptolemy's two exact solutions, "very nearly the same",
   5.25 (IV 6); Copernicus' almost the same (*De Rev.* IV 5).
@@ -446,7 +455,7 @@ The first anomaly and the simplest complete model.
 - **Question:** what goes wrong at the quarters?
 - **Learn:** the second anomaly, largest at the quarters: the real Moon's
   whole equation reaches 4.96° at new and full Moon and 7.68° at the
-  quarters (2021–2030); Ptolemy's description (*Almagest* V 2), his and
+  quarters (2016–2025); Ptolemy's description (*Almagest* V 2), his and
   Hipparchus' sightings of 7⅔° (V 3); Ptolemy's crank mechanism (V 2): K
   seen from the Earth at the mean longitude, carried on an eccentric whose
   centre C turns westward, its apogee A at $\bar\lambda - 2D$, so that
@@ -466,7 +475,7 @@ The first anomaly and the simplest complete model.
   elongation; lengths in units of OA (Ptolemy's 60); $c = \text{OC}$; the
   points O, C, A, K, N, L.
 - **Figures:** the real Moon's equation against $M$ at the new and full
-  Moons and at the quarters of 2021–2030 (static); the crank fitted to
+  Moons and at the quarters of 2016–2025 (static); the crank fitted to
   2026, without the direction, with $q$ over two months against page 3.1's
   epicycle (date); the direction of the epicycle in Ptolemy's example of
   V 6 (static, the epicycle enlarged); the error curve of the crank with
@@ -477,8 +486,8 @@ The first anomaly and the simplest complete model.
 - **Fit:** the quarters fix $c$ ($\sin q_\text{max} = r/\text{OG}$ with
   the epicycle at the eccentric's perigee); the direction of the epicycle
   shows near the octants and is kept as Ptolemy found it, so the octants
-  test the model; ours keeps page 3.1's fit and fits $c = 0.1762$ to the
-  25 quarters of 2026 (about 1% more for 2021–2030). History block:
+  test the model; ours keeps page 3.1's fit and fits $c = 0.1769$ to the
+  25 quarters of 2025 (0.6% more for 2016–2025); the Test runs over 2026. History block:
   Ptolemy's $c = 0.1719$ from 7⅔° at the quarters (V 4); ON = OC from two
   of Hipparchus' sightings near the octants (V 5).
 - **Test:** over 2026 the largest error falls from 3.2° (epicycle) to 2.7°
@@ -514,10 +523,10 @@ The first anomaly and the simplest complete model.
 #### 3.3 · Eclipses
 
 - **Question:** when does a new Moon become a solar eclipse?
-- **Learn:** the eclipses of 2021–2030 from the reference sky, which match
-  NASA's list (22 solar, 16 umbral lunar; penumbral eclipses not counted),
-  in 21 seasons 173.1 days apart on average, each about 19 days earlier in
-  the year; the Moon's greatest latitude, 4.99° to 5.30°; the nodes
+- **Learn:** the eclipses of 2016–2025 from the reference sky, which match
+  NASA's list (22 solar, 13 umbral lunar; penumbral eclipses not counted),
+  in 21 seasons 173.8 days apart on average, each about 18 days earlier in
+  the year; the Moon's greatest latitude, 4.98° to 5.30°; the nodes
   moving westward 19.34° a year (18.61 years); Ptolemy's "Periodic" of
   223 months (IV 2, Babylonian; "wrongly" called the saros, Toomer). The
   inclined circle (V 12): from $R_z(\Omega)R_x(i)$, $\sin\beta = \sin
@@ -532,15 +541,15 @@ The first anomaly and the simplest complete model.
   \pi - \pi_\odot$, total or annular by the Moon's radius from the
   point where the shadow's axis meets the Earth (non-central total and
   annular eclipses included); the least distance taken as $|\beta|$ at the
-  syzygy (0.9956 of it). The limits from the node (lunar 10.2° to
-  12.1°, solar 16.4° to 18.3°, with the Moon's distance); Ptolemy's
+  syzygy (0.9956 of it). The limits from the node (lunar 10.3° to
+  12.2°, solar 16.4° to 18.3°, with the Moon's distance); Ptolemy's
   (VI 5). The eclipse seasons: the solar limits take 31.5 to 35.3 days to
   cross, more than a month, so at least two solar eclipses a year; the
   lunar 19.7 to 23.4 days (VI 6). Capstone of Acts II and III.
 - **Notation:** $i$, $F$ and $\bar F$, $\Omega$ (☊ ☋ in figures),
   $n_F$, $P_s$, $P_d$, $P_a$, $Y_\text{e}$; $s$, $s_\odot$, $\pi$,
   $\pi_\odot$, $u$ (§6).
-- **Figures:** a calendar of the new and full Moons of 2021–2030 with the
+- **Figures:** a calendar of the new and full Moons of 2016–2025 with the
   eclipses (static); a photo of the total eclipse of 21 August 2017
   (NASA, public domain); a blue plate of the Moon's path near Regulus,
   11–15 August 2026, crossing the ecliptic at the node 16 hours after the
@@ -562,15 +571,18 @@ The first anomaly and the simplest complete model.
   months = 5923 returns in latitude (IV 2, Babylonian), 0.1 s from the
   reference; Ptolemy's correction and epoch (IV 9); his diameter and
   shadow from two eclipses (VI 5); Copernicus' motion in latitude from
-  eclipses at opposite nodes (IV 13). Ours: Meeus' $n_F$, and $i$ and $F_0$
-  fitted to the latitudes at the 25 new and full Moons of 2026: $i =
-  5.00^\circ$ (the mean inclination 5.145° would be up to 10′ off
-  there), the node at J2000 125.05° (Meeus 125.04°); the sizes from the
-  model's distances.
-- **Test:** the latitude within 1.9′ at the new and full Moons of 2026, 26′
-  over the year, 29′ over a century; the eclipses: all 38 of 2021–2030,
-  364 of 366 in 2001–2100 (two missed and three added, all grazing
-  partials), times rms 45 min, worst 97 min (page 3.1's 40′). Ptolemy: his
+  eclipses at opposite nodes (IV 13). Ours: $n_F$ from the latitudes at
+  the 2473 new and full Moons of 1926–2025 (±0.02° a century), and $i$
+  and $F_0$ fitted to the latitudes at the last 25 documented ones, 5
+  November 2025 to 26 October 2026: $i = 5.00^\circ$ (the mean
+  inclination 5.145° would be up to 10′ off there), the node at J2000
+  125.05° (Meeus 125.04°); the sizes from the model's distances, the mean
+  distance the reference Moon's average over 1926–2025.
+- **Test:** the latitude within 1.7′ at the fitted new and full Moons,
+  2.6′ at the others of 2021–2030, 26′ over 2026, 29′ over a century; the
+  eclipses: all 38 of 2021–2030 and no other, one of another kind (the
+  deep partial solar eclipse of 29 March 2025 comes out total), times rms
+  43 min, worst 95 min (page 3.1's 40′). Ptolemy: his
   latitudes within 2.3′ and his times within half an hour at his three
   eclipses; his lunar limit holds all 157 lunar eclipses of AD 100–200;
   in 2021–2030 still 37 of 38 eclipses, times wrong by up to 4.3 h.
@@ -600,7 +612,7 @@ The first anomaly and the simplest complete model.
 
 - **Question:** why do planets loop, and why always at opposition?
 - **Learn:** retrograde motion and the stations (Mars' loop of 2024–2025,
-  19.2° in 79 days); the loops of the five planets in 2001–2040 (a table),
+  19.2° in 79 days); the loops of the five planets in 1986–2025 (a table),
   centred on opposition for Mars, Jupiter and Saturn and on inferior
   conjunction for Venus and Mercury, which never pass 47° and 28° from the
   Sun (XII 1); the two anomalies, related to the Sun and to the place in
@@ -621,40 +633,45 @@ The first anomaly and the simplest complete model.
   the planet's mean motion and $n_\odot$ the mean Sun's; lengths in units of
   the deferent's radius (Ptolemy's 60); $e$ is left free for page 4.2.
 - **Figures:** a blue plate of Mars' path among the stars of Gemini and
-  Cancer, 15 October 2024 to 15 April 2025, with the stations and the
-  opposition dated; the daily motion against the place relative to the
-  Sun, one curve per synodic period of 2011–2030 (a view per planet,
+  Cancer (the whole of both figures), 15 October 2024 to 15 April 2025,
+  with the stations dated outside the ends of the loop; the daily motion against the place relative to the
+  Sun, one curve per synodic period of 2006–2025 (a view per planet,
   static); the epicycle and the daily motion against $\mu$ (date and $r$,
   presets Ptolemy's, no loop, no epicycle; views Mars and Venus); the
   error curve of Mars in degrees (the uniform planet as ghost, dots at the
-  oppositions; 4 years, 16 years, 200 years); the arcs and the intervals
-  of the loops of 2001–2040 against the ecliptic longitude of opposition
+  oppositions; 2016–2019, the 16 years of the fit, 200 years); the arcs
+  and the intervals of the loops of 1986–2025 against the ecliptic
+  longitude of opposition
   (static).
-- **Fit:** Mars has no opposition in 2026, so the eight oppositions of
-  2018–2033, once round the zodiac. $n$ from the reference (Standish's
-  mean longitude of date); $L_0$ from the oppositions to the mean Sun,
-  where the planet is seen through K (X 6), 354.79°, 38′ from the
-  reference, each opposition 11° to 12° off; $r$ from the mean arc of
-  retrogradation, 16.07°, so 0.657 (39.4 in 60; Ptolemy 39.5), each loop
-  alone 0.626 to 0.674. History block: the period relations "computed by
+- **Fit:** documented oppositions only (§5). $n$ from the eight
+  oppositions to the mean Sun of 2010–2025 and those 79 years earlier
+  (1931–1946: 37 synodic periods, 42 turns and 2.8° to 4.6° more, so
+  both anomalies cancel), 0.524070° a day; $L_0$ from the eight of
+  2010–2025, where the planet is seen through K (X 6), 355.83°, each
+  opposition 11° to 12° off; $r$ from the mean arc of retrogradation of
+  their loops, 16.7°, so 0.660 (39.6 in 60; Ptolemy 39.5), each loop
+  alone 0.63 to 0.67. The arc is measured, not $\mu_s$: a station's
+  place is easy to measure and its moment is not, and for a trial $r$
+  the station condition gives $\mu_s$ and the arc. History block: the period relations "computed by
   Hipparchus", Babylonian (IX 3, Toomer), and Ptolemy's corrections;
   stations hard to time (IX 2); Ptolemy's oppositions, where the ecliptic
   anomaly is isolated (X 6), and his epicycle of Mars (X 7–8).
-- **Test:** within 34.5° over 2018–2033 (the uniform planet 53.2°), rms
-  9.9°; the same over 1926–2126; largest near the oppositions (32° at
-  that of December 2022), an
+- **Test:** within 34° over 2010–2025 (the uniform planet 54°), rms a
+  third of the uniform planet's; the same over 1926–2126; largest near
+  the oppositions (33° at that of May 2016), an
   error in K multiplied by $1/(1 - r)$ there. History block: Hipparchus'
   verdict on the models of a "single unvarying anomaly and retrograde arc"
   (IX 2).
 - **Residual:** the arcs follow the zodiac, 10.0° to 19.5° against the
-  model's 16.1°, and the intervals 764 to 810 days against 779.9;
+  model's 16.7°, and the intervals 764 to 811 days against 779.9;
   Neugebauer's remark on constant arcs (HAMA p. 191). Detour: planetary
   latitudes (the shape of the loop).
 - **Exercises:** Apollonius' form of the station (TP/OP = $n/n_\mu$) and
   Ptolemy's Mars at mean distance, 16°18′44″ in about 73 days (XII 4),
   with Jupiter and Saturn; the synodic periods from the periods of return
   to the same star, and Ptolemy's 79-year relation for Mars (IX 3);
-  the oppositions of 2018 and 2027 in the model (break the model).
+  the oppositions of 1999 and 2003 in the model, outside the fit (break
+  the model).
 - **Code:** `models/planet-epicycle.js` (`PlanetEpicycle`: `make`,
   `makeUniform`, `state`, `dailyMotion`, `loopThreshold`,
   `stationAnomaly`, `loop`, `ratioForArc`, `construction`,
@@ -844,8 +861,25 @@ Every page follows the same rhythm:
 3. **Fit.** How the model's parameters could be obtained: for each
    parameter, which observation fixes it and why that observation is the
    right one. The method comes first; the fitted values appear once, as
-   its outcome, not as a stream of numbers.
-4. **Test.** The model fitted to the current period against the
+   its outcome, not as a stream of numbers. The data of the fit follow
+   three rules:
+   - **Fitted, not copied.** Every parameter is fitted from observations
+     (the reference sky's positions, standing in for modern
+     observations). A value is never taken from the theory behind the
+     reference sky (Meeus' or Standish's mean motions, a mean node): that
+     would put the answer into the fit.
+   - **Documented.** The observations are ones already made: no date
+     after the time of writing. Only the test runs the model into the
+     future, as a prediction.
+   - **Modern, over the span the parameter needs.** "The current period"
+     means modern observations, as against the historical astronomer's
+     (the model is never fitted to Ptolemy's or Hipparchus' data; their
+     fits go in the history block). It does not mean the years around
+     2026: a rate takes observations decades or a century apart, an
+     anomaly a full turn of it.
+   Adopted on 2026-11-11 (DECISIONS.md); pages 1.1 to 3.3 were refitted
+   to it on 2026-11-12.
+4. **Test.** The model fitted to modern observations against the
    reference sky, with the error curve from page 2.1 on: around the fit
    year, and over centuries or millennia when that shows something about
    the model. It is tested once: the same test is not repeated in the

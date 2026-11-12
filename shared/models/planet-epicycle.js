@@ -113,16 +113,17 @@ const PlanetEpicycle = (function () {
 		}
 	};
 
-	/* Mars fitted on page 4.1 (tools/numbers/4.1-going-backwards.js): the
-	   reference's mean motion; L0 from the eight oppositions of Mars to the
-	   mean Sun of 2018 - 2033; r from the mean of the eight arcs of
-	   retrogradation, 16.07°. Epoch J2000.0. */
+	/* Mars fitted on page 4.1 (tools/numbers/4.1-going-backwards.js), from
+	   documented oppositions only: n from the eight oppositions to the mean
+	   Sun of 2010 - 2025 and those 79 years earlier; L0 from the eight of
+	   2010 - 2025; r from the mean of their eight arcs of retrogradation,
+	   16.66°. Epoch J2000.0. */
 	const MARS_FIT = {
 		kind: 'outer',
-		L0: 354.793635,
-		n: meanOfDate('mars').n,
+		L0: 355.834128,
+		n: 0.524070384,
 		epoch: 2451545.0,
-		r: 0.657064,
+		r: 0.66015,
 		sun: MeanSun.MODERN
 	};
 

@@ -90,16 +90,18 @@ const LunarEpicycle = (function () {
 	   (tools/numbers/3.1-first-anomaly.js). */
 	const ECLIPSES_2026 = [2460926.256636, 2461102.986269, 2461280.680274];
 
-	/* Our fit (page 3.1, section 3): the three-eclipse method applied to
-	   those eclipses, with Meeus' mean motions; the epoch J2000.0
-	   (tools/numbers/3.1-first-anomaly.js). */
+	/* Our fit (page 3.1, section 3): the mean motions from the new Moons
+	   of 1926 - 2025 (n = n_sun + 360° / P_s with the mean Sun of page
+	   1.3, n_M from 251 synodic = 269 anomalistic months), and the
+	   three-eclipse method applied to those eclipses with these motions;
+	   the epoch J2000.0 (tools/numbers/3.1-first-anomaly.js). */
 	const FIT_2026 = {
-		L0: 218.320909,
-		n: MEEUS.n,
-		M0: 320.013246,
-		nM: MEEUS.nM,
+		L0: 218.311196,
+		n: 13.176397489,
+		M0: 320.072803,
+		nM: 13.064987203,
 		epoch: 2451545.0,
-		e: 0.084402
+		e: 0.084404
 	};
 
 	/* ======================================================================

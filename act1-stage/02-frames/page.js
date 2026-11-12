@@ -13,7 +13,7 @@
 	 4. the triangle P, Z, star   (3D, static: the horizon frame at the
 								   observation of section 1)
 	 5. the noon Sun              (2D, static: its altitude at Alexandria
-								   through 2026, for the fit)
+								   through 2025, for the fit)
 	 6. the nutation error        (2D, static: mean against true obliquity
 								   over 2026)
    Shared code: common.js, time.js, ephemeris.js, stars.js, models/diurnal.js,
@@ -44,7 +44,8 @@ const EPS_TODAY = Ephem.meanObliquity(STAR_EPOCH);
 /* The axes are drawn a little beyond the sphere. */
 const AXIS_LENGTH = 1.25;
 
-/* x ticks at the first of every other month (day of the year 2026). */
+/* x ticks at the first of every other month (day of the year; 2025 and
+   2026 are both common years). */
 const MONTH_TICKS = [
 	[0, 'Jan'],
 	[59, 'Mar'],
@@ -867,7 +868,7 @@ const triangleFigure = {
 /* ==========================================================================
    5. FIGURE 5: THE NOON SUN THROUGH THE YEAR
    A static figure: no controls. The altitude of the reference Sun at noon
-   at Alexandria on each day of 2026, as seen (with refraction). The
+   at Alexandria on each day of 2025, as seen (with refraction). The
    highest and the lowest value are the obliquity above and below the
    altitude of the equator, 90° - phi, and the curve crosses that altitude
    at the equinoxes. Fixed scale: every value lies between 35.39° and
@@ -878,7 +879,7 @@ const triangleFigure = {
    tools/numbers/1.2-frames.js. */
 const ALEXANDRIA = { lat: 31.2, lon: 29.9 };
 
-const NOON_YEAR = 2026;
+const NOON_YEAR = 2025; // the last whole year before today (STRUCTURE.md §5)
 const NOON_Y_RANGE = [25, 95]; // degrees
 
 /* The altitude of the equator is named under its line on this day of the

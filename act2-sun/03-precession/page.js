@@ -390,14 +390,14 @@ function crossDirection(pole, angle) {
    3. FIGURE 3: THE PATH OF THE POLE
    Static, a blue plate (STYLE.md §7; shared/plate.js). The northern sky of
    2026 down to declination +35°, and in gold the pole of the equator over
-   one turn of the reference sky's precession, 10·859 BC to AD 14·910,
+   one turn of the reference sky's precession, 10·862 BC to AD 14·913,
    seen in the equatorial frame of 2026; ticks every thousand years. It
    circles the ecliptic pole K, at right ascension 18 h and declination
    90° minus the obliquity of 2026.
    ========================================================================== */
 
-const POLE_PATH_FROM = -10858;
-const POLE_PATH_TO = 14910;
+const POLE_PATH_FROM = -10861;
+const POLE_PATH_TO = 14913;
 const POLE_PATH_STEP = 50; // years
 const POLE_PATH_LABELS = { '-2999': '3000 BC', 2000: 'AD 2000', 8000: 'AD 8000', 14000: 'AD 14·000' };
 
@@ -579,7 +579,7 @@ const testFigure = {
 		});
 
 		stars.addModel({
-			label: "uniform precession, $p = 50.29''$ a year",
+			label: "uniform precession, $p = 50.28''$ a year",
 			short: 'uniform precession',
 			color: COL.earth,
 			fn: Precession.make(MODEL, spicaNow.lon)
@@ -604,7 +604,7 @@ const testFigure = {
 			fn: SolarEccentric.make(SolarEccentric.FIT_2026)
 		});
 		sun.addModel({
-			label: 'moving apogee, 1.741° a century',
+			label: 'moving apogee, 1.751° a century',
 			short: 'moving apogee',
 			color: COL.deferent,
 			fn: SolarEccentric.make(SolarEccentric.MOVING_2026)

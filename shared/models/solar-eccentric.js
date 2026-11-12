@@ -75,21 +75,21 @@ const SolarEccentric = (function () {
 	/* Our fit (page 2.1, section 3): Hipparchus' method applied to the
 	   seasons of 2026 of the reference Sun (spring 92.739 d, summer
 	   93.663 d) with the modern year, and the mean longitude from the
-	   moment of the spring equinox, on the modern mean motion
+	   moment of the spring equinox, on the mean motion fitted on page 1.3
 	   (tools/numbers/2.1-uneven-year.js). */
 	const FIT_2026 = Object.assign({}, MeanSun.MODERN, {
-		L0: 280.45897,
+		L0: 280.45909,
 		e: 0.033473,
 		apogee: 103.732
 	});
 
 	/* Page 2.3: FIT_2026 with its apogee moving at the rate that fits
-	   Hipparchus' method applied to the reference seasons of seventeen
-	   years from 1000 BC to AD 3000 (least squares, 1.741° a century),
-	   through its value of 2026 at the spring equinox of 2026, when page
-	   2.1 fitted it (tools/numbers/2.3-precession.js). */
+	   Hipparchus' method applied to the reference seasons of every year
+	   from 1826 to 2025 (least squares, 1.751° a century), through its
+	   value of 2026 at the spring equinox of 2026, when page 2.1 fitted it
+	   (tools/numbers/2.3-precession.js). */
 	const MOVING_2026 = Object.assign({}, FIT_2026, {
-		apogeeRate: 1.741,
+		apogeeRate: 1.751,
 		apogeeEpoch: 2461120.106
 	});
 

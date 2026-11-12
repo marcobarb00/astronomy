@@ -92,18 +92,22 @@ const lon = (body, jd) => Ephem.longitude(body, jd);
 const speed = (body, jd) => PlanetEpicycle.referenceMotion(body, jd);
 const elongation = (body, jd) => PlanetEpicycle.referenceElongation(body, jd);
 const meanSun = MeanSun.make(MeanSun.MODERN);
-const mars = PlanetEpicycle.meanOfDate('mars');
-const marsMotions = { n: mars.n, nMu: MeanSun.MODERN.n - mars.n };
+
+/* The rule of the page's data (STRUCTURE.md §5): every observation it
+   uses, in the observation, the fit and the residual, is already
+   documented, before 2026; only the test runs the model into the future. */
+const DATA_START = JD(1986, 1, 1);
+const DATA_END = JD(2026, 1, 1);
 
 /* ==========================================================================
    3. OBSERVATION
    ========================================================================== */
 
-const START = JD(2001, 1, 1);
-const END = JD(2041, 1, 1);
+const START = DATA_START;
+const END = DATA_END;
 const KINDS = { mars: 'outer', jupiter: 'outer', saturn: 'outer', venus: 'inner', mercury: 'inner' };
 
-const marsEvents = PlanetEpicycle.referenceEvents('mars', 'outer', JD(2000, 6, 1), JD(2041, 6, 1));
+const marsEvents = PlanetEpicycle.referenceEvents('mars', 'outer', JD(1985, 6, 1), DATA_END);
 const marsLoops = marsEvents.loops;
 const loop2425 = marsLoops.find(l => l.middle > JD(2025, 1, 1) && l.middle < JD(2025, 2, 1));
 
@@ -126,12 +130,12 @@ console.log(`distance at opposition ${f(Ephem.position('mars', loop2425.middle).
 	console.log(`ecliptic latitude, 15 Oct 2024 - 15 Apr 2025 (the path of the plate): ${range(lats, 2)}°`);
 }
 
-title('Observation: five planets, 2001 - 2040');
+title('Observation: five planets, 1986 - 2025');
 
 const SUMMARY = {};
 
 Object.entries(KINDS).forEach(([body, kind]) => {
-	const ev = body === 'mars' ? marsEvents : PlanetEpicycle.referenceEvents(body, kind, START - 200, END + 200);
+	const ev = body === 'mars' ? marsEvents : PlanetEpicycle.referenceEvents(body, kind, START - 200, END);
 	const loops = ev.loops.filter(l => l.middle >= START && l.middle < END);
 	const arcs = loops.map(l => l.arc);
 	const days = loops.map(l => l.days);
@@ -176,11 +180,11 @@ title('Observation: Almagest IX 5, Mars from its fastest to its slowest, 2023 - 
 		}
 	}
 
-	const meanReached = roots(jd => speed('mars', jd) - mars.n, fastest, loop2425.middle, 1)[0];
+	const meanReached = roots(jd => speed('mars', jd) - MARS_FIT.n, fastest, loop2425.middle, 1)[0];
 
 	console.log(
 		`conjunction ${date(conjunction)}; fastest ${date(fastest)}, ${f(speed('mars', fastest), 2)}°/day;` +
-			` back to the mean motion ${f(mars.n, 3)}°/day on ${date(meanReached)}; opposition ${date(loop2425.middle)}`
+			` back to the mean motion ${f(MARS_FIT.n, 3)}°/day on ${date(meanReached)}; opposition ${date(loop2425.middle)}`
 	);
 	console.log(
 		`from fastest to mean ${f(meanReached - fastest, 0)} days; from mean to the opposition (slowest) ${f(loop2425.middle - meanReached, 0)} days`
@@ -222,18 +226,58 @@ title("Model: the speed on the epicycle (Ptolemy's Mars: his motions and 39;30 /
    5. FIT
    ========================================================================== */
 
-title('Fit: the oppositions of Mars to the mean Sun, 2018 - 2033');
+title('Fit: the mean motion from oppositions 79 years apart');
 
-const FIT_START = JD(2018, 1, 1);
-const FIT_END = JD(2034, 1, 1);
-const meanOppositions = roots(jd => norm180(lon('mars', jd) - meanSun(jd) - 180), FIT_START, FIT_END, 2);
-const L0s = meanOppositions.map(jd => norm360(lon('mars', jd) - mars.n * (jd - J2000)));
+// the oppositions of Mars to the mean Sun of 2010 - 2025, once round the
+// zodiac, and those 79 years earlier (37 synodic periods, 42 turns and a
+// little more: Almagest IX 3), at nearly the same places in the zodiac
+const FIT_START = JD(2010, 1, 1);
+const FIT_END = DATA_END;
+const offMeanSun = jd => norm180(lon('mars', jd) - meanSun(jd) - 180);
+const meanOppositions = roots(offMeanSun, FIT_START, FIT_END, 2);
+const earlier = roots(offMeanSun, FIT_START - 29300, FIT_END - 28500, 2);
+const pairs = meanOppositions.map(t => {
+	const o = earlier.reduce((best, x) => (Math.abs(x - (t - 28857.7)) < Math.abs(best - (t - 28857.7)) ? x : best));
+	const beyond = norm180(lon('mars', t) - lon('mars', o));
+
+	return { o, t, days: t - o, beyond, n: (42 * 360 + beyond) / (t - o) };
+});
+const nFit = mean(pairs.map(pair => pair.n));
+const motions = { n: nFit, nMu: MeanSun.MODERN.n - nFit };
+
+pairs.forEach(pair => {
+	console.log(
+		`${date(pair.o).padEnd(12)} -> ${date(pair.t).padEnd(12)} ${f(pair.days, 1)} days = ${f(pair.days / (360 / MeanSun.MODERN.n), 3)} years;` +
+			` 42 turns + ${f(pair.beyond, 2)}°; n = ${pair.n.toFixed(7)}°/day`
+	);
+});
+console.log(
+	`beyond the 42 turns: ${range(
+		pairs.map(pair => pair.beyond),
+		1
+	)}°`
+);
+console.log(
+	`n = ${nFit.toFixed(9)}°/day (the mean of ${pairs.length}), from ${range(
+		pairs.map(pair => pair.n),
+		7
+	)};` + ` period in ecliptic longitude ${f(360 / nFit, 2)} days; synodic period ${f(360 / motions.nMu, 2)} days`
+);
+{
+	// a check only, not used by the fit: the reference's own mean motion
+	const reference = PlanetEpicycle.meanOfDate('mars');
+
+	console.log(
+		`(check: the reference's mean motion ${reference.n.toFixed(9)}°/day; difference ${f((nFit - reference.n) * 36525, 3)}° a century)`
+	);
+}
+
+title('Fit: the mean ecliptic longitude from the oppositions to the mean Sun, 2010 - 2025');
+
+const L0s = meanOppositions.map(jd => norm360(lon('mars', jd) - nFit * (jd - J2000)));
 const L0fit = norm360(atan2d(mean(L0s.map(x => sin(x))), mean(L0s.map(x => cos(x)))));
 const realOppositions = marsLoops.map(l => l.middle).filter(jd => jd >= FIT_START && jd < FIT_END);
 
-console.log(
-	`n = ${mars.n.toFixed(9)}°/day (Standish's L of date); period in ecliptic longitude ${f(360 / mars.n, 3)} days`
-);
 meanOppositions.forEach((jd, i) => {
 	console.log(
 		`${date(jd).padEnd(12)} ecliptic longitude ${f(lon('mars', jd), 2).padStart(6)}°  L0 ${f(L0s[i], 2).padStart(6)}°` +
@@ -244,14 +288,13 @@ console.log(
 	`the oppositions to the mean Sun within ${f(Math.max(...meanOppositions.map((jd, i) => Math.abs(jd - realOppositions[i]))), 1)} days of those to the true Sun`
 );
 console.log(
-	`L0 = ${L0fit.toFixed(6)}° (the mean of ${L0s.length}); Standish's mean longitude at J2000 ${f(mars.L0, 2)}°, ` +
-		`${f(Math.abs(norm180(L0fit - mars.L0)) * 60, 0)}' away`
+	`L0 = ${L0fit.toFixed(6)}° (the mean of ${L0s.length}); each from ${f(Math.min(...L0s.map(x => norm180(x - L0fit))), 1)} to ${f(Math.max(...L0s.map(x => norm180(x - L0fit))), 1)}°`
 );
 
-title('Fit: the epicycle from the arcs of retrogradation, 2018 - 2033');
+title('Fit: the epicycle from the arcs of retrogradation, 2010 - 2025');
 
 const fitLoops = marsLoops.filter(l => l.middle >= FIT_START && l.middle < FIT_END);
-const ratioFor = arc => PlanetEpicycle.ratioForArc(arc, marsMotions.n, marsMotions.nMu);
+const ratioFor = arc => PlanetEpicycle.ratioForArc(arc, motions.n, motions.nMu);
 
 fitLoops.forEach(l => {
 	console.log(
@@ -261,7 +304,7 @@ fitLoops.forEach(l => {
 
 const meanArc = mean(fitLoops.map(l => l.arc));
 const rFit = ratioFor(meanArc);
-const fitLoop = PlanetEpicycle.loop(rFit, marsMotions.n, marsMotions.nMu);
+const fitLoop = PlanetEpicycle.loop(rFit, motions.n, motions.nMu);
 
 console.log(
 	`r from each loop ${range(
@@ -273,13 +316,45 @@ console.log(`mean arc ${f(meanArc, 2)}° -> r = ${rFit.toFixed(6)} (${f(60 * rFi
 console.log(
 	`stations at mu = ${f(fitLoop.mu, 1)}° and ${f(360 - fitLoop.mu, 1)}°; the loop ${f(fitLoop.arc, 2)}° in ${f(fitLoop.days, 1)} days (real mean ${f(mean(fitLoops.map(l => l.days)), 1)} days)`
 );
-console.log(`MARS_FIT in planet-epicycle.js: L0 ${MARS_FIT.L0}, r ${MARS_FIT.r}`);
+{
+	// how r follows from the arc: for a trial r, the station condition gives
+	// mu_s and the arc; two trials either side, and the solution
+	[0.6, 0.66, 0.7].forEach(r => {
+		const L = PlanetEpicycle.loop(r, motions.n, motions.nMu);
+
+		console.log(`trial r = ${r}: mu_s = ${f(L.mu, 2)}°, arc ${f(L.arc, 2)}°`);
+	});
+
+	// why not mu_s from the moment of the station: Mars hardly moves for
+	// days around a station, so the moment is uncertain while the place is not
+	const station = fitLoops[fitLoops.length - 1].start;
+	const moves = [3, 5, 10].map(d => Math.abs(norm180(lon('mars', station + d) - lon('mars', station))) * 60);
+
+	console.log(
+		`around the station of ${date(station)}, Mars moves ${moves.map(x => f(x, 1)).join(', ')}' in 3, 5 and 10 days`
+	);
+
+	// a moment wrong by 5 days changes mu_s by 5 n_mu, more than the whole
+	// change of mu_s from r = 0.6 to r = 0.7
+	const low = PlanetEpicycle.loop(0.6, motions.n, motions.nMu).mu;
+	const high = PlanetEpicycle.loop(0.7, motions.n, motions.nMu).mu;
+
+	console.log(
+		`a station 5 days off moves mu_s by ${f(5 * motions.nMu, 1)}°; from r = 0.6 to 0.7 mu_s moves by ${f(low - high, 1)}°, the arc by ${f(
+			PlanetEpicycle.loop(0.7, motions.n, motions.nMu).arc - PlanetEpicycle.loop(0.6, motions.n, motions.nMu).arc,
+			1
+		)}°`
+	);
+}
+
+console.log(`MARS_FIT in planet-epicycle.js: L0 ${MARS_FIT.L0}, n ${MARS_FIT.n}, r ${MARS_FIT.r}`);
+console.log(`this fit:                       L0 ${L0fit.toFixed(6)}, n ${nFit.toFixed(9)}, r ${rFit.toFixed(6)}`);
 
 /* ==========================================================================
    6. TEST
    ========================================================================== */
 
-title('Test: the model fitted to 2018 - 2033 against the reference Mars');
+title('Test: the model fitted to 2010 - 2025 against the reference Mars');
 
 const fitted = PlanetEpicycle.make(MARS_FIT);
 const uniform = PlanetEpicycle.makeUniform(MARS_FIT);
@@ -301,7 +376,7 @@ function errors(fn, start, end, step) {
 }
 
 [
-	['2018 - 2033', FIT_START, FIT_END, 1],
+	['2010 - 2025', FIT_START, FIT_END, 1],
 	['1926 - 2126', JD(1926, 1, 1), JD(2126, 1, 1), 5]
 ].forEach(([label, a, b, step]) => {
 	const model = errors(fitted, a, b, step);
@@ -317,6 +392,22 @@ function errors(fn, start, end, step) {
 	const atConjunction = conjunctions.map(jd => norm180(fitted(jd) - lon('mars', jd)));
 
 	console.log(`at the oppositions: ${atOpposition.map(x => f(x, 1)).join(', ')}°`);
+	realOppositions.forEach((jd, i) => {
+		// the largest error near each opposition, within 30 days
+		let worst = 0;
+		let when2 = jd;
+
+		for (let t = jd - 30; t <= jd + 30; t += 0.5) {
+			const d = norm180(fitted(t) - lon('mars', t));
+
+			if (Math.abs(d) > Math.abs(worst)) {
+				worst = d;
+				when2 = t;
+			}
+		}
+
+		console.log(`  ${date(jd)}: ${f(atOpposition[i], 1)}° at the opposition, ${f(worst, 1)}° on ${date(when2)}`);
+	});
 	console.log(`at the conjunctions: ${atConjunction.map(x => f(x, 1)).join(', ')}°`);
 }
 
@@ -324,7 +415,7 @@ function errors(fn, start, end, step) {
    7. RESIDUAL
    ========================================================================== */
 
-title('Residual: the loops of Mars, 2001 - 2040 (Figure 5)');
+title('Residual: the loops of Mars, 1986 - 2025 (Figure 5)');
 
 const residualLoops = marsLoops.filter(l => l.middle >= START && l.middle < END);
 
@@ -345,7 +436,7 @@ residualLoops.forEach((l, i) => {
 			1
 		)}°; the model ${f(fitLoop.arc, 1)}° every time`
 	);
-	console.log(`intervals ${range(gaps, 0)} days; the model's synodic period ${f(360 / marsMotions.nMu, 1)} days`);
+	console.log(`intervals ${range(gaps, 0)} days; the model's synodic period ${f(360 / motions.nMu, 1)} days`);
 }
 
 /* ==========================================================================
@@ -395,7 +486,7 @@ title("Exercise 1: the stations; Ptolemy's Mars at mean distance (XII 4)");
 
 		console.log(
 			`${body}: r = ${f(q.r, 4)} (threshold ${f(PlanetEpicycle.loopThreshold(q.n, q.nMu), 4)}): back ${f(M.arc, 1)}° in ${f(M.days, 0)} days;` +
-				` reference mean, 2001 - 2040, ${f(mean(s.arcs), 1)}° in ${f(mean(s.days), 0)} days`
+				` reference mean, 1986 - 2025, ${f(mean(s.arcs), 1)}° in ${f(mean(s.days), 0)} days`
 		);
 	});
 }
@@ -430,19 +521,20 @@ title("Exercise 2: synodic periods from sidereal periods; Ptolemy's Mars (IX 3)"
 		`3;10° = ${f(fromSexagesimal(3, 10), 3)}°; the mean Sun in 3;13 days, at Ptolemy's rate, ${f(fromSexagesimal(3, 13) * fromSexagesimal(0, 59, 8, 17, 13, 12, 31), 3)}°`
 	);
 	console.log(
-		`synodic period ${f(S, 3)} days (modern ${f(360 / marsMotions.nMu, 3)}); period in ecliptic longitude ${f(P, 3)} days (modern ${f(360 / mars.n, 3)})`
+		`synodic period ${f(S, 3)} days (this page's fit ${f(360 / motions.nMu, 3)}); period in ecliptic longitude ${f(P, 3)} days (this page's fit ${f(360 / motions.n, 3)})`
 	);
 	console.log(
-		`turns ${f(42 + fromSexagesimal(3, 10) / 360, 4)}; differences ${f((S - 360 / marsMotions.nMu) * 1440, 1)} minutes and ${f((P - 360 / mars.n) * 1440, 0)} minutes`
+		`turns ${f(42 + fromSexagesimal(3, 10) / 360, 4)}; differences ${f((S - 360 / motions.nMu) * 1440, 1)} minutes and ${f((P - 360 / motions.n) * 1440, 0)} minutes`
 	);
 }
 
-title('Exercise 3: the oppositions of 2018 and 2027 in the model');
+title('Exercise 3: the oppositions of 1999 and 2003 in the model');
 {
 	const centre = jd => MARS_FIT.L0 + MARS_FIT.n * (jd - J2000);
 	const modelOpposition = (a, b) => bisect(jd => norm180(meanSun(jd) - centre(jd) - 180), a, b);
+	const meanOpp = near => bisect(offMeanSun, near - 10, near + 10);
 
-	[2018, 2027].forEach(year => {
+	[1999, 2003].forEach(year => {
 		const l = marsLoops.find(x => Time.calendarDate(x.middle).year === year);
 		const m = modelOpposition(l.middle - 60, l.middle + 60);
 
@@ -450,7 +542,7 @@ title('Exercise 3: the oppositions of 2018 and 2027 in the model');
 			`${year}: model opposition ${when(m)} at ${f(fitted(m), 1)}°; real ${when(l.middle)} at ${f(l.lon, 1)}°` +
 				` (${f(m - l.middle, 1)} days, ${f(norm180(fitted(m) - l.lon), 1)}°); real loop ${f(l.arc, 1)}° in ${f(l.days, 0)} days,` +
 				` model ${f(fitLoop.arc, 1)}° in ${f(fitLoop.days, 0)} days; distance ${f(Ephem.position('mars', l.middle).dist, 2)} au;` +
-				` the real Mars ${f(norm180(L0s[meanOppositions.findIndex(jd => Math.abs(jd - l.middle) < 10)] - L0fit), 1)}° from K at its opposition to the mean Sun`
+				` the real Mars ${f(norm180(lon('mars', meanOpp(l.middle)) - centre(meanOpp(l.middle))), 1)}° from K at its opposition to the mean Sun`
 		);
 	});
 }
@@ -461,7 +553,7 @@ title('Exercise 3: the oppositions of 2018 and 2027 in the model');
 
 title('Scales');
 {
-	// Figure 2: the reference daily motions, 2001 - 2040, per planet
+	// Figure 2: the reference daily motions, 1986 - 2025, per planet
 	Object.keys(KINDS).forEach(body => {
 		const values = [];
 
@@ -493,9 +585,9 @@ title('Scales');
 		`VENUS_MEAN: mu0 ${f(VENUS_MEAN.mu0, 4)}°, nMu ${f(VENUS_MEAN.nMu, 7)}°/day, synodic ${f(360 / VENUS_MEAN.nMu, 2)} days`
 	);
 
-	// Figure 5: the arcs and the intervals of 2001 - 2040, in the
+	// Figure 5: the arcs and the intervals of 1986 - 2025, in the
 	// geometric positions every two days that the figure computes
-	const quick = PlanetEpicycle.referenceEvents('mars', 'outer', START - 200, END + 200, { apparent: false, step: 2 });
+	const quick = PlanetEpicycle.referenceEvents('mars', 'outer', START - 200, END, { apparent: false, step: 2 });
 	const quickLoops = quick.loops.filter(l => l.middle >= START && l.middle < END);
 	const largest = Math.max(...quickLoops.map((l, i) => Math.abs(l.arc - residualLoops[i].arc)));
 

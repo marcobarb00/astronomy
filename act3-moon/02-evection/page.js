@@ -5,7 +5,7 @@
    controls):
 	 1. the equation at the phases   (2D, static: the real Moon's true
 									   minus mean longitude against its
-									   anomaly, 2021 - 2030)
+									   anomaly, 2016 - 2025)
 	 2. Ptolemy's crank              (2D: (a) the epicycle on the turning
 									   eccentric, seen from the north
 									   ecliptic pole, (b) q over two
@@ -13,7 +13,7 @@
 	 3. the direction of the epicycle (2D, static: Ptolemy's example of
 									   Almagest V 6, and the epicycle
 									   enlarged)
-	 4. the crank fitted to 2026     (error curve)
+	 4. the crank fitted to 2025 - 2026     (error curve)
 	 5. the apparent diameter        (2D, static: the real Moon and the
 									   two models through 2026)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
@@ -106,14 +106,14 @@ const toCanvas = (origin, scale, point) => ({ x: origin.x + scale * point[0], y:
 /* ==========================================================================
    1. FIGURE 1: THE EQUATION AT THE NEW AND FULL MOONS AND THE QUARTERS
    Static. The reference Moon's true minus mean longitude at every new and
-   full Moon and every quarter of 2021 - 2030, against its anomaly M from
+   full Moon and every quarter of 2016 - 2025, against its anomaly M from
    the apogee (Meeus' mean motions). Fixed scale +-9° (the equation reaches
    7.92°, tools/numbers/3.2-evection.js).
    ========================================================================== */
 
 const EQUATION_RANGE = [-9, 9];
-const EQUATION_FROM = Time.julianDay(2021, 1, 1);
-const EQUATION_TO = Time.julianDay(2031, 1, 1);
+const EQUATION_FROM = Time.julianDay(2016, 1, 1);
+const EQUATION_TO = Time.julianDay(2026, 1, 1);
 
 /* Ticks of the anomaly axis, every 90°. */
 const anomalyTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
@@ -155,7 +155,7 @@ const equationFigure = {
 
 /* ==========================================================================
    2. FIGURE 2: PTOLEMY'S CRANK
-   (a) the crank fitted to 2026 (LunarCrank.FIT_2026, without the direction
+   (a) the crank fitted to 2025 - 2026 (LunarCrank.FIT_2026, without the direction
    of the epicycle, which Figure 3 adds), at the chosen moment, seen from
    the north ecliptic pole: the eccentric about C with its apogee A and its
    line of apsides, the direction of the mean Sun, the epicycle about K
@@ -587,7 +587,7 @@ const directionZoomFigure = {
    changes a model here, so the widget fits its scale to each span.
    ========================================================================== */
 
-/* Figure 4: the crank fitted to 2026, with page 3.1's epicycle and the
+/* Figure 4: the crank fitted to 2025 - 2026, with page 3.1's epicycle and the
    crank without the direction as ghosts, over the year 2026, and over two
    months and a century centred on it; dots at the quarters. */
 const ourErrorFigure = {
@@ -622,7 +622,7 @@ const ourErrorFigure = {
 			fn: LunarCrank.make(CRANK)
 		});
 		curve.addModel({
-			label: "Ptolemy's complete model, fitted to 2026",
+			label: "Ptolemy's complete model, fitted to 2025–2026",
 			short: 'complete model',
 			color: COL.planet,
 			fn: crank

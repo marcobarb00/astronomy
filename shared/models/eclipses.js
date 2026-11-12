@@ -64,7 +64,7 @@ const Eclipses = (function () {
 
 	const EARTH_RADIUS = 6378.14; // equatorial radius (km)
 	const MOON_RADIUS = 1737.4; // km
-	const MOON_MEAN_DISTANCE = 385000.56; // km, the constant term of Meeus 47
+	const MOON_MEAN_DISTANCE = 385001.8; // km, the reference Moon's mean over 1926 - 2025 (page 3.3)
 	const SUN_RADIUS_AT_AU = 959.63 / 3600; // the Sun's apparent radius at 1 au (deg)
 	const SUN_PARALLAX_AT_AU = 8.794 / 3600; // the Sun's horizontal parallax at 1 au (deg)
 	const SHADOW_ENLARGEMENT = 1.01; // Danjon: 1 % of the Moon's parallax

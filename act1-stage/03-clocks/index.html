@@ -88,7 +88,7 @@
 
 		<p>
 			The interval from one noon to the next, the <em>true solar day</em>,
-			is less regular than the day of the stars. In 2026 it varied from 21
+			is less regular than the day of the stars. In 2025 it varied from 21
 			s short of 24 hours in September to 30 s over in December, yet its
 			average over the year was 24 hours to within a tenth of a second,
 			because our clocks are defined that way.
@@ -124,7 +124,7 @@
 				a whole additional rotation as the result of a daily prolongation due to
 				the apparent advance of the sun" (<em>De Revolutionibus</em> III
 				26 [f. 96v]). Figure 1 shows the extra turn building up through
-				2026.
+				2025.
 			</p>
 			<aside>
 				<div class="note" data-origin="copernicus"></div>
@@ -170,7 +170,7 @@
 				the meridian, while the stars and γ move about $1^\circ$ further
 				each day. The solid arc is the angle by which the Sun has fallen
 				behind them, the last line of the read-out, and it closes into
-				one whole turn by 1 January 2027.
+				one whole turn by 1 January 2026.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -181,14 +181,14 @@
 						<dt class="c-earth">blue</dt>
 						<dd>the celestial equator</dd>
 						<dt class="c-sun">gold</dt>
-						<dd>the ecliptic, solid from the Sun's place on 1 January 2026 at 0 h UT (the ring) to the Sun</dd>
+						<dd>the ecliptic, solid from the Sun's place on 1 January 2025 at 0 h UT (the ring) to the Sun</dd>
 					</dl>
 				</div>
 				<div>
 					<p class="key-title">Read-out</p>
 					<dl class="key">
 						<dt>elapsed, turns</dt>
-						<dd>counted from 1 January 2026, 0 h UT; the Sun's turns are its meridian crossings</dd>
+						<dd>counted from 1 January 2025, 0 h UT; the Sun's turns are its meridian crossings</dd>
 					</dl>
 				</div>
 			</div>
@@ -303,9 +303,11 @@
 		<p>
 			Here $d$ is the time in days of UT since the epoch J2000.0, 1
 			January 2000 at 12:00 UT, and $L_0$ is the mean Sun's right
-			ascension at that epoch. Both constants have been fixed by
-			convention since 1984 (Meeus, ch. 12): $L_0 = 280.46061837^\circ$
-			and $n = 0.98564736629^\circ$ a day.
+			ascension at that epoch. Section 3 measures both from the Sun.
+			Universal Time itself is defined by values of them fixed by
+			convention since 1984 (Meeus, ch. 12), $L_0 = 280.46061837^\circ$
+			and $n = 0.98564736629^\circ$ a day, and we use these to follow
+			one moment through the steps below.
 		</p>
 
 		<p>
@@ -407,8 +409,8 @@
 
 		<p>
 			<strong>Step 3: the date gives $\alpha_m$.</strong> On 20 April 2026
-			at 20:00 UT, $d = 9606.3333$ days, and with the conventional $L_0$
-			and $n$, $\alpha_m = L_0 + n\,d = 28.92^\circ$ (modulo $360^\circ$).
+			at 20:00 UT, $d = 9606.3333$ days, and with UT's $L_0$ and $n$,
+			$\alpha_m = L_0 + n\,d = 28.92^\circ$ (modulo $360^\circ$).
 			Adding the two angles gives $\theta_G = 120^\circ + 28.92^\circ =
 			148.92^\circ$.
 		</p>
@@ -441,48 +443,21 @@
 		</p>
 
 		<p>
-			With the conventional values of $L_0$ and $n$, this becomes the
-			formula we'll use from now on:
+			This is the clock of this page. With UT's own values of $L_0$ and
+			$n$ it becomes the formula that defines the sidereal time,
 		</p>
 
 		<div class="box">
-			$$\theta_G = 280.46061837^\circ + 360.98564736629^\circ\, d, \qquad d = \text{JD(UT)} - 2451545.0.$$
+			$$\theta_G = 280.46061837^\circ + 360.98564736629^\circ\, d, \qquad d = \text{JD(UT)} - 2451545.0,$$
 		</div>
 
 		<p>
-			The rate contains the length of the year, since $360^\circ / n =
-			365.24219$ days, the tropical year. Meeus adds two more terms, in
-			$T^2$ and $T^3$, but in 2026 they are worth only 6 ms, so we leave
-			them out.
-
+			where Meeus adds two more terms, in $T^2$ and $T^3$, worth only 6 ms
+			in 2026. The rate contains the length of the year, since $360^\circ
+			/ n = 365.24219$ days, the tropical year. Our clock uses the $L_0$
+			and $n$ that section 3 measures from the Sun, and section 4 checks it
+			against the sky.
 		</p>
-
-		<div class="row">
-			<p>
-				Tables of the Sun give a slightly larger mean ecliptic longitude at
-				J2000.0, $280.46646^\circ$ (Meeus 25.2), 21″ more than $L_0$,
-				because they give the Sun's geometric position. The mean Sun of
-				the clock follows the Sun as we see it, which lags to the west by
-				the arc the Sun moves while its light reaches the Earth, about 8
-				minutes (the aberration of light). This lag accounts for all but
-				half an arcsecond of the difference, and the rest comes from the
-				two fits.
-			</p>
-			<aside>
-				<div class="note" data-origin="modern"></div>
-			</aside>
-		</div>
-
-		<div class="row">
-			<p>
-				In time, 21″ is only 1.4 s, too small to matter on this page. We
-				use $L_0$ in the clock formula, and the Sun's mean ecliptic
-				longitude for the model Sun that sets the length of the day.
-			</p>
-			<aside>
-				<div class="note detour" data-topic="aberration"></div>
-			</aside>
-		</div>
 
 		<p>
 			We can now check the angle we set by hand on page 1.2, where
@@ -658,10 +633,10 @@
 			At 0 h UT on the date the Greenwich sidereal time is $\theta_{G,0}$,
 			so the sky still has to turn by $(\alpha - \ell - \theta_{G,0})$,
 			reduced to $[0^\circ, 360^\circ)$, and it turns at
-			$360.98564736629^\circ$ a day:
+			$360^\circ + n$ a day:
 		</p>
 
-		$$\text{UT of transit} = \frac{(\alpha - \ell - \theta_{G,0}) \bmod 360^\circ}{360.98564736629^\circ} \times 24\ \text{h}.$$
+		$$\text{UT of transit} = \frac{(\alpha - \ell - \theta_{G,0}) \bmod 360^\circ}{360^\circ + n} \times 24\ \text{h}.$$
 
 		<p>
 			The next transit comes one sidereal day later, usually on the next
@@ -854,8 +829,21 @@
 
 		<p>
 			Since $n = 360^\circ / Y$, the rate follows from the length of the
-			year, measured from one equinox to the next. We take the modern year
-			of section 2, which the Test checks against the stars.
+			year. A year is fixed best by timing the same point of the Sun's
+			course many years apart, since the error of each timing is then
+			divided by the number of years between them. We take the moments at
+			which the Sun reached each equinox and each solstice from 1926 to
+			2025, and fit a straight line through the hundred moments of each.
+		</p>
+
+		<p>
+			The four lines give four slightly different years, from 365.24163
+			days between June solstices to 365.24275 days between December
+			solstices. The Sun's speed at each of these points changes slowly,
+			as the place where it moves fastest drifts along the ecliptic (page
+			2.3), which lengthens some of these years and shortens others. The
+			year of the mean Sun is their mean, $Y$ = 365.24219 days, so $n$ =
+			0.98564735° a day.
 		</p>
 
 		<p>
@@ -870,11 +858,36 @@
 
 		<p>
 			The constant $L_0$ is the mean Sun's right ascension at the epoch,
-			which is also its mean ecliptic longitude. A timed equinox fixes it,
-			because at that moment the real Sun's ecliptic longitude is exactly
-			0°; turning that into the mean Sun's needs a model of the Sun's uneven
-			motion, which page 2.1 builds. Until then we keep the conventional
-			value of section 2.
+			which is also its mean ecliptic longitude. Over whole years the real
+			Sun is as far ahead of the mean Sun as behind it, so the average of
+			$\lambda_\odot - n\,d$ over whole years is $L_0$. We average over the
+			19 years from 2007 to 2025, which also cover a turn of the nutation,
+			the wobble of the equinox met on page 1.2, which repeats every 18.6
+			years: the ten years from 2016 alone would leave $L_0$ 10″ off. The
+			result is $L_0$ = 280.4614°.
+		</p>
+
+		<div class="row">
+			<p>
+				This is the mean Sun of the Sun as we see it, which lags behind its
+				geometric place by the 20″ it moves while its light reaches us, the
+				aberration of light. Its days are those of Terrestrial Time, in which
+				the reference sky gives the Sun (TT, section 5), while the clock counts
+				days of UT, which at J2000.0 ran 64 s behind. In 64 s the mean Sun
+				moves 2.6″, so the clock's constant is $L_0$ + 2.6″ = 280.4621°.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="aberration"></div>
+			</aside>
+		</div>
+
+		<p>
+			With it, the real Sun of 2007–2025 crosses the meridian of Greenwich
+			on average 0.08 s after the clock's noon, as it should for a clock
+			of mean solar time. UT's own constant, 280.46061837°, is a
+			convention tied to the turning Earth and lies 5.3″ lower: by it the
+			real Sun crosses on average 0.40 s after 12:00. Our $n$ moves the
+			clock away from UT by a further 0.16 s of time a century.
 		</p>
 
 		<h3>The geographic longitude, from a timed transit</h3>
@@ -888,8 +901,8 @@
 		</p>
 
 		<p>
-			At that moment the formula gives $\theta_G = 266.9626^\circ$, so
-			$\ell = 12.4975^\circ$, against the true 12.4964°. How close we get
+			At that moment the clock gives $\theta_G = 266.9639^\circ$, so
+			$\ell = 12.4962^\circ$, against the true 12.4964°. How close we get
 			depends only on the timing, since one second of time is 15″ of
 			geographic longitude, 345 m on the parallel of Rome.
 		</p>
@@ -904,7 +917,7 @@
 					solstices and equinoxes with their own, one to several centuries
 					apart (<em>Almagest</em> III 1), because an error in a timing is
 					then divided by the number of years between them. Their year still
-					came out about six and a half minutes too long.
+					came out 6.4 minutes too long.
 				</p>
 				<aside>
 					<div class="note" data-origin="hipparchus"></div>
@@ -934,7 +947,7 @@
 				The reference sky computes the sidereal time with the full Meeus
 				formula and adds nutation, the small back-and-forth shift of the
 				equinox met on page 1.2. Through 2026 the clock differs from it by
-				under 0.7 s, so the transits we predict for the stars are right to
+				under 0.4 s, so the transits we predict for the stars are right to
 				within a second.
 			</p>
 			<aside>
@@ -1091,7 +1104,7 @@
 				find the sidereal day for $Y = 365.24219$ days. Repeat with Ptolemy's
 				daily motion of the Sun, $0^\circ 59' 08.29''$ (0.985635°). Then
 				apply the same argument to the Moon, which goes round the sky
-				relative to the Sun in a synodic month of 29.530589 days: how much
+				relative to the Sun in a synodic month of 29.530586 days: how much
 				later does it cross the meridian each day?
 			</p>
 			<details class="hint">
@@ -1115,9 +1128,9 @@
 					23 h 56 min 04.093 s.
 				</p>
 				<p>
-					The Moon moves east relative to the Sun by one turn in 29.530589
+					The Moon moves east relative to the Sun by one turn in 29.530586
 					days, so its hour angle falls behind the Sun's by $360^\circ /
-					29.530589$ a day. Its day lasts $1/(1 - 1/29.530589) = 1.035050$
+					29.530586$ a day. Its day lasts $1/(1 - 1/29.530586) = 1.035050$
 					days, 24 h 50 min 28 s: it crosses the meridian about 50.5 minutes
 					later each day.
 				</p>
@@ -1143,12 +1156,12 @@
 			<details class="answer">
 				<p>
 					On 31 December 2026 at 0 h UT, JD = 2461405.5 and $d = 9860.5$, so
-					$\theta_{G,0} = 99.4365^\circ$ ($6^\text{h}37^\text{m}44.75^\text{s}$).
+					$\theta_{G,0} = 99.4378^\circ$ ($6^\text{h}37^\text{m}45.06^\text{s}$).
 				</p>
 				<p>
 					The sky still has to turn $(101.5845^\circ - 12.4964^\circ -
-					99.4365^\circ) \bmod 360^\circ = 349.6516^\circ$. At
-					$360.9856^\circ$ a day that takes 23.24646 h: the transit is at
+					99.4378^\circ) \bmod 360^\circ = 349.6503^\circ$. At
+					$360.9856^\circ$ a day that takes 23.24637 h: the transit is at
 					23:14:47 UT, which is 00:14:47 CET on 1 January, a quarter of an hour
 					into the new year, and 00:04:46 local mean time.
 				</p>
@@ -1166,9 +1179,9 @@
 			<p>
 				The model puts the earliest sunset and the latest sunrise of the
 				winter on the shortest day, the solstice: at Rome, 07:36:18 and
-				16:43:44 CET on 21 December 2026. In the real sky the earliest sunset
-				is on 8 December (16:38:44 CET) and the latest sunrise on 4 January
-				2027 (07:37:53 CET). Explain the difference with Figure 6.
+				16:43:44 CET on 21 December 2025. In the real sky the earliest sunset
+				was on 8 December (16:38:44 CET) and the latest sunrise on 3 January
+				2026 (07:37:53 CET). Explain the difference with Figure 6.
 			</p>
 			<details class="hint">
 				<p>
@@ -1180,12 +1193,12 @@
 				<p>
 					Sunrise and sunset sit symmetrically about noon. Near the solstice
 					the length of the day changes by only a few seconds a day (9 h 13 min
-					54 s on 8 December, 9 h 07 min 37 s on 21 December, 9 h 14 min 06 s on
-					4 January), but the real noon moves later by 29.8 s a day.
+					40 s on 8 December, 9 h 07 min 37 s on 21 December, 9 h 13 min 24 s on
+					3 January), but the real noon moves later by 30.0 s a day.
 				</p>
 				<p>
-					Real noon at Rome is at 12:01:53 CET on 8 December, 12:08:04 on
-					21 December and 12:14:51 on 4 January. Sunset is noon plus half the
+					Real noon at Rome was at 12:01:59 CET on 8 December, 12:08:11 on
+					21 December and 12:14:30 on 3 January. Sunset is noon plus half the
 					day. From 8 December the later noon outweighs the shortening of the
 					day, so sunset moves later two weeks before the shortest day.
 					Sunrise is noon minus half the day, and for the same reason it keeps
