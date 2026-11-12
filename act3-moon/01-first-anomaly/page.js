@@ -4,7 +4,7 @@
    Five figures, each with its own init and draw (and update when it has
    controls):
 	 1. the Moon's daily motion      (2D, static: the real Moon through
-									   2026, with its full Moons)
+									   2025, with its full Moons)
 	 2. the epicycle                 (2D: (a) the deferent and the epicycle
 									   seen from the north ecliptic pole,
 									   (b) q over two months; date and r/R)
@@ -40,6 +40,11 @@ const YEAR = 2026;
 const YEAR_START = Time.julianDay(YEAR, 1, 1);
 const DAYS_IN_YEAR = 365;
 
+/* The year of the observation of Figure 1: the last whole year before
+   today, so that every day of it is documented (STRUCTURE.md §5). */
+const OBS_YEAR = 2025;
+const OBS_YEAR_START = Time.julianDay(OBS_YEAR, 1, 1);
+
 /* The reference Moon and Sun (apparent longitudes of date, deg). */
 const moonLongitude = jd => Ephem.longitude('moon', jd);
 const sunLongitude = jd => Ephem.longitude('sun', jd);
@@ -73,9 +78,9 @@ function syzygies(from, to) {
 	return news.concat(fulls).sort((a, b) => a.jd - b.jd);
 }
 
-/* First day of each month of YEAR, as a day index (0 = 1 January). */
+/* First day of each month of OBS_YEAR, as a day index (0 = 1 January). */
 const MONTH_STARTS = Time.MONTH_NAMES.map((name, i) => ({
-	value: Time.julianDay(YEAR, i + 1, 1) - YEAR_START,
+	value: Time.julianDay(OBS_YEAR, i + 1, 1) - OBS_YEAR_START,
 	label: name
 }));
 
@@ -101,8 +106,8 @@ function epicyclePoints(view, s, e) {
 /* ==========================================================================
    1. FIGURE 1: THE MOON'S DAILY MOTION
    Static. The reference Moon's daily motion every quarter of a day of
-   2026, the mean motion n, and a dot at each full Moon. Fixed scale 11.5
-   to 15.5°/day (the motion ranges from 11.79 to 15.31°/day,
+   2025, the mean motion n, and a dot at each full Moon. Fixed scale 11.5
+   to 15.5°/day (the motion ranges from 11.80 to 15.34°/day,
    tools/numbers/3.1-first-anomaly.js).
    ========================================================================== */
 
@@ -120,7 +125,7 @@ const motionFigure = {
 		this.plot = new Plot2D(byId('motion-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: MOTION_RANGE,
-			xLabel: `date (${YEAR})`,
+			xLabel: `date (${OBS_YEAR})`,
 			yLabel: 'daily motion (°)',
 			xTicks: monthTicks,
 			aspect: 0.42,
@@ -137,7 +142,7 @@ const motionFigure = {
 		const last = DAYS_IN_YEAR * MOTION_SAMPLES_PER_DAY + MOTION_SAMPLES_PER_DAY;
 
 		for (let i = first; i <= last; i++) {
-			longitudes.push(moonLongitude(YEAR_START + i * step));
+			longitudes.push(moonLongitude(OBS_YEAR_START + i * step));
 		}
 
 		this.days = [];
@@ -151,8 +156,8 @@ const motionFigure = {
 			this.motion.push(norm180(longitudes[centre + half] - longitudes[centre - half]));
 		}
 
-		this.fullMoons = phases(180, YEAR_START, YEAR_START + DAYS_IN_YEAR + 1).map(jd => ({
-			day: jd - YEAR_START,
+		this.fullMoons = phases(180, OBS_YEAR_START, OBS_YEAR_START + DAYS_IN_YEAR + 1).map(jd => ({
+			day: jd - OBS_YEAR_START,
 			motion: moonMotion(jd)
 		}));
 	},
@@ -161,7 +166,7 @@ const motionFigure = {
 		const p = this.plot;
 
 		p.frame();
-		p.hline(LunarEpicycle.MEEUS.n, { color: COL.muted, width: 1.5, dash: [6, 5] });
+		p.hline(LunarEpicycle.FIT_2026.n, { color: COL.muted, width: 1.5, dash: [6, 5] });
 		p.curve(this.days, this.motion, { color: COL.planet, width: 2.2 });
 		this.fullMoons.forEach(full => p.marker(full.day, full.motion, { color: COL.ink, radius: 4.5 }));
 	}
@@ -674,7 +679,7 @@ const eclipsesFigure = {
 	ourTriple() {
 		const times = LunarEpicycle.ECLIPSES_2026;
 
-		return LunarEpicycle.tripleFromObservations(times, times.map(moonLongitude), LunarEpicycle.MEEUS);
+		return LunarEpicycle.tripleFromObservations(times, times.map(moonLongitude), LunarEpicycle.FIT_2026);
 	},
 
 	wireChoice() {

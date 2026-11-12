@@ -76,21 +76,20 @@
 
 		<p>
 			The Moon covers 13.18° of the ecliptic a day on average, a whole turn
-			in about 27⅓ days. Through 2026 its daily motion departs from that
+			in about 27⅓ days. Through 2025 its daily motion departs from that
 			mean by up to 16%, almost five times as much as the Sun's does
 			(page 2.1).
 		</p>
 
-		<!-- Figure 1: the Moon's daily motion through 2026 (static) -->
+		<!-- Figure 1: the Moon's daily motion through 2025 (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="motion-plot"></canvas>
 			</div>
 			<figcaption>
-				Follow the dots, one at each full Moon. The full Moon of early January
-				falls near a peak of the curve, those of June near a trough, and that
-				of December near a peak again: the peaks drift through the cycle of
-				phases.
+				Follow the dots, one at each full Moon. The full Moons of April and
+				May fall near troughs of the curve, those of November and December
+				near peaks: the peaks drift through the cycle of phases.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -105,10 +104,11 @@
 
 		<p>
 			Each fastest moment comes about two days earlier in the cycle of
-			phases than the one before. In January the Moon is fastest just
-			before full Moon, in June about halfway between two full Moons, and
-			in December at full Moon again. The speed therefore has a period of
-			its own, a little shorter than the month of the phases.
+			phases than the one before. In January the Moon is fastest four
+			days before full Moon, at the end of April about halfway between two
+			full Moons, and in November and December at full Moon. The speed
+			therefore has a period of its own, a little shorter than the month
+			of the phases.
 		</p>
 
 		<p>
@@ -117,9 +117,9 @@
 			<em>first anomaly</em>. The fastest moment slips through the whole
 			cycle of phases and comes back to full Moon after 412 days on average
 			(Exercise 2). The fastest full Moon must fall on a full Moon, so the
-			actual interval is 13, 14 or 15 months. From 4 December 2025 to 24
-			December 2026 it was 13, and the next comes 14 months later, on 10
-			February 2028.
+			actual interval is 13, 14 or 15 months. From 1 August 2023 to 17
+			October 2024 it was 15, and from then to 4 December 2025 it was
+			14.
 		</p>
 
 		<h3>Five months</h3>
@@ -129,8 +129,10 @@
 			come back to the same place. The model of this page uses two of them,
 			the tropical month for the mean motion in ecliptic longitude and the
 			anomalistic month for the motion in anomaly. The table gives all five,
-			from the mean motions of the reference Moon, because they differ by
-			hours and are easily confused.
+			because they differ by hours and are easily confused. Each is
+			measured in the reference sky of 1926 to 2025, by a straight line
+			through the moments of over a thousand returns; the sidereal month
+			adds the precession of page 2.3 to the tropical one.
 		</p>
 
 		<div class="table-scroll">
@@ -146,12 +148,12 @@
 				<tr>
 					<td>tropical</td>
 					<td>the same ecliptic longitude</td>
-					<td>27.32158 d</td>
+					<td>27.32155 d</td>
 				</tr>
 				<tr>
 					<td>sidereal</td>
 					<td>the same star</td>
-					<td>27.32166 d</td>
+					<td>27.32163 d</td>
 				</tr>
 				<tr>
 					<td>synodic</td>
@@ -161,12 +163,12 @@
 				<tr>
 					<td>anomalistic</td>
 					<td>the same speed</td>
-					<td>27.55455 d</td>
+					<td>27.55454 d</td>
 				</tr>
 				<tr>
 					<td>draconitic</td>
 					<td>the same node, where it crosses the ecliptic</td>
-					<td>27.21222 d</td>
+					<td>27.21224 d</td>
 				</tr>
 			</tbody>
 		</table>
@@ -196,7 +198,7 @@
 				IV 2). The oldest of them, the "Periodic", makes 223 synodic months
 				equal to 239 anomalistic months. Hipparchus' relation, 251 synodic
 				months to 269 anomalistic months, is better: in the reference sky the
-				two agree within six minutes. Toomer states, after Kugler and Aaboe,
+				two agree within seven minutes. Toomer states, after Kugler and Aaboe,
 				that Hipparchus took these relations from Babylonian astronomy, and
 				only confirmed them by comparing eclipses of his own time with
 				Babylonian ones 345 years earlier (note to IV 2).
@@ -521,11 +523,14 @@
 		$$n_M = \frac{269 \times 360^\circ}{251\,P_s}.$$
 
 		<p>
-			Both rates are fixed best by eclipses centuries apart, since the error
-			of each eclipse is then divided by the whole interval. A few years of
-			eclipses cannot do this, so we take the reference Moon's rates, about
-			$13.18^\circ$ and $13.06^\circ$ a day (Meeus 47), which belong to the
-			tropical and the anomalistic month of section 1.
+			Both rates are fixed best by observations far apart, since the error
+			of each is then divided by the whole interval. We take $P_s$ from the
+			1237 new Moons of 1926 to 2025, by a straight line through their
+			moments: 29.530586 days, to within 2 seconds. With the mean Sun of
+			page 1.3 this gives $n = 13.176397^\circ$ and $n_M = 13.064987^\circ$
+			a day. The anomalistic month of $n_M$ is 1.5 s longer than the one
+			measured from the fastest moments in section 1, well within the 9 s
+			that those scattered moments allow.
 		</p>
 
 		<h3>Lunar eclipses as observations</h3>
@@ -709,13 +714,13 @@
 			the eclipses of 2025–2026 give $e = 0.0844$, a greatest equation of
 			4.84°, and the Moon's anomaly at the second eclipse. Going back from the second eclipse to J2000.0 at
 			the two mean rates gives $L_0$ and $M_0$, and the mean ecliptic
-			longitude we find there differs from Meeus' by a quarter of an
+			longitude we find there differs from Meeus' by a third of an
 			arcminute.
 		</p>
 
 		<p>
-			Other triples of consecutive eclipses from 2019 to 2030 give ratios
-			between 0.080 and 0.093. The smaller inequalities that the model
+			Other triples of consecutive eclipses from 2014 to 2026 give ratios
+			between 0.075 and 0.093. The smaller inequalities that the model
 			leaves out shift each eclipse a little, and three eclipses are too few
 			to average them away.
 		</p>
@@ -752,7 +757,7 @@
 					eclipses and again with three he observed at Alexandria, and the two
 					epicycles came out "very nearly the same". He used 5.25 where the
 					deferent is 60, close to what a least-squares fit to the new and full
-					Moons of 2026 gives.
+					Moons of 2025 gives.
 				</p>
 				<aside>
 					<div class="note" data-origin="ptolemy"></div>
@@ -834,7 +839,7 @@
 
 			<p>
 				Over the centuries his Moon drifts with his Sun, and a little faster:
-				the month he took from Hipparchus is about half a second longer than
+				the month he took from Hipparchus is about two-thirds of a second longer than
 				today's.
 			</p>
 		</div>
@@ -887,8 +892,8 @@
 		<p>
 			What remains at the new and full Moons, up to 40′, has two parts of
 			about the same size. One is the fit to only three eclipses: an
-			epicycle fitted by least squares to all 25 new and full Moons of 2026
-			stays within 22′. Most of the other is the <em>annual equation</em>, a
+			epicycle fitted by least squares to all 24 new and full Moons of 2025
+			stays within 24′ of them. Most of the other is the <em>annual equation</em>, a
 			term of 11′ that follows the Sun's anomaly, with a few arcminutes from
 			the tilt of the Moon's orbit.
 		</p>
@@ -948,9 +953,9 @@
 		<div class="exercise" data-kind="compute">
 			<p>
 				The fastest full Moons come roughly every fourteen months. In the
-				reference sky the first of the century was on 8 February 2001, and 34
-				intervals later the last before 2040 was on 6 June 2039, 13·997.5 days
-				later. From this and the synodic month, 29.530589 days,
+				reference sky the first of the century was on 8 February 2001, and 17
+				intervals later another fell on 8 April 2020, 6998.8 days later.
+				From this and the synodic month, 29.530586 days,
 				find the anomalistic month. How many synodic and anomalistic months
 				does one interval hold?
 			</p>
@@ -962,16 +967,16 @@
 			</details>
 			<details class="answer">
 				<p>
-					One interval lasts $B = 13997.5 / 34 = 411.69$ days. In it the
+					One interval lasts $B = 6998.8 / 17 = 411.69$ days. In it the
 					anomaly makes one turn more than the phases, $B/P_a = B/P_s + 1$, so
 				</p>
-				$$\frac{1}{P_a} = \frac{1}{P_s} + \frac{1}{B}, \qquad P_a = \frac{1}{1/29.530589 + 1/411.69} = 27.5541 \text{ days},$$
+				$$\frac{1}{P_a} = \frac{1}{P_s} + \frac{1}{B}, \qquad P_a = \frac{1}{1/29.530586 + 1/411.69} = 27.5541 \text{ days},$$
 				<p>
-					36 seconds less than the real 27.5545 days. One interval holds 13.94
+					35 seconds less than the measured 27.5545 days. One interval holds 13.94
 					synodic months and 14.94 anomalistic months. The fastest full Moon
 					can only fall on a full Moon, so a single interval is 384, 413 or 443
 					days; only the average over many intervals gives the beat. The
-					Periodic of section 1 gives $223 \times 29.530589 / 239 = 27.5536$
+					Periodic of section 1 gives $223 \times 29.530586 / 239 = 27.5536$
 					days.
 				</p>
 			</details>
