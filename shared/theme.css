@@ -78,6 +78,7 @@
 	--text-width: 700px; /* the text column */
 	--margin-gap: 40px; /* between text and margin columns */
 	--frame-band: 14px; /* graduated frame: band thickness */
+	--site-link-height: 44px; /* the sticky link to the hub, at the top */
 }
 
 /* ==========================================================================
@@ -149,10 +150,15 @@ strong {
 		"toc"
 		"main"
 		"foot";
+	grid-template-rows: var(--site-link-height) auto;
 }
 
+/* The link to the hub spans every row, so that it can stay at the top of
+   the window down to the end of the page; the first row keeps its room. */
 .page > .site-link {
-	grid-area: link;
+	grid-row: 1 / -1;
+	grid-column: 1 / -1;
+	align-self: start;
 	justify-self: start;
 }
 .page > .page-head {
@@ -189,9 +195,9 @@ strong {
 	   down the whole page; a long list scrolls inside the window. */
 	.page > .toc {
 		position: sticky;
-		top: 32px;
+		top: calc(var(--site-link-height) + 16px);
 		align-self: start;
-		max-height: calc(100vh - 64px);
+		max-height: calc(100vh - var(--site-link-height) - 48px);
 		overflow-y: auto;
 		margin-top: 44px;
 	}
@@ -201,8 +207,21 @@ article {
 	min-width: 0;
 }
 
-/* "Predicting the Sky" above the header: the way back to the hub. */
+/* "« Predicting the Sky" above the header: the way back to the hub. It
+   stays at the top of the window while the page scrolls, on a band of
+   parchment as wide as the window (a shadow, so that only the words are
+   clickable) that hides the text passing under it. */
 .site-link {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	display: block;
+	width: fit-content;
+	height: var(--site-link-height);
+	line-height: var(--site-link-height);
+	background: var(--bg);
+	box-shadow: 0 0 0 100vmax var(--bg);
+	clip-path: inset(0 -100vmax);
 	font-family: var(--font-label);
 	font-size: 17px;
 	letter-spacing: 0.1em;
@@ -212,6 +231,13 @@ article {
 
 .site-link:hover {
 	color: var(--accent);
+}
+
+/* The arrow that says the link leads back (hidden from screen readers,
+   which announce a link anyway). */
+.site-link::before {
+	content: "\00ab\00a0";
+	content: "\00ab\00a0" / "";
 }
 
 /* The header: the titles, then a double rule (two 1 px ink lines 3 px
@@ -352,13 +378,13 @@ article section > ol {
 h2 {
 	margin: 56px 0 14px;
 	font: 600 34px/1.2 var(--font-title);
-	scroll-margin-top: 16px;
+	scroll-margin-top: calc(var(--site-link-height) + 16px);
 }
 
 h3 {
 	margin: 32px 0 8px;
 	font: italic 600 26px/1.3 var(--font-title);
-	scroll-margin-top: 16px;
+	scroll-margin-top: calc(var(--site-link-height) + 16px);
 }
 
 /* Step label above each section title: "1 · Observation". */
