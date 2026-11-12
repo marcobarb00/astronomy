@@ -9,7 +9,7 @@
    TABLE OF CONTENTS
 	 1. Loading the shared code
 	 2. Formatting
-	 3. Observation: one turn, the pole, Polaris
+	 3. Fit: the rate; the pole and Polaris
 	 4. Fit: latitude and declination from two culminations
 	 5. Test: refraction and the rising times; figure scales
 	 6. Exercises
@@ -82,29 +82,73 @@ const NOW = Time.julianDay(2026, 1, 1); // epoch of the "fitted" stars
 const clockHours = degrees => degrees / Diurnal.DEGREES_PER_HOUR;
 
 /* ==========================================================================
-   3. OBSERVATION: ONE TURN, THE POLE, POLARIS
+   3. FIT: THE RATE, FROM MERIDIAN CROSSINGS A CENTURY APART
+   Vega timed at Greenwich in the reference sky on 1 June 1925 and 1 June
+   2025. Other bright stars give the same turn to a few thousandths of a
+   second; their small differences are precession (page 2.3).
    ========================================================================== */
 
-title('One turn of the sky');
-console.log(`rate ${Diurnal.DEGREES_PER_DAY} deg/day = ${Diurnal.DEGREES_PER_HOUR.toFixed(4)} deg per clock hour`);
-console.log(`one turn = ${hms(Diurnal.TURN_HOURS)}, ${((24 - Diurnal.TURN_HOURS) * 60).toFixed(2)} min short of 24 h`);
+title('Fit: the rate, from meridian crossings a century apart');
 
-// the same from time.js: the next instant with the same sidereal time
-const start = Time.julianDay(2026, 3, 1);
-let lo = start + 0.99;
-let hi = start + 1.0;
+/* The moment a star crosses the meridian of Greenwich (hour angle 0),
+   searched in the day after jdUT, in the reference sky. */
+function meridianCrossing(name, jdUT) {
+	const st = star(name);
+	const hourAngle = t => norm180(Time.gmst(t) - Stars.ofDate(st, Time.ttFromUt(t)).ra);
+	const step = 1 / 96;
+	let lo = jdUT;
+	let hi = jdUT + step;
 
-for (let i = 0; i < 60; i++) {
-	const mid = (lo + hi) / 2;
-
-	if (norm180(Time.gmst(mid) - Time.gmst(start)) < 0) {
-		lo = mid;
-	} else {
-		hi = mid;
+	while (!(hourAngle(lo) <= 0 && hourAngle(hi) > 0)) {
+		lo = hi;
+		hi += step;
 	}
+
+	for (let i = 0; i < 50; i++) {
+		const mid = (lo + hi) / 2;
+
+		if (hourAngle(mid) <= 0) {
+			lo = mid;
+		} else {
+			hi = mid;
+		}
+	}
+
+	return (lo + hi) / 2;
 }
 
-console.log(`check with Time.gmst: ${hms((lo - start) * 24)}`);
+/* One turn (days) from the crossings of 1 June 1925 and 1 June 2025. */
+function measuredTurn(name) {
+	const first = meridianCrossing(name, Time.julianDay(1925, 6, 1));
+	const last = meridianCrossing(name, Time.julianDay(2025, 6, 1));
+	const turns = Math.round((last - first) / 0.99727);
+
+	return { first, last, turns, turn: (last - first) / turns };
+}
+
+const vega = measuredTurn('Vega');
+
+console.log(`Vega crosses at ${clock(vega.first)} UT on 1 Jun 1925 and ${clock(vega.last)} UT on 1 Jun 2025`);
+console.log(`${vega.turns} turns: one turn = ${hms(vega.turn * 24)}, rate ${(360 / vega.turn).toFixed(8)} deg/day`);
+console.log(
+	`= ${(360 / vega.turn / 24).toFixed(4)} deg per clock hour, ${((24 - vega.turn * 24) * 60).toFixed(2)} min short of 24 h`
+);
+
+const others = ['Sirius', 'Arcturus', 'Spica', 'Betelgeuse', 'Altair', 'Regulus', 'Antares'];
+const turnsOthers = others.map(name => measuredTurn(name).turn * 86400);
+const spread = turnsOthers.map(t => t - vega.turn * 86400);
+
+console.log(
+	`other bright stars, one turn minus Vega's: ${Math.min(...spread).toFixed(4)} to ${Math.max(...spread).toFixed(4)} s`
+);
+console.log(`Diurnal.DEGREES_PER_DAY ${Diurnal.DEGREES_PER_DAY} (this fit ${(360 / vega.turn).toFixed(8)})`);
+console.log(`one turn in the model = ${hms(Diurnal.TURN_HOURS)}`);
+
+/* ==========================================================================
+   3b. THE POLE AND POLARIS
+   ========================================================================== */
+
+title('The pole and Polaris');
 console.log(`Polaris from the pole now: ${(90 - Stars.ofDate(star('Polaris'), NOW).dec).toFixed(2)} deg`);
 
 /* ==========================================================================

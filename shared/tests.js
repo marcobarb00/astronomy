@@ -952,8 +952,8 @@ function testDiurnal() {
 
 	check({
 		name: 'One turn of the sky',
-		source: 'Meeus 12.4',
-		expected: 23 + 56 / 60 + 4.0905 / 3600,
+		source: 'page 1.1 (Vega, 1925 and 2025)',
+		expected: 23 + 56 / 60 + 4.0961 / 3600,
 		computed: Diurnal.TURN_HOURS,
 		tol: 0.01,
 		unit: 's',

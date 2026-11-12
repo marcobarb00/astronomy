@@ -29,12 +29,13 @@
 const Diurnal = (function () {
 	/* ======================================================================
 	   1. ROTATION RATE
-	   The sky turns 360.98564736629° per day of clock time (UT), the rate
-	   of Greenwich sidereal time in Meeus 12.4 (time.js): one turn in
-	   23 h 56 min 04.09 s.
+	   The sky turns 360.98562418° per day of clock time (UT): one turn in
+	   23 h 56 min 04.10 s. Fitted on page 1.1 from Vega's meridian
+	   crossings at Greenwich on 1 June 1925 and 1 June 2025, 36 625 turns
+	   apart, in the reference sky (tools/numbers/1.1-turning-sky.js).
 	   ====================================================================== */
 
-	const DEGREES_PER_DAY = Time.SIDEREAL_RATE;
+	const DEGREES_PER_DAY = 360.98562418;
 	const DEGREES_PER_HOUR = DEGREES_PER_DAY / 24;
 	const TURN_HOURS = 360 / DEGREES_PER_HOUR;
 
