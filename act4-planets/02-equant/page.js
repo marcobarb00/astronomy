@@ -184,8 +184,11 @@ const observedFigure = {
 			return { lon, q: norm180(lon - (fit41.L0 + fit41.n * (jd - fit41.epoch))) };
 		});
 		this.loops = marsLoops();
-		this.oppositions = longitudePlot(byId('observed-oppositions'), EQUATION_RANGE, "less page 4.1's λ̄ (°)", () =>
-			this.drawOppositions()
+		this.oppositions = longitudePlot(
+			byId('observed-oppositions'),
+			EQUATION_RANGE,
+			'ahead of the mean place (°)',
+			() => this.drawOppositions()
 		);
 		this.arcs = longitudePlot(byId('observed-arcs'), ARC_RANGE, 'arc (°)', () => this.drawArcs());
 	},
@@ -227,7 +230,9 @@ const observedFigure = {
    of the fit.
    ========================================================================== */
 
-const EQUANT_DAYS_PER_SECOND = 365;
+/* Play at page 4.1's speed: a synodic period, one loop, in about twenty
+   seconds, slow enough to follow K, P and the line QK. */
+const EQUANT_DAYS_PER_SECOND = 40;
 
 /* The room around the drawing (units of the deferent's radius): the
    farthest the planet goes, 1 + e + r, and the labels. */
@@ -620,7 +625,7 @@ const fitFigure = {
 			.filter(jd => jd >= FIT_START)
 			.map(jd => ({ jd, lon: marsLongitude(jd) }));
 		this.loops = marsLoops().filter(loop => loop.middle >= FIT_START);
-		this.directions = longitudePlot(byId('fit-directions'), EQUATION_RANGE, 'less the mean λ̄ (°)', () =>
+		this.directions = longitudePlot(byId('fit-directions'), EQUATION_RANGE, 'ahead of the mean place (°)', () =>
 			this.drawDirections()
 		);
 		this.arcs = longitudePlot(byId('fit-arcs'), FIT_ARC_RANGE, 'arc (°)', () => this.drawArcs());

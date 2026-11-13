@@ -85,11 +85,13 @@
 
 		<p>
 			If K moved uniformly, the planet would be seen there at its mean
-			ecliptic longitude $\bar\lambda$. Figure 1(a) gives the nineteen
-			oppositions of Mars to the mean Sun of 1986–2025, each as its ecliptic
-			longitude less the $\bar\lambda$ of page 4.1's fit. The difference
-			reaches about 12° either way and changes sign twice round the zodiac,
-			near the ecliptic longitudes 149° and 333°.
+			ecliptic longitude $\bar\lambda$, its <em>mean place</em>. Figure 1(a)
+			shows, at each of the nineteen oppositions of Mars to the mean Sun of
+			1986–2025, how far Mars was ahead of its mean place: its ecliptic
+			longitude less the $\bar\lambda$ of page 4.1's fit, negative when
+			Mars was behind. It was up to about 12° ahead or behind, and it passed
+			from ahead to behind near the ecliptic longitude 149° and back near
+			333°.
 		</p>
 
 		<!-- Figure 1: the oppositions and the loops of 1986 - 2025 (static) -->
@@ -97,7 +99,7 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) at the oppositions</p>
+						<p class="panel-title">(a) how far Mars is ahead of its mean place</p>
 						<canvas id="observed-oppositions"></canvas>
 					</div>
 					<div>
@@ -109,7 +111,7 @@
 			<figcaption>
 				Compare the two panels, one dot for each opposition or loop of
 				1986–2025. The loops are longest and shortest close to where the
-				dots of (a) change sign, so both kinds of unevenness are tied to the
+				dots of (a) pass from ahead to behind, so both kinds of unevenness are tied to the
 				same line across the zodiac.
 			</figcaption>
 		</figure>
@@ -336,7 +338,7 @@
 				</div>
 			</div>
 			<figcaption>
-				Play the sixteen years of the fit and watch the line QK turn
+				Play, a loop of P in about twenty seconds, and watch the line QK turn
 				uniformly, while the ticks of K lie closer together near the apogee A
 				than near the perigee. The loops of P are longest on the side of A:
 				K is farthest away there, but its slowness counts for more.
@@ -531,7 +533,8 @@
 			With the directions known, the loops measure the distance of K. Their
 			mean size fixes $r$, as on page 4.1, and the way it changes round the
 			zodiac fixes OC. Figure 4 shows both observations of 2010–2025 against
-			the model, with OC free.
+			the model, with OC free. In (a) the model's curve is $q$, how far K is
+			seen ahead of its mean place.
 		</p>
 
 		<!-- Figure 4: the oppositions fix Q, the loops fix C; OC -->
@@ -539,7 +542,7 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) at the oppositions</p>
+						<p class="panel-title">(a) how far Mars is ahead of its mean place</p>
 						<canvas id="fit-directions"></canvas>
 					</div>
 					<div>
