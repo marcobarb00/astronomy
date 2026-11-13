@@ -67,6 +67,7 @@ const SHARED_FILES = [
 	'shared/models/lunar-latitude.js',
 	'shared/models/eclipses.js',
 	'shared/models/planet-epicycle.js',
+	'shared/models/planet-equant.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -83,7 +84,8 @@ const PAGE_FILES = [
 	'act3-moon/01-first-anomaly/index.html',
 	'act3-moon/02-evection/index.html',
 	'act3-moon/03-eclipses/index.html',
-	'act4-planets/01-going-backwards/index.html'
+	'act4-planets/01-going-backwards/index.html',
+	'act4-planets/02-equant/index.html'
 ];
 
 /* ==========================================================================
@@ -797,6 +799,84 @@ function planetEpicycleSection(c) {
 	});
 }
 
+function planetEquantSection(c) {
+	const { Time, PlanetEquant } = c;
+
+	title('6k. THE PLANETARY EQUANT (models/planet-equant.js)');
+	Object.entries({
+		MARS_FIT: PlanetEquant.MARS_FIT,
+		MARS_SEPARATE: PlanetEquant.MARS_SEPARATE,
+		PTOLEMY: PlanetEquant.PTOLEMY
+	}).forEach(([name, p]) => {
+		const o = PlanetEquant.offsets(p);
+
+		row(
+			name,
+			num(p.L0),
+			num(p.n, 12),
+			num(p.epoch),
+			num(p.apogee),
+			num(p.apogeeRate, 12),
+			num(o.centre),
+			num(o.equant),
+			num(p.r)
+		);
+	});
+	row(
+		'zodiacal e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const z = PlanetEquant.zodiacal(M, 0.1, 0.2);
+
+				return `${num(z.q)}/${num(z.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'kepler e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const k = PlanetEquant.kepler(M, 0.1);
+
+				return `${num(k.q)}/${num(k.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'loopAt PTOLEMY mars',
+		[0, 90, 180]
+			.map(M => {
+				const loop = PlanetEquant.loopAt(M, 0.1, 0.2, 39.5 / 60, 0.524059, 0.985635);
+
+				return `${num(loop.lon)}/${num(loop.arc)}/${num(loop.days)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'oppositionInterval e = 0.1',
+		[0, 90, 180].map(M => num(PlanetEquant.oppositionInterval(M, 0.1, 0.2, 0.524, 0.9856))).join(' ')
+	);
+
+	const three = PlanetEquant.threeOppositions();
+
+	row(
+		'threeOppositions',
+		num(three.first.e),
+		num(three.first.apogee),
+		num(three.exact.e),
+		num(three.exact.apogee),
+		num(three.exact.M)
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = PlanetEquant.state(PlanetEquant.MARS_FIT, jd);
+		const t = PlanetEquant.state(PlanetEquant.PTOLEMY, jd);
+
+		row(`${label}`, num(s.meanLongitude), num(s.M), num(s.q), num(s.rho), num(s.eta), num(s.lambda), num(t.lambda));
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -1163,6 +1243,31 @@ function page41(c) {
 	);
 }
 
+function page42(c) {
+	title('8k. PAGE 4.2 (act4-planets/02-equant/page.js)');
+	row('quarterTicks', JSON.stringify(c.quarterTicks()));
+	row(
+		'modelLoops',
+		JSON.stringify(
+			c
+				.modelLoops(0.1, 0.2, 0.658, 151, true)
+				.arcs.slice(0, 6)
+				.map(x => num(x, 6))
+		)
+	);
+	row('FIT_APOGEE TEST_APOGEE', num(inContext(c, 'FIT_APOGEE')), num(inContext(c, 'TEST_APOGEE')));
+	row('EQUANT_REACH', num(inContext(c, 'EQUANT_REACH')));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'EQUATION_RANGE')),
+		JSON.stringify(inContext(c, 'ARC_RANGE')),
+		JSON.stringify(inContext(c, 'FIT_ARC_RANGE')),
+		JSON.stringify(inContext(c, 'INTERVAL_RANGE')),
+		JSON.stringify(inContext(c, 'DISTANCE_RANGE')),
+		JSON.stringify(Object.values(inContext(c, 'KEPLER_VIEWS')).map(view => view.y))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1231,6 +1336,7 @@ function buildTable() {
 	lunarCrankSection(shared);
 	lunarLatitudeSection(shared);
 	planetEpicycleSection(shared);
+	planetEquantSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1242,6 +1348,7 @@ function buildTable() {
 	page32(pages[7]);
 	page33(pages[8]);
 	page41(pages[9]);
+	page42(pages[10]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

@@ -2112,6 +2112,29 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 June solstice             22.546600512  67.153317272  25.838186879  48.384787391  102.046973672  129.321900431
   range end                      79.372975896  200.165603412  -30.895734121  48.477241775  305.739182118  257.187313465
 
+=== 6k. THE PLANETARY EQUANT (models/planet-equant.js) ===
+  MARS_FIT                       355.375032000  0.524070384000  2451545.000000000  151.082000000  0.000038240931  0.100469000  0.200938000  0.658030000
+  MARS_SEPARATE                  355.374664000  0.524070384000  2451545.000000000  151.081100000  0.000038240931  0.098287000  0.200731000  0.658102000
+  PTOLEMY                        3.533333333  0.524059711355  1448637.916888889  106.666666667  0.000027397260  0.100000000  0.200000000  0.658333333
+  zodiacal e = 0.1               0.000000000/1.100000000 -7.541603543/1.077528357 -11.365430463/1.014889157 -8.676025174/0.937514075 0.000000000/0.900000000 11.365430463/1.014889157
+  kepler e = 0.1                 0.000000000/1.100000000 -7.422390651/1.075213699 -11.383814606/1.009934122 -8.849399236/0.934852164 0.000000000/0.900000000 11.383814606/1.009934122
+  loopAt PTOLEMY mars            0.000000000/19.845843074/81.931104327 78.634569537/16.357918357/74.431427413 180.000000000/11.297180357/60.469255996
+  oppositionInterval e = 0.1     764.863994224 788.380775474 802.458535326
+  threeOppositions               0.108928840  111.159511681  0.100002625  115.492502817  135.658492909
+  range start                    350.196892344  268.937918152  11.436779995  1.013197623  -37.380564117  324.253108222  335.217960206
+  Thales eclipse                 98.715487128  343.719369459  2.942140994  1.097490101  -15.825939512  85.831688610  86.499951177
+  Ptolemy                        280.639907472  155.543270094  -5.236568415  0.911484442  -38.371451585  237.031887472  237.788631045
+  last Julian day                54.647530968  269.392894339  11.429142428  1.013982972  40.212482190  106.289155586  98.272469117
+  first Gregorian day            55.171601352  269.916926482  11.419481716  1.014885289  40.118567008  106.709650075  98.676221879
+  Sputnik (Meeus 7.a)            189.655539083  39.163546551  -6.726912902  1.083341320  3.883448063  186.812074244  177.468499942
+  Meeus 12.a                     78.709781592  287.805582800  10.560977319  1.043818488  -26.506996465  62.763762447  53.706263958
+  Meeus 47.a                     317.234513928  166.260372474  -3.028287813  0.903382672  27.265618801  341.471844916  333.847206448
+  Meeus 25.a                     53.663464584  262.682286798  11.470047334  1.002241592  40.774803815  105.908315734  96.463043718
+  J2000.0                        355.375032000  204.293032000  5.204446796  0.911329694  -32.330264109  328.249214688  320.630404670
+  2026 January 1                 292.209433656  140.764278656  -7.864132934  0.928896481  -1.527450633  282.817850088  274.698700706
+  2026 June solstice             22.087504512  230.635791192  9.450879016  0.946098094  23.377345769  54.915729296  46.280890973
+  range end                      78.913879896  273.850747004  11.317758067  1.021576017  -15.955873159  74.275764804  62.639604045
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2278,6 +2301,13 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   MARS_LOOP                      {"mu":163.1029082557189,"arc":16.660789075168886,"days":73.21462314352134}
   quarterTicks                   [{"value":0,"label":"0°"},{"value":90,"label":"90°"},{"value":180,"label":"180°"},{"value":270,"label":"270°"},{"value":360,"label":"360°"}]
   fixed ranges                   {"raMin":87,"raMax":139.5,"decMin":7,"decMax":37}  {"Mars":{"body":"mars","kind":"outer","step":2,"x":[0,360],"y":[-0.5,0.9]},"Jupiter":{"body":"jupiter","kind":"outer","step":2,"x":[0,360],"y":[-0.15,0.25]},"Saturn":{"body":"saturn","kind":"outer","step":2,"x":[0,360],"y":[-0.1,0.15]},"Venus":{"body":"venus","kind":"inner","step":2,"x":[-50,50],"y":[-0.7,1.3]},"Mercury":{"body":"mercury","kind":"inner","step":1,"x":[-30,30],"y":[-1.5,2.3]}}  [[-1.4,0.8],[-1.6,1.4]]  [8,22]  [750,825]
+
+=== 8k. PAGE 4.2 (act4-planets/02-equant/page.js) ===
+  quarterTicks                   [{"value":0,"label":"0°"},{"value":90,"label":"90°"},{"value":180,"label":"180°"},{"value":270,"label":"270°"},{"value":360,"label":"360°"}]
+  modelLoops                     ["19.791874","19.779228","19.741373","19.678547","19.591149","19.479728"]
+  FIT_APOGEE TEST_APOGEE         151.332515000  151.165805000
+  EQUANT_REACH                   1.898499000
+  fixed ranges                   [-14,14]  [8,22]  [0,34]  [750,825]  [0.75,1.25]  [[-500,500],[-35,35]]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -3802,3 +3832,143 @@ Figure 3(b), mars: r in [0, 0.8], daily motion -1.322 to 0.729°; Ptolemy's r 0.
 Figure 3(b), venus: r in [0, 0.8], daily motion -1.480 to 1.260°; Ptolemy's r 0.7194, no loop below 0.6152
 VENUS_MEAN: mu0 261.5184°, nMu 0.6165214°/day, synodic 583.92 days
 Figure 5: arcs 10.03 to 19.50°; 19 loops; the figure's arcs within 0.07' of the quoted ones
+
+=== 9. tools/numbers/4.2-equant.js ===
+
+=== Observation: the oppositions to the mean Sun, 1986 - 2025, against page 4.1's mean longitude (Figure 1a) ===
+10 Jul 1986  ecliptic longitude 287.7°  less the mean  -7.93°
+26 Sep 1988  ecliptic longitude   5.6°  less the mean   5.76°
+26 Nov 1990  ecliptic longitude  65.6°  less the mean  11.02°
+8 Jan 1993   ecliptic longitude 107.6°  less the mean   7.85°
+12 Feb 1995  ecliptic longitude 142.5°  less the mean   1.39°
+18 Mar 1997  ecliptic longitude 176.2°  less the mean  -5.66°
+26 Apr 1999  ecliptic longitude 213.6°  less the mean -11.00°
+14 Jun 2001  ecliptic longitude 262.5°  less the mean -10.89°
+27 Aug 2003  ecliptic longitude 335.3°  less the mean   0.35°
+6 Nov 2005   ecliptic longitude  45.4°  less the mean  10.37°
+24 Dec 2007  ecliptic longitude  92.7°  less the mean   9.69°
+30 Jan 2010  ecliptic longitude 129.5°  less the mean   4.11°
+5 Mar 2012   ecliptic longitude 163.2°  less the mean  -2.96°
+10 Apr 2014  ecliptic longitude 198.4°  less the mean  -9.28°
+23 May 2016  ecliptic longitude 241.4°  less the mean -11.96°
+26 Jul 2018  ecliptic longitude 304.2°  less the mean  -5.37°
+12 Oct 2020  ecliptic longitude  21.5°  less the mean   7.98°
+7 Dec 2022   ecliptic longitude  76.3°  less the mean  10.82°
+16 Jan 2025  ecliptic longitude 116.1°  less the mean   6.62°
+19 oppositions; less the mean longitude -12.0 to 11.0°
+crosses zero at about 149° (down), 333° (up)
+
+=== Observation: the loops, 1986 - 2025 (Figure 1b, page 4.1) ===
+19 loops; arcs 10.0 to 19.5°
+longest 19.5° (12 Feb 1995, at 143°); shortest 10.0° (28 Aug 2003, at 335°)
+
+=== Model: one eccentric (C = Q) fitted to the oppositions of 2010 - 2025 ===
+e = 0.1999, apogee 151.2°; directions within 28' (rms 18')
+with r fitted to the arcs (0.633) its loops: 8.5, 8.2, 10.4, 15.6, 21.7, 20.3, 13.6, 9.4°
+the real loops:                        19.4, 19.4, 18.5, 15.8, 10.6, 12.9, 17.5, 19.2°
+at ecliptic longitudes:                130, 164, 199, 242, 304, 21, 76, 116°
+the eccentric's loops 8.2 to 21.7°, the real 10.6 to 19.4°
+
+=== Model: speed and distance of K at the apsides (OQ = 0.2) ===
+eccentric, OC = OQ = 0.2     OK 1.20 at the apogee, 0.80 at the perigee; K's speed seen from O 0.833 n, 1.250 n
+equant, OC = 0.1, OQ = 0.2   OK 1.10 at the apogee, 0.90 at the perigee; K's speed seen from O 0.818 n, 1.222 n
+
+=== Model: the equant, Ptolemy's Mars (OQ = 12, OC = 6 where the deferent is 60) ===
+greatest zodiacal equation 11.42° at M = 95.7° (first order 2e radians = 11.46°; an eccentric of 2e, asin 2e = 11.54°)
+OK from 0.900 to 1.100 (an eccentric of 2e: 0.80 to 1.20)
+
+=== Model: the equant against Kepler's ellipse, to second order (M from the apogee) ===
+eccentric, OC = 2e:          q = -2e sin M + 2 e^2 sin 2M     OK = 1 + 2e cos M + 2 e^2 sin^2 M
+equant, OC = e, OQ = 2e:     q = -2e sin M + e^2 sin 2M       OK = 1 + e cos M + 3/2 e^2 sin^2 M
+Kepler's ellipse, e:         q = -2e sin M + 5/4 e^2 sin 2M   r  = 1 + e cos M + e^2 sin^2 M
+check at e = 0.001: eccentric, OC = 2e       -2.0000 e sin M, 2.0000 e^2 sin 2M
+check at e = 0.001: equant, OC = e, OQ = 2e  -2.0000 e sin M, 1.0000 e^2 sin 2M
+check at e = 0.001: Kepler's ellipse         -2.0000 e sin M, 1.2500 e^2 sin 2M
+the direction from the empty focus less M: at most 0.2502 e^2
+e = 0.3: equant - ellipse up to 134.99' (e^2/4 = 77.35', ratio 1.745); eccentric - ellipse 467.91' (3e^2/4 = 232.05'); distance up to 0.04258 (e^2/2 = 0.04500)
+e = 0.2: equant - ellipse up to 50.27' (e^2/4 = 34.38', ratio 1.462); eccentric - ellipse 156.11' (3e^2/4 = 103.13'); distance up to 0.01949 (e^2/2 = 0.02000)
+e = 0.1: equant - ellipse up to 10.40' (e^2/4 = 8.59', ratio 1.210); eccentric - ellipse 31.12' (3e^2/4 = 25.78'); distance up to 0.00497 (e^2/2 = 0.00500)
+e = 0.05: equant - ellipse up to 2.36' (e^2/4 = 2.15', ratio 1.100); eccentric - ellipse 7.05' (3e^2/4 = 6.45'); distance up to 0.00125 (e^2/2 = 0.00125)
+e = 0.0167: equant - ellipse up to 0.25' (e^2/4 = 0.24', ratio 1.032); eccentric - ellipse 0.74' (3e^2/4 = 0.72'); distance up to 0.00014 (e^2/2 = 0.00014)
+
+=== Fit: OQ from the oppositions, OC and r from the loops (2010 - 2025), alternately ===
+round 1: OQ 0.1973  OC 0.0960  OC/OQ 0.487  r 0.6581  apogee 150.86°  L0 355.348°  | directions rms 32.1', arcs rms 0.53°
+round 2: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.374°  | directions rms 8.7', arcs rms 0.52°
+round 3: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
+round 4: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
+round 5: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
+MARS_SEPARATE: L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
+in planet-equant.js:  L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
+
+=== Fit: Ptolemy's bisection, OC = e, OQ = 2e ===
+L0 = 355.375032° at J2000.0, apogee 151.0820°, e = 0.100469 (OQ 0.2009), r = 0.658030
+where the deferent is 60: OC 6.03, OQ 12.06, r 39.48 (Ptolemy 6, 12, 39.5)
+directions at the 8 oppositions within 12.0' (rms 7.6'); arcs within 1.12° (rms 0.55°)
+page 4.1's mean longitude moves by -0.46°
+in planet-equant.js:  L0 355.375032, apogee 151.082, e 0.100469, r 0.65803
+
+=== Test: the equant fitted to 2010 - 2025 against the reference Mars (Figure 5) ===
+2010 - 2025: the equant within 0.88° (rms 0.35°, worst on 30 Jun 2018); page 4.1's epicycle 34.4° (rms 9.8°)
+2026: the equant within 0.42° (rms 0.22°, worst on 2 Sep 2026); page 4.1's epicycle 7.2° (rms 5.0°)
+1926 - 2126: the equant within 1.03° (rms 0.35°, worst on 5 Jul 2097); page 4.1's epicycle 34.6° (rms 9.8°)
+
+=== Test: the loops of 1986 - 2025 (Figure 6) ===
+10 Jul 1986  at 288°: back 11.7° (equant 12.5°) in 64 d (64 d); next after 811 d (809 d)
+28 Sep 1988  at   5°: back 11.6° (equant 12.0°) in 63 d (63 d); next after 791 d (792 d)
+27 Nov 1990  at  65°: back 16.8° (equant 15.8°) in 73 d (73 d); next after 772 d (773 d)
+7 Jan 1993   at 108°: back 18.9° (equant 18.5°) in 78 d (79 d); next after 765 d (766 d)
+12 Feb 1995  at 143°: back 19.5° (equant 19.8°) in 81 d (82 d); next after 764 d (764 d)
+17 Mar 1997  at 177°: back 19.2° (equant 19.4°) in 81 d (81 d); next after 768 d (768 d)
+24 Apr 1999  at 214°: back 17.8° (equant 17.4°) in 78 d (77 d); next after 781 d (781 d)
+13 Jun 2001  at 263°: back 14.0° (equant 14.0°) in 69 d (68 d); next after 806 d (804 d)
+28 Aug 2003  at 335°: back 10.0° (equant 11.2°) in 60 d (60 d); next after 802 d (802 d)
+7 Nov 2005   at  45°: back 15.1° (equant 14.4°) in 69 d (69 d); next after 778 d (779 d)
+24 Dec 2007  at  93°: back 18.4° (equant 17.6°) in 77 d (78 d); next after 767 d (768 d)
+29 Jan 2010  at 130°: back 19.4° (equant 19.5°) in 80 d (81 d); next after 764 d (764 d)
+3 Mar 2012   at 164°: back 19.4° (equant 19.7°) in 81 d (82 d); next after 766 d (766 d)
+8 Apr 2014   at 199°: back 18.5° (equant 18.3°) in 79 d (79 d); next after 775 d (775 d)
+22 May 2016  at 242°: back 15.8° (equant 15.5°) in 73 d (72 d); next after 796 d (794 d)
+27 Jul 2018  at 304°: back 10.6° (equant 11.7°) in 62 d (62 d); next after 810 d (808 d)
+13 Oct 2020  at  21°: back 12.9° (equant 12.9°) in 65 d (65 d); next after 785 d (787 d)
+8 Dec 2022   at  76°: back 17.5° (equant 16.5°) in 74 d (75 d); next after 770 d (771 d)
+16 Jan 2025  at 116°: back 19.2° (equant 18.9°) in 79 d (80 d); next after NaN d (NaN d)
+the 11 loops of 1986 - 2009, outside the fit: arcs within 1.2° (rms 0.6°)
+all 19: arcs within 1.2°; intervals within 2.4 days
+the equant's arcs 11.2 to 19.8°; intervals 764 to 809 days (real 764 to 811)
+intervals between oppositions to the mean Sun: real 764.6 to 809.6 days, the equant within 1.0 days; the real intervals to the true and to the mean Sun differ by up to 1.7 days
+
+=== Test, history: Ptolemy's Mars (Almagest X 7 - 10) in his own time ===
+check: the anomaly at the epoch 327.22° (X 10: 327° 13′ = 327.22°)
+AD 130 - 139: his Mars within 1.9° of the reference, on average -1.07°; his mean Sun -0.99°
+his mean ecliptic longitude of Mars less the reference's mean longitude, AD 130 - 139: -1.01°
+his check: from 2e = 12 and the apogee at Cancer 25;30, intervals 67.83°, 93.73° (observed 67.83°, 93.73°)
+
+=== Residual: the epicycle turned by the real Sun, its direction and distance, instead of the mean Sun ===
+refitted: e = 0.0935, apogee 156.1°, r = 0.6579; within 32' (rms 8') over 2010 - 2025
+(a check, not a fit: the reference's ellipse of Mars has e = 0.0934)
+second order: e^2 / 4 = 7.5' (exact 9.0'); near opposition times 1 / (1 - r) = 2.92: 22'
+
+=== Exercise 1: the equant and Kepler's ellipse, Mars (e = 0.1005) and the Sun ===
+Mars, e = 0.1005: e^2/4 = 8.7' (exact 10.5' at M = 225°); the eccentric 3e^2/4 = 26.0' (exact 31.4'); distance e^2/2 = 0.0050 (exact 0.0050)
+the Sun, e = 0.0167: the equant e^2/4 = 0.24', the eccentric 3e^2/4 = 0.72'
+
+=== Exercise 2: Ptolemy's three oppositions of Mars (Almagest X 7) ===
+longitudes 81.000, 148.833, 242.567°; apparent intervals 67.833°, 93.733°; mean 81.733°, 95.467°
+the arcs less the mean motion: -13.900°, -1.733°
+first order: 2e = 0.2179 (13.1 where the deferent is 60), apogee 111.2°
+the observed less the mean longitudes (q) at the three: 7.05, -6.85, -8.58°
+exact: 2e = 0.20001 (12;00), apogee 115.49° = Cancer 25;30; the mean anomaly at the third 135.66° (Ptolemy 135;39 = 135.65°); residual 0.000"
+
+=== Exercise 3: the loops at the apsides, OC moved between O and Q (Figure 4) ===
+OC = 0.0000: at the apogee 31.9° in 83 d; at the perigee 1.4° in 37 d
+OC = 0.0983: at the apogee 20.0° in 82 d; at the perigee 10.9° in 60 d
+OC = 0.2007: at the apogee 11.0° in 76 d; at the perigee 31.8° in 63 d
+Ptolemy's model: at the apogee 19.85° in 81.9 d, at the perigee 11.30° in 60.5 d (XII 4: 19;53,32 = 19.89° in 80 d, 11;12,14 = 11.20° in 64 1/2 d)
+
+=== Scales ===
+Figure 2(b): OK from 0.799 to 1.201
+Figure 3(b), e = 0.3000: equant - ellipse up to 135.0', eccentric - ellipse up to 467.9'
+Figure 3(b), e = 0.1005: equant - ellipse up to 10.5', eccentric - ellipse up to 31.4'
+Figure 4: OC in [0, OQ]: arcs 1.4 to 31.9°; zodiacal equation -11.58 to 11.58°; the dots -11.50 to 11.28°
+Figure 6: the equant's arcs 11.20 to 19.81°, intervals 764.2 to 808.7 days
+Figure 6(b): intervals between the geometric oppositions to the mean Sun 764.6 to 809.6 days

@@ -6,9 +6,9 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 4.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   pages 1.1 to 4.2 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
    solar-eccentric.js, equation-of-time.js, precession.js,
-   lunar-epicycle.js).
+   lunar-epicycle.js, ..., planet-epicycle.js, planet-equant.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -30,7 +30,8 @@
 	17. The lunar epicycle (Almagest IV 5-10; De Rev. IV 5; page 3.1)
 	18. Ptolemy's crank (Almagest V 4-7, V 13; page 3.2)
 	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
-	20. Run
+	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
+	21. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -2072,7 +2073,108 @@ function testPlanetEpicycle() {
 }
 
 /* ==========================================================================
-   20. RUN
+   20. THE PLANETARY EQUANT (Almagest X 7, XII 4; page 4.2)
+   ========================================================================== */
+
+function testPlanetEquant() {
+	group('The planetary equant · models/planet-equant.js (page 4.2)');
+
+	// X 7: Ptolemy's three oppositions of Mars give his double
+	// eccentricity 12 (where the deferent is 60) and his apogee, Cancer 25;30
+	const solution = PlanetEquant.threeOppositions();
+
+	check({
+		name: "Mars' double eccentricity from Ptolemy's three oppositions",
+		source: 'Almagest X 7 (12 where the deferent is 60)',
+		expected: 12,
+		computed: 120 * solution.exact.e,
+		tol: 0.02,
+		show: x => x.toFixed(4)
+	});
+
+	check({
+		name: "Mars' apogee from Ptolemy's three oppositions",
+		source: 'Almagest X 7 (Cancer 25;30°)',
+		expected: 115.5,
+		computed: solution.exact.apogee,
+		tol: 0.05,
+		unit: '°',
+		show: showDeg
+	});
+
+	// XII 4: Ptolemy's arcs of retrogradation of Mars at greatest and least
+	// distance, 19;53,32° and 11;12,14°, computed with approximations of his
+	// own: the exact model is within a few minutes of them
+	const mars = PlanetEpicycle.PTOLEMY.mars;
+	const { e, r } = PlanetEquant.PTOLEMY;
+
+	check({
+		name: "Mars' arc of retrogradation at greatest distance",
+		source: 'Almagest XII 4 (19;53,32°)',
+		expected: 19 + 53 / 60 + 32 / 3600,
+		computed: PlanetEquant.loopAt(0, e, 2 * e, r, mars.n, mars.n + mars.nMu).arc,
+		tol: 6,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	check({
+		name: "Mars' arc of retrogradation at least distance",
+		source: 'Almagest XII 4 (11;12,14°)',
+		expected: 11 + 12 / 60 + 14 / 3600,
+		computed: PlanetEquant.loopAt(180, e, 2 * e, r, mars.n, mars.n + mars.nMu).arc,
+		tol: 6,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// the model's longitude is the direction of its constructed planet
+	const jd = Time.julianDay(2025, 1, 16);
+	const s = PlanetEquant.state(PlanetEquant.MARS_FIT, jd);
+	const point = PlanetEquant.construction(PlanetEquant.MARS_FIT, s).planet;
+
+	check({
+		name: 'The longitude against the construction, 16 January 2025',
+		source: 'OP = OK + r u(λ̄☉)',
+		expected: atan2d(point[1], point[0]),
+		computed: s.lambda,
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// with no eccentricity the model is page 4.1's epicycle
+	const flat = Object.assign({}, PlanetEquant.MARS_FIT, { e: 0 }, PlanetEpicycle.MARS_FIT);
+
+	check({
+		name: "With e = 0, page 4.1's epicycle",
+		source: 'λ = λ̄ + η',
+		expected: PlanetEpicycle.state(PlanetEpicycle.MARS_FIT, jd).lambda,
+		computed: PlanetEquant.state(Object.assign(flat, { apogee: 0, apogeeRate: 0 }), jd).lambda,
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// the equant and Kepler's ellipse differ by -e^2/4 sin 2M to second order
+	const small = 0.001;
+
+	check({
+		name: "The equant less Kepler's ellipse at M = 45°, e = 0.001",
+		source: '-e² / 4 sin 2M (Fitzpatrick § 4.2, 4.4)',
+		expected: (-(small * small) / 4) * R2D,
+		computed: PlanetEquant.zodiacal(45, small, 2 * small).q - PlanetEquant.kepler(45, small).q,
+		tol: 1e-3,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(3)
+	});
+}
+
+/* ==========================================================================
+   21. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2097,5 +2199,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testLunarCrank();
 	testLunarLatitude();
 	testPlanetEpicycle();
+	testPlanetEquant();
 	render();
 });

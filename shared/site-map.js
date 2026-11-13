@@ -144,7 +144,7 @@ const SITE_MAP = (function () {
 		{
 			number: '4.2',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'The equant',
 			question: 'What does the simple model miss?',
 			path: 'act4-planets/02-equant/index.html'

@@ -686,15 +686,70 @@ The first anomaly and the simplest complete model.
 #### 4.2 · The equant
 
 - **Question:** what does the simple model miss?
-- **Learn:** why one eccentricity cannot fit both the zodiacal anomaly and the
-  loop sizes; Ptolemy's bisected eccentricity and the equant point; fitting
-  Mars; the equant compared with Kepler's empty focus, and to what order in
-  $e$ they agree (derived, then checked numerically).
-- **Figures:** deferent, equant and epicycle; the equant versus a Keplerian
-  ellipse with the same $e$; the error curve, much smaller.
-- **Exercises:** expand both models in $e$ and compare term by term.
-- **Hands over:** the model works, but every planet's epicycle turns in step
-  with the Sun. Why?
+- **Learn:** the oppositions to the mean Sun of 1986–2025 show the
+  zodiacal anomaly alone (the planet seen along OK, X 6), −12.0° to
+  +11.0° about page 4.1's $\bar\lambda$; the loops (10.0° to 19.5°) are
+  longest and shortest near where it crosses zero; Ptolemy's two remarks,
+  the zodiacal anomaly suits an eccentric (IX 5) and its eccentricity is
+  "about twice" the loops' (X 6). The eccentric deferent (page 2.1's $q$
+  for K); fitted to the oppositions of 2010–2025 it needs $e$ = 0.200 and
+  gets the loops the wrong way round (8.2° to 21.7°, longest where the
+  real ones are shortest). To first order, with K turning uniformly about
+  a point Q: K's speed seen from O is $n(1 - \text{OQ}\cos M)$ and its
+  distance $1 + \text{OC}\cos M$, so the oppositions fix OQ and the
+  loops OC. The equant (IX 5): OC = $e$, OQ = $2e$; QK from the law of
+  cosines (page 3.2's quadratic), $q = -\operatorname{atan2}(2e\sin M,
+  \text{QK} + 2e\cos M)$; the planet $\lambda = \bar\lambda + q + \eta$,
+  $\mu$ counted from the mean apogee on QK (IX 6, XI 9); the apogee fixed
+  among the stars (IX 5). The equant against Kepler's ellipse with the
+  same $e$ (centre C, foci O and Q), as geometry: to second order $q$ =
+  $-2e\sin M + e^2\sin 2M$ against $-2e\sin M + \tfrac54 e^2\sin 2M$, the
+  distances $1 + e\cos M + \tfrac32 e^2\sin^2 M$ against $1 + e\cos M +
+  e^2\sin^2 M$, page 2.1's eccentric beside them; checked numerically
+  (the coefficients at $e$ = 0.001; 10.5′ exact against 8.7′ for Mars).
+- **Notation:** OC = $e$ and OQ = $2e$ (so $e$ compares directly with
+  Kepler's); Q the equant, C the centre of the deferent, A its apogee;
+  $q$ the zodiacal equation (K seen from O less $\bar\lambda$), $\rho$ =
+  OK; K′ the point of the ellipse.
+- **Figures:** the oppositions and the loops of 1986–2025 against the
+  ecliptic longitude (static); the deferent, the equant and the epicycle,
+  with K's ticks at equal times and the distance OK against $M$, the
+  eccentric with the same OQ dashed (date, 2010–2025); the equant and
+  Kepler's ellipse (M; views $e$ = 0.3 and Mars); the fit of the centre,
+  the oppositions and the loops of 2010–2025 with OC from O to Q (presets
+  C at O, fitted, C at Q); the error curve with page 4.1's epicycle as
+  ghost (4, 16 and 200 years); page 4.1's Figure 5 again with the
+  equant's curves (static).
+- **Fit:** $n$ kept from page 4.1; OC and OQ fitted apart, alternately:
+  OQ, $\lambda_A$ and $L_0$ from the eight oppositions to the mean Sun of
+  2010–2025, $r$ and OC from their eight loops; OQ = 0.2007, OC = 0.0983,
+  OC/OQ = 0.49, so the bisection is adopted and the fit repeated: $e$ =
+  0.1005, $\lambda_A$ = 151.08°, $L_0$ = 355.38°, $r$ = 0.658 (6.03, 12.06
+  and 39.48 where the deferent is 60). History block: the three
+  oppositions and the iteration (X 7), the bisection taken for granted
+  (*HAMA* pp. 172–173, Debated), the epicycle from one sighting (X 8).
+- **Test:** within 0.9° over 2010–2025 (page 4.1's epicycle 34°), about
+  1° over 1926–2126; the 11 loops of 1986–2009 within 1.2°, the intervals
+  between oppositions to the mean Sun within a day. History block: his check of the intervals (X 7); his
+  Mars of AD 130–139 within about 2°, a degree behind, as his mean
+  ecliptic longitude of Mars is (and his mean Sun).
+- **Residual:** the epicycle follows the mean Sun; turned by the real
+  Sun (direction and distance) and refitted, within 32′, with $e$ =
+  0.0935 (the reference's ellipse 0.0934); the rest mostly the
+  difference from the ellipse, about 9′ ($e^2/4$ = 7.5′), tripled near
+  opposition.
+- **Exercises:** expand the equant and the ellipse to second order
+  (derive); Ptolemy's three oppositions of Mars, first order and exactly
+  (12;00, Cancer 25;30); the loops at the apsides with C at O and at Q,
+  against XII 4 (predict, then play).
+- **Code:** `models/planet-equant.js` (`PlanetEquant`: `make`, `state`,
+  `construction`, `zodiacal`, `loopAt`, `oppositionInterval`, `kepler`,
+  `threeOppositions`, `PTOLEMY_OPPOSITIONS`, `PTOLEMY`, `MARS_FIT`,
+  `MARS_SEPARATE`); `quarterTicks` and `nameAbove` moved to `plot2d.js`.
+- **No Today note:** as on page 4.1; the comparison with the ellipse is
+  geometry, without the two orbits about the Sun.
+- **Hands over:** the model works, but every planet's epicycle turns in
+  step with the Sun. Why?
 
 #### 4.3 · Same geometry, new centre
 
@@ -970,6 +1025,7 @@ once on the page.
 | $\eta$ | the equation of the epicycle, $\lambda = \bar\lambda + \eta$, positive from the apogee to the perigee (page 4.1) |
 | $n_\mu$ | a planet's daily motion in anomaly; for an outer planet $n + n_\mu = n_\odot$ (page 4.1) |
 | $S,\ P_\lambda$ | a planet's synodic period and its period in ecliptic longitude (page 4.1) |
+| Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the centre of the deferent); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -1077,7 +1133,7 @@ of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
 at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
-reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The simple planetary epicycle (`models/planet-epicycle.js`, page 4.1) carries a planet on an epicycle whose radius keeps the direction of the mean Sun, and finds the reference sky's stations and loops (`PlanetEpicycle.referenceEvents`). The mean Sun (`models/mean-sun.js`, page 1.3)
+reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The simple planetary epicycle (`models/planet-epicycle.js`, page 4.1) carries a planet on an epicycle whose radius keeps the direction of the mean Sun, and finds the reference sky's stations and loops (`PlanetEpicycle.referenceEvents`). The planetary equant (`models/planet-equant.js`, page 4.2) puts that epicycle on an eccentric deferent turning uniformly about the equant, and holds Ptolemy's Mars, which page 0.1 runs to tonight. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,

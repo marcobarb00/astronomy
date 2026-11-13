@@ -115,6 +115,23 @@ section.
   as ghosts where the scales allow. Decided by Marco on 2026-11-11. →
   STRUCTURE.md §4 (page 2.1), §7.3
 
+- **Page 4.2 fits the deferent's centre and the equant apart, then adopts
+  the bisection.** The oppositions fix OQ and the loops OC (to first
+  order K's speed depends only on OQ, its distance only on OC); fitted
+  alternately to 2010–2025 they give OC/OQ = 0.49, so Ptolemy's model
+  is then fitted with OC = $e$, OQ = $2e$. Its apogee is fixed among the
+  stars, as Ptolemy's (IX 5), moving at page 2.3's rate. Notation: OC =
+  $e$, so $e$ compares directly with Kepler's. Approved by Marco on
+  2026-11-13. → STRUCTURE.md §4 (page 4.2), §6
+- **Page 4.2's error curve keeps page 4.1's epicycle as ghost**, though
+  it is about forty times larger: the shrink is the point of the figure,
+  and the pointer reads the equant's own error. Unlike page 2.1. Decided
+  by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
+- **No Today note on page 4.2; the equant is compared with Kepler's
+  ellipse as geometry** (the same circle's centre and foci O and Q),
+  without the two orbits about the Sun, which would answer page 4.3's
+  question. Approved by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
+
 ## Look
 
 - **The star-atlas style (variant "B2"): navy ink on parchment, margin

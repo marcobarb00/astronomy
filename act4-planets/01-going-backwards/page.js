@@ -72,31 +72,10 @@ function marsLoops() {
 const MARS_MOTIONS = PlanetEpicycle.motions(PlanetEpicycle.MARS_FIT);
 const MARS_LOOP = PlanetEpicycle.loop(PlanetEpicycle.MARS_FIT.r, MARS_MOTIONS.n, MARS_MOTIONS.nMu);
 
-/* Ticks every 90° on an axis of [0, 360] degrees. */
-const quarterTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
-
-/* An angle with a sign in TeX: "+1.85^\circ", "-0.40^\circ". */
+/* An angle with a sign in TeX: "+1.85^\\circ", "-0.40^\\circ". */
 const texSigned = (degrees, digits = 2) => `${signed(degrees, digits).replace('−', '-')}^\\circ`;
 
-/* A word above the plot box, at x (e.g. "opposition" over its line):
-   centred on x, or starting at the left edge or ending at the right edge
-   of the box, so that it never leaves the canvas. */
-function nameAbove(plot, text, x) {
-	const ctx = plot.ctx;
-	let align = 'center';
-
-	if (x <= plot.x[0]) {
-		align = 'left';
-	} else if (x >= plot.x[1]) {
-		align = 'right';
-	}
-
-	ctx.fillStyle = textColor(COL.muted);
-	ctx.font = FONT_TICK;
-	ctx.textAlign = align;
-	ctx.textBaseline = 'bottom';
-	ctx.fillText(text, plot.px(x), plot.box.top - 4);
-}
+/* quarterTicks and nameAbove, shared with page 4.2, are in plot2d.js. */
 
 /* ==========================================================================
    1. FIGURE 1: MARS TURNING BACK (BLUE PLATE)

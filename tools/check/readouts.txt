@@ -481,23 +481,23 @@ Regenerate with: node tools/check/smoke.js --update
   slider #sid-time + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.81^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   slider #sid-lon = -180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.31^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.31^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 0
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   slider #sid-lon + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.01° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.32^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ
   slider #transit-lat = -60
     OUTPUT (transit-lat): −60.0°
     #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 46.8^\circ
@@ -545,35 +545,35 @@ Regenerate with: node tools/check/smoke.js --update
   button "Greenwich"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   button "Rome"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.81^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   button "Alexandria"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 29.92° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.22^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.23^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ
   button "New York"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Aldebaran"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Vega"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ
   button "Sirius"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ
   button "Arcturus"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ
   button "Sirius"
     OUTPUT (transit-lat): 0.1°
     #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 73.1^\circ
@@ -1524,6 +1524,153 @@ Regenerate with: node tools/check/smoke.js --update
   hover #intervals-plot at 0.6
   hover #intervals-plot at 0.9
   hover #intervals-plot left
+  dragged 0 spheres
+
+=== act4-planets/02-equant/index.html ===
+  as loaded
+    OUTPUT (equant-day): 28 Jun 2018
+    #equant-readout: \text{28 Jun 2018:}\quad \bar\lambda = 294.2^\circ,\quad M = 142.8^\circ | q = -7.53^\circ,\quad \rho = \text{OK} = 0.926 | \mu = 161.9^\circ,\quad \eta = +23.40^\circ | \lambda = \bar\lambda + q + \eta = 310.0^\circ
+    OUTPUT (kepler-m): 45.0°
+    #kepler-readout: M = 45.0^\circ:\quad q_\text{equant} = -19.63^\circ,\quad q_\text{ellipse} = -18.86^\circ | q_\text{equant} - q_\text{ellipse} = -46.4' | \text{OK} = 1.2628,\quad \text{OK}' = 1.2454
+    OUTPUT (fit-oc): 0.098
+    #fit-readout: \text{OC} = 0.098 = 0.49\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #equant-day = 0
+    OUTPUT (equant-day): 1 Jan 2010
+    #equant-readout: \text{1 Jan 2010:}\quad \bar\lambda = 109.5^\circ,\quad M = 318.3^\circ | q = +7.10^\circ,\quad \rho = \text{OK} = 1.081 | \mu = 171.0^\circ,\quad \eta = +22.13^\circ | \lambda = \bar\lambda + q + \eta = 138.8^\circ
+  slider #equant-day = 5844
+    OUTPUT (equant-day): 1 Jan 2026
+    #equant-readout: \text{1 Jan 2026:}\quad \bar\lambda = 292.2^\circ,\quad M = 140.8^\circ | q = -7.86^\circ,\quad \rho = \text{OK} = 0.929 | \mu = 348.5^\circ,\quad \eta = -1.53^\circ | \lambda = \bar\lambda + q + \eta = 282.8^\circ
+  slider #equant-day = 2922
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 200.9^\circ,\quad M = 49.5^\circ | q = -8.19^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.7^\circ,\quad \eta = +30.94^\circ | \lambda = \bar\lambda + q + \eta = 223.6^\circ
+  slider #equant-day + one key step
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  slider #kepler-m = 0
+    OUTPUT (kepler-m): 0.0°
+    #kepler-readout: M = 0.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 1.3000,\quad \text{OK}' = 1.3000
+  slider #kepler-m = 360
+    OUTPUT (kepler-m): 360.0°
+    #kepler-readout: M = 360.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 1.3000,\quad \text{OK}' = 1.3000
+  slider #kepler-m = 180
+    OUTPUT (kepler-m): 180.0°
+    #kepler-readout: M = 180.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
+  slider #kepler-m + one key step
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.43^\circ,\quad q_\text{ellipse} = +0.47^\circ | q_\text{equant} - q_\text{ellipse} = -2.7' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
+  slider #fit-oc = 0
+    OUTPUT (fit-oc): 0.000
+    #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
+  slider #fit-oc = 0.2007
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  slider #fit-oc = 0.1003
+    OUTPUT (fit-oc): 0.100
+    #fit-readout: \text{OC} = 0.100 = 0.50\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  slider #fit-oc + one key step
+    OUTPUT (fit-oc): 0.100
+    #fit-readout: \text{OC} = 0.100 = 0.50\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  button "‹ previous day"
+    OUTPUT (equant-day): 31 Dec 2017
+    #equant-readout: \text{31 Dec 2017:}\quad \bar\lambda = 200.5^\circ,\quad M = 49.1^\circ | q = -8.14^\circ,\quad \rho = \text{OK} = 1.074 | \mu = 79.4^\circ,\quad \eta = +30.82^\circ | \lambda = \bar\lambda + q + \eta = 223.2^\circ
+  button "next day ›"
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  button "e = 0.3"
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.43^\circ,\quad q_\text{ellipse} = +0.47^\circ | q_\text{equant} - q_\text{ellipse} = -2.7' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
+  button "Mars"
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+  button "C at O"
+    OUTPUT (fit-oc): 0.000
+    #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
+  button "fitted"
+    OUTPUT (fit-oc): 0.098
+    #fit-readout: \text{OC} = 0.098 = 0.49\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  button "C at Q"
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  button "4 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "16 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "200 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #observed-oppositions at 0.3
+  hover #observed-oppositions at 0.6
+  hover #observed-oppositions at 0.9
+  hover #observed-oppositions left
+  hover #observed-arcs at 0.3
+  hover #observed-arcs at 0.6
+  hover #observed-arcs at 0.9
+  hover #observed-arcs left
+  hover #distance-plot at 0.3
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  hover #distance-plot at 0.6
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  hover #distance-plot at 0.9
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  hover #distance-plot left
+    OUTPUT (equant-day): 1 Jan 2018
+    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  hover #kepler-plot at 0.3
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+  hover #kepler-plot at 0.6
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+  hover #kepler-plot at 0.9
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+  hover #kepler-plot left
+    OUTPUT (kepler-m): 180.5°
+    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+  hover #fit-directions at 0.3
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions at 0.6
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions at 0.9
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions left
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.3
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.6
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.9
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs left
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 Jun 1969 · page 4.1's epicycle: +32.79° · equant: +0.40°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 Jul 2034 · page 4.1's epicycle: −2.08° · equant: −0.03°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 Sep 2099 · page 4.1's epicycle: −21.04° · equant: −0.15°
+  hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #test-arcs at 0.3
+  hover #test-arcs at 0.6
+  hover #test-arcs at 0.9
+  hover #test-arcs left
+  hover #test-intervals at 0.3
+  hover #test-intervals at 0.6
+  hover #test-intervals at 0.9
+  hover #test-intervals left
   dragged 0 spheres
 
 === archive/copernican_revolution/index.html ===
@@ -2906,7 +3053,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 166 tests pass.
+    #summary: All 173 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

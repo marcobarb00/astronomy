@@ -31,6 +31,7 @@
 	 4. Frame: grid, axes, labels
 	 5. Marks: curves, bands, markers, lines, text
 	 6. Legend (HTML)
+	 7. Helpers for the pages' plots
    ========================================================================== */
 
 /* ==========================================================================
@@ -640,4 +641,32 @@ function drawSegment(ctx, x1, y1, x2, y2) {
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
+}
+
+/* ==========================================================================
+   7. HELPERS FOR THE PAGES' PLOTS
+   Used by more than one page (pages 4.1 and 4.2).
+   ========================================================================== */
+
+/* Ticks every 90° on an axis of [0, 360] degrees. */
+const quarterTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
+
+/* A word above the plot box, at x (e.g. "opposition" over its line):
+   centred on x, or starting at the left edge or ending at the right edge
+   of the box, so that it never leaves the canvas. */
+function nameAbove(plot, text, x) {
+	const ctx = plot.ctx;
+	let align = 'center';
+
+	if (x <= plot.x[0]) {
+		align = 'left';
+	} else if (x >= plot.x[1]) {
+		align = 'right';
+	}
+
+	ctx.fillStyle = textColor(COL.muted);
+	ctx.font = FONT_TICK;
+	ctx.textAlign = align;
+	ctx.textBaseline = 'bottom';
+	ctx.fillText(text, plot.px(x), plot.box.top - 4);
 }

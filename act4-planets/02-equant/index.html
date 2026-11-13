@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.2 · THE EQUANT
+     Act IV, the planets. Page 4.1's epicycle makes every loop of Mars the
+     same size. The oppositions show the zodiacal anomaly alone, and the
+     loops show the distance of the epicycle; one eccentric cannot fit
+     both. Ptolemy's answer (Almagest IX 5 - 6, X 6 - 8): a deferent
+     centred halfway between the Earth and the equant, the point about
+     which the epicycle moves uniformly. Fitted to Mars over 2010 - 2025,
+     with the centre and the equant found apart, it brings the error from
+     34° to under 1°; compared with Kepler's ellipse, it agrees to first
+     order in e. Numbers: tools/numbers/4.2-equant.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.2 · The equant · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Page 4.1 left Mars with loops of one size, where the real planet goes
+			back almost twice as far in one part of the zodiac as in the opposite
+			part. To follow it, the epicycle has to move unevenly round the
+			zodiac, and come nearer to the Earth in some parts than in others.
+		</p>
+
+		<p>
+			Ptolemy's answer was an eccentric deferent on which the epicycle moves
+			uniformly as seen from a second point, the equant. Fitted to Mars, it
+			brings the error from 34° down to under a degree, and it turns out to
+			agree with Kepler's ellipse to first order in the eccentricity.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The zodiacal anomaly at the oppositions and in the loops</h2>
+
+		<p>
+			To study the zodiacal anomaly on its own, we need moments when the
+			anomaly related to the Sun has no effect. The oppositions to the mean
+			Sun are such moments: there the planet lies on the line from the Earth
+			through K, the centre of its epicycle, and is seen where K is (X 6).
+		</p>
+
+		<p>
+			If K moved uniformly, the planet would be seen there at its mean
+			ecliptic longitude $\bar\lambda$. Figure 1(a) gives the nineteen
+			oppositions of Mars to the mean Sun of 1986–2025, each as its ecliptic
+			longitude less the $\bar\lambda$ of page 4.1's fit. The difference
+			reaches about 12° either way and changes sign twice round the zodiac,
+			near the ecliptic longitudes 149° and 333°.
+		</p>
+
+		<!-- Figure 1: the oppositions and the loops of 1986 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) at the oppositions</p>
+						<canvas id="observed-oppositions"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) how far Mars goes back</p>
+						<canvas id="observed-arcs"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two panels, one dot for each opposition or loop of
+				1986–2025. The loops are longest and shortest close to where the
+				dots of (a) change sign, so both kinds of unevenness are tied to the
+				same line across the zodiac.
+			</figcaption>
+		</figure>
+
+		<p>
+			Figure 1(b) sets the loops of the same years against the same ecliptic
+			longitude. Mars goes back by almost 20° in one part of the zodiac and
+			by only 10° in the opposite part.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy noted that this anomaly behaves the opposite way to the one
+				related to the Sun: "the time from least speed to mean is always
+				greater than the time from mean speed to greatest" (IX 5). An eccentric
+				circle produces that, and "that is the hypothesis which we actually use
+				to represent this kind of anomaly".
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				He also found that the oppositions and the retrograde arcs ask for
+				different eccentricities:
+				"using rough estimation, the eccentricity one finds from the greatest
+				equation of ecliptic anomaly turns out to be about twice that derived
+				from the size of the retrograde arcs at greatest and least distances of
+				the epicycle" (X 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>The eccentric deferent and the equant</h2>
+
+		<h3>An eccentric deferent</h3>
+
+		<p>
+			Ptolemy's remark suggests the eccentric that served for the Sun, so we
+			try it first on the deferent. Let K move uniformly on a circle of radius
+			1 whose centre C lies at the distance OC = $e$ from the Earth O, towards
+			the apogee A at the ecliptic longitude $\lambda_A$. Seen from C, K is at $\bar\lambda$; seen from O it
+			is at $\bar\lambda + q$, at the distance $\rho = \text{OK}$, where $q$
+			has the form of the Sun's equation of centre. We call $q$ the
+			<em>zodiacal equation</em>, Ptolemy's "equation of ecliptic
+			anomaly":
+		</p>
+
+		$$q = -\operatorname{atan2}(e\sin M,\ 1 + e\cos M), \qquad \rho = \sqrt{1 + 2e\cos M + e^2}, \qquad M = \bar\lambda - \lambda_A.$$
+
+		<p>
+			The epicycle stays as on page 4.1, its radius KP parallel to the line
+			from the Earth to the mean Sun, so at an opposition to the mean Sun the
+			planet is still seen where K is (X 6). Figure 1(a) is then a picture of
+			$q$, and its greatest value is about $e$ radians.
+		</p>
+
+		<h3>One eccentricity is not enough</h3>
+
+		<p>
+			Fitted to the eight oppositions to the mean Sun of 2010–2025, one turn
+			of the zodiac, an eccentric needs $e$ = 0.200. With the epicycle sized
+			to the loops of the same years, its loops come out the wrong way round:
+			its longest loop falls in the part of the zodiac where Mars went back
+			least, and its shortest where Mars went back most.
+		</p>
+
+		<h3>The direction from one point, the distance from another</h3>
+
+		<p>
+			To see why, look at what sets the size of a loop. The nearer K is to
+			the Earth, the larger the epicycle looks and the longer the loop. The faster K is seen
+			to move, the more it carries the loop forward, and the shorter the loop.
+			To see which part of the deferent controls each, let K move uniformly
+			about a point Q, at the distance OQ from the Earth on the line of the
+			apogee, while the circle stays centred on C. In the eccentric, Q is C.
+		</p>
+
+		<p>
+			In the triangle OQK the angle at Q is $180^\circ - M$ and the angle at K
+			is $-q$, so the law of sines gives $\sin(-q) = \text{OQ}\,\sin M/\rho$.
+			To first order in the offsets, $q \approx -\text{OQ}\sin M$, and K is
+			seen to turn at $d(\bar\lambda + q)/dt \approx n\,(1 - \text{OQ}\cos M)$.
+		</p>
+
+		<p>
+			In the triangle CQK, with $\text{CK} = 1$ and $\text{CQ} = \text{OQ} -
+			\text{OC}$, the law of cosines gives $\text{QK} \approx 1 -
+			\text{CQ}\cos M$. Projecting OK on the line QK then gives $\rho \approx
+			\text{OQ}\cos M + \text{QK}$, and so
+		</p>
+
+		<div class="box">
+			$$\frac{d(\bar\lambda + q)}{dt} \approx n\,(1 - \text{OQ}\cos M), \qquad \rho \approx 1 + \text{OC}\cos M.$$
+		</div>
+
+		<p>
+			The direction and the speed of K depend only on OQ, and its distance
+			only on OC. The oppositions measure the direction, so they fix OQ, about
+			0.2 for Mars. In the eccentric OC is the same 0.2, and K is 1.20 from
+			the Earth at the apogee and 0.80 at the perigee. The change of distance
+			then outweighs the change of speed, and the loops are longest at the
+			perigee. The real loops are
+			longest near the apogee, so OC must be smaller than OQ.
+		</p>
+
+		<h3>The equant</h3>
+
+		<div class="row">
+			<p>
+				Ptolemy separated the two points. The epicycle, he writes, "is carried
+				on an eccentre which, though equal in size to the eccentre which
+				produces the anomaly, is not described about the same centre", and
+				for every planet but Mercury its centre "is the point bisecting the
+				line joining the centre of the eccentre producing the anomaly to the
+				centre of the ecliptic" (IX 5). The centre of the uniform motion, Q,
+				is now called the <em>equant</em>.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			So OC = $e$ and OQ = $2e$. In the triangle CQK the law of cosines,
+			$1 = \text{QK}^2 + e^2 + 2e\,\text{QK}\cos M$, gives QK, the same
+			quadratic as the crank of page 3.2, and the triangle OQK gives K as seen
+			from the Earth:
+		</p>
+
+		<div class="box">
+			$$\text{QK} = -e\cos M + \sqrt{1 - e^2\sin^2 M}, \qquad q = -\operatorname{atan2}(2e\sin M,\ \text{QK} + 2e\cos M).$$
+		</div>
+
+		<p>
+			The distance is $\rho = \sqrt{\text{QK}^2 + 4e\,\text{QK}\cos M +
+			4e^2}$. To first order $q \approx -2e\sin M$ and $\rho \approx 1 +
+			e\cos M$: the equant gives the directions of an eccentric with $2e$ and
+			the distances of one with $e$. For Ptolemy's Mars, 12 and 6 where the
+			deferent is 60, K's distance changes half as much as in an eccentric
+			with the same directions.
+		</p>
+
+		<div class="row">
+			<p>
+				The line QK turns uniformly about a point that is not the centre of
+				K's circle, so K does not move along its circle at a constant speed.
+				Copernicus rejected the equant for that reason: in it "a circular
+				motion can be uniform with respect to an extraneous center not its
+				own" (<em>De Revolutionibus</em> V 2, and IV 2 for the Moon).
+			</p>
+			<aside>
+				<div class="note detour" data-topic="islamic"></div>
+			</aside>
+		</div>
+
+		<h3>The planet</h3>
+
+		<div class="row">
+			<p>
+				The planet moves on its epicycle as on page 4.1, with $\mu =
+				\bar\lambda_\odot - \bar\lambda$, and Ptolemy counts this anomaly from
+				the diameter of the epicycle "which points towards" the equant (IX 6),
+				the mean apogee on the line QK. The epicycle's apogee seen from the
+				Earth lies on the line OK, $q$ further on, so the planet is $\mu - q$
+				from it. He then finds the planet in two steps, first K, then the
+				planet on the epicycle (XI 9):
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="box">
+			$$\lambda = \bar\lambda + q + \eta, \qquad \eta = \operatorname{atan2}\big(r\sin(\mu - q),\ \rho + r\cos(\mu - q)\big).$$
+		</div>
+
+		<p>
+			With $e = 0$ this is page 4.1's model. The apogee of the deferent is
+			fixed among the stars: Ptolemy has it move "about the same ... as the
+			amount determined for the sphere of the fixed stars" (IX 5), so in
+			ecliptic longitude of date it moves at the rate of precession of page
+			2.3.
+		</p>
+
+		<!-- Figure 2: the deferent, the equant and the epicycle; date -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the deferent, the equant and the epicycle</p>
+						<canvas id="equant-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the distance of K from the Earth</p>
+						<canvas id="distance-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="equant-day">date</label>
+							<input id="equant-day" type="range" min="0" max="5844" step="0.25" value="3100">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="equant-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="equant-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="equant-play">Play</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="equant-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play the sixteen years of the fit and watch the line QK turn
+				uniformly, while the ticks of K lie closer together near the apogee A
+				than near the perigee. The loops of P are longest on the side of A:
+				K is farthest away there, but its slowness counts for more.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">ticks</dt>
+						<dd>K every 1/24 of a turn of $\bar\lambda$</dd>
+						<dt class="c-sun">☉, dashed</dt>
+						<dd>the direction of the mean Sun from the Earth O</dd>
+						<dt class="c-planet">faint</dt>
+						<dd>the path of P over the last synodic period</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-muted">dashed</dt>
+						<dd>an eccentric with the same directions, C at Q</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>The equant and Kepler's ellipse</h3>
+
+		<div class="row">
+			<p>
+				The equant's split of directions and distances is the feature that
+				survived into Kepler's ellipse. Working on Mars, Kepler first gave up
+				the equality of the two eccentricities, and in the end restored it as
+				the two foci of an ellipse (<em>HAMA</em> p. 172), along which the
+				radius from one focus sweeps equal areas in equal times (Voelkel ch. 3;
+				page 4.5).
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Kepler put the Sun at that focus. Here we lay the ellipse over
+			Ptolemy's deferent only to compare the two curves: with the same $e$
+			and semi-major axis 1, its centre is C and its foci are O and Q.
+			Expanding both in $e$, with $M$ counted from the apogee (Exercise 1),
+			and adding the Sun's eccentric with its centre at $2e$, gives the
+			table:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table series-table">
+			<thead>
+				<tr>
+					<th>model</th>
+					<th>direction, $q$</th>
+					<th>distance</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>eccentric, OC = $2e$</td>
+					<td>$-2e\sin M + 2e^2\sin 2M$</td>
+					<td>$1 + 2e\cos M + 2e^2\sin^2 M$</td>
+				</tr>
+				<tr>
+					<td>equant, OC = $e$, OQ = $2e$</td>
+					<td>$-2e\sin M + e^2\sin 2M$</td>
+					<td>$1 + e\cos M + \tfrac32 e^2\sin^2 M$</td>
+				</tr>
+				<tr>
+					<td>Kepler's ellipse</td>
+					<td>$-2e\sin M + \tfrac54 e^2\sin 2M$</td>
+					<td>$1 + e\cos M + e^2\sin^2 M$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			The equant and the ellipse agree to first order in $e$, in direction
+			and in distance. In direction they differ by $-\tfrac14 e^2\sin 2M$, at
+			most $e^2/4$, and in distance by $\tfrac12 e^2\sin^2 M$. The eccentric
+			has the ellipse's directions to first order too, but its distances vary
+			twice as much, as pages 2.1 and 3.2 found for the Sun and the Moon.
+		</p>
+
+		<div class="row">
+			<p>
+				Seen from the empty focus Q, the point of the ellipse runs ahead of a
+				uniform turn by $\tfrac14 e^2\sin 2M$, so to first order the empty
+				focus is an equant. The expansions can be checked numerically: the
+				coefficient of $\sin 2M$ in the exact $q$, at $e = 0.001$, is
+				$1.0000\,e^2$ for the equant and $1.2500\,e^2$ for the ellipse.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			At $e$ = 0.1, about Mars' value, the greatest difference in direction
+			is 10.4′, where the second-order term $e^2/4$ gives 8.6′; the terms of
+			third order make up the rest. At the Sun's $e$ = 0.0167 the greatest
+			difference is about 3% above $e^2/4$.
+		</p>
+
+		<!-- Figure 3: the equant and Kepler's ellipse; M, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="kepler-views"></div>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the deferent and the ellipse</p>
+						<canvas id="kepler-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the direction from O, less the ellipse's</p>
+						<canvas id="kepler-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="kepler-m">mean anomaly $M$</label>
+							<input id="kepler-m" type="range" min="0" max="360" step="0.5" value="45">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="kepler-play">Play</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="kepler-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Start with the exaggerated $e$ = 0.3 and play: K on the circle and K′
+				on the ellipse keep close together, and the lines from Q to them turn
+				almost together. Choose Mars and notice that the difference in (b)
+				shrinks to about ten minutes of arc.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">K</dt>
+						<dd>QK turns uniformly</dd>
+						<dt class="c-planet">K′</dt>
+						<dd>OK′ sweeps equal areas in equal times</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-muted">dashed</dt>
+						<dd>the Sun's eccentric, OC = $2e$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>Mars from its oppositions and its loops</h2>
+
+		<p>
+			The model has six parameters: the mean motion $n$, the mean ecliptic
+			longitude $L_0$ at J2000.0, the apogee $\lambda_A$, OQ, OC and the
+			epicycle $r$. We keep OC and OQ apart, so that the observations, and
+			not Ptolemy, decide how they are related. The mean motion stays as on
+			page 4.1: oppositions 79 years apart fall at the same place in the
+			zodiac and in the same configuration with the Sun, so both anomalies
+			cancel, whatever the deferent.
+		</p>
+
+		<h3>The equant from the oppositions</h3>
+
+		<p>
+			The directions of K are what the equant point changes, and at each
+			opposition to the mean Sun the planet is seen in the direction of K.
+			The eight oppositions of 2010–2025 go once round the zodiac, as a full turn of an anomaly needs, and give
+			eight values of $\bar\lambda + q$. Since $q \approx -\text{OQ}\sin M$,
+			they fix $L_0$, $\lambda_A$ and OQ; the centre C changes them only in
+			the second order.
+		</p>
+
+		<h3>The centre from the loops</h3>
+
+		<p>
+			With the directions known, the loops measure the distance of K. Their
+			mean size fixes $r$, as on page 4.1, and the way it changes round the
+			zodiac fixes OC. Figure 4 shows both observations of 2010–2025 against
+			the model, with OC free.
+		</p>
+
+		<!-- Figure 4: the oppositions fix Q, the loops fix C; OC -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) at the oppositions</p>
+						<canvas id="fit-directions"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) how far Mars goes back</p>
+						<canvas id="fit-arcs"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="fit-oc">centre OC</label>
+							<input id="fit-oc" type="range" min="0" max="0.2007" step="0.0001" value="0.0983">
+							<output></output>
+						</div>
+						<div class="presets" id="fit-presets">
+							<button type="button" data-target="fit-oc" data-value="0">C at O</button>
+							<button type="button" data-target="fit-oc" data-value="0.0983">fitted</button>
+							<button type="button" data-target="fit-oc" data-value="0.2007">C at Q</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="fit-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Move C from the Earth to the equant and compare the model's curves
+				with the observed dots. The curve of (a) hardly moves, while the loops
+				in (b) turn over: longest at the apogee with C at O,
+				longest at the perigee with C at Q, and on the observed loops only
+				near halfway.
+			</figcaption>
+		</figure>
+
+		<p>
+			Each step uses the result of the other, so we alternate between them
+			until nothing changes, which takes two rounds. The
+			oppositions give OQ = 0.2007 and the loops OC = 0.0983, a ratio of
+			0.49, close to Ptolemy's half.
+		</p>
+
+		<p>
+			We therefore take Ptolemy's bisection and fit again with OC = $e$ and
+			OQ = $2e$. Mars then has $e$ = 0.1005, its apogee at the ecliptic
+			longitude $\lambda_A$ = 151.1° and $L_0$ = 355.38°. Where the deferent
+			is 60, the fitted lengths are close to Ptolemy's:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table fit-table">
+			<thead>
+				<tr>
+					<th>where the deferent is 60</th>
+					<th>OC</th>
+					<th>OQ</th>
+					<th>epicycle</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>fitted to 2010–2025</td><td>6.03</td><td>12.06</td><td>39.48</td></tr>
+				<tr><td>Ptolemy (X 7, X 8)</td><td>6</td><td>12</td><td>39.5</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Ptolemy's three oppositions and the bisection -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's oppositions and his bisection</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy observed three oppositions of Mars "as accurately as
+					possible, using the astrolabe instruments", in AD 130, 135 and 139
+					(X 7). The oppositions show K from the Earth, while the uniform
+					motion is about the equant, so he first took the centre of the
+					deferent to be the equant (<em>HAMA</em> p. 174), then corrected
+					the arcs between the oppositions and computed twice more. He found
+					the apogee at Cancer 25° 30′ (115.5°) and 12 for the double
+					eccentricity, and Toomer finds that a further round would hardly
+					change them. Exercise 2 redoes the computation.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					He does not show how he came to the bisection. Apart from the rough
+					estimate of X 6, the symmetric arrangement is taken for granted in
+					his computation (<em>HAMA</em> p. 173), and Neugebauer suggests that
+					its likeness to the model of Venus, found from much more direct
+					observations (X 1–3), helped its acceptance (p. 172).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The equant against the real Mars</h2>
+
+		<p>
+			To see how much of page 4.1's error the equant removes, Figure 5 gives
+			the error curve of the model fitted to 2010–2025, $\Delta\lambda =
+			\lambda_\text{model} - \lambda_\text{ref}$ in degrees, with page 4.1's
+			epicycle as a ghost.
+		</p>
+
+		<!-- Figure 5: the equant fitted to 2010 - 2025 against the reference Mars -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Point at the oppositions, the dots, where page 4.1's epicycle went
+				wrong by tens of degrees, and read the equant's error there. Then
+				switch to two hundred years and notice that its band stays as narrow
+				as over the sixteen years of the fit.
+			</figcaption>
+		</figure>
+
+		<p>
+			Over 2010–2025 the equant stays within 0.9° of the real Mars, where
+			page 4.1's epicycle was off by up to 34°. Its mean motion came from
+			oppositions 79 years apart, and over the two centuries 1926–2126 it
+			stays within about a degree.
+		</p>
+
+		<p>
+			The loops were page 4.1's residual, so they are the second test. Figure
+			6 repeats Figure 5 of page 4.1 with the equant's loops in place of the
+			epicycle's single value. The eleven loops of 1986–2009, outside the
+			fit, are within 1.2° of the real ones. The model's oppositions are to
+			the mean Sun, so (b) compares the times between the real oppositions to
+			the mean Sun, and the model's agree with them within a day.
+		</p>
+
+		<!-- Figure 6: the loops of Mars against the ecliptic longitude, with the equant (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) how far Mars goes back</p>
+						<canvas id="test-arcs"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the time to the next opposition</p>
+						<canvas id="test-intervals"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Follow the dots, the loops of 1986–2025, round the zodiac: the
+				equant's curves now rise and fall with them, where page 4.1's
+				epicycle gave one value for every loop.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-epicycle">faint, dashed</dt>
+						<dd>page 4.1's epicycle</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- History block: Ptolemy's check and his Mars in his own time -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Ptolemy's Mars in his own time</h3>
+
+			<div class="row">
+				<p>
+					Ptolemy checked his result by computing back from it the arcs
+					between his three oppositions, and found them "in agreement with
+					the amount observed" (X 7). He then gave the positions of Mars at an
+					epoch in the reign of Nabonassar (X 10), so that the model could be
+					run to any date.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Run against the reference sky, his Mars of AD 130–139 stays within
+				about 2° of the real planet and is on average a degree behind it. His
+				mean ecliptic longitude of Mars is a degree behind in those years, as
+				his mean Sun is (page 2.1), and the planet carries that error.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>The epicycle and the Sun</h2>
+
+		<p>
+			The epicycle's radius KP follows the mean Sun, which moves uniformly,
+			while the real Sun does not (page 2.1). To see how much of the error
+			comes from that, we turn the epicycle instead by the real Sun, with its
+			direction and its distance from the reference sky, and fit again.
+		</p>
+
+		<p>
+			The model then stays within 32′ of Mars, and its eccentricity becomes
+			0.0935. The theory behind the reference sky describes Mars by an
+			ellipse of eccentricity 0.0934, which the equant's $e$ matches to first
+			order.
+		</p>
+
+		<p>
+			Most of the rest is the second-order difference between the equant and
+			the ellipse. At the refitted $e$ it reaches about 9′ in the direction
+			of K, 7.5′ from the term $e^2/4$, and near opposition it is almost
+			tripled by the factor $1/(1 - r)$ of page 4.1.
+		</p>
+
+		<p>
+			So the model needs the Sun's own unevenness in the epicycle of Mars. In
+			Ptolemy's models the epicycles of Mars, Jupiter and Saturn all keep
+			step with the mean Sun, and the centres of the epicycles of Venus and
+			Mercury move with it (page 4.1). Why a planet's motion should be
+			tied to the Sun at all is the question of page 4.3.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Expand the equant and Kepler's ellipse to second order in $e$ and
+				compare them term by term. For the ellipse, with $M$ and the eccentric
+				anomaly $E$ (not page 2.2's equation of time) counted from the apogee, the point is at $(e + \cos E,\
+				\sqrt{1 - e^2}\,\sin E)$ from the focus O, its distance is $1 + e\cos
+				E$, and the area law gives Kepler's equation $M = E + e\sin E$. Then
+				find the greatest differences for Mars, $e$ = 0.1005, and for the Sun,
+				$e$ = 0.0167, and compare page 2.1's eccentric.
+			</p>
+			<details class="hint">
+				<p>
+					Invert Kepler's equation to $E \approx M - e\sin M + \tfrac12
+					e^2\sin 2M$. The direction of the point from O is $E - e\sin E +
+					\tfrac14 e^2\sin 2E$ to second order (Fitzpatrick (4.21), counted
+					there from the perigee). For the equant, expand QK first, then use
+					$\arctan x \approx x$, which is enough to second order.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Equant: $\text{QK} = 1 - e\cos M - \tfrac12 e^2\sin^2 M$. Then
+					$q = -\arctan\big(2e\sin M/(\text{QK} + 2e\cos M)\big)$ with
+					$\text{QK} + 2e\cos M \approx 1 + e\cos M$ gives $q \approx -2e\sin
+					M\,(1 - e\cos M) = -2e\sin M + e^2\sin 2M$. The distance squared is
+					$\text{QK}^2 + 4e\,\text{QK}\cos M + 4e^2 \approx 1 + 2e\cos M + 3e^2
+					\sin^2 M + e^2\cos^2 M$, whose root is $1 + e\cos M + \tfrac32 e^2
+					\sin^2 M$.
+				</p>
+				<p>
+					Ellipse: $E \approx M - e\sin M + \tfrac12 e^2\sin 2M$. The direction
+					from O, $\operatorname{atan2}\big(\sqrt{1 - e^2}\sin E,\ e + \cos
+					E\big)$, is to
+					second order $E - e\sin E + \tfrac14 e^2\sin 2E$. With $\sin E
+					\approx \sin M - \tfrac12 e\sin 2M$ this is $M - 2e\sin M + \tfrac54
+					e^2\sin 2M$, so $q \approx -2e\sin M + \tfrac54 e^2\sin 2M$; the
+					distance $1 + e\cos E$ is $1 + e\cos M + e^2\sin^2 M$.
+				</p>
+				<p>
+					The equant less the ellipse is $-\tfrac14 e^2\sin 2M$ in direction
+					and $\tfrac12 e^2\sin^2 M$ in distance. For Mars, $e^2/4$ is 8.7′ and
+					the exact greatest difference 10.5′; the distance differs by at most
+					0.0050. Page 2.1's eccentric, $q = -2e\sin M + 2e^2\sin 2M$, differs
+					from the ellipse by $\tfrac34 e^2\sin 2M$, 26.0′ (exactly 31.4′). For
+					the Sun the equant would differ from the ellipse by 0.24′ and the
+					eccentric by 0.72′, the value of page 2.1's Today note.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Redo Ptolemy's computation of X 7. His three oppositions of Mars were
+				at Gemini 21° (81°), Leo 28° 50′ (148.833°) and Sagittarius 2° 34′
+				(242.567°), and between them the mean longitude advanced 81° 44′
+				(81.733°) and 95° 28′ (95.467°). With OC = $e$ and OQ = $2e$, find $2e$
+				and the apogee, first to first order, then exactly.
+			</p>
+			<details class="hint">
+				<p>
+					To first order the direction of K is $\bar\lambda - X\sin\bar\lambda
+					+ Y\cos\bar\lambda$ (in radians), with $X = 2e\cos\lambda_A$ and $Y =
+					2e\sin\lambda_A$. Subtract the equations of neighbouring oppositions,
+					and put the observed longitudes in the sines and cosines. For the
+					exact solution use Newton's method on the three equations.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The observed arcs, 67.833° and 93.733°, fall short of the mean ones by
+					13.900° and 1.733°. To first order this gives two linear equations
+					in $X$ and $Y$, whose solution is $2e$ = 0.218 (13.1 where the
+					deferent is 60) and the apogee at 111.2°.
+				</p>
+				<p>
+					The first order puts the observed longitudes where the mean ones
+					belong, and at Ptolemy's three oppositions the two differ by $q$, up
+					to 8.6°: too much for an eccentricity of 0.2. Newton's method on the
+					three exact equations, unknowns $e$, $\lambda_A$ and $\bar\lambda$ at
+					the third opposition, converges to $2e$ = 0.20001, 12.000 where the
+					deferent is 60, and the apogee at 115.49°, Cancer 25° 30′, Ptolemy's
+					values. The mean anomaly at the third opposition is 135.66°, against
+					Ptolemy's 135° 39′ (135.65°).
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 4. Before you
+				move it, predict where the loops will be longest, at the apogee or at
+				the perigee, with C at the Earth, and with C at Q. Then check, and
+				compare with Ptolemy's own arcs for Mars at greatest and least distance
+				(XII 4): 19° 53′ 32″ (19.89°) and 11° 12′ 14″ (11.20°).
+			</p>
+			<details class="hint">
+				<p>
+					Use the two first-order results of section 2: the speed of K seen
+					from O depends only on OQ, its distance only on OC.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With C at O the distance does not change, and only the speed does: K
+					is slowest at the apogee, so the loops are longest there, 31.9°,
+					and almost vanish at the perigee, 1.4°. With C at Q the distance
+					changes as much as the speed, and the nearness counts for more: 11.0° at the
+					apogee and 31.8° at the perigee. With the fitted C the loops are
+					20.0° and 10.9°.
+				</p>
+				<p>
+					Ptolemy's own model, with his motions, 12, 6 and 39.5, gives 19.85°
+					and 11.30° at the apsides, close to his 19.89° and 11.20°, which he
+					computed with a few approximations of his own.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): IX 5 (the zodiacal
+				anomaly suits the eccentric, the bisected eccentricity, the apogees
+				moving with the fixed stars); IX 6 (the model of the outer planets, the
+				anomaly counted from the diameter towards the equant); X 1–3 (Venus);
+				X 6 (the oppositions to the mean Sun, the eccentricity "about twice");
+				X 7 (the three oppositions of Mars, the iteration, the check, with
+				Toomer's notes); X 8 (the epicycle of Mars); X 10 (the epoch); XI 9
+				(the position computed in two steps); XII 4 (the retrogradations of
+				Mars at greatest and least distance).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Part One: I C 4 (pp. 170–177: the refinement of the model, the
+				equant, Ptolemy's bisection, Kepler and the foci).</li>
+			<li>N. Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen): IV 2
+				and V 2 [f. 140v] (the objection to a motion uniform about a centre
+				not its own).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.2–4.4 (the models of
+				Kepler, Hipparchus and Ptolemy expanded to second order).</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				ch. 3 (Kepler's work on Mars, the area law).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): the reference planets.</li>
+			<li>Every number on this page: <code>tools/numbers/4.2-equant.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>
