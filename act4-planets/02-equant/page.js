@@ -784,7 +784,7 @@ const errorFigure = {
 
 /* ==========================================================================
    6. FIGURE 6: THE LOOPS OF MARS AGAIN
-   Static: page 4.1's Figure 5, (a) the arcs and (b) the time from each
+   Static: page 4.1's Figure 7, (a) the arcs and (b) the time from each
    opposition to the mean Sun to the next, like the model's (the last, in
    2025, has none yet), against the ecliptic longitude of the opposition, with the equant's curves and
    page 4.1's single values faint and dashed. The scales are page 4.1's:

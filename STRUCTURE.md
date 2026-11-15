@@ -634,14 +634,21 @@ The first anomaly and the simplest complete model.
   the deferent's radius (Ptolemy's 60); $e$ is left free for page 4.2.
 - **Figures:** a blue plate of Mars' path among the stars of Gemini and
   Cancer (the whole of both figures), 15 October 2024 to 15 April 2025,
-  with the stations dated outside the ends of the loop; the daily motion against the place relative to the
-  Sun, one curve per synodic period of 2006–2025 (a view per planet,
-  static); the epicycle and the daily motion against $\mu$ (date and $r$,
-  presets Ptolemy's, no loop, no epicycle; views Mars and Venus); the
+  with the stations dated outside the ends of the loop; the daily motion
+  against the days from opposition (from inferior conjunction for Venus
+  and Mercury), one curve per loop of 2006–2025, from conjunction to
+  conjunction (a view per planet; a stepper draws one loop in full and
+  the others faint, with its arc, its duration and the ecliptic longitude
+  of its middle); the epicycle of Mars and the daily motion against
+  $\mu$, the arc between the stations shaded in both (date and $r$,
+  presets Ptolemy's, no loop, no epicycle); in the Fit, the arc and the
+  anomaly of the first station against $r$, with the eight loops of
+  2010–2025 and the band of a station timed five days off (static); the
   error curve of Mars in degrees (the uniform planet as ghost, dots at the
-  oppositions; 2016–2019, the 16 years of the fit, 200 years); the arcs
-  and the intervals of the loops of 1986–2025 against the ecliptic
-  longitude of opposition
+  oppositions; 2016–2019, the 16 years of the fit, 200 years); in the
+  Test, K moved back 12° at the perigee, the planet's direction turned by
+  33° (static); the arcs and the intervals of the loops of 1986–2025
+  against the ecliptic longitude of opposition
   (static).
 - **Fit:** documented oppositions only (§5). $n$ from the eight
   oppositions to the mean Sun of 2010–2025 and those 79 years earlier
@@ -718,7 +725,7 @@ The first anomaly and the simplest complete model.
   Kepler's ellipse (M; views $e$ = 0.3 and Mars); the fit of the centre,
   the oppositions and the loops of 2010–2025 with OC from O to Q (presets
   C at O, fitted, C at Q); the error curve with page 4.1's epicycle as
-  ghost (4, 16 and 200 years); page 4.1's Figure 5 again with the
+  ghost (4, 16 and 200 years); page 4.1's Figure 7 again with the
   equant's curves (static).
 - **Fit:** $n$ kept from page 4.1; OC and OQ fitted apart, alternately:
   OQ, $\lambda_A$ and $L_0$ from the eight oppositions to the mean Sun of
