@@ -293,8 +293,9 @@
 
 		<p>
 			Direction:</br>
-			Q lies on the line from O towards A, so seen from
-			Q the Earth lies towards the apogee. Consider the triangle OQK, the angle at Q is $180^\circ - M$.
+			Q lies on the line from O towards A, between them, so seen from Q the
+			Earth lies opposite the apogee. In the triangle OQK the angle at Q is
+			therefore $180^\circ - M$.
 			The angle at K is the difference between the directions of QK and OK, $\bar\lambda$ and
 			$\bar\lambda + q$, so it is $-q$. The law of sines in the triangle OQK
 			gives
@@ -354,32 +355,47 @@
 		</figure>
 
 		<p>
-			CHK is a right triangle whose hypotenuse CK is the radius, 1, so by
-			Pythagoras, exactly,
+			CHK is a right triangle whose hypotenuse CK is the radius, 1, and whose
+			short leg CH is $\text{CQ}\sin M$. Pythagoras gives the long leg HK,
+			and since $\text{QK} = \text{HK} - \text{CQ}\cos M$, it gives QK too, both
+			exactly:
 		</p>
 
-		$$1 = \text{CQ}^2\sin^2 M + (\text{QK} + \text{CQ}\cos M)^2.$$
+		$$\text{HK} = \sqrt{1 - \text{CQ}^2\sin^2 M}, \qquad \text{QK} = \sqrt{1 - \text{CQ}^2\sin^2 M} - \text{CQ}\cos M.$$
 
 		<p>
-			The short leg CH is of first order and appears only squared, so to
-			first order the long leg HK is the whole radius, 1, and $\text{QK}
-			\approx 1 - \text{CQ}\cos M$. At the apogee, for instance, C lies on
-			the line QK, H is C itself, and QK = 1 − CQ exactly.
+			Only the root needs an approximation. CQ is of first order, so
+			$\text{CQ}^2\sin^2 M$ under the root is of second order. To first
+			order we drop it, so the root becomes $\sqrt{1} = 1$ and the long leg
+			HK is taken as the whole radius.
+			Since $\sqrt{1 - x} \approx 1 - x/2$, what is dropped is about
+			$\tfrac12\text{CQ}^2\sin^2 M$, at most 0.005 for Mars. So
+		</p>
+
+		$$\text{QK} \approx 1 - \text{CQ}\cos M.$$
+
+		<p>
+			At the apogee, for instance, C lies on the line QK, H is C itself, and
+			QK = 1 − CQ exactly.
 		</p>
 
 		<p>
 			The same construction from O gives the distance $\rho$. O lies on the
-			same line as C, at the distance OQ from Q, so its perpendicular onto
-			QK has the length $\text{OQ}\sin M$ and its foot G lies at
-			$-\text{OQ}\cos M$ from Q. In the right triangle OGK of Figure 3(b),
-			with hypotenuse OK,
+			same line as C, at the distance OQ from Q, so its perpendicular OG onto
+			QK has the length $\text{OQ}\sin M$, and its foot G lies at
+			$-\text{OQ}\cos M$ from Q, so that $\text{GK} = \text{QK} + \text{OQ}\cos
+			M$. In the right
+			triangle OGK of Figure 3(b) the hypotenuse is OK, and Pythagoras gives,
+			exactly,
 		</p>
 
-		$$\rho^2 = \text{OQ}^2\sin^2 M + (\text{QK} + \text{OQ}\cos M)^2.$$
+		$$\rho = \sqrt{\text{GK}^2 + \text{OQ}^2\sin^2 M}.$$
 
 		<p>
-			Again the short leg appears only squared, so $\rho \approx \text{QK} +
-			\text{OQ}\cos M = 1 + (\text{OQ} - \text{CQ})\cos M$. Since OQ − CQ =
+			Here too the short leg appears only squared, and we drop
+			$\text{OQ}^2\sin^2 M$ under the root, which leaves $\rho \approx
+			\text{GK} = \text{QK} + \text{OQ}\cos M$. With the QK just found,
+			$\rho \approx 1 + (\text{OQ} - \text{CQ})\cos M$, and since OQ − CQ =
 			OC, the two first-order results are
 		</p>
 

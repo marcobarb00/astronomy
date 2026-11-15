@@ -340,6 +340,19 @@ title('Model: speed and distance of K at the apsides (OQ = 0.2)');
 	});
 }
 
+title('Model: what the first order drops in the long leg HK = sqrt(1 - CQ^2 sin^2 M)');
+{
+	// for Mars, CQ = OQ - OC = e: HK falls short of 1 by about CQ^2 sin^2 M / 2
+	const CQ = MARS_FIT.e;
+	let shortfall = 0;
+
+	for (let M = 0; M < 360; M += 1) {
+		shortfall = Math.max(shortfall, 1 - Math.sqrt(1 - CQ * CQ * sin(M) ** 2));
+	}
+
+	console.log(`Mars, CQ = ${f(CQ, 4)}: 1 - HK at most ${f(shortfall, 4)} (CQ^2 / 2 = ${f((CQ * CQ) / 2, 4)})`);
+}
+
 title("Model: the equant, Ptolemy's Mars (OQ = 12, OC = 6 where the deferent is 60)");
 {
 	const e = PTOLEMY.e;
