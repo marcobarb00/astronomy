@@ -1716,6 +1716,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-intervals at 0.9
   hover #test-intervals left
   dragged 0 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
