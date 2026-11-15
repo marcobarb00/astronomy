@@ -217,24 +217,39 @@
 			</aside>
 		</div>
 
-		<!-- Figure 2: the daily motion against the place relative to the Sun (static, a view per planet) -->
+		<!-- Figure 2: the daily motion through each loop (a view per planet, a stepper through the loops) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="presets" id="motion-views"></div>
 				<canvas id="motion-plot"></canvas>
+				<div class="ctl stepper">
+					<label for="motion-loop">loop</label>
+					<input id="motion-loop" type="range" min="0" max="8" step="1" value="8">
+					<output></output>
+					<span class="stepper-buttons">
+						<button type="button" class="stepper-btn" data-target="motion-loop" data-step="-1"
+							aria-label="previous loop">‹ previous loop</button>
+						<button type="button" class="stepper-btn" data-target="motion-loop" data-step="1"
+							aria-label="next loop">next loop ›</button>
+					</span>
+				</div>
+				<div class="readout" id="motion-readout" data-lines="2"></div>
 			</div>
 			<figcaption>
-				Choose a planet. Each curve is one return to the same place
-				relative to the Sun, from 2006 to 2025, and every one of them drops
-				below zero, into retrograde motion, at the same place. For Mars,
-				notice that the curves do not lie on top of one another.
+				Choose a planet and step through its loops of 2006 to 2025. Notice
+				how slowly the daily motion falls through the dashed mean motion
+				after the conjunction, and how quickly it then drops below zero,
+				where the planet goes back. For Mars, notice that the loop is deeper
+				in some returns than in others.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-muted">dashed</dt>
-						<dd>the planet's mean daily motion (for Venus and Mercury, the mean Sun's)</dd>
+						<dt class="c-planet">full colour</dt>
+						<dd>the chosen loop, from the conjunction with the Sun before it to the one after (for Venus and Mercury, the superior conjunctions; their mean motion is the mean Sun's)</dd>
+						<dt class="c-planet">faint</dt>
+						<dd>the other loops of 2006–2025</dd>
 					</dl>
 				</div>
 			</div>
@@ -446,10 +461,9 @@
 			Ptolemy's epicycle of Mars.
 		</p>
 
-		<!-- Figure 3: the epicycle of Mars or Venus; date and r -->
+		<!-- Figure 3: the epicycle of Mars; date and r -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="presets" id="epicycle-views"></div>
 				<div class="panels">
 					<div>
 						<p class="panel-title">(a) the deferent and the epicycle</p>
@@ -493,12 +507,11 @@
 				<div class="readout" id="epicycle-readout" data-lines="4"></div>
 			</div>
 			<figcaption>
-				Play, and watch the planet P go round the epicycle while K goes round
-				the deferent: P always keeps the direction of the mean Sun from K, and
-				goes back in the sky, in the shaded part of (b), when it is near the
-				perigee. Then make the epicycle smaller and see the loops in (a) and the
-				shaded part shrink to nothing at "no loop". Choose Venus and notice that
-				K stays on the line to the mean Sun.
+				Play, and notice that KP stays parallel to the dashed line from O to
+				☉. The planet P goes back in the sky while it crosses the shaded arc,
+				on the side of the epicycle facing O, which is the shaded part of (b).
+				Make the epicycle smaller, and the arc and the loop of the faint path
+				shrink to nothing at "no loop".
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -655,7 +668,7 @@
 			The fitted $r$ is the one whose arc equals the arc observed. Timing the
 			stations to find $\mu_s$ would not do: a station five days off moves
 			$\mu_s$ by 2.3°, while all the values of $r$ from 0.6 to 0.7 move it by
-			only 3.6°.
+			only 3.6° (Figure 4b).
 		</p>
 
 		<p>
@@ -666,8 +679,44 @@
 		<p>
 			Each loop on its own gives a different epicycle, from about 0.63 for
 			the short loop of 2018 to 0.67 for the long ones of 2010 and 2012, so no
-			single epicycle fits them all.
+			single epicycle fits them all (Figure 4a).
 		</p>
+
+		<!-- Figure 4: the arc and the anomaly of the first station against r (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) how far the model goes back</p>
+						<canvas id="ratio-arc-plot"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the anomaly of the first station</p>
+						<canvas id="ratio-station-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Read each dot in (a) down to its $r$: the arc grows fast with $r$, so
+				each loop gives a sharp value of $r$, yet the eight dots spread from
+				0.63 to 0.67. In (b) the same values of $r$ hardly move the station:
+				the curve stays inside the band from $r$ = 0.61 to the end of the
+				axis.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-planet">dots</dt>
+						<dd>in both panels, the eight loops of 2010–2025, each at the $r$ that gives its arc</dd>
+						<dt class="c-muted">dashed</dt>
+						<dd>in (a), the mean arc of the eight loops and the $r$ fitted to it</dd>
+						<dt class="c-planet">band</dt>
+						<dd>in (b), the first station for $r$ = 0.660, timed five days early or late</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
 
 		<!-- History block: Ptolemy's mean motions and oppositions -->
 		<div class="history">
@@ -725,13 +774,13 @@
 		<h2 id="test"><span class="step">4 · Test</span>The epicycle against the real Mars</h2>
 
 		<p>
-			To see how much one epicycle explains, Figure 4 gives the error curve of
+			To see how much one epicycle explains, Figure 5 gives the error curve of
 			the model fitted to 2010–2025, $\Delta\lambda = \lambda_\text{model} -
 			\lambda_\text{ref}$, now in degrees, beside that of the uniform planet,
 			one that moves at $\bar\lambda$ with no epicycle.
 		</p>
 
-		<!-- Figure 4: the epicycle fitted to 2010 - 2025 against the reference Mars -->
+		<!-- Figure 5: the epicycle fitted to 2010 - 2025 against the reference Mars -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-mars"></div>
@@ -764,8 +813,29 @@
 
 		<p>
 			almost 3. At the opposition of May 2016 the real Mars was 12° behind K,
-			and the model put it 33° ahead of the real planet.
+			and the model put it 33° ahead of the real planet (Figure 6).
 		</p>
+
+		<!-- Figure 6: an error in K at the perigee, magnified (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="magnify-canvas"></canvas>
+			</div>
+			<figcaption>
+				Compare the two angles at the Earth O. P and P′ are as far apart as K
+				and K′, but about a third as far from O, so the planet's direction
+				turns by 33° when K moves by 12°.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-epicycle">dashed</dt>
+						<dd>the epicycle and its radius once K has moved back along the deferent to K′</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
 
 		<!-- History block: Hipparchus and the simple models -->
 		<div class="history">
@@ -794,14 +864,14 @@
 
 		<p>
 			The loops of Mars are long in one part of the zodiac and short in the
-			opposite part, while the model's loop never changes. Figure 5 sets each
+			opposite part, while the model's loop never changes. Figure 7 sets each
 			loop of 1986–2025 against the ecliptic longitude of its opposition: Mars
 			goes back by about 10° in one part and almost 20° in the other, where
 			the model always goes back by about 17°. The times between oppositions change
 			with the loops.
 		</p>
 
-		<!-- Figure 5: the loops of Mars against the ecliptic longitude (static) -->
+		<!-- Figure 7: the loops of Mars against the ecliptic longitude (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
