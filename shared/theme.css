@@ -450,6 +450,16 @@ details.fold[open] > summary {
 	scrollbar-width: none;
 }
 
+/* The boxes that clip a display equation leave it a little room above and
+   below: KaTeX draws an accent such as the bar of \bar\lambda on the top
+   row of its own box, or half a pixel above it, and a clip at the box's
+   edge cut it away at some zoom levels. The same amount comes off the
+   margin, so a boxed equation keeps its place. */
+.katex-display,
+.eq-split {
+	padding-block: 0.15em;
+}
+
 .eq::-webkit-scrollbar,
 .katex-display::-webkit-scrollbar {
 	display: none;
@@ -459,7 +469,7 @@ details.fold[open] > summary {
    kept to the text column here rather than by an article > selector. */
 .katex-display {
 	max-width: var(--text-width);
-	margin: 0.8em 0;
+	margin: 0.65em 0;
 }
 
 .katex {
@@ -490,7 +500,7 @@ details.fold[open] > summary {
 	column-gap: 2.5em;
 	row-gap: 0.9em;
 	max-width: var(--text-width);
-	margin: 0.8em 0;
+	margin: 0.65em 0;
 }
 
 .eq-split::-webkit-scrollbar {
@@ -510,6 +520,7 @@ details.fold[open] > summary {
 .eq-split .katex-display {
 	overflow: visible;
 	margin: 0;
+	padding: 0;
 }
 
 /* A piece still wider than the column breaks after a binary operator
