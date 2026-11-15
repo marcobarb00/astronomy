@@ -415,7 +415,7 @@ function errors(fn, start, end, step) {
    7. RESIDUAL
    ========================================================================== */
 
-title('Residual: the loops of Mars, 1986 - 2025 (Figure 5)');
+title('Residual: the loops of Mars, 1986 - 2025 (Figure 7)');
 
 const residualLoops = marsLoops.filter(l => l.middle >= START && l.middle < END);
 
@@ -564,6 +564,24 @@ title('Scales');
 		console.log(`Figure 2, ${body}: daily motion ${range(values, 3)}°`);
 	});
 
+	// Figure 2: each curve runs from the conjunction before a loop to the
+	// conjunction after it (superior conjunctions for Venus and Mercury),
+	// in days from the loop's middle; the loops of 2006 - 2025, the last
+	// cut at the end of 2025
+	Object.entries(KINDS).forEach(([body, kind]) => {
+		const from = JD(2006, 1, 1);
+		const conjunctions = roots(jd => elongation(body, jd), from - 500, END + 200, 1).filter(
+			jd => kind === 'outer' || speed(body, jd) > 0
+		);
+		const loops = SUMMARY[body].loops.filter(l => l.middle >= from);
+		const before = loops.map(l => Math.max(...conjunctions.filter(jd => jd < l.middle)) - l.middle);
+		const after = loops.map(l => Math.min(END, Math.min(...conjunctions.filter(jd => jd > l.middle))) - l.middle);
+
+		console.log(
+			`Figure 2, ${body}: ${loops.length} loops of 2006 - 2025; from ${f(Math.min(...before), 1)} to ${f(Math.max(...after), 1)} days from the middle`
+		);
+	});
+
 	// Figure 3(b): the model's daily motion for every r of the slider
 	const R_MAX = 0.8;
 	const views = { mars: PlanetEpicycle.motions(MARS_FIT), venus: PlanetEpicycle.motions(VENUS_MEAN) };
@@ -585,14 +603,50 @@ title('Scales');
 		`VENUS_MEAN: mu0 ${f(VENUS_MEAN.mu0, 4)}°, nMu ${f(VENUS_MEAN.nMu, 7)}°/day, synodic ${f(360 / VENUS_MEAN.nMu, 2)} days`
 	);
 
-	// Figure 5: the arcs and the intervals of 1986 - 2025, in the
+	// Figure 4: the arc and the anomaly of the first station against r,
+	// from the threshold to the right end of the axis; the band of (b),
+	// a station five days early or late, about the fitted r
+	{
+		const m = PlanetEpicycle.motions(MARS_FIT);
+		const threshold = PlanetEpicycle.loopThreshold(m.n, m.nMu);
+		const R_RIGHT = 0.72;
+		const right = PlanetEpicycle.loop(R_RIGHT, m.n, m.nMu);
+		const fitted = PlanetEpicycle.loop(MARS_FIT.r, m.n, m.nMu);
+		const band = 5 * m.nMu;
+		const inBand = [];
+
+		for (let r = threshold + 1e-4; r <= R_RIGHT; r += 0.0005) {
+			if (Math.abs(PlanetEpicycle.loop(r, m.n, m.nMu).mu - fitted.mu) <= band) {
+				inBand.push(r);
+			}
+		}
+
+		console.log(
+			`Figure 4: r from the threshold ${f(threshold, 4)} to ${R_RIGHT}: arc 0 to ${f(right.arc, 2)}°, mu_s 180 to ${f(right.mu, 2)}°;` +
+				` the fitted r ${f(MARS_FIT.r, 4)}: arc ${f(fitted.arc, 2)}°, mu_s ${f(fitted.mu, 2)}° +- ${f(band, 2)}°,` +
+				` met by every r from ${f(Math.min(...inBand), 3)} to ${f(Math.max(...inBand), 3)}`
+		);
+	}
+
+	// Figure 6: K moved back 12° along the deferent, with KP still towards
+	// the mean Sun, at the perigee; the direction of P turns by
+	{
+		const r = MARS_FIT.r;
+		const turn = atan2d(sin(12), cos(12) - r);
+
+		console.log(
+			`Figure 6: K back 12° at the perigee, r ${f(r, 3)}: P turns ${f(turn, 2)}° (12 / (1 - r) = ${f(12 / (1 - r), 2)}°)`
+		);
+	}
+
+	// Figure 7: the arcs and the intervals of 1986 - 2025, in the
 	// geometric positions every two days that the figure computes
 	const quick = PlanetEpicycle.referenceEvents('mars', 'outer', START - 200, END, { apparent: false, step: 2 });
 	const quickLoops = quick.loops.filter(l => l.middle >= START && l.middle < END);
 	const largest = Math.max(...quickLoops.map((l, i) => Math.abs(l.arc - residualLoops[i].arc)));
 
 	console.log(
-		`Figure 5: arcs ${range(
+		`Figure 7: arcs ${range(
 			quickLoops.map(l => l.arc),
 			2
 		)}°; ${quickLoops.length} loops; the figure's arcs within ${f(largest * 60, 2)}' of the quoted ones`
