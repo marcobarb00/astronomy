@@ -325,8 +325,31 @@
 			M$ with QK. It therefore has the length $\text{CQ}\sin M$ across the
 			line, the perpendicular CH, and $-\text{CQ}\cos M$ along it, from Q
 			towards K: H lies at $-\text{CQ}\cos M$ from Q, and $\text{HK} =
-			\text{QK} + \text{CQ}\cos M$.
+			\text{QK} + \text{CQ}\cos M$. Figure 3(a) draws the right triangle
+			CHK.
 		</p>
+
+		<!-- Figure 3: the perpendiculars onto QK, the two right triangles (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the triangle CHK: QK</p>
+						<canvas id="perp-centre"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the triangle OGK: the distance ρ</p>
+						<canvas id="perp-earth"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two shaded right triangles. In each, the short leg is an
+				offset times $\sin M$, and the long leg lies along the line QK, longer
+				than QK by the offset times $\cos M$, since the foot falls behind Q.
+				Drawn with offsets three times Mars' and $M$ = 60°.
+			</figcaption>
+		</figure>
 
 		<p>
 			CHK is a right triangle whose hypotenuse CK is the radius, 1, so by
@@ -345,8 +368,9 @@
 		<p>
 			The same construction from O gives the distance $\rho$. O lies on the
 			same line as C, at the distance OQ from Q, so its perpendicular onto
-			QK has the length $\text{OQ}\sin M$ and its foot lies at
-			$-\text{OQ}\cos M$ from Q. In the right triangle with hypotenuse OK,
+			QK has the length $\text{OQ}\sin M$ and its foot G lies at
+			$-\text{OQ}\cos M$ from Q. In the right triangle OGK of Figure 3(b),
+			with hypotenuse OK,
 		</p>
 
 		$$\rho^2 = \text{OQ}^2\sin^2 M + (\text{QK} + \text{OQ}\cos M)^2.$$
@@ -533,7 +557,7 @@
 			difference is about 3% above $e^2/4$.
 		</p>
 
-		<!-- Figure 3: the equant and Kepler's ellipse; M, two views -->
+		<!-- Figure 4: the equant and Kepler's ellipse; M, two views -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="presets" id="kepler-views"></div>
@@ -618,12 +642,12 @@
 		<p>
 			With the directions known, the loops measure the distance of K. Their
 			mean size fixes $r$, as on page 4.1, and the way it changes round the
-			zodiac fixes OC. Figure 4 shows both observations of 2010–2025 against
+			zodiac fixes OC. Figure 5 shows both observations of 2010–2025 against
 			the model, with OC free. In (a) the model's curve is $q$, how far K is
 			seen ahead of its mean place.
 		</p>
 
-		<!-- Figure 4: the oppositions fix Q, the loops fix C; OC -->
+		<!-- Figure 5: the oppositions fix Q, the loops fix C; OC -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -734,13 +758,13 @@
 		<h2 id="test"><span class="step">4 · Test</span>The equant against the real Mars</h2>
 
 		<p>
-			To see how much of page 4.1's error the equant removes, Figure 5 gives
+			To see how much of page 4.1's error the equant removes, Figure 6 gives
 			the error curve of the model fitted to 2010–2025, $\Delta\lambda =
 			\lambda_\text{model} - \lambda_\text{ref}$ in degrees, with page 4.1's
 			epicycle as a ghost.
 		</p>
 
-		<!-- Figure 5: the equant fitted to 2010 - 2025 against the reference Mars -->
+		<!-- Figure 6: the equant fitted to 2010 - 2025 against the reference Mars -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-mars"></div>
@@ -769,7 +793,7 @@
 			the mean Sun, and the model's agree with them within a day.
 		</p>
 
-		<!-- Figure 6: the loops of Mars against the ecliptic longitude, with the equant (static) -->
+		<!-- Figure 7: the loops of Mars against the ecliptic longitude, with the equant (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -948,7 +972,7 @@
 
 		<div class="exercise" data-kind="predict">
 			<p>
-				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 4. Before you
+				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 5. Before you
 				move it, predict where the loops will be longest, at the apogee or at
 				the perigee, with C at the Earth, and with C at Q. Then check, and
 				compare with Ptolemy's own arcs for Mars at greatest and least distance

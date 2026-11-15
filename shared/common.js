@@ -593,10 +593,12 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
    colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
    symbol that would cover an earlier label or leave the canvas (on a
    phone) moves next to its point instead; a word stays where it is, only
-   moved inside the canvas (LabelPlacer.candidates). */
-function centredLabel(ctx, text, point, color, labels = null) {
+   moved inside the canvas (LabelPlacer.candidates). 'kind' ('name' or
+   'symbol') overrides the font labelFont would choose, e.g. 'symbol' for a
+   formula such as "CQ sin M". */
+function centredLabel(ctx, text, point, color, labels = null, kind = null) {
 	ctx.fillStyle = textColor(color);
-	ctx.font = labelFont(text);
+	ctx.font = labelFont(text, kind);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 
@@ -679,15 +681,15 @@ function circle(ctx, centre, r, style) {
    OUTSIDE_LABEL_GAP px beyond the circle, so it never sits on the circle. */
 const OUTSIDE_LABEL_GAP = 6;
 
-function labelOutside(ctx, text, centre, r, lon, color, labels) {
-	ctx.font = labelFont(text);
+function labelOutside(ctx, text, centre, r, lon, color, labels, kind = null) {
+	ctx.font = labelFont(text, kind);
 
 	const box = ctx.measureText(text);
 	const halfWidth = box.width / 2;
 	const halfHeight = (box.actualBoundingBoxAscent + box.actualBoundingBoxDescent) / 2;
 	const reach = r + OUTSIDE_LABEL_GAP + Math.abs(halfWidth * cos(lon)) + Math.abs(halfHeight * sin(lon));
 
-	centredLabel(ctx, text, towards(centre, lon, reach), color, labels);
+	centredLabel(ctx, text, towards(centre, lon, reach), color, labels, kind);
 }
 
 /* The direction (deg) from a point that is farthest from every line

@@ -1,7 +1,7 @@
 // @ts-check
 /* ==========================================================================
    PAGE 4.2 · THE EQUANT - SCRIPT (page.js)
-   Six figures, each with its own init and draw (and update when it has
+   Seven figures, each with its own init and draw (and update when it has
    controls):
 	 1. the oppositions and the loops  (2D, static: Mars at its oppositions
 										to the mean Sun, and its arcs of
@@ -9,16 +9,18 @@
 	 2. the deferent and the equant    (2D: (a) the construction seen from
 										the north ecliptic pole, (b) the
 										distance of K; date)
-	 3. the equant and the ellipse     (2D: (a) the deferent and Kepler's
+	 3. the perpendiculars onto QK     (2D, static: the right triangles
+										of the derivation of QK and rho)
+	 4. the equant and the ellipse     (2D: (a) the deferent and Kepler's
 										ellipse with the same e, (b) the
 										difference in direction; M; views
 										e = 0.3 and Mars)
-	 4. the fit of the centre          (2D: (a) the oppositions, (b) the
+	 5. the fit of the centre          (2D: (a) the oppositions, (b) the
 										loops of 2010 - 2025 with the model;
 										the centre OC)
-	 5. the equant against Mars        (error curve, fitted to 2010 - 2025,
+	 6. the equant against Mars        (error curve, fitted to 2010 - 2025,
 										page 4.1's epicycle as ghost)
-	 6. the loops of Mars again        (2D, static: arcs and intervals of
+	 7. the loops of Mars again        (2D, static: arcs and intervals of
 										1986 - 2025 with the equant's)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/precession.js, models/planet-epicycle.js, models/planet-equant.js,
@@ -29,11 +31,12 @@
 	 0. Helpers shared by the figures
 	 1. Figure 1: the oppositions and the loops
 	 2. Figure 2: the deferent and the equant
-	 3. Figure 3: the equant and Kepler's ellipse
-	 4. Figure 4: the fit of the centre
-	 5. Figure 5: the error curve
-	 6. Figure 6: the loops of Mars again
-	 7. Page start
+	 3. Figure 3: the perpendiculars onto QK
+	 4. Figure 4: the equant and Kepler's ellipse
+	 5. Figure 5: the fit of the centre
+	 6. Figure 6: the error curve
+	 7. Figure 7: the loops of Mars again
+	 8. Page start
    ========================================================================== */
 
 /* ==========================================================================
@@ -485,7 +488,180 @@ const equantFigure = {
 };
 
 /* ==========================================================================
-   3. FIGURE 3: THE EQUANT AND KEPLER'S ELLIPSE
+   3. FIGURE 3: THE PERPENDICULARS ONTO QK
+   Static, for the derivation of the first-order distance: two panels of
+   the same part of the deferent, at offsets three times Mars' (OC = 0.3,
+   OQ = 0.6) and M = 60°, so that the feet of the perpendiculars fall
+   clearly behind Q. (a) the right triangle C H K, hypotenuse the radius
+   CK = 1, short leg CQ sin M; (b) the right triangle O G K, hypotenuse
+   OK = rho, short leg OQ sin M. Both drawn in the frame of the apsidal
+   line, the apogee to the right.
+   ========================================================================== */
+
+const PERPENDICULAR_OFFSETS = { centre: 0.3, equant: 0.6 };
+const PERPENDICULAR_M = 60;
+
+/* The part of the plane shown (units of the deferent's radius): from
+   just left of the Earth to the apogee, and up to K. */
+const PERPENDICULAR_VIEW = { x0: -0.12, y0: -0.47, span: 1.5 };
+
+/* The size of the right-angle mark and the radius of the angle M (px). */
+const RIGHT_ANGLE_MARK = 9;
+const PERPENDICULAR_ARC = 24;
+
+const perpendicularFigure = {
+	panels: [],
+
+	init() {
+		this.panels = [
+			{ id: 'perp-centre', from: 'C', foot: 'H', hypotenuse: '1', leg: 'CQ sin M' },
+			{ id: 'perp-earth', from: 'O', foot: 'G', hypotenuse: 'ρ', leg: 'OQ sin M' }
+		].map(panel => {
+			const owner = Object.assign({ labels: new LabelPlacer() }, panel);
+
+			owner.draw = () => this.drawPanel(owner);
+			squareCanvas(owner, byId(panel.id), 380, 10);
+			owner.draw();
+
+			return owner;
+		});
+	},
+
+	/* The points of the construction, in the frame of the apsidal line:
+	   O, C, Q, K, the apogee, and the foot of the perpendicular from O or C
+	   onto the line QK (its signed distance from Q along QK is the
+	   component of QC or QO along it, -CQ cos M or -OQ cos M). */
+	points(from) {
+		const { centre, equant } = PERPENDICULAR_OFFSETS;
+		const M = PERPENDICULAR_M;
+		const u = [cos(M), sin(M)];
+		const QK = PlanetEquant.equantDistance(M, centre, equant);
+		const Q = [equant, 0];
+		const start = from === 'C' ? [centre, 0] : [0, 0];
+		const along = (start[0] - Q[0]) * u[0] + (start[1] - Q[1]) * u[1];
+
+		return {
+			O: [0, 0],
+			C: [centre, 0],
+			Q,
+			K: [Q[0] + QK * u[0], Q[1] + QK * u[1]],
+			A: [centre + 1, 0],
+			start,
+			foot: [Q[0] + along * u[0], Q[1] + along * u[1]],
+			beyond: [Q[0] + (along - 0.04) * u[0], Q[1] + (along - 0.04) * u[1]]
+		};
+	},
+
+	drawPanel(owner) {
+		const ctx = owner.ctx;
+
+		if (!ctx) {
+			return;
+		}
+
+		const view = PERPENDICULAR_VIEW;
+		const scale = (2 * owner.R) / view.span;
+		const left = owner.cx - owner.R;
+		const top = owner.cy - owner.R;
+		const at = p => ({ x: left + scale * (p[0] - view.x0), y: top + scale * (view.y0 + view.span - p[1]) });
+		const p = this.points(owner.from);
+		const pt = Object.fromEntries(Object.entries(p).map(([name, value]) => [name, at(value)]));
+		const M = PERPENDICULAR_M;
+
+		ctx.clearRect(0, 0, owner.width, owner.width);
+		owner.labels.begin({ x0: 0, y0: 0, x1: owner.width, y1: owner.width });
+		ctx.save();
+		ctx.beginPath();
+		ctx.rect(0, 0, owner.width, owner.width);
+		ctx.clip();
+
+		// the deferent about C, faint where it is not part of the triangle,
+		// and the line of the apsides through O, C and Q to the apogee
+		ctx.globalAlpha = owner.from === 'C' ? 1 : 0.45;
+		circle(ctx, pt.C, scale, { color: COL.deferent, width: 2 });
+		ctx.globalAlpha = 1;
+		segment(ctx, at([view.x0, 0]), pt.A, { color: COL.muted, width: 1, dash: [2, 4] });
+
+		// the right triangle, shaded
+		ctx.fillStyle = withAlpha(COL.epicycle, 0.12);
+		ctx.beginPath();
+		ctx.moveTo(pt.start.x, pt.start.y);
+		ctx.lineTo(pt.foot.x, pt.foot.y);
+		ctx.lineTo(pt.K.x, pt.K.y);
+		ctx.closePath();
+		ctx.fill();
+
+		// the line QK, carried back beyond Q to the foot; the perpendicular,
+		// the hypotenuse and the right angle; the angle M at Q
+		segment(ctx, pt.Q, pt.K, { color: COL.ink, width: 1.6 });
+		segment(ctx, pt.beyond, pt.Q, { color: COL.ink, width: 1.2, dash: [4, 4] });
+		segment(ctx, pt.start, pt.foot, { color: COL.epicycle, width: 2.2 });
+		segment(ctx, pt.start, pt.K, { color: COL.planet, width: 2.2 });
+		this.drawRightAngle(ctx, pt);
+		screenArc(ctx, pt.Q, PERPENDICULAR_ARC, 0, M, { color: COL.ink, width: 1.5 });
+
+		['O', 'C', 'Q', 'K', 'foot'].forEach(name => {
+			const color = name === 'O' ? COL.earth : COL.ink;
+
+			drawDot(ctx, pt[name].x, pt[name].y, name === 'O' ? 6 : 3.5, color);
+		});
+		drawDot(ctx, pt.A.x, pt.A.y, 3, COL.muted);
+		ctx.restore();
+		this.drawLabels(owner, pt);
+	},
+
+	/* The small square at the foot, between the line QK (towards K) and
+	   the perpendicular (towards O or C). */
+	drawRightAngle(ctx, pt) {
+		const unit = (a, b) => {
+			const length = Math.hypot(b.x - a.x, b.y - a.y);
+
+			return { x: (b.x - a.x) / length, y: (b.y - a.y) / length };
+		};
+		const along = unit(pt.foot, pt.K);
+		const across = unit(pt.foot, pt.start);
+		const s = RIGHT_ANGLE_MARK;
+		const corner = { x: pt.foot.x + s * (along.x + across.x), y: pt.foot.y + s * (along.y + across.y) };
+
+		ctx.strokeStyle = COL.ink;
+		ctx.lineWidth = 1.2;
+		ctx.setLineDash([]);
+		ctx.beginPath();
+		ctx.moveTo(pt.foot.x + s * along.x, pt.foot.y + s * along.y);
+		ctx.lineTo(corner.x, corner.y);
+		ctx.lineTo(pt.foot.x + s * across.x, pt.foot.y + s * across.y);
+		ctx.stroke();
+	},
+
+	/* Static labels: the points, the angle M, the short leg on the side
+	   away from the triangle, the hypotenuse on its outer side. */
+	drawLabels(owner, pt) {
+		const ctx = owner.ctx;
+		const M = PERPENDICULAR_M;
+		const middle = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+		const screenAngle = (a, b) => atan2d(a.y - b.y, b.x - a.x); // counted anticlockwise
+		const hypotenuse = screenAngle(pt.start, pt.K);
+		const outward = [hypotenuse - 90, hypotenuse + 90].find(a => {
+			const m = middle(pt.start, pt.K);
+			const probe = towards(m, a, 10);
+
+			return Math.hypot(probe.x - pt.foot.x, probe.y - pt.foot.y) > Math.hypot(m.x - pt.foot.x, m.y - pt.foot.y);
+		});
+
+		labelOutside(ctx, 'O', pt.O, 7, 270, COL.earth, owner.labels);
+		labelOutside(ctx, 'C', pt.C, 4, 270, COL.ink, owner.labels);
+		labelOutside(ctx, 'Q', pt.Q, 4, 270, COL.ink, owner.labels);
+		labelOutside(ctx, 'A', pt.A, 4, -40, COL.muted, owner.labels);
+		labelOutside(ctx, 'K', pt.K, 4, M, COL.ink, owner.labels);
+		labelOutside(ctx, owner.foot, pt.foot, 4, M - 90, COL.ink, owner.labels);
+		centredLabel(ctx, 'M', towards(pt.Q, M / 2, PERPENDICULAR_ARC + 10), COL.ink, owner.labels);
+		labelOutside(ctx, owner.leg, middle(pt.start, pt.foot), 4, M + 180, COL.epicycle, owner.labels, 'symbol');
+		labelOutside(ctx, owner.hypotenuse, middle(pt.start, pt.K), 4, outward, COL.planet, owner.labels, 'symbol');
+	}
+};
+
+/* ==========================================================================
+   4. FIGURE 4: THE EQUANT AND KEPLER'S ELLIPSE
    (a) the deferent (centre C) and Kepler's ellipse with the same e
    (semi-major axis 1, centre C, foci O and Q), apogee to the right; K on
    the circle at the mean anomaly M by the equant, K' on the ellipse by
@@ -633,7 +809,7 @@ const keplerFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE FIT OF THE CENTRE
+   5. FIGURE 5: THE FIT OF THE CENTRE
    (a) the eight oppositions to the mean Sun of 2010 - 2025, each as its
    ecliptic longitude less the mean longitude of the separate fit, with
    the model's zodiacal equation; (b) the eight loops of those years with
@@ -737,7 +913,7 @@ const fitFigure = {
 };
 
 /* ==========================================================================
-   5. FIGURE 5: THE ERROR CURVE
+   6. FIGURE 6: THE ERROR CURVE
    The equant fitted to 2010 - 2025 against the reference Mars, in
    degrees, with page 4.1's epicycle as a ghost; over four years,
    2016 - 2019, the sixteen years of the fit and two centuries; dots at
@@ -834,11 +1010,19 @@ const loopsFigure = {
 };
 
 /* ==========================================================================
-   7. PAGE START
+   8. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([observedFigure, equantFigure, keplerFigure, fitFigure, errorFigure, loopsFigure]);
+	startFigures([
+		observedFigure,
+		equantFigure,
+		perpendicularFigure,
+		keplerFigure,
+		fitFigure,
+		errorFigure,
+		loopsFigure
+	]);
 });

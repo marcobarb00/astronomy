@@ -36,6 +36,8 @@ figure.fig .ctl {
    ========================================================================== */
 
 #equant-canvas,
+#perp-centre,
+#perp-earth,
 #kepler-canvas {
 	display: block;
 	margin: 0 auto;
