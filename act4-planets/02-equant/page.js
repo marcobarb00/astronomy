@@ -234,31 +234,38 @@ const observedFigure = {
    seconds, slow enough to follow K, P and the line QK. */
 const EQUANT_DAYS_PER_SECOND = 40;
 
-/* The room around the drawing (units of the deferent's radius): the
-   farthest the planet goes, 1 + e + r, and the labels. */
-const EQUANT_REACH = 1 + EQUANT.e + EQUANT.r + 0.14;
-
 /* Radius of the angle M at Q (units of the deferent's radius), the step
    of the path (days) and the length of a tick on the deferent. */
 const M_ARC_RADIUS = 0.16;
 const PATH_STEP = 2;
 const TICK_HALF = 0.035;
 
-/* The scale of panel (b): OK from 1 - 2e to 1 + 2e (the eccentric with
-   the same directions), 0.799 to 1.201 (tools/numbers/4.2-equant.js). */
-const DISTANCE_RANGE = [0.75, 1.25];
+/* Two views: e = 0.2, twice Mars', so that the triangles O Q K and C Q K
+   of the text can be seen (the loops stay at both apsides; at 0.25 they
+   vanish at the perigee), and Mars fitted on this page. The drawing's
+   room is the farthest the planet goes, 1 + e + r, and the labels. The
+   scale of panel (b) holds OK from 1 - 2e to 1 + 2e, the eccentric with
+   the same directions (tools/numbers/4.2-equant.js). */
+const EQUANT_VIEWS = {
+	'e = 0.2': { e: 0.2, y: [0.55, 1.45] },
+	Mars: { e: EQUANT.e, y: [0.75, 1.25] }
+};
 
 const equantFigure = {
 	plot: null,
 	state: null,
 	labels: new LabelPlacer(), // keeps the labels of one drawing apart
 
+	view: 'e = 0.2',
+	params: null,
+
 	init() {
 		squareCanvas(this, byId('equant-canvas'), 420, 10);
+		this.params = this.parametersOf(this.view);
 
 		this.plot = new Plot2D(byId('distance-plot'), {
 			x: [0, 360],
-			y: DISTANCE_RANGE,
+			y: EQUANT_VIEWS[this.view].y,
 			xLabel: 'mean anomaly M (°)',
 			yLabel: 'distance OK',
 			xTicks: quarterTicks,
@@ -275,14 +282,29 @@ const equantFigure = {
 		);
 		wirePresets(byId('equant-day').closest('figure'));
 		wirePlayButton(byId('equant-play'), byId('equant-day'), EQUANT_DAYS_PER_SECOND);
+		buildChoice(byId('equant-views'), Object.keys(EQUANT_VIEWS), this.view, name => this.choose(name));
+		this.choose(this.view);
+	},
+
+	/* The fitted Mars with the eccentricity of a view. */
+	parametersOf(name) {
+		return Object.assign({}, EQUANT, { e: EQUANT_VIEWS[name].e });
+	},
+
+	/* A view: its e and the scale of (b) (CLAUDE.md: a view the reader
+	   chooses may change a scale). */
+	choose(name) {
+		this.view = name;
+		this.params = this.parametersOf(name);
+		this.plot.setRange([0, 360], EQUANT_VIEWS[name].y);
 		this.update();
 	},
 
 	update() {
 		const jd = FIT_START + readNumber('equant-day');
-		const now = PlanetEquant.state(EQUANT, jd);
+		const now = PlanetEquant.state(this.params, jd);
 
-		this.state = { jd, now, parts: PlanetEquant.construction(EQUANT, now), path: this.path(jd) };
+		this.state = { jd, now, parts: PlanetEquant.construction(this.params, now), path: this.path(jd) };
 		this.showReadout();
 		this.draw();
 		this.plot.redraw();
@@ -294,7 +316,7 @@ const equantFigure = {
 		const points = [];
 
 		for (let t = jd - period; t <= jd + 1e-9; t += PATH_STEP) {
-			points.push(PlanetEquant.construction(EQUANT, PlanetEquant.state(EQUANT, t)).planet);
+			points.push(PlanetEquant.construction(this.params, PlanetEquant.state(this.params, t)).planet);
 		}
 
 		return points;
@@ -319,9 +341,9 @@ const equantFigure = {
 
 		const ctx = this.ctx;
 		const { now, parts, path } = this.state;
-		const r = EQUANT.r;
+		const r = this.params.r;
 
-		this.scale = this.R / EQUANT_REACH;
+		this.scale = this.R / (1 + this.params.e + this.params.r + 0.14);
 
 		const at = point => ({ x: this.cx + this.scale * point[0], y: this.cy - this.scale * point[1] });
 		const O = at([0, 0]);
@@ -329,7 +351,7 @@ const equantFigure = {
 		const Q = at(parts.Q);
 		const K = at(parts.K);
 		const P = at(parts.planet);
-		const edge = this.scale * (1 + EQUANT.e + r);
+		const edge = this.scale * (1 + this.params.e + r);
 
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
@@ -339,8 +361,8 @@ const equantFigure = {
 		segment(ctx, O, towards(O, 0, edge), { color: COL.muted, width: 1 });
 		segment(
 			ctx,
-			towards(O, now.apogee + 180, this.scale * (1 - EQUANT.e)),
-			towards(O, now.apogee, this.scale * (1 + 2 * EQUANT.e)),
+			towards(O, now.apogee + 180, this.scale * (1 - this.params.e)),
+			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e)),
 			{
 				color: COL.muted,
 				width: 1,
@@ -361,6 +383,7 @@ const equantFigure = {
 		// the uniform line QK and the angle M at Q; the epicycle, its
 		// radius to P and the line of sight
 		segment(ctx, Q, K, { color: COL.ink, width: 1.2 });
+		segment(ctx, O, K, { color: COL.ink, width: 1, dash: [3, 3] });
 		screenArc(ctx, Q, M_ARC_RADIUS * this.scale, now.apogee, now.apogee + now.M, { color: COL.ink, width: 1.5 });
 		circle(ctx, K, r * this.scale, { color: COL.epicycle, width: 2 });
 		segment(ctx, K, P, { color: COL.epicycle, width: 1.8 });
@@ -377,7 +400,7 @@ const equantFigure = {
 	/* K's place at every 1/24 of a turn of the mean longitude: equal
 	   angles at Q, unequal arcs of the deferent. */
 	drawTicks(at, apogee) {
-		const o = PlanetEquant.offsets(EQUANT);
+		const o = PlanetEquant.offsets(this.params);
 		const C = [o.centre * cos(apogee), o.centre * sin(apogee)];
 
 		for (let M = 0; M < 360; M += 15) {
@@ -400,7 +423,13 @@ const equantFigure = {
 
 		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
 		centredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
-		centredLabel(ctx, 'A', towards(O, now.apogee, this.scale * (1 + 2 * EQUANT.e) + 12), COL.muted, this.labels);
+		centredLabel(
+			ctx,
+			'A',
+			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e) + 12),
+			COL.muted,
+			this.labels
+		);
 		centredLabel(
 			ctx,
 			'M',
@@ -438,7 +467,7 @@ const equantFigure = {
 		}
 
 		const p = this.plot;
-		const o = PlanetEquant.offsets(EQUANT);
+		const o = PlanetEquant.offsets(this.params);
 
 		p.frame();
 		p.hline(1, { color: COL.ink, width: 1 });

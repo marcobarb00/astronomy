@@ -2306,8 +2306,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   quarterTicks                   [{"value":0,"label":"0°"},{"value":90,"label":"90°"},{"value":180,"label":"180°"},{"value":270,"label":"270°"},{"value":360,"label":"360°"}]
   modelLoops                     ["19.791874","19.779228","19.741373","19.678547","19.591149","19.479728"]
   FIT_APOGEE TEST_APOGEE         151.332515000  151.165805000
-  EQUANT_REACH                   1.898499000
-  fixed ranges                   [-14,14]  [8,22]  [0,34]  [750,825]  [0.75,1.25]  [[-500,500],[-35,35]]
+  fixed ranges                   [-14,14]  [8,22]  [0,34]  [750,825]  {"e = 0.2":{"e":0.2,"y":[0.55,1.45]},"Mars":{"e":0.100469,"y":[0.75,1.25]}}  [[-500,500],[-35,35]]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -3966,7 +3965,9 @@ OC = 0.2007: at the apogee 11.0° in 76 d; at the perigee 31.8° in 63 d
 Ptolemy's model: at the apogee 19.85° in 81.9 d, at the perigee 11.30° in 60.5 d (XII 4: 19;53,32 = 19.89° in 80 d, 11;12,14 = 11.20° in 64 1/2 d)
 
 === Scales ===
-Figure 2(b): OK from 0.799 to 1.201
+Figure 2, e = 0.2000: OK of the eccentric with the same directions from 0.600 to 1.400; loops at the apogee 22.5°, at the perigee 3.3°
+Figure 2, e = 0.1005: OK of the eccentric with the same directions from 0.799 to 1.201; loops at the apogee 19.8°, at the perigee 11.2°
+(at e = 0.25 the loop at the perigee: NaN°)
 Figure 3(b), e = 0.3000: equant - ellipse up to 135.0', eccentric - ellipse up to 467.9'
 Figure 3(b), e = 0.1005: equant - ellipse up to 10.5', eccentric - ellipse up to 31.4'
 Figure 4: OC in [0, OQ]: arcs 1.4 to 31.9°; zodiacal equation -11.58 to 11.58°; the dots -11.50 to 11.28°

@@ -1025,7 +1025,7 @@ once on the page.
 | $\eta$ | the equation of the epicycle, $\lambda = \bar\lambda + \eta$, positive from the apogee to the perigee (page 4.1) |
 | $n_\mu$ | a planet's daily motion in anomaly; for an outer planet $n + n_\mu = n_\odot$ (page 4.1) |
 | $S,\ P_\lambda$ | a planet's synodic period and its period in ecliptic longitude (page 4.1) |
-| Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the centre of the deferent); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
+| Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the centre of the deferent); $M$ the mean anomaly of K on the deferent, the angle at Q from the apogee (the planet's anomaly on the epicycle stays $\mu$); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is

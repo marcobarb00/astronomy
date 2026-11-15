@@ -158,11 +158,23 @@
 			Ptolemy's remark suggests the eccentric that served for the Sun, so we
 			try it first on the deferent. Let K move uniformly on a circle of radius
 			1 whose centre C lies at the distance OC = $e$ from the Earth O, towards
-			the apogee A at the ecliptic longitude $\lambda_A$. Seen from C, K is at $\bar\lambda$; seen from O it
-			is at $\bar\lambda + q$, at the distance $\rho = \text{OK}$, where $q$
-			has the form of the Sun's equation of centre. We call $q$ the
-			<em>zodiacal equation</em>, Ptolemy's "equation of ecliptic
-			anomaly":
+			the apogee A of the circle, at the ecliptic longitude $\lambda_A$.
+		</p>
+
+		<p>
+			As for the Sun on page 2.1, the place of K on its circle is given by its
+			<em>mean anomaly</em> $M = \bar\lambda - \lambda_A$: the angle at C from
+			the direction of the apogee to K, counted eastward, which grows
+			uniformly at the planet's mean motion $n$. $M$ belongs to the deferent.
+			The planet's angle on its epicycle is still $\mu$, as on page 4.1 (on
+			the Moon's pages it was the epicycle that carried $M$).
+		</p>
+
+		<p>
+			Seen from O, K is at $\bar\lambda + q$ and at the distance $\rho =
+			\text{OK}$, where $q$ is page 2.1's equation of centre with K in place of
+			the Sun. We call $q$ the <em>zodiacal equation</em>, Ptolemy's "equation
+			of ecliptic anomaly":
 		</p>
 
 		$$q = -\operatorname{atan2}(e\sin M,\ 1 + e\cos M), \qquad \rho = \sqrt{1 + 2e\cos M + e^2}, \qquad M = \bar\lambda - \lambda_A.$$
@@ -188,25 +200,141 @@
 
 		<p>
 			To see why, look at what sets the size of a loop. The nearer K is to
-			the Earth, the larger the epicycle looks and the longer the loop. The faster K is seen
-			to move, the more it carries the loop forward, and the shorter the loop.
-			To see which part of the deferent controls each, let K move uniformly
-			about a point Q, at the distance OQ from the Earth on the line of the
-			apogee, while the circle stays centred on C. In the eccentric, Q is C.
+			the Earth, the larger the epicycle looks and the longer the loop. The
+			faster K is seen to move, the more it carries the loop forward, and the
+			shorter the loop.
 		</p>
 
 		<p>
-			In the triangle OQK the angle at Q is $180^\circ - M$ and the angle at K
-			is $-q$, so the law of sines gives $\sin(-q) = \text{OQ}\,\sin M/\rho$.
-			To first order in the offsets, $q \approx -\text{OQ}\sin M$, and K is
-			seen to turn at $d(\bar\lambda + q)/dt \approx n\,(1 - \text{OQ}\cos M)$.
+			In the eccentric, C does two jobs: it is the centre of K's circle and
+			the point about which K moves uniformly. To see which job controls the
+			speed and which the distance, we give the second one to another point.
+			Let K move uniformly as seen from a point Q on the line from O to the
+			apogee, at the distance OQ from the Earth, while its circle stays
+			centred on C. $M$ is now the angle at Q from the direction of the apogee
+			to K, and it still grows at the rate $n$. In the eccentric Q is C.
+			Figure 2 draws the construction, with C halfway between O and Q,
+			where Ptolemy puts it, and dashed the side OK of the triangle OQK.
+		</p>
+
+		<!-- Figure 2: the deferent, the equant and the epicycle; date -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="equant-views"></div>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the deferent, the equant and the epicycle</p>
+						<canvas id="equant-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the distance of K from the Earth</p>
+						<canvas id="distance-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="equant-day">date</label>
+							<input id="equant-day" type="range" min="0" max="5844" step="0.25" value="3100">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="equant-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="equant-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="equant-play">Play</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="equant-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Start with $e$ = 0.2, twice Mars', where the triangles OQK and CQK
+				of the text are easy to see. Play, a loop of P in about twenty seconds,
+				and watch the angle M at Q grow uniformly, while the ticks of K lie
+				closer together near the apogee A than near the perigee. The loops of P
+				are longest on the side of A: K is farthest away there, but its
+				slowness counts for more. Then choose Mars.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">ticks</dt>
+						<dd>K every 1/24 of a turn of $\bar\lambda$</dd>
+						<dt class="c-sun">☉, dashed</dt>
+						<dd>the direction of the mean Sun from the Earth O</dd>
+						<dt class="c-planet">faint</dt>
+						<dd>the path of P over the last synodic period</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt class="c-muted">dashed</dt>
+						<dd>an eccentric with the same directions, C at Q</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			We call OC and OQ the <em>offsets</em>, the distances of the two points
+			from the Earth. They are small beside the radius of the circle, 1: about
+			0.1 and 0.2 for Mars. To first order in the offsets we keep the terms
+			proportional to one offset and drop the squares and the products of
+			two, which are about ten times smaller again, as on page 3.2.
 		</p>
 
 		<p>
-			In the triangle CQK, with $\text{CK} = 1$ and $\text{CQ} = \text{OQ} -
-			\text{OC}$, the law of cosines gives $\text{QK} \approx 1 -
-			\text{CQ}\cos M$. Projecting OK on the line QK then gives $\rho \approx
-			\text{OQ}\cos M + \text{QK}$, and so
+			First the direction. Q lies on the line from O towards A, so seen from
+			Q the Earth lies opposite to the apogee, and the angle OQK, between QO
+			and QK, is $180^\circ - M$. The angle at K, between KQ and KO, is the
+			difference between the directions of QK and OK, $\bar\lambda$ and
+			$\bar\lambda + q$, so it is $-q$. The law of sines in the triangle OQK
+			gives
+		</p>
+
+		$$\sin(-q) = \frac{\text{OQ}\,\sin(180^\circ - M)}{\rho} = \frac{\text{OQ}\,\sin M}{\rho}.$$
+
+		<p>
+			The right side is already proportional to OQ, so to first order $\rho$
+			can be taken as 1 and $\sin(-q)$ as $-q$, in radians: $q \approx
+			-\text{OQ}\sin M$. As K goes round, $M$ grows at the rate $n$, so the
+			direction of K, $\bar\lambda + q$, changes at
+		</p>
+
+		$$\frac{d(\bar\lambda + q)}{dt} = n + \frac{dq}{dM}\,\frac{dM}{dt} \approx n\,(1 - \text{OQ}\cos M).$$
+
+		<p>
+			K is seen to move slowest at the apogee, at $n\,(1 - \text{OQ})$, and
+			fastest at the perigee, at $n\,(1 + \text{OQ})$. K turns at the same
+			rate about Q all the time, but at the apogee it is farther from the
+			Earth than from Q by OQ, and at the perigee nearer by OQ, and the same
+			motion seen from farther away looks slower.
+		</p>
+
+		<p>
+			Then the distance. C, Q and K make a second triangle, with CK = 1, the
+			radius, and CQ = OQ − OC. C lies on the same line as O, so the angle at
+			Q is again $180^\circ - M$, and the law of cosines gives
+		</p>
+
+		$$1 = \text{QK}^2 + \text{CQ}^2 + 2\,\text{CQ}\,\text{QK}\cos M.$$
+
+		<p>
+			Dropping the square $\text{CQ}^2$ leaves $\text{QK} \approx 1 -
+			\text{CQ}\cos M$. The line OK is the sum of the long segment QK and the
+			short one OQ, at the angle $M$ to each other. Squaring, $\rho^2 =
+			\text{QK}^2 + 2\,\text{OQ}\,\text{QK}\cos M + \text{OQ}^2$, and without
+			the square of OQ, $\rho \approx \text{QK} + \text{OQ}\cos M = 1 +
+			(\text{OQ} - \text{CQ})\cos M$. Since OQ − CQ = OC, the two first-order
+			results are
 		</p>
 
 		<div class="box">
@@ -241,10 +369,10 @@
 		</div>
 
 		<p>
-			So OC = $e$ and OQ = $2e$. In the triangle CQK the law of cosines,
-			$1 = \text{QK}^2 + e^2 + 2e\,\text{QK}\cos M$, gives QK, the same
-			quadratic as the crank of page 3.2, and the triangle OQK gives K as seen
-			from the Earth:
+			So OC = $e$, OQ = $2e$ and CQ = $e$. Solved exactly, the law of cosines
+			of the triangle CQK, $1 = \text{QK}^2 + e^2 + 2e\,\text{QK}\cos M$, is
+			the same quadratic as the crank's on page 3.2, and the triangle OQK
+			gives K as seen from the Earth:
 		</p>
 
 		<div class="box">
@@ -301,69 +429,6 @@
 			ecliptic longitude of date it moves at the rate of precession of page
 			2.3.
 		</p>
-
-		<!-- Figure 2: the deferent, the equant and the epicycle; date -->
-		<figure class="fig">
-			<div class="frame">
-				<div class="panels">
-					<div>
-						<p class="panel-title">(a) the deferent, the equant and the epicycle</p>
-						<canvas id="equant-canvas"></canvas>
-					</div>
-					<div>
-						<p class="panel-title">(b) the distance of K from the Earth</p>
-						<canvas id="distance-plot"></canvas>
-					</div>
-				</div>
-				<div class="panel-controls">
-					<div>
-						<div class="ctl stepper">
-							<label for="equant-day">date</label>
-							<input id="equant-day" type="range" min="0" max="5844" step="0.25" value="3100">
-							<output></output>
-							<span class="stepper-buttons">
-								<button type="button" class="stepper-btn" data-target="equant-day" data-step="-1"
-									aria-label="previous day">‹ previous day</button>
-								<button type="button" class="stepper-btn" data-target="equant-day" data-step="1"
-									aria-label="next day">next day ›</button>
-							</span>
-						</div>
-						<div class="presets">
-							<button type="button" class="play" id="equant-play">Play</button>
-						</div>
-					</div>
-					<div>
-						<div class="readout" id="equant-readout" data-lines="4"></div>
-					</div>
-				</div>
-			</div>
-			<figcaption>
-				Play, a loop of P in about twenty seconds, and watch the line QK turn
-				uniformly, while the ticks of K lie closer together near the apogee A
-				than near the perigee. The loops of P are longest on the side of A:
-				K is farthest away there, but its slowness counts for more.
-			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In panel (a)</p>
-					<dl class="key">
-						<dt class="c-deferent">ticks</dt>
-						<dd>K every 1/24 of a turn of $\bar\lambda$</dd>
-						<dt class="c-sun">☉, dashed</dt>
-						<dd>the direction of the mean Sun from the Earth O</dd>
-						<dt class="c-planet">faint</dt>
-						<dd>the path of P over the last synodic period</dd>
-					</dl>
-				</div>
-				<div>
-					<p class="key-title">In panel (b)</p>
-					<dl class="key">
-						<dt class="c-muted">dashed</dt>
-						<dd>an eccentric with the same directions, C at Q</dd>
-					</dl>
-				</div>
-			</div>
-		</figure>
 
 		<h3>The equant and Kepler's ellipse</h3>
 

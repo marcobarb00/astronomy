@@ -23,7 +23,8 @@ figure.fig .ctl {
 	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 }
 
-/* The choice of a view, above the panels of Figure 3. */
+/* The choice of a view, above the panels of Figures 2 and 3. */
+#equant-views,
 #kepler-views {
 	justify-content: center;
 	margin-bottom: 12px;

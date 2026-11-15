@@ -1256,14 +1256,13 @@ function page42(c) {
 		)
 	);
 	row('FIT_APOGEE TEST_APOGEE', num(inContext(c, 'FIT_APOGEE')), num(inContext(c, 'TEST_APOGEE')));
-	row('EQUANT_REACH', num(inContext(c, 'EQUANT_REACH')));
 	row(
 		'fixed ranges',
 		JSON.stringify(inContext(c, 'EQUATION_RANGE')),
 		JSON.stringify(inContext(c, 'ARC_RANGE')),
 		JSON.stringify(inContext(c, 'FIT_ARC_RANGE')),
 		JSON.stringify(inContext(c, 'INTERVAL_RANGE')),
-		JSON.stringify(inContext(c, 'DISTANCE_RANGE')),
+		JSON.stringify(inContext(c, 'EQUANT_VIEWS')),
 		JSON.stringify(Object.values(inContext(c, 'KEPLER_VIEWS')).map(view => view.y))
 	);
 }

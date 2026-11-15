@@ -757,7 +757,18 @@ title('Scales');
 {
 	// Figure 2(b): the distance OK of the equant and of the eccentric with
 	// the same OQ
-	console.log(`Figure 2(b): OK from ${f(1 - 2 * MARS_FIT.e, 3)} to ${f(1 + 2 * MARS_FIT.e, 3)}`);
+	[0.2, MARS_FIT.e].forEach(e => {
+		const apogee = PlanetEquant.loopAt(0, e, 2 * e, MARS_FIT.r, N, N_SUN);
+		const perigee = PlanetEquant.loopAt(180, e, 2 * e, MARS_FIT.r, N, N_SUN);
+
+		console.log(
+			`Figure 2, e = ${f(e, 4)}: OK of the eccentric with the same directions from ${f(1 - 2 * e, 3)} to ${f(1 + 2 * e, 3)};` +
+				` loops at the apogee ${f(apogee.arc, 1)}°, at the perigee ${f(perigee.arc, 1)}°`
+		);
+	});
+	console.log(
+		`(at e = 0.25 the loop at the perigee: ${f(PlanetEquant.loopAt(180, 0.25, 0.5, MARS_FIT.r, N, N_SUN).arc, 1)}°)`
+	);
 
 	// Figure 3(b): the differences from the ellipse, per view
 	[0.3, MARS_FIT.e].forEach(e => {
