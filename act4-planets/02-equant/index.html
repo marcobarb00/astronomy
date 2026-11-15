@@ -319,21 +319,42 @@
 		</p>
 
 		<p>
-			Then the distance. C, Q and K make a second triangle, with CK = 1, the
-			radius, and CQ = OQ − OC. C lies on the same line as O, so the angle at
-			Q is again $180^\circ - M$, and the law of cosines gives
+			Then the distance. Drop a perpendicular from C onto the line QK, and
+			call its foot H. Seen from Q, C lies opposite to the apogee at the
+			distance CQ = OQ − OC, so the segment QC makes the angle $180^\circ -
+			M$ with QK. It therefore has the length $\text{CQ}\sin M$ across the
+			line, the perpendicular CH, and $-\text{CQ}\cos M$ along it, from Q
+			towards K: H lies at $-\text{CQ}\cos M$ from Q, and $\text{HK} =
+			\text{QK} + \text{CQ}\cos M$.
 		</p>
 
-		$$1 = \text{QK}^2 + \text{CQ}^2 + 2\,\text{CQ}\,\text{QK}\cos M.$$
+		<p>
+			CHK is a right triangle whose hypotenuse CK is the radius, 1, so by
+			Pythagoras, exactly,
+		</p>
+
+		$$1 = \text{CQ}^2\sin^2 M + (\text{QK} + \text{CQ}\cos M)^2.$$
 
 		<p>
-			Dropping the square $\text{CQ}^2$ leaves $\text{QK} \approx 1 -
-			\text{CQ}\cos M$. The line OK is the sum of the long segment QK and the
-			short one OQ, at the angle $M$ to each other. Squaring, $\rho^2 =
-			\text{QK}^2 + 2\,\text{OQ}\,\text{QK}\cos M + \text{OQ}^2$, and without
-			the square of OQ, $\rho \approx \text{QK} + \text{OQ}\cos M = 1 +
-			(\text{OQ} - \text{CQ})\cos M$. Since OQ − CQ = OC, the two first-order
-			results are
+			The short leg CH is of first order and appears only squared, so to
+			first order the long leg HK is the whole radius, 1, and $\text{QK}
+			\approx 1 - \text{CQ}\cos M$. At the apogee, for instance, C lies on
+			the line QK, H is C itself, and QK = 1 − CQ exactly.
+		</p>
+
+		<p>
+			The same construction from O gives the distance $\rho$. O lies on the
+			same line as C, at the distance OQ from Q, so its perpendicular onto
+			QK has the length $\text{OQ}\sin M$ and its foot lies at
+			$-\text{OQ}\cos M$ from Q. In the right triangle with hypotenuse OK,
+		</p>
+
+		$$\rho^2 = \text{OQ}^2\sin^2 M + (\text{QK} + \text{OQ}\cos M)^2.$$
+
+		<p>
+			Again the short leg appears only squared, so $\rho \approx \text{QK} +
+			\text{OQ}\cos M = 1 + (\text{OQ} - \text{CQ})\cos M$. Since OQ − CQ =
+			OC, the two first-order results are
 		</p>
 
 		<div class="box">
@@ -368,10 +389,11 @@
 		</div>
 
 		<p>
-			So OC = $e$, OQ = $2e$ and CQ = $e$. Solved exactly, the law of cosines
-			of the triangle CQK, $1 = \text{QK}^2 + e^2 + 2e\,\text{QK}\cos M$, is
-			the same quadratic as the crank's on page 3.2, and the triangle OQK
-			gives K as seen from the Earth:
+			So OC = $e$, OQ = $2e$ and CQ = $e$. The two right triangles above
+			give everything exactly, without dropping anything. The first gives QK,
+			of the same form as the distance of the crank on page 3.2. In the
+			second, with hypotenuse OK, the angle at K is $-q$, between the leg
+			$2e\sin M$ and the leg $\text{QK} + 2e\cos M$:
 		</p>
 
 		<div class="box">
@@ -379,9 +401,9 @@
 		</div>
 
 		<p>
-			The distance is $\rho = \sqrt{\text{QK}^2 + 4e\,\text{QK}\cos M +
-			4e^2}$. To first order $q \approx -2e\sin M$ and $\rho \approx 1 +
-			e\cos M$: the equant gives the directions of an eccentric with $2e$ and
+			The hypotenuse is the distance, $\rho = \sqrt{4e^2\sin^2 M + (\text{QK}
+			+ 2e\cos M)^2}$. To first order $q \approx -2e\sin M$ and $\rho \approx
+			1 + e\cos M$: the equant gives the directions of an eccentric with $2e$ and
 			the distances of one with $e$. For Ptolemy's Mars, 12 and 6 where the
 			deferent is 60, K's distance changes half as much as in an eccentric
 			with the same directions.
