@@ -8,7 +8,8 @@
    pass / fail with the error. Also checks stars.js and the models of
    pages 1.1 to 4.2 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
    solar-eccentric.js, equation-of-time.js, precession.js,
-   lunar-epicycle.js, ..., planet-epicycle.js, planet-equant.js).
+   lunar-epicycle.js, ..., planet-epicycle.js, planet-equant.js,
+   planet-arrangement.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -31,7 +32,8 @@
 	18. Ptolemy's crank (Almagest V 4-7, V 13; page 3.2)
 	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
 	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
-	21. Run
+	21. Copernicus' arrangement (De Revolutionibus V 1, V 21; page 4.3)
+	22. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -2174,7 +2176,74 @@ function testPlanetEquant() {
 }
 
 /* ==========================================================================
-   21. RUN
+   21. COPERNICUS' ARRANGEMENT (DE REVOLUTIONIBUS V 1, V 21; PAGE 4.3)
+   ========================================================================== */
+
+function testPlanetArrangement() {
+	group("Copernicus' arrangement · models/planet-arrangement.js (page 4.3)");
+
+	// the exchange of the two vectors turns no direction: Copernicus'
+	// arrangement sees Mars where page 4.2's equant does
+	const jd = Time.julianDay(2025, 1, 16);
+
+	check({
+		name: "Mars in Copernicus' arrangement against page 4.2's equant, 16 January 2025",
+		source: 'OP = OK + KP = O☉ + ☉P',
+		expected: PlanetEquant.make(PlanetEquant.MARS_FIT)(jd),
+		computed: PlanetArrangement.make('mars')(jd),
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// Copernicus' period relations (V 1): Venus goes round the Sun 13 times
+	// while the Earth goes round 8 times and passes it 5 times
+	const venus = PlanetArrangement.COPERNICUS.venus;
+	const year = 365.25;
+
+	check({
+		name: "Venus' period from 5 synodic periods in 8 years",
+		source: 'De Revolutionibus V 1 (13 turns in 8 years)',
+		expected: (8 * year) / 13,
+		computed: PlanetArrangement.periodAboutSun('inner', (venus.years * year) / venus.synodic, year),
+		tol: 1e-9,
+		unit: ' d',
+		show: x => x.toFixed(4)
+	});
+
+	// V 21: Copernicus' greatest elongations of Venus give its radius
+	// 7193 and the centre 208 parts from the Sun's mean place
+	const sinA = sin(44.8);
+	const sinB = sin(47 + 16 / 60);
+	const radius = 2 / (1 / sinA + 1 / sinB);
+
+	check({
+		name: "Venus' radius from Copernicus' two greatest elongations",
+		source: 'De Revolutionibus V 21 (7193 parts of 10000)',
+		expected: 0.7193,
+		computed: radius,
+		tol: 2e-4,
+		show: x => x.toFixed(4)
+	});
+
+	// the eccentric with an epicyclet has the equant's direction to second
+	// order (Fitzpatrick § 4.4 - 4.5)
+	const small = 0.001;
+
+	check({
+		name: 'The epicyclet less the equant at M = 45°, e = 0.001',
+		source: 'equal to second order (Fitzpatrick § 4.4 - 4.5)',
+		expected: 0,
+		computed: PlanetArrangement.epicyclet(45, small).q - PlanetEquant.zodiacal(45, small, 2 * small).q,
+		tol: 1e-4,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(3)
+	});
+}
+
+/* ==========================================================================
+   22. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2200,5 +2269,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testLunarLatitude();
 	testPlanetEpicycle();
 	testPlanetEquant();
+	testPlanetArrangement();
 	render();
 });

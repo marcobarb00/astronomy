@@ -68,6 +68,7 @@ const SHARED_FILES = [
 	'shared/models/eclipses.js',
 	'shared/models/planet-epicycle.js',
 	'shared/models/planet-equant.js',
+	'shared/models/planet-arrangement.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -85,7 +86,8 @@ const PAGE_FILES = [
 	'act3-moon/02-evection/index.html',
 	'act3-moon/03-eclipses/index.html',
 	'act4-planets/01-going-backwards/index.html',
-	'act4-planets/02-equant/index.html'
+	'act4-planets/02-equant/index.html',
+	'act4-planets/03-new-centre/index.html'
 ];
 
 /* ==========================================================================
@@ -877,6 +879,71 @@ function planetEquantSection(c) {
 	});
 }
 
+function planetArrangementSection(c) {
+	const { Time, PlanetArrangement } = c;
+
+	title("6l. COPERNICUS' ARRANGEMENT (models/planet-arrangement.js)");
+	PlanetArrangement.PLANETS.forEach(name => {
+		const fit = PlanetArrangement.FIT[name];
+		const kind = PlanetArrangement.KIND[name];
+
+		row(
+			name,
+			kind,
+			num(fit.S),
+			num(fit.a),
+			num(PlanetArrangement.PTOLEMY[name].a),
+			num(PlanetArrangement.COPERNICUS[name].a),
+			num(PlanetArrangement.periodAboutSun(kind, fit.S, 365.25636)),
+			num(
+				PlanetArrangement.synodicPeriod(
+					kind,
+					PlanetArrangement.periodAboutSun(kind, fit.S, 365.25636),
+					365.25636
+				)
+			)
+		);
+	});
+	row(
+		'VENUS_FIT',
+		num(PlanetArrangement.VENUS_FIT.mu0),
+		num(PlanetArrangement.VENUS_FIT.nMu, 12),
+		num(PlanetArrangement.VENUS_FIT.r)
+	);
+	row(
+		'greatestElongation quadratureAngle',
+		num(PlanetArrangement.greatestElongation(0.7)),
+		num(PlanetArrangement.quadratureAngle(5))
+	);
+	row(
+		'epicyclet e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const z = PlanetArrangement.epicyclet(M, 0.1);
+
+				return `${num(z.q)}/${num(z.distance)}`;
+			})
+			.join(' ')
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const mars = PlanetArrangement.moment('mars', jd);
+		const venus = PlanetArrangement.moment('venus', jd);
+
+		row(
+			`${label}`,
+			num(mars.lambda),
+			num(mars.distance),
+			num(mars.heliostatic.O[0]),
+			num(mars.heliostatic.P[1]),
+			num(venus.lambda),
+			num(venus.distance),
+			num(PlanetArrangement.makeEpicyclet()(jd))
+		);
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -1269,6 +1336,22 @@ function page42(c) {
 	);
 }
 
+function page43(c) {
+	title('8l. PAGE 4.3 (act4-planets/03-new-centre/page.js)');
+	row('yearOf', [2451545.0, 2460676.5].map(jd => num(c.yearOf(jd))).join(' '));
+	row('yearTicks', JSON.stringify(c.yearTicks(2)(2010, 2026)));
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'INNER_RANGE')),
+		JSON.stringify(inContext(c, 'OUTER_RANGE')),
+		JSON.stringify(inContext(c, 'DISTANCE_RANGE')),
+		JSON.stringify(inContext(c, 'DISTANCE_ERROR_RANGE')),
+		JSON.stringify(inContext(c, 'SATURN_VIEW')),
+		JSON.stringify(inContext(c, 'ARRANGEMENT_VIEWS'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1338,6 +1421,7 @@ function buildTable() {
 	lunarLatitudeSection(shared);
 	planetEpicycleSection(shared);
 	planetEquantSection(shared);
+	planetArrangementSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1350,6 +1434,7 @@ function buildTable() {
 	page33(pages[8]);
 	page41(pages[9]);
 	page42(pages[10]);
+	page43(pages[11]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

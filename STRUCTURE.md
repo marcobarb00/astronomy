@@ -768,22 +768,95 @@ The first anomaly and the simplest complete model.
 
 #### 4.3 · Same geometry, new centre
 
-- **Question:** what changes if the Sun is taken as at rest?
-- **Learn:** Copernicus' arrangement: in Ptolemy's models every outer
-  planet's epicycle radius stays parallel to the line from the Earth to
-  the mean Sun (*Almagest* X 6), and the deferents of Venus and Mercury
-  follow the mean Sun approximately (from the equant, not the Earth);
-  linking them all to one Earth–Sun line, at a scale of its own for each
-  planet, turns the free ratios into distances; the order of the planets;
-  sidereal periods from synodic periods; Mercury and Venus' maximum
-  elongations.
-- **Figures:** the same planet in the heliostatic and geostatic
-  descriptions side by side; the error curve, **unchanged**.
-- **Point to make:** the predictions barely improved. What changed is that
-  the system now has a scale and an order. They come from the arrangement:
-  the body taken as at rest changes no prediction (WRITING.md §9).
-- **Exercises:** the radius of Venus' orbit from its greatest elongation.
-- **Hands over:** Tycho kept this arrangement with the Earth at rest. What
+- **Question:** what changes when the Sun is fixed?
+- **Learn:** the Sun enters every planet's motion: the elongations of the
+  five planets in 2022–2025, each loop at opposition or inferior
+  conjunction; the synodic periods (115.88 to 779.93 days, 1926–2025); in
+  Ptolemy's models every outer planet's epicycle radius stays parallel to
+  the line from the Earth to the mean Sun (*Almagest* X 6), and the
+  centres of the epicycles of Venus and Mercury follow the mean Sun (from
+  the equant, not the Earth); five free ratios, and no order without a
+  parallax (IX 1). The exchange of the two vectors, $\vec{\text{OP}} =
+  \vec{\text{OK}} + \vec{\text{KP}} = \vec{\text{O}\odot} +
+  \vec{\odot\text{P}}$ (page 3.1's equivalence): the epicycle of an
+  outer planet, the deferent of an inner one (in page 4.1's simple model,
+  which the page uses for Venus and Mercury), becomes the Earth's circle;
+  one scale for all five ($|\text{O}\odot| = 1$) turns the ratios into
+  distances, $a = 1/r$ (outer), $a = r$ (inner), in au; Copernicus fixed
+  the Sun (*De Revolutionibus* I 10), which turns no direction (the frame
+  is page 4.4's question). The periods about the Sun, $1/P = 1/Y \mp
+  1/S$, and Ptolemy's period relations as sums (IX 3, V 1: Venus 8 + 5 =
+  13); the order by distance and by period (I 10); greatest elongation
+  $\sin\varepsilon_\text{max} = a$; loops from the Earth's motion (V 3)
+  and their sizes (I 10). Copernicus without the equant: the eccentric
+  with an epicyclet, $\tfrac32 e$ and $\tfrac12 e$ (V 4; Debated: al-Tusi
+  and Ibn ash-Shatir, *HAMA* p. 11), the equant's
+  directions to second order, distances off by $e^2$ against
+  $\tfrac12 e^2$ (Fitzpatrick § 1.3, § 4.4–4.5), page 4.2's Mars a little
+  worse (largest error 0.88° to 0.91°); Kepler brought the equant's point
+  back as the empty focus (*HAMA* p. 155, page 4.5).
+- **Notation:** $a$, a planet's distance from ☉ in units of the Earth's
+  (au); ☉ the point of the mean Sun at distance 1 (S is the synodic
+  period); $P$ the period about the Sun (§6).
+- **Figures:** the elongations of the five planets, 2022–2025, thick where
+  they go back (static); one planet in Ptolemy's description (O fixed,
+  the parallelogram O K P ☉) beside Copernicus' (☉ fixed), each circle in
+  its colour of (a) (date, play; views Mars, page 4.2's equant, and
+  Venus); Ptolemy's five models with deferents of one size, and the same
+  numbers on one scale, out to Saturn and out to Mars (static); a photo:
+  Copernicus' manuscript, f. 9v (Jagiellonian Library, public domain);
+  the two right triangles of the fit, Venus at greatest elongation and
+  Saturn at quadrature, with the quadrature a day early (static); the
+  error curve of Mars in Copernicus' arrangement with page 4.2's equant as
+  ghost, **unchanged**; Mars' distance from the Earth, 2010–2025, the
+  equant on Copernicus' scale and without the equant, and the difference
+  (static).
+- **Point to make:** the predicted directions do not change. What changed
+  is that the system now has a scale and an order, and the distances
+  are a new prediction. They come from the arrangement: fixing the Sun
+  changes no prediction (WRITING.md §9).
+- **Fit:** the synodic periods from lines through the oppositions and
+  inferior conjunctions of 1926–2025, the periods about the Sun with the
+  sidereal year; the distances of Venus and Mercury from their greatest
+  elongations of 1986–2025, of Jupiter and Saturn from the mean arcs of
+  their loops of 1986–2025 (page 4.1's method), Mars from page 4.2's
+  equant (1.520 au). Not quadratures: a day's error moves Saturn's
+  distance by 16%. History block: Copernicus' periods in sidereal years
+  (V 1), his triangles from one sighting (V 9, V 14, V 19), Venus (V 21),
+  Mercury (V 27); his distances are Ptolemy's ratios inverted (V 19;
+  *HAMA* p. 147).
+- **Test:** the directions identical to page 4.2's ($6 \times 10^{-12}$°);
+  Mars' distance from the Earth within 0.020 au (1.6%) over 2010–2025,
+  0.022 au over 1926–2125; the five distances within
+  0.3% of the reference, Mercury 1.9% short (its elongated path: at a
+  greatest elongation the radius is not perpendicular to the line of
+  sight); the periods within 0.1%; the distances follow the real
+  oppositions because the deferent is eccentric (a concentric one gives
+  0.52 au at every opposition).
+  History block: Copernicus' check of Jupiter's motion (V 12); Tycho on
+  his distances (Voelkel ch. 2).
+- **Residual:** one Earth for every planet, uniform about ☉, so the
+  Earth's unevenness (page 2.1) is missing from the three outer planets
+  alike;
+  Ptolemy's eccentricities are vector sums of the Earth's and the
+  planet's (*HAMA* p. 147); page 4.2's residual (the epicycle turned by
+  the real Sun) gives the Earth's circle the real Sun's unevenness; Kepler and the
+  Sun's actual position (Voelkel ch. 3). Detour: Tycho.
+- **Today note** (§7.5), beside the distances: the modern first
+  approximation keeps this arrangement, every planet and the Earth on a
+  Kepler ellipse about the Sun (Standish's elements, the reference sky).
+- **Exercises:** the radius of Venus' orbit from its greatest elongations
+  of 2025, and Copernicus' V 21 (compute, then check); Copernicus'
+  eccentric with an epicyclet against the equant, with his Mars of V 19
+  and its second order (derive); Mercury's greatest elongations, 17.835°
+  to 27.789°, against one circle, and why their mean falls short (break
+  the model).
+- **Code:** `models/planet-arrangement.js` (`PlanetArrangement`: `FIT`,
+  `PTOLEMY`, `COPERNICUS`, `VENUS_FIT`, `periodAboutSun`,
+  `synodicPeriod`, `greatestElongation`, `quadratureAngle`, `moment`
+  (one moment in both descriptions), `make`, `makeDistance`, `epicyclet`,
+  `makeEpicyclet`).
+- **Hands over:** Tycho kept this arrangement with the Earth fixed. What
   can the observations decide?
 
 #### 4.4 · What moves?
@@ -1041,6 +1114,11 @@ once on the page.
 | $n_\mu$ | a planet's daily motion in anomaly; for an outer planet $n + n_\mu = n_\odot$ (page 4.1) |
 | $S,\ P_\lambda$ | a planet's synodic period and its period in ecliptic longitude (page 4.1) |
 | Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the centre of the deferent); $M$ the mean anomaly of K on the deferent, the angle at Q from the apogee (the planet's anomaly on the epicycle stays $\mu$); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
+| $a$ | a planet's distance from the Sun's mean place ☉, in units of the Earth's (au), $1/r$ for an outer planet and $r$ for an inner one; ☉ that point in figures, since $S$ is the synodic period (page 4.3) |
+| $P$ | a planet's period about the Sun, $1/P = 1/Y \mp 1/S$ (outer, inner), against the stars with $Y_\text{s}$ (page 4.3) |
+| $\varepsilon_\text{max}$ | an inner planet's greatest elongation, $\sin\varepsilon_\text{max} = a$ for a circle (not the obliquity; page 4.3) |
+| $\psi$ | the angle at ☉ between the Earth and an outer planet, $\cos\psi = 1/a$ at quadrature (page 4.3) |
+| $d_1,\ d_2$ | Copernicus' eccentricity and epicyclet (*De Revolutionibus* V 4), $\tfrac32 e$ and $\tfrac12 e$ (page 4.3) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -1111,7 +1189,7 @@ On a page whose model is not the one used today, a margin note headed
 first approximation and how the two compare (a formula, a number from the
 page's script). It states the modern counterpart; it does not judge the
 historical model, which the page tests with the error curve. Pages 2.1,
-3.1 and 3.2 have one (§4); other pages add one only when their model has
+3.1, 3.2 and 4.3 have one (§4); other pages add one only when their model has
 a direct modern counterpart. Its numbers come from the page's script, like
 every other number. Adopted on 2026-11-02; written on pages 2.1, 3.1 and
 3.2 the same day. The style is in `STYLE.md` §4.5.

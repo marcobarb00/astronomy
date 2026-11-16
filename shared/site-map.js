@@ -152,9 +152,9 @@ const SITE_MAP = (function () {
 		{
 			number: '4.3',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'Same geometry, new centre',
-			question: 'What changes if the Sun is taken as at rest?',
+			question: 'What changes when the Sun is fixed?',
 			path: 'act4-planets/03-new-centre/index.html'
 		},
 		{
@@ -219,7 +219,7 @@ const SITE_MAP = (function () {
 		},
 		islamic: {
 			title: 'the Islamic critiques of the equant',
-			sentence: "al-Tusi's couple and Ibn al-Shatir's models, which Copernicus reused",
+			sentence: "al-Tusi's couple and Ibn al-Shatir's models, whose devices reappear in Copernicus",
 			path: null,
 			ready: false
 		},

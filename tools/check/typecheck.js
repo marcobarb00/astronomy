@@ -29,6 +29,7 @@ const PAGES = [
 	'act3-moon/03-eclipses/index.html',
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
+	'act4-planets/03-new-centre/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',
