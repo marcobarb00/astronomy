@@ -292,8 +292,10 @@
 		</p>
 
 		<p>
-			First the direction. Q lies on the line from O towards A, so seen from
-			Q the Earth lies towards the apogee. Consider the triangle OQK, the angle at Q is $180^\circ - M$.
+			<strong>Direction:</strong><br>
+			Q lies on the line from O towards A, between them, so seen from Q the
+			Earth lies opposite the apogee. In the triangle OQK the angle at Q is
+			therefore $180^\circ - M$.
 			The angle at K is the difference between the directions of QK and OK, $\bar\lambda$ and
 			$\bar\lambda + q$, so it is $-q$. The law of sines in the triangle OQK
 			gives
@@ -319,21 +321,82 @@
 		</p>
 
 		<p>
-			Then the distance. C, Q and K make a second triangle, with CK = 1, the
-			radius, and CQ = OQ − OC. C lies on the same line as O, so the angle at
-			Q is again $180^\circ - M$, and the law of cosines gives
+			<strong>Distance:</strong><br>
+			Drop a perpendicular from C onto the line QK, and
+			call its foot H. Seen from Q, C lies opposite to the apogee at the
+			distance CQ = OQ − OC, so the segment QC makes the angle $180^\circ -
+			M$ with QK. It therefore has the length $\text{CQ}\sin M$ across the
+			line, the perpendicular CH, and $-\text{CQ}\cos M$ along it, from Q
+			towards K: H lies at $-\text{CQ}\cos M$ from Q, and $\text{HK} =
+			\text{QK} + \text{CQ}\cos M$. Figure 3(a) draws the right triangle
+			CHK.
 		</p>
 
-		$$1 = \text{QK}^2 + \text{CQ}^2 + 2\,\text{CQ}\,\text{QK}\cos M.$$
+		<!-- Figure 3: the perpendiculars onto QK, the two right triangles (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the triangle CHK: QK</p>
+						<canvas id="perp-centre"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the triangle OGK: the distance ρ</p>
+						<canvas id="perp-earth"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two shaded right triangles. In each, the short leg is an
+				offset times $\sin M$, and the long leg lies along the line QK, longer
+				than QK by the offset times $\cos M$, since the foot falls behind Q.
+				Drawn with offsets three times Mars' and $M$ = 60°.
+			</figcaption>
+		</figure>
 
 		<p>
-			Dropping the square $\text{CQ}^2$ leaves $\text{QK} \approx 1 -
-			\text{CQ}\cos M$. The line OK is the sum of the long segment QK and the
-			short one OQ, at the angle $M$ to each other. Squaring, $\rho^2 =
-			\text{QK}^2 + 2\,\text{OQ}\,\text{QK}\cos M + \text{OQ}^2$, and without
-			the square of OQ, $\rho \approx \text{QK} + \text{OQ}\cos M = 1 +
-			(\text{OQ} - \text{CQ})\cos M$. Since OQ − CQ = OC, the two first-order
-			results are
+			CHK is a right triangle whose hypotenuse CK is the radius, 1, and whose
+			short leg CH is $\text{CQ}\sin M$. Pythagoras gives the long leg HK,
+			and since $\text{QK} = \text{HK} - \text{CQ}\cos M$, it gives QK too, both
+			exactly:
+		</p>
+
+		$$\text{HK} = \sqrt{1 - \text{CQ}^2\sin^2 M}, \qquad \text{QK} = \sqrt{1 - \text{CQ}^2\sin^2 M} - \text{CQ}\cos M.$$
+
+		<p>
+			Only the root needs an approximation. CQ is of first order, so
+			$\text{CQ}^2\sin^2 M$ under the root is of second order. To first
+			order we drop it, so the root becomes $\sqrt{1} = 1$ and the long leg
+			HK is taken as the whole radius.
+			Since $\sqrt{1 - x} \approx 1 - x/2$, what is dropped is about
+			$\tfrac12\text{CQ}^2\sin^2 M$, at most 0.005 for Mars. So
+		</p>
+
+		$$\text{QK} \approx 1 - \text{CQ}\cos M.$$
+
+		<p>
+			At the apogee, for instance, C lies on the line QK, H is C itself, and
+			QK = 1 − CQ exactly.
+		</p>
+
+		<p>
+			The same construction from O gives the distance $\rho$. O lies on the
+			same line as C, at the distance OQ from Q, so its perpendicular OG onto
+			QK has the length $\text{OQ}\sin M$, and its foot G lies at
+			$-\text{OQ}\cos M$ from Q, so that $\text{GK} = \text{QK} + \text{OQ}\cos
+			M$. In the right
+			triangle OGK of Figure 3(b) the hypotenuse is OK, and Pythagoras gives,
+			exactly,
+		</p>
+
+		$$\rho = \sqrt{\text{GK}^2 + \text{OQ}^2\sin^2 M}.$$
+
+		<p>
+			Here too the short leg appears only squared, and we drop
+			$\text{OQ}^2\sin^2 M$ under the root, which leaves $\rho \approx
+			\text{GK} = \text{QK} + \text{OQ}\cos M$. With the QK just found,
+			$\rho \approx 1 + (\text{OQ} - \text{CQ})\cos M$, and since OQ − CQ =
+			OC, the two first-order results are
 		</p>
 
 		<div class="box">
@@ -368,10 +431,11 @@
 		</div>
 
 		<p>
-			So OC = $e$, OQ = $2e$ and CQ = $e$. Solved exactly, the law of cosines
-			of the triangle CQK, $1 = \text{QK}^2 + e^2 + 2e\,\text{QK}\cos M$, is
-			the same quadratic as the crank's on page 3.2, and the triangle OQK
-			gives K as seen from the Earth:
+			So OC = $e$, OQ = $2e$ and CQ = $e$. The two right triangles above
+			give everything exactly, without dropping anything. The first gives QK,
+			of the same form as the distance of the crank on page 3.2. In the
+			second, with hypotenuse OK, the angle at K is $-q$, between the leg
+			$2e\sin M$ and the leg $\text{QK} + 2e\cos M$:
 		</p>
 
 		<div class="box">
@@ -379,9 +443,9 @@
 		</div>
 
 		<p>
-			The distance is $\rho = \sqrt{\text{QK}^2 + 4e\,\text{QK}\cos M +
-			4e^2}$. To first order $q \approx -2e\sin M$ and $\rho \approx 1 +
-			e\cos M$: the equant gives the directions of an eccentric with $2e$ and
+			The hypotenuse is the distance, $\rho = \sqrt{4e^2\sin^2 M + (\text{QK}
+			+ 2e\cos M)^2}$. To first order $q \approx -2e\sin M$ and $\rho \approx
+			1 + e\cos M$: the equant gives the directions of an eccentric with $2e$ and
 			the distances of one with $e$. For Ptolemy's Mars, 12 and 6 where the
 			deferent is 60, K's distance changes half as much as in an eccentric
 			with the same directions.
@@ -404,18 +468,27 @@
 
 		<div class="row">
 			<p>
-				The planet moves on its epicycle as on page 4.1, with $\mu =
-				\bar\lambda_\odot - \bar\lambda$, and Ptolemy counts this anomaly from
+				The planet P moves on its epicycle, of radius $r$, as on page 4.1: its
+				anomaly is $\mu = \bar\lambda_\odot - \bar\lambda$, where
+				$\bar\lambda_\odot$ is the mean Sun's ecliptic longitude, so that KP
+				stays parallel to the line to the mean Sun. Ptolemy counts this anomaly from
 				the diameter of the epicycle "which points towards" the equant (IX 6),
 				the mean apogee on the line QK. The epicycle's apogee seen from the
 				Earth lies on the line OK, $q$ further on, so the planet is $\mu - q$
-				from it. He then finds the planet in two steps, first K, then the
-				planet on the epicycle (XI 9):
+				from it.
 			</p>
 			<aside>
 				<div class="note" data-origin="ptolemy"></div>
 			</aside>
 		</div>
+
+		<p>
+			Ptolemy then finds the planet in two steps, first K, then the planet on
+			the epicycle (XI 9). The planet's ecliptic longitude $\lambda$, as seen
+			from the Earth, is the direction of K, $\bar\lambda + q$, plus the
+			equation of the epicycle $\eta$ of page 4.1, now with the anomaly $\mu -
+			q$ and the epicycle at the distance $\rho$:
+		</p>
 
 		<div class="box">
 			$$\lambda = \bar\lambda + q + \eta, \qquad \eta = \operatorname{atan2}\big(r\sin(\mu - q),\ \rho + r\cos(\mu - q)\big).$$
@@ -511,7 +584,7 @@
 			difference is about 3% above $e^2/4$.
 		</p>
 
-		<!-- Figure 3: the equant and Kepler's ellipse; M, two views -->
+		<!-- Figure 4: the equant and Kepler's ellipse; M, two views -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="presets" id="kepler-views"></div>
@@ -596,12 +669,12 @@
 		<p>
 			With the directions known, the loops measure the distance of K. Their
 			mean size fixes $r$, as on page 4.1, and the way it changes round the
-			zodiac fixes OC. Figure 4 shows both observations of 2010–2025 against
+			zodiac fixes OC. Figure 5 shows both observations of 2010–2025 against
 			the model, with OC free. In (a) the model's curve is $q$, how far K is
 			seen ahead of its mean place.
 		</p>
 
-		<!-- Figure 4: the oppositions fix Q, the loops fix C; OC -->
+		<!-- Figure 5: the oppositions fix Q, the loops fix C; OC -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -712,13 +785,14 @@
 		<h2 id="test"><span class="step">4 · Test</span>The equant against the real Mars</h2>
 
 		<p>
-			To see how much of page 4.1's error the equant removes, Figure 5 gives
+			To see how much of page 4.1's error the equant removes, Figure 6 gives
 			the error curve of the model fitted to 2010–2025, $\Delta\lambda =
-			\lambda_\text{model} - \lambda_\text{ref}$ in degrees, with page 4.1's
-			epicycle as a ghost.
+			\lambda_\text{model} - \lambda_\text{ref}$ in degrees, the planet's
+			ecliptic longitude $\lambda$ given by the model less that of the real
+			Mars, with page 4.1's epicycle as a ghost.
 		</p>
 
-		<!-- Figure 5: the equant fitted to 2010 - 2025 against the reference Mars -->
+		<!-- Figure 6: the equant fitted to 2010 - 2025 against the reference Mars -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-mars"></div>
@@ -747,7 +821,7 @@
 			the mean Sun, and the model's agree with them within a day.
 		</p>
 
-		<!-- Figure 6: the loops of Mars against the ecliptic longitude, with the equant (static) -->
+		<!-- Figure 7: the loops of Mars against the ecliptic longitude, with the equant (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -861,10 +935,12 @@
 					Equant: $\text{QK} = 1 - e\cos M - \tfrac12 e^2\sin^2 M$. Then
 					$q = -\arctan\big(2e\sin M/(\text{QK} + 2e\cos M)\big)$ with
 					$\text{QK} + 2e\cos M \approx 1 + e\cos M$ gives $q \approx -2e\sin
-					M\,(1 - e\cos M) = -2e\sin M + e^2\sin 2M$. The distance squared is
-					$\text{QK}^2 + 4e\,\text{QK}\cos M + 4e^2 \approx 1 + 2e\cos M + 3e^2
-					\sin^2 M + e^2\cos^2 M$, whose root is $1 + e\cos M + \tfrac32 e^2
-					\sin^2 M$.
+					M\,(1 - e\cos M) = -2e\sin M + e^2\sin 2M$. For the distance, the
+					right triangle OGK of Figure 3 gives $\rho^2 = 4e^2\sin^2 M +
+					(\text{QK} + 2e\cos M)^2$, and to second order $\text{QK} + 2e\cos M
+					\approx 1 + e\cos M - \tfrac12 e^2\sin^2 M$, so $\rho^2 \approx (1 +
+					e\cos M)^2 + 3e^2\sin^2 M$, whose root is $1 + e\cos M + \tfrac32
+					e^2\sin^2 M$.
 				</p>
 				<p>
 					Ellipse: $E \approx M - e\sin M + \tfrac12 e^2\sin 2M$. The direction
@@ -926,7 +1002,7 @@
 
 		<div class="exercise" data-kind="predict">
 			<p>
-				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 4. Before you
+				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 5. Before you
 				move it, predict where the loops will be longest, at the apogee or at
 				the perigee, with C at the Earth, and with C at Q. Then check, and
 				compare with Ptolemy's own arcs for Mars at greatest and least distance

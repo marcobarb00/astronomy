@@ -3879,6 +3879,9 @@ the eccentric's loops 8.2 to 21.7°, the real 10.6 to 19.4°
 eccentric, OC = OQ = 0.2     OK 1.20 at the apogee, 0.80 at the perigee; K's speed seen from O 0.833 n, 1.250 n
 equant, OC = 0.1, OQ = 0.2   OK 1.10 at the apogee, 0.90 at the perigee; K's speed seen from O 0.818 n, 1.222 n
 
+=== Model: what the first order drops in the long leg HK = sqrt(1 - CQ^2 sin^2 M) ===
+Mars, CQ = 0.1005: 1 - HK at most 0.0051 (CQ^2 / 2 = 0.0050)
+
 === Model: the equant, Ptolemy's Mars (OQ = 12, OC = 6 where the deferent is 60) ===
 greatest zodiacal equation 11.42° at M = 95.7° (first order 2e radians = 11.46°; an eccentric of 2e, asin 2e = 11.54°)
 OK from 0.900 to 1.100 (an eccentric of 2e: 0.80 to 1.20)

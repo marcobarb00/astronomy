@@ -721,7 +721,10 @@ The first anomaly and the simplest complete model.
 - **Figures:** the oppositions and the loops of 1986–2025 against the
   ecliptic longitude (static); the deferent, the equant and the epicycle,
   with K's ticks at equal times and the distance OK against $M$, the
-  eccentric with the same OQ dashed (date, 2010–2025); the equant and
+  eccentric with the same OQ dashed (date, 2010–2025; views $e$ = 0.2
+  and Mars); the perpendiculars from C and O onto QK, the right triangles
+  CHK and OGK of the first-order derivation (static, offsets three times
+  Mars'); the equant and
   Kepler's ellipse (M; views $e$ = 0.3 and Mars); the fit of the centre,
   the oppositions and the loops of 2010–2025 with OC from O to Q (presets
   C at O, fitted, C at Q); the error curve with page 4.1's epicycle as
