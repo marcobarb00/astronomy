@@ -641,9 +641,7 @@ const perpendicularFigure = {
    seconds, slow enough to follow K, P and the line QK. */
 const EQUANT_DAYS_PER_SECOND = 40;
 
-/* Radius of the angle M at Q (units of the deferent's radius) and the
-   step of the path (days). */
-const M_ARC_RADIUS = 0.16;
+/* The step of the path (days). */
 const PATH_STEP = 2;
 
 /* The date of the "an opposition" button is searched for near this day of
@@ -653,10 +651,13 @@ const OPPOSITION_NEAR = 2333;
 /* Two views: e = 0.2, twice Mars', where O, C and Q stand apart (the
    loops stay at both apsides; at 0.25 they vanish at the perigee), and
    Mars fitted on this page. The drawing's room is the farthest the
-   planet goes, 1 + e + r, and the labels. */
+   planet goes, 1 + e + r, and the labels. 'arc' is the radius of the
+   angle M at Q (units of the deferent's radius): inside OQ at e = 0.2,
+   and for Mars, where O, C and Q are a few pixels apart, beyond O and the
+   labels of O, C and Q, so that the arc and M stay clear of them. */
 const EQUANT_VIEWS = {
-	'e = 0.2': { e: 0.2 },
-	Mars: { e: EQUANT.e }
+	'e = 0.2': { e: 0.2, arc: 0.16 },
+	Mars: { e: EQUANT.e, arc: 0.4 }
 };
 
 const planetFigure = {
@@ -788,7 +789,10 @@ const planetFigure = {
 		// radius to P and the line of sight
 		segment(ctx, Q, K, { color: COL.ink, width: 1.2 });
 		segment(ctx, O, K, { color: COL.ink, width: 1, dash: [3, 3] });
-		screenArc(ctx, Q, M_ARC_RADIUS * this.scale, now.apogee, now.apogee + now.M, { color: COL.ink, width: 1.5 });
+		screenArc(ctx, Q, EQUANT_VIEWS[this.view].arc * this.scale, now.apogee, now.apogee + now.M, {
+			color: COL.ink,
+			width: 1.5
+		});
 		circle(ctx, K, r * this.scale, { color: COL.epicycle, width: 2 });
 		segment(ctx, K, P, { color: COL.epicycle, width: 1.8 });
 		segment(ctx, O, towards(O, now.lambda, edge), { color: COL.planet, width: 1.5 });
@@ -808,6 +812,21 @@ const planetFigure = {
 		const ctx = this.ctx;
 		const { O, C, Q, K, P } = points;
 		const side = now.apogee + 90;
+		const DOT_ROOM = 8;
+
+		const reserveDots = dots =>
+			dots.forEach(point =>
+				this.labels.reserve({
+					x0: point.x - DOT_ROOM,
+					y0: point.y - DOT_ROOM,
+					x1: point.x + DOT_ROOM,
+					y1: point.y + DOT_ROOM
+				})
+			);
+
+		// the Earth and the planet are the labels' obstacles too: near an
+		// opposition P passes by the angle M at Q
+		reserveDots([O, P]);
 
 		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
 		centredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
@@ -818,16 +837,20 @@ const planetFigure = {
 			COL.muted,
 			this.labels
 		);
-		centredLabel(
-			ctx,
-			'M',
-			towards(Q, now.apogee + now.M / 2, M_ARC_RADIUS * this.scale + 10),
-			COL.ink,
-			this.labels
-		);
+		// O, C and Q first, so that M steps aside rather than C
 		labelOutside(ctx, 'O', O, 7, side + 180, COL.earth, this.labels);
 		labelOutside(ctx, 'C', C, 4, side, COL.ink, this.labels);
 		labelOutside(ctx, 'Q', Q, 4, side + 180, COL.ink, this.labels);
+
+		// then M, which must not cover the dots C and Q either
+		reserveDots([C, Q]);
+		centredLabel(
+			ctx,
+			'M',
+			towards(Q, now.apogee + now.M / 2, EQUANT_VIEWS[this.view].arc * this.scale + 10),
+			COL.ink,
+			this.labels
+		);
 		labelOutside(
 			ctx,
 			'K',
