@@ -738,7 +738,7 @@ title("Exercise 2: Ptolemy's three oppositions of Mars (Almagest X 7)");
 	);
 }
 
-title('Exercise 3: the loops at the apsides, OC moved between O and Q (Figure 4)');
+title('Exercise 3: the loops at the apsides, OC moved between O and Q (Figure 6)');
 {
 	const { equant, r } = MARS_SEPARATE;
 
@@ -768,31 +768,31 @@ title('Exercise 3: the loops at the apsides, OC moved between O and Q (Figure 4)
 
 title('Scales');
 {
-	// Figure 2(b): the distance OK of the equant and of the eccentric with
-	// the same OQ
+	// Figure 4: the loops at the apsides in its two views (at e = 0.25 the
+	// loop at the perigee vanishes, so the wide view takes e = 0.2)
 	[0.2, MARS_FIT.e].forEach(e => {
 		const apogee = PlanetEquant.loopAt(0, e, 2 * e, MARS_FIT.r, N, N_SUN);
 		const perigee = PlanetEquant.loopAt(180, e, 2 * e, MARS_FIT.r, N, N_SUN);
 
 		console.log(
-			`Figure 2, e = ${f(e, 4)}: OK of the eccentric with the same directions from ${f(1 - 2 * e, 3)} to ${f(1 + 2 * e, 3)};` +
-				` loops at the apogee ${f(apogee.arc, 1)}°, at the perigee ${f(perigee.arc, 1)}°`
+			`Figure 4, e = ${f(e, 4)}: loops at the apogee ${f(apogee.arc, 1)}°, at the perigee ${f(perigee.arc, 1)}°`
 		);
 	});
 	console.log(
 		`(at e = 0.25 the loop at the perigee: ${f(PlanetEquant.loopAt(180, 0.25, 0.5, MARS_FIT.r, N, N_SUN).arc, 1)}°)`
 	);
 
-	// Figure 3(b): the differences from the ellipse, per view
+	// Figure 5: the differences from the ellipse, at the e of panel (a)
+	// and for Mars
 	[0.3, MARS_FIT.e].forEach(e => {
 		const c = comparison(e);
 
 		console.log(
-			`Figure 3(b), e = ${f(e, 4)}: equant - ellipse up to ${f(arcmin(c.dq), 1)}', eccentric - ellipse up to ${f(arcmin(c.dqEccentric), 1)}'`
+			`Figure 5, e = ${f(e, 4)}: equant - ellipse up to ${f(arcmin(c.dq), 1)}', eccentric - ellipse up to ${f(arcmin(c.dqEccentric), 1)}'`
 		);
 	});
 
-	// Figure 4: every OC of the slider, with MARS_SEPARATE's OQ and r
+	// Figure 6: every OC of the slider, with MARS_SEPARATE's OQ and r
 	const { equant, r } = MARS_SEPARATE;
 	let low = Infinity;
 	let high = -Infinity;
@@ -814,10 +814,10 @@ title('Scales');
 	const dots = fitOppositions.map(jd => norm180(lon(jd) - PlanetEquant.state(MARS_SEPARATE, jd).meanLongitude));
 
 	console.log(
-		`Figure 4: OC in [0, OQ]: arcs ${f(low, 1)} to ${f(high, 1)}°; zodiacal equation ${f(qLow, 2)} to ${f(qHigh, 2)}°; the dots ${range(dots, 2)}°`
+		`Figure 6: OC in [0, OQ]: arcs ${f(low, 1)} to ${f(high, 1)}°; zodiacal equation ${f(qLow, 2)} to ${f(qHigh, 2)}°; the dots ${range(dots, 2)}°`
 	);
 
-	// Figure 6: the equant's arcs and intervals round the zodiac
+	// Figure 8: the equant's arcs and intervals round the zodiac
 	const arcs = [];
 	const intervals = [];
 
@@ -826,9 +826,9 @@ title('Scales');
 		intervals.push(PlanetEquant.oppositionInterval(M, MARS_FIT.e, 2 * MARS_FIT.e, N, N_SUN));
 	}
 
-	console.log(`Figure 6: the equant's arcs ${range(arcs, 2)}°, intervals ${range(intervals, 1)} days`);
+	console.log(`Figure 8: the equant's arcs ${range(arcs, 2)}°, intervals ${range(intervals, 1)} days`);
 
-	// the dots of Figure 6(b): the intervals between the geometric
+	// the dots of Figure 8(b): the intervals between the geometric
 	// oppositions to the mean Sun that the page computes
 	const geometric = roots(
 		jd => norm180(Ephem.position('mars', jd, { apparent: false }).lon - meanSun(jd) - 180),
@@ -838,9 +838,83 @@ title('Scales');
 	);
 
 	console.log(
-		`Figure 6(b): intervals between the geometric oppositions to the mean Sun ${range(
+		`Figure 8(b): intervals between the geometric oppositions to the mean Sun ${range(
 			geometric.slice(1).map((jd, i) => jd - geometric[i]),
 			1
 		)} days`
 	);
+}
+
+title('Scales of the redrawn figures');
+{
+	// Figure 2, the equant's two jobs: OQ = 0.2 (Ptolemy's 12 in 60), OC
+	// from 0 to OQ. The speed of K seen from O, in units of n, is
+	// d(M + q)/dM; the distance is OK.
+	const OQ = 0.2;
+	const speedOf = (M, OC) => {
+		const h = 0.01;
+
+		return 1 + (PlanetEquant.zodiacal(M + h, OC, OQ).q - PlanetEquant.zodiacal(M - h, OC, OQ).q) / (2 * h);
+	};
+	let speedLow = Infinity;
+	let speedHigh = -Infinity;
+	let distanceLow = Infinity;
+	let distanceHigh = -Infinity;
+
+	for (let OC = 0; OC <= OQ + 1e-9; OC += OQ / 40) {
+		for (let M = 0; M <= 360; M += 1) {
+			const s = speedOf(M, OC);
+			const d = PlanetEquant.zodiacal(M, OC, OQ).distance;
+
+			speedLow = Math.min(speedLow, s);
+			speedHigh = Math.max(speedHigh, s);
+			distanceLow = Math.min(distanceLow, d);
+			distanceHigh = Math.max(distanceHigh, d);
+		}
+	}
+
+	console.log(
+		`Figure 2, OQ = ${OQ}, OC in [0, OQ]: speed ${f(speedLow, 3)} to ${f(speedHigh, 3)} n; OK ${f(distanceLow, 3)} to ${f(distanceHigh, 3)};` +
+			` first order 1 - OQ cos M: ${f(1 - OQ, 3)} to ${f(1 + OQ, 3)} n`
+	);
+	[0, OQ / 2, OQ].forEach(OC => {
+		console.log(
+			`  OC = ${f(OC, 2)}: speed at the apogee ${f(speedOf(0, OC), 3)} n, at the perigee ${f(speedOf(180, OC), 3)} n;` +
+				` OK ${f(PlanetEquant.zodiacal(0, OC, OQ).distance, 3)} and ${f(PlanetEquant.zodiacal(180, OC, OQ).distance, 3)}`
+		);
+	});
+
+	// Figure 5: the differences in direction from the ellipse,
+	// divided by e^2 (radians), exact for Mars, and their second-order terms
+	const e = MARS_FIT.e;
+	const equantLess = [];
+	const eccentricLess = [];
+
+	for (let M = 0; M <= 360; M += 0.5) {
+		const k = PlanetEquant.kepler(M, e).q;
+
+		equantLess.push((PlanetEquant.zodiacal(M, e, 2 * e).q - k) / R2D / (e * e));
+		eccentricLess.push((PlanetEquant.zodiacal(M, 2 * e, 2 * e).q - k) / R2D / (e * e));
+	}
+
+	console.log(
+		`Figure 5, Mars (e = ${f(e, 4)}), difference / e^2: the equant ${range(equantLess, 3)}, the eccentric ${range(eccentricLess, 3)};` +
+			' second order -0.25 sin 2M and +0.75 sin 2M'
+	);
+
+	// each lobe of the exact curves (a quarter turn of M) against the
+	// second-order amplitude: the third order deepens some and flattens
+	// others
+	const lobes = (values, amplitude) =>
+		[0, 1, 2, 3]
+			.map(quarter => {
+				const part = values.slice(quarter * 180, quarter * 180 + 181);
+				const peak = part.reduce((a, b) => (Math.abs(b) > Math.abs(a) ? b : a), 0);
+
+				return `${quarter * 90}-${quarter * 90 + 90}°: ${f(peak, 3)} (${f(Math.abs(peak) / amplitude, 2)})`;
+			})
+			.join(', ');
+
+	console.log(`  the equant's lobes (ratio to 1/4): ${lobes(equantLess, 0.25)}`);
+	console.log(`  the eccentric's lobes (ratio to 3/4): ${lobes(eccentricLess, 0.75)}`);
 }

@@ -719,13 +719,18 @@ The first anomaly and the simplest complete model.
   $q$ the zodiacal equation (K seen from O less $\bar\lambda$), $\rho$ =
   OK; K′ the point of the ellipse.
 - **Figures:** the oppositions and the loops of 1986–2025 against the
-  ecliptic longitude (static); the deferent, the equant and the epicycle,
-  with K's ticks at equal times and the distance OK against $M$, the
-  eccentric with the same OQ dashed (date, 2010–2025; views $e$ = 0.2
-  and Mars); the perpendiculars from C and O onto QK, the right triangles
-  CHK and OGK of the first-order derivation (static, offsets three times
-  Mars'); the equant and
-  Kepler's ellipse (M; views $e$ = 0.3 and Mars); the fit of the centre,
+  ecliptic longitude, one above the other, with dotted lines where the
+  oppositions cross the mean place (static); the equant's two jobs, the
+  deferent alone with K's places at equal steps of $M$, the speed of K
+  seen from O with its first order, and the distance OK, against $M$ (OC
+  from O to Q, OQ = 0.2; presets C at O, Ptolemy, C at Q); the
+  perpendiculars from C and O onto QK, the right triangles CHK and OGK of
+  the first-order derivation (static, offsets three times Mars'); the
+  whole model, deferent, equant and epicycle, with the line OK (date,
+  2010–2025, an opposition preset; views $e$ = 0.2 and Mars); the equant
+  and Kepler's ellipse, the drawing at $e$ = 0.3 and the differences in
+  direction divided by $e^2$, exact for Mars and to second order
+  (static); the fit of the centre,
   the oppositions and the loops of 2010–2025 with OC from O to Q (presets
   C at O, fitted, C at Q); the error curve with page 4.1's epicycle as
   ghost (4, 16 and 200 years); page 4.1's Figure 7 again with the

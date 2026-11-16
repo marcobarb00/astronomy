@@ -3,14 +3,14 @@
    Layout only: every colour comes from shared/theme.css.
 
    TABLE OF CONTENTS
-	 1. Controls
+	 1. Controls and panels
 	 2. The square drawings
 	 3. The table of the expansions
 	 4. Phone width
    ========================================================================== */
 
 /* ==========================================================================
-   1. CONTROLS
+   1. CONTROLS AND PANELS
    ========================================================================== */
 
 /* Slider values here run up to "31 Dec 2025"; the labels "mean anomaly
@@ -23,11 +23,16 @@ figure.fig .ctl {
 	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 }
 
-/* The choice of a view, above the panels of Figures 2 and 3. */
-#equant-views,
-#kepler-views {
+/* The choice of a view, above the drawing of Figure 4. */
+#planet-views {
 	justify-content: center;
 	margin-bottom: 12px;
+}
+
+/* Figure 1: the two plots one above the other, on the same axis of
+   ecliptic longitude, so that the dotted lines run through both. */
+.panels.stacked {
+	grid-template-columns: minmax(0, 1fr);
 }
 
 /* ==========================================================================
@@ -35,7 +40,8 @@ figure.fig .ctl {
    The canvases set their own square size (page.js); centre them.
    ========================================================================== */
 
-#equant-canvas,
+#jobs-canvas,
+#planet-canvas,
 #perp-centre,
 #perp-earth,
 #kepler-canvas {

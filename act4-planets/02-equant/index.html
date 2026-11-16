@@ -97,7 +97,7 @@
 		<!-- Figure 1: the oppositions and the loops of 1986 - 2025 (static) -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="panels">
+				<div class="panels stacked">
 					<div>
 						<p class="panel-title">(a) how far Mars is ahead of its mean place</p>
 						<canvas id="observed-oppositions"></canvas>
@@ -109,9 +109,9 @@
 				</div>
 			</div>
 			<figcaption>
-				Compare the two panels, one dot for each opposition or loop of
-				1986–2025. The loops are longest and shortest close to where the
-				dots of (a) pass from ahead to behind, so both kinds of unevenness are tied to the
+				Follow the dotted lines down from (a), where Mars passes its mean
+				place, to (b): the longest and the shortest loops lie close to them,
+				so the zodiacal anomaly and the length of the loops depend on the
 				same line across the zodiac.
 			</figcaption>
 		</figure>
@@ -213,71 +213,56 @@
 			apogee, at the distance OQ from the Earth, while its circle stays
 			centred on C. $M$ is now the angle at Q from the direction of the apogee
 			to K, and it still grows at the rate $n$.
-			Figure 2 draws the construction, with C halfway between O and Q,
-			where Ptolemy puts it, and dashed the side OK of the triangle OQK.
+			In Figure 2, C can be moved anywhere between O and Q with Q fixed;
+			its panel (a) shows the triangle OQK used below.
 		</p>
 
-		<!-- Figure 2: the deferent, the equant and the epicycle; date -->
+		<!-- Figure 2: the equant's two jobs, the deferent alone; OC -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="presets" id="equant-views"></div>
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the deferent, the equant and the epicycle</p>
-						<canvas id="equant-canvas"></canvas>
+						<p class="panel-title">(a) the deferent, C and the equant Q</p>
+						<canvas id="jobs-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) the distance of K from the Earth</p>
-						<canvas id="distance-plot"></canvas>
+						<p class="panel-title">(b) the speed of K seen from the Earth</p>
+						<canvas id="jobs-speed"></canvas>
+						<p class="panel-title">(c) the distance of K from the Earth</p>
+						<canvas id="jobs-distance"></canvas>
 					</div>
 				</div>
 				<div class="panel-controls">
 					<div>
-						<div class="ctl stepper">
-							<label for="equant-day">date</label>
-							<input id="equant-day" type="range" min="0" max="5844" step="0.25" value="3100">
+						<div class="ctl">
+							<label for="jobs-oc">centre OC</label>
+							<input id="jobs-oc" type="range" min="0" max="0.2" step="0.001" value="0.1">
 							<output></output>
-							<span class="stepper-buttons">
-								<button type="button" class="stepper-btn" data-target="equant-day" data-step="-1"
-									aria-label="previous day">‹ previous day</button>
-								<button type="button" class="stepper-btn" data-target="equant-day" data-step="1"
-									aria-label="next day">next day ›</button>
-							</span>
 						</div>
-						<div class="presets">
-							<button type="button" class="play" id="equant-play">Play</button>
+						<div class="presets" id="jobs-presets">
+							<button type="button" data-target="jobs-oc" data-value="0">C at O</button>
+							<button type="button" data-target="jobs-oc" data-value="0.1">Ptolemy</button>
+							<button type="button" data-target="jobs-oc" data-value="0.2">C at Q</button>
 						</div>
 					</div>
 					<div>
-						<div class="readout" id="equant-readout" data-lines="4"></div>
+						<div class="readout" id="jobs-readout" data-lines="3"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Start with $e$ = 0.2, twice Mars', where the triangles OQK and CQK
-				of the text are easy to see. Play, a loop of P in about twenty seconds,
-				and watch the angle M at Q grow uniformly, while the ticks of K lie
-				closer together near the apogee A than near the perigee. The loops of P
-				are longest on the side of A: K is farthest away there, but its
-				slowness counts for more. Then choose Mars.
+				Move C from the Earth to the equant, with OQ fixed at 0.2. The speed
+				of K in (b) hardly changes and stays on its first-order curve, while
+				the distance in (c) goes from constant to a swing of 0.2 either way.
+				In (a), the rays from Q at equal steps of M meet the circle in places
+				that bunch near the apogee A.
 			</figcaption>
 			<div class="keys">
-				<div>
-					<p class="key-title">In panel (a)</p>
-					<dl class="key">
-						<dt class="c-deferent">ticks</dt>
-						<dd>K every 1/24 of a turn of $\bar\lambda$</dd>
-						<dt class="c-sun">☉, dashed</dt>
-						<dd>the direction of the mean Sun from the Earth O</dd>
-						<dt class="c-planet">faint</dt>
-						<dd>the path of P over the last synodic period</dd>
-					</dl>
-				</div>
 				<div>
 					<p class="key-title">In panel (b)</p>
 					<dl class="key">
 						<dt class="c-muted">dashed</dt>
-						<dd>an eccentric with the same directions, C at Q</dd>
+						<dd>first order, $n\,(1 - \text{OQ}\cos M)$</dd>
 					</dl>
 				</div>
 			</div>
@@ -499,8 +484,57 @@
 			fixed among the stars: Ptolemy has it move "about the same ... as the
 			amount determined for the sphere of the fixed stars" (IX 5), so in
 			ecliptic longitude of date it moves at the rate of precession of page
-			2.3.
+			2.3. Figure 4 draws the whole model, with the epicycle, over the years
+			of the fit.
 		</p>
+
+
+		<!-- Figure 4: the whole model, deferent, equant and epicycle; date, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="planet-views"></div>
+				<div class="fig-row">
+					<div>
+						<canvas id="planet-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="planet-day">date</label>
+							<input id="planet-day" type="range" min="0" max="5844" step="0.25" value="3100">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="planet-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="planet-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets" id="planet-presets">
+							<button type="button" class="play" id="planet-play">Play</button>
+							<button type="button" data-target="planet-day" data-value="2333" id="planet-opposition">an opposition</button>
+						</div>
+						<div class="readout" id="planet-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Start with $e$ = 0.2, twice Mars', then choose Mars. Press "an
+				opposition", or play, and watch P: whenever it is opposite the mean
+				Sun it lies on the line OK, so it is seen where K is. Its loops are
+				longest on the side of the apogee A.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-sun">☉, dashed</dt>
+						<dd>the direction of the mean Sun</dd>
+						<dt class="c-planet">faint</dt>
+						<dd>the path of P over the last synodic period</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
 
 		<h3>The equant and Kepler's ellipse</h3>
 
@@ -584,13 +618,12 @@
 			difference is about 3% above $e^2/4$.
 		</p>
 
-		<!-- Figure 4: the equant and Kepler's ellipse; M, two views -->
+		<!-- Figure 5: the equant and Kepler's ellipse (static) -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="presets" id="kepler-views"></div>
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) the deferent and the ellipse</p>
+						<p class="panel-title">(a) the deferent and the ellipse, $e = 0.3$</p>
 						<canvas id="kepler-canvas"></canvas>
 					</div>
 					<div>
@@ -598,27 +631,13 @@
 						<canvas id="kepler-plot"></canvas>
 					</div>
 				</div>
-				<div class="panel-controls">
-					<div>
-						<div class="ctl">
-							<label for="kepler-m">mean anomaly $M$</label>
-							<input id="kepler-m" type="range" min="0" max="360" step="0.5" value="45">
-							<output></output>
-						</div>
-						<div class="presets">
-							<button type="button" class="play" id="kepler-play">Play</button>
-						</div>
-					</div>
-					<div>
-						<div class="readout" id="kepler-readout" data-lines="3"></div>
-					</div>
-				</div>
 			</div>
 			<figcaption>
-				Start with the exaggerated $e$ = 0.3 and play: K on the circle and K′
-				on the ellipse keep close together, and the lines from Q to them turn
-				almost together. Choose Mars and notice that the difference in (b)
-				shrinks to about ten minutes of arc.
+				Read the amplitudes in (b): the equant differs from the ellipse by
+				about a quarter of $e^2$, page 2.1's eccentric by three quarters. For
+				Mars the exact curves also contain the third order, which deepens the
+				lobes on the side of the perigee and flattens those on the side of the
+				apogee.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -633,8 +652,10 @@
 				<div>
 					<p class="key-title">In panel (b)</p>
 					<dl class="key">
-						<dt class="c-muted">dashed</dt>
-						<dd>the Sun's eccentric, OC = $2e$</dd>
+						<dt>solid</dt>
+						<dd>exact, for Mars</dd>
+						<dt>dashed</dt>
+						<dd>second order, $-\tfrac14\sin 2M$ and $\tfrac34\sin 2M$</dd>
 					</dl>
 				</div>
 			</div>
@@ -669,12 +690,12 @@
 		<p>
 			With the directions known, the loops measure the distance of K. Their
 			mean size fixes $r$, as on page 4.1, and the way it changes round the
-			zodiac fixes OC. Figure 5 shows both observations of 2010–2025 against
+			zodiac fixes OC. Figure 6 shows both observations of 2010–2025 against
 			the model, with OC free. In (a) the model's curve is $q$, how far K is
 			seen ahead of its mean place.
 		</p>
 
-		<!-- Figure 5: the oppositions fix Q, the loops fix C; OC -->
+		<!-- Figure 6: the oppositions fix Q, the loops fix C; OC -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -785,14 +806,14 @@
 		<h2 id="test"><span class="step">4 · Test</span>The equant against the real Mars</h2>
 
 		<p>
-			To see how much of page 4.1's error the equant removes, Figure 6 gives
+			To see how much of page 4.1's error the equant removes, Figure 7 gives
 			the error curve of the model fitted to 2010–2025, $\Delta\lambda =
 			\lambda_\text{model} - \lambda_\text{ref}$ in degrees, the planet's
 			ecliptic longitude $\lambda$ given by the model less that of the real
 			Mars, with page 4.1's epicycle as a ghost.
 		</p>
 
-		<!-- Figure 6: the equant fitted to 2010 - 2025 against the reference Mars -->
+		<!-- Figure 7: the equant fitted to 2010 - 2025 against the reference Mars -->
 		<figure class="fig">
 			<div class="frame">
 				<div id="error-mars"></div>
@@ -814,14 +835,14 @@
 
 		<p>
 			The loops were page 4.1's residual, so they are the second test. Figure
-			6 repeats Figure 7 of page 4.1 with the equant's loops in place of the
+			8 repeats Figure 7 of page 4.1 with the equant's loops in place of the
 			epicycle's single value. The eleven loops of 1986–2009, outside the
 			fit, are within 1.2° of the real ones. The model's oppositions are to
 			the mean Sun, so (b) compares the times between the real oppositions to
 			the mean Sun, and the model's agree with them within a day.
 		</p>
 
-		<!-- Figure 7: the loops of Mars against the ecliptic longitude, with the equant (static) -->
+		<!-- Figure 8: the loops of Mars against the ecliptic longitude, with the equant (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels">
@@ -1002,7 +1023,7 @@
 
 		<div class="exercise" data-kind="predict">
 			<p>
-				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 5. Before you
+				Keep OQ = 0.2007 and $r$ = 0.658 and move C in Figure 6. Before you
 				move it, predict where the loops will be longest, at the apogee or at
 				the perigee, with C at the Earth, and with C at Q. Then check, and
 				compare with Ptolemy's own arcs for Mars at greatest and least distance

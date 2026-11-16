@@ -1263,7 +1263,9 @@ function page42(c) {
 		JSON.stringify(inContext(c, 'FIT_ARC_RANGE')),
 		JSON.stringify(inContext(c, 'INTERVAL_RANGE')),
 		JSON.stringify(inContext(c, 'EQUANT_VIEWS')),
-		JSON.stringify(Object.values(inContext(c, 'KEPLER_VIEWS')).map(view => view.y))
+		JSON.stringify(inContext(c, 'JOBS_SPEED_RANGE')),
+		JSON.stringify(inContext(c, 'JOBS_DISTANCE_RANGE')),
+		JSON.stringify(inContext(c, 'KEPLER_RANGE'))
 	);
 }
 
