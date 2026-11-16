@@ -1566,38 +1566,38 @@ Regenerate with: node tools/check/smoke.js --update
 
 === act4-planets/02-equant/index.html ===
   as loaded
-    OUTPUT (equant-day): 28 Jun 2018
-    #equant-readout: \text{28 Jun 2018:}\quad \bar\lambda = 294.2^\circ,\quad M = 142.8^\circ | q = -16.18^\circ,\quad \rho = \text{OK} = 0.868 | \mu = 161.9^\circ,\quad \eta = +6.05^\circ | \lambda = \bar\lambda + q + \eta = 284.0^\circ
-    OUTPUT (kepler-m): 45.0°
-    #kepler-readout: M = 45.0^\circ:\quad q_\text{equant} = -19.63^\circ,\quad q_\text{ellipse} = -18.86^\circ | q_\text{equant} - q_\text{ellipse} = -46.4' | \text{OK} = 1.2628,\quad \text{OK}' = 1.2454
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+    OUTPUT (planet-day): 28 Jun 2018
+    #planet-readout: \text{28 Jun 2018:}\quad \bar\lambda = 294.2^\circ,\quad M = 142.8^\circ | q = -16.18^\circ,\quad \rho = \text{OK} = 0.868 | \mu = 161.9^\circ,\quad \eta = +6.05^\circ | \lambda = \bar\lambda + q + \eta = 284.0^\circ
     OUTPUT (fit-oc): 0.098
     #fit-readout: \text{OC} = 0.098 = 0.49\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
-  slider #equant-day = 0
-    OUTPUT (equant-day): 1 Jan 2010
-    #equant-readout: \text{1 Jan 2010:}\quad \bar\lambda = 109.5^\circ,\quad M = 318.3^\circ | q = +13.13^\circ,\quad \rho = \text{OK} = 1.171 | \mu = 171.0^\circ,\quad \eta = +23.82^\circ | \lambda = \bar\lambda + q + \eta = 146.5^\circ
-  slider #equant-day = 5844
-    OUTPUT (equant-day): 1 Jan 2026
-    #equant-readout: \text{1 Jan 2026:}\quad \bar\lambda = 292.2^\circ,\quad M = 140.8^\circ | q = -16.82^\circ,\quad \rho = \text{OK} = 0.874 | \mu = 348.5^\circ,\quad \eta = +2.26^\circ | \lambda = \bar\lambda + q + \eta = 277.7^\circ
-  slider #equant-day = 2922
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 200.9^\circ,\quad M = 49.5^\circ | q = -15.23^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.7^\circ,\quad \eta = +30.75^\circ | \lambda = \bar\lambda + q + \eta = 216.4^\circ
-  slider #equant-day + one key step
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
-  slider #kepler-m = 0
-    OUTPUT (kepler-m): 0.0°
-    #kepler-readout: M = 0.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 1.3000,\quad \text{OK}' = 1.3000
-  slider #kepler-m = 360
-    OUTPUT (kepler-m): 360.0°
-    #kepler-readout: M = 360.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 1.3000,\quad \text{OK}' = 1.3000
-  slider #kepler-m = 180
-    OUTPUT (kepler-m): 180.0°
-    #kepler-readout: M = 180.0^\circ:\quad q_\text{equant} = +0.00^\circ,\quad q_\text{ellipse} = +0.00^\circ | q_\text{equant} - q_\text{ellipse} = +0.0' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
-  slider #kepler-m + one key step
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.43^\circ,\quad q_\text{ellipse} = +0.47^\circ | q_\text{equant} - q_\text{ellipse} = -2.7' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
+  slider #jobs-oc = 0
+    OUTPUT (jobs-oc): 0.000
+    #jobs-readout: \text{OC} = 0.000 = 0.00\,\text{OQ} | \text{speed: } 0.800\,n \text{ to } 1.200\,n | \text{OK: } 1.000 \text{ to } 1.000
+  slider #jobs-oc = 0.2
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  slider #jobs-oc = 0.1
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+  slider #jobs-oc + one key step
+    OUTPUT (jobs-oc): 0.101
+    #jobs-readout: \text{OC} = 0.101 = 0.51\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.899 \text{ to } 1.101
+  slider #planet-day = 0
+    OUTPUT (planet-day): 1 Jan 2010
+    #planet-readout: \text{1 Jan 2010:}\quad \bar\lambda = 109.5^\circ,\quad M = 318.3^\circ | q = +13.13^\circ,\quad \rho = \text{OK} = 1.171 | \mu = 171.0^\circ,\quad \eta = +23.82^\circ | \lambda = \bar\lambda + q + \eta = 146.5^\circ
+  slider #planet-day = 5844
+    OUTPUT (planet-day): 1 Jan 2026
+    #planet-readout: \text{1 Jan 2026:}\quad \bar\lambda = 292.2^\circ,\quad M = 140.8^\circ | q = -16.82^\circ,\quad \rho = \text{OK} = 0.874 | \mu = 348.5^\circ,\quad \eta = +2.26^\circ | \lambda = \bar\lambda + q + \eta = 277.7^\circ
+  slider #planet-day = 2922
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 200.9^\circ,\quad M = 49.5^\circ | q = -15.23^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.7^\circ,\quad \eta = +30.75^\circ | \lambda = \bar\lambda + q + \eta = 216.4^\circ
+  slider #planet-day + one key step
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
   slider #fit-oc = 0
     OUTPUT (fit-oc): 0.000
     #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
@@ -1610,24 +1610,30 @@ Regenerate with: node tools/check/smoke.js --update
   slider #fit-oc + one key step
     OUTPUT (fit-oc): 0.100
     #fit-readout: \text{OC} = 0.100 = 0.50\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  button "C at O"
+    OUTPUT (jobs-oc): 0.000
+    #jobs-readout: \text{OC} = 0.000 = 0.00\,\text{OQ} | \text{speed: } 0.800\,n \text{ to } 1.200\,n | \text{OK: } 1.000 \text{ to } 1.000
+  button "Ptolemy"
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+  button "C at Q"
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
   button "e = 0.2"
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
   button "Mars"
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
   button "‹ previous day"
-    OUTPUT (equant-day): 31 Dec 2017
-    #equant-readout: \text{31 Dec 2017:}\quad \bar\lambda = 200.5^\circ,\quad M = 49.1^\circ | q = -8.14^\circ,\quad \rho = \text{OK} = 1.074 | \mu = 79.4^\circ,\quad \eta = +30.82^\circ | \lambda = \bar\lambda + q + \eta = 223.2^\circ
+    OUTPUT (planet-day): 31 Dec 2017
+    #planet-readout: \text{31 Dec 2017:}\quad \bar\lambda = 200.5^\circ,\quad M = 49.1^\circ | q = -8.14^\circ,\quad \rho = \text{OK} = 1.074 | \mu = 79.4^\circ,\quad \eta = +30.82^\circ | \lambda = \bar\lambda + q + \eta = 223.2^\circ
   button "next day ›"
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
-  button "e = 0.3"
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.43^\circ,\quad q_\text{ellipse} = +0.47^\circ | q_\text{equant} - q_\text{ellipse} = -2.7' | \text{OK} = 0.7000,\quad \text{OK}' = 0.7000
-  button "Mars"
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  button "an opposition"
+    OUTPUT (planet-day): 23 May 2016
+    #planet-readout: \text{23 May 2016:}\quad \bar\lambda = 253.0^\circ,\quad M = 101.7^\circ | q = -11.41^\circ,\quad \rho = \text{OK} = 0.994 | \mu = 168.5^\circ,\quad \eta = +0.08^\circ | \lambda = \bar\lambda + q + \eta = 241.6^\circ
   button "C at O"
     OUTPUT (fit-oc): 0.000
     #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
@@ -1651,30 +1657,34 @@ Regenerate with: node tools/check/smoke.js --update
   hover #observed-arcs at 0.6
   hover #observed-arcs at 0.9
   hover #observed-arcs left
-  hover #distance-plot at 0.3
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
-  hover #distance-plot at 0.6
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
-  hover #distance-plot at 0.9
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
-  hover #distance-plot left
-    OUTPUT (equant-day): 1 Jan 2018
-    #equant-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  hover #jobs-speed at 0.3
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed at 0.6
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed at 0.9
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed left
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.3
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.6
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.9
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance left
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
   hover #kepler-plot at 0.3
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
   hover #kepler-plot at 0.6
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
   hover #kepler-plot at 0.9
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
   hover #kepler-plot left
-    OUTPUT (kepler-m): 180.5°
-    #kepler-readout: M = 180.5^\circ:\quad q_\text{equant} = +0.11^\circ,\quad q_\text{ellipse} = +0.11^\circ | q_\text{equant} - q_\text{ellipse} = -0.2' | \text{OK} = 0.8995,\quad \text{OK}' = 0.8995
   hover #fit-directions at 0.3
     OUTPUT (fit-oc): 0.201
     #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'

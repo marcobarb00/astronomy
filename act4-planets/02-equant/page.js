@@ -1,26 +1,27 @@
 // @ts-check
 /* ==========================================================================
    PAGE 4.2 · THE EQUANT - SCRIPT (page.js)
-   Seven figures, each with its own init and draw (and update when it has
+   Eight figures, each with its own init and draw (and update when it has
    controls):
 	 1. the oppositions and the loops  (2D, static: Mars at its oppositions
 										to the mean Sun, and its arcs of
 										retrogradation, 1986 - 2025)
-	 2. the deferent and the equant    (2D: (a) the construction seen from
-										the north ecliptic pole, (b) the
-										distance of K; date)
+	 2. the equant's two jobs          (2D: (a) the deferent, C and Q,
+										(b) the speed and (c) the distance of
+										K against M; the centre OC)
 	 3. the perpendiculars onto QK     (2D, static: the right triangles
 										of the derivation of QK and rho)
-	 4. the equant and the ellipse     (2D: (a) the deferent and Kepler's
-										ellipse with the same e, (b) the
-										difference in direction; M; views
-										e = 0.3 and Mars)
-	 5. the fit of the centre          (2D: (a) the oppositions, (b) the
+	 4. the whole model                (2D: deferent, equant, epicycle and
+										planet; date; views e = 0.2 and Mars)
+	 5. the equant and the ellipse     (2D, static: (a) the deferent and
+										Kepler's ellipse, (b) the differences
+										in direction divided by e^2)
+	 6. the fit of the centre          (2D: (a) the oppositions, (b) the
 										loops of 2010 - 2025 with the model;
 										the centre OC)
-	 6. the equant against Mars        (error curve, fitted to 2010 - 2025,
+	 7. the equant against Mars        (error curve, fitted to 2010 - 2025,
 										page 4.1's epicycle as ghost)
-	 7. the loops of Mars again        (2D, static: arcs and intervals of
+	 8. the loops of Mars again        (2D, static: arcs and intervals of
 										1986 - 2025 with the equant's)
    Shared code: common.js, time.js, ephemeris.js, models/mean-sun.js,
    models/precession.js, models/planet-epicycle.js, models/planet-equant.js,
@@ -30,13 +31,14 @@
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
 	 1. Figure 1: the oppositions and the loops
-	 2. Figure 2: the deferent and the equant
+	 2. Figure 2: the equant's two jobs
 	 3. Figure 3: the perpendiculars onto QK
-	 4. Figure 4: the equant and Kepler's ellipse
-	 5. Figure 5: the fit of the centre
-	 6. Figure 6: the error curve
-	 7. Figure 7: the loops of Mars again
-	 8. Page start
+	 4. Figure 4: the whole model
+	 5. Figure 5: the equant and Kepler's ellipse
+	 6. Figure 6: the fit of the centre
+	 7. Figure 7: the error curve
+	 8. Figure 8: the loops of Mars again
+	 9. Page start
    ========================================================================== */
 
 /* ==========================================================================
@@ -145,18 +147,25 @@ function modelLoops(centre, equant, r, apogee, withIntervals = false) {
 	return { xs, arcs, intervals };
 }
 
-/* A plot of a quantity against the ecliptic longitude of the opposition. */
-function longitudePlot(canvas, y, yLabel, onDraw) {
-	return new Plot2D(canvas, {
-		x: [0, 360],
-		y,
-		xLabel: 'ecliptic longitude of the opposition (°)',
-		yLabel,
-		xTicks: quarterTicks,
-		aspect: 0.75,
-		maxHeight: 360,
-		onDraw
-	});
+/* A plot of a quantity against the ecliptic longitude of the opposition;
+   'options' may change its size (Figure 1 stacks two wide plots). */
+function longitudePlot(canvas, y, yLabel, onDraw, options = {}) {
+	return new Plot2D(
+		canvas,
+		Object.assign(
+			{
+				x: [0, 360],
+				y,
+				xLabel: 'ecliptic longitude of the opposition (°)',
+				yLabel,
+				xTicks: quarterTicks,
+				aspect: 0.75,
+				maxHeight: 360,
+				onDraw
+			},
+			options
+		)
+	);
 }
 
 /* The fixed scales (tools/numbers/4.2-equant.js, section 9): the
@@ -174,8 +183,14 @@ const INTERVAL_RANGE = [750, 825];
    Static. (a) each opposition to the mean Sun of 1986 - 2025, its
    ecliptic longitude less page 4.1's mean longitude there; (b) how far
    Mars went back in each loop of those years; both against the ecliptic
-   longitude of the opposition.
+   longitude of the opposition, one above the other on the same axis, so
+   that the dotted lines through both, where the dots of (a) change sign
+   (near 149° and 333°, tools/numbers/4.2-equant.js), meet the longest and
+   the shortest loops.
    ========================================================================== */
+
+/* The two stacked plots: wide and low. */
+const STACKED_PLOT = { aspect: 0.3, maxHeight: 280, minHeight: 200 };
 
 const observedFigure = {
 	init() {
@@ -186,14 +201,40 @@ const observedFigure = {
 
 			return { lon, q: norm180(lon - (fit41.L0 + fit41.n * (jd - fit41.epoch))) };
 		});
+		this.crossings = this.signChanges(this.points);
 		this.loops = marsLoops();
 		this.oppositions = longitudePlot(
 			byId('observed-oppositions'),
 			EQUATION_RANGE,
 			'ahead of the mean place (°)',
-			() => this.drawOppositions()
+			() => this.drawOppositions(),
+			STACKED_PLOT
 		);
-		this.arcs = longitudePlot(byId('observed-arcs'), ARC_RANGE, 'arc (°)', () => this.drawArcs());
+		this.arcs = longitudePlot(byId('observed-arcs'), ARC_RANGE, 'arc (°)', () => this.drawArcs(), STACKED_PLOT);
+	},
+
+	/* The ecliptic longitudes where the dots change sign: between two
+	   neighbours in longitude (the last and the first included), by linear
+	   interpolation, as the numbers script does. */
+	signChanges(points) {
+		const sorted = points.slice().sort((a, b) => a.lon - b.lon);
+		const found = [];
+
+		sorted.forEach((point, i) => {
+			const next = sorted[(i + 1) % sorted.length];
+			const span = norm360(next.lon - point.lon);
+
+			if (point.q * next.q < 0) {
+				found.push(norm360(point.lon + (span * point.q) / (point.q - next.q)));
+			}
+		});
+
+		return found;
+	},
+
+	/* The dotted lines at the sign changes, through both plots. */
+	drawCrossings(p) {
+		this.crossings.forEach(x => p.vline(x, { color: COL.muted, width: 1.2, dash: [2, 4] }));
 	},
 
 	drawOppositions() {
@@ -205,6 +246,7 @@ const observedFigure = {
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
+		this.drawCrossings(p);
 		this.points.forEach(point => p.marker(point.lon, point.q, { color: COL.planet, radius: 4.5 }));
 	},
 
@@ -216,274 +258,197 @@ const observedFigure = {
 		}
 
 		p.frame();
+		this.drawCrossings(p);
 		this.loops.forEach(loop => p.marker(loop.lon, loop.arc, { color: COL.planet, radius: 4.5 }));
 	}
 };
 
 /* ==========================================================================
-   2. FIGURE 2: THE DEFERENT AND THE EQUANT
-   (a) the model fitted on this page at the chosen date, seen from the
-   north ecliptic pole: the Earth O, the centre C and the equant Q on the
-   line to the apogee A; the deferent with K's place at every 1/24 of a
-   turn of the mean longitude (equal angles at Q); the uniform line QK and
-   the angle M at Q; the epicycle and the planet P, the line of sight, the
-   mean Sun's direction, and P's path over the last synodic period.
-   (b) the distance OK against M, with the eccentric that has the same
-   directions (C at Q) dashed. The date slider runs over the sixteen years
-   of the fit.
+   2. FIGURE 2: THE EQUANT'S TWO JOBS
+   (a) the deferent alone, seen from the north ecliptic pole with the
+   apogee A to the right: the Earth O, the centre C and the equant Q; rays
+   from Q at equal steps of M, ending at K's places on the circle; and K
+   at M = 60° with the triangle O Q K of the text and the angle M at Q.
+   (b) the speed of K seen from O, in units of n, against M, exact, with
+   its first-order curve n (1 - OQ cos M) dashed; (c) the distance OK
+   against M, exact. The slider moves C from O to Q with OQ fixed at 0.2
+   (Ptolemy's 12 in 60), so it changes only what the section is about:
+   the distance, not the speed. Fixed scales for every OC of the slider:
+   speed 0.80 to 1.25 n, OK 0.80 to 1.20 (tools/numbers/4.2-equant.js).
    ========================================================================== */
 
-/* Play at page 4.1's speed: a synodic period, one loop, in about twenty
-   seconds, slow enough to follow K, P and the line QK. */
-const EQUANT_DAYS_PER_SECOND = 40;
+const JOBS_OQ = 0.2;
+const JOBS_M = 60;
 
-/* Radius of the angle M at Q (units of the deferent's radius), the step
-   of the path (days) and the length of a tick on the deferent. */
-const M_ARC_RADIUS = 0.16;
-const PATH_STEP = 2;
-const TICK_HALF = 0.035;
+/* The drawing is centred halfway between O and Q, so that it stays put
+   while C moves; its half-span holds the circle and the label of A. */
+const JOBS_REACH = 1.3;
 
-/* Two views: e = 0.2, twice Mars', so that the triangles O Q K and C Q K
-   of the text can be seen (the loops stay at both apsides; at 0.25 they
-   vanish at the perigee), and Mars fitted on this page. The drawing's
-   room is the farthest the planet goes, 1 + e + r, and the labels. The
-   scale of panel (b) holds OK from 1 - 2e to 1 + 2e, the eccentric with
-   the same directions (tools/numbers/4.2-equant.js). */
-const EQUANT_VIEWS = {
-	'e = 0.2': { e: 0.2, y: [0.55, 1.45] },
-	Mars: { e: EQUANT.e, y: [0.75, 1.25] }
-};
+/* The angle M at Q (px), and the half-length of a tick on the circle
+   (units of the radius). */
+const JOBS_ARC = 22;
+const JOBS_TICK = 0.035;
 
-const equantFigure = {
-	plot: null,
-	state: null,
+const JOBS_SPEED_RANGE = [0.75, 1.3];
+const JOBS_DISTANCE_RANGE = [0.75, 1.25];
+
+/* The speed of K seen from O at the mean anomaly M (deg), in units of n:
+   d(M + q)/dM, by a central difference. */
+function speedSeenFromEarth(M, centre, equant) {
+	const h = 0.01;
+
+	return (
+		1 + (PlanetEquant.zodiacal(M + h, centre, equant).q - PlanetEquant.zodiacal(M - h, centre, equant).q) / (2 * h)
+	);
+}
+
+const jobsFigure = {
 	labels: new LabelPlacer(), // keeps the labels of one drawing apart
-
-	view: 'e = 0.2',
-	params: null,
+	centre: 0.1,
 
 	init() {
-		squareCanvas(this, byId('equant-canvas'), 420, 10);
-		this.params = this.parametersOf(this.view);
-
-		this.plot = new Plot2D(byId('distance-plot'), {
+		const plotOptions = {
 			x: [0, 360],
-			y: EQUANT_VIEWS[this.view].y,
 			xLabel: 'mean anomaly M (°)',
-			yLabel: 'distance OK',
 			xTicks: quarterTicks,
-			aspect: 0.95,
-			maxHeight: 440,
-			margin: { top: 28 },
-			onDraw: () => this.drawPlot()
-		});
+			aspect: 0.5,
+			maxHeight: 240,
+			minHeight: 180,
+			margin: { top: 26 }
+		};
+
+		squareCanvas(this, byId('jobs-canvas'), 400, 10);
+		this.speed = new Plot2D(
+			byId('jobs-speed'),
+			Object.assign({}, plotOptions, {
+				y: JOBS_SPEED_RANGE,
+				yLabel: 'speed (n)',
+				onDraw: () => this.drawSpeed()
+			})
+		);
+		this.distance = new Plot2D(
+			byId('jobs-distance'),
+			Object.assign({}, plotOptions, {
+				y: JOBS_DISTANCE_RANGE,
+				yLabel: 'distance OK',
+				onDraw: () => this.drawDistance()
+			})
+		);
 
 		wireSlider(
-			byId('equant-day'),
+			byId('jobs-oc'),
 			() => this.update(),
-			value => dateYearText(FIT_START + Number(value))
+			value => fixed(Number(value), 3)
 		);
-		wirePresets(byId('equant-day').closest('figure'));
-		wirePlayButton(byId('equant-play'), byId('equant-day'), EQUANT_DAYS_PER_SECOND);
-		buildChoice(byId('equant-views'), Object.keys(EQUANT_VIEWS), this.view, name => this.choose(name));
-		this.choose(this.view);
-	},
-
-	/* The fitted Mars with the eccentricity of a view. */
-	parametersOf(name) {
-		return Object.assign({}, EQUANT, { e: EQUANT_VIEWS[name].e });
-	},
-
-	/* A view: its e and the scale of (b) (CLAUDE.md: a view the reader
-	   chooses may change a scale). */
-	choose(name) {
-		this.view = name;
-		this.params = this.parametersOf(name);
-		this.plot.setRange([0, 360], EQUANT_VIEWS[name].y);
+		wirePresets(byId('jobs-oc').closest('figure'));
 		this.update();
 	},
 
 	update() {
-		const jd = FIT_START + readNumber('equant-day');
-		const now = PlanetEquant.state(this.params, jd);
+		const OC = readNumber('jobs-oc');
+		const OQ = JOBS_OQ;
 
-		this.state = { jd, now, parts: PlanetEquant.construction(this.params, now), path: this.path(jd) };
-		this.showReadout();
-		this.draw();
-		this.plot.redraw();
-	},
-
-	/* The planet's places over the synodic period before jd. */
-	path(jd) {
-		const period = 360 / (N_SUN - N_MARS);
-		const points = [];
-
-		for (let t = jd - period; t <= jd + 1e-9; t += PATH_STEP) {
-			points.push(PlanetEquant.construction(this.params, PlanetEquant.state(this.params, t)).planet);
-		}
-
-		return points;
-	},
-
-	showReadout() {
-		const { jd, now } = this.state;
-
-		showLines('equant-readout', [
-			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 1)}^\\circ,\\quad M = ${fixedAngle(now.M, 1)}^\\circ`,
-			`q = ${texSigned(now.q, 2)},\\quad \\rho = \\text{OK} = ${fixed(now.rho, 3)}`,
-			`\\mu = ${fixedAngle(now.mu, 1)}^\\circ,\\quad \\eta = ${texSigned(now.eta, 2)}`,
-			`\\lambda = \\bar\\lambda + q + \\eta = ${fixedAngle(now.lambda, 1)}^\\circ`
+		this.centre = OC;
+		showLines('jobs-readout', [
+			`\\text{OC} = ${fixed(OC, 3)} = ${fixed(OC / OQ, 2)}\\,\\text{OQ}`,
+			`\\text{speed: } ${fixed(speedSeenFromEarth(0, OC, OQ), 3)}\\,n \\text{ to } ${fixed(speedSeenFromEarth(180, OC, OQ), 3)}\\,n`,
+			`\\text{OK: } ${fixed(PlanetEquant.zodiacal(180, OC, OQ).distance, 3)} \\text{ to } ${fixed(PlanetEquant.zodiacal(0, OC, OQ).distance, 3)}`
 		]);
+		this.draw();
+		this.speed.redraw();
+		this.distance.redraw();
+	},
+
+	/* K on the circle at the mean anomaly M: [x, y], apogee along x. */
+	pointK(M) {
+		return PlanetEquant.centreOfEpicycle(M, this.centre, JOBS_OQ);
 	},
 
 	/* Panel (a). */
 	draw() {
-		if (!this.state) {
+		const ctx = this.ctx;
+
+		if (!ctx) {
 			return;
 		}
 
-		const ctx = this.ctx;
-		const { now, parts, path } = this.state;
-		const r = this.params.r;
-
-		this.scale = this.R / (1 + this.params.e + this.params.r + 0.14);
-
-		const at = point => ({ x: this.cx + this.scale * point[0], y: this.cy - this.scale * point[1] });
+		const OC = this.centre;
+		const OQ = JOBS_OQ;
+		const scale = this.R / JOBS_REACH;
+		const at = p => ({ x: this.cx + scale * (p[0] - OQ / 2), y: this.cy - scale * p[1] });
 		const O = at([0, 0]);
-		const C = at(parts.C);
-		const Q = at(parts.Q);
-		const K = at(parts.K);
-		const P = at(parts.planet);
-		const edge = this.scale * (1 + this.params.e + r);
+		const C = at([OC, 0]);
+		const Q = at([OQ, 0]);
+		const A = at([OC + 1, 0]);
+		const K = at(this.pointK(JOBS_M));
 
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
 
-		// the direction of gamma, the line of the apsides through O, C and Q,
-		// the deferent about C, and the mean Sun's direction
-		segment(ctx, O, towards(O, 0, edge), { color: COL.muted, width: 1 });
-		segment(
-			ctx,
-			towards(O, now.apogee + 180, this.scale * (1 - this.params.e)),
-			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e)),
-			{
-				color: COL.muted,
-				width: 1,
-				dash: [2, 4]
-			}
-		);
-		circle(ctx, C, this.scale, { color: COL.deferent, width: 2 });
-		this.drawTicks(at, now.apogee);
-		segment(ctx, O, towards(O, now.sun, edge), { color: COL.sun, width: 1.5, dash: [6, 4] });
+		// the line of the apsides, the circle about C
+		segment(ctx, at([OQ / 2 - JOBS_REACH, 0]), at([OQ / 2 + JOBS_REACH, 0]), {
+			color: COL.muted,
+			width: 1,
+			dash: [2, 4]
+		});
+		circle(ctx, C, scale, { color: COL.deferent, width: 2 });
 
-		// the path of P over the last synodic period
-		ctx.strokeStyle = withAlpha(COL.planet, 0.35);
-		ctx.lineWidth = 1.5;
-		ctx.beginPath();
-		path.map(at).forEach((q, i) => (i === 0 ? ctx.moveTo(q.x, q.y) : ctx.lineTo(q.x, q.y)));
-		ctx.stroke();
-
-		// the uniform line QK and the angle M at Q; the epicycle, its
-		// radius to P and the line of sight
-		segment(ctx, Q, K, { color: COL.ink, width: 1.2 });
-		segment(ctx, O, K, { color: COL.ink, width: 1, dash: [3, 3] });
-		screenArc(ctx, Q, M_ARC_RADIUS * this.scale, now.apogee, now.apogee + now.M, { color: COL.ink, width: 1.5 });
-		circle(ctx, K, r * this.scale, { color: COL.epicycle, width: 2 });
-		segment(ctx, K, P, { color: COL.epicycle, width: 1.8 });
-		segment(ctx, O, towards(O, now.lambda, edge), { color: COL.planet, width: 1.5 });
-
-		drawDot(ctx, O.x, O.y, 6, COL.earth);
-		drawDot(ctx, C.x, C.y, 3, COL.ink);
-		drawDot(ctx, Q.x, Q.y, 3.5, COL.ink);
-		drawDot(ctx, K.x, K.y, 3.5, COL.ink);
-		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
-		this.drawLabels({ O, C, Q, K, P }, now, edge);
-	},
-
-	/* K's place at every 1/24 of a turn of the mean longitude: equal
-	   angles at Q, unequal arcs of the deferent. */
-	drawTicks(at, apogee) {
-		const o = PlanetEquant.offsets(this.params);
-		const C = [o.centre * cos(apogee), o.centre * sin(apogee)];
-
+		// rays from Q at equal steps of M, and K's places where they meet
+		// the circle, ticked across it
 		for (let M = 0; M < 360; M += 15) {
-			const local = PlanetEquant.centreOfEpicycle(M, o.centre, o.equant);
-			const lon = apogee + atan2d(local[1], local[0] - o.centre); // seen from C
-			const inner = [C[0] + (1 - TICK_HALF) * cos(lon), C[1] + (1 - TICK_HALF) * sin(lon)];
-			const outer = [C[0] + (1 + TICK_HALF) * cos(lon), C[1] + (1 + TICK_HALF) * sin(lon)];
+			const local = this.pointK(M);
+			const lon = atan2d(local[1], local[0] - OC); // seen from C
+			const inner = [OC + (1 - JOBS_TICK) * cos(lon), (1 - JOBS_TICK) * sin(lon)];
+			const outer = [OC + (1 + JOBS_TICK) * cos(lon), (1 + JOBS_TICK) * sin(lon)];
 
-			segment(this.ctx, at(inner), at(outer), { color: COL.deferent, width: 1.5 });
-		}
-	},
-
-	/* The labels: single letters and symbols, never words, which would
-	   jump from side to side as the points turn (CLAUDE.md). O, C and Q
-	   take the two sides of the line of the apsides alternately. */
-	drawLabels(points, now, edge) {
-		const ctx = this.ctx;
-		const { O, C, Q, K, P } = points;
-		const side = now.apogee + 90;
-
-		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
-		centredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
-		centredLabel(
-			ctx,
-			'A',
-			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e) + 12),
-			COL.muted,
-			this.labels
-		);
-		centredLabel(
-			ctx,
-			'M',
-			towards(Q, now.apogee + now.M / 2, M_ARC_RADIUS * this.scale + 10),
-			COL.ink,
-			this.labels
-		);
-		labelOutside(ctx, 'O', O, 7, side + 180, COL.earth, this.labels);
-		labelOutside(ctx, 'C', C, 4, side, COL.ink, this.labels);
-		labelOutside(ctx, 'Q', Q, 4, side + 180, COL.ink, this.labels);
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			4,
-			clearestDirection([now.meanLongitude + 180, now.centreLongitude, now.sun]),
-			COL.ink,
-			this.labels
-		);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([now.sun + 180, now.lambda + 180, now.lambda]),
-			COL.planet,
-			this.labels
-		);
-	},
-
-	/* Panel (b). */
-	drawPlot() {
-		if (!this.state) {
-			return;
+			segment(ctx, Q, at(local), { color: withAlpha(COL.muted, 0.45), width: 1 });
+			segment(ctx, at(inner), at(outer), { color: COL.deferent, width: 1.8 });
 		}
 
-		const p = this.plot;
-		const o = PlanetEquant.offsets(this.params);
+		// the triangle O Q K at M = 60°, and the angle M at Q
+		segment(ctx, Q, K, { color: COL.ink, width: 1.8 });
+		segment(ctx, O, K, { color: COL.ink, width: 1.2, dash: [4, 4] });
+		screenArc(ctx, Q, JOBS_ARC, 0, JOBS_M, { color: COL.ink, width: 1.5 });
+
+		drawDot(ctx, A.x, A.y, 3, COL.muted);
+		drawDot(ctx, O.x, O.y, 6, COL.earth);
+		drawDot(ctx, C.x, C.y, 3.5, COL.ink);
+		drawDot(ctx, Q.x, Q.y, 3.5, COL.ink);
+		drawDot(ctx, K.x, K.y, 4, COL.ink);
+
+		// letters only; O, C and Q below the line at fixed sides, so that C
+		// sitting on O or on Q never covers their letters
+		labelOutside(ctx, 'O', O, 7, 225, COL.earth, this.labels);
+		labelOutside(ctx, 'C', C, 4, 270, COL.ink, this.labels);
+		labelOutside(ctx, 'Q', Q, 4, 315, COL.ink, this.labels);
+		labelOutside(ctx, 'A', A, 4, -40, COL.muted, this.labels);
+		labelOutside(ctx, 'K', K, 5, JOBS_M, COL.ink, this.labels);
+		centredLabel(ctx, 'M', towards(Q, JOBS_M / 2, JOBS_ARC + 10), COL.ink, this.labels);
+	},
+
+	/* Panel (b): the speed, exact, and its first order dashed. */
+	drawSpeed() {
+		const p = this.speed;
 
 		p.frame();
 		p.hline(1, { color: COL.ink, width: 1 });
 		nameAbove(p, 'apogee', 0);
 		nameAbove(p, 'perigee', 180);
 		nameAbove(p, 'apogee', 360);
-		p.fn(M => PlanetEquant.zodiacal(M, o.equant, o.equant).distance, {
-			color: COL.muted,
-			width: 1.5,
-			dash: [6, 5]
-		});
-		p.fn(M => PlanetEquant.zodiacal(M, o.centre, o.equant).distance, { color: COL.deferent, width: 2.4 });
-		p.marker(this.state.now.M, this.state.now.rho, { color: COL.deferent, radius: 5 });
+		p.fn(M => 1 - JOBS_OQ * cos(M), { color: COL.muted, width: 1.5, dash: [6, 5] });
+		p.fn(M => speedSeenFromEarth(M, this.centre, JOBS_OQ), { color: COL.deferent, width: 2.4 });
+	},
+
+	/* Panel (c): the distance, exact. */
+	drawDistance() {
+		const p = this.distance;
+
+		p.frame();
+		p.hline(1, { color: COL.ink, width: 1 });
+		nameAbove(p, 'apogee', 0);
+		nameAbove(p, 'perigee', 180);
+		nameAbove(p, 'apogee', 360);
+		p.fn(M => PlanetEquant.zodiacal(M, this.centre, JOBS_OQ).distance, { color: COL.deferent, width: 2.4 });
 	}
 };
 
@@ -661,96 +626,310 @@ const perpendicularFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE EQUANT AND KEPLER'S ELLIPSE
-   (a) the deferent (centre C) and Kepler's ellipse with the same e
-   (semi-major axis 1, centre C, foci O and Q), apogee to the right; K on
-   the circle at the mean anomaly M by the equant, K' on the ellipse by
-   the area law; the lines from Q to both. (b) the direction of K seen
-   from O less that of K', and the same for page 2.1's eccentric (OC =
-   2e), against M. Two views: e = 0.3, exaggerated, and Mars. The scale
-   of (b) changes only with the view: up to 135' and 468' at 0.3, 10.5'
-   and 31.4' for Mars (tools/numbers/4.2-equant.js).
+   4. FIGURE 4: THE WHOLE MODEL
+   The model fitted on this page at the chosen date, seen from the north
+   ecliptic pole: the Earth O, the centre C and the equant Q on the line
+   to the apogee A; the deferent, the uniform line QK, the line OK dashed
+   and the angle M at Q; the epicycle and the planet P, the line of sight,
+   the mean Sun's direction, and P's path over the last synodic period.
+   The button "an opposition" sets the date when K is opposite the mean
+   Sun, where P lies on OK. The date slider runs over the sixteen years of
+   the fit; two views, e = 0.2 and Mars.
    ========================================================================== */
 
-const KEPLER_VIEWS = {
-	'e = 0.3': { e: 0.3, y: [-500, 500] },
-	Mars: { e: EQUANT.e, y: [-35, 35] }
-};
-const KEPLER_DEGREES_PER_SECOND = 40;
-const KEPLER_REACH = 1.22;
+/* Play at page 4.1's speed: a synodic period, one loop, in about twenty
+   seconds, slow enough to follow K, P and the line QK. */
+const EQUANT_DAYS_PER_SECOND = 40;
 
-const keplerFigure = {
-	plot: null,
-	view: 'e = 0.3',
-	labels: new LabelPlacer(),
+/* The step of the path (days). */
+const PATH_STEP = 2;
+
+/* The date of the "an opposition" button is searched for near this day of
+   the slider (May 2016), in each view's own model. */
+const OPPOSITION_NEAR = 2333;
+
+/* Two views: e = 0.2, twice Mars', where O, C and Q stand apart (the
+   loops stay at both apsides; at 0.25 they vanish at the perigee), and
+   Mars fitted on this page. The drawing's room is the farthest the
+   planet goes, 1 + e + r, and the labels. 'arc' is the radius of the
+   angle M at Q (units of the deferent's radius): inside OQ at e = 0.2,
+   and for Mars, where O, C and Q are a few pixels apart, beyond O and the
+   labels of O, C and Q, so that the arc and M stay clear of them. */
+const EQUANT_VIEWS = {
+	'e = 0.2': { e: 0.2, arc: 0.16 },
+	Mars: { e: EQUANT.e, arc: 0.4 }
+};
+
+const planetFigure = {
+	state: null,
+	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+
+	view: 'e = 0.2',
+	params: null,
 
 	init() {
-		const figure = byId('kepler-canvas').closest('figure');
-
-		squareCanvas(this, byId('kepler-canvas'), 420, 10);
-
-		this.plot = new Plot2D(byId('kepler-plot'), {
-			x: [0, 360],
-			y: KEPLER_VIEWS[this.view].y,
-			xLabel: 'mean anomaly M (°)',
-			yLabel: 'difference (′)',
-			xTicks: quarterTicks,
-			aspect: 0.95,
-			maxHeight: 440,
-			margin: { top: 28 },
-			onDraw: () => this.drawPlot()
-		});
+		squareCanvas(this, byId('planet-canvas'), 420, 10);
+		this.params = this.parametersOf(this.view);
 
 		wireSlider(
-			byId('kepler-m'),
+			byId('planet-day'),
 			() => this.update(),
-			value => `${fixed(Number(value), 1)}°`
+			value => dateYearText(FIT_START + Number(value))
 		);
-		wirePresets(figure);
-		wirePlayButton(byId('kepler-play'), byId('kepler-m'), KEPLER_DEGREES_PER_SECOND);
-		buildChoice(byId('kepler-views'), Object.keys(KEPLER_VIEWS), this.view, name => this.choose(name));
+		wirePresets(byId('planet-day').closest('figure'));
+		wirePlayButton(byId('planet-play'), byId('planet-day'), EQUANT_DAYS_PER_SECOND);
+		buildChoice(byId('planet-views'), Object.keys(EQUANT_VIEWS), this.view, name => this.choose(name));
 		this.choose(this.view);
 	},
 
-	/* A view: its e and the scale of (b) (CLAUDE.md: a view the reader
-	   chooses may change a scale). */
+	/* The day of the slider when the view's model has K opposite the mean
+	   Sun, near OPPOSITION_NEAR: there P lies on the line OK. */
+	oppositionDay() {
+		const off = day => {
+			const s = PlanetEquant.state(this.params, FIT_START + day);
+
+			return norm180(s.centreLongitude - s.sun - 180);
+		};
+
+		return bisect(off, OPPOSITION_NEAR - 60, OPPOSITION_NEAR + 60, 40);
+	},
+
+	/* The fitted Mars with the eccentricity of a view. */
+	parametersOf(name) {
+		return Object.assign({}, EQUANT, { e: EQUANT_VIEWS[name].e });
+	},
+
+	/* A view: its e, and the date of its opposition for the button. */
 	choose(name) {
 		this.view = name;
-		this.plot.setRange([0, 360], KEPLER_VIEWS[name].y);
+		this.params = this.parametersOf(name);
+		byId('planet-opposition').setAttribute('data-value', fixed(Math.round(4 * this.oppositionDay()) / 4, 2));
 		this.update();
 	},
 
 	update() {
-		const e = KEPLER_VIEWS[this.view].e;
-		const M = readNumber('kepler-m');
-		const equant = PlanetEquant.zodiacal(M, e, 2 * e);
-		const ellipse = PlanetEquant.kepler(M, e);
+		const jd = FIT_START + readNumber('planet-day');
+		const now = PlanetEquant.state(this.params, jd);
 
-		this.state = { e, M, equant, ellipse, K: PlanetEquant.centreOfEpicycle(M, e, 2 * e) };
-		showLines('kepler-readout', [
-			`M = ${fixed(M, 1)}^\\circ:\\quad q_\\text{equant} = ${texSigned(equant.q, 2)},\\quad q_\\text{ellipse} = ${texSigned(ellipse.q, 2)}`,
-			`q_\\text{equant} - q_\\text{ellipse} = ${signed(60 * (equant.q - ellipse.q), 1).replace('−', '-')}'`,
-			`\\text{OK} = ${fixed(equant.distance, 4)},\\quad \\text{OK}' = ${fixed(ellipse.distance, 4)}`
-		]);
+		this.state = { jd, now, parts: PlanetEquant.construction(this.params, now), path: this.path(jd) };
+		this.showReadout();
 		this.draw();
-		this.plot.redraw();
 	},
 
-	/* Panel (a), centred on C, the apogee to the right. */
+	/* The planet's places over the synodic period before jd. */
+	path(jd) {
+		const period = 360 / (N_SUN - N_MARS);
+		const points = [];
+
+		for (let t = jd - period; t <= jd + 1e-9; t += PATH_STEP) {
+			points.push(PlanetEquant.construction(this.params, PlanetEquant.state(this.params, t)).planet);
+		}
+
+		return points;
+	},
+
+	showReadout() {
+		const { jd, now } = this.state;
+
+		showLines('planet-readout', [
+			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 1)}^\\circ,\\quad M = ${fixedAngle(now.M, 1)}^\\circ`,
+			`q = ${texSigned(now.q, 2)},\\quad \\rho = \\text{OK} = ${fixed(now.rho, 3)}`,
+			`\\mu = ${fixedAngle(now.mu, 1)}^\\circ,\\quad \\eta = ${texSigned(now.eta, 2)}`,
+			`\\lambda = \\bar\\lambda + q + \\eta = ${fixedAngle(now.lambda, 1)}^\\circ`
+		]);
+	},
+
+	/* The drawing. */
 	draw() {
 		if (!this.state) {
 			return;
 		}
 
 		const ctx = this.ctx;
-		const { e, M, K, ellipse } = this.state;
+		const { now, parts, path } = this.state;
+		const r = this.params.r;
+
+		this.scale = this.R / (1 + this.params.e + this.params.r + 0.14);
+
+		const at = point => ({ x: this.cx + this.scale * point[0], y: this.cy - this.scale * point[1] });
+		const O = at([0, 0]);
+		const C = at(parts.C);
+		const Q = at(parts.Q);
+		const K = at(parts.K);
+		const P = at(parts.planet);
+		const edge = this.scale * (1 + this.params.e + r);
+
+		ctx.clearRect(0, 0, this.width, this.width);
+		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
+
+		// the direction of gamma, the line of the apsides through O, C and Q,
+		// the deferent about C, and the mean Sun's direction
+		segment(ctx, O, towards(O, 0, edge), { color: COL.muted, width: 1 });
+		segment(
+			ctx,
+			towards(O, now.apogee + 180, this.scale * (1 - this.params.e)),
+			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e)),
+			{
+				color: COL.muted,
+				width: 1,
+				dash: [2, 4]
+			}
+		);
+		circle(ctx, C, this.scale, { color: COL.deferent, width: 2 });
+		segment(ctx, O, towards(O, now.sun, edge), { color: COL.sun, width: 1.5, dash: [6, 4] });
+
+		// the path of P over the last synodic period
+		ctx.strokeStyle = withAlpha(COL.planet, 0.35);
+		ctx.lineWidth = 1.5;
+		ctx.beginPath();
+		path.map(at).forEach((q, i) => (i === 0 ? ctx.moveTo(q.x, q.y) : ctx.lineTo(q.x, q.y)));
+		ctx.stroke();
+
+		// the uniform line QK and the angle M at Q; the epicycle, its
+		// radius to P and the line of sight
+		segment(ctx, Q, K, { color: COL.ink, width: 1.2 });
+		segment(ctx, O, K, { color: COL.ink, width: 1, dash: [3, 3] });
+		screenArc(ctx, Q, EQUANT_VIEWS[this.view].arc * this.scale, now.apogee, now.apogee + now.M, {
+			color: COL.ink,
+			width: 1.5
+		});
+		circle(ctx, K, r * this.scale, { color: COL.epicycle, width: 2 });
+		segment(ctx, K, P, { color: COL.epicycle, width: 1.8 });
+		segment(ctx, O, towards(O, now.lambda, edge), { color: COL.planet, width: 1.5 });
+
+		drawDot(ctx, O.x, O.y, 6, COL.earth);
+		drawDot(ctx, C.x, C.y, 3, COL.ink);
+		drawDot(ctx, Q.x, Q.y, 3.5, COL.ink);
+		drawDot(ctx, K.x, K.y, 3.5, COL.ink);
+		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
+		this.drawLabels({ O, C, Q, K, P }, now, edge);
+	},
+
+	/* The labels: single letters and symbols, never words, which would
+	   jump from side to side as the points turn (CLAUDE.md). O, C and Q
+	   take the two sides of the line of the apsides alternately. */
+	drawLabels(points, now, edge) {
+		const ctx = this.ctx;
+		const { O, C, Q, K, P } = points;
+		const side = now.apogee + 90;
+		const DOT_ROOM = 8;
+
+		const reserveDots = dots =>
+			dots.forEach(point =>
+				this.labels.reserve({
+					x0: point.x - DOT_ROOM,
+					y0: point.y - DOT_ROOM,
+					x1: point.x + DOT_ROOM,
+					y1: point.y + DOT_ROOM
+				})
+			);
+
+		// the Earth and the planet are the labels' obstacles too: near an
+		// opposition P passes by the angle M at Q
+		reserveDots([O, P]);
+
+		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
+		centredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
+		centredLabel(
+			ctx,
+			'A',
+			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e) + 12),
+			COL.muted,
+			this.labels
+		);
+		// O, C and Q first, so that M steps aside rather than C
+		labelOutside(ctx, 'O', O, 7, side + 180, COL.earth, this.labels);
+		labelOutside(ctx, 'C', C, 4, side, COL.ink, this.labels);
+		labelOutside(ctx, 'Q', Q, 4, side + 180, COL.ink, this.labels);
+
+		// then M, which must not cover the dots C and Q either
+		reserveDots([C, Q]);
+		centredLabel(
+			ctx,
+			'M',
+			towards(Q, now.apogee + now.M / 2, EQUANT_VIEWS[this.view].arc * this.scale + 10),
+			COL.ink,
+			this.labels
+		);
+		labelOutside(
+			ctx,
+			'K',
+			K,
+			4,
+			clearestDirection([now.meanLongitude + 180, now.centreLongitude, now.sun]),
+			COL.ink,
+			this.labels
+		);
+		labelOutside(
+			ctx,
+			'P',
+			P,
+			7,
+			clearestDirection([now.sun + 180, now.lambda + 180, now.lambda]),
+			COL.planet,
+			this.labels
+		);
+	}
+};
+
+/* ==========================================================================
+   5. FIGURE 5: THE EQUANT AND KEPLER'S ELLIPSE
+   Static. (a) the deferent (centre C) and Kepler's ellipse with the same
+   e (semi-major axis 1, centre C, foci O and Q), drawn at e = 0.3 so that
+   they differ, the apogee to the right; K on the circle at M = 45° by the
+   equant, K' on the ellipse by the area law, and the lines from Q to
+   both. (b) the direction of K seen from O less that of K', and the same
+   for page 2.1's eccentric (OC = 2e), divided by e^2 (radians), against
+   M: exact for Mars, solid, and the second-order terms -1/4 sin 2M and
+   3/4 sin 2M, dashed. Exact for Mars the curves reach 0.303 and 0.906, so
+   the scale is [-1, 1] (tools/numbers/4.2-equant.js).
+   ========================================================================== */
+
+const KEPLER_E = 0.3;
+const KEPLER_M = 45;
+const KEPLER_REACH = 1.22;
+const KEPLER_RANGE = [-1, 1];
+
+const keplerFigure = {
+	plot: null,
+	labels: new LabelPlacer(),
+
+	init() {
+		squareCanvas(this, byId('kepler-canvas'), 420, 10);
+
+		this.plot = new Plot2D(byId('kepler-plot'), {
+			x: [0, 360],
+			y: KEPLER_RANGE,
+			xLabel: 'mean anomaly M (°)',
+			yLabel: 'difference ÷ e²',
+			xTicks: quarterTicks,
+			aspect: 0.95,
+			maxHeight: 440,
+			margin: { top: 28 },
+			onDraw: () => this.drawPlot()
+		});
+		this.draw();
+	},
+
+	/* Panel (a), centred on C, the apogee to the right. */
+	draw() {
+		const ctx = this.ctx;
+
+		if (!ctx) {
+			return;
+		}
+
+		const e = KEPLER_E;
+		const M = KEPLER_M;
 		const scale = this.R / KEPLER_REACH;
 		const at = point => ({ x: this.cx + scale * (point[0] - e), y: this.cy - scale * point[1] });
 		const O = at([0, 0]);
 		const C = at([e, 0]);
 		const Q = at([2 * e, 0]);
+		const K = PlanetEquant.centreOfEpicycle(M, e, 2 * e);
 		const Kc = at(K);
-		const Ke = at(ellipse.point);
+		const ellipsePoint = PlanetEquant.kepler(M, e).point;
+		const Ke = at(ellipsePoint);
 
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
@@ -774,8 +953,10 @@ const keplerFigure = {
 		drawDot(ctx, Kc.x, Kc.y, 5.5, COL.deferent);
 		drawDot(ctx, Ke.x, Ke.y, 5, COL.planet);
 
-		// the labels: letters only (CLAUDE.md)
+		// the labels: letters only (CLAUDE.md); K outside the circle, K'
+		// inside it, clear of the circle and of its line to Q
 		const outward = atan2d(K[1], K[0] - e);
+		const toQ = atan2d(-ellipsePoint[1], 2 * e - ellipsePoint[0]);
 
 		centredLabel(ctx, 'A', at([e + 1.15, 0]), COL.muted, this.labels);
 		centredLabel(ctx, 'M', towards(Q, M / 2, 0.25 * scale + 10), COL.ink, this.labels);
@@ -783,33 +964,41 @@ const keplerFigure = {
 		labelOutside(ctx, 'C', C, 4, 90, COL.ink, this.labels);
 		labelOutside(ctx, 'Q', Q, 4, 270, COL.ink, this.labels);
 		labelOutside(ctx, 'K', Kc, 7, outward, COL.deferent, this.labels);
-		labelOutside(ctx, 'K′', Ke, 7, outward + 180, COL.planet, this.labels);
+		labelOutside(
+			ctx,
+			'K′',
+			Ke,
+			7,
+			clearestDirection([outward, outward + 90, outward - 90, toQ]),
+			COL.planet,
+			this.labels
+		);
 	},
 
-	/* Panel (b): the differences in arcminutes. */
+	/* Panel (b): the differences from the ellipse divided by e^2, exact
+	   for Mars and to second order, with a word on each pair of curves. */
 	drawPlot() {
-		if (!this.state) {
-			return;
-		}
-
 		const p = this.plot;
-		const e = this.state.e;
-		const difference = centre => M =>
-			60 * (PlanetEquant.zodiacal(M, centre, 2 * e).q - PlanetEquant.kepler(M, e).q);
+		const e = EQUANT.e;
+		const exact = centre => M =>
+			(PlanetEquant.zodiacal(M, centre, 2 * e).q - PlanetEquant.kepler(M, e).q) / R2D / (e * e);
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
 		nameAbove(p, 'apogee', 0);
 		nameAbove(p, 'perigee', 180);
 		nameAbove(p, 'apogee', 360);
-		p.fn(difference(2 * e), { color: COL.muted, width: 1.5, dash: [6, 5] });
-		p.fn(difference(e), { color: COL.deferent, width: 2.4 });
-		p.marker(this.state.M, difference(e)(this.state.M), { color: COL.deferent, radius: 5 });
+		p.fn(M => 0.75 * sin(2 * M), { color: COL.muted, width: 1.5, dash: [6, 5] });
+		p.fn(M => -0.25 * sin(2 * M), { color: COL.deferent, width: 1.5, dash: [6, 5] });
+		p.fn(exact(2 * e), { color: COL.muted, width: 2.4 });
+		p.fn(exact(e), { color: COL.deferent, width: 2.4 });
+		p.text('eccentric', 60, 0.8, { color: COL.muted, align: 'center', dx: 0 });
+		p.text('equant', 135, 0.4, { color: COL.deferent, align: 'center', dx: 0 });
 	}
 };
 
 /* ==========================================================================
-   5. FIGURE 5: THE FIT OF THE CENTRE
+   6. FIGURE 6: THE FIT OF THE CENTRE
    (a) the eight oppositions to the mean Sun of 2010 - 2025, each as its
    ecliptic longitude less the mean longitude of the separate fit, with
    the model's zodiacal equation; (b) the eight loops of those years with
@@ -913,7 +1102,7 @@ const fitFigure = {
 };
 
 /* ==========================================================================
-   6. FIGURE 6: THE ERROR CURVE
+   7. FIGURE 7: THE ERROR CURVE
    The equant fitted to 2010 - 2025 against the reference Mars, in
    degrees, with page 4.1's epicycle as a ghost; over four years,
    2016 - 2019, the sixteen years of the fit and two centuries; dots at
@@ -959,7 +1148,7 @@ const errorFigure = {
 };
 
 /* ==========================================================================
-   6. FIGURE 6: THE LOOPS OF MARS AGAIN
+   8. FIGURE 8: THE LOOPS OF MARS AGAIN
    Static: page 4.1's Figure 7, (a) the arcs and (b) the time from each
    opposition to the mean Sun to the next, like the model's (the last, in
    2025, has none yet), against the ecliptic longitude of the opposition, with the equant's curves and
@@ -1010,7 +1199,7 @@ const loopsFigure = {
 };
 
 /* ==========================================================================
-   8. PAGE START
+   9. PAGE START
    Shared components first (they typeset the prose), then the figures.
    ========================================================================== */
 
@@ -1018,8 +1207,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
 	startFigures([
 		observedFigure,
-		equantFigure,
+		jobsFigure,
 		perpendicularFigure,
+		planetFigure,
 		keplerFigure,
 		fitFigure,
 		errorFigure,
