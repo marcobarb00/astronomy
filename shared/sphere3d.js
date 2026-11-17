@@ -19,7 +19,7 @@
 	 Points are 3D vectors in the base frame of the page (by convention the
 	 equatorial frame: x towards the vernal point, z towards the north
 	 celestial pole), with the sphere of unit radius. The camera looks at
-	 the centre; yaw turns about z, pitch tilts towards the viewer.
+	 the center; yaw turns about z, pitch tilts towards the viewer.
 	 Orthographic projection; a depth d > 0 means "behind the sphere".
 	 Everything behind is drawn faded.
 
@@ -298,9 +298,9 @@ class Sphere3D {
 	smallCircle(pole, polarAngle, style = {}) {
 		const n = normalize3(pole);
 		const [a, b] = planeBasis(n);
-		const centre = scale(n, cos(polarAngle));
+		const center = scale(n, cos(polarAngle));
 		const points = sampleParametric(t => {
-			return add3(centre, arcPoint(a, b, t, sin(polarAngle)));
+			return add3(center, arcPoint(a, b, t, sin(polarAngle)));
 		});
 
 		this.path(points, style);
@@ -333,7 +333,7 @@ class Sphere3D {
 		ctx.globalAlpha = 1;
 	}
 
-	/* Disc spanned by a, b (a shaded plane through the centre). */
+	/* Disc spanned by a, b (a shaded plane through the center). */
 	fillPlane(a, b, style = {}, r = 1) {
 		this.fill(sampleCircle(a, b, r), style);
 	}
@@ -398,7 +398,7 @@ class Sphere3D {
 		ctx.globalAlpha = 1;
 	}
 
-	/* Arrow from the centre to 'tip' with a label at the tip. */
+	/* Arrow from the center to 'tip' with a label at the tip. */
 	axis(tip, text, style = {}) {
 		this.arrow(ORIGIN, tip, style);
 		this.label(text, tip, { color: style.labelColor ?? COL.ink, dx: 6, dy: -4 });

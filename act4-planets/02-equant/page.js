@@ -8,7 +8,7 @@
 										retrogradation, 1986 - 2025)
 	 2. the equant's two jobs          (2D: (a) the deferent, C and Q,
 										(b) the speed and (c) the distance of
-										K against M; the centre OC)
+										K against M; the center OC)
 	 3. the perpendiculars onto QK     (2D, static: the right triangles
 										of the derivation of QK and rho)
 	 4. the whole model                (2D: deferent, equant, epicycle and
@@ -16,9 +16,9 @@
 	 5. the equant and the ellipse     (2D, static: (a) the deferent and
 										Kepler's ellipse, (b) the differences
 										in direction divided by e^2)
-	 6. the fit of the centre          (2D: (a) the oppositions, (b) the
+	 6. the fit of the center          (2D: (a) the oppositions, (b) the
 										loops of 2010 - 2025 with the model;
-										the centre OC)
+										the center OC)
 	 7. the equant against Mars        (error curve, fitted to 2010 - 2025,
 										page 4.1's epicycle as ghost)
 	 8. the loops of Mars again        (2D, static: arcs and intervals of
@@ -35,7 +35,7 @@
 	 3. Figure 3: the perpendiculars onto QK
 	 4. Figure 4: the whole model
 	 5. Figure 5: the equant and Kepler's ellipse
-	 6. Figure 6: the fit of the centre
+	 6. Figure 6: the fit of the center
 	 7. Figure 7: the error curve
 	 8. Figure 8: the loops of Mars again
 	 9. Page start
@@ -128,19 +128,19 @@ function wrappedCurve(plot, xs, ys, style) {
 /* The equant's loops round the zodiac, for the deferent offsets OC and
    OQ, the epicycle r and the apogee: { xs (the ecliptic longitude of the
    opposition, unwrapped), arcs, intervals (when asked) }. */
-function modelLoops(centre, equant, r, apogee, withIntervals = false) {
+function modelLoops(center, equant, r, apogee, withIntervals = false) {
 	const xs = [];
 	const arcs = [];
 	const intervals = [];
 
 	for (let M = 0; M <= 360; M += 5) {
-		const loop = PlanetEquant.loopAt(M, centre, equant, r, N_MARS, N_SUN);
+		const loop = PlanetEquant.loopAt(M, center, equant, r, N_MARS, N_SUN);
 
-		xs.push(apogee + M + PlanetEquant.zodiacal(M, centre, equant).q);
+		xs.push(apogee + M + PlanetEquant.zodiacal(M, center, equant).q);
 		arcs.push(loop.arc);
 
 		if (withIntervals) {
-			intervals.push(PlanetEquant.oppositionInterval(M, centre, equant, N_MARS, N_SUN));
+			intervals.push(PlanetEquant.oppositionInterval(M, center, equant, N_MARS, N_SUN));
 		}
 	}
 
@@ -170,8 +170,8 @@ function longitudePlot(canvas, y, yLabel, onDraw, options = {}) {
 
 /* The fixed scales (tools/numbers/4.2-equant.js, section 9): the
    oppositions less the mean longitude, -12.0° to +11.0° (Figure 1) and
-   -11.6° to +11.6° for every centre (Figure 4); the arcs 10.0° to 19.5°,
-   and 1.4° to 31.9° for every centre of Figure 4; the intervals 764 to
+   -11.6° to +11.6° for every center (Figure 4); the arcs 10.0° to 19.5°,
+   and 1.4° to 31.9° for every center of Figure 4; the intervals 764 to
    811 days. */
 const EQUATION_RANGE = [-14, 14];
 const ARC_RANGE = [8, 22];
@@ -266,7 +266,7 @@ const observedFigure = {
 /* ==========================================================================
    2. FIGURE 2: THE EQUANT'S TWO JOBS
    (a) the deferent alone, seen from the north ecliptic pole with the
-   apogee A to the right: the Earth O, the centre C and the equant Q; rays
+   apogee A to the right: the Earth O, the center C and the equant Q; rays
    from Q at equal steps of M, ending at K's places on the circle; and K
    at M = 60° with the triangle O Q K of the text and the angle M at Q.
    (b) the speed of K seen from O, in units of n, against M, exact, with
@@ -280,7 +280,7 @@ const observedFigure = {
 const JOBS_OQ = 0.2;
 const JOBS_M = 60;
 
-/* The drawing is centred halfway between O and Q, so that it stays put
+/* The drawing is centered halfway between O and Q, so that it stays put
    while C moves; its half-span holds the circle and the label of A. */
 const JOBS_REACH = 1.3;
 
@@ -294,17 +294,17 @@ const JOBS_DISTANCE_RANGE = [0.75, 1.25];
 
 /* The speed of K seen from O at the mean anomaly M (deg), in units of n:
    d(M + q)/dM, by a central difference. */
-function speedSeenFromEarth(M, centre, equant) {
+function speedSeenFromEarth(M, center, equant) {
 	const h = 0.01;
 
 	return (
-		1 + (PlanetEquant.zodiacal(M + h, centre, equant).q - PlanetEquant.zodiacal(M - h, centre, equant).q) / (2 * h)
+		1 + (PlanetEquant.zodiacal(M + h, center, equant).q - PlanetEquant.zodiacal(M - h, center, equant).q) / (2 * h)
 	);
 }
 
 const jobsFigure = {
 	labels: new LabelPlacer(), // keeps the labels of one drawing apart
-	centre: 0.1,
+	center: 0.1,
 
 	init() {
 		const plotOptions = {
@@ -348,7 +348,7 @@ const jobsFigure = {
 		const OC = readNumber('jobs-oc');
 		const OQ = JOBS_OQ;
 
-		this.centre = OC;
+		this.center = OC;
 		showLines('jobs-readout', [
 			`\\text{OC} = ${fixed(OC, 3)} = ${fixed(OC / OQ, 2)}\\,\\text{OQ}`,
 			`\\text{speed: } ${fixed(speedSeenFromEarth(0, OC, OQ), 3)}\\,n \\text{ to } ${fixed(speedSeenFromEarth(180, OC, OQ), 3)}\\,n`,
@@ -361,7 +361,7 @@ const jobsFigure = {
 
 	/* K on the circle at the mean anomaly M: [x, y], apogee along x. */
 	pointK(M) {
-		return PlanetEquant.centreOfEpicycle(M, this.centre, JOBS_OQ);
+		return PlanetEquant.centreOfEpicycle(M, this.center, JOBS_OQ);
 	},
 
 	/* Panel (a). */
@@ -372,7 +372,7 @@ const jobsFigure = {
 			return;
 		}
 
-		const OC = this.centre;
+		const OC = this.center;
 		const OQ = JOBS_OQ;
 		const scale = this.R / JOBS_REACH;
 		const at = p => ({ x: this.cx + scale * (p[0] - OQ / 2), y: this.cy - scale * p[1] });
@@ -423,7 +423,7 @@ const jobsFigure = {
 		labelOutside(ctx, 'Q', Q, 4, 315, COL.ink, this.labels);
 		labelOutside(ctx, 'A', A, 4, -40, COL.muted, this.labels);
 		labelOutside(ctx, 'K', K, 5, JOBS_M, COL.ink, this.labels);
-		centredLabel(ctx, 'M', towards(Q, JOBS_M / 2, JOBS_ARC + 10), COL.ink, this.labels);
+		centeredLabel(ctx, 'M', towards(Q, JOBS_M / 2, JOBS_ARC + 10), COL.ink, this.labels);
 	},
 
 	/* Panel (b): the speed, exact, and its first order dashed. */
@@ -436,7 +436,7 @@ const jobsFigure = {
 		nameAbove(p, 'perigee', 180);
 		nameAbove(p, 'apogee', 360);
 		p.fn(M => 1 - JOBS_OQ * cos(M), { color: COL.muted, width: 1.5, dash: [6, 5] });
-		p.fn(M => speedSeenFromEarth(M, this.centre, JOBS_OQ), { color: COL.deferent, width: 2.4 });
+		p.fn(M => speedSeenFromEarth(M, this.center, JOBS_OQ), { color: COL.deferent, width: 2.4 });
 	},
 
 	/* Panel (c): the distance, exact. */
@@ -448,7 +448,7 @@ const jobsFigure = {
 		nameAbove(p, 'apogee', 0);
 		nameAbove(p, 'perigee', 180);
 		nameAbove(p, 'apogee', 360);
-		p.fn(M => PlanetEquant.zodiacal(M, this.centre, JOBS_OQ).distance, { color: COL.deferent, width: 2.4 });
+		p.fn(M => PlanetEquant.zodiacal(M, this.center, JOBS_OQ).distance, { color: COL.deferent, width: 2.4 });
 	}
 };
 
@@ -463,7 +463,7 @@ const jobsFigure = {
    line, the apogee to the right.
    ========================================================================== */
 
-const PERPENDICULAR_OFFSETS = { centre: 0.3, equant: 0.6 };
+const PERPENDICULAR_OFFSETS = { center: 0.3, equant: 0.6 };
 const PERPENDICULAR_M = 60;
 
 /* The part of the plane shown (units of the deferent's radius): from
@@ -479,7 +479,7 @@ const perpendicularFigure = {
 
 	init() {
 		this.panels = [
-			{ id: 'perp-centre', from: 'C', foot: 'H', hypotenuse: '1', leg: 'CQ sin M' },
+			{ id: 'perp-center', from: 'C', foot: 'H', hypotenuse: '1', leg: 'CQ sin M' },
 			{ id: 'perp-earth', from: 'O', foot: 'G', hypotenuse: 'ρ', leg: 'OQ sin M' }
 		].map(panel => {
 			const owner = Object.assign({ labels: new LabelPlacer() }, panel);
@@ -497,20 +497,20 @@ const perpendicularFigure = {
 	   onto the line QK (its signed distance from Q along QK is the
 	   component of QC or QO along it, -CQ cos M or -OQ cos M). */
 	points(from) {
-		const { centre, equant } = PERPENDICULAR_OFFSETS;
+		const { center, equant } = PERPENDICULAR_OFFSETS;
 		const M = PERPENDICULAR_M;
 		const u = [cos(M), sin(M)];
-		const QK = PlanetEquant.equantDistance(M, centre, equant);
+		const QK = PlanetEquant.equantDistance(M, center, equant);
 		const Q = [equant, 0];
-		const start = from === 'C' ? [centre, 0] : [0, 0];
+		const start = from === 'C' ? [center, 0] : [0, 0];
 		const along = (start[0] - Q[0]) * u[0] + (start[1] - Q[1]) * u[1];
 
 		return {
 			O: [0, 0],
-			C: [centre, 0],
+			C: [center, 0],
 			Q,
 			K: [Q[0] + QK * u[0], Q[1] + QK * u[1]],
-			A: [centre + 1, 0],
+			A: [center + 1, 0],
 			start,
 			foot: [Q[0] + along * u[0], Q[1] + along * u[1]],
 			beyond: [Q[0] + (along - 0.04) * u[0], Q[1] + (along - 0.04) * u[1]]
@@ -619,7 +619,7 @@ const perpendicularFigure = {
 		labelOutside(ctx, 'A', pt.A, 4, -40, COL.muted, owner.labels);
 		labelOutside(ctx, 'K', pt.K, 4, M, COL.ink, owner.labels);
 		labelOutside(ctx, owner.foot, pt.foot, 4, M - 90, COL.ink, owner.labels);
-		centredLabel(ctx, 'M', towards(pt.Q, M / 2, PERPENDICULAR_ARC + 10), COL.ink, owner.labels);
+		centeredLabel(ctx, 'M', towards(pt.Q, M / 2, PERPENDICULAR_ARC + 10), COL.ink, owner.labels);
 		labelOutside(ctx, owner.leg, middle(pt.start, pt.foot), 4, M + 180, COL.epicycle, owner.labels, 'symbol');
 		labelOutside(ctx, owner.hypotenuse, middle(pt.start, pt.K), 4, outward, COL.planet, owner.labels, 'symbol');
 	}
@@ -628,7 +628,7 @@ const perpendicularFigure = {
 /* ==========================================================================
    4. FIGURE 4: THE WHOLE MODEL
    The model fitted on this page at the chosen date, seen from the north
-   ecliptic pole: the Earth O, the centre C and the equant Q on the line
+   ecliptic pole: the Earth O, the center C and the equant Q on the line
    to the apogee A; the deferent, the uniform line QK, the line OK dashed
    and the angle M at Q; the epicycle and the planet P, the line of sight,
    the mean Sun's direction, and P's path over the last synodic period.
@@ -828,9 +828,9 @@ const planetFigure = {
 		// opposition P passes by the angle M at Q
 		reserveDots([O, P]);
 
-		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
-		centredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
-		centredLabel(
+		centeredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
+		centeredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
+		centeredLabel(
 			ctx,
 			'A',
 			towards(O, now.apogee, this.scale * (1 + 2 * this.params.e) + 12),
@@ -844,7 +844,7 @@ const planetFigure = {
 
 		// then M, which must not cover the dots C and Q either
 		reserveDots([C, Q]);
-		centredLabel(
+		centeredLabel(
 			ctx,
 			'M',
 			towards(Q, now.apogee + now.M / 2, EQUANT_VIEWS[this.view].arc * this.scale + 10),
@@ -874,8 +874,8 @@ const planetFigure = {
 
 /* ==========================================================================
    5. FIGURE 5: THE EQUANT AND KEPLER'S ELLIPSE
-   Static. (a) the deferent (centre C) and Kepler's ellipse with the same
-   e (semi-major axis 1, centre C, foci O and Q), drawn at e = 0.3 so that
+   Static. (a) the deferent (center C) and Kepler's ellipse with the same
+   e (semi-major axis 1, center C, foci O and Q), drawn at e = 0.3 so that
    they differ, the apogee to the right; K on the circle at M = 45° by the
    equant, K' on the ellipse by the area law, and the lines from Q to
    both. (b) the direction of K seen from O less that of K', and the same
@@ -911,7 +911,7 @@ const keplerFigure = {
 		this.draw();
 	},
 
-	/* Panel (a), centred on C, the apogee to the right. */
+	/* Panel (a), centered on C, the apogee to the right. */
 	draw() {
 		const ctx = this.ctx;
 
@@ -958,8 +958,8 @@ const keplerFigure = {
 		const outward = atan2d(K[1], K[0] - e);
 		const toQ = atan2d(-ellipsePoint[1], 2 * e - ellipsePoint[0]);
 
-		centredLabel(ctx, 'A', at([e + 1.15, 0]), COL.muted, this.labels);
-		centredLabel(ctx, 'M', towards(Q, M / 2, 0.25 * scale + 10), COL.ink, this.labels);
+		centeredLabel(ctx, 'A', at([e + 1.15, 0]), COL.muted, this.labels);
+		centeredLabel(ctx, 'M', towards(Q, M / 2, 0.25 * scale + 10), COL.ink, this.labels);
 		labelOutside(ctx, 'O', O, 7, 270, COL.earth, this.labels);
 		labelOutside(ctx, 'C', C, 4, 90, COL.ink, this.labels);
 		labelOutside(ctx, 'Q', Q, 4, 270, COL.ink, this.labels);
@@ -980,8 +980,8 @@ const keplerFigure = {
 	drawPlot() {
 		const p = this.plot;
 		const e = EQUANT.e;
-		const exact = centre => M =>
-			(PlanetEquant.zodiacal(M, centre, 2 * e).q - PlanetEquant.kepler(M, e).q) / R2D / (e * e);
+		const exact = center => M =>
+			(PlanetEquant.zodiacal(M, center, 2 * e).q - PlanetEquant.kepler(M, e).q) / R2D / (e * e);
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
@@ -998,12 +998,12 @@ const keplerFigure = {
 };
 
 /* ==========================================================================
-   6. FIGURE 6: THE FIT OF THE CENTRE
+   6. FIGURE 6: THE FIT OF THE CENTER
    (a) the eight oppositions to the mean Sun of 2010 - 2025, each as its
    ecliptic longitude less the mean longitude of the separate fit, with
    the model's zodiacal equation; (b) the eight loops of those years with
    the model's loops; both against the ecliptic longitude. The slider
-   moves the centre C from O to Q; OQ, r, the apogee and L0 stay at the
+   moves the center C from O to Q; OQ, r, the apogee and L0 stay at the
    separate fit (MARS_SEPARATE), so a control moves only what the section
    is about. The scales hold every OC of the slider.
    ========================================================================== */
@@ -1033,19 +1033,19 @@ const fitFigure = {
 		this.update();
 	},
 
-	/* The separate fit with the centre of the slider. */
+	/* The separate fit with the center of the slider. */
 	parameters() {
-		return Object.assign({}, SEPARATE, { centre: readNumber('fit-oc') });
+		return Object.assign({}, SEPARATE, { center: readNumber('fit-oc') });
 	},
 
 	update() {
 		const parameters = this.parameters();
-		const { centre, equant, r } = parameters;
-		const curves = modelLoops(centre, equant, r, FIT_APOGEE);
+		const { center, equant, r } = parameters;
+		const curves = modelLoops(center, equant, r, FIT_APOGEE);
 		const qs = [];
 
 		for (let M = 0; M <= 360; M += 5) {
-			qs.push(PlanetEquant.zodiacal(M, centre, equant).q);
+			qs.push(PlanetEquant.zodiacal(M, center, equant).q);
 		}
 
 		// the residuals at the observations of 2010 - 2025
@@ -1054,14 +1054,14 @@ const fitFigure = {
 		);
 		const arcs = this.loops.map(
 			loop =>
-				PlanetEquant.loopAt(PlanetEquant.state(parameters, loop.middle).M, centre, equant, r, N_MARS, N_SUN)
+				PlanetEquant.loopAt(PlanetEquant.state(parameters, loop.middle).M, center, equant, r, N_MARS, N_SUN)
 					.arc - loop.arc
 		);
 		const rms = list => Math.sqrt(list.reduce((sum, x) => sum + x * x, 0) / list.length);
 
 		this.state = { parameters, curves, qs };
 		showLines('fit-readout', [
-			`\\text{OC} = ${fixed(centre, 3)} = ${fixed(centre / equant, 2)}\\,\\text{OQ},\\quad \\text{OQ} = ${fixed(equant, 3)}`,
+			`\\text{OC} = ${fixed(center, 3)} = ${fixed(center / equant, 2)}\\,\\text{OQ},\\quad \\text{OQ} = ${fixed(equant, 3)}`,
 			`\\text{rms: loops } ${fixed(rms(arcs), 1)}^\\circ,\\quad \\text{oppositions } ${fixed(60 * rms(directions), 0)}'`
 		]);
 		this.directions.redraw();
@@ -1176,7 +1176,7 @@ const loopsFigure = {
 		this.intervalDots = oppositions
 			.slice(0, -1)
 			.map((jd, i) => ({ lon: marsLongitude(jd), value: oppositions[i + 1] - jd }));
-		this.curves = modelLoops(o.centre, o.equant, EQUANT.r, TEST_APOGEE, true);
+		this.curves = modelLoops(o.center, o.equant, EQUANT.r, TEST_APOGEE, true);
 		this.arcs = longitudePlot(byId('test-arcs'), ARC_RANGE, 'arc (°)', () =>
 			this.draw(this.arcs, this.arcDots, this.curves.arcs, LOOP_41.arc)
 		);

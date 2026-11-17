@@ -5,9 +5,9 @@
      same size. The oppositions show the zodiacal anomaly alone, and the
      loops show the distance of the epicycle; one eccentric cannot fit
      both. Ptolemy's answer (Almagest IX 5 - 6, X 6 - 8): a deferent
-     centred halfway between the Earth and the equant, the point about
+     centered halfway between the Earth and the equant, the point about
      which the epicycle moves uniformly. Fitted to Mars over 2010 - 2025,
-     with the centre and the equant found apart, it brings the error from
+     with the center and the equant found apart, it brings the error from
      34° to under 1°; compared with Kepler's ellipse, it agrees to first
      order in e. Numbers: tools/numbers/4.2-equant.js.
      ========================================================================== -->
@@ -80,7 +80,7 @@
 			To study the zodiacal anomaly on its own, we need moments when the
 			anomaly related to the Sun has no effect. The oppositions to the mean
 			Sun are such moments: there the planet lies on the line from the Earth
-			through K, the centre of its epicycle, and is seen where K is (X 6).
+			through K, the center of its epicycle, and is seen where K is (X 6).
 		</p>
 
 		<p>
@@ -157,7 +157,7 @@
 		<p>
 			Ptolemy's remark suggests the eccentric that served for the Sun, so we
 			try it first on the deferent. Let K move uniformly on a circle of radius
-			1 whose centre C lies at the distance OC = $e$ from the Earth O, towards
+			1 whose center C lies at the distance OC = $e$ from the Earth O, towards
 			the apogee A of the circle, at the ecliptic longitude $\lambda_A$.
 		</p>
 
@@ -172,7 +172,7 @@
 
 		<p>
 			Seen from O, K is at $\bar\lambda + q$ and at the distance $\rho =
-			\text{OK}$, where $q$ is page 2.1's equation of centre with K in place of
+			\text{OK}$, where $q$ is page 2.1's equation of center with K in place of
 			the Sun. We call $q$ the <em>zodiacal equation</em>, Ptolemy's "equation
 			of ecliptic anomaly":
 		</p>
@@ -206,12 +206,12 @@
 		</p>
 
 		<p>
-			In the eccentric, C does two jobs: it is the centre of K's circle and
+			In the eccentric, C does two jobs: it is the center of K's circle and
 			the point about which K moves uniformly. To see which job controls the
 			speed and which the distance, we give the second one to another point.
 			Let K move uniformly as seen from a point Q on the line from O to the
 			apogee, at the distance OQ from the Earth, while its circle stays
-			centred on C. $M$ is now the angle at Q from the direction of the apogee
+			centered on C. $M$ is now the angle at Q from the direction of the apogee
 			to K, and it still grows at the rate $n$.
 			In Figure 2, C can be moved anywhere between O and Q with Q fixed;
 			its panel (a) shows the triangle OQK used below.
@@ -235,7 +235,7 @@
 				<div class="panel-controls">
 					<div>
 						<div class="ctl">
-							<label for="jobs-oc">centre OC</label>
+							<label for="jobs-oc">center OC</label>
 							<input id="jobs-oc" type="range" min="0" max="0.2" step="0.001" value="0.1">
 							<output></output>
 						</div>
@@ -323,7 +323,7 @@
 				<div class="panels">
 					<div>
 						<p class="panel-title">(a) the triangle CHK: QK</p>
-						<canvas id="perp-centre"></canvas>
+						<canvas id="perp-center"></canvas>
 					</div>
 					<div>
 						<p class="panel-title">(b) the triangle OGK: the distance ρ</p>
@@ -404,10 +404,10 @@
 			<p>
 				Ptolemy separated the two points. The epicycle, he writes, "is carried
 				on an eccentre which, though equal in size to the eccentre which
-				produces the anomaly, is not described about the same centre", and
-				for every planet but Mercury its centre "is the point bisecting the
-				line joining the centre of the eccentre producing the anomaly to the
-				centre of the ecliptic" (IX 5). The centre of the uniform motion, Q,
+				produces the anomaly, is not described about the same center", and
+				for every planet but Mercury its center "is the point bisecting the
+				line joining the center of the eccentre producing the anomaly to the
+				center of the ecliptic" (IX 5). The center of the uniform motion, Q,
 				is now called the <em>equant</em>.
 			</p>
 			<aside>
@@ -438,7 +438,7 @@
 
 		<div class="row">
 			<p>
-				The line QK turns uniformly about a point that is not the centre of
+				The line QK turns uniformly about a point that is not the center of
 				K's circle, so K does not move along its circle at a constant speed.
 				Copernicus rejected the equant for that reason: in it "a circular
 				motion can be uniform with respect to an extraneous center not its
@@ -555,9 +555,9 @@
 		<p>
 			Kepler put the Sun at that focus. Here we lay the ellipse over
 			Ptolemy's deferent only to compare the two curves: with the same $e$
-			and semi-major axis 1, its centre is C and its foci are O and Q.
+			and semi-major axis 1, its center is C and its foci are O and Q.
 			Expanding both in $e$, with $M$ counted from the apogee (Exercise 1),
-			and adding the Sun's eccentric with its centre at $2e$, gives the
+			and adding the Sun's eccentric with its center at $2e$, gives the
 			table:
 		</p>
 
@@ -681,11 +681,11 @@
 			opposition to the mean Sun the planet is seen in the direction of K.
 			The eight oppositions of 2010–2025 go once round the zodiac, as a full turn of an anomaly needs, and give
 			eight values of $\bar\lambda + q$. Since $q \approx -\text{OQ}\sin M$,
-			they fix $L_0$, $\lambda_A$ and OQ; the centre C changes them only in
+			they fix $L_0$, $\lambda_A$ and OQ; the center C changes them only in
 			the second order.
 		</p>
 
-		<h3>The centre from the loops</h3>
+		<h3>The center from the loops</h3>
 
 		<p>
 			With the directions known, the loops measure the distance of K. Their
@@ -711,7 +711,7 @@
 				<div class="panel-controls">
 					<div>
 						<div class="ctl">
-							<label for="fit-oc">centre OC</label>
+							<label for="fit-oc">center OC</label>
 							<input id="fit-oc" type="range" min="0" max="0.2007" step="0.0001" value="0.0983">
 							<output></output>
 						</div>
@@ -775,7 +775,7 @@
 					Ptolemy observed three oppositions of Mars "as accurately as
 					possible, using the astrolabe instruments", in AD 130, 135 and 139
 					(X 7). The oppositions show K from the Earth, while the uniform
-					motion is about the equant, so he first took the centre of the
+					motion is about the equant, so he first took the center of the
 					deferent to be the equant (<em>HAMA</em> p. 174), then corrected
 					the arcs between the oppositions and computed twice more. He found
 					the apogee at Cancer 25° 30′ (115.5°) and 12 for the double
@@ -924,7 +924,7 @@
 		<p>
 			So the model needs the Sun's own unevenness in the epicycle of Mars. In
 			Ptolemy's models the epicycles of Mars, Jupiter and Saturn all keep
-			step with the mean Sun, and the centres of the epicycles of Venus and
+			step with the mean Sun, and the centers of the epicycles of Venus and
 			Mercury move with it (page 4.1). Why a planet's motion should be
 			tied to the Sun at all is the question of page 4.3.
 		</p>
@@ -1069,7 +1069,7 @@
 				(1975), Part One: I C 4 (pp. 170–177: the refinement of the model, the
 				equant, Ptolemy's bisection, Kepler and the foci).</li>
 			<li>N. Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen): IV 2
-				and V 2 [f. 140v] (the objection to a motion uniform about a centre
+				and V 2 [f. 140v] (the objection to a motion uniform about a center
 				not its own).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.2–4.4 (the models of
 				Kepler, Hipparchus and Ptolemy expanded to second order).</li>

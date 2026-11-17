@@ -77,7 +77,7 @@ const minimise = Eclipses.minimise;
 /* ==========================================================================
    3. THE REFERENCE ECLIPSES, CHECKED AGAINST NASA
    Every new and full Moon of the reference sky, the least distance of the
-   Moon from the Sun or from the centre of the shadow near it, and the
+   Moon from the Sun or from the center of the shadow near it, and the
    kind of eclipse by the criteria of models/eclipses.js with the
    reference distances (Eclipses.reference), computed once each.
    ========================================================================== */

@@ -1413,7 +1413,7 @@ Regenerate with: node tools/check/smoke.js --update
 === act4-planets/01-going-backwards/index.html ===
   as loaded
     OUTPUT (motion-loop): 16 Jan 2025
-    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centred on ecliptic longitude } 116.2^\circ
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
     OUTPUT (epi-day): 27 Oct 2024
     OUTPUT (epi-r): 0.658
     #epicycle-readout: \text{27 Oct 2024:}\quad \bar\lambda = 66.8^\circ,\quad \mu = 149.1^\circ | \eta = +37.8^\circ,\quad \lambda = \bar\lambda + \eta = 104.6^\circ | \text{daily motion } +0.325^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
@@ -1421,16 +1421,16 @@ Regenerate with: node tools/check/smoke.js --update
   opened 6 hints and answers
   slider #motion-loop = 0
     OUTPUT (motion-loop): 24 Dec 2007
-    #motion-readout: \text{goes back } 18.4^\circ \text{ in } 77 \text{ days} | \text{centred on ecliptic longitude } 92.6^\circ
+    #motion-readout: \text{goes back } 18.4^\circ \text{ in } 77 \text{ days} | \text{centered on ecliptic longitude } 92.6^\circ
   slider #motion-loop = 8
     OUTPUT (motion-loop): 16 Jan 2025
-    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centred on ecliptic longitude } 116.2^\circ
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
   slider #motion-loop = 4
     OUTPUT (motion-loop): 22 May 2016
-    #motion-readout: \text{goes back } 15.8^\circ \text{ in } 73 \text{ days} | \text{centred on ecliptic longitude } 241.8^\circ
+    #motion-readout: \text{goes back } 15.8^\circ \text{ in } 73 \text{ days} | \text{centered on ecliptic longitude } 241.8^\circ
   slider #motion-loop + one key step
     OUTPUT (motion-loop): 27 Jul 2018
-    #motion-readout: \text{goes back } 10.6^\circ \text{ in } 62 \text{ days} | \text{centred on ecliptic longitude } 304.1^\circ
+    #motion-readout: \text{goes back } 10.6^\circ \text{ in } 62 \text{ days} | \text{centered on ecliptic longitude } 304.1^\circ
   slider #epi-day = 0
     OUTPUT (epi-day): 1 Jan 2024
     OUTPUT (epi-r): 0.658
@@ -1465,25 +1465,25 @@ Regenerate with: node tools/check/smoke.js --update
     #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +5.7^\circ,\quad \lambda = \bar\lambda + \eta = 334.6^\circ | \text{daily motion } +0.654^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   button "Mars"
     OUTPUT (motion-loop): 16 Jan 2025
-    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centred on ecliptic longitude } 116.2^\circ
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
   button "Jupiter"
     OUTPUT (motion-loop): 7 Dec 2024
-    #motion-readout: \text{goes back } 10.1^\circ \text{ in } 118 \text{ days} | \text{centred on ecliptic longitude } 76.2^\circ
+    #motion-readout: \text{goes back } 10.1^\circ \text{ in } 118 \text{ days} | \text{centered on ecliptic longitude } 76.2^\circ
   button "Saturn"
     OUTPUT (motion-loop): 8 Sep 2024
-    #motion-readout: \text{goes back } 6.7^\circ \text{ in } 139 \text{ days} | \text{centred on ecliptic longitude } 346.0^\circ
+    #motion-readout: \text{goes back } 6.7^\circ \text{ in } 139 \text{ days} | \text{centered on ecliptic longitude } 346.0^\circ
   button "Venus"
     OUTPUT (motion-loop): 23 Mar 2025
-    #motion-readout: \text{goes back } 16.2^\circ \text{ in } 42 \text{ days} | \text{centred on ecliptic longitude } 2.7^\circ
+    #motion-readout: \text{goes back } 16.2^\circ \text{ in } 42 \text{ days} | \text{centered on ecliptic longitude } 2.7^\circ
   button "Mercury"
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   button "‹ previous loop"
     OUTPUT (motion-loop): 24 Mar 2025
-    #motion-readout: \text{goes back } 12.8^\circ \text{ in } 23 \text{ days} | \text{centred on ecliptic longitude } 4.4^\circ
+    #motion-readout: \text{goes back } 12.8^\circ \text{ in } 23 \text{ days} | \text{centered on ecliptic longitude } 4.4^\circ
   button "next loop ›"
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   button "‹ previous day"
     OUTPUT (epi-day): 10 Mar 2026
     OUTPUT (epi-r): 0.401
@@ -1512,16 +1512,16 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot at 0.6
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot at 0.9
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot left
     OUTPUT (motion-loop): 31 Jul 2025
-    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centred on ecliptic longitude } 129.0^\circ
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #epicycle-plot at 0.3
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
@@ -1727,7 +1727,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-intervals left
   dragged 0 spheres
 
-=== act4-planets/03-new-centre/index.html ===
+=== act4-planets/03-new-center/index.html ===
   as loaded
     OUTPUT (arrangement-day): 6 Dec 2014
     #arrangement-readout: \text{6 Dec 2014:}\quad \lambda - \bar\lambda_\odot = 46.5^\circ | \lambda = 301.19^\circ \text{ in (a)},\quad 301.19^\circ \text{ in (b)} | \text{OP} = 1.216 \text{ in (a)},\quad 1.847\ \text{au in (b)}

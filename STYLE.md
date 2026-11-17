@@ -145,7 +145,7 @@ Inline badges in the text are no longer used.
 
 ### 4.6 Equations
 
-Display equations centred in the text column. An equation is numbered only
+Display equations centered in the text column. An equation is numbered only
 when the text, an exercise or another page refers to it; the number `(1.1)`
 then sits at the right, in `--muted`.
 

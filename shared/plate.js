@@ -340,7 +340,7 @@ const Plate = (function () {
 	/* ======================================================================
 	   3. THE MILKY WAY
 	   Fine stipple spread about the galactic equator (Gaussian in latitude,
-	   sigma 4°, cut at ±12°), denser towards the galactic centre: a drawing
+	   sigma 4°, cut at ±12°), denser towards the galactic center: a drawing
 	   of the band, not catalogue data, and the keys say so. A fixed seed
 	   draws the same points every time. Equatorial coordinates (J2000) from
 	   the galactic ones, with the IAU galactic pole.
@@ -405,7 +405,7 @@ const Plate = (function () {
 	   ====================================================================== */
 
 	/* An hour ring about (cx, cy) between the radii inner and outer: 24
-	   segments, light and dark in turn, hour h centred at angleOf(h)
+	   segments, light and dark in turn, hour h centered at angleOf(h)
 	   (degrees clockwise from the top), labelled at the radius 'label'.
 	   Odd hours are 'minor' labels, left out on a phone (theme.css). */
 	function drawHourRing(svg, ring, angleOf) {
@@ -421,7 +421,7 @@ const Plate = (function () {
 				{ d: ringSegment(point, angleOf(h), inner, outer), class: h % 2 === 0 ? 'light' : 'dark' },
 				group
 			);
-			// centred on its point, whatever the size of the text
+			// centered on its point, whatever the size of the text
 			svgText(group, `${h}h`, at.x, at.y, {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'central',
@@ -433,14 +433,14 @@ const Plate = (function () {
 		svgEl('circle', { cx: cx, cy: cy, r: outer, class: 'edge' }, group);
 	}
 
-	/* The SVG path of one hour of the ring (15° centred on 'centre'), from
-	   centre - 7.5° to centre + 7.5°, clockwise on the screen along the
+	/* The SVG path of one hour of the ring (15° centered on 'center'), from
+	   center - 7.5° to center + 7.5°, clockwise on the screen along the
 	   inner edge (SVG sweep flag 1), and back along the outer one. */
-	function ringSegment(point, centre, inner, outer) {
-		const p0 = point(centre - 7.5, inner);
-		const p1 = point(centre + 7.5, inner);
-		const p2 = point(centre + 7.5, outer);
-		const p3 = point(centre - 7.5, outer);
+	function ringSegment(point, center, inner, outer) {
+		const p0 = point(center - 7.5, inner);
+		const p1 = point(center + 7.5, inner);
+		const p2 = point(center + 7.5, outer);
+		const p3 = point(center - 7.5, outer);
 
 		return (
 			`M${p0.x} ${p0.y} A${inner} ${inner} 0 0 1 ${p1.x} ${p1.y} ` +
@@ -510,7 +510,7 @@ const Plate = (function () {
 	}
 
 	/* Hours under the border, degrees on its left: the hours hang from a
-	   line under the border, the degrees are centred on their line, so a
+	   line under the border, the degrees are centered on their line, so a
 	   larger text (on a phone) grows away from the chart. */
 	function drawBorderLabels(border, area, at, band) {
 		const { raMin, raMax, decMin, decMax } = area;
@@ -579,11 +579,11 @@ const Plate = (function () {
 	   6. CHARTS: POLAR AND RECTANGULAR
 	   ====================================================================== */
 
-	/* A chart centred on the north celestial pole, as seen from the ground
+	/* A chart centered on the north celestial pole, as seen from the ground
 	   looking up (right ascension increases clockwise), down to declination
 	   rimDec, with an hour ring. options: rimDec, figures, names, keep (the
 	   ids of the star names still shown on a phone), label.
-	   Returns { svg, at, project, radius, centre }. */
+	   Returns { svg, at, project, radius, center }. */
 	function polar(container, options) {
 		const size = 640;
 		const R = 250;
@@ -596,7 +596,7 @@ const Plate = (function () {
 
 		// a label stays inside the rim of the chart, clear of the hour ring
 		const inside = box => boxCorners(box).every(p => Math.hypot(p.x - c, p.y - c) <= R - 2);
-		const chart = { svg, at, project, radius, centre: c, inside, labels: [], obstacles: [] };
+		const chart = { svg, at, project, radius, center: c, inside, labels: [], obstacles: [] };
 
 		// graticule: declination every 10°, right ascension every 2 h
 		const grid = svgEl('g', { class: 'grid' }, svg);
@@ -734,7 +734,7 @@ const Plate = (function () {
 
 	/* A circle of declination on a polar chart. */
 	function highlightCircle(chart, dec) {
-		svgEl('circle', { cx: chart.centre, cy: chart.centre, r: chart.radius(dec), class: 'highlight' }, chart.svg);
+		svgEl('circle', { cx: chart.center, cy: chart.center, r: chart.radius(dec), class: 'highlight' }, chart.svg);
 	}
 
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
@@ -848,11 +848,11 @@ const Plate = (function () {
 	/* A path through (ra, dec) points on a polar chart (page 2.3: the path
 	   of the celestial pole around the ecliptic pole), with a short tick
 	   across it at each of 'marks' [{ ra, dec, text }]. A tick points away
-	   from the point 'centre' { ra, dec } that the path goes round, and
+	   from the point 'center' { ra, dec } that the path goes round, and
 	   its text, if any, goes beside it on that side. */
-	function highlightPath(chart, points, centre, marks = []) {
+	function highlightPath(chart, points, center, marks = []) {
 		const screen = points.map(p => chart.at(p.ra, p.dec));
-		const c = chart.at(centre.ra, centre.dec);
+		const c = chart.at(center.ra, center.dec);
 		const tickLength = 6;
 
 		svgLine(chart.svg, screen, { class: 'highlight' });
@@ -886,7 +886,7 @@ const Plate = (function () {
 		placeLabels(chart);
 	}
 
-	/* The Sun at a point: the sign ☉ itself, a ring and a dot, centred
+	/* The Sun at a point: the sign ☉ itself, a ring and a dot, centered
 	   on the Sun's place, not a label beside a cross. A label can be moved
 	   off its point to stay clear of a line; the Sun's sign, which reads as
 	   the Sun, must stay where the Sun is (page 3.3: on the ecliptic, where
@@ -991,7 +991,7 @@ const Plate = (function () {
 		});
 	}
 
-	/* Places for a name centred on a point (a constellation's name): moved
+	/* Places for a name centered on a point (a constellation's name): moved
 	   up or down by up to three lines, and sideways by up to four thirds of
 	   its width, in steps of a third, the nearest first. */
 	function aroundCentre(c, box, k) {

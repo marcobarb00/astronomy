@@ -431,7 +431,7 @@ details.fold[open] > summary {
 	border-bottom: 1px solid var(--line);
 }
 
-/* Display equations are centred in the text column (STYLE.md §4.6). An
+/* Display equations are centered in the text column (STYLE.md §4.6). An
    equation is never cut by KaTeX, so the prose's display equations are
    split by wrapDisplayMath (common.js) into pieces that wrap, below; any
    overflow left (a single piece wider than a phone) scrolls quietly. */
@@ -944,7 +944,7 @@ canvas.sphere3d:focus-visible {
 	outline-offset: 2px;
 }
 
-/* A slider with previous / next buttons on a second line, centred under
+/* A slider with previous / next buttons on a second line, centered under
    the row, so the track keeps the length of the other rows.
 	 <div class="ctl stepper"> label, input, output,
 		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */

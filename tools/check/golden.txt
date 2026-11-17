@@ -2331,7 +2331,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   FIT_APOGEE TEST_APOGEE         151.332515000  151.165805000
   fixed ranges                   [-14,14]  [8,22]  [0,34]  [750,825]  {"e = 0.2":{"e":0.2,"arc":0.16},"Mars":{"e":0.100469,"arc":0.4}}  [0.75,1.3]  [0.75,1.25]  [-1,1]
 
-=== 8l. PAGE 4.3 (act4-planets/03-new-centre/page.js) ===
+=== 8l. PAGE 4.3 (act4-planets/03-new-center/page.js) ===
   yearOf                         2000.000000000 2025.000684463
   yearTicks                      [{"value":2010,"label":"2010"},{"value":2012,"label":"2012"},{"value":2014,"label":"2014"},{"value":2016,"label":"2016"},{"value":2018,"label":"2018"},{"value":2020,"label":"2020"},{"value":2022,"label":"2022"},{"value":2024,"label":"2024"},{"value":2026,"label":"2026"}]
   screenDirection                45.000000000
@@ -2388,7 +2388,7 @@ Rhodes: -tan 36 tan(23;51,20) = -0.3213, H0 = 108.741, longest day = 14.4988 h, 
 inverse: a 14.5 h day gives phi = 36.01
 
 === Exercise 3: the equinox day at Greenwich, 20 March 2026 ===
-centre on the geometric horizon      rise 6:08:14, set 18:07:41, day 11h59m27.51s
+center on the geometric horizon      rise 6:08:14, set 18:07:41, day 11h59m27.51s
 with refraction (-34')               rise 6:04:36, set 18:11:20, day 12h06m44.15s
 upper limb with refraction (-50')    rise 6:02:53, set 18:13:03, day 12h10m09.64s
 split: Sun's own motion -0.5 min, refraction +7.3 min, radius +3.4 min, total +10.2 min
@@ -2681,7 +2681,7 @@ AD 140:
    winter  starts 21 Dec 140 21:53 TT, lasts 90.032 d
    spring + summer = 186.45 d, autumn + winter = 178.79 d
 
-=== Model: the equation of centre ===
+=== Model: the equation of center ===
 e = 0.04167: greatest q = 2.3880° (2°23'17") at M = 92.388° (92°23'17"); e in degrees 2.3873°; e^2/2 = 2.98'; |q + e sin M| <= 3.04'
 e = 0.03347: greatest q = 1.9182° (1°55'06") at M = 91.918° (91°55'06"); e in degrees 1.9179°; e^2/2 = 1.93'; |q + e sin M| <= 1.96'
 e = 0.10000: greatest q = 5.7392° (5°44'21") at M = 95.739° (95°44'21"); e in degrees 5.7296°; e^2/2 = 17.19'; |q + e sin M| <= 18.04'
@@ -3005,7 +3005,7 @@ Polaris  nearest the pole: real 2102, 0.46° (76 years from 2026); uniform model
 Thuban   nearest the pole: real 2796 BC, 0.10° (-4821 years from 2026); uniform model 2831 BC, 0.20° (Figure 2's presets)
 Vega     nearest the pole: real 13600, 5.70° (11574 years from 2026); uniform model 13790, 4.83° (Figure 2's presets)
 Polaris from the pole in 2026: 0.63°
-Figure 3: one turn centred on 2026, from 10862 BC to 14913
+Figure 3: one turn centered on 2026, from 10862 BC to 14913
 
 === Model: the tropical and the sidereal year ===
 Y_s = Y_t / (1 - p Y_t / 360°): 365.24219 d -> 365.25637 d, 20.41 min longer; p / n = 20.41 min
@@ -3031,7 +3031,7 @@ an error of 1° spread over the 1818 years: 2.0" a year
 Precession.MODERN in precession.js: rate 50.283" a year, obliquity 23.43591° (here 23.43591°), epoch 1 Jan 2026
 p = 50.283" a year = 1.3967° a century, 1° in 71.60 years; from Spica alone 50.240" a year
 the stars of Figure 1 over the same century: Aldebaran 50.33", Regulus 50.05", Spica 50.24", Antares 50.26", Vega 50.48", Polaris 50.40"
-(the century centred on 2026, which runs into the future: 50.294" a year)
+(the century centered on 2026, which runs into the future: 50.294" a year)
 Copernicus' mean precession, 23;57° in 1,717 Egyptian years: 50.25" a Julian year; his period 25,816 years (360° / rate = 25809)
    ours minus his: 0.033" a year
    the real mean rate over his records, 294 BC to 1525: 49.99" a year
@@ -3935,8 +3935,8 @@ round 2: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.37
 round 3: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
 round 4: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
 round 5: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
-MARS_SEPARATE: L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
-in planet-equant.js:  L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
+MARS_SEPARATE: L0 355.374664, apogee 151.0811, center 0.098287, equant 0.200731, r 0.658102
+in planet-equant.js:  L0 355.374664, apogee 151.0811, center 0.098287, equant 0.200731, r 0.658102
 
 === Fit: Ptolemy's bisection, OC = e, OQ = 2e ===
 L0 = 355.375032° at J2000.0, apogee 151.0820°, e = 0.100469 (OQ 0.2009), r = 0.658030
@@ -4022,14 +4022,14 @@ Figure 5, Mars (e = 0.1005), difference / e^2: the equant -0.303 to 0.303, the e
   the equant's lobes (ratio to 1/4): 0-90°: -0.208 (0.83), 90-180°: 0.303 (1.21), 180-270°: -0.303 (1.21), 270-360°: 0.208 (0.83)
   the eccentric's lobes (ratio to 3/4): 0-90°: 0.638 (0.85), 90-180°: -0.906 (1.21), 180-270°: 0.906 (1.21), 270-360°: -0.638 (0.85)
 
-=== 9. tools/numbers/4.3-new-centre.js ===
+=== 9. tools/numbers/4.3-new-center.js ===
 
 === Observation: the elongations from the Sun, 2022 - 2025 (Figure 1) ===
-Mercury  loops centred on inferior conjunction: 13
-Venus    loops centred on inferior conjunction: 3
-Mars     loops centred on opposition: 2
-Jupiter  loops centred on opposition: 3
-Saturn   loops centred on opposition: 4
+Mercury  loops centered on inferior conjunction: 13
+Venus    loops centered on inferior conjunction: 3
+Mars     loops centered on opposition: 2
+Jupiter  loops centered on opposition: 3
+Saturn   loops centered on opposition: 4
 Venus stays within 47.2° of the Sun (geometric, daily)
 Mercury stays within 27.4° of the Sun (geometric, daily)
 
@@ -4075,7 +4075,7 @@ Saturn   a = 9.562 au, P = 29.432 years (10750.4 days)
 a - 1 = 0.52 au at opposition, a + 1 = 2.52 au at conjunction, ratio 4.8
 
 === Model: Copernicus' eccentric with an epicyclet against the equant (Mars, e = 0.1005) ===
-K seen from the centre: directions within 3.4', distances within 0.0050 (e^2 / 2 = 0.0050)
+K seen from the center: directions within 3.4', distances within 0.0050 (e^2 / 2 = 0.0050)
 the planet seen from the Earth, 2010 - 2025: the two within 25.0' of each other
 largest error: the equant 0.88°, the eccentric with the epicyclet 0.91°
 
@@ -4145,7 +4145,7 @@ Saturn   a = 9.562 au, the reference 9.541 au (0.2%); P = 29.432 years, the refe
 10 Jan 2025: 47.166° (east, evening), sin = 0.7333; Venus 0.7213 au and the Earth 0.9834 au from the Sun, ratio 0.7335
 31 May 2025: -45.838° (west, morning), sin = 0.7174; Venus 0.7280 au and the Earth 1.0140 au from the Sun, ratio 0.7179
 mean of the two 0.7254; the fit 0.7226, whose greatest elongation is 46.27°
-Copernicus V 21: sin 44.8° = 0.7046, sin 47.267° = 0.7345; the distances from the Earth to the centre 1.0208 and 0.9792; radius 0.7193, centre 0.0208 from the Sun's mean place (his 7193 and 208 in 10000)
+Copernicus V 21: sin 44.8° = 0.7046, sin 47.267° = 0.7345; the distances from the Earth to the center 1.0208 and 0.9792; radius 0.7193, center 0.0208 from the Sun's mean place (his 7193 and 208 in 10000)
 
 === Exercise 2: Copernicus' eccentric with an epicyclet (V 4) ===
 coefficients in q at e = 0.001: sin M -2.0000 e, sin 2M 1.0000 e^2 (equant 1.0000 e^2)

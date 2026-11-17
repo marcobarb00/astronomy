@@ -104,7 +104,7 @@ const CET = 1; // Rome's winter time zone, UT + 1 h
    2024 Dec 1 (the observations of 2025, the model of 2026) and
    interpolated linearly (error under 0.01"). Its noon is
    where its hour angle (apparent sidereal time) is zero; sunrise and
-   sunset where its centre is 50' below the horizon, as in the model.
+   sunset where its center is 50' below the horizon, as in the model.
    ========================================================================== */
 
 const TABLE_START = Time.julianDay(2024, 12, 1);

@@ -1,6 +1,6 @@
 // @ts-check
 /* ==========================================================================
-   PAGE 4.3 · SAME GEOMETRY, NEW CENTRE - SCRIPT (page.js)
+   PAGE 4.3 · SAME GEOMETRY, NEW CENTER - SCRIPT (page.js)
    Six figures, each with its own init and draw (and update when it has
    controls):
 	 1. the elongations           (2D, static: the five planets' ecliptic
@@ -27,7 +27,7 @@
    models/precession.js, models/planet-epicycle.js, models/planet-equant.js,
    models/planet-arrangement.js, plot2d.js, errorcurve.js, components.js.
    Every number quoted in the prose comes from
-   tools/numbers/4.3-new-centre.js.
+   tools/numbers/4.3-new-center.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
@@ -137,7 +137,7 @@ const screenDirection = (a, b) => atan2d(a.y - b.y, b.x - a.x);
    east of the Sun positive; (b) Mars, Jupiter and Saturn, 0° to 360° east
    of the Sun. Thick where the planet goes back among the stars (its
    ecliptic longitude decreasing). Venus reaches 47.2°, Mercury 27.4°
-   (tools/numbers/4.3-new-centre.js), so (a) is drawn from -50° to 50°.
+   (tools/numbers/4.3-new-center.js), so (a) is drawn from -50° to 50°.
    ========================================================================== */
 
 const ELONGATION_START = Time.julianDay(2022, 1, 1);
@@ -263,7 +263,7 @@ const elongationFigure = {
    from O and the parallelogram O K P sun dashed, and P's path over the
    last synodic period; (b) the same points moved by -O sun, so that sun
    stands still: the Earth's circle, the planet's circle (for Mars,
-   page 4.2's deferent, centred where C was relative to O), and the
+   page 4.2's deferent, centered where C was relative to O), and the
    triangle O sun P. Each circle
    keeps its colour, so the reader sees which of Ptolemy's circles
    becomes the Earth's. The date runs over 2010 - 2025.
@@ -358,7 +358,7 @@ const arrangementFigure = {
 		return owner.R / ARRANGEMENT_VIEWS[this.view].room;
 	},
 
-	/* Panel (a): Ptolemy's model, the Earth O at the centre. */
+	/* Panel (a): Ptolemy's model, the Earth O at the center. */
 	drawGeostatic() {
 		const owner = this.geo;
 		const ctx = owner.ctx;
@@ -412,7 +412,7 @@ const arrangementFigure = {
 		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
 
 		// letters only, each on the side clearest of its lines (CLAUDE.md)
-		centredLabel(ctx, 'γ', towards(O, 0, edge - 8), COL.muted, owner.labels);
+		centeredLabel(ctx, 'γ', towards(O, 0, edge - 8), COL.muted, owner.labels);
 		labelOutside(
 			ctx,
 			'O',
@@ -465,7 +465,7 @@ const arrangementFigure = {
 		ctx.stroke();
 	},
 
-	/* Panel (b): the same points less O sun, the mean Sun at the centre, on
+	/* Panel (b): the same points less O sun, the mean Sun at the center, on
 	   the scale of (a). */
 	drawHeliostatic() {
 		const owner = this.helio;
@@ -511,7 +511,7 @@ const arrangementFigure = {
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
 		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
 
-		centredLabel(ctx, 'γ', towards(S, 0, edge - 8), COL.muted, owner.labels);
+		centeredLabel(ctx, 'γ', towards(S, 0, edge - 8), COL.muted, owner.labels);
 		labelOutside(
 			ctx,
 			'☉',
@@ -547,7 +547,7 @@ const arrangementFigure = {
    3. FIGURE 3: ONE SCALE
    Static. (a) Ptolemy's five models (PlanetEpicycle.PTOLEMY), each
    deferent drawn the same size, the epicycle at K 30° above the right,
-   the Earth O at the centre, with the planet's name and its epicycle
+   the Earth O at the center, with the planet's name and its epicycle
    where the deferent is 60; five in a row, or three and two on a phone.
    (b) the circles of the same numbers read as distances
    (PlanetArrangement.PTOLEMY) about the Sun, with the Earth's, out to
@@ -620,8 +620,8 @@ const scaleFigure = {
 			segment(ctx, O, K, { color: COL.deferent, width: 1 });
 			drawDot(ctx, O.x, O.y, 3.5, COL.earth);
 			drawDot(ctx, K.x, K.y, 2.5, COL.ink);
-			centredLabel(ctx, entry.name, { x: O.x, y: cellHeight * (row + 0.76) }, COL.ink, null, 'name');
-			centredLabel(
+			centeredLabel(ctx, entry.name, { x: O.x, y: cellHeight * (row + 0.76) }, COL.ink, null, 'name');
+			centeredLabel(
 				ctx,
 				fixed(60 * r, entry.planet === 'venus' ? 2 : 1),
 				{ x: O.x, y: cellHeight * (row + 0.76) + 20 },
@@ -642,22 +642,22 @@ const scaleFigure = {
 		}
 
 		const scale = owner.R / owner.reach;
-		const centre = { x: owner.cx, y: owner.cy };
+		const center = { x: owner.cx, y: owner.cy };
 		const shown = which === 'outer' ? SCALE_PLANETS : SCALE_PLANETS.slice(0, 3);
 
 		ctx.clearRect(0, 0, owner.width, owner.width);
 		owner.labels.begin({ x0: 0, y0: 0, x1: owner.width, y1: owner.width });
 
-		circle(ctx, centre, scale, { color: COL.earth, width: 2 });
+		circle(ctx, center, scale, { color: COL.earth, width: 2 });
 		shown.forEach(entry => {
-			circle(ctx, centre, PlanetArrangement.PTOLEMY[entry.planet].a * scale, { color: COL.planet, width: 1.6 });
+			circle(ctx, center, PlanetArrangement.PTOLEMY[entry.planet].a * scale, { color: COL.planet, width: 1.6 });
 		});
-		drawDot(ctx, centre.x, centre.y, 4, COL.sun);
+		drawDot(ctx, center.x, center.y, 4, COL.sun);
 
 		// in (b) the inner circles leave no room for the Sun's symbol
 		if (which === 'inner') {
-			labelOutside(ctx, '☉', centre, 4, 90, COL.sun, owner.labels);
-			labelOutside(ctx, 'Earth', towards(centre, 140, scale), 0, 140, COL.earth, owner.labels);
+			labelOutside(ctx, '☉', center, 4, 90, COL.sun, owner.labels);
+			labelOutside(ctx, 'Earth', towards(center, 140, scale), 0, 140, COL.earth, owner.labels);
 		}
 
 		shown.forEach(entry => {
@@ -668,7 +668,7 @@ const scaleFigure = {
 				labelOutside(
 					ctx,
 					entry.name,
-					towards(centre, entry.angle, a * scale),
+					towards(center, entry.angle, a * scale),
 					0,
 					entry.angle,
 					COL.planet,
@@ -687,7 +687,7 @@ const scaleFigure = {
    0.723 au. (b) Saturn at quadrature: the right angle at O, the angle
    psi at the Sun, 84°, and dashed the line from the Sun one day's motion
    earlier, psi - 360° / S, meeting the line of sight at P' (a = 8.26
-   instead of 9.56, tools/numbers/4.3-new-centre.js).
+   instead of 9.56, tools/numbers/4.3-new-center.js).
    ========================================================================== */
 
 /* The angle of the Earth in (a), seen from the Sun (deg), and the view
@@ -750,7 +750,7 @@ const triangleFigure = {
 		labelOutside(ctx, '☉', S, 5, VENUS_EARTH_ANGLE + 180, COL.sun, owner.labels);
 		labelOutside(ctx, 'O', O, 7, VENUS_EARTH_ANGLE, COL.earth, owner.labels);
 		labelOutside(ctx, 'P', P, 7, VENUS_EARTH_ANGLE - angleAtSun, COL.planet, owner.labels);
-		centredLabel(ctx, 'ε', towards(O, (toPlanet + toSun) / 2, 46), COL.ink, owner.labels);
+		centeredLabel(ctx, 'ε', towards(O, (toPlanet + toSun) / 2, 46), COL.ink, owner.labels);
 		labelOutside(ctx, '1', middle(S, O), 3, toSun - 90, COL.ink, owner.labels);
 		labelOutside(ctx, 'a', middle(S, P), 3, screenDirection(S, P) + 90, COL.ink, owner.labels);
 	},
@@ -801,7 +801,7 @@ const triangleFigure = {
 		labelOutside(ctx, 'O', O, 7, 120, COL.earth, owner.labels);
 		labelOutside(ctx, 'P', P, 7, 90, COL.planet, owner.labels);
 		labelOutside(ctx, 'P′', P2, 5, 90, COL.muted, owner.labels);
-		centredLabel(ctx, 'ψ', towards(S, 90 - psi / 2, 0.55 * scale + 12), COL.ink, owner.labels);
+		centeredLabel(ctx, 'ψ', towards(S, 90 - psi / 2, 0.55 * scale + 12), COL.ink, owner.labels);
 	}
 };
 
@@ -864,7 +864,7 @@ const errorFigure = {
    arrangement, and the same with e = 0 (a concentric deferent: a circle
    of radius a about the mean Sun) faint and dashed; (b) the model less the reference. The real
    Mars runs from 0.38 to 2.68 au, the model is within 0.0204 au
-   (tools/numbers/4.3-new-centre.js): the axes are 0 to 2.8 au and
+   (tools/numbers/4.3-new-center.js): the axes are 0 to 2.8 au and
    +-0.03 au.
    ========================================================================== */
 

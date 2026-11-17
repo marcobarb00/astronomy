@@ -90,7 +90,7 @@ const texSigned = (degrees, digits = 2) => `${signed(degrees, digits).replace('�
    Cancer, seen looking south, on the equatorial grid; the ecliptic of
    2026 in the plate's ink, and highlighted the reference path of Mars
    from 15 October 2024 to 15 April 2025 (apparent positions of date, as
-   seen from the Earth's centre), a tick on the first of each month.
+   seen from the Earth's center), a tick on the first of each month.
    The area holds the path, right ascension 109° to 129°, declination
    +21° to +26°, and the whole figures of Gemini and Cancer, so that
    none of their lines is cut by the border.
@@ -384,7 +384,7 @@ const motionFigure = {
 
 		showLines('motion-readout', [
 			`\\text{goes back } ${fixed(loop.arc, 1)}^\\circ \\text{ in } ${fixed(loop.days, 0)} \\text{ days}`,
-			`\\text{centred on ecliptic longitude } ${fixedAngle(loop.lon, 1)}^\\circ`
+			`\\text{centered on ecliptic longitude } ${fixedAngle(loop.lon, 1)}^\\circ`
 		]);
 	},
 
@@ -665,8 +665,8 @@ const epicycleFigure = {
 		const { meanLongitude, mu, sun, lambda } = now;
 		const radius = Math.max(ANGLE_ARC_MIN, MU_ARC_RADIUS * r * this.scale);
 
-		centredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
-		centredLabel(ctx, '☉', towards(O, sun, edge + 12), COL.sun, this.labels);
+		centeredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
+		centeredLabel(ctx, '☉', towards(O, sun, edge + 12), COL.sun, this.labels);
 
 		if (r > 0) {
 			labelOutside(ctx, 'μ', K, radius, meanLongitude + mu / 2, COL.epicycle, this.labels);
@@ -853,7 +853,7 @@ const ratioFigure = {
    5. FIGURE 5: THE ERROR CURVE
    The model fitted to 2010 - 2025 and the uniform planet against the
    reference Mars, in degrees, over four years, 2016 - 2019, and the
-   sixteen years of the fit and two centuries centred on them (a curve
+   sixteen years of the fit and two centuries centered on them (a curve
    over four years; over the longer spans one pixel covers more than the
    sampling step, so the curves become bands); dots at the oppositions of
    1986 - 2025, on spans of the fit or less. No slider changes a model, so
@@ -1007,14 +1007,14 @@ const magnifyFigure = {
 		const labels = new LabelPlacer();
 
 		labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
-		centredLabel(ctx, '☉', towards(O, 180, scale * 0.38 + 12), COL.sun, labels);
+		centeredLabel(ctx, '☉', towards(O, 180, scale * 0.38 + 12), COL.sun, labels);
 		labelOutside(ctx, 'O', O, 7, 225, COL.earth, labels);
 		labelOutside(ctx, 'K', K, 4, 60, COL.ink, labels);
 		labelOutside(ctx, 'K′', K2, 4, -40, COL.ink, labels);
 		labelOutside(ctx, 'P', P, 7, 130, COL.planet, labels);
 		labelOutside(ctx, 'P′', P2, 7, 215, COL.planet, labels);
-		centredLabel(ctx, `${MAGNIFY_SHIFT}°`, towards(O, -MAGNIFY_SHIFT / 2, scale * 0.86), COL.ink, labels);
-		centredLabel(
+		centeredLabel(ctx, `${MAGNIFY_SHIFT}°`, towards(O, -MAGNIFY_SHIFT / 2, scale * 0.86), COL.ink, labels);
+		centeredLabel(
 			ctx,
 			`${fixed(-turn, 0)}°`,
 			towards(O, turn / 2, (MAGNIFY_P_ANGLE + 0.1) * scale),

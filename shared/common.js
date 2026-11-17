@@ -453,7 +453,7 @@ function starSize(mag) {
 	return lerp(STAR_SIZE_BRIGHT, STAR_SIZE_FAINT, t);
 }
 
-/* The eight corners of a four-pointed star centred on (x, y), half-size s:
+/* The eight corners of a four-pointed star centered on (x, y), half-size s:
    the four points (north, east, south, west) and the four waists. */
 function starCorners(x, y, s) {
 	const w = STAR_WAIST * s;
@@ -535,7 +535,7 @@ function drawStar(ctx, x, y, s, ring = null) {
 	ctx.fill();
 }
 
-/* ---------- Square canvases and centred labels ---------- */
+/* ---------- Square canvases and centered labels ---------- */
 
 /* The smallest square canvas (px): narrower than any phone's column. */
 const SQUARE_CANVAS_MIN = 200;
@@ -589,14 +589,14 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 	});
 }
 
-/* A text label centred at a screen point, in the atlas fonts and the text
+/* A text label centered at a screen point, in the atlas fonts and the text
    colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
    symbol that would cover an earlier label or leave the canvas (on a
    phone) moves next to its point instead; a word stays where it is, only
    moved inside the canvas (LabelPlacer.candidates). 'kind' ('name' or
    'symbol') overrides the font labelFont would choose, e.g. 'symbol' for a
    formula such as "CQ sin M". */
-function centredLabel(ctx, text, point, color, labels = null, kind = null) {
+function centeredLabel(ctx, text, point, color, labels = null, kind = null) {
 	ctx.fillStyle = textColor(color);
 	ctx.font = labelFont(text, kind);
 	ctx.textAlign = 'center';
@@ -623,18 +623,18 @@ function segment(ctx, a, b, style) {
 
 /* A circular arc about a canvas point, from angle 'from' to 'to'
    (longitudes, anticlockwise on the screen), of radius r px. */
-function screenArc(ctx, centre, r, from, to, style) {
+function screenArc(ctx, center, r, from, to, style) {
 	const start = -from * D2R;
 	const end = -to * D2R;
 
 	ctx.strokeStyle = style.color;
 	ctx.lineWidth = style.width ?? 2;
 	ctx.beginPath();
-	ctx.arc(centre.x, centre.y, r, start, end, to > from);
+	ctx.arc(center.x, center.y, r, start, end, to > from);
 	ctx.stroke();
 }
 
-/* A symbol with a subscript ("λ" and "A"), centred at a canvas point, in
+/* A symbol with a subscript ("λ" and "A"), centered at a canvas point, in
    the text colour of 'color'. */
 function subscriptLabel(ctx, base, sub, point, color) {
 	const subFont = 'italic 500 15px "Cormorant Garamond", Georgia, serif';
@@ -666,22 +666,22 @@ function towards(from, lon, r) {
 }
 
 /* A circle on a canvas. */
-function circle(ctx, centre, r, style) {
+function circle(ctx, center, r, style) {
 	ctx.strokeStyle = style.color;
 	ctx.lineWidth = style.width ?? 2;
 	ctx.setLineDash(style.dash ?? []);
 	ctx.beginPath();
-	ctx.arc(centre.x, centre.y, r, 0, TAU);
+	ctx.arc(center.x, center.y, r, 0, TAU);
 	ctx.stroke();
 	ctx.setLineDash([]);
 }
 
-/* A name set just outside a circle (or a point, r = 0) of centre
-   'centre' and radius r px, in the direction 'lon': its box starts
+/* A name set just outside a circle (or a point, r = 0) of center
+   'center' and radius r px, in the direction 'lon': its box starts
    OUTSIDE_LABEL_GAP px beyond the circle, so it never sits on the circle. */
 const OUTSIDE_LABEL_GAP = 6;
 
-function labelOutside(ctx, text, centre, r, lon, color, labels, kind = null) {
+function labelOutside(ctx, text, center, r, lon, color, labels, kind = null) {
 	ctx.font = labelFont(text, kind);
 
 	const box = ctx.measureText(text);
@@ -689,7 +689,7 @@ function labelOutside(ctx, text, centre, r, lon, color, labels, kind = null) {
 	const halfHeight = (box.actualBoundingBoxAscent + box.actualBoundingBoxDescent) / 2;
 	const reach = r + OUTSIDE_LABEL_GAP + Math.abs(halfWidth * cos(lon)) + Math.abs(halfHeight * sin(lon));
 
-	centredLabel(ctx, text, towards(centre, lon, reach), color, labels, kind);
+	centeredLabel(ctx, text, towards(center, lon, reach), color, labels, kind);
 }
 
 /* The direction (deg) from a point that is farthest from every line

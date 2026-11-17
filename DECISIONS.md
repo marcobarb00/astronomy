@@ -62,7 +62,7 @@ section.
   theirs; it never presents one as true. Directions seen from the Earth
   cannot decide which body is at rest, so the text says what each model
   takes as at rest (geostatic, heliostatic), keeps the frame apart from
-  the arrangement, and never speaks of a true centre. Adopted on
+  the arrangement, and never speaks of a true center. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 - **The Sun and the Moon are connected to the models used today, without
@@ -115,7 +115,7 @@ section.
   as ghosts where the scales allow. Decided by Marco on 2026-11-11. →
   STRUCTURE.md §4 (page 2.1), §7.3
 
-- **Page 4.2 fits the deferent's centre and the equant apart, then adopts
+- **Page 4.2 fits the deferent's center and the equant apart, then adopts
   the bisection.** The oppositions fix OQ and the loops OC (to first
   order K's speed depends only on OQ, its distance only on OC); fitted
   alternately to 2010–2025 they give OC/OQ = 0.49, so Ptolemy's model
@@ -128,7 +128,7 @@ section.
   and the pointer reads the equant's own error. Unlike page 2.1. Decided
   by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
 - **No Today note on page 4.2; the equant is compared with Kepler's
-  ellipse as geometry** (the same circle's centre and foci O and Q),
+  ellipse as geometry** (the same circle's center and foci O and Q),
   without the two orbits about the Sun, which would answer page 4.3's
   question. Approved by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
 

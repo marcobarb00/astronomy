@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PAGE 4.3 · SAME GEOMETRY, NEW CENTRE - FIGURE LAYOUT (page.css)
+   PAGE 4.3 · SAME GEOMETRY, NEW CENTER - FIGURE LAYOUT (page.css)
    Layout only: every colour comes from shared/theme.css.
 
    TABLE OF CONTENTS
@@ -36,7 +36,7 @@ figure.fig .ctl {
 
 /* ==========================================================================
    2. THE DRAWINGS
-   The canvases set their own size (page.js); centre them.
+   The canvases set their own size (page.js); center them.
    ========================================================================== */
 
 #geostatic-canvas,
@@ -52,7 +52,7 @@ figure.fig .ctl {
 
 /* ==========================================================================
    3. THE TABLES
-   The planet on the left, the values centred.
+   The planet on the left, the values centered.
    ========================================================================== */
 
 table.prose-table {

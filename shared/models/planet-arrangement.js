@@ -21,7 +21,7 @@
    was.
 
    Mars is page 4.2's equant (models/planet-equant.js), its deferent
-   centred at C, near the mean Sun once moved; Venus is a simple epicycle
+   centered at C, near the mean Sun once moved; Venus is a simple epicycle
    (models/planet-epicycle.js) fitted on page 4.3. The periods about the
    mean Sun follow from the synodic periods S (days) and the year Y:
 	   outer: 1 / P = 1 / Y - 1 / S,   inner: 1 / P = 1 / Y + 1 / S.
@@ -57,7 +57,7 @@ const PlanetArrangement = (function () {
 	};
 
 	/* The synodic periods S (days) and the distances a (au) fitted on
-	   page 4.3 (tools/numbers/4.3-new-centre.js), from documented
+	   page 4.3 (tools/numbers/4.3-new-center.js), from documented
 	   observations only: S from a straight line through the times of the
 	   oppositions (outer) or inferior conjunctions (inner) of 1926 - 2025;
 	   a from the greatest elongations of 1986 - 2025 (inner, a = the mean
@@ -170,11 +170,11 @@ const PlanetArrangement = (function () {
 	   Sun's ecliptic longitude), lambda (the planet's, seen from O),
 	   elongation (lambda less the mean Sun's, deg in [-180, 180)),
 	   distance (OP, au), geostatic: { O, K, P, S, C, Q }, heliostatic:
-	   { S, O, P, C, Q } } (C and Q, the centre of the deferent and the
+	   { S, O, P, C, Q } } (C and Q, the center of the deferent and the
 	   equant, for Mars only). In the heliostatic drawing the Earth is at
 	   -O sun and the planet at P - O sun; an outer planet's deferent, the
 	   circle of K about O, has become the circle of P about sun, so its
-	   centre and its equant keep their places relative to sun. */
+	   center and its equant keep their places relative to sun. */
 	function moment(name, jd) {
 		const p = MODELS[name];
 
@@ -248,13 +248,13 @@ const PlanetArrangement = (function () {
 
 	/* ======================================================================
 	   4. COPERNICUS' ECCENTRIC WITH AN EPICYCLET (DE REVOLUTIONIBUS V 4)
-	   Copernicus gave up the equant: a deferent of radius 1 whose centre
-	   lies 3e/2 from the centre of motion towards the apogee, and on it a
+	   Copernicus gave up the equant: a deferent of radius 1 whose center
+	   lies 3e/2 from the center of motion towards the apogee, and on it a
 	   small epicycle of radius e/2 turning twice as fast, which puts the
 	   planet at
 		   [3e/2 + cos M - (e/2) cos 2M,  sin M - (e/2) sin 2M]
 	   in the frame of the apsidal line (x towards the apogee). Seen from
-	   the centre of motion it has the equant's direction and distance to
+	   the center of motion it has the equant's direction and distance to
 	   first order (Fitzpatrick § 4.5).
 	   ====================================================================== */
 
@@ -278,11 +278,11 @@ const PlanetArrangement = (function () {
 		return jd => {
 			const s = PlanetEquant.state(parameters, jd);
 			const z = epicyclet(s.M, parameters.e);
-			const centre = s.meanLongitude + z.q;
+			const center = s.meanLongitude + z.q;
 			const r = parameters.r;
-			const eta = atan2d(r * sin(s.sun - centre), z.distance + r * cos(s.sun - centre));
+			const eta = atan2d(r * sin(s.sun - center), z.distance + r * cos(s.sun - center));
 
-			return norm360(centre + eta);
+			return norm360(center + eta);
 		};
 	}
 

@@ -32,7 +32,7 @@ figure.fig .ctl {
 /* ==========================================================================
    2. THE SQUARE DRAWINGS
    Figures 3(a) and 6: the canvas sets its own square size (page.js);
-   centre it.
+   center it.
    ========================================================================== */
 
 #epicycle-canvas,
@@ -44,7 +44,7 @@ figure.fig .ctl {
 /* ==========================================================================
    3. THE TABLE OF THE LOOPS
    A narrow table: the planet and the middle of the loop, words, on the
-   left; the numbers centred, as in the shared tables.
+   left; the numbers centered, as in the shared tables.
    ========================================================================== */
 
 table.prose-table {

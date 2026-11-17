@@ -1,11 +1,11 @@
 /* ==========================================================================
-   NUMBERS FOR PAGE 4.3 "SAME GEOMETRY, NEW CENTRE" (tools/numbers/4.3-new-centre.js)
+   NUMBERS FOR PAGE 4.3 "SAME GEOMETRY, NEW CENTER" (tools/numbers/4.3-new-center.js)
    Loads the site's shared code (common, time, ephemeris and the models
    mean-sun.js, precession.js, planet-epicycle.js, planet-equant.js and
    planet-arrangement.js) in a Node vm context and prints every number
    quoted on the page, in page order.
 
-   Run from the repository root:  node tools/numbers/4.3-new-centre.js
+   Run from the repository root:  node tools/numbers/4.3-new-center.js
    (about a minute: it finds a century of oppositions and conjunctions of
    five planets, and forty years of their loops and greatest elongations)
 
@@ -204,7 +204,7 @@ title('Observation: the elongations from the Sun, 2022 - 2025 (Figure 1)');
 		const loops = middles(planet, start, end);
 
 		console.log(
-			`${name(planet).padEnd(8)} loops centred on ${KIND[planet] === 'inner' ? 'inferior conjunction' : 'opposition'}: ${loops.length}`
+			`${name(planet).padEnd(8)} loops centered on ${KIND[planet] === 'inner' ? 'inferior conjunction' : 'opposition'}: ${loops.length}`
 		);
 	});
 
@@ -317,7 +317,7 @@ const DEVICE = {};
 	DEVICE.dq = dq;
 	DEVICE.dd = dd;
 	console.log(
-		`K seen from the centre: directions within ${f(60 * dq, 1)}', distances within ${f(dd, 4)} (e^2 / 2 = ${f((e * e) / 2, 4)})`
+		`K seen from the center: directions within ${f(60 * dq, 1)}', distances within ${f(dd, 4)} (e^2 / 2 = ${f((e * e) / 2, 4)})`
 	);
 	console.log(`the planet seen from the Earth, 2010 - 2025: the two within ${f(60 * apart, 1)}' of each other`);
 	console.log(
@@ -513,7 +513,7 @@ title('Exercise 1: Venus from its greatest elongations of 2025');
 	const offset = (radius / sinA - radius / sinB) / 2;
 
 	console.log(
-		`Copernicus V 21: sin 44.8° = ${f(sinA, 4)}, sin 47.267° = ${f(sinB, 4)}; the distances from the Earth to the centre ${f(radius / sinA, 4)} and ${f(radius / sinB, 4)}; radius ${f(radius, 4)}, centre ${f(offset, 4)} from the Sun's mean place (his 7193 and 208 in 10000)`
+		`Copernicus V 21: sin 44.8° = ${f(sinA, 4)}, sin 47.267° = ${f(sinB, 4)}; the distances from the Earth to the center ${f(radius / sinA, 4)} and ${f(radius / sinB, 4)}; radius ${f(radius, 4)}, center ${f(offset, 4)} from the Sun's mean place (his 7193 and 208 in 10000)`
 	);
 }
 

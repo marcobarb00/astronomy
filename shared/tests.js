@@ -687,7 +687,7 @@ function testPrecession() {
    10. EPHEMERIS: JPL HORIZONS SPOT CHECKS (DE441)
    Apparent geocentric ecliptic longitude of date from JPL Horizons
    (ssd.jpl.nasa.gov/api/horizons.api: CENTER='500@399', QUANTITIES='31',
-   TIME_TYPE='TT'; Mars, Jupiter, Saturn as system barycentres 4, 5, 6),
+   TIME_TYPE='TT'; Mars, Jupiter, Saturn as system barycenters 4, 5, 6),
    retrieved 2026-10-17. Tolerances: the accuracy measured over
    500 BC - 2500 AD in the header of ephemeris.js, rounded up.
    ========================================================================== */
@@ -1303,7 +1303,7 @@ function testSolarEccentric() {
 		show: showDeg
 	});
 
-	// III 4: Hipparchus' 94 1/2 and 92 1/2 days give the centres 2;29 1/2
+	// III 4: Hipparchus' 94 1/2 and 92 1/2 days give the centers 2;29 1/2
 	// apart (on a radius of 60), the apogee 24;30° before the summer
 	// solstice, and 88 1/8 and 90 1/8 days for autumn and winter.
 	const yearPtolemy = 365 + 14 / 60 + 48 / 3600;
@@ -1808,7 +1808,7 @@ function testLunarCrank() {
 		name: 'The perigee of the eccentric, OG',
 		source: 'Almagest V 4 (39;22)',
 		expected: 39 + 22 / 60,
-		computed: parts(LunarCrank.centreDistance(P.c, 180)),
+		computed: parts(LunarCrank.centeredistance(P.c, 180)),
 		tol: 0.02,
 		unit: 'parts',
 		show: x => x.toFixed(3)
@@ -1841,7 +1841,7 @@ function testLunarCrank() {
 	});
 
 	// V 7: OK = 43;43 and the greatest equation 6;54 at 2D = 120°
-	const rho = LunarCrank.centreDistance(P.c, 120);
+	const rho = LunarCrank.centeredistance(P.c, 120);
 
 	check({
 		name: 'The greatest equation at 2D = 120°',
@@ -1892,7 +1892,7 @@ function testLunarLatitude() {
 	group("The Moon's latitude and eclipses · models/lunar-latitude.js, models/eclipses.js (page 3.3)");
 
 	// VI 5: with i = 5°, the Moon 8;20° and 10;36° from the node along its
-	// circle; Ptolemy finds the two distances from the shadow's centre
+	// circle; Ptolemy finds the two distances from the shadow's center
 	// 0;11,47° apart
 	check({
 		name: 'The latitudes 8;20° and 10;36° from the node, their difference',
@@ -2212,7 +2212,7 @@ function testPlanetArrangement() {
 	});
 
 	// V 21: Copernicus' greatest elongations of Venus give its radius
-	// 7193 and the centre 208 parts from the Sun's mean place
+	// 7193 and the center 208 parts from the Sun's mean place
 	const sinA = sin(44.8);
 	const sinB = sin(47 + 16 / 60);
 	const radius = 2 / (1 / sinA + 1 / sinB);

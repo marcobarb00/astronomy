@@ -72,15 +72,15 @@ same style:
   more `<dl class="key">` ("In the figure", "Read-out"), one line per
   entry, styled by `shared/theme.css` (see `templates/page.html`).
 - A label never jumps. A point that moves when a control moves or the
-  sphere turns (the Moon on its epicycle, the centre of a moving circle,
-  the Earth at a centre crossed by turning lines) is named by a single
+  sphere turns (the Moon on its epicycle, the center of a moving circle,
+  the Earth at a center crossed by turning lines) is named by a single
   letter that the text defines (O, K, L, C, A), or not named at all when
   the panel title, the caption or the key already says what it is. A
   word or an expression (Vega, mean Sun, deferent, 90° − a) may label a
   moving object only if it stays on the same side of it, or turns
   smoothly round it, as the object moves: it is never sent to the other
   side of its point to avoid a line or another label. `LabelPlacer`
-  (`shared/common.js`) does this for `centredLabel` and `Sphere3D.label`:
+  (`shared/common.js`) does this for `centeredLabel` and `Sphere3D.label`:
   only a label of one or two characters may move round its point, a
   longer one keeps its place and only slides inside the canvas. A page
   that chooses a label's side itself (by the clearest direction, the sign
@@ -107,7 +107,7 @@ same style:
   a fixed-width column (`--ctl-output` in `shared/theme.css`): never let it
   follow its text, or the track resizes while dragging and the value
   jitters. For a quantity the reader steps through one unit at a time (a
-  day), add previous / next buttons centred under the slider
+  day), add previous / next buttons centered under the slider
   (`.ctl.stepper` with `button[data-target][data-step]`, see
   `templates/demo.html`); held down, they repeat and speed up.
 - A figure keeps one size whatever its controls and the pointer show:

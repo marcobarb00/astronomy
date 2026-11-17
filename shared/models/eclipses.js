@@ -7,10 +7,10 @@
    At page 3.3's new and full Moons the crank of page 3.2 changes nothing,
    so the Moon is page 3.1's epicycle.
 
-   At a syzygy (new or full Moon) the Moon passes the Sun, or the centre
+   At a syzygy (new or full Moon) the Moon passes the Sun, or the center
    of the Earth's shadow, at the distance |beta|, its latitude. With the
    apparent radii s and the horizontal parallaxes p of the Moon (sM, pM)
-   and of the Sun (sS, pS), all seen from the Earth's centre (page 3.3
+   and of the Sun (sS, pS), all seen from the Earth's center (page 3.3
    writes s, pi, s_sun, pi_sun):
 	   umbra:   u = 1.01 pM + pS - sS   the shadow's radius at the Moon;
 	   lunar eclipse (umbral) when |beta| < u + sM, total when < u - sM;
@@ -22,7 +22,7 @@
 	   annular; a non-central eclipse is still total or annular when the
 	   shadow's cone touches the Earth, |beta| < pM - pS + |s' - sS|, with
 	   s' that apparent radius of the Moon. The angles are small, so the
-	   distance of the axis from the Earth's centre is gamma = |beta| /
+	   distance of the axis from the Earth's center is gamma = |beta| /
 	   (pM - pS) Earth radii, to first order.
    The 1.01 is Danjon's enlargement of the shadow by the Earth's
    atmosphere, as in NASA's Five Millennium Canon of Lunar Eclipses
@@ -39,7 +39,7 @@
 
    The reference sky's eclipses (reference): at each of its new and full
    Moons, the least distance of the Moon from the Sun or from the shadow's
-   centre, with the same criteria and the reference distances. They agree
+   center, with the same criteria and the reference distances. They agree
    with NASA's list of 2021 - 2030 (tools/numbers/3.3-eclipses.js).
 
    Needs common.js, time.js, ephemeris.js, models/mean-sun.js,
@@ -125,7 +125,7 @@ const Eclipses = (function () {
 	/* The Moon's apparent radius (deg) seen from the point of the Earth
 	   where the shadow's axis meets it, or, when the axis misses the
 	   Earth, from the point nearest the axis: gamma (Earth radii) is the
-	   axis' distance from the Earth's centre, moonKm the Moon's. */
+	   axis' distance from the Earth's center, moonKm the Moon's. */
 	function axisRadius(moonKm, gamma) {
 		const g = Math.min(1, gamma);
 
@@ -173,7 +173,7 @@ const Eclipses = (function () {
 	   4. THE CRITERIA
 	   ====================================================================== */
 
-	/* A lunar eclipse at the distance 'distance' (deg) of the Moon's centre
+	/* A lunar eclipse at the distance 'distance' (deg) of the Moon's center
 	   from the shadow's, with the sizes z: { kind: 'total', 'partial' or
 	   null, magnitude (the fraction of the Moon's diameter in the umbra) }. */
 	function lunarEclipse(distance, z) {
@@ -184,7 +184,7 @@ const Eclipses = (function () {
 		return { kind, magnitude: (l.lunar - b) / (2 * z.sM) };
 	}
 
-	/* A solar eclipse at the distance 'distance' (deg) of the Moon's centre
+	/* A solar eclipse at the distance 'distance' (deg) of the Moon's center
 	   from the Sun's, with the sizes z and the Moon's distance (km):
 	   { kind: 'total', 'annular', 'partial' or null, central }. */
 	function solarEclipse(distance, z, moonKm) {

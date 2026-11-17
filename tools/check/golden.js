@@ -87,7 +87,7 @@ const PAGE_FILES = [
 	'act3-moon/03-eclipses/index.html',
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
-	'act4-planets/03-new-centre/index.html'
+	'act4-planets/03-new-center/index.html'
 ];
 
 /* ==========================================================================
@@ -819,7 +819,7 @@ function planetEquantSection(c) {
 			num(p.epoch),
 			num(p.apogee),
 			num(p.apogeeRate, 12),
-			num(o.centre),
+			num(o.center),
 			num(o.equant),
 			num(p.r)
 		);
@@ -1337,7 +1337,7 @@ function page42(c) {
 }
 
 function page43(c) {
-	title('8l. PAGE 4.3 (act4-planets/03-new-centre/page.js)');
+	title('8l. PAGE 4.3 (act4-planets/03-new-center/page.js)');
 	row('yearOf', [2451545.0, 2460676.5].map(jd => num(c.yearOf(jd))).join(' '));
 	row('yearTicks', JSON.stringify(c.yearTicks(2)(2010, 2026)));
 	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));

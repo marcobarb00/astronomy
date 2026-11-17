@@ -65,7 +65,7 @@ const Clock = (function () {
 	const SUN_DEGREES_PER_HOUR = 15;
 
 	/* Sunrise and sunset: the Sun's upper limb on the seen horizon. Its
-	   centre is then 34' (refraction, page 1.1) + 16' (its radius) = 50'
+	   center is then 34' (refraction, page 1.1) + 16' (its radius) = 50'
 	   below the true horizon (Meeus ch. 15). */
 	const SUN_HORIZON = -50 / 60;
 

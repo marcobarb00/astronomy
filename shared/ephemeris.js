@@ -38,7 +38,7 @@
 	 Largest difference from JPL Horizons (DE441, observer quantity 31,
 	 apparent ecliptic longitude of date, TT), sampled every 5 days in
 	 1800-2050 and every 73 days over 3000 BC - 3000 AD (retrieved 2026-10-17;
-	 Mars, Jupiter, Saturn as system barycentres). RMS in brackets.
+	 Mars, Jupiter, Saturn as system barycenters). RMS in brackets.
 	                     1800 - 2050      500 BC - 2500 AD    3000 BC - 3000 AD
 	   Sun              0.7'  (0.2')       0.8'  (0.2')        1.1'  (0.3')
 	   Moon             0.3'  (0.05')      1.7'  (0.5')        11'   (3.3')

@@ -104,7 +104,7 @@ const DAYS_PER_YEAR = 365.25;
 const equinoxShift = jd => Ephem.precessEcliptic(0, 0, Time.J2000, jd).lon;
 
 /* The rate of precession in longitude (arcsec a Julian year) at JD,
-   from the shift over the century centred on it. */
+   from the shift over the century centered on it. */
 function rateAt(jd) {
 	const half = 36525 / 2;
 
@@ -355,7 +355,7 @@ console.log(`period 360° / p = ${f(360 / P, 0)} years`);
 	});
 	console.log(`Polaris from the pole in 2026: ${f(fromPole('Polaris', J2026), 2)}°`);
 	console.log(
-		`Figure 3: one turn centred on 2026, from ${year(Math.round(2026 - 180 / P))} to ${year(Math.round(2026 + 180 / P))}`
+		`Figure 3: one turn centered on 2026, from ${year(Math.round(2026 - 180 / P))} to ${year(Math.round(2026 + 180 / P))}`
 	);
 }
 
@@ -445,7 +445,7 @@ console.log(
 console.log(
 	`the stars of Figure 1 over the same century: ${FIGURE_1_STARS.map(name => `${name} ${f((norm180(ofDate(star(name), P_TO).lon - ofDate(star(name), P_FROM).lon) * 3600) / 100, 2)}"`).join(', ')}`
 );
-console.log(`(the century centred on 2026, which runs into the future: ${f(rateAt(J2026), 3)}" a year)`);
+console.log(`(the century centered on 2026, which runs into the future: ${f(rateAt(J2026), 3)}" a year)`);
 {
 	const copernicus = (23 + 57 / 60) / 1717; // deg per Egyptian year of 365 days (De Rev. III 6)
 
@@ -565,9 +565,9 @@ title('Test: the equation of time with a moving apogee (page 2.2)');
 
 	[100, 1000].forEach(span => {
 		const half = (span / 2) * DAYS_PER_YEAR;
-		const centre = Time.julianDay(2026, 7, 2.5);
+		const center = Time.julianDay(2026, 7, 2.5);
 		const worst = parameters => {
-			const e = extremes(jd => (modelE(parameters, jd) - ephemE(jd)) * 60, centre - half, centre + half, 5);
+			const e = extremes(jd => (modelE(parameters, jd) - ephemE(jd)) * 60, center - half, center + half, 5);
 
 			return Math.max(-e.low, e.high);
 		};
