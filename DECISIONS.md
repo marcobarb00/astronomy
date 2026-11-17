@@ -144,6 +144,15 @@ section.
   worse, and that Kepler restored it with the ellipse: the page compares
   Copernicus' eccentric with an epicyclet (V 4) with page 4.2's equant
   (largest error of Mars 0.88° to 0.91°). → STRUCTURE.md §4 (page 4.3)
+- **Page 4.3's error curve shows Copernicus' epicyclet, not the
+  arrangement.** The arrangement's error curve is page 4.2's exactly,
+  so repeating it showed nothing (its ghost lay hidden under the curve,
+  and the scale, without page 4.1's ghost, made it look different from
+  page 4.2's). Figure 4, in the Model, has Mars with Copernicus'
+  eccentric and epicyclet as the model and page 4.2's equant as ghost,
+  over 4 and 16 years; the Test says in a sentence that the directions
+  are page 4.2's. Decided by Marco on 2026-11-17. → STRUCTURE.md §4
+  (page 4.3)
 - **"Copernicus fixed the Sun".** On page 4.3 the frame is stated as
   Copernicus' act ("Copernicus fixed the Sun"), not as "taking ☉ as at
   rest"; the page's question became "What changes when the Sun is
