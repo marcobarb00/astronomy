@@ -4,12 +4,12 @@
    The model of page 4.2, Ptolemy's model of an outer planet (Almagest
    IX 5 - 6, X 6 - 8, XI 9). The epicycle of page 4.1
    (models/planet-epicycle.js) is carried on an eccentric deferent, and
-   its centre K moves uniformly as seen from a second point, the equant Q.
+   its center K moves uniformly as seen from a second point, the equant Q.
 
    Units: the deferent's radius is 1. In the frame of the apsidal line,
    with the Earth O at the origin and x towards the apogee A (ecliptic
    longitude lambdaA):
-	 C = (OC, 0)        the centre of the deferent;
+	 C = (OC, 0)        the center of the deferent;
 	 Q = (OQ, 0)        the equant, about which the line QK turns
 						uniformly: its direction is the mean longitude
 						lambdaBar, at the mean anomaly M = lambdaBar -
@@ -17,11 +17,11 @@
 	 K = Q + QK u(M),   QK = -d cos M + sqrt(1 - d^2 sin^2 M), d = OQ - OC
 						(the law of cosines in the triangle C Q K, CK = 1).
    Ptolemy bisects the eccentricity: OC = e, OQ = 2e (IX 5, X 6). The
-   parameters may instead give centre (OC) and equant (OQ) apart, as the
+   parameters may instead give center (OC) and equant (OQ) apart, as the
    fit of page 4.2 does before it finds OC = OQ / 2.
 
    Seen from O, K is at lambdaBar + q, q the zodiacal equation (negative
-   from the apogee to the perigee, as page 2.1's equation of centre), at
+   from the apogee to the perigee, as page 2.1's equation of center), at
    the distance rho = OK. The radius KP of the epicycle (radius r) is
    parallel to the line from the Earth to the mean Sun (X 6), so the
    anomaly mu = lambdaBarSun - lambdaBar is counted from the mean apogee
@@ -58,7 +58,7 @@ const PlanetEquant = (function () {
 	   (deg / day); epoch: JD (TT, or UT with clock: 'ut', as in
 	   models/mean-sun.js); sun: the mean Sun (MeanSun parameters); apogee:
 	   lambdaA at the epoch (deg); apogeeRate: its motion (deg / day); e:
-	   OC, with the equant at 2e, or centre and equant given apart; r: the
+	   OC, with the equant at 2e, or center and equant given apart; r: the
 	   epicycle's radius.
 	   ====================================================================== */
 
@@ -82,7 +82,7 @@ const PlanetEquant = (function () {
 		r: 0.65803
 	};
 
-	/* The same fit with the centre C and the equant Q found apart (page
+	/* The same fit with the center C and the equant Q found apart (page
 	   4.2, section 3): OQ from the oppositions, OC and r from the loops,
 	   alternately until nothing changes. OC / OQ = 0.49. */
 	const MARS_SEPARATE = {
@@ -92,7 +92,7 @@ const PlanetEquant = (function () {
 		sun: MeanSun.MODERN,
 		apogee: 151.0811,
 		apogeeRate: PRECESSION_PER_DAY,
-		centre: 0.098287,
+		center: 0.098287,
 		equant: 0.200731,
 		r: 0.658102
 	};
@@ -121,33 +121,33 @@ const PlanetEquant = (function () {
 	   the deferent's radius.
 	   ====================================================================== */
 
-	/* OC and OQ of a parameter set: { centre, equant }. */
+	/* OC and OQ of a parameter set: { center, equant }. */
 	function offsets(parameters) {
-		if (parameters.centre !== undefined) {
-			return { centre: parameters.centre, equant: parameters.equant };
+		if (parameters.center !== undefined) {
+			return { center: parameters.center, equant: parameters.equant };
 		}
 
-		return { centre: parameters.e, equant: 2 * parameters.e };
+		return { center: parameters.e, equant: 2 * parameters.e };
 	}
 
-	/* QK at the mean anomaly M (deg) for OC = centre and OQ = equant. */
-	function equantDistance(M, centre, equant) {
-		const d = equant - centre;
+	/* QK at the mean anomaly M (deg) for OC = center and OQ = equant. */
+	function equantDistance(M, center, equant) {
+		const d = equant - center;
 
 		return -d * cos(M) + Math.sqrt(1 - d * d * sin(M) * sin(M));
 	}
 
 	/* K at the mean anomaly M: [x, y]. */
-	function centreOfEpicycle(M, centre, equant) {
-		const QK = equantDistance(M, centre, equant);
+	function centreOfEpicycle(M, center, equant) {
+		const QK = equantDistance(M, center, equant);
 
 		return [equant + QK * cos(M), QK * sin(M)];
 	}
 
 	/* K seen from the Earth: { q (deg, the zodiacal equation, the
 	   direction of K less M), distance (OK) }. */
-	function zodiacal(M, centre, equant) {
-		const K = centreOfEpicycle(M, centre, equant);
+	function zodiacal(M, center, equant) {
+		const K = centreOfEpicycle(M, center, equant);
 
 		return { q: norm180(atan2d(K[1], K[0]) - M), distance: Math.hypot(K[0], K[1]) };
 	}
@@ -170,7 +170,7 @@ const PlanetEquant = (function () {
 		const apogee = apogeeAt(parameters, jd);
 		const M = norm360(meanLongitude - apogee);
 		const o = offsets(parameters);
-		const z = zodiacal(M, o.centre, o.equant);
+		const z = zodiacal(M, o.center, o.equant);
 		const sun = MeanSun.meanLongitude(parameters.sun, jd);
 		const mu = norm360(sun - meanLongitude);
 		const r = parameters.r;
@@ -204,7 +204,7 @@ const PlanetEquant = (function () {
 		const K = along(s.rho, s.centreLongitude);
 
 		return {
-			C: along(o.centre, s.apogee),
+			C: along(o.center, s.apogee),
 			Q: along(o.equant, s.apogee),
 			K,
 			planet: [K[0] + parameters.r * cos(s.sun), K[1] + parameters.r * sin(s.sun)]
@@ -222,9 +222,9 @@ const PlanetEquant = (function () {
 
 	/* The planet's direction (deg, unwrapped near K's) t days after the
 	   mean opposition at M0. */
-	function directionNear(M0, t, centre, equant, r, n, nSun) {
-		const z0 = zodiacal(M0, centre, equant);
-		const K = centreOfEpicycle(M0 + n * t, centre, equant);
+	function directionNear(M0, t, center, equant, r, n, nSun) {
+		const z0 = zodiacal(M0, center, equant);
+		const K = centreOfEpicycle(M0 + n * t, center, equant);
 		const sun = M0 + z0.q + 180 + nSun * t;
 
 		return atan2d(K[1] + r * sin(sun), K[0] + r * cos(sun));
@@ -233,14 +233,14 @@ const PlanetEquant = (function () {
 	/* The loop at the mean anomaly M0: { lon (K's direction at the mean
 	   opposition, from the apogee, deg), arc (deg), days }, NaN without a
 	   loop. */
-	function loopAt(M0, centre, equant, r, n, nSun) {
-		const direction = t => directionNear(M0, t, centre, equant, r, n, nSun);
+	function loopAt(M0, center, equant, r, n, nSun) {
+		const direction = t => directionNear(M0, t, center, equant, r, n, nSun);
 		const motion = t => norm180(direction(t + 0.05) - direction(t - 0.05)) / 0.1;
 		const first = bisect(motion, -60, 0, 40);
 		const second = bisect(motion, 0, 60, 40);
 
 		return {
-			lon: norm360(M0 + zodiacal(M0, centre, equant).q),
+			lon: norm360(M0 + zodiacal(M0, center, equant).q),
 			arc: norm180(direction(first) - direction(second)),
 			days: second - first
 		};
@@ -248,16 +248,16 @@ const PlanetEquant = (function () {
 
 	/* The time (days) from the mean opposition at M0 to the next: the
 	   mean Sun gains 360° on the direction of K. */
-	function oppositionInterval(M0, centre, equant, n, nSun) {
-		const q0 = zodiacal(M0, centre, equant).q;
-		const gain = t => (nSun - n) * t - zodiacal(M0 + n * t, centre, equant).q + q0 - 360;
+	function oppositionInterval(M0, center, equant, n, nSun) {
+		const q0 = zodiacal(M0, center, equant).q;
+		const gain = t => (nSun - n) * t - zodiacal(M0 + n * t, center, equant).q + q0 - 360;
 
 		return bisect(gain, 500, 1100, 50);
 	}
 
 	/* ======================================================================
 	   5. KEPLER'S ELLIPSE, FOR COMPARISON
-	   An ellipse of semi-major axis 1 and eccentricity e, its centre at C =
+	   An ellipse of semi-major axis 1 and eccentricity e, its center at C =
 	   (e, 0) and its foci at O and Q = (2e, 0), the points of the equant
 	   model with the same e. A point moving on it by the area law about O
 	   has, with M counted from the apogee, the eccentric anomaly E from

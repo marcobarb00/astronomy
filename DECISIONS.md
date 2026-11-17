@@ -62,7 +62,7 @@ section.
   theirs; it never presents one as true. Directions seen from the Earth
   cannot decide which body is at rest, so the text says what each model
   takes as at rest (geostatic, heliostatic), keeps the frame apart from
-  the arrangement, and never speaks of a true centre. Adopted on
+  the arrangement, and never speaks of a true center. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 - **The Sun and the Moon are connected to the models used today, without
@@ -115,7 +115,7 @@ section.
   as ghosts where the scales allow. Decided by Marco on 2026-11-11. →
   STRUCTURE.md §4 (page 2.1), §7.3
 
-- **Page 4.2 fits the deferent's centre and the equant apart, then adopts
+- **Page 4.2 fits the deferent's center and the equant apart, then adopts
   the bisection.** The oppositions fix OQ and the loops OC (to first
   order K's speed depends only on OQ, its distance only on OC); fitted
   alternately to 2010–2025 they give OC/OQ = 0.49, so Ptolemy's model
@@ -128,9 +128,40 @@ section.
   and the pointer reads the equant's own error. Unlike page 2.1. Decided
   by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
 - **No Today note on page 4.2; the equant is compared with Kepler's
-  ellipse as geometry** (the same circle's centre and foci O and Q),
+  ellipse as geometry** (the same circle's center and foci O and Q),
   without the two orbits about the Sun, which would answer page 4.3's
   question. Approved by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
+
+- **Page 4.3: the arrangement changes no direction; its distances are
+  the test.** Ptolemy's models of pages 4.1 and 4.2 are moved into
+  Copernicus' arrangement exactly (the vectors exchanged, each model
+  scaled so that the Earth–☉ distance is 1), so the error curve is page
+  4.2's, unchanged; the distances from the Earth, a new prediction, are
+  tested on Mars. STRUCTURE.md's "the predictions barely improved"
+  became "the predicted directions do not change"; Copernicus' own models
+  are not rebuilt. Approved by Marco on 2026-11-16, who asked that the
+  page say Copernicus removed the equant, which made his model (a little)
+  worse, and that Kepler restored it with the ellipse: the page compares
+  Copernicus' eccentric with an epicyclet (V 4) with page 4.2's equant
+  (largest error of Mars 0.88° to 0.91°). → STRUCTURE.md §4 (page 4.3)
+- **Page 4.3's error curve shows Copernicus' epicyclet, not the
+  arrangement.** The arrangement's error curve is page 4.2's exactly,
+  so repeating it showed nothing (its ghost lay hidden under the curve,
+  and the scale, without page 4.1's ghost, made it look different from
+  page 4.2's). Figure 4, in the Model, has Mars with Copernicus'
+  eccentric and epicyclet as the model and page 4.2's equant as ghost,
+  over 4 and 16 years; the Test says in a sentence that the directions
+  are page 4.2's. Decided by Marco on 2026-11-17. → STRUCTURE.md §4
+  (page 4.3)
+- **"Copernicus fixed the Sun".** On page 4.3 the frame is stated as
+  Copernicus' act ("Copernicus fixed the Sun"), not as "taking ☉ as at
+  rest"; the page's question became "What changes when the Sun is
+  fixed?". Asked by Marco on 2026-11-16. → STRUCTURE.md §4 (page 4.3),
+  shared/site-map.js
+- **A Today note on page 4.3**, beside the distances: the modern first
+  approximation keeps the arrangement, every planet and the Earth on a
+  Kepler ellipse about the Sun. Pages 4.1 and 4.2 left it out so that
+  4.3 could say it. Approved by Marco on 2026-11-16. → STRUCTURE.md §7.5
 
 ## Look
 

@@ -17,6 +17,7 @@ shared code in Node, and prints the numbers quoted on the page.
 | `3.3-eclipses.js` | 3.3 · Eclipses |
 | `4.1-going-backwards.js` | 4.1 · Going backwards |
 | `4.2-equant.js` | 4.2 · The equant |
+| `4.3-new-center.js` | 4.3 · Same geometry, new center |
 
 Run from the repository root, e.g.
 

@@ -95,7 +95,7 @@ const STAR_NAME_GAP = 12;
 const STAR_NAME_DROP = 5;
 const STAR_NAME_RAISE = 8;
 
-/* The symbol of an arc is centred this far from the arc (px), and this far
+/* The symbol of an arc is centered this far from the arc (px), and this far
    below its own middle (half the height of a symbol at the label font). */
 const ARC_NAME_GAP = 13;
 const SYMBOL_HALF_HEIGHT = 5;
@@ -104,7 +104,7 @@ const SYMBOL_HALF_HEIGHT = 5;
    longer than the arc. */
 const ARROW_MIN_SWEEP = 3;
 
-/* A symbol centred 'distance' px from a point of the sphere, on the screen
+/* A symbol centered 'distance' px from a point of the sphere, on the screen
    side that faces the 3D point 'toward' (a negative distance: on the
    opposite side). The place follows the point smoothly, so the symbol
    never jumps round it. With 'always', it is not faded on the far side of
@@ -226,13 +226,13 @@ const SUN_YEAR_START = Time.julianDay(SUN_YEAR, 1, 1);
 const PLAY_DAYS_PER_SECOND = 15;
 
 /* The arrow of the Sun's yearly motion: how far ahead it reaches along the
-   ecliptic (deg), and its distance from the centre, just outside the
+   ecliptic (deg), and its distance from the center, just outside the
    sphere so that it does not cover the lambda path. */
 const SUN_ARROW_DEGREES = 20;
 const SUN_ARROW_RADIUS = 1.1;
 
 /* The obliquity is marked between the two poles, P and K, at these
-   distances from the centre (the arc, and its symbol). */
+   distances from the center (the arc, and its symbol). */
 const OBLIQUITY_ARC_RADIUS = 0.62;
 const OBLIQUITY_NAME_RADIUS = 0.74;
 

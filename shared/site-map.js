@@ -40,7 +40,7 @@ const SITE_MAP = (function () {
 			id: 4,
 			name: 'Act IV',
 			title: 'The planets',
-			blurb: 'Loops, the equant, a new centre, what the observations can decide, and the ellipse that removes the last error.'
+			blurb: 'Loops, the equant, a new center, what the observations can decide, and the ellipse that removes the last error.'
 		},
 		{
 			id: 5,
@@ -152,10 +152,10 @@ const SITE_MAP = (function () {
 		{
 			number: '4.3',
 			act: 4,
-			ready: false,
-			title: 'Same geometry, new centre',
-			question: 'What changes if the Sun is taken as at rest?',
-			path: 'act4-planets/03-new-centre/index.html'
+			ready: true,
+			title: 'Same geometry, new center',
+			question: 'What changes when the Sun is fixed?',
+			path: 'act4-planets/03-new-center/index.html'
 		},
 		{
 			number: '4.4',
@@ -195,7 +195,7 @@ const SITE_MAP = (function () {
 		aberration: {
 			title: 'aberration',
 			sentence:
-				"the Earth's yearly motion relative to the solar system's centre of mass tilts the incoming starlight by about 20″",
+				"the Earth's yearly motion relative to the solar system's center of mass tilts the incoming starlight by about 20″",
 			path: null,
 			ready: false
 		},
@@ -219,7 +219,7 @@ const SITE_MAP = (function () {
 		},
 		islamic: {
 			title: 'the Islamic critiques of the equant',
-			sentence: "al-Tusi's couple and Ibn al-Shatir's models, which Copernicus reused",
+			sentence: "al-Tusi's couple and Ibn al-Shatir's models, whose devices reappear in Copernicus",
 			path: null,
 			ready: false
 		},

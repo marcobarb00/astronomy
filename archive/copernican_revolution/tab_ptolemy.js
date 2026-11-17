@@ -533,7 +533,7 @@ const TOPICS = [
 		tone: "models",
 		diagram: "equant",
 		summary: [
-			"A plain epicycle on a Earth-centred deferent gives identical loops everywhere in the sky, which does not match the observations.",
+			"A plain epicycle on a Earth-centered deferent gives identical loops everywhere in the sky, which does not match the observations.",
 			"To solve this problem, Ptolemy introduced the equant: a point on the opposite side of the deferent's center from the Earth.",
 			"The epicycle center moves uniformly around the equant, not around the deferent's center. This makes loops smaller when the planet is far from us and larger when it is near."
 		],

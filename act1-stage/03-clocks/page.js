@@ -113,7 +113,7 @@ function clockwisePoint(owner, angle, r) {
    own length, so the head shrinks to nothing with the arc. */
 const ARROW_SIZE = 10;
 
-/* An arc of a view from above P, about its centre at radius r: from the
+/* An arc of a view from above P, about its center at radius r: from the
    angle 'from' (clockwise from the top) through 'sweep' degrees, clockwise
    when positive (westward) and anticlockwise when negative (eastward),
    with an arrowhead at its end. */
@@ -151,14 +151,14 @@ function polarArrowHead(owner, at, r, sense, color, size) {
 	ctx.fill();
 }
 
-/* A straight line of a view from above P, from its centre outwards to the
+/* A straight line of a view from above P, from its center outwards to the
    radius r at an angle (clockwise from the top). */
 function polarRay(owner, angle, r, style) {
 	segment(owner.ctx, { x: owner.cx, y: owner.cy }, clockwisePoint(owner, angle, r), style);
 }
 
 /* The name of an angle, a symbol with or without a subscript ("H",
-   ["θ", "G"]), centred at a canvas point in the text colour of its arc.
+   ["θ", "G"]), centered at a canvas point in the text colour of its arc.
    It is drawn where it is asked: it never steps aside. */
 function angleName(owner, name, point, color) {
 	const ctx = owner.ctx;
@@ -178,7 +178,7 @@ function angleName(owner, name, point, color) {
 /* ==========================================================================
    1. FIGURE 1: THE SKY FROM ABOVE THE POLE
    A polar view from outside the sphere, above P, from declination +90° at
-   the centre to -60° at the rim (equidistant in declination). The
+   the center to -60° at the rim (equidistant in declination). The
    meridian of Greenwich is fixed and points up; a point at hour angle H
    is drawn H clockwise from it, so the sky turns clockwise. The part of
    the ecliptic the Sun has covered since 1 January is drawn solid: seen
@@ -335,7 +335,7 @@ const wheelFigure = {
 	/* The ecliptic, from Frames.eclipticPoint: dashed, and solid from the
 	   Sun's place at the start of the year (a small ring) to the Sun. It is
 	   the great circle 90° from its own pole, 23.4° from P, so in this view
-	   centred on P it is off the centre. */
+	   centered on P it is off the center. */
 	drawEcliptic() {
 		const start = this.sunAtStart.lon;
 		const from = this.eclipticScreen(start);
@@ -543,9 +543,9 @@ const anglesFigure = {
 		this.dot(sunPoint, COL.sun, 7);
 		this.dot(gammaPoint, COL.ink, 4.5);
 		this.dot({ x: this.cx, y: this.cy }, COL.ink, 3.5);
-		centredLabel(ctx, 'mean Sun', this.meanSunLabelPlace(), COL.sun, this.labels);
-		centredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink, this.labels);
-		centredLabel(
+		centeredLabel(ctx, 'mean Sun', this.meanSunLabelPlace(), COL.sun, this.labels);
+		centeredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink, this.labels);
+		centeredLabel(
 			ctx,
 			'γ',
 			clockwisePoint(this, this.theta + 7, ANGLES_RING.equator * R + 14),
@@ -554,7 +554,7 @@ const anglesFigure = {
 		);
 	},
 
-	/* Where the name of the mean Sun is centred: inside the equator, which
+	/* Where the name of the mean Sun is centered: inside the equator, which
 	   it must not cross, and above the dashed line from P to the mean Sun,
 	   as near the mean Sun as the two allow. Drawn before the name of P,
 	   which steps aside on a phone, where the circle is small. */
@@ -597,7 +597,7 @@ const anglesFigure = {
 		ctx.moveTo(this.cx, this.cy);
 		ctx.lineTo(top.x, top.y);
 		ctx.stroke();
-		centredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
+		centeredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
 	},
 
 	/* An arc { from, sweep, ring, color, name }: from the angle 'from'
@@ -759,7 +759,7 @@ const siderealFigure = {
 		polarRay(this, at.star, SID_RING.H * R, { color: COL.planet, width: 1.5, dash: [5, 4] });
 		polarRay(this, at.observer, SID_RING.lon * R, meridian);
 		polarRay(this, 0, R + 8, meridian);
-		centredLabel(this.ctx, 'Greenwich', { x: this.cx, y: this.cy - R - 20 }, COL.deferent);
+		centeredLabel(this.ctx, 'Greenwich', { x: this.cx, y: this.cy - R - 20 }, COL.deferent);
 	},
 
 	/* The names of the four angles. That of alpha stands a quarter of the
@@ -814,11 +814,11 @@ const siderealFigure = {
 	/* P, named on the side farthest from the four lines that leave it (a
 	   single letter may move round its point). */
 	drawPole(at) {
-		const centre = { x: this.cx, y: this.cy };
+		const center = { x: this.cx, y: this.cy };
 		const rays = [0, at.observer, at.gamma, at.star].map(angle => 90 - angle);
 
-		drawDot(this.ctx, centre.x, centre.y, 3.5, COL.ink);
-		angleName(this, 'P', towards(centre, clearestDirection(rays), 14), COL.ink);
+		drawDot(this.ctx, center.x, center.y, 3.5, COL.ink);
+		angleName(this, 'P', towards(center, clearestDirection(rays), 14), COL.ink);
 	}
 };
 

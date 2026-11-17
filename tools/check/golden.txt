@@ -2135,6 +2135,29 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 June solstice             22.087504512  230.635791192  9.450879016  0.946098094  23.377345769  54.915729296  46.280890973
   range end                      78.913879896  273.850747004  11.317758067  1.021576017  -15.955873159  74.275764804  62.639604045
 
+=== 6l. COPERNICUS' ARRANGEMENT (models/planet-arrangement.js) ===
+  mercury                        inner  115.877747000  0.379632000  0.375000000  0.376300000  87.969411144  115.877747000
+  venus                          inner  583.922074000  0.722563000  0.719444444  0.719300000  224.700903047  583.922074000
+  mars                           outer  779.927956000  1.519687552  1.518987342  1.519756839  686.986157284  779.927956000
+  jupiter                        outer  398.876314000  5.200876000  5.217391304  5.219206681  4333.501186285  398.876314000
+  saturn                         outer  378.102808000  9.562304000  9.230769231  9.174311927  10750.400060457  378.102808000
+  VENUS_FIT                      261.492905000  0.616520621551  0.722563000
+  greatestElongation quadratureAngle 44.427004001  78.463040967
+  epicyclet e = 0.1              0.000000000/1.100000000 -7.524174839/1.080009887 -11.309932474/1.019803903 -8.653009636/0.939988640 0.000000000/0.900000000 11.309932474/1.019803903
+  range start                    324.253108222  1.578717754  0.257821671  0.043896707  228.053771272  1.453026080  324.374622237
+  Thales eclipse                 85.831688610  2.495191490  -0.518376282  1.633438650  15.365859326  0.949651681  85.834774805
+  Ptolemy                        237.031887472  0.575440547  0.443575271  -1.379016522  118.534027143  1.720802589  237.122058415
+  last Julian day                106.289155586  1.075546155  0.926545901  1.408553737  167.178633801  1.260917638  105.969411488
+  first Gregorian day            106.709650075  1.068415835  0.919937748  1.415365454  168.380332913  1.267060355  106.388210540
+  Sputnik (Meeus 7.a)            186.812074244  2.636324364  0.973523198  -0.084114680  235.095314454  1.020971794  186.815371782
+  Meeus 12.a                     62.763762447  2.125773626  -0.952693265  1.586149481  343.582391267  1.283570294  62.815202033
+  Meeus 47.a                     341.471844916  1.997786725  -0.937020069  -0.984113456  4.862017004  1.634035730  341.466751216
+  Meeus 25.a                     105.908315734  1.050727229  0.928472076  1.381888204  232.643551937  1.367778054  105.583631795
+  J2000.0                        328.249214688  1.842120355  -0.181572296  0.014006749  241.796652613  1.143816892  328.267620529
+  2026 January 1                 282.817850088  2.410422627  -0.185004548  -1.367617918  279.101486962  1.721679433  282.829749323
+  2026 June solstice             54.915729296  2.141055619  -0.005237399  0.752055676  129.455315821  1.105118342  54.849238766
+  range end                      74.275764804  0.588305460  -0.165711670  1.552463669  257.006387508  1.536243485  74.335274608
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2308,6 +2331,12 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   FIT_APOGEE TEST_APOGEE         151.332515000  151.165805000
   fixed ranges                   [-14,14]  [8,22]  [0,34]  [750,825]  {"e = 0.2":{"e":0.2,"arc":0.16},"Mars":{"e":0.100469,"arc":0.4}}  [0.75,1.3]  [0.75,1.25]  [-1,1]
 
+=== 8l. PAGE 4.3 (act4-planets/03-new-center/page.js) ===
+  yearOf                         2000.000000000 2025.000684463
+  yearTicks                      [{"value":2010,"label":"2010"},{"value":2012,"label":"2012"},{"value":2014,"label":"2014"},{"value":2016,"label":"2016"},{"value":2018,"label":"2018"},{"value":2020,"label":"2020"},{"value":2022,"label":"2022"},{"value":2024,"label":"2024"},{"value":2026,"label":"2026"}]
+  screenDirection                45.000000000
+  fixed ranges                   [-50,50]  [0,360]  [0,2.8]  [-0.03,0.03]  {"x0":-0.7,"x1":10.2,"y0":-0.4,"y1":1.5}  {"Mars":{"planet":"mars","room":2.018968},"Venus":{"planet":"venus","room":1.882563}}
+
 === 9. tools/numbers/1.1-turning-sky.js ===
 
 === Fit: the rate, from meridian crossings a century apart ===
@@ -2359,7 +2388,7 @@ Rhodes: -tan 36 tan(23;51,20) = -0.3213, H0 = 108.741, longest day = 14.4988 h, 
 inverse: a 14.5 h day gives phi = 36.01
 
 === Exercise 3: the equinox day at Greenwich, 20 March 2026 ===
-centre on the geometric horizon      rise 6:08:14, set 18:07:41, day 11h59m27.51s
+center on the geometric horizon      rise 6:08:14, set 18:07:41, day 11h59m27.51s
 with refraction (-34')               rise 6:04:36, set 18:11:20, day 12h06m44.15s
 upper limb with refraction (-50')    rise 6:02:53, set 18:13:03, day 12h10m09.64s
 split: Sun's own motion -0.5 min, refraction +7.3 min, radius +3.4 min, total +10.2 min
@@ -2652,7 +2681,7 @@ AD 140:
    winter  starts 21 Dec 140 21:53 TT, lasts 90.032 d
    spring + summer = 186.45 d, autumn + winter = 178.79 d
 
-=== Model: the equation of centre ===
+=== Model: the equation of center ===
 e = 0.04167: greatest q = 2.3880° (2°23'17") at M = 92.388° (92°23'17"); e in degrees 2.3873°; e^2/2 = 2.98'; |q + e sin M| <= 3.04'
 e = 0.03347: greatest q = 1.9182° (1°55'06") at M = 91.918° (91°55'06"); e in degrees 1.9179°; e^2/2 = 1.93'; |q + e sin M| <= 1.96'
 e = 0.10000: greatest q = 5.7392° (5°44'21") at M = 95.739° (95°44'21"); e in degrees 5.7296°; e^2/2 = 17.19'; |q + e sin M| <= 18.04'
@@ -2976,7 +3005,7 @@ Polaris  nearest the pole: real 2102, 0.46° (76 years from 2026); uniform model
 Thuban   nearest the pole: real 2796 BC, 0.10° (-4821 years from 2026); uniform model 2831 BC, 0.20° (Figure 2's presets)
 Vega     nearest the pole: real 13600, 5.70° (11574 years from 2026); uniform model 13790, 4.83° (Figure 2's presets)
 Polaris from the pole in 2026: 0.63°
-Figure 3: one turn centred on 2026, from 10862 BC to 14913
+Figure 3: one turn centered on 2026, from 10862 BC to 14913
 
 === Model: the tropical and the sidereal year ===
 Y_s = Y_t / (1 - p Y_t / 360°): 365.24219 d -> 365.25637 d, 20.41 min longer; p / n = 20.41 min
@@ -3002,7 +3031,7 @@ an error of 1° spread over the 1818 years: 2.0" a year
 Precession.MODERN in precession.js: rate 50.283" a year, obliquity 23.43591° (here 23.43591°), epoch 1 Jan 2026
 p = 50.283" a year = 1.3967° a century, 1° in 71.60 years; from Spica alone 50.240" a year
 the stars of Figure 1 over the same century: Aldebaran 50.33", Regulus 50.05", Spica 50.24", Antares 50.26", Vega 50.48", Polaris 50.40"
-(the century centred on 2026, which runs into the future: 50.294" a year)
+(the century centered on 2026, which runs into the future: 50.294" a year)
 Copernicus' mean precession, 23;57° in 1,717 Egyptian years: 50.25" a Julian year; his period 25,816 years (360° / rate = 25809)
    ours minus his: 0.033" a year
    the real mean rate over his records, 294 BC to 1525: 49.99" a year
@@ -3906,8 +3935,8 @@ round 2: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.37
 round 3: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
 round 4: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
 round 5: OQ 0.2007  OC 0.0983  OC/OQ 0.490  r 0.6581  apogee 151.08°  L0 355.375°  | directions rms 8.1', arcs rms 0.52°
-MARS_SEPARATE: L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
-in planet-equant.js:  L0 355.374664, apogee 151.0811, centre 0.098287, equant 0.200731, r 0.658102
+MARS_SEPARATE: L0 355.374664, apogee 151.0811, center 0.098287, equant 0.200731, r 0.658102
+in planet-equant.js:  L0 355.374664, apogee 151.0811, center 0.098287, equant 0.200731, r 0.658102
 
 === Fit: Ptolemy's bisection, OC = e, OQ = 2e ===
 L0 = 355.375032° at J2000.0, apogee 151.0820°, e = 0.100469 (OQ 0.2009), r = 0.658030
@@ -3992,3 +4021,147 @@ Figure 2, OQ = 0.2, OC in [0, OQ]: speed 0.800 to 1.250 n; OK 0.800 to 1.200; fi
 Figure 5, Mars (e = 0.1005), difference / e^2: the equant -0.303 to 0.303, the eccentric -0.906 to 0.906; second order -0.25 sin 2M and +0.75 sin 2M
   the equant's lobes (ratio to 1/4): 0-90°: -0.208 (0.83), 90-180°: 0.303 (1.21), 180-270°: -0.303 (1.21), 270-360°: 0.208 (0.83)
   the eccentric's lobes (ratio to 3/4): 0-90°: 0.638 (0.85), 90-180°: -0.906 (1.21), 180-270°: 0.906 (1.21), 270-360°: -0.638 (0.85)
+
+=== 9. tools/numbers/4.3-new-center.js ===
+
+=== Observation: the elongations from the Sun, 2022 - 2025 (Figure 1) ===
+Mercury  loops centered on inferior conjunction: 13
+Venus    loops centered on inferior conjunction: 3
+Mars     loops centered on opposition: 2
+Jupiter  loops centered on opposition: 3
+Saturn   loops centered on opposition: 4
+Venus stays within 47.2° of the Sun (geometric, daily)
+Mercury stays within 27.4° of the Sun (geometric, daily)
+
+=== Observation: the synodic periods (the mean interval, 1926 - 2025) ===
+Mercury  315 inferior conjunctions; S = 115.88 days (single intervals 106 to 129)
+Venus     63 inferior conjunctions; S = 583.92 days (single intervals 580 to 588)
+Mars      47 oppositions; S = 779.93 days (single intervals 764 to 811)
+Jupiter   91 oppositions; S = 398.88 days (single intervals 395 to 403)
+Saturn    97 oppositions; S = 378.10 days (single intervals 377 to 379)
+
+=== Observation: Ptolemy's epicycles (where the deferent is 60) ===
+Mercury  22.50
+Venus    43.17
+Mars     39.50
+Jupiter  11.50
+Saturn   6.50
+
+=== Model: Ptolemy's epicycles read as distances (Figure 3a, the table) ===
+Mercury  a = 0.375
+Venus    a = 0.719
+Mars     a = 1.519
+Jupiter  a = 5.217
+Saturn   a = 9.231
+
+=== Model: the period relations about the Sun (Almagest IX 3, De Revolutionibus V 1) ===
+Mercury  145 synodic periods in 46 years: 46 + 145 = 191 turns about the Sun (Copernicus: 191); one turn in 0.241 years
+Venus    5 synodic periods in 8 years: 8 + 5 = 13 turns about the Sun (Copernicus: 13); one turn in 0.615 years
+Mars     37 synodic periods in 79 years: 79 - 37 = 42 turns about the Sun (Copernicus: 42); one turn in 1.881 years
+Jupiter  65 synodic periods in 71 years: 71 - 65 = 6 turns about the Sun (Copernicus: 6); one turn in 11.833 years
+Saturn   57 synodic periods in 59 years: 59 - 57 = 2 turns about the Sun (Copernicus: 2); one turn in 29.500 years
+
+=== Model: the greatest elongation of Ptolemy's Venus, sin epsilon = a ===
+43.17 where the deferent is 60: 46.0°
+
+=== Model: the periods, by distance (Figure 3) ===
+Mercury  a = 0.380 au, P = 0.241 years (88.0 days)
+Venus    a = 0.723 au, P = 0.615 years (224.7 days)
+Mars     a = 1.520 au, P = 1.881 years (687.0 days)
+Jupiter  a = 5.201 au, P = 11.864 years (4333.5 days)
+Saturn   a = 9.562 au, P = 29.432 years (10750.4 days)
+
+=== Model: Mars' distance from the Earth in the circle of radius a ===
+a - 1 = 0.52 au at opposition, a + 1 = 2.52 au at conjunction, ratio 4.8
+
+=== Model: Copernicus' eccentric with an epicyclet against the equant (Mars, e = 0.1005) ===
+K seen from the center: directions within 3.4', distances within 0.0050 (e^2 / 2 = 0.0050)
+the planet seen from the Earth, 2010 - 2025: the two within 25.0' of each other
+largest error: the equant 0.88°, the eccentric with the epicyclet 0.91°
+
+=== Fit: the periods about the Sun from the synodic periods (the table) ===
+the tropical year Y = 365.24219 days, the sidereal year Y_s = 365.25637 days
+Mercury  S = 115.88 d, P = 87.97 d = 0.241 years; the reference 87.97 d (0.00 d, 0.00%)
+Venus    S = 583.92 d, P = 224.70 d = 0.615 years; the reference 224.70 d (0.00 d, 0.00%)
+Mars     S = 779.93 d, P = 686.99 d = 1.881 years; the reference 686.98 d (0.01 d, 0.00%)
+Jupiter  S = 398.88 d, P = 4333.50 d = 11.864 years; the reference 4332.59 d (0.91 d, 0.02%)
+Saturn   S = 378.10 d, P = 10750.40 d = 29.432 years; the reference 10759.22 d (-8.81 d, -0.08%)
+
+=== Fit: Venus and Mercury from their greatest elongations, 1986 - 2025 ===
+Venus    50 greatest elongations, 45.3 to 47.2°; a = mean of sin = 0.7226
+Mercury  252 greatest elongations, 17.8 to 27.8°; a = mean of sin = 0.3796
+
+=== Fit: Jupiter and Saturn from their loops, 1986 - 2025 (and Mars, for comparison) ===
+Mars     19 loops, mean arc 16.12°; r = 0.6573 (39.44 where the deferent is 60), a = 1.5213
+Jupiter  36 loops, mean arc 9.95°; r = 0.1923 (11.54 where the deferent is 60), a = 5.2009
+Saturn   39 loops, mean arc 6.75°; r = 0.1046 (6.27 where the deferent is 60), a = 9.5623
+Mars keeps page 4.2's equant: r = 0.6580, a = 1.5197
+
+=== Fit: why not the quadratures (cos psi = 1 / a, psi = 360° t / S) ===
+Mars     psi = 48.9°, 106 days from opposition; psi moves 0.46° a day; a day's error moves a by 0.9% (a day early: a = 1.51, -0.9%)
+Jupiter  psi = 78.9°, 87 days from opposition; psi moves 0.90° a day; a day's error moves a by 8.0% (a day early: a = 4.81, -7.4%)
+Saturn   psi = 84.0°, 88 days from opposition; psi moves 0.95° a day; a day's error moves a by 15.8% (a day early: a = 8.26, -13.6%)
+
+=== Fit: the values stored in models/planet-arrangement.js ===
+mercury: { S: 115.877747, a: 0.379632 }
+venus: { S: 583.922074, a: 0.722563 }
+mars: { S: 779.927956, a: 1 / r }
+jupiter: { S: 398.876314, a: 5.200876 }
+saturn: { S: 378.102808, a: 9.562304 }
+VENUS_FIT.mu0 = 261.492905
+stored: mercury 115.877747/0.379632, venus 583.922074/0.722563, mars 779.927956/1.519688, jupiter 398.876314/5.200876, saturn 378.102808/9.562304; mu0 261.492905
+
+=== Fit: the table, fitted against Ptolemy ===
+Mercury  fitted a = 0.380, Ptolemy 0.375, Copernicus 0.376
+Venus    fitted a = 0.723, Ptolemy 0.719, Copernicus 0.719
+Mars     fitted a = 1.520, Ptolemy 1.519, Copernicus 1.520
+Jupiter  fitted a = 5.201, Ptolemy 5.217, Copernicus 5.219
+Saturn   fitted a = 9.562, Ptolemy 9.231, Copernicus 9.174
+
+=== Test: the directions of Mars, page 4.2's equant in Copernicus' arrangement (Figure 5) ===
+the two descriptions differ by at most 6.1e-12° over 1926 - 2125
+
+=== Test: Mars' distance from the Earth (Figure 6) ===
+1 Jan 2010 - 1 Jan 2026: the real Mars 0.38 to 2.68 au; the model within 0.020 au (16 Nov 2015), 1.6% at most
+1 Jan 1926 - 1 Jan 2126: the real Mars 0.37 to 2.68 au; the model within 0.022 au (20 Nov 2094), 1.8% at most
+   opposition 29 Jan 2010: real 0.664 au, model 0.660 au
+   opposition 3 Mar 2012: real 0.674 au, model 0.669 au
+   opposition 8 Apr 2014: real 0.621 au, model 0.621 au
+   opposition 22 May 2016: real 0.510 au, model 0.513 au
+   opposition 27 Jul 2018: real 0.386 au, model 0.382 au
+   opposition 13 Oct 2020: real 0.419 au, model 0.419 au
+   opposition 8 Dec 2022: real 0.549 au, model 0.553 au
+   opposition 16 Jan 2025: real 0.644 au, model 0.642 au
+at the oppositions of 2010 - 2025 the real Mars was 0.39 to 0.67 au away; the circle gives 0.52 au at each
+
+=== Test: the five distances and periods against the reference (the table) ===
+Mercury  a = 0.380 au, the reference 0.387 au (-1.9%); P = 0.241 years, the reference 0.241 years
+Venus    a = 0.723 au, the reference 0.723 au (-0.1%); P = 0.615 years, the reference 0.615 years
+Mars     a = 1.520 au, the reference 1.524 au (-0.3%); P = 1.881 years, the reference 1.881 years
+Jupiter  a = 5.201 au, the reference 5.202 au (-0.0%); P = 11.864 years, the reference 11.862 years
+Saturn   a = 9.562 au, the reference 9.541 au (0.2%); P = 29.432 years, the reference 29.457 years
+
+=== Exercise 1: Venus from its greatest elongations of 2025 ===
+10 Jan 2025: 47.166° (east, evening), sin = 0.7333; Venus 0.7213 au and the Earth 0.9834 au from the Sun, ratio 0.7335
+31 May 2025: -45.838° (west, morning), sin = 0.7174; Venus 0.7280 au and the Earth 1.0140 au from the Sun, ratio 0.7179
+mean of the two 0.7254; the fit 0.7226, whose greatest elongation is 46.27°
+Copernicus V 21: sin 44.8° = 0.7046, sin 47.267° = 0.7345; the distances from the Earth to the center 1.0208 and 0.9792; radius 0.7193, center 0.0208 from the Sun's mean place (his 7193 and 208 in 10000)
+
+=== Exercise 2: Copernicus' eccentric with an epicyclet (V 4) ===
+coefficients in q at e = 0.001: sin M -2.0000 e, sin 2M 1.0000 e^2 (equant 1.0000 e^2)
+distance at M = 90°, (rho - 1) / e^2: eccentric with epicyclet 2.000, equant 1.500
+Mars, e = 0.1005: directions within 3.4', distances within 0.0050
+Copernicus' Mars (V 19): 1460 and 500 where the deferent is 10000: sum 0.196, difference 0.096, ratio 2.92; Ptolemy 2e = 0.2, e = 0.1
+
+=== Exercise 3: Mercury's greatest elongations, 1986 - 2025 ===
+the circle of radius a = 0.3796: always 22.31°
+26 Sep 2003: -17.835°, sin = 0.3063; Mercury 0.3075 au from the Sun, the Earth 1.0025 au, ratio 0.3068
+28 Mar 2000: -27.789°, sin = 0.4662; Mercury 0.4661 au from the Sun, the Earth 0.9984 au, ratio 0.4669
+the reference ellipse: perihelion 0.3075 au, aphelion 0.4667 au, a = 0.3871 au
+Mercury's mean distance from the Sun at its greatest elongations 0.3883 au
+mean of r_M / r_E at the greatest elongations 0.3881, mean of sin epsilon 0.3796; sin(angle at Mercury) from 0.956 to 0.999
+Venus: mean of r_V / r_E 0.7233, mean of sin epsilon 0.7226
+Copernicus V 27: radius 0.3573 to 0.3953
+
+=== Scales: Figure 6, the difference in distance over 2010 - 2025 ===
+model less reference (geometric, as the figure): at most 0.0204 au; the axis is ±0.03 au

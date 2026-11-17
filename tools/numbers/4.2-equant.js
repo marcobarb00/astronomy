@@ -14,7 +14,7 @@
 	 2. Helpers
 	 3. Observation: the oppositions and the loops of 1986 - 2025
 	 4. Model: one eccentric; the first order; the equant; Kepler
-	 5. Fit: the centre and the equant apart, then bisected
+	 5. Fit: the center and the equant apart, then bisected
 	 6. Test: the error curve, the loops, Ptolemy in his time
 	 7. Residual: the epicycle turned by the real Sun
 	 8. Exercises
@@ -296,13 +296,13 @@ title('Observation: the loops, 1986 - 2025 (Figure 1b, page 4.1)');
 title('Model: one eccentric (C = Q) fitted to the oppositions of 2010 - 2025');
 
 const eccentricFit = leastSquares(
-	x => directionResiduals(modern({ L0: x[0], apogee: x[1], centre: x[2], equant: x[2] }), fitOppositions),
+	x => directionResiduals(modern({ L0: x[0], apogee: x[1], center: x[2], equant: x[2] }), fitOppositions),
 	[MARS_41.L0, 150, 0.2]
 );
 const ECCENTRIC = modern({
 	L0: eccentricFit.x[0],
 	apogee: eccentricFit.x[1],
-	centre: eccentricFit.x[2],
+	center: eccentricFit.x[2],
 	equant: eccentricFit.x[2]
 });
 {
@@ -311,7 +311,7 @@ const ECCENTRIC = modern({
 	const arcs = fitLoops.map(l => modelLoop(ECCENTRIC, l.middle).arc);
 
 	console.log(
-		`e = ${f(ECCENTRIC.centre, 4)}, apogee ${f(ECCENTRIC.apogee, 1)}°; directions within ${f(arcmin(maxAbs(eccentricFit.residuals)), 0)}' (rms ${f(arcmin(rms(eccentricFit.residuals)), 0)}')`
+		`e = ${f(ECCENTRIC.center, 4)}, apogee ${f(ECCENTRIC.apogee, 1)}°; directions within ${f(arcmin(maxAbs(eccentricFit.residuals)), 0)}' (rms ${f(arcmin(rms(eccentricFit.residuals)), 0)}')`
 	);
 	console.log(`with r fitted to the arcs (${f(ECCENTRIC.r, 3)}) its loops: ${arcs.map(a => f(a, 1)).join(', ')}°`);
 	console.log(`the real loops:                        ${fitLoops.map(l => f(l.arc, 1)).join(', ')}°`);
@@ -463,7 +463,7 @@ function comparison(e) {
 
 title('Fit: OQ from the oppositions, OC and r from the loops (2010 - 2025), alternately');
 
-const separate = modern({ L0: MARS_41.L0, apogee: 150, centre: 0, equant: 0.2 });
+const separate = modern({ L0: MARS_41.L0, apogee: 150, center: 0, equant: 0.2 });
 
 for (let step = 1; step <= 5; step++) {
 	const a = leastSquares(
@@ -474,23 +474,23 @@ for (let step = 1; step <= 5; step++) {
 	Object.assign(separate, { L0: a.x[0], apogee: a.x[1], equant: a.x[2] });
 
 	const b = leastSquares(
-		x => arcResiduals(Object.assign({}, separate, { r: x[0], centre: x[1] }), fitLoops),
-		[separate.r, separate.centre],
+		x => arcResiduals(Object.assign({}, separate, { r: x[0], center: x[1] }), fitLoops),
+		[separate.r, separate.center],
 		12
 	);
 
-	Object.assign(separate, { r: b.x[0], centre: b.x[1] });
+	Object.assign(separate, { r: b.x[0], center: b.x[1] });
 	console.log(
-		`round ${step}: OQ ${f(separate.equant, 4)}  OC ${f(separate.centre, 4)}  OC/OQ ${f(separate.centre / separate.equant, 3)}  r ${f(separate.r, 4)}` +
+		`round ${step}: OQ ${f(separate.equant, 4)}  OC ${f(separate.center, 4)}  OC/OQ ${f(separate.center / separate.equant, 3)}  r ${f(separate.r, 4)}` +
 			`  apogee ${f(separate.apogee, 2)}°  L0 ${f(separate.L0, 3)}°  | directions rms ${f(arcmin(rms(a.residuals)), 1)}', arcs rms ${f(rms(b.residuals), 2)}°`
 	);
 }
 
 console.log(
-	`MARS_SEPARATE: L0 ${f(separate.L0, 6)}, apogee ${f(separate.apogee, 4)}, centre ${f(separate.centre, 6)}, equant ${f(separate.equant, 6)}, r ${f(separate.r, 6)}`
+	`MARS_SEPARATE: L0 ${f(separate.L0, 6)}, apogee ${f(separate.apogee, 4)}, center ${f(separate.center, 6)}, equant ${f(separate.equant, 6)}, r ${f(separate.r, 6)}`
 );
 console.log(
-	`in planet-equant.js:  L0 ${MARS_SEPARATE.L0}, apogee ${MARS_SEPARATE.apogee}, centre ${MARS_SEPARATE.centre}, equant ${MARS_SEPARATE.equant}, r ${MARS_SEPARATE.r}`
+	`in planet-equant.js:  L0 ${MARS_SEPARATE.L0}, apogee ${MARS_SEPARATE.apogee}, center ${MARS_SEPARATE.center}, equant ${MARS_SEPARATE.equant}, r ${MARS_SEPARATE.r}`
 );
 
 title("Fit: Ptolemy's bisection, OC = e, OQ = 2e");
@@ -742,7 +742,7 @@ title('Exercise 3: the loops at the apsides, OC moved between O and Q (Figure 6)
 {
 	const { equant, r } = MARS_SEPARATE;
 
-	[0, MARS_SEPARATE.centre, equant].forEach(c => {
+	[0, MARS_SEPARATE.center, equant].forEach(c => {
 		const apogee = PlanetEquant.loopAt(0, c, equant, r, N, N_SUN);
 		const perigee = PlanetEquant.loopAt(180, c, equant, r, N, N_SUN);
 

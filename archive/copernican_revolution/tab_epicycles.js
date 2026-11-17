@@ -410,7 +410,7 @@ function drawHelio(m, p, events) {
 	circle(ctx, sun, m.rEarth * v.s, earthColor, 1.8, [6, 5]);
 	circle(ctx, sun, m.aPlanet * v.s, planetColor, 1.8, [6, 5]);
 
-	// the true longitude is a direction: drawn from the centre, parallel to the sight line
+	// the true longitude is a direction: drawn from the center, parallel to the sight line
 	const lamDot = ringPoint(v, p.lam);
 	line(ctx, sun, lamDot, COL.planet, 1, [2, 5]);
 
@@ -693,13 +693,13 @@ function buildEventsTable(m) {
 	let rows = '';
 
 	for (let k = 0; k < 6; k++) {
-		const centre = k * S;
-		const events = findEvents(m, centre - S / 2, centre + S / 2);
+		const center = k * S;
+		const events = findEvents(m, center - S / 2, center + S / 2);
 		const pick = type => events.find(e => e.type === type);
 		const s1 = pick('station1');
 		const s2 = pick('station2');
 		const mid = pick(m.superior ? 'opp' : 'iconj');
-		const far = findEvents(m, centre, centre + S).find(e => e.type === (m.superior ? 'conj' : 'sconj'));
+		const far = findEvents(m, center, center + S).find(e => e.type === (m.superior ? 'conj' : 'sconj'));
 		const arc = (s1 && s2) ? dms(Math.abs(wrap180(s2.lam - s1.lam))) : '—';
 		const duration = (s1 && s2) ? `${(s2.t - s1.t).toFixed(1)} d` : '—';
 

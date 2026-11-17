@@ -530,8 +530,8 @@ title("Exercise 2: synodic periods from sidereal periods; Ptolemy's Mars (IX 3)"
 
 title('Exercise 3: the oppositions of 1999 and 2003 in the model');
 {
-	const centre = jd => MARS_FIT.L0 + MARS_FIT.n * (jd - J2000);
-	const modelOpposition = (a, b) => bisect(jd => norm180(meanSun(jd) - centre(jd) - 180), a, b);
+	const center = jd => MARS_FIT.L0 + MARS_FIT.n * (jd - J2000);
+	const modelOpposition = (a, b) => bisect(jd => norm180(meanSun(jd) - center(jd) - 180), a, b);
 	const meanOpp = near => bisect(offMeanSun, near - 10, near + 10);
 
 	[1999, 2003].forEach(year => {
@@ -542,7 +542,7 @@ title('Exercise 3: the oppositions of 1999 and 2003 in the model');
 			`${year}: model opposition ${when(m)} at ${f(fitted(m), 1)}°; real ${when(l.middle)} at ${f(l.lon, 1)}°` +
 				` (${f(m - l.middle, 1)} days, ${f(norm180(fitted(m) - l.lon), 1)}°); real loop ${f(l.arc, 1)}° in ${f(l.days, 0)} days,` +
 				` model ${f(fitLoop.arc, 1)}° in ${f(fitLoop.days, 0)} days; distance ${f(Ephem.position('mars', l.middle).dist, 2)} au;` +
-				` the real Mars ${f(norm180(lon('mars', meanOpp(l.middle)) - centre(meanOpp(l.middle))), 1)}° from K at its opposition to the mean Sun`
+				` the real Mars ${f(norm180(lon('mars', meanOpp(l.middle)) - center(meanOpp(l.middle))), 1)}° from K at its opposition to the mean Sun`
 		);
 	});
 }

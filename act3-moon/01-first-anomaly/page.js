@@ -50,7 +50,7 @@ const moonLongitude = jd => Ephem.longitude('moon', jd);
 const sunLongitude = jd => Ephem.longitude('sun', jd);
 
 /* The Moon's daily motion (deg a day) at JD(TT): the change of its
-   longitude over the day centred on that moment. */
+   longitude over the day centered on that moment. */
 const moonMotion = jd => norm180(moonLongitude(jd + 0.5) - moonLongitude(jd - 0.5));
 
 /* The moments (JD(TT)) in [from, to] when the Moon's elongation from
@@ -92,10 +92,10 @@ const monthTicks = (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8
 const texSigned = (degrees, digits = 2) => `${signed(degrees, digits).replace('−', '-')}^\\circ`;
 
 /* The drawing of one moment of the epicycle (Figures 2 and 3): the
-   Earth O at the centre of the canvas, x towards the vernal point. 'view'
+   Earth O at the center of the canvas, x towards the vernal point. 'view'
    is set up by squareCanvas; view.scale is the deferent's radius (px).
-   Returns the canvas points O, K (the centre of the epicycle), C (the
-   centre of the equivalent eccentric) and the Moon. */
+   Returns the canvas points O, K (the center of the epicycle), C (the
+   center of the equivalent eccentric) and the Moon. */
 function epicyclePoints(view, s, e) {
 	const parts = LunarEpicycle.construction(s, e);
 	const at = point => ({ x: view.cx + view.scale * point[0], y: view.cy - view.scale * point[1] });
@@ -149,11 +149,11 @@ const motionFigure = {
 		this.motion = [];
 
 		for (let i = 0; i <= DAYS_IN_YEAR * MOTION_SAMPLES_PER_DAY; i++) {
-			const centre = i - first;
+			const center = i - first;
 			const half = MOTION_SAMPLES_PER_DAY / 2;
 
 			this.days.push(i * step);
-			this.motion.push(norm180(longitudes[centre + half] - longitudes[centre - half]));
+			this.motion.push(norm180(longitudes[center + half] - longitudes[center - half]));
 		}
 
 		this.fullMoons = phases(180, OBS_YEAR_START, OBS_YEAR_START + DAYS_IN_YEAR + 1).map(jd => ({
@@ -318,7 +318,7 @@ const epicycleFigure = {
 
 		// the direction of gamma, and the deferent
 		segment(ctx, O, towards(O, 0, this.scale * (1 + EPICYCLE_E_MAX)), { color: COL.sun, width: 1.2 });
-		centredLabel(ctx, 'γ', towards(O, 0, this.scale * (1 + EPICYCLE_E_MAX + 0.07)), COL.sun, this.labels);
+		centeredLabel(ctx, 'γ', towards(O, 0, this.scale * (1 + EPICYCLE_E_MAX + 0.07)), COL.sun, this.labels);
 		circle(ctx, O, this.scale, { color: COL.deferent, width: 2 });
 
 		// the mean direction, from the Earth through K to the apogee of the
@@ -435,8 +435,8 @@ const epicycleFigure = {
 /* ==========================================================================
    3. FIGURE 3: THE EPICYCLE AND ITS ECCENTRIC
    One moment of our fit, drawn with r/R = EQUIVALENCE_E so that the two
-   constructions can be told apart: the deferent and the epicycle (centre
-   K), the eccentric (centre C) and the parallelogram O K L C, with
+   constructions can be told apart: the deferent and the epicycle (center
+   K), the eccentric (center C) and the parallelogram O K L C, with
    the line of apsides of the eccentric. The slider runs over one turn of that line,
    8.85 years from 1 January 2026.
    ========================================================================== */
@@ -447,7 +447,7 @@ const EQUIVALENCE_REACH = 1 + EQUIVALENCE_E + 0.14;
 /* The two views (CLAUDE.md: a view the reader chooses may change what is
    drawn): a month, with everything drawn, played 3 days a second (9
    seconds); and the eccentric's turn, with only what moves slowly (the
-   eccentric, its centre C and its apogee A), played over the whole turn
+   eccentric, its center C and its apogee A), played over the whole turn
    in 9 seconds. Played over years, the Moon and K go round so fast that
    they flicker, so that view leaves them out. */
 const MONTH_VIEW = 'A month';
@@ -591,7 +591,7 @@ const equivalenceFigure = {
 	   moving points (O the Earth, K, C, L the Moon, A the eccentric's
 	   apogee), never words, which would jump from side to side as the
 	   points turn (CLAUDE.md). The key tells the circles apart by their
-	   centres. */
+	   centers. */
 	drawLabels(O, K, C, moon, now, e) {
 		const ctx = this.ctx;
 		const { meanLongitude, apogee, M } = now;
@@ -727,12 +727,12 @@ const eclipsesFigure = {
 		}
 
 		const ctx = this.ctx;
-		const centre = { x: this.cx, y: this.cy - 0.05 * this.R };
+		const center = { x: this.cx, y: this.cy - 0.05 * this.R };
 		const radius = 0.62 * this.R;
 		const { a12, a23 } = this.triple;
 		const M2 = this.solution.M2;
 		const anomalies = [M2 - a12, M2, M2 + a23];
-		const onCircle = (M, r) => ({ x: centre.x + r * sin(M), y: centre.y - r * cos(M) });
+		const onCircle = (M, r) => ({ x: center.x + r * sin(M), y: center.y - r * cos(M) });
 
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.width });
@@ -743,30 +743,30 @@ const eclipsesFigure = {
 			width: 1.2,
 			dash: [2, 4]
 		});
-		circle(ctx, centre, radius, { color: COL.epicycle, width: 2.2 });
+		circle(ctx, center, radius, { color: COL.epicycle, width: 2.2 });
 
 		// the arcs of anomaly between the eclipses, clockwise, inside
-		this.arc(centre, 0.72 * radius, anomalies[0], anomalies[1], COL.planet);
-		this.arc(centre, 0.52 * radius, anomalies[1], anomalies[2], COL.epicycle);
+		this.arc(center, 0.72 * radius, anomalies[0], anomalies[1], COL.planet);
+		this.arc(center, 0.52 * radius, anomalies[1], anomalies[2], COL.epicycle);
 		subscriptLabel(ctx, 'a', '12', onCircle(anomalies[0] + a12 / 2, 0.83 * radius), COL.planet);
 		subscriptLabel(ctx, 'a', '23', onCircle(anomalies[1] + a23 / 2, 0.38 * radius), COL.epicycle);
 
 		anomalies.forEach((M, i) => {
 			const point = onCircle(M, radius);
 
-			segment(ctx, centre, point, { color: COL.ink, width: 1 });
+			segment(ctx, center, point, { color: COL.ink, width: 1 });
 			drawDot(ctx, point.x, point.y, 6, COL.planet);
-			centredLabel(ctx, String(i + 1), onCircle(M, radius + 20), COL.planet, this.labels);
+			centeredLabel(ctx, String(i + 1), onCircle(M, radius + 20), COL.planet, this.labels);
 		});
 
-		drawDot(ctx, centre.x, centre.y, 3.5, COL.ink);
-		centredLabel(ctx, 'apogee', onCircle(0, radius * 1.12 + 14), COL.epicycle, this.labels);
-		centredLabel(ctx, 'to the Earth', { x: centre.x, y: centre.y + radius * 1.25 + 14 }, COL.earth, this.labels);
+		drawDot(ctx, center.x, center.y, 3.5, COL.ink);
+		centeredLabel(ctx, 'apogee', onCircle(0, radius * 1.12 + 14), COL.epicycle, this.labels);
+		centeredLabel(ctx, 'to the Earth', { x: center.x, y: center.y + radius * 1.25 + 14 }, COL.earth, this.labels);
 	},
 
-	/* An arc of the circle 'radius' about 'centre', clockwise on the
+	/* An arc of the circle 'radius' about 'center', clockwise on the
 	   screen from the anomaly 'from' to 'to' (deg, from up). */
-	arc(centre, radius, from, to, color) {
+	arc(center, radius, from, to, color) {
 		const ctx = this.ctx;
 		const start = (from - 90) * D2R;
 		const end = (to - 90) * D2R;
@@ -774,7 +774,7 @@ const eclipsesFigure = {
 		ctx.strokeStyle = color;
 		ctx.lineWidth = 2.5;
 		ctx.beginPath();
-		ctx.arc(centre.x, centre.y, radius, start, end, false);
+		ctx.arc(center.x, center.y, radius, start, end, false);
 		ctx.stroke();
 	},
 
@@ -904,7 +904,7 @@ const eclipsesFigure = {
    ========================================================================== */
 
 /* Figure 5: the fitted epicycle and the uniform Moon over the year 2026, and
-   over two months and a century centred on it. */
+   over two months and a century centered on it. */
 const ourErrorFigure = {
 	init() {
 		const start = YEAR_START;

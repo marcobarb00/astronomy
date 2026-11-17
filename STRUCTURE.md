@@ -210,15 +210,15 @@ The first anomaly and the simplest complete model.
 
 - **Question:** why are the seasons not equal?
 - **Learn:** mean longitude $\bar\lambda$ and true longitude $\lambda$; the
-  eccentric circle; the equation of centre $q$, with
+  eccentric circle; the equation of center $q$, with
   $\lambda = \bar\lambda + q$; fitting the eccentricity $e$ and the apogee
   $\lambda_A$ from two season lengths (Hipparchus' method); $q$ to first order,
   $q \approx -e\sin M$ with $M$ measured from the apogee, so the greatest
-  equation of centre is about $e$ radians (exactly $\arcsin e$). (Kepler's
+  equation of center is about $e$ radians (exactly $\arcsin e$). (Kepler's
   ellipse gives $2e_\text{K}$: the eccentric's offset is twice the ellipse's
   eccentricity, a point picked up again on page 4.2.)
-- **Notation:** the centre of the eccentric is $C = (h, k)$, so that $x$
-  and $y$ stay the axes, and $q$ the equation of centre; $h < 0$ today,
+- **Notation:** the center of the eccentric is $C = (h, k)$, so that $x$
+  and $y$ stay the axes, and $q$ the equation of center; $h < 0$ today,
   since the apogee is beyond 90°.
 - **Model:** $q = -\operatorname{atan2}(e \sin M, 1 + e \cos M)$, derived
   from $\vec{OS} = \vec{OC} + \vec{CS}$; the seasons are the arcs of the
@@ -226,12 +226,12 @@ The first anomaly and the simplest complete model.
 - **Figures:** the real Sun's daily motion from the September equinox of
   2025 to that of 2026, with the four seasons and their lengths above it
   (static); the same arrow from the Earth to the Sun with the Earth at
-  rest and with the Sun at rest (static); the equation of centre, the
+  rest and with the Sun at rest (static); the equation of center, the
   eccentric with M and q beside $q(t)$ over a year (date, and two views:
   the exaggerated $e = 0.2$ and the Sun's $e$), next to the definition of
   q; the four seasons as the arcs between the lines to the equinoxes and
   solstices, at $e = 0.2$ and to scale (static); Hipparchus' construction,
-  with the centre $C = (h, k)$ drawn six times farther out to show the two
+  with the center $C = (h, k)$ drawn six times farther out to show the two
   right triangles of the text (legs $h$ and $k$, angles $\arcsin h$,
   $\arcsin k$) and the arcs $a_1$, $a_2$, and C at its true place
   magnified (spring and summer, with presets including AD 140 for
@@ -287,7 +287,7 @@ The first anomaly and the simplest complete model.
   excesses over 24 h; the two contributions, $E = -q + (\lambda - \alpha)$,
   from the eccentricity (page 2.1) and from the obliquity (the reduction to
   the equator); $\tan(\lambda - \alpha)$ has the form of page 2.1's
-  equation of centre, with $e_\varepsilon = \tan^2(\varepsilon/2)$ for $e$
+  equation of center, with $e_\varepsilon = \tan^2(\varepsilon/2)$ for $e$
   and $2\lambda$ for $M$, so page 2.1's results apply (first order
   $e_\varepsilon \sin 2\lambda$, greatest value $\arcsin e_\varepsilon$);
   $d\alpha/d\lambda = \cos\varepsilon / \cos^2\delta$, derived from
@@ -398,7 +398,7 @@ The first anomaly and the simplest complete model.
   synodic = 269 anomalistic months), from Babylonian astronomy (Toomer);
   the epicycle model (IV 6), with the equation of anomaly
   $q = -\operatorname{atan2}(e\sin M, 1 + e\cos M)$, $e = r/R$, the solar
-  equation of centre of page 2.1; the speed, $n + n_M\,dq/dM$; **the
+  equation of center of page 2.1; the speed, $n + n_M\,dq/dM$; **the
   eccentric/epicycle equivalence theorem**, proved by commuting the two
   vectors (a parallelogram, IV 5), the eccentric's apogee turning at
   $n - n_M$ (8.85 years), reused in Act IV; the three-eclipse method,
@@ -458,7 +458,7 @@ The first anomaly and the simplest complete model.
   quarters (2016–2025); Ptolemy's description (*Almagest* V 2), his and
   Hipparchus' sightings of 7⅔° (V 3); Ptolemy's crank mechanism (V 2): K
   seen from the Earth at the mean longitude, carried on an eccentric whose
-  centre C turns westward, its apogee A at $\bar\lambda - 2D$, so that
+  center C turns westward, its apogee A at $\bar\lambda - 2D$, so that
   $\rho = \text{OK} = c\cos 2D + \sqrt{(1-c)^2 - c^2\sin^2 2D}$, 1 at mean
   syzygy and $1 - 2c$ at the mean quarters, and $q = -\operatorname{atan2}(e
   \sin M, \rho + e\cos M)$; the direction of the epicycle (V 5), its mean
@@ -613,7 +613,7 @@ The first anomaly and the simplest complete model.
 - **Question:** why do planets loop, and why always at opposition?
 - **Learn:** retrograde motion and the stations (Mars' loop of 2024–2025,
   19.2° in 79 days); the loops of the five planets in 1986–2025 (a table),
-  centred on opposition for Mars, Jupiter and Saturn and on inferior
+  centered on opposition for Mars, Jupiter and Saturn and on inferior
   conjunction for Venus and Mercury, which never pass 47° and 28° from the
   Sun (XII 1); the two anomalies, related to the Sun and to the place in
   the ecliptic, the zodiacal anomaly (IX 2); Ptolemy's asymmetry, longer from greatest speed to
@@ -625,7 +625,7 @@ The first anomaly and the simplest complete model.
   r\cos\mu)$, page 2.1's function with the sign reversed; the speed, and
   why the planet moves eastward at the epicycle's apogee (IX 5, the
   opposite of the Moon); retrogradation iff $r > n/(n + n_\mu)$ (XII 1),
-  centred on the opposition to the mean Sun; the stations, $\cos\mu_s =
+  centered on the opposition to the mean Sun; the stations, $\cos\mu_s =
   -(1 + r^2(1 + k))/(r(2 + k))$, $k = n_\mu/n$, and the arc; inner planets
   (K on the mean Sun, greatest elongation $\arcsin r$); the synodic
   period, $1/P_\lambda + 1/S = 1/Y$.
@@ -709,13 +709,13 @@ The first anomaly and the simplest complete model.
   \text{QK} + 2e\cos M)$; the planet $\lambda = \bar\lambda + q + \eta$,
   $\mu$ counted from the mean apogee on QK (IX 6, XI 9); the apogee fixed
   among the stars (IX 5). The equant against Kepler's ellipse with the
-  same $e$ (centre C, foci O and Q), as geometry: to second order $q$ =
+  same $e$ (center C, foci O and Q), as geometry: to second order $q$ =
   $-2e\sin M + e^2\sin 2M$ against $-2e\sin M + \tfrac54 e^2\sin 2M$, the
   distances $1 + e\cos M + \tfrac32 e^2\sin^2 M$ against $1 + e\cos M +
   e^2\sin^2 M$, page 2.1's eccentric beside them; checked numerically
   (the coefficients at $e$ = 0.001; 10.5′ exact against 8.7′ for Mars).
 - **Notation:** OC = $e$ and OQ = $2e$ (so $e$ compares directly with
-  Kepler's); Q the equant, C the centre of the deferent, A its apogee;
+  Kepler's); Q the equant, C the center of the deferent, A its apogee;
   $q$ the zodiacal equation (K seen from O less $\bar\lambda$), $\rho$ =
   OK; K′ the point of the ellipse.
 - **Figures:** the oppositions and the loops of 1986–2025 against the
@@ -730,7 +730,7 @@ The first anomaly and the simplest complete model.
   2010–2025, an opposition preset; views $e$ = 0.2 and Mars); the equant
   and Kepler's ellipse, the drawing at $e$ = 0.3 and the differences in
   direction divided by $e^2$, exact for Mars and to second order
-  (static); the fit of the centre,
+  (static); the fit of the center,
   the oppositions and the loops of 2010–2025 with OC from O to Q (presets
   C at O, fitted, C at Q); the error curve with page 4.1's epicycle as
   ghost (4, 16 and 200 years); page 4.1's Figure 7 again with the
@@ -766,24 +766,98 @@ The first anomaly and the simplest complete model.
 - **Hands over:** the model works, but every planet's epicycle turns in
   step with the Sun. Why?
 
-#### 4.3 · Same geometry, new centre
+#### 4.3 · Same geometry, new center
 
-- **Question:** what changes if the Sun is taken as at rest?
-- **Learn:** Copernicus' arrangement: in Ptolemy's models every outer
-  planet's epicycle radius stays parallel to the line from the Earth to
-  the mean Sun (*Almagest* X 6), and the deferents of Venus and Mercury
-  follow the mean Sun approximately (from the equant, not the Earth);
-  linking them all to one Earth–Sun line, at a scale of its own for each
-  planet, turns the free ratios into distances; the order of the planets;
-  sidereal periods from synodic periods; Mercury and Venus' maximum
-  elongations.
-- **Figures:** the same planet in the heliostatic and geostatic
-  descriptions side by side; the error curve, **unchanged**.
-- **Point to make:** the predictions barely improved. What changed is that
-  the system now has a scale and an order. They come from the arrangement:
-  the body taken as at rest changes no prediction (WRITING.md §9).
-- **Exercises:** the radius of Venus' orbit from its greatest elongation.
-- **Hands over:** Tycho kept this arrangement with the Earth at rest. What
+- **Question:** what changes when the Sun is fixed?
+- **Learn:** the Sun enters every planet's motion: the elongations of the
+  five planets in 2022–2025, each loop at opposition or inferior
+  conjunction; the synodic periods (115.88 to 779.93 days, 1926–2025); in
+  Ptolemy's models every outer planet's epicycle radius stays parallel to
+  the line from the Earth to the mean Sun (*Almagest* X 6), and the
+  centers of the epicycles of Venus and Mercury follow the mean Sun (from
+  the equant, not the Earth); five free ratios, and no order without a
+  parallax (IX 1). The exchange of the two vectors, $\vec{\text{OP}} =
+  \vec{\text{OK}} + \vec{\text{KP}} = \vec{\text{O}\odot} +
+  \vec{\odot\text{P}}$ (page 3.1's equivalence): the epicycle of an
+  outer planet, the deferent of an inner one (in page 4.1's simple model,
+  which the page uses for Venus and Mercury), becomes the Earth's circle;
+  one scale for all five ($|\text{O}\odot| = 1$) turns the ratios into
+  distances, $a = 1/r$ (outer), $a = r$ (inner), in au; Copernicus fixed
+  the Sun (*De Revolutionibus* I 10), which turns no direction (the frame
+  is page 4.4's question). The periods about the Sun, $1/P = 1/Y \mp
+  1/S$, and Ptolemy's period relations as sums (IX 3, V 1: Venus 8 + 5 =
+  13); the order by distance and by period (I 10); greatest elongation
+  $\sin\varepsilon_\text{max} = a$; loops from the Earth's motion (V 3)
+  and their sizes (I 10). Copernicus without the equant: the eccentric
+  with an epicyclet, $\tfrac32 e$ and $\tfrac12 e$ (V 4; Debated: al-Tusi
+  and Ibn ash-Shatir, *HAMA* p. 11), the equant's
+  directions to second order, distances off by $e^2$ against
+  $\tfrac12 e^2$ (Fitzpatrick § 1.3, § 4.4–4.5), page 4.2's Mars a little
+  worse (largest error 0.88° to 0.91°); Kepler brought the equant's point
+  back as the empty focus (*HAMA* p. 155, page 4.5).
+- **Notation:** $a$, a planet's distance from ☉ in units of the Earth's
+  (au); ☉ the point of the mean Sun at distance 1 (S is the synodic
+  period); $P$ the period about the Sun (§6).
+- **Figures:** the elongations of the five planets, 2022–2025, thick where
+  they go back (static); one planet in Ptolemy's description (O fixed,
+  the parallelogram O K P ☉) beside Copernicus' (☉ fixed), each circle in
+  its colour of (a) (date, play; views Mars, page 4.2's equant, and
+  Venus); Ptolemy's five models with deferents of one size, and the same
+  numbers on one scale, out to Saturn and out to Mars (static); a photo:
+  Copernicus' manuscript, f. 9v (Jagiellonian Library, public domain);
+  the error curve of Mars with Copernicus' epicyclet in place of the
+  equant, page 4.2's equant as ghost (4 and 16 years), in the Model;
+  the two right triangles of the fit, Venus at greatest elongation and
+  Saturn at quadrature, with the quadrature a day early (static); Mars' distance from the Earth, 2010–2025, the
+  equant on Copernicus' scale and without the equant, and the difference
+  (static).
+- **Point to make:** the predicted directions do not change. What changed
+  is that the system now has a scale and an order, and the distances
+  are a new prediction. They come from the arrangement: fixing the Sun
+  changes no prediction (WRITING.md §9).
+- **Fit:** the synodic periods from lines through the oppositions and
+  inferior conjunctions of 1926–2025, the periods about the Sun with the
+  sidereal year; the distances of Venus and Mercury from their greatest
+  elongations of 1986–2025, of Jupiter and Saturn from the mean arcs of
+  their loops of 1986–2025 (page 4.1's method), Mars from page 4.2's
+  equant (1.520 au). Not quadratures: a day's error moves Saturn's
+  distance by 16%. History block: Copernicus' periods in sidereal years
+  (V 1), his triangles from one sighting (V 9, V 14, V 19), Venus (V 21),
+  Mercury (V 27); his distances are Ptolemy's ratios inverted (V 19;
+  *HAMA* p. 147).
+- **Test:** the directions identical to page 4.2's ($6 \times 10^{-12}$°),
+  so their error curve is page 4.2's Figure 7, not repeated;
+  Mars' distance from the Earth within 0.020 au (1.6%) over 2010–2025,
+  0.022 au over 1926–2125; the five distances within
+  0.3% of the reference, Mercury 1.9% short (its elongated path: at a
+  greatest elongation the radius is not perpendicular to the line of
+  sight); the periods within 0.1%; the distances follow the real
+  oppositions because the deferent is eccentric (a concentric one gives
+  0.52 au at every opposition).
+  History block: Copernicus' check of Jupiter's motion (V 12); Tycho on
+  his distances (Voelkel ch. 2).
+- **Residual:** one Earth for every planet, uniform about ☉, so the
+  Earth's unevenness (page 2.1) is missing from the three outer planets
+  alike;
+  Ptolemy's eccentricities are vector sums of the Earth's and the
+  planet's (*HAMA* p. 147); page 4.2's residual (the epicycle turned by
+  the real Sun) gives the Earth's circle the real Sun's unevenness; Kepler and the
+  Sun's actual position (Voelkel ch. 3). Detour: Tycho.
+- **Today note** (§7.5), beside the distances: the modern first
+  approximation keeps this arrangement, every planet and the Earth on a
+  Kepler ellipse about the Sun (Standish's elements, the reference sky).
+- **Exercises:** the radius of Venus' orbit from its greatest elongations
+  of 2025, and Copernicus' V 21 (compute, then check); Copernicus'
+  eccentric with an epicyclet against the equant, with his Mars of V 19
+  and its second order (derive); Mercury's greatest elongations, 17.835°
+  to 27.789°, against one circle, and why their mean falls short (break
+  the model).
+- **Code:** `models/planet-arrangement.js` (`PlanetArrangement`: `FIT`,
+  `PTOLEMY`, `COPERNICUS`, `VENUS_FIT`, `periodAboutSun`,
+  `synodicPeriod`, `greatestElongation`, `quadratureAngle`, `moment`
+  (one moment in both descriptions), `make`, `makeDistance`, `epicyclet`,
+  `makeEpicyclet`).
+- **Hands over:** Tycho kept this arrangement with the Earth fixed. What
   can the observations decide?
 
 #### 4.4 · What moves?
@@ -818,7 +892,7 @@ The first anomaly and the simplest complete model.
     (*Almagest* I 7), and his answer to an air that turns with the Earth;
     Copernicus' natural motion and his ship (*De Revolutionibus* I 8);
     Newton's laws of motion (*Principia*, 1687), which hold in inertial
-    frames, where the solar system's centre of mass, near the Sun, is at
+    frames, where the solar system's center of mass, near the Sun, is at
     rest or moves uniformly, and are simplest where it is at rest (Book
     III, Hypothesis 1 and Propositions 11–12). Physics makes the
     heliostatic description simpler; the geostatic one stays correct once
@@ -1014,7 +1088,7 @@ once on the page.
 | $\bar\lambda$ | mean longitude |
 | $\lambda_A$ | longitude of the apogee |
 | $M$ | mean anomaly, measured from the apogee, $M = \bar\lambda - \lambda_A$ (Fitzpatrick counts it from the perigee) |
-| $q$ | equation of centre ($\lambda = \bar\lambda + q$), negative from the apogee to the perigee |
+| $q$ | equation of center ($\lambda = \bar\lambda + q$), negative from the apogee to the perigee |
 | $e$ | eccentricity, as a fraction of the deferent radius |
 | $R,\ r$ | deferent radius, epicycle radius |
 | $E$ | equation of time, apparent minus mean solar time ($\bar\lambda - \alpha$, at 4 min per degree), positive when the sundial is ahead of the clock (Meeus' sign) |
@@ -1026,7 +1100,7 @@ once on the page.
 | $n_M$ | the daily motion in anomaly (page 3.1); $n$ is then the daily motion in longitude |
 | $q$ (Moon) | the equation of anomaly, $\lambda = \bar\lambda + q$, with $M$ counted from the apogee of the epicycle and $e = r/R$ (page 3.1) |
 | $D$ | the mean elongation of the Moon, $\bar\lambda - \bar\lambda_\odot$ (Meeus' $D$), page 3.2 |
-| $c$ | OC, the distance of the centre of Ptolemy's lunar eccentric from the Earth, where OA = 1 (page 3.2) |
+| $c$ | OC, the distance of the center of Ptolemy's lunar eccentric from the Earth, where OA = 1 (page 3.2) |
 | $i$ | the inclination of the Moon's circle to the ecliptic (page 3.3) |
 | $\Omega$ | the longitude of the Moon's ascending node; ☊ and ☋, the ascending and descending nodes, in figures (page 3.3) |
 | $F,\ \bar F$ | the argument of latitude, the Moon's angle along its circle from the ascending node, and its mean value $\bar\lambda - \Omega$ (Meeus' $F$); Ptolemy counts it from the northern limit, $F - 90^\circ$ (page 3.3) |
@@ -1040,7 +1114,12 @@ once on the page.
 | $\eta$ | the equation of the epicycle, $\lambda = \bar\lambda + \eta$, positive from the apogee to the perigee (page 4.1) |
 | $n_\mu$ | a planet's daily motion in anomaly; for an outer planet $n + n_\mu = n_\odot$ (page 4.1) |
 | $S,\ P_\lambda$ | a planet's synodic period and its period in ecliptic longitude (page 4.1) |
-| Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the centre of the deferent); $M$ the mean anomaly of K on the deferent, the angle at Q from the apogee (the planet's anomaly on the epicycle stays $\mu$); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
+| Q, $e$ | the equant, and for a planet OC = $e$, OQ = $2e$ (C the center of the deferent); $M$ the mean anomaly of K on the deferent, the angle at Q from the apogee (the planet's anomaly on the epicycle stays $\mu$); $q$ the zodiacal equation, $\rho$ = OK, and $\mu$ counted from the mean apogee on QK (page 4.2) |
+| $a$ | a planet's distance from the Sun's mean place ☉, in units of the Earth's (au), $1/r$ for an outer planet and $r$ for an inner one; ☉ that point in figures, since $S$ is the synodic period (page 4.3) |
+| $P$ | a planet's period about the Sun, $1/P = 1/Y \mp 1/S$ (outer, inner), against the stars with $Y_\text{s}$ (page 4.3) |
+| $\varepsilon_\text{max}$ | an inner planet's greatest elongation, $\sin\varepsilon_\text{max} = a$ for a circle (not the obliquity; page 4.3) |
+| $\psi$ | the angle at ☉ between the Earth and an outer planet, $\cos\psi = 1/a$ at quadrature (page 4.3) |
+| $d_1,\ d_2$ | Copernicus' eccentricity and epicyclet (*De Revolutionibus* V 4), $\tfrac32 e$ and $\tfrac12 e$ (page 4.3) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -1111,7 +1190,7 @@ On a page whose model is not the one used today, a margin note headed
 first approximation and how the two compare (a formula, a number from the
 page's script). It states the modern counterpart; it does not judge the
 historical model, which the page tests with the error curve. Pages 2.1,
-3.1 and 3.2 have one (§4); other pages add one only when their model has
+3.1, 3.2 and 4.3 have one (§4); other pages add one only when their model has
 a direct modern counterpart. Its numbers come from the page's script, like
 every other number. Adopted on 2026-11-02; written on pages 2.1, 3.1 and
 3.2 the same day. The style is in `STYLE.md` §4.5.
@@ -1148,7 +1227,7 @@ of time, `models/equation-of-time.js`) exports plain functions instead of
 `make()`. Precession (`models/precession.js`, page 2.3) predicts the
 longitude of a star: its `make(parameters, lon0)` takes the star's longitude
 at the epoch. The lunar epicycle (`models/lunar-epicycle.js`, page 3.1)
-reuses the solar equation of centre as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The simple planetary epicycle (`models/planet-epicycle.js`, page 4.1) carries a planet on an epicycle whose radius keeps the direction of the mean Sun, and finds the reference sky's stations and loops (`PlanetEpicycle.referenceEvents`). The planetary equant (`models/planet-equant.js`, page 4.2) puts that epicycle on an eccentric deferent turning uniformly about the equant, and holds Ptolemy's Mars, which page 0.1 runs to tonight. The mean Sun (`models/mean-sun.js`, page 1.3)
+reuses the solar equation of center as its equation of anomaly. Ptolemy's crank (`models/lunar-crank.js`, page 3.2) carries that epicycle on a turning eccentric and also gives the Moon's distance. The Moon's latitude (`models/lunar-latitude.js`, page 3.3) tilts that epicycle's circle, and `models/eclipses.js` joins a Sun and a Moon into an eclipse model, with the reference sky's eclipses (`Eclipses.reference`) to test it against. The simple planetary epicycle (`models/planet-epicycle.js`, page 4.1) carries a planet on an epicycle whose radius keeps the direction of the mean Sun, and finds the reference sky's stations and loops (`PlanetEpicycle.referenceEvents`). The planetary equant (`models/planet-equant.js`, page 4.2) puts that epicycle on an eccentric deferent turning uniformly about the equant, and holds Ptolemy's Mars, which page 0.1 runs to tonight. The mean Sun (`models/mean-sun.js`, page 1.3)
 is the first model with `make()`, and the solar eccentric
 (`models/solar-eccentric.js`, page 2.1) the first that adds an anomaly to it.
 A parameter set whose days are turns of the Earth, as every ancient one is,
@@ -1181,7 +1260,7 @@ act3-moon/
 act4-planets/
   01-going-backwards/
   02-equant/
-  03-new-centre/
+  03-new-center/
   04-what-moves/
   05-kepler/
 beyond-kepler/

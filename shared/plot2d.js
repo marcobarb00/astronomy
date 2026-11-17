@@ -133,12 +133,12 @@ class Plot2D {
 		};
 	}
 
-	/* The width an x-axis title may take: it is centred on the plot box,
+	/* The width an x-axis title may take: it is centered on the plot box,
 	   so it has the room of the shorter side, to the canvas edge. */
 	titleRoom(width) {
-		const centre = (this.margin.left + width - this.margin.right) / 2;
+		const center = (this.margin.left + width - this.margin.right) / 2;
 
-		return 2 * (Math.min(centre, width - centre) - AXIS_TITLE_INSET);
+		return 2 * (Math.min(center, width - center) - AXIS_TITLE_INSET);
 	}
 
 	/* The x-axis title as one line, or as two when it is wider than its
@@ -652,7 +652,7 @@ function drawSegment(ctx, x1, y1, x2, y2) {
 const quarterTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
 
 /* A word above the plot box, at x (e.g. "opposition" over its line):
-   centred on x, or starting at the left edge or ending at the right edge
+   centered on x, or starting at the left edge or ending at the right edge
    of the box, so that it never leaves the canvas. */
 function nameAbove(plot, text, x) {
 	const ctx = plot.ctx;

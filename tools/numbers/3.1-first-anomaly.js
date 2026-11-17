@@ -105,7 +105,7 @@ const sunLon = jd => Ephem.longitude('sun', jd);
 const moonLat = jd => Ephem.position('moon', jd).lat;
 
 /* The daily motion (deg a day) at JD(TT): the change over one day
-   centred on it. */
+   centered on it. */
 const moonMotion = jd => norm180(moonLon(jd + 0.5) - moonLon(jd - 0.5));
 
 /* Every moment in [from, to] when the elongation Moon - Sun reaches
