@@ -1757,9 +1757,9 @@ Regenerate with: node tools/check/smoke.js --update
   button "next day ›"
     OUTPUT (arrangement-day): 31 Dec 2017
     #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.2^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)} | \text{OP} = 1.721 \text{ in (a)},\quad 1.721\ \text{au in (b)}
-  button "16 years"
+  button "4 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "200 years"
+  button "16 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #elongation-inner at 0.3
   hover #elongation-inner at 0.6
@@ -1770,11 +1770,11 @@ Regenerate with: node tools/check/smoke.js --update
   hover #elongation-outer at 0.9
   hover #elongation-outer left
   hover #error-mars-plot at 0.3
-    .errorcurve-readout: 4 Jun 1969 · page 4.2's equant: +0.40° · Copernicus' arrangement: +0.40°
+    .errorcurve-readout: 11 Feb 2014 · page 4.2's equant: −0.67° · Copernicus' epicyclet: −0.71°
   hover #error-mars-plot at 0.6
-    .errorcurve-readout: 28 Jul 2034 · page 4.2's equant: −0.03° · Copernicus' arrangement: −0.03°
+    .errorcurve-readout: 29 Apr 2019 · page 4.2's equant: −0.18° · Copernicus' epicyclet: −0.14°
   hover #error-mars-plot at 0.9
-    .errorcurve-readout: 20 Sep 2099 · page 4.2's equant: −0.16° · Copernicus' arrangement: −0.16°
+    .errorcurve-readout: 15 Jul 2024 · page 4.2's equant: +0.38° · Copernicus' epicyclet: +0.30°
   hover #error-mars-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #distance-plot at 0.3

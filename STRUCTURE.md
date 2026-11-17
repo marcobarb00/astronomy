@@ -805,10 +805,10 @@ The first anomaly and the simplest complete model.
   Venus); Ptolemy's five models with deferents of one size, and the same
   numbers on one scale, out to Saturn and out to Mars (static); a photo:
   Copernicus' manuscript, f. 9v (Jagiellonian Library, public domain);
+  the error curve of Mars with Copernicus' epicyclet in place of the
+  equant, page 4.2's equant as ghost (4 and 16 years), in the Model;
   the two right triangles of the fit, Venus at greatest elongation and
-  Saturn at quadrature, with the quadrature a day early (static); the
-  error curve of Mars in Copernicus' arrangement with page 4.2's equant as
-  ghost, **unchanged**; Mars' distance from the Earth, 2010–2025, the
+  Saturn at quadrature, with the quadrature a day early (static); Mars' distance from the Earth, 2010–2025, the
   equant on Copernicus' scale and without the equant, and the difference
   (static).
 - **Point to make:** the predicted directions do not change. What changed
@@ -825,7 +825,8 @@ The first anomaly and the simplest complete model.
   (V 1), his triangles from one sighting (V 9, V 14, V 19), Venus (V 21),
   Mercury (V 27); his distances are Ptolemy's ratios inverted (V 19;
   *HAMA* p. 147).
-- **Test:** the directions identical to page 4.2's ($6 \times 10^{-12}$°);
+- **Test:** the directions identical to page 4.2's ($6 \times 10^{-12}$°),
+  so their error curve is page 4.2's Figure 7, not repeated;
   Mars' distance from the Earth within 0.020 au (1.6%) over 2010–2025,
   0.022 au over 1926–2125; the five distances within
   0.3% of the reference, Mercury 1.9% short (its elongated path: at a

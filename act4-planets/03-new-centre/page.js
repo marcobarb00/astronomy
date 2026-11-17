@@ -15,11 +15,12 @@
 								   each deferent the same size; (b) the five
 								   circles about the Sun on one scale; (c)
 								   the same out to Mars)
-	 4. the two right triangles   (2D, static: (a) Venus at greatest
+	 4. the two right triangles   (Figure 5, 2D, static: (a) Venus at greatest
 								   elongation; (b) Saturn at quadrature, and
 								   the same a day earlier)
-	 5. the error curve           (Mars in Copernicus' arrangement, page
-								   4.2's equant as ghost)
+	 5. the error curve           (Figure 4: Mars with Copernicus'
+								   epicyclet, page 4.2's equant as ghost;
+								   coded after Figure 5)
 	 6. Mars' distance            (2D, static: (a) the distance from the
 								   Earth, real, model and model without the
 								   equant; (b) model less real, 2010 - 2025)
@@ -34,8 +35,8 @@
 	 1. Figure 1: the elongations
 	 2. Figure 2: the two descriptions
 	 3. Figure 3: one scale
-	 4. Figure 4: the two right triangles
-	 5. Figure 5: the error curve
+	 4. Figure 5: the two right triangles
+	 5. Figure 4: the error curve of the epicyclet
 	 6. Figure 6: Mars' distance
 	 7. Page start
    ========================================================================== */
@@ -680,7 +681,7 @@ const scaleFigure = {
 };
 
 /* ==========================================================================
-   4. FIGURE 4: THE TWO RIGHT TRIANGLES
+   4. FIGURE 5: THE TWO RIGHT TRIANGLES
    Static, to scale. (a) Venus at its greatest elongation: the Earth O on
    its circle about the Sun, the line of sight touching Venus' circle at
    P, the right angle at P, the angle epsilon at O; Venus at the fitted
@@ -806,28 +807,36 @@ const triangleFigure = {
 };
 
 /* ==========================================================================
-   5. FIGURE 5: THE ERROR CURVE
-   Mars in Copernicus' arrangement against the reference Mars, in
-   degrees, with page 4.2's equant in Ptolemy's description as a ghost: the two
-   coincide, so the ghost is hidden under the curve. Over the sixteen
-   years of page 4.2's fit and two centuries; dots at the oppositions of
-   2010 - 2025. No slider changes a model, so the widget fits its scale
-   to each span.
+   5. FIGURE 4: THE ERROR CURVE OF THE EPICYCLET
+   Page 4.2's Mars with Copernicus' eccentric and epicyclet in place of
+   the deferent and the equant (PlanetArrangement.makeEpicyclet, the same
+   parameters) against the reference Mars, in degrees, with page 4.2's
+   equant as a ghost. Over 2016 - 2019, where the two are drawn as
+   lines and part by up to 22' at the opposition of 2016, and over the
+   sixteen years of page 4.2's fit, 2010 - 2025; dots at the oppositions.
+   No slider changes a model, so the widget fits its scale to each span.
+   (Copernicus' arrangement itself gives page 4.2's directions exactly,
+   so its error curve is page 4.2's Figure 7.)
    ========================================================================== */
+
+/* The four years shown first: around the opposition of 2016. */
+const ERROR_START = Time.julianDay(2016, 1, 1);
+const ERROR_END = Time.julianDay(2020, 1, 1);
 
 const errorFigure = {
 	init() {
 		const curve = new ErrorCurve(byId('error-mars'), {
 			body: 'mars',
-			start: FIT_START,
-			end: FIT_END,
+			start: ERROR_START,
+			end: ERROR_END,
 			spans: [
-				{ label: '16 years', years: 16 },
-				{ label: '200 years', years: 200 }
+				{ label: '4 years', years: 4 },
+				{ label: '16 years', years: 16 }
 			],
 			units: 'deg',
 			ghostButtons: false
 		});
+		const epicyclet = PlanetArrangement.makeEpicyclet(MARS);
 		const oppositions = PlanetEpicycle.referenceEvents('mars', 'outer', FIT_START - 200, FIT_END, {
 			apparent: false,
 			step: 2
@@ -836,21 +845,21 @@ const errorFigure = {
 			.filter(jd => jd >= FIT_START);
 
 		curve.addGhost({
-			label: "page 4.2's equant, in Ptolemy's description",
+			label: "page 4.2's equant",
 			short: "page 4.2's equant",
-			color: COL.epicycle,
+			color: COL.deferent,
 			fn: PlanetEquant.make(MARS)
 		});
 		curve.addModel({
-			label: "the same, in Copernicus' arrangement",
-			short: "Copernicus' arrangement",
-			color: COL.deferent,
-			fn: PlanetArrangement.make('mars')
+			label: "Copernicus' epicyclet in place of the equant",
+			short: "Copernicus' epicyclet",
+			color: COL.earth,
+			fn: epicyclet
 		});
 		curve.addMarks({
-			label: 'at the oppositions (span of 16 years)',
-			color: COL.deferent,
-			fn: PlanetArrangement.make('mars'),
+			label: 'the epicyclet at the oppositions',
+			color: COL.earth,
+			fn: epicyclet,
 			dates: oppositions,
 			maxYears: 16.5
 		});
