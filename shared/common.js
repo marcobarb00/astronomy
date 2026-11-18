@@ -589,6 +589,41 @@ function squareCanvas(owner, canvas, maxWidth, margin) {
 	});
 }
 
+/* A canvas as wide as its column (up to maxWidth px) and 'aspect' times
+   as high, scaled for the device pixel ratio; it follows the column and
+   calls owner.draw() when the width changes. Sets owner.ctx, width and
+   height. 'aspect' may be a function of the width, for a drawing that
+   changes its layout on a phone. */
+function wideCanvas(owner, canvas, aspect, maxWidth) {
+	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 600, SQUARE_CANVAS_MIN, maxWidth);
+
+	const resize = () => {
+		const width = targetWidth();
+		const height = Math.round(width * (typeof aspect === 'function' ? aspect(width) : aspect));
+
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${height}px`;
+		owner.ctx = canvas.getContext('2d');
+		scaleCanvas(canvas, owner.ctx, width, height);
+		owner.width = width;
+		owner.height = height;
+	};
+
+	resize();
+	new ResizeObserver(() => {
+		if (targetWidth() !== owner.width) {
+			resize();
+			owner.draw();
+		}
+	}).observe(canvas.parentElement);
+
+	whenCanvasFontsReady().then(() => owner.draw());
+	onPixelRatioChange(() => {
+		resize();
+		owner.draw();
+	});
+}
+
 /* A text label centered at a screen point, in the atlas fonts and the text
    colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
    symbol that would cover an earlier label or leave the canvas (on a

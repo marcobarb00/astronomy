@@ -160,10 +160,10 @@ const SITE_MAP = (function () {
 		{
 			number: '4.4',
 			act: 4,
-			ready: false,
-			title: 'What moves?',
+			ready: true,
+			title: 'Phases and parallax',
 			question: 'Can the observations decide which body is at rest?',
-			path: 'act4-planets/04-what-moves/index.html'
+			path: 'act4-planets/04-phases-parallax/index.html'
 		},
 		{
 			number: '4.5',
@@ -264,13 +264,14 @@ const SITE_MAP = (function () {
 		hipparchus: 'Hipparchus',
 		ptolemy: 'Ptolemy',
 		copernicus: 'Copernicus',
+		tycho: 'Tycho',
 		kepler: 'Kepler',
 		debated: 'Debated',
 		modern: 'Modern'
 	};
 
 	/* The hub's key of origins: one line per kind of origin. 'origin' picks
-	   the colour of the label; the four authors share one line. */
+	   the colour of the label; the five authors share one line. */
 	const ORIGIN_KEY = [
 		{
 			origin: 'babylonian',
@@ -284,7 +285,7 @@ const SITE_MAP = (function () {
 		},
 		{
 			origin: 'ptolemy',
-			label: 'Hipparchus, Ptolemy, Copernicus, Kepler',
+			label: 'Hipparchus, Ptolemy, Copernicus, Tycho, Kepler',
 			text: "the author's own contribution, as far as the sources allow"
 		},
 		{

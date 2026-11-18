@@ -162,6 +162,36 @@ section.
   approximation keeps the arrangement, every planet and the Earth on a
   Kepler ellipse about the Sun. Pages 4.1 and 4.2 left it out so that
   4.3 could say it. Approved by Marco on 2026-11-16. → STRUCTURE.md §7.5
+- **Page 4.4: the arrangement fitted from the phases of Venus; no
+  error curve.** The page keeps the full rhythm: the arrangement of
+  Venus, where the center K of its epicycle lies on the line to the Sun
+  (the ratio O☉ : OK, which turns no direction), is fitted from the
+  phase at greatest elongation ($k = \tfrac12$ only when O☉ = OK) and
+  K at the Sun is adopted; the Test sets the phase of 2026–2033 against
+  the real Venus, with Ptolemy's order as ghost, and the parallax of 61
+  Cygni against Tycho's stars. Mars in Tycho's system has page 4.2's
+  directions exactly, so, as on page 4.3, its error curve is not
+  repeated: Figure 2's read-out shows the two longitudes. The phases
+  figure has three orders, below, around and above the Sun (IX 1 gives
+  both of Ptolemy's). Notation $k$, $\chi$, $\varpi$. Approved by Marco
+  on 2026-11-17. → STRUCTURE.md §4 (page 4.4), §6
+- **A Tycho origin.** Tycho's system gets an origin of its own, in the
+  colour of the other authors, rather than "Debated" for Ursus' rival
+  claim; Galileo, Bradley, Bessel, Newton and Foucault are "Modern".
+  Decided by Marco on 2026-11-17. → shared/site-map.js, STRUCTURE.md §7.1
+- **Page 4.4 tells Tycho's argument from the size of the stars** (the
+  missing parallax would make the stars as large as the Earth's orbit),
+  from secondary sources (Graney), in the Test's history block; and has
+  a Today note, beside Newton, on the barycentric frame in which
+  positions are computed today. Decided by Marco on 2026-11-17. →
+  STRUCTURE.md §4 (page 4.4), §7.5
+- **Page 4.4 is titled "Phases and parallax"**, the two observations
+  that decide the arrangement, instead of "What moves?", a question
+  heading (CLAUDE.md, Writing); the question stays as the subtitle. The
+  folder and the numbers script take the new slug,
+  `act4-planets/04-phases-parallax/` and
+  `tools/numbers/4.4-phases-parallax.js`. Decided by Marco on
+  2026-11-18. → shared/site-map.js, STRUCTURE.md §4, §9
 
 ## Look
 

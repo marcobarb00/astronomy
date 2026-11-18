@@ -860,63 +860,119 @@ The first anomaly and the simplest complete model.
 - **Hands over:** Tycho kept this arrangement with the Earth fixed. What
   can the observations decide?
 
-#### 4.4 · What moves?
+#### 4.4 · Phases and parallax
 
 - **Question:** can the observations decide which body is at rest?
 - **Learn:**
   - The frame (what is taken as at rest) and the arrangement (how the
     motions are linked; the order and the distances of the planets) are
     separate questions. Directions from the Earth depend only on the
-    relative positions and velocities of the bodies, so they cannot decide
-    the frame, while the arrangement makes predictions that can be tested.
-  - Tycho's system (1588): the Sun, the Moon and the planets arranged as
-    in Copernicus, about a resting Earth, the planets going round the Sun
-    and the Sun round the Earth. Copernicus' model moved to the Earth at
-    rest gives the same direction to every planet at every moment, proved
-    with vectors as in the equivalence of page 3.1. Tycho's stars stay on
-    a sphere about the Earth, though, so the two arrangements differ for
-    the stars.
-  - The phases of Venus (Galileo, observed 1610): when Venus' epicycle
-    lies wholly between the Earth and the Sun, as in Ptolemy's order
-    (*Almagest* IX 1, and the nested spheres of the *Planetary
-    Hypotheses*), Venus is never more than half lit; a gibbous Venus is
-    expected in Copernicus' arrangement and Tycho's alike.
-  - Stellar parallax: Copernicus explains its absence by the distance of
-    the stars (*De Revolutionibus* I 10); Bessel measured it in 1838 (61
-    Cygni). With the Earth at rest it means that every star moves each
-    year with the Sun, which Tycho's stars do not: parallax decides
-    between Tycho's arrangement and Copernicus'. Aberration (Bradley,
-    1729), which depends on the Earth's velocity relative to the stars,
-    bears on the same question.
+    relative positions of the bodies, so they cannot decide the frame
+    (Copernicus I 5; Ptolemy's concession, I 7), while the arrangement
+    makes predictions that can be tested.
+  - Observation: the phases and sizes of the real Venus over one synodic
+    period (superior conjunction of 4 June 2024 to that of 6 January
+    2026): full and 9.6″ at superior conjunction, a crescent of 59.5″ at
+    inferior conjunction, half lit near the greatest elongations;
+    Osiander's objection to the size of Venus' epicycle ("To the
+    Reader"); the Platonists' argument that Venus below the Sun would be
+    "seen halved or at any rate less than fully round" (*De
+    Revolutionibus* I 10); Ptolemy's two orders (IX 1).
+  - Tycho's system (1588, Voelkel ch. 1): the
+    Sun, the Moon and the planets arranged as in Copernicus, about a
+    resting Earth. Copernicus' model moved to the Earth at rest (every
+    place less the Earth's) gives the same direction to every planet at
+    every moment; for Mars it is page 4.2's model with page 4.3's
+    parallelogram drawn as circles. Mars' circle crosses the Sun's. Tycho's
+    stars stay on a sphere about the Earth, so the two arrangements differ
+    for the stars.
+  - The phases: $k = (1 + \cos\chi)/2$; where the center K of Venus'
+    epicycle lies on the line to the Sun turns no direction (page 4.3's
+    scale) but decides the phases. Below the Sun (O☉ > (1 + r) OK,
+    Ptolemy's order, IX 1, and his nested spheres, HAMA I B 5, reported
+    in *De Revolutionibus* I 10, with the Sun's mean distance of
+    *Almagest* V 15: O☉ = 1.80 OK) Venus is never more than half lit;
+    above it (O☉ < (1 − r) OK) never less; around it (O☉ = OK, Copernicus
+    and Tycho alike) half lit at greatest elongation. The sizes, $(1 +
+    r)/(1 - r)$ = 6.2, are the same in every order: they test $r$, the
+    phases the arrangement. Galileo's observation (anagram of 11 December
+    1610, solved 1 January 1611; *Il Saggiatore*, 1623).
+  - Stellar parallax: Copernicus' stars at rest about ☉ trace each year an
+    ellipse of semi-axes $\varpi$ and $\varpi\sin\beta$; Copernicus
+    explains its absence by the distance of the stars (*De
+    Revolutionibus* I 10); Tycho's stars have none. Aberration (Bradley,
+    1729): the same ellipse a quarter year later, 20.5″, following the
+    Earth's velocity relative to the stars. Bessel measured the parallax
+    of 61 Cygni in 1838 (0.314″, today 0.286″). Parallax and aberration
+    decide between Tycho's arrangement and Copernicus'.
   - The physical arguments: Ptolemy's clouds and thrown objects
     (*Almagest* I 7), and his answer to an air that turns with the Earth;
     Copernicus' natural motion and his ship (*De Revolutionibus* I 8);
     Newton's laws of motion (*Principia*, 1687), which hold in inertial
     frames, where the solar system's center of mass, near the Sun, is at
     rest or moves uniformly, and are simplest where it is at rest (Book
-    III, Hypothesis 1 and Propositions 11–12). Physics makes the
-    heliostatic description simpler; the geostatic one stays correct once
-    the forces of an accelerated, turning frame are added. The Earth's
-    daily rotation shows in an experiment on the ground (Foucault, 1851);
-    its yearly motion, a free fall, does not show in experiments of that
-    kind.
-- **Figures:** Mars seen from the Earth in Copernicus' and Tycho's systems,
-  side by side, with one error curve for both, identical by construction;
-  the phases of Venus in Ptolemy's arrangement and in Copernicus'; a star's
-  parallax drawn with the Sun at rest and with the Earth at rest.
+    III, Hypothesis 1 and Propositions 11–12, third edition). Physics
+    makes the heliostatic description simpler; the geostatic one stays
+    correct once the forces of an accelerated, turning frame are added.
+    The Earth's daily rotation shows in an experiment on the ground
+    (Foucault, 1851); its yearly motion, a free fall, does not show in
+    experiments of that kind.
+- **Notation:** $k$ the illuminated fraction (Meeus' symbol), $\chi$ the
+  phase angle at the planet between the Sun and the Earth ($i$ is the
+  Moon's inclination), $\varpi$ the parallax ($p$ is precession); the
+  arrangement of Venus as the ratio O☉ : OK, with no new letter (§6).
+- **Figures:** the disks of the real Venus at twelve dates of 2024–2026,
+  to scale, with their phases (static); Venus, the Earth and Mars in
+  Copernicus' system (☉ fixed) and Tycho's (O fixed), with a read-out of
+  Mars' ecliptic longitude in both (date 2010–2025, play); the phases of
+  Venus in three orders, below, around and above the Sun, the drawing
+  from above beside the disk as seen from O (date over a synodic period,
+  play, three views); the illuminated fraction against the elongation,
+  the three orders against the real Venus (static); a star's parallax
+  with the Sun at rest and with the Earth at rest, and the apparent path
+  of 61 Cygni in arcseconds (date over 2026, play); the phase of Venus
+  in 2026–2033, the arrangement around the Sun against the real Venus,
+  Ptolemy's order as ghost, and the difference (static). A photo: the
+  phases of Venus in Galileo's *Il Saggiatore*. No error curve: the
+  directions are page 4.2's (DECISIONS.md, 2026-11-17).
+- **Fit:** the arrangement of Venus from its phase at greatest elongation,
+  $k = \tfrac12$ only when O☉ = OK: the 50 greatest elongations of
+  1986–2025 (page 4.3's) give O☉ = 0.998 OK, and K at the Sun is
+  adopted. The stars: directions to the naked eye only bound their
+  distance (no yearly shift over 1′: beyond 6875 au); a measured parallax
+  fixes it. History block: Galileo's telescope and his anagram; Bessel's
+  heliometer and 61 Cygni.
+- **Test:** the directions of Tycho's system are Copernicus' and page
+  4.2's ($10^{-13}$°), so their error is page 4.2's Figure 7; the phase
+  of Venus within 0.03 over 2026–2033, Ptolemy's order and the order
+  above the Sun off by the whole disk; the parallax of 61 Cygni, which
+  Tycho's arrangement cannot give. History block: Tycho's argument from
+  the missing parallax and the size of the stars (letter to Rothmann,
+  1589; Graney), Bradley's aberration (1729), Bessel (1838).
+- **Today note** (§7.5), beside Newton: positions are computed today in
+  the frame of the solar system's center of mass, its axes fixed by
+  distant radio sources, and then referred to the Earth.
+- **Residual:** the observations decided the arrangement, not the frame;
+  both systems keep page 4.2's error of Mars.
 - **Exercises:** derive that Tycho's and Copernicus' systems give the same
-  directions; the greatest phase of Venus in Ptolemy's arrangement; the
-  parallax of 61 Cygni from its distance, and why Copernicus could not see
-  it.
-- **Rhythm:** no longitude to fit, as in Act I: observation (Venus),
-  model (frames and arrangements), test (the two error curves coincide),
-  residual (Mars).
-- **Sources:** *Almagest* I 7, IX 1 and X 6; *De Revolutionibus* I 5,
-  I 8, I 10 and the preface to Book II; for Kepler and Tycho, Voelkel's
-  biography in the `astronomy-sources` library; for Galileo, Bessel,
-  Bradley, Newton and Foucault, sources outside it, to be chosen and
-  checked when the page is built (the dates above are not yet checked
-  against them).
+  directions, and what Tycho's stars would have to do to show
+  Copernicus' parallax; the greatest phase of Venus in Ptolemy's order
+  (compute, then check in the figure); the parallax of 61 Cygni from its
+  distance, its dates, and why Copernicus could not see it.
+- **Rhythm:** observation (Venus), model (frames and arrangements), fit
+  (the arrangement of Venus from its phases), test (directions, phases,
+  parallax), residual (Mars).
+- **Code:** `Ephem.phase` (the illuminated fraction and the apparent
+  diameter of the reference planets); `PlanetArrangement.tycho`,
+  `venusPhase` and `ORDERS`; 61 Cygni A in `Stars.MORE`, with its
+  parallax, and `Stars.parallax`.
+- **Sources:** *Almagest* I 7, IX 1; *De Revolutionibus*, "To the
+  Reader", I 5, I 8, I 10; HAMA I B 5; Voelkel ch. 1 and 3; outside the
+  library: Galileo's letters to Giuliano de' Medici (*Opere* XI) and *Il
+  Saggiatore*; Bradley (*Phil. Trans.* 35, 1729); Bessel (*Astronomische
+  Nachrichten* 16, 1838); Newton, *Principia* (transl. Motte); Foucault
+  (*Comptes rendus* 32, 1851); C. M. Graney on Tycho's star-size
+  argument; SIMBAD / Gaia DR3 for 61 Cygni; Meeus ch. 41.
 - **Hands over:** circles still leave an error, and Mars shows it most.
   Kepler, who looked in the Sun for the physical cause of the planets'
   motions (*Mysterium Cosmographicum*, 1596; *Astronomia Nova*, 1609),
@@ -1120,6 +1176,9 @@ once on the page.
 | $\varepsilon_\text{max}$ | an inner planet's greatest elongation, $\sin\varepsilon_\text{max} = a$ for a circle (not the obliquity; page 4.3) |
 | $\psi$ | the angle at ☉ between the Earth and an outer planet, $\cos\psi = 1/a$ at quadrature (page 4.3) |
 | $d_1,\ d_2$ | Copernicus' eccentricity and epicyclet (*De Revolutionibus* V 4), $\tfrac32 e$ and $\tfrac12 e$ (page 4.3) |
+| $k$ | the illuminated fraction of a planet's disk, $(1 + \cos\chi)/2$ (Meeus' symbol; page 4.1 uses $k$ for $n_\mu/n$ in one formula) (page 4.4) |
+| $\chi$ | the phase angle, at the planet between the Sun and the Earth (page 4.4) |
+| $\varpi$ | the parallax of a star, in arcseconds (page 4.4) |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is
@@ -1149,7 +1208,7 @@ origins once, in a key:
 
 - **Babylonian:** inherited from Mesopotamian astronomy.
 - **Greek:** from earlier Greek astronomers and mathematicians.
-- **Hipparchus / Ptolemy / Copernicus / Kepler:** the author's contribution, as far as the sources allow.
+- **Hipparchus / Ptolemy / Copernicus / Tycho / Kepler:** the author's contribution, as far as the sources allow.
 - **Debated:** attribution or details still discussed by historians.
 - **Modern:** the modern understanding or notation.
 
@@ -1190,7 +1249,7 @@ On a page whose model is not the one used today, a margin note headed
 first approximation and how the two compare (a formula, a number from the
 page's script). It states the modern counterpart; it does not judge the
 historical model, which the page tests with the error curve. Pages 2.1,
-3.1, 3.2 and 4.3 have one (§4); other pages add one only when their model has
+3.1, 3.2, 4.3 and 4.4 have one (§4); other pages add one only when their model has
 a direct modern counterpart. Its numbers come from the page's script, like
 every other number. Adopted on 2026-11-02; written on pages 2.1, 3.1 and
 3.2 the same day. The style is in `STYLE.md` §4.5.
@@ -1261,7 +1320,7 @@ act4-planets/
   01-going-backwards/
   02-equant/
   03-new-center/
-  04-what-moves/
+  04-phases-parallax/
   05-kepler/
 beyond-kepler/
 archive/                   earlier pages, kept for reference, not linked

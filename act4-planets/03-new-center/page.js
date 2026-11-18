@@ -52,9 +52,6 @@ const FIT_END = Time.julianDay(2026, 1, 1);
 /* Page 4.2's Mars, which this page moves into Copernicus' arrangement. */
 const MARS = PlanetEquant.MARS_FIT;
 
-/* A JD as a year with its fraction, for the axes in years. */
-const yearOf = jd => 2000 + (jd - 2451545.0) / 365.25;
-
 /* Ticks at whole years, every 'step' years, on an axis of years. */
 const yearTicks = step => (min, max) => {
 	const ticks = [];
@@ -70,41 +67,6 @@ const yearTicks = step => (min, max) => {
    apparent ones the numbers script quotes and four times faster
    (DECISIONS.md, page 4.1). */
 const geometric = (planet, jd) => Ephem.planet(planet, jd, { apparent: false });
-
-/* A canvas as wide as its column (up to maxWidth px) and 'aspect' times
-   as high, scaled for the device pixel ratio; it follows the column and
-   calls owner.draw() when the width changes. Sets owner.ctx, width and
-   height. 'aspect' may be a function of the width, for a drawing that
-   changes its layout on a phone. */
-function wideCanvas(owner, canvas, aspect, maxWidth) {
-	const targetWidth = () => clamp(contentWidth(canvas.parentElement) || 600, SQUARE_CANVAS_MIN, maxWidth);
-
-	const resize = () => {
-		const width = targetWidth();
-		const height = Math.round(width * (typeof aspect === 'function' ? aspect(width) : aspect));
-
-		canvas.style.width = `${width}px`;
-		canvas.style.height = `${height}px`;
-		owner.ctx = canvas.getContext('2d');
-		scaleCanvas(canvas, owner.ctx, width, height);
-		owner.width = width;
-		owner.height = height;
-	};
-
-	resize();
-	new ResizeObserver(() => {
-		if (targetWidth() !== owner.width) {
-			resize();
-			owner.draw();
-		}
-	}).observe(canvas.parentElement);
-
-	whenCanvasFontsReady().then(() => owner.draw());
-	onPixelRatioChange(() => {
-		resize();
-		owner.draw();
-	});
-}
 
 /* The small square of a right angle at 'corner', between the directions
    towards a and towards b (screen points). */
