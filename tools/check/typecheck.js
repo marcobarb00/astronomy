@@ -30,6 +30,7 @@ const PAGES = [
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
 	'act4-planets/03-new-center/index.html',
+	'act4-planets/04-what-moves/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',

@@ -33,7 +33,8 @@
 	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
 	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
 	21. Copernicus' arrangement (De Revolutionibus V 1, V 21; page 4.3)
-	22. Run
+	22. What moves: Tycho's system, the phase of Venus, parallax (Meeus ch. 41; page 4.4)
+	23. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -2243,7 +2244,89 @@ function testPlanetArrangement() {
 }
 
 /* ==========================================================================
-   22. RUN
+   22. WHAT MOVES: TYCHO'S SYSTEM, THE PHASE OF VENUS, PARALLAX (PAGE 4.4)
+   ========================================================================== */
+
+function testWhatMoves() {
+	group("Tycho's system, phases, parallax · ephemeris.js, stars.js, models/planet-arrangement.js (page 4.4)");
+
+	// Meeus Example 41.a: Venus on 1992 December 20.0 TD, i = 72.96°,
+	// k = 0.647
+	const venus = Ephem.phase('venus', 2448976.5);
+
+	check({
+		name: 'The phase angle of Venus, 1992 Dec 20.0 TD',
+		source: 'Meeus Ex. 41.a (72.96°)',
+		expected: 72.96,
+		computed: venus.phaseAngle,
+		tol: 0.01,
+		unit: '°',
+		show: x => x.toFixed(2)
+	});
+	check({
+		name: 'The illuminated fraction of Venus, 1992 Dec 20.0 TD',
+		source: 'Meeus Ex. 41.a (0.647)',
+		expected: 0.647,
+		computed: venus.k,
+		tol: 0.0005,
+		show: x => x.toFixed(3)
+	});
+
+	// Tycho's system: every place less the Earth's, so Mars' direction
+	// from the Earth is Copernicus' exactly
+	const jd = Time.julianDay(2025, 1, 16);
+	const m = PlanetArrangement.moment('mars', jd);
+	const T = m.tychonic;
+
+	check({
+		name: "Mars' ecliptic longitude, Tycho's system less Copernicus'",
+		source: 'equal by construction (page 4.4)',
+		expected: 0,
+		computed: norm180(atan2d(T.P[1] - T.O[1], T.P[0] - T.O[0]) - m.lambda),
+		tol: 1e-9,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(2)
+	});
+
+	// the order of Venus around the Sun: half lit at greatest elongation,
+	// where the line of sight touches the circle about the Sun
+	const r = PlanetArrangement.VENUS_FIT.r;
+	const tangent = [1 - r * r, r * Math.sqrt(1 - r * r)];
+
+	check({
+		name: 'Venus around the Sun, at greatest elongation',
+		source: 'k = 1/2 when the radius is perpendicular to the line of sight',
+		expected: 0.5,
+		computed: PlanetArrangement.phaseAt(tangent, [1, 0]).k,
+		tol: 1e-12,
+		show: x => x.toFixed(6)
+	});
+
+	// the annual parallax of 61 Cygni is at most its parallax times the
+	// Sun's distance, along the ecliptic when the Sun is 90° from the star
+	const star = Stars.find('61 Cygni');
+	let largest = 0;
+
+	for (let t = jd; t < jd + 366; t += 1) {
+		const p = Stars.parallax(star, t);
+
+		largest = Math.max(largest, Math.hypot(p.dlon, p.dlat) / Ephem.sun(t, { apparent: false }).dist);
+	}
+
+	check({
+		name: 'The largest annual parallax of 61 Cygni, per au',
+		source: 'SIMBAD (Gaia DR3), 285.9949 mas',
+		expected: 0.2859949,
+		computed: largest,
+		tol: 2e-5,
+		unit: '″',
+		show: x => x.toFixed(4)
+	});
+}
+
+/* ==========================================================================
+   23. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2270,5 +2353,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testPlanetEpicycle();
 	testPlanetEquant();
 	testPlanetArrangement();
+	testWhatMoves();
 	render();
 });

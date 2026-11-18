@@ -27,6 +27,8 @@
 	 - Nutation: the short series of Meeus ch. 22 (0.5" in longitude).
 	 - Aberration: Meeus 25.10 (Sun) and 23.2 (planets).
 	 - Equation of time: Meeus 28.1.
+	 - Phase and apparent diameter of a planet: Meeus 41.1 and 41.2; the
+	   radii of the IAU (Archinal et al. 2018).
 	 - Atmospheric refraction: Meeus 16.3 (Bennett) and 16.4 (Saemundsson).
 
    VALID RANGE
@@ -88,6 +90,16 @@ const Ephem = (function () {
 	const LIGHT_TIME_PER_AU = 0.0057755183; // days for light to cross 1 AU
 	const EARTH_MOON_MASS_RATIO = 81.30056; // M_earth / M_moon
 	const ABERRATION_CONSTANT = 20.49552; // kappa (arcsec)
+
+	/* Equatorial radii of the planets (km), IAU WGCCRE 2015, for their
+	   apparent diameters (phase()). */
+	const RADIUS_KM = {
+		mercury: 2440.53,
+		venus: 6051.8,
+		mars: 3396.19,
+		jupiter: 71492,
+		saturn: 60268
+	};
 
 	const RANGE = {
 		start: Time.julianDay(-2999, 1, 1), // 3000 BC January 1
@@ -776,6 +788,39 @@ const Ephem = (function () {
 		return planet(body, jdTT, options);
 	}
 
+	/* The phase of a planet seen from the Earth: { phaseAngle (deg, at the
+	   planet between the Sun and the Earth, Meeus' i), k (the illuminated
+	   fraction of the disk, (1 + cos i) / 2), diameter (the apparent
+	   equatorial diameter, arcsec), dist (au) }, from the triangle of the
+	   Sun, the Earth and the planet (Meeus 41.1, 41.2). Apparent (the
+	   default) takes the planet where it was when the light left it. */
+	function phase(body, jdTT, options = {}) {
+		const { apparent = true } = options;
+		const earth = earthJ2000(jdTT);
+		let helio = heliocentricJ2000(body, jdTT);
+
+		if (apparent) {
+			for (let i = 0; i < 3; i++) {
+				const tau = LIGHT_TIME_PER_AU * length3(sub3(helio, earth));
+
+				helio = heliocentricJ2000(body, jdTT - tau);
+			}
+		}
+
+		const r = length3(helio);
+		const delta = length3(sub3(helio, earth));
+		const R = length3(earth);
+		const cosI = (r * r + delta * delta - R * R) / (2 * r * delta);
+		const phaseAngle = acos(cosI);
+
+		return {
+			phaseAngle,
+			k: (1 + cos(phaseAngle)) / 2,
+			diameter: (2 * Math.atan(RADIUS_KM[body] / (delta * AU_KM)) * 180 * 3600) / Math.PI,
+			dist: delta
+		};
+	}
+
 	/* Geocentric ecliptic longitude only: what the error curves compare. */
 	function longitude(body, jdTT, options = {}) {
 		return position(body, jdTT, options).lon;
@@ -863,6 +908,7 @@ const Ephem = (function () {
 		planet,
 		position,
 		longitude,
+		phase,
 		heliocentric,
 		heliocentricJ2000,
 		solveKepler,

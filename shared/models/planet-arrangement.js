@@ -33,12 +33,19 @@
    make(name) returns jd => longitude (JD(TT) in, degrees out), as
    ErrorCurve.addModel and ErrorCurve.addGhost expect (README.md).
 
+   Page 4.4 adds Tycho's system, the same arrangement with the Earth at
+   rest (every heliostatic place less the Earth's: moment().tychonic),
+   and the phase of Venus for a center K of its epicycle anywhere on the
+   line to the Sun (venusPhase, ORDERS): below the Sun, as in Ptolemy's
+   order, around it, or above it.
+
    TABLE OF CONTENTS
 	 1. Parameter sets
 	 2. Periods and distances
 	 3. One moment, in both descriptions
 	 4. Copernicus' eccentric with an epicyclet (De Revolutionibus V 4)
-	 5. Export
+	 5. Tycho's system and the order of Venus (page 4.4)
+	 6. Export
    ========================================================================== */
 
 const PlanetArrangement = (function () {
@@ -170,8 +177,9 @@ const PlanetArrangement = (function () {
 	   Sun's ecliptic longitude), lambda (the planet's, seen from O),
 	   elongation (lambda less the mean Sun's, deg in [-180, 180)),
 	   distance (OP, au), geostatic: { O, K, P, S, C, Q }, heliostatic:
-	   { S, O, P, C, Q } } (C and Q, the center of the deferent and the
-	   equant, for Mars only). In the heliostatic drawing the Earth is at
+	   { S, O, P, C, Q }, tychonic: { O, S, P, C, Q } } (C and Q, the
+	   center of the deferent and the equant, for Mars only). In the
+	   heliostatic drawing the Earth is at
 	   -O sun and the planet at P - O sun; an outer planet's deferent, the
 	   circle of K about O, has become the circle of P about sun, so its
 	   center and its equant keep their places relative to sun. */
@@ -216,12 +224,14 @@ const PlanetArrangement = (function () {
 	}
 
 	/* The common part of moment(): the direction and the distance, from
-	   the heliostatic points. */
+	   the heliostatic points, and Tycho's system, the heliostatic points
+	   less the Earth's (au, the Earth O at the origin). */
 	function finish(name, sun, scale, geostatic, heliostatic) {
 		const sight = minus(heliostatic.P, heliostatic.O);
 		const lambda = norm360(atan2d(sight[1], sight[0]));
 
 		return {
+			tychonic: tycho(heliostatic),
 			name,
 			kind: KIND[name],
 			scale,
@@ -287,7 +297,84 @@ const PlanetArrangement = (function () {
 	}
 
 	/* ======================================================================
-	   5. EXPORT
+	   5. TYCHO'S SYSTEM AND THE ORDER OF VENUS (PAGE 4.4)
+	   Tycho's system: Copernicus' arrangement with every place less the
+	   Earth's, so that the Earth O is at rest at the origin, the Sun goes
+	   round it once a year on a circle of 1 au, and each planet goes round
+	   the Sun on its circle. Every direction from O stays as it was.
+	   The order of Venus: in page 4.1's simple model K, the center of the
+	   epicycle, is on the line from O to the mean Sun, and nothing in the
+	   directions fixes where. With OK = 1 and the Sun at the distance
+	   ratio = O sun / OK on that line, the phase angle chi at P (between
+	   the Sun and O) gives the illuminated fraction k = (1 + cos chi) / 2.
+	   ====================================================================== */
+
+	/* The points of a heliostatic drawing less the Earth's: Tycho's. */
+	function tycho(heliostatic) {
+		const O = heliostatic.O;
+
+		return Object.fromEntries(Object.entries(heliostatic).map(([key, point]) => [key, minus(point, O)]));
+	}
+
+	/* The nested spheres of the planets below the Sun (Ptolemy's Planetary
+	   Hypotheses, HAMA I B 5, pp. 110 - 112, as Copernicus reports them in
+	   De Revolutionibus I 10, in earth radii): each sphere fills the space
+	   between its neighbours', up to the Sun's least distance, 1160. Venus'
+	   farthest point, (1 + r) OK, is put at that least distance, and the
+	   Sun at its mean distance, 1210 (Almagest V 15): O sun = (1 + r) OK
+	   1210 / 1160, 1.797 OK for page 4.3's r, just beyond the epicycle. */
+	const NESTED = {
+		sunLeast: 1160,
+		sunMean: 1210
+	};
+
+	/* The ratio O sun / OK for Venus in the nested spheres, for the radius
+	   r of its epicycle. */
+	function nestedRatio(r = VENUS_FIT.r) {
+		return ((1 + r) * NESTED.sunMean) / NESTED.sunLeast;
+	}
+
+	/* The three orders of Venus that page 4.4 compares: O sun / OK. Below
+	   the Sun needs a ratio over 1 + r, above it one under 1 - r (0.277
+	   for page 4.3's r); 0.2 is a value of that kind, chosen for the
+	   figures. */
+	const ORDERS = {
+		below: nestedRatio(),
+		around: 1,
+		above: 0.2
+	};
+
+	/* The phase of Venus at JD(TT) in page 4.3's simple model with the
+	   order 'ratio' (O sun / OK): { k, chi (deg), elongation (deg, from
+	   the Sun seen from O), distance (OP, units of OK), sun, K, P (points,
+	   O at the origin, OK = 1) }. The radius r may be changed (Ptolemy's,
+	   page 4.4's exercise). */
+	function venusPhase(jd, ratio, r = VENUS_FIT.r) {
+		const c = PlanetEpicycle.construction(PlanetEpicycle.state(VENUS_FIT, jd), r);
+		const sun = times(c.K, ratio);
+
+		return Object.assign(phaseAt(c.planet, sun), { K: c.K, P: c.planet, sun });
+	}
+
+	/* The phase of a planet at P lit by a Sun at 'sun', seen from the
+	   origin: { k, chi, elongation, distance }. */
+	function phaseAt(P, sun) {
+		const toSun = minus(sun, P);
+		const toEarth = times(P, -1);
+		const cosChi =
+			(toSun[0] * toEarth[0] + toSun[1] * toEarth[1]) / (Math.hypot(...toSun) * Math.hypot(...toEarth));
+		const chi = acos(cosChi);
+
+		return {
+			k: (1 + cos(chi)) / 2,
+			chi,
+			elongation: norm180(atan2d(P[1], P[0]) - atan2d(sun[1], sun[0])),
+			distance: Math.hypot(...P)
+		};
+	}
+
+	/* ======================================================================
+	   6. EXPORT
 	   ====================================================================== */
 
 	return {
@@ -306,6 +393,12 @@ const PlanetArrangement = (function () {
 		make,
 		makeDistance,
 		epicyclet,
-		makeEpicyclet
+		makeEpicyclet,
+		tycho,
+		NESTED,
+		nestedRatio,
+		ORDERS,
+		venusPhase,
+		phaseAt
 	};
 })();

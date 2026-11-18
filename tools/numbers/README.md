@@ -18,6 +18,7 @@ shared code in Node, and prints the numbers quoted on the page.
 | `4.1-going-backwards.js` | 4.1 · Going backwards |
 | `4.2-equant.js` | 4.2 · The equant |
 | `4.3-new-center.js` | 4.3 · Same geometry, new center |
+| `4.4-what-moves.js` | 4.4 · What moves? |
 
 Run from the repository root, e.g.
 

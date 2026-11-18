@@ -2157,6 +2157,20 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 January 1                 282.817850088  2.410422627  -0.185004548  -1.367617918  279.101486962  1.721679433  282.829749323
   2026 June solstice             54.915729296  2.141055619  -0.005237399  0.752055676  129.455315821  1.105118342  54.849238766
   range end                      74.275764804  0.588305460  -0.165711670  1.552463669  257.006387508  1.536243485  74.335274608
+  ORDERS                         {"below":1.7968114051724138,"around":1,"above":0.2}
+  range start 4.4                -0.257821671  -0.922295813  0.410834485 0.888936468 0.998736144  0.882746225  11.672434851  0.001784175  -0.218638658
+  Thales eclipse 4.4             0.518376282  2.488591286  0.361621246 0.654454242 0.992856563  0.644015176  17.551605873  0.242800305  0.125201327
+  Ptolemy 4.4                    -0.443575271  -0.482779400  0.132830656 0.999292714 0.999993619  0.998721823  9.661836653  0.060241321  0.221509072
+  last Julian day 4.4            -0.926545901  1.032372008  0.398876582 0.805131110 0.997298925  0.811832841  13.140273717  -0.218138154  0.143793024
+  first Gregorian day 4.4        -0.919937748  1.023300996  0.399393704 0.807892173 0.997355227  0.814640141  13.079492391  -0.221218651  0.140757205
+  Sputnik (Meeus 7.a) 4.4        -0.973523198  -0.312702918  0.372323888 0.691293247 0.994240740  0.682077140  16.688167718  -0.164143643  0.184264838
+  Meeus 12.a 4.4                 0.952693265  1.890082933  0.400744742 0.815282999 0.997502563  0.808771472  13.125052432  0.194856230  -0.165256334
+  Meeus 47.a 4.4                 0.937020069  -0.634837933  0.401725939 0.964169908 0.999653103  0.959538923  10.242922595  0.204539629  -0.158097373
+  Meeus 25.a 4.4                 -0.928472076  1.010485992  0.406708407 0.852348958 0.998172852  0.844542069  12.378028532  -0.194829018  0.164022269
+  J2000.0 4.4                    0.181572296  -0.969370850  0.387527185 0.751190170 0.996045935  0.758101990  14.670571286  -0.234709702  -0.121899059
+  2026 January 1 4.4             0.185004548  -2.350355583  0.082091443 0.999645032 0.999996800  0.999705680  9.760139922  -0.235310785  -0.121176577
+  2026 June solstice 4.4         0.005237399  1.752041960  0.383130463 0.732738707 0.995541734  0.726572212  14.981111627  0.268001286  0.088517215
+  range end 4.4                  0.165711670  0.566289423  0.411790789 0.923893218 0.999198005  0.929421609  10.886182009  -0.271046351  -0.060305123
 
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
@@ -2336,6 +2350,10 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   yearTicks                      [{"value":2010,"label":"2010"},{"value":2012,"label":"2012"},{"value":2014,"label":"2014"},{"value":2016,"label":"2016"},{"value":2018,"label":"2018"},{"value":2020,"label":"2020"},{"value":2022,"label":"2022"},{"value":2024,"label":"2024"},{"value":2026,"label":"2026"}]
   screenDirection                45.000000000
   fixed ranges                   [-50,50]  [0,360]  [0,2.8]  [-0.03,0.03]  {"x0":-0.7,"x1":10.2,"y0":-0.4,"y1":1.5}  {"Mars":{"planet":"mars","room":2.018968},"Venus":{"planet":"venus","room":1.882563}}
+
+=== 8m. PAGE 4.4 (act4-planets/04-what-moves/page.js) ===
+  screenDirection                45.000000000
+  fixed ranges                   60.000000000  2.850000000  1.920000000  2.750000000  0.350000000  [-50,50]  [-0.04,0.04]  {"below the Sun":1.7968114051724138,"around the Sun":1,"above the Sun":0.2}
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -4165,3 +4183,108 @@ Copernicus V 27: radius 0.3573 to 0.3953
 
 === Scales: Figure 6, the difference in distance over 2010 - 2025 ===
 model less reference (geometric, as the figure): at most 0.0204 au; the axis is ±0.03 au
+
+=== 9. tools/numbers/4.4-what-moves.js ===
+
+=== Observation: the conjunctions and greatest elongations of Venus, 2024 - 2026 ===
+superior conjunction 4 Jun 2024: k = 1.000, diameter 9.6″
+inferior conjunction 23 Mar 2025: k = 0.010, diameter 59.5″
+superior conjunction 6 Jan 2026: k = 1.000, diameter 9.8″
+greatest elongation 10 Jan 2025: 47.17°, k = 0.509, diameter 24.5″
+greatest elongation 31 May 2025: -45.84°, k = 0.494, diameter 23.9″
+
+=== Observation: the apparent diameter over the synodic period ===
+from 9.6″ (5 Jun 2024) to 59.5″ (22 Mar 2025), 6.18 times
+the disk's area: 38.2 times (Galileo's "40 times", Il Saggiatore p. 217)
+
+=== Observation: Figure 1, the twelve dates ===
+4 Jun 2024   elongation   -0.2°, k = 1.00, diameter 9.6″
+15 Sep 2024  elongation   27.5°, k = 0.88, diameter 11.5″
+20 Nov 2024  elongation   41.6°, k = 0.71, diameter 15.9″
+10 Jan 2025  elongation   47.2°, k = 0.51, diameter 24.4″
+15 Feb 2025  elongation   40.2°, k = 0.27, diameter 39.2″
+12 Mar 2025  elongation   17.1°, k = 0.05, diameter 56.2″
+3 Apr 2025   elongation  -16.8°, k = 0.05, diameter 55.8″
+25 Apr 2025  elongation  -37.8°, k = 0.24, diameter 40.2″
+31 May 2025  elongation  -45.8°, k = 0.49, diameter 24.2″
+15 Aug 2025  elongation  -35.1°, k = 0.80, diameter 13.3″
+25 Oct 2025  elongation  -18.0°, k = 0.95, diameter 10.5″
+6 Jan 2026   elongation   -0.2°, k = 1.00, diameter 9.8″
+
+=== Model: Tycho's system against Copernicus' and page 4.2's Ptolemy, Mars, 1926 - 2125 ===
+Tycho less Copernicus: at most 0.0e+0°
+Tycho less page 4.2's model (Ptolemy's description): at most 0.0e+0°
+
+=== Model: Mars at its oppositions of 2010 - 2025, nearer than the Sun ===
+8 oppositions: the real Mars 0.39 to 0.67 au from the Earth, page 4.2's model 0.38 to 0.67 au; the Sun about 1 au
+Mars' circle about the Sun 1.520 au
+
+=== Test: page 4.2's Mars (the same in Tycho's and Copernicus' systems), 2010 - 2025 ===
+largest error 0.88°
+
+=== Model: the three orders of Venus (page 4.3: OK = 1, r = the epicycle) ===
+r = 0.7226; below the Sun needs O☉ > (1 + r) OK = 1.723 OK, above O☉ < (1 - r) OK = 0.277 OK
+the nested spheres: Venus' farthest point at the Sun's least distance, 1160 earth radii (De Rev. I 10), the Sun at its mean, 1210 (Almagest V 15): O☉ = (1 + r) 1210 / 1160 = 1.797 OK
+the order above the Sun drawn with O☉ = 0.2 OK
+greatest to least distance in every order: (1 + r) / (1 - r) = 6.21
+k at greatest elongation: below 0.305, around 0.500, above 0.984
+fullest Venus: below 0.412; least lit: above 0.801 (not used)
+
+=== Model: parallax and aberration of 61 Cygni ===
+61 Cygni A: ecliptic longitude 337.38°, ecliptic latitude 51.90° (of date, 2026)
+parallax 0.28599″: the ellipse's half-axes 0.286″ along the ecliptic, 0.225″ across
+the aberration constant 20.50″, 72 times the parallax
+proper motion 5.28″ a year
+
+=== Fit: the order of Venus from its phase at the greatest elongations of 1986 - 2025 ===
+dk / d(O☉/OK) at O☉ = OK: -0.478
+50 greatest elongations; k from 0.489 to 0.515, mean 0.5009
+O☉ / OK from each: 0.969 to 1.024; mean 0.9983
+
+=== Fit: the distance of the stars from a missing or a measured parallax ===
+a yearly shift under 1′ (ϖ under 0.5′): the stars beyond 6875 au, 719 times Saturn's 9.56 au (page 4.3)
+61 Cygni: 0.28599″ -> 721218 au, 11.40 light years
+Bessel's 0.3136″ (1838): 10.40 light years; his parallax 10% above today's
+
+=== Test: the phase of Venus over 2026 - 2033 in each order, against the real Venus ===
+fitted  O☉ = 0.9983 OK: largest Δk -0.028 on 26 Feb 2033
+around  O☉ = 1.0000 OK: largest Δk -0.029 on 26 Feb 2033
+below   O☉ = 1.7968 OK: largest Δk -1.000 on 7 Jan 2026
+above   O☉ = 0.2000 OK: largest Δk 1.000 on 1 Jun 2028
+apparent diameter around the Sun (OK = 1 au): within 5.5%
+
+=== Test: 61 Cygni over 2026, its parallax ===
+largest shift along the ecliptic 0.290″ (the Earth's distance from the Sun included)
+
+=== Test (history): Tycho's argument from the size of the stars (Graney) ===
+a star 1′ wide, 6875 au away: 2.0 au across (the Earth's orbit is 2 au)
+a star 2′ wide, 6875 au away: 4.0 au across (the Earth's orbit is 2 au)
+
+=== Exercise 1: Tycho's stars ===
+every star on a circle of radius 1 au in a year, parallel to the Sun's: Copernicus' arrangement with the Earth at rest
+
+=== Exercise 2: the fullest Venus in Ptolemy's order ===
+the Sun very far: k = (1 - sqrt(1 - r^2)) / 2 = 0.154 at greatest elongation 46.3° (r = 0.7226)
+nested spheres, r = 0.7226 (the figure), O☉ = 1.797 OK: fullest k = 0.412 at elongation 23.8°; at greatest elongation k = 0.305
+nested spheres, r = 0.7194 (Ptolemy's 43.17 in 60), O☉ = 1.794 OK: fullest k = 0.411 at elongation 23.6°; at greatest elongation k = 0.304
+the real Venus: k = 0.986 on 26 Nov 2025, 10.05° from the Sun
+around the Sun at 10.05°: OP = 1.686 OK, cos chi = 0.9704, k = 0.985
+
+=== Exercise 3: the parallax of 61 Cygni ===
+distance 1 / 0.28599″ = 721218 au = 11.40 light years
+greatest shifts along the ecliptic: east on 28 May 2026, west on 29 Nov 2026
+aberration's: on 25 Feb 2026 and 30 Aug 2026
+the whole yearly shift 0.572″; 1′ is 105 times as much
+
+=== Scales: Figure 2, the farthest point of Tycho's drawing, 2010 - 2025 ===
+Mars' circle in Tycho's drawing reaches 2.672 au from O; Venus' 1.723 au
+
+=== Scales: Figure 3, the drawing and the disk ===
+the drawing reaches 1.797 (OK = 1)
+the disk: from 0.581 to 3.604 times its size at OP = OK
+
+=== Scales: Figure 4 (c), 61 Cygni in arcseconds ===
+largest shift 0.290″; the axes are ±0.35″
+
+=== Scales: Figure 6 (b), the order around the Sun less the real Venus ===
+largest |Δk| 0.029; the axis is ±0.04

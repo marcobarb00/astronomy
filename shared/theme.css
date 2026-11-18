@@ -1099,6 +1099,7 @@ button.play {
 [data-origin="hipparchus"],
 [data-origin="ptolemy"],
 [data-origin="copernicus"],
+[data-origin="tycho"],
 [data-origin="kepler"] {
 	--origin: var(--epicycle-text);
 }

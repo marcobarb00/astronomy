@@ -87,7 +87,8 @@ const PAGE_FILES = [
 	'act3-moon/03-eclipses/index.html',
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
-	'act4-planets/03-new-center/index.html'
+	'act4-planets/03-new-center/index.html',
+	'act4-planets/04-what-moves/index.html'
 ];
 
 /* ==========================================================================
@@ -942,6 +943,29 @@ function planetArrangementSection(c) {
 			num(PlanetArrangement.makeEpicyclet()(jd))
 		);
 	});
+
+	// page 4.4: Tycho's system, the orders of Venus, the phase and the
+	// apparent diameter of the reference Venus, the parallax of 61 Cygni
+	row('ORDERS', JSON.stringify(PlanetArrangement.ORDERS));
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const tycho = PlanetArrangement.moment('mars', jd).tychonic;
+		const phase = c.Ephem.phase('venus', jd);
+		const shift = c.Stars.parallax(c.Stars.find('61 Cygni'), jd);
+
+		row(
+			`${label} 4.4`,
+			num(tycho.S[0]),
+			num(tycho.P[1]),
+			['below', 'around', 'above']
+				.map(o => num(PlanetArrangement.venusPhase(jd, PlanetArrangement.ORDERS[o]).k))
+				.join(' '),
+			num(phase.k),
+			num(phase.diameter),
+			num(shift.dlon),
+			num(shift.dlat)
+		);
+	});
 }
 
 function displaySection(c) {
@@ -1352,6 +1376,22 @@ function page43(c) {
 	);
 }
 
+function page44(c) {
+	title('8m. PAGE 4.4 (act4-planets/04-what-moves/page.js)');
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		num(inContext(c, 'TELESCOPE_LARGEST')),
+		num(inContext(c, 'SYSTEMS_ROOM')),
+		num(inContext(c, 'ORDERS_ROOM')),
+		num(inContext(c, 'PARALLAX_ROOM')),
+		num(inContext(c, 'PARALLAX_RANGE')),
+		JSON.stringify(inContext(c, 'PHASE_RANGE_X')),
+		JSON.stringify(inContext(c, 'TEST_ERROR_RANGE')),
+		JSON.stringify(inContext(c, 'ORDER_VIEWS'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1435,6 +1475,7 @@ function buildTable() {
 	page41(pages[9]);
 	page42(pages[10]);
 	page43(pages[11]);
+	page44(pages[12]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

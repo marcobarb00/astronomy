@@ -645,8 +645,12 @@ function drawSegment(ctx, x1, y1, x2, y2) {
 
 /* ==========================================================================
    7. HELPERS FOR THE PAGES' PLOTS
-   Used by more than one page (pages 4.1 and 4.2).
+   Used by more than one page (pages 4.1 to 4.4).
    ========================================================================== */
+
+/* A JD as a year with its fraction, for the axes in years (pages 4.3,
+   4.4). */
+const yearOf = jd => 2000 + (jd - 2451545.0) / 365.25;
 
 /* Ticks every 90° on an axis of [0, 360] degrees. */
 const quarterTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
