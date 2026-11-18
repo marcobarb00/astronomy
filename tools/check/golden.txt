@@ -2351,7 +2351,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   screenDirection                45.000000000
   fixed ranges                   [-50,50]  [0,360]  [0,2.8]  [-0.03,0.03]  {"x0":-0.7,"x1":10.2,"y0":-0.4,"y1":1.5}  {"Mars":{"planet":"mars","room":2.018968},"Venus":{"planet":"venus","room":1.882563}}
 
-=== 8m. PAGE 4.4 (act4-planets/04-what-moves/page.js) ===
+=== 8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js) ===
   screenDirection                45.000000000
   fixed ranges                   60.000000000  2.850000000  1.920000000  2.750000000  0.350000000  [-50,50]  [-0.04,0.04]  {"below the Sun":1.7968114051724138,"around the Sun":1,"above the Sun":0.2}
 
@@ -4184,7 +4184,7 @@ Copernicus V 27: radius 0.3573 to 0.3953
 === Scales: Figure 6, the difference in distance over 2010 - 2025 ===
 model less reference (geometric, as the figure): at most 0.0204 au; the axis is ±0.03 au
 
-=== 9. tools/numbers/4.4-what-moves.js ===
+=== 9. tools/numbers/4.4-phases-parallax.js ===
 
 === Observation: the conjunctions and greatest elongations of Venus, 2024 - 2026 ===
 superior conjunction 4 Jun 2024: k = 1.000, diameter 9.6″

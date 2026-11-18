@@ -1320,7 +1320,7 @@ act4-planets/
   01-going-backwards/
   02-equant/
   03-new-center/
-  04-what-moves/
+  04-phases-parallax/
   05-kepler/
 beyond-kepler/
 archive/                   earlier pages, kept for reference, not linked

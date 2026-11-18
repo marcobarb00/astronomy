@@ -163,7 +163,7 @@ const SITE_MAP = (function () {
 			ready: true,
 			title: 'Phases and parallax',
 			question: 'Can the observations decide which body is at rest?',
-			path: 'act4-planets/04-what-moves/index.html'
+			path: 'act4-planets/04-phases-parallax/index.html'
 		},
 		{
 			number: '4.5',

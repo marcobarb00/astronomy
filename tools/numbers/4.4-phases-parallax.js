@@ -1,11 +1,11 @@
 /* ==========================================================================
-   NUMBERS FOR PAGE 4.4 "PHASES AND PARALLAX" (tools/numbers/4.4-what-moves.js)
+   NUMBERS FOR PAGE 4.4 "PHASES AND PARALLAX" (tools/numbers/4.4-phases-parallax.js)
    Loads the site's shared code (common, time, ephemeris, stars and the
    models mean-sun.js, precession.js, planet-epicycle.js,
    planet-equant.js and planet-arrangement.js) in a Node vm context and
    prints every number quoted on the page, in page order.
 
-   Run from the repository root:  node tools/numbers/4.4-what-moves.js
+   Run from the repository root:  node tools/numbers/4.4-phases-parallax.js
    (about half a minute: it finds forty years of Venus' greatest
    elongations and follows Mars over two centuries)
 

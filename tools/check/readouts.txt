@@ -1787,7 +1787,7 @@ Regenerate with: node tools/check/smoke.js --update
   hover #distance-error left
   dragged 0 spheres
 
-=== act4-planets/04-what-moves/index.html ===
+=== act4-planets/04-phases-parallax/index.html ===
   as loaded
     OUTPUT (systems-day): 6 Dec 2014
     #systems-readout: \text{6 Dec 2014} | \lambda_\text{P} = 301.186^\circ \text{ in (a)},\quad 301.186^\circ \text{ in (b)} | \text{OP} = 1.847 \text{ in (a)},\quad 1.847\ \text{au in (b)}

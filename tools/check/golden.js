@@ -88,7 +88,7 @@ const PAGE_FILES = [
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
 	'act4-planets/03-new-center/index.html',
-	'act4-planets/04-what-moves/index.html'
+	'act4-planets/04-phases-parallax/index.html'
 ];
 
 /* ==========================================================================
@@ -1377,7 +1377,7 @@ function page43(c) {
 }
 
 function page44(c) {
-	title('8m. PAGE 4.4 (act4-planets/04-what-moves/page.js)');
+	title('8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js)');
 	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
 	row(
 		'fixed ranges',

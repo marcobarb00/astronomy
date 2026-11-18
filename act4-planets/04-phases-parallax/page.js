@@ -28,7 +28,7 @@
    models/mean-sun.js, models/precession.js, models/planet-epicycle.js,
    models/planet-equant.js, models/planet-arrangement.js, plot2d.js,
    components.js. Every number quoted in the prose comes from
-   tools/numbers/4.4-what-moves.js.
+   tools/numbers/4.4-phases-parallax.js.
 
    TABLE OF CONTENTS
 	 0. Helpers shared by the figures
@@ -106,7 +106,7 @@ const realSun = jd => Ephem.sun(jd, { apparent: false });
    looks to the south, east on the left, so the Sun is to the right of
    Venus in the evening and to its left in the morning. The largest
    disk, 56.2″ on 12 March 2025, fits a scale set for 60″
-   (tools/numbers/4.4-what-moves.js).
+   (tools/numbers/4.4-phases-parallax.js).
    ========================================================================== */
 
 /* The dates of each row, and the largest diameter drawn (″). */
@@ -226,7 +226,7 @@ const telescopeFigure = {
    system, the same places less the Earth's (moment().tychonic): the
    Sun's circle about the Earth, and the two planets' circles carried by
    the Sun, with Mars' path over the last synodic period. The farthest
-   point of (b) is 2.672 au from O (tools/numbers/4.4-what-moves.js): the
+   point of (b) is 2.672 au from O (tools/numbers/4.4-phases-parallax.js): the
    scale reaches 2.85 au. The date runs over 2010 - 2025.
    ========================================================================== */
 
@@ -445,7 +445,7 @@ const systemsFigure = {
    Earth O at the center, the deferent, the epicycle about K, the Sun and
    its circle, Venus P with its lit half towards the Sun, the line of
    sight. (b) The disk seen from O, its size proportional to 1 / OP: from
-   0.581 to 3.604 times its size at OP = OK (tools/numbers/4.4-what-moves.js),
+   0.581 to 3.604 times its size at OP = OK (tools/numbers/4.4-phases-parallax.js),
    the largest filling the panel. The date runs over one synodic period
    from the superior conjunction of 4 June 2024.
    ========================================================================== */
@@ -626,7 +626,7 @@ const ordersFigure = {
    synodic period from the superior conjunction of 4 June 2024: the three
    orders of Figure 3 (curves, PlanetArrangement.venusPhase) and the real
    Venus (dots every 6 days, Ephem.phase). The elongations stay within
-   47.2° (tools/numbers/4.4-what-moves.js): the axis runs from -50° to 50°.
+   47.2° (tools/numbers/4.4-phases-parallax.js): the axis runs from -50° to 50°.
    ========================================================================== */
 
 const PHASE_RANGE_X = [-50, 50];
@@ -722,7 +722,7 @@ const phaseFigure = {
    size about its place in (a), turning with the Sun; Tycho's star, at
    rest on its sphere about the Earth, faint. (c) The star's place on the
    sky relative to Tycho's, in arcseconds (Stars.parallax), east on the
-   left: within 0.290″ (tools/numbers/4.4-what-moves.js), so the axes are
+   left: within 0.290″ (tools/numbers/4.4-phases-parallax.js), so the axes are
    ±0.35″.
    ========================================================================== */
 
@@ -947,7 +947,7 @@ const parallaxFigure = {
    (Ephem.phase), of page 4.3's Venus with the Sun at K (the order around
    the Sun), and of Ptolemy's order (the Sun at 1.797 OK, faint and dashed);
    (b) the order around the Sun less the real Venus, within 0.029
-   (tools/numbers/4.4-what-moves.js): the axis is ±0.04.
+   (tools/numbers/4.4-phases-parallax.js): the axis is ±0.04.
    ========================================================================== */
 
 const TEST_START = Time.julianDay(2026, 1, 1);

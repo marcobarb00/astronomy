@@ -188,8 +188,10 @@ section.
 - **Page 4.4 is titled "Phases and parallax"**, the two observations
   that decide the arrangement, instead of "What moves?", a question
   heading (CLAUDE.md, Writing); the question stays as the subtitle. The
-  folder and the numbers script keep the slug `what-moves`. Decided by
-  Marco on 2026-11-18. → shared/site-map.js, STRUCTURE.md §4
+  folder and the numbers script take the new slug,
+  `act4-planets/04-phases-parallax/` and
+  `tools/numbers/4.4-phases-parallax.js`. Decided by Marco on
+  2026-11-18. → shared/site-map.js, STRUCTURE.md §4, §9
 
 ## Look
 
