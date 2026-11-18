@@ -236,7 +236,7 @@
 
 		<p>
 			For Mars, Tycho's system is page 4.2's model once more. On page 4.3 we
-			wrote its place as $\vec{\text{O}\odot} + \vec{\odot\text{P}}$, the
+			wrote its place as $\vec{\text{O}{\odot}} + \vec{\odot\text{P}}$, the
 			two dashed sides of a parallelogram, and in Tycho's system those sides
 			are circles, the Sun's about the Earth and Mars' about the Sun. Figure
 			2 draws Venus, the Earth and Mars in both systems.
@@ -349,16 +349,32 @@
 			4.3, and the phases depend on it. Take OK = 1, the epicycle of radius
 			$r$, Venus at $\text{P} = \text{K} + r\,\hat u(\mu)$ with page 4.1's
 			anomaly $\mu$, counted here from the Sun's direction, and the Sun at
-			the distance O☉ on the same line. With O at the origin,
+			the distance O☉ on the same line. With O at the origin and
+			$\hat u_\odot$ the unit vector towards K and the Sun, the three points
+			are
 		</p>
 
-		$$(\vec x_\odot - \vec x_\text{P})\cdot(\vec x_\text{O} - \vec x_\text{P}) = |\text{OP}|^2 - \text{O}\odot\,(1 + r\cos\mu) = (1 + r^2 - \text{O}\odot) + r\,(2 - \text{O}\odot)\cos\mu.$$
+		$$\vec x_\text{O} = 0, \qquad \vec x_\odot = \text{O}{\odot}\,\hat u_\odot, \qquad \vec x_\text{P} = \hat u_\odot + r\,\hat u(\mu).$$
 
 		<p>
-			The sign of this product is the sign of $\cos\chi$. It is linear in
-			$\cos\mu$, so it keeps one sign all round the epicycle when its two
+			Since $\hat u(\mu)$ makes the angle $\mu$ with $\hat u_\odot$, their dot
+			product is $\cos\mu$, so $\hat u_\odot\cdot\vec x_\text{P} = 1 +
+			r\cos\mu$ and $|\vec x_\text{P}|^2 = 1 + 2r\cos\mu + r^2$. The angle
+			$\chi$ at P lies between the directions from P to the Sun and to the
+			Earth, so the sign of $\cos\chi$ is that of the product
+		</p>
+
+		$$\begin{aligned}
+			&(\vec x_\odot - \vec x_\text{P})\cdot(\vec x_\text{O} - \vec x_\text{P}) \\
+			&\quad = |\vec x_\text{P}|^2 - \vec x_\odot\cdot\vec x_\text{P} \\
+			&\quad = (1 + 2r\cos\mu + r^2) - \text{O}{\odot}\,(1 + r\cos\mu) \\
+			&\quad = (1 + r^2 - \text{O}{\odot}) + r\,(2 - \text{O}{\odot})\cos\mu.
+		\end{aligned}$$
+
+		<p>
+			It is linear in $\cos\mu$, so it keeps one sign all round the epicycle when its two
 			end values, at $\cos\mu = \pm 1$, have the same sign. They are
-			$(1 \pm r)(1 \pm r - \text{O}\odot)$, and three cases follow.
+			$(1 \pm r)(1 \pm r - \text{O}{\odot})$, and three cases follow.
 		</p>
 
 		<ul>
@@ -480,7 +496,7 @@
 			$\hat u_\odot$, so the star is seen from the Earth along
 		</p>
 
-		$$a_*\,\hat u_* + \text{O}\odot\,\hat u_\odot.$$
+		$$a_*\,\hat u_* + \text{O}{\odot}\,\hat u_\odot.$$
 
 		<p>
 			To first order in O☉/$a_*$, the second term shifts the star towards
@@ -491,7 +507,7 @@
 			longitude, the shifts are
 		</p>
 
-		$$\Delta\lambda\cos\beta = \varpi\,\text{O}\odot\sin(\lambda_\odot - \lambda), \qquad \Delta\beta = -\varpi\,\text{O}\odot\sin\beta\cos(\lambda_\odot - \lambda).$$
+		$$\Delta\lambda\cos\beta = \varpi\,\text{O}{\odot}\sin(\lambda_\odot - \lambda), \qquad \Delta\beta = -\varpi\,\text{O}{\odot}\sin\beta\cos(\lambda_\odot - \lambda).$$
 
 		<p>
 			As the Sun goes round, the star runs once a year round an ellipse of
@@ -1016,7 +1032,7 @@
 			</p>
 			<details class="hint">
 				<p>
-					The shift along the ecliptic is $\varpi\,\text{O}\odot\sin(\lambda_\odot
+					The shift along the ecliptic is $\varpi\,\text{O}{\odot}\sin(\lambda_\odot
 					- \lambda)$: it is greatest when the Sun is 90° from the star's
 					ecliptic longitude. The whole yearly swing is twice the parallax.
 				</p>
