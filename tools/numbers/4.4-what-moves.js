@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NUMBERS FOR PAGE 4.4 "WHAT MOVES?" (tools/numbers/4.4-what-moves.js)
+   NUMBERS FOR PAGE 4.4 "PHASES AND PARALLAX" (tools/numbers/4.4-what-moves.js)
    Loads the site's shared code (common, time, ephemeris, stars and the
    models mean-sun.js, precession.js, planet-epicycle.js,
    planet-equant.js and planet-arrangement.js) in a Node vm context and

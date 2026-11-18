@@ -1,6 +1,6 @@
 // @ts-check
 /* ==========================================================================
-   PAGE 4.4 · WHAT MOVES? - SCRIPT (page.js)
+   PAGE 4.4 · PHASES AND PARALLAX - SCRIPT (page.js)
    Six figures, each with its own init and draw (and update when it has
    controls):
 	 1. Venus through a telescope   (2D, static: the real Venus at twelve

@@ -860,7 +860,7 @@ The first anomaly and the simplest complete model.
 - **Hands over:** Tycho kept this arrangement with the Earth fixed. What
   can the observations decide?
 
-#### 4.4 · What moves?
+#### 4.4 · Phases and parallax
 
 - **Question:** can the observations decide which body is at rest?
 - **Learn:**

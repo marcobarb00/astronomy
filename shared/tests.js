@@ -33,7 +33,7 @@
 	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
 	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
 	21. Copernicus' arrangement (De Revolutionibus V 1, V 21; page 4.3)
-	22. What moves: Tycho's system, the phase of Venus, parallax (Meeus ch. 41; page 4.4)
+	22. Phases and parallax: Tycho's system, the phase of Venus, parallax (Meeus ch. 41; page 4.4)
 	23. Run
    ========================================================================== */
 
@@ -2244,7 +2244,7 @@ function testPlanetArrangement() {
 }
 
 /* ==========================================================================
-   22. WHAT MOVES: TYCHO'S SYSTEM, THE PHASE OF VENUS, PARALLAX (PAGE 4.4)
+   22. PHASES AND PARALLAX: TYCHO'S SYSTEM, THE PHASE OF VENUS, PARALLAX (PAGE 4.4)
    ========================================================================== */
 
 function testWhatMoves() {

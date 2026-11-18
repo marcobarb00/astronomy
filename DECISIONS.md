@@ -185,6 +185,11 @@ section.
   a Today note, beside Newton, on the barycentric frame in which
   positions are computed today. Decided by Marco on 2026-11-17. →
   STRUCTURE.md §4 (page 4.4), §7.5
+- **Page 4.4 is titled "Phases and parallax"**, the two observations
+  that decide the arrangement, instead of "What moves?", a question
+  heading (CLAUDE.md, Writing); the question stays as the subtitle. The
+  folder and the numbers script keep the slug `what-moves`. Decided by
+  Marco on 2026-11-18. → shared/site-map.js, STRUCTURE.md §4
 
 ## Look
 
