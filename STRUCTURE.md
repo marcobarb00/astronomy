@@ -1008,8 +1008,9 @@ The first anomaly and the simplest complete model.
   to 0.0064 au; the ellipse (foci ☉ and Q, center C, $b = a\sqrt{1 -
   e^2}$, the circle on the long axis squeezed by $b/a$, $a - b \approx
   ae^2/2$); the eccentric anomaly $E$; the area law and Kepler's equation
-  $M = E + e\sin E$ (from the aphelion; Fitzpatrick's $M = E - e\sin E$
-  from the perihelion), derived from the area of the focal sector;
+  $M = E + e\sin E$ (from the aphelion), derived from the area of the
+  focal sector, with $M$ explained as the time since the aphelion written
+  as an angle (the mean Sun's anomaly of page 2.1);
   fixed-point and Newton iteration; the empty focus as an equant to first
   order (page 4.2's table; *HAMA* p. 172); the third law $P^2 = a^3$,
   checked on page 4.3's five distances (within 0.3%, Mercury 1.9%); Mars

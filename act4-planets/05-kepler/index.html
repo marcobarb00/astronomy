@@ -246,12 +246,25 @@
 
 		<p>
 			with $E$ in radians. Squeezing towards the axis multiplies every area
-			by $b/a$, and the whole ellipse has the area $\pi ab$. The fraction
-			of the period since the aphelion is the fraction of the area swept,
-			$\tfrac12 ab(E + e\sin E)/(\pi ab)$. Writing $M$ for $2\pi$ times
-			that fraction, the mean anomaly, counted from the aphelion as it was
-			counted from the apogee on every page since 2.1, we get
-			<em>Kepler's equation</em>:
+			by $b/a$, so the area swept in the ellipse is $\tfrac12 ab(E + e\sin
+			E)$, and the whole ellipse has the area $\pi ab$. By the area law the
+			fraction of the period $P$ elapsed since the aphelion, at the time
+			$t_A$, is the fraction of the area swept:
+		</p>
+
+		$$\frac{t - t_A}{P} = \frac{\tfrac12 ab\,(E + e\sin E)}{\pi ab} = \frac{E + e\sin E}{2\pi}.$$
+
+		<p>
+			The left side, times $2\pi$, is the angle that a point turning at a
+			constant rate, once a period, would have covered since the aphelion:
+			$M = 2\pi(t - t_A)/P$, or $n(t - t_A)$ in degrees with $n$ the mean
+			motion. It is the <em>mean anomaly</em> of every page since 2.1. There
+			a mean Sun turned uniformly, at the mean longitude $\bar\lambda =
+			\lambda_A + M$, and the real Sun was ahead of it or behind it by the
+			equation of center $q$. Here too $M$ is the time since the aphelion
+			written as an angle, the place of a uniformly moving body, and the
+			real body is at $M + q$. The two meet at A and at Π. Equating the two
+			sides gives <em>Kepler's equation</em>:
 		</p>
 
 		<div class="box">
@@ -259,20 +272,22 @@
 		</div>
 
 		<p>
-			Fitzpatrick counts $M$ and $E$ from the perihelion and writes it $M =
-			E - e\sin E$. Given the date we know $M$, and we need $E$. The
-			equation cannot be solved for $E$ in closed form, but it is easy to
-			solve by iteration. Starting from $E = M$, either repeat $E \leftarrow
-			M - e\sin E$, or take Newton's steps
+			Given the date we know $M$, and we need $E$. The equation cannot be
+			solved for $E$ in closed form, but iteration solves it. Written as $E
+			= M - e\sin E$, it says that $E$ is $M$ less a small correction.
+			Starting from $E = M$ and putting each value back into the right
+			side gives the steps $E \leftarrow M - e\sin E$. Newton's method
+			looks instead for the root of $f(E) = E + e\sin E - M$, whose
+			derivative is $f'(E) = 1 + e\cos E$, and each step $E \leftarrow E -
+			f(E)/f'(E)$ is
 		</p>
 
 		$$E \leftarrow E - \frac{E + e\sin E - M}{1 + e\cos E}.$$
 
 		<p>
 			Exercise 1 compares the two. With $E$ known, P is placed by the
-			coordinates above, and its direction from the Sun, the <em>true
-			anomaly</em>, is $M + q$, where $q$ is the equation of center of page
-			2.1. In Figure 3 you can follow the body across areas swept in equal
+			coordinates above, and its direction from the Sun, $M + q$, is the
+			<em>true anomaly</em>. In Figure 3 you can follow the body across areas swept in equal
 			times.
 		</p>
 
