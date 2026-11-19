@@ -53,6 +53,8 @@ const SHARED_FILES = [
 	'shared/common.js',
 	'shared/time.js',
 	'shared/ephemeris.js',
+	'shared/vsop87-data.js',
+	'shared/vsop87.js',
 	'shared/stars.js',
 	'shared/plate-stars.js',
 	'shared/models/diurnal.js',
@@ -69,6 +71,7 @@ const SHARED_FILES = [
 	'shared/models/planet-epicycle.js',
 	'shared/models/planet-equant.js',
 	'shared/models/planet-arrangement.js',
+	'shared/models/kepler.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -88,7 +91,8 @@ const PAGE_FILES = [
 	'act4-planets/01-going-backwards/index.html',
 	'act4-planets/02-equant/index.html',
 	'act4-planets/03-new-center/index.html',
-	'act4-planets/04-phases-parallax/index.html'
+	'act4-planets/04-phases-parallax/index.html',
+	'act4-planets/05-kepler/index.html'
 ];
 
 /* ==========================================================================
@@ -968,6 +972,57 @@ function planetArrangementSection(c) {
 	});
 }
 
+function keplerSection(c) {
+	const { Time, Ephem, Kepler } = c;
+	const vsop = { theory: 'vsop87' };
+
+	title("6m. KEPLER'S ELLIPSES (models/kepler.js) AND THE VSOP87 REFERENCE (vsop87.js)");
+	row('SUN_2026', JSON.stringify(Kepler.SUN_2026));
+	row('MARS_FIT', JSON.stringify(Kepler.MARS_FIT));
+	row(
+		"Kepler's equation e = 0.1, 0.6, 0.967",
+		[
+			[185, 0.1],
+			[90, 0.6],
+			[30, 0.967]
+		]
+			.map(([M, e]) => `${num(Kepler.newton(M, e).E)}/${num(Kepler.fixedPoint(M, e).E)}`)
+			.join(' ')
+	);
+	row(
+		'atAnomaly e = 0.0934',
+		[0, 30, 90, 180, 270]
+			.map(M => {
+				const a = Kepler.atAnomaly(M, 0.0934);
+
+				return `${num(a.q)}/${num(a.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'fitSeasons, thirdLaw, siderealPeriod',
+		JSON.stringify(Kepler.fitSeasons(92.735, 93.653, 0.98564734824)),
+		num(Kepler.thirdLaw(686.981, 365.2564)),
+		num(Kepler.siderealPeriod(0.524070384))
+	);
+	row('triangulate', JSON.stringify(Kepler.triangulate([1, 0], 90, [0, 1], 0)));
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const g = Kepler.geocentric(Kepler.MARS_FIT, Kepler.SUN_2026, jd);
+
+		row(
+			`${label}`,
+			num(g.lon),
+			num(g.dist),
+			num(Kepler.makeSun()(jd)),
+			num(Ephem.longitude('mars', jd, vsop)),
+			num(Ephem.sun(jd, vsop).lon),
+			num(Ephem.sun(jd, vsop).dist)
+		);
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -1392,6 +1447,21 @@ function page44(c) {
 	);
 }
 
+function page45(c) {
+	title('8n. PAGE 4.5 (act4-planets/05-kepler/page.js)');
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'SUN_RANGE')),
+		num(inContext(c, 'TRIANGLE_ROOM')),
+		JSON.stringify(inContext(c, 'TRIANGLE_RANGE')),
+		num(inContext(c, 'ELLIPSE_ROOM')),
+		num(inContext(c, 'ELLIPSE_PERIOD')),
+		JSON.stringify(inContext(c, 'ELLIPSE_VIEWS')),
+		JSON.stringify(inContext(c, 'SUMMARY_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1462,6 +1532,7 @@ function buildTable() {
 	planetEpicycleSection(shared);
 	planetEquantSection(shared);
 	planetArrangementSection(shared);
+	keplerSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1476,6 +1547,7 @@ function buildTable() {
 	page42(pages[10]);
 	page43(pages[11]);
 	page44(pages[12]);
+	page45(pages[13]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

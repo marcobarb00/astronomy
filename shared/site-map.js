@@ -168,7 +168,7 @@ const SITE_MAP = (function () {
 		{
 			number: '4.5',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'Kepler',
 			question: 'What shape removes the last error?',
 			path: 'act4-planets/05-kepler/index.html'

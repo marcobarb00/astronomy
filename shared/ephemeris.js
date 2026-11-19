@@ -31,6 +31,15 @@
 	   radii of the IAU (Archinal et al. 2018).
 	 - Atmospheric refraction: Meeus 16.3 (Bennett) and 16.4 (Saemundsson).
 
+   THE THEORY OF PAGE 4.5
+	 The planets above are Kepler ellipses, so a Kepler model would match
+	 them by construction. sun, planet, position, longitude, phase and
+	 heliocentric therefore accept { theory: 'vsop87' } for the Earth and
+	 Mars: the same light-time, aberration, nutation and precession, with
+	 the heliocentric places from VSOP87 (vsop87.js, loaded after this
+	 file by the pages that need it, adds the theory with addTheory;
+	 within 0.61" of DE441 for Mars seen from the Earth, 1900 - 2150).
+
    VALID RANGE
 	 3000 BC to 3000 AD (Ephem.RANGE), the range of Standish's Table 2.
 	 Outside it the functions still return numbers, but Ephem.inRange(jd)
@@ -668,9 +677,50 @@ const Ephem = (function () {
 	   7. GEOCENTRIC POSITIONS
 	   ====================================================================== */
 
-	/* Heliocentric position of the Earth (au, J2000 ecliptic): the
-	   Earth-Moon barycentre minus the Moon's share of the Earth-Moon vector. */
-	function earthJ2000(jdTT) {
+	/* The theories of the planets: Standish's (the default, section 2)
+	   and those that other files add with addTheory: vsop87.js adds
+	   'vsop87' (the Earth and Mars, for page 4.5: the Standish planets
+	   are Kepler ellipses and cannot judge Kepler's model). Every
+	   function below that takes options reads options.theory. */
+	const THEORIES = {};
+
+	/* Add a theory: placeOf(body, jdTT) -> [x, y, z] (au, J2000
+	   ecliptic, the Sun at the origin), for 'earth' and the planets it
+	   holds. */
+	function addTheory(name, placeOf) {
+		THEORIES[name] = placeOf;
+	}
+
+	/* The heliocentric function of a theory, or null for Standish's. */
+	function theoryOf(name) {
+		if (name === undefined || name === 'standish') {
+			return null;
+		}
+
+		if (!THEORIES[name]) {
+			throw new Error(`Ephem: unknown theory "${name}" (is its file loaded?)`);
+		}
+
+		return THEORIES[name];
+	}
+
+	/* Heliocentric position of a planet (au, J2000 ecliptic) in a theory. */
+	function bodyJ2000(body, jdTT, theory) {
+		const other = theoryOf(theory);
+
+		return other ? other(body, jdTT) : heliocentricJ2000(body, jdTT);
+	}
+
+	/* Heliocentric position of the Earth (au, J2000 ecliptic): in
+	   Standish's theory the Earth-Moon barycentre minus the Moon's share of
+	   the Earth-Moon vector; another theory gives the Earth itself. */
+	function earthJ2000(jdTT, theory) {
+		const other = theoryOf(theory);
+
+		if (other) {
+			return other('earth', jdTT);
+		}
+
 		const emb = heliocentricJ2000('emb', jdTT);
 		const moonNow = moonGeometric(jdTT);
 		const moonOfDate = fromLonLat(moonNow.lon, moonNow.lat, moonNow.dist / AU_KM);
@@ -689,8 +739,8 @@ const Ephem = (function () {
 
 	/* The Sun: { lon, lat (deg), dist (au) }. */
 	function sun(jdTT, options = {}) {
-		const { apparent = true } = options;
-		const result = ofDate(negate(earthJ2000(jdTT)), jdTT);
+		const { apparent = true, theory } = options;
+		const result = ofDate(negate(earthJ2000(jdTT, theory)), jdTT);
 
 		if (apparent) {
 			result.lon = norm360(result.lon + nutation(jdTT).dpsi - (20.4898 * ARCSEC) / result.dist);
@@ -730,8 +780,8 @@ const Ephem = (function () {
 	/* Heliocentric planet { lon, lat (deg), r (au) }, frame 'date' (mean
 	   ecliptic and equinox of date, default) or 'J2000'. */
 	function heliocentric(body, jdTT, options = {}) {
-		const { frame = 'date' } = options;
-		const v = heliocentricJ2000(body, jdTT);
+		const { frame = 'date', theory } = options;
+		const v = bodyJ2000(body, jdTT, theory);
 		const s = toLonLat(v);
 
 		if (frame === 'J2000') {
@@ -747,15 +797,15 @@ const Ephem = (function () {
 	   Apparent positions include light-time (the planet is taken where it
 	   was when the light left it), annual aberration and nutation. */
 	function planet(body, jdTT, options = {}) {
-		const { apparent = true } = options;
-		const earth = earthJ2000(jdTT);
-		let geocentric = sub3(heliocentricJ2000(body, jdTT), earth);
+		const { apparent = true, theory } = options;
+		const earth = earthJ2000(jdTT, theory);
+		let geocentric = sub3(bodyJ2000(body, jdTT, theory), earth);
 
 		if (apparent) {
 			for (let i = 0; i < 3; i++) {
 				const tau = LIGHT_TIME_PER_AU * length3(geocentric);
 
-				geocentric = sub3(heliocentricJ2000(body, jdTT - tau), earth);
+				geocentric = sub3(bodyJ2000(body, jdTT - tau, theory), earth);
 			}
 		}
 
@@ -795,15 +845,15 @@ const Ephem = (function () {
 	   Sun, the Earth and the planet (Meeus 41.1, 41.2). Apparent (the
 	   default) takes the planet where it was when the light left it. */
 	function phase(body, jdTT, options = {}) {
-		const { apparent = true } = options;
-		const earth = earthJ2000(jdTT);
-		let helio = heliocentricJ2000(body, jdTT);
+		const { apparent = true, theory } = options;
+		const earth = earthJ2000(jdTT, theory);
+		let helio = bodyJ2000(body, jdTT, theory);
 
 		if (apparent) {
 			for (let i = 0; i < 3; i++) {
 				const tau = LIGHT_TIME_PER_AU * length3(sub3(helio, earth));
 
-				helio = heliocentricJ2000(body, jdTT - tau);
+				helio = bodyJ2000(body, jdTT - tau, theory);
 			}
 		}
 
@@ -900,6 +950,7 @@ const Ephem = (function () {
 	return {
 		RANGE,
 		PLANETS,
+		addTheory,
 		ELEMENTS,
 		AU_KM,
 		inRange,
