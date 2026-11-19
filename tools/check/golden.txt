@@ -2172,6 +2172,27 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   2026 June solstice 4.4         0.005237399  1.752041960  0.383130463 0.732738707 0.995541734  0.726572212  14.981111627  0.268001286  0.088517215
   range end 4.4                  0.165711670  0.566289423  0.411790789 0.923893218 0.999198005  0.929421609  10.886182009  -0.271046351  -0.060305123
 
+=== 6m. KEPLER'S ELLIPSES (models/kepler.js) AND THE VSOP87 REFERENCE (vsop87.js) ===
+  SUN_2026                       {"L0":280.461044,"n":0.98564734824,"epoch":2451545,"apogee":102.92153,"apogeeRate":0.00004793976728268309,"e":0.016655,"a":1}
+  MARS_FIT                       {"L0":355.441625,"n":0.524070384,"epoch":2451545,"apogee":156.14578,"apogeeRate":0.00003824093086926763,"e":0.093409,"a":1.523694}
+  Kepler's equation e = 0.1, 0.6, 0.967 185.554589254/185.554589254 60.175676673/60.175676673 15.341450519/15.341450519
+  atAnomaly e = 0.0934           0.000000000/1.093400000 -4.852762854/1.082826653 -10.641356941/1.008673351 0.000000000/0.906600000 10.641356941/1.008673351
+  fitSeasons, thirdLaw, siderealPeriod {"e":0.016652975621719232,"apogee":103.3808776340951,"steps":4}  1.523694597  686.980760172
+  triangulate                    {"point":[1,1],"angle":90}
+  range start                    324.022577832  1.598947080  256.723393810  323.887167079  257.566013838  0.990427297
+  Thales eclipse                 85.980640089  2.495118777  58.740630754  84.570143961  58.954720603  1.017694297
+  Ptolemy                        237.355969424  0.571569273  114.979059739  239.055724413  115.024135055  1.012438167
+  last Julian day                106.114000242  1.082998895  200.256395121  105.766754996  200.237664658  0.995495348
+  first Gregorian day            106.542473378  1.075817034  201.251047980  106.189978343  201.231998035  0.995218896
+  Sputnik (Meeus 7.a)            186.916227631  2.640468082  191.305083140  186.892085381  191.298561911  0.999930778
+  Meeus 12.a                     62.898628105  2.137758680  19.591185337  62.883443342  19.599487821  1.001665572
+  Meeus 47.a                     341.539355555  1.985604558  22.328632997  341.559016724  22.339765533  1.002497420
+  Meeus 25.a                     105.734255729  1.058270422  199.911000437  105.733129479  199.906071718  0.997608731
+  J2000.0                        327.954741171  1.849971728  280.377371570  327.962730688  280.368159014  0.983327902
+  2026 January 1                 282.694815852  2.411094973  280.568741684  282.687554549  280.567807197  0.983326537
+  2026 June solstice             54.736763249  2.133299498  90.142181565  54.754734773  90.142041175  1.016202512
+  range end                      74.009463637  0.583884429  278.843622006  74.640249050  278.910743340  0.984787675
+
 === 7. DISPLAY HELPERS (common.js, time.js, plot2d.js, errorcurve.js) ===
   x = -181.25                    "-181°15'" "181h15m" "-181h15m00.0s" "-181h15m00s" "181d06h" "−181.3" "−181.250" "−181.3′" "-181;15 (181.250°)" "-181;15,00 (181.250°)" "181\\,\\text{h}\\,15\\,\\text{min}" "181\\,\\text{d}\\,06\\,\\text{h}" "-181.250" "-181.250" "\\alpha=-181°15'"  178.750000000  178.750000000
   x = -12.5                      "-12°30'" "12h30m" "-12h30m00.0s" "-12h30m00s" "12d12h" "−12.5" "−12.500" "−12.5′" "-12;30 (12.500°)" "-12;30,00 (12.500°)" "12\\,\\text{h}\\,30\\,\\text{min}" "12\\,\\text{d}\\,12\\,\\text{h}" "-12.500" "-12.500" "\\alpha=-12°30'"  347.500000000  -12.500000000
@@ -2354,6 +2375,10 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 === 8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js) ===
   screenDirection                45.000000000
   fixed ranges                   60.000000000  2.850000000  1.920000000  2.750000000  0.350000000  [-50,50]  [-0.04,0.04]  {"below the Sun":1.7968114051724138,"around the Sun":1,"above the Sun":0.2}
+
+=== 8n. PAGE 4.5 (act4-planets/05-kepler/page.js) ===
+  screenDirection                45.000000000
+  fixed ranges                   [-4,4]  1.800000000  [-0.008,0.002]  1.080000000  686.980760172  {"e = 0.6":0.6,"Mars":0.093409}  [-1,4.178151250383644]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -4288,3 +4313,141 @@ largest shift 0.290″; the axes are ±0.35″
 
 === Scales: Figure 6 (b), the order around the Sun less the real Venus ===
 largest |Δk| 0.029; the axis is ±0.04
+
+=== 9. tools/numbers/4.5-kepler.js ===
+
+=== The reference: VSOP87 against the site reference (Standish), 1926 - 2126 ===
+the Sun differs by up to 0.69', Mars by up to 7.26'
+VSOP87 against JPL Horizons (DE441): node tools/make-vsop87.js (Mars from the Earth within 0.61")
+
+=== Lead: page 4.2's equant, 2010 - 2025, against page 4.2's reference ===
+equant: within 52.54' (30 Jun 2018), rms 21.10'
+(page 4.2's residual, the epicycle turned by the real Sun: 32', e = 0.0935, tools/numbers/4.2-equant.js)
+
+=== Observation (a): the Sun's daily motion and apparent diameter, 2025 (Figure 1) ===
+daily motion 0.9533° to 1.0196° (7.0% apart)
+apparent diameter 31.46' to 32.53' (3.4% apart)
+speed x distance^2 constant within 0.10%; speed x distance varies by 3.5%
+in percent from the mean: speed -3.28 to 3.45, diameter -1.64 to 1.70, diameter^2 -3.26 to 3.41
+fastest 1 Jan 2025, slowest 9 Jul 2025
+
+=== Observation (b): Mars triangulated from pairs one sidereal period apart, 2010 - 2025 (Figure 2) ===
+sidereal period 686.98 days; 103 pairs whose lines cross at 20° or more
+distances 1.381 to 1.665 au; within 0.0010 au of the reference's
+the line of the apsides at 156.4°; farthest 1.6654 au, nearest 1.3807 au
+the points against the circle through the apsides: -0.0064 to 0.0001 au
+
+=== Model: the ellipse and the area law, for Mars and for the Sun ===
+Mars, e = 0.0934: distance ratio 1.206, speed ratio about the Sun 1.455
+the Sun, e = 0.0167: distance ratio 1.0339, speed ratio 1.0689
+Mars: b / a = 0.99563, a - b = 0.00437 a = 0.0067 au (a e^2 / 2 = 0.0066 au)
+
+=== Model: the third law against page 4.3's distances ===
+sidereal year 365.2564 days
+mercury  a 0.3796 au, P 0.2408 years: P^2 / a^3 1.060; a from the law 0.3871 (page 4.3 -1.93%)
+venus    a 0.7226 au, P 0.6152 years: P^2 / a^3 1.003; a from the law 0.7233 (page 4.3 -0.11%)
+mars     a 1.5197 au, P 1.8808 years: P^2 / a^3 1.008; a from the law 1.5237 (page 4.3 -0.26%)
+jupiter  a 5.2009 au, P 11.8643 years: P^2 / a^3 1.001; a from the law 5.2019 (page 4.3 -0.02%)
+saturn   a 9.5623 au, P 29.4325 years: P^2 / a^3 0.991; a from the law 9.5327 (page 4.3 0.31%)
+
+=== Fit: the Sun's ellipse from the seasons of 2026 (page 2.1's method with Kepler's equation) ===
+spring equinox 20 Mar 2026; spring 92.735 d, summer 93.653 d
+e = 0.016655, apogee 103.381° (Newton, 4 steps); page 2.1's eccentric: e = 0.033473 (= 2 x 0.01674), apogee 103.732°
+L0 (J2000) = 280.461044°; apogee at J2000 102.92153° (for Kepler.SUN_2026)
+each year of 2016 - 2025 alone: e 0.01665 to 0.01675, apogee (carried to 2026) 103.29° to 103.58°
+check Kepler.SUN_2026: L0 280.461044 (0.00"), apogee 102.92153, e 0.016655
+
+=== Fit: Mars from its oppositions to the real Sun, 2010 - 2025 ===
+29 Jan 2010  ecliptic longitude 129.797°  (heliocentric 129.795°)
+3 Mar 2012   ecliptic longitude 163.657°  (heliocentric 163.655°)
+8 Apr 2014   ecliptic longitude 198.947°  (heliocentric 198.948°)
+22 May 2016  ecliptic longitude 241.790°  (heliocentric 241.794°)
+27 Jul 2018  ecliptic longitude 304.146°  (heliocentric 304.154°)
+13 Oct 2020  ecliptic longitude 21.078°  (heliocentric 21.087°)
+8 Dec 2022   ecliptic longitude 76.096°  (heliocentric 76.103°)
+16 Jan 2025  ecliptic longitude 116.210°  (heliocentric 116.213°)
+8 oppositions: L0 355.441625°, aphelion (J2000) 156.14578°, e 0.093409; within 0.75' of the oppositions
+n = 0.524070384 (page 4.1); P = 686.981 d = 1.88082 years; a = 1.523694 au
+(page 4.2's refit with the real Sun: e = 0.0935; page 4.3's distance 1.5197 au)
+check Kepler.MARS_FIT: L0 355.441625 (-0.00"), apogee 156.14578, e 0.093409, a 1.523694
+
+=== Test: Mars against the reference (Figure 4) ===
+Kepler 2010 - 2025: within 5.73' (14 Sep 2020), rms 1.07'
+Kepler 1926 - 2126: within 17.85' (17 Mar 2123), rms 2.94'
+page 4.2's equant on this reference: 2010 - 2025 within 0.81°; 1926 - 2126 within 0.93°
+(on page 4.2's reference: 0.88°)
+
+=== Test: Mars' distances ===
+from the Earth: within 0.0019 au (1 Aug 2018); page 4.3's equant on this reference 0.0205 au
+the triangulated distances within 0.0010 au of the ellipse
+
+=== Test: the Sun's ellipse against the reference (Figure 5) ===
+2026: ellipse within 0.24', page 2.1's eccentric (moving apogee) 1.74'
+1976 - 2076: ellipse within 1.23', page 2.1's eccentric (moving apogee) 2.04'
+1526 - 2526: ellipse within 2.66', page 2.1's eccentric (moving apogee) 3.95'
+(page 2.1's eccentric fitted to 2026, fixed apogee, in 2026: 1.72')
+distance in 2026: real 0.98330 to 1.01664 (ratio 1.0339); ellipse 0.98335 to 1.01665 (ratio 1.0339); page 2.1's eccentric 0.96653 to 1.03347 (ratio 1.0693)
+
+=== Test: every model of the Sun (2026) and of Mars (2010 - 2025) (Figure 6) ===
+Sun   uniform (1.3)    114.721' = 1.912°
+Sun   eccentric (2.1)  1.721' = 0.029°
+Sun   ellipse (4.5)    0.240' = 0.004°
+Mars  uniform (4.1)    3220.783' = 53.680°
+Mars  epicycle (4.1)   2065.010' = 34.417°
+Mars  equant (4.2)     48.847' = 0.814°
+Mars  epicyclet (4.3)  55.283' = 0.921°
+Mars  ellipses (4.5)   5.734' = 0.096°
+
+=== Residual: the aphelion turning, fitted to the oppositions of 1931 - 1946 and 2010 - 2025 ===
+16 oppositions: the aphelion turns 1.823° a century relative to the equinox, 0.43° among the stars; e 0.09332
+1926 - 2126 with the turning aphelion: within 8.40' (8 Sep 2067), rms 1.39'
+
+=== Residual: the tilt of Mars' plane (1.85°), in heliocentric ecliptic longitude ===
+at most 0.9'
+Mars' heliocentric ecliptic longitude, ellipse against the reference, 2010 - 2025: within 2.83' (28 Jan 2015), rms 0.95'
+
+=== Residual: the Earth about the Earth - Moon center of mass, seen from the Sun, 2026 ===
+the Earth swings up to 6.9" about the center of mass each month, seen from the Sun
+the ellipse's error over 2026 averaged over a month: 0.00' to 0.13'
+
+=== Residual: the nutation in 2026 ===
+up to 10.7"
+
+=== Residual: the Moon after Kepler (Meeus, Table 47.A; pages 3.1 - 3.3) ===
+ellipse's term 6.288774° sin M' = 6.29°; evection 1.274027° = 1.27°; variation 0.658314° = 0.66°
+annual equation 0.185116° = 11'
+the perigee turns once in 8.85 years, the nodes in 18.61 years
+
+=== Exercise 1: Kepler's equation, fixed point and Newton (to 1e-8°) ===
+Mars, e = 0.0934, M = 30°: E = 27.526769°, the point (0.9802, 0.4601) a, M + q = 25.1472°, q = -4.8528°, r = 1.08283 a
+  fixed point: 9 steps; first 27.3243, 27.5436, 27.5254, 27.5269
+  Newton: 3 steps; 27.52452063, 27.52676909, 27.52676909
+  e |cos E| = 0.083; Newton's errors -2.2e-3, -1.8e-9, 0.0e+0
+the exaggerated view of Figure 3, e = 0.6, M = 90°: E = 60.175677°, the point (1.0973, 0.6940) a, M + q = 32.3124°, q = -57.6876°, r = 1.29841 a
+  fixed point: 19 steps; first 55.6225, 61.6271, 59.7522, 60.3029
+  Newton: 5 steps; 55.62253229, 60.10758186, 60.17566047, 60.17567667, 60.17567667
+  e |cos E| = 0.298; Newton's errors -4.6e+0, -6.8e-2, -1.6e-5, -9.2e-13, 0.0e+0
+Halley's comet, e = 0.967, M = 30°: E = 15.341451°, the point (1.9314, 0.0674) a, M + q = 1.9989°, q = -28.0011°, r = 1.93254 a
+  fixed point: 312 steps; first 2.2975, 27.7789, 4.1779, 25.9636
+  Newton: 4 steps; 14.92336598, 15.34125235, 15.34145052, 15.34145052
+  e |cos E| = 0.933; Newton's errors -4.2e-1, -2.0e-4, -4.5e-11, 0.0e+0
+
+=== Exercise 2: the third law with Kepler's numbers (Voelkel, ch. 4) ===
+Mercury  P = 0.241, a = 0.388: P / a = 0.621, P^2 / a^3 = 0.995
+Venus    P = 0.616, a = 0.724: P / a = 0.851, P^2 / a^3 = 1.001
+Earth    P = 1.000, a = 1.000: P / a = 1.000, P^2 / a^3 = 1.000
+Mars     P = 1.882, a = 1.524: P / a = 1.235, P^2 / a^3 = 1.001
+Jupiter  P = 11.871, a = 5.200: P / a = 2.283, P^2 / a^3 = 1.002
+Saturn   P = 29.477, a = 9.510: P / a = 3.100, P^2 / a^3 = 1.010
+Mars: P = 686.981 d / 365.2564 d = 1.88082 years, a = 1.52369 au
+
+=== Exercise 3: Kepler's first try, an eccentric circle with the area law ===
+coefficient of sin 2M: circle with the area law 1.5000 e^2, ellipse 1.2500 e^2, equant 1.0000 e^2
+Mars, e = 0.0934: circle with the area law less the ellipse up to 7.53' (M = 52.9°)
+Mars, e = 0.0934: equant less the ellipse up to 8.96' (M = 135.2°)
+second order e^2 / 4 = 7.50'; b / a = 0.99563
+
+=== Scales of the figures ===
+Figure 1: the three curves stay within ±3.5%: the axis is ±4%
+Figure 2: the points within 1.665 au of the Sun; against the circle -0.0064 to 0.0001 au
+Figure 6: from the ellipse of the Sun (0.24') to the uniform Mars (53.7°): the axis runs from 0.1' to 100°

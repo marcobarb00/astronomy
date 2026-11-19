@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.5 · KEPLER
+     Act IV, the planets. The Sun's speed changes twice as much as its
+     size, and Mars' triangulated path falls inside the circle through its
+     apsides: Kepler's ellipse with the Sun at a focus, and the area law.
+     Kepler's equation and its solution; the third law. The Earth's
+     ellipse fitted to the seasons of 2026, Mars' to its oppositions to the
+     real Sun of 2010 - 2025, its distance from the third law. Tested
+     against VSOP87 (the site's Standish planets are themselves ellipses):
+     Mars within 6', the Sun within a quarter of an arcminute. What is left
+     comes from the planets' pulls on one another, Newton's subject.
+     Numbers: tools/numbers/4.5-kepler.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.5 · Kepler · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/vsop87-data.js"></script>
+	<script defer src="../../shared/vsop87.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/models/kepler.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.5">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Page 4.2's equant, moved into Copernicus' arrangement and Tycho's
+			system on pages 4.3 and 4.4, gives Mars directions whose error
+			reaches 0.88° near the oppositions. Turning the epicycle with the real Sun instead of the
+			mean Sun brought the error down to 32′, and left the part that
+			comes from the shape of Mars' path. Kepler, working on Tycho's
+			observations of Mars, found that shape: an ellipse.
+		</p>
+
+		<div class="row">
+			<p>
+				To judge Kepler's model we need a reference that is not built from
+				it. The planets of the reference sky, used on every page so far,
+				are themselves Kepler ellipses whose elements drift slowly
+				(Standish's tables), and a Kepler model fitted to them would agree
+				with them almost by construction. On this page the Sun and Mars
+				therefore come from VSOP87, a theory that adds the planets' pulls
+				on one another to the ellipses. Over 1900–2150 it agrees with
+				JPL's modern ephemeris within an arcsecond for Mars seen from the
+				Earth, and over 1926–2126 it differs from the reference sky of the
+				earlier pages by up to 7.3′ for Mars, which is why the errors of earlier models quoted here can
+				differ a little from their own pages'.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The Sun's speed and Mars' distances</h2>
+
+		<p>
+			Every model so far was judged by the directions it predicts. The two
+			observations of this section are about distances: how far the Sun is
+			from us through the year, and how far Mars is from the Sun around its
+			path. Both can be measured without any model of the motion.
+		</p>
+
+		<h3>The Sun's speed and its apparent size</h3>
+
+		<p>
+			The Sun's apparent diameter measures its distance, since the two are
+			inversely proportional. To see how its speed depends on its distance
+			we set the two side by side in Figure 1, each in percent of its mean
+			over 2025: the fastest daily motion exceeds the slowest by 7.0%, the
+			largest diameter the smallest by only 3.4%.
+		</p>
+
+		<!-- Figure 1: the Sun's daily motion and apparent diameter through 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="sun-plot"></canvas>
+				<div id="sun-legend"></div>
+			</div>
+			<figcaption>
+				Follow the daily motion through the year and compare it with the
+				two curves of the diameter. It does not follow the diameter but its
+				square: the Sun moves fastest in early January, when it is nearest
+				and largest.
+			</figcaption>
+		</figure>
+
+		<p>
+			The speed varies as the square of the diameter, so as the inverse
+			square of the distance $r$: the product $r^2$ times the angular speed
+			stays constant through the year within 0.10%, while $r$ times the
+			angular speed varies by 3.5%. Page 2.1's eccentric, a uniform motion
+			on a circle seen from a point off its center, gives a speed that
+			varies as $1/r$ to first order. To match the Sun's speed it needs a
+			distance that varies twice as much as the real one: this is why its
+			distances, and those of page 3.2's Moon, varied twice too much.
+		</p>
+
+		<h3>Mars triangulated</h3>
+
+		<p>
+			The distance of Mars from the Sun cannot be read from its size by
+			eye, but it can be found by triangulation. After one sidereal period,
+			686.98 days, Mars is back at the same point of its path among the
+			stars, while the Earth is at another place on its own. The two lines
+			of sight, one from each place, meet at that point. The Earth's two
+			places come from the Sun's direction and its distance, which its
+			apparent diameter gives.
+		</p>
+
+		<p>
+			From 2010 to 2025 a first sighting every ten days, with its partner
+			one period later, gives 103 points. Pairs whose lines meet at less
+			than 20° are left out, since a small error in either direction would
+			move such a point far along the lines. The distances found agree with
+			the reference within 0.0010 au, close enough to test the shape of
+			the path. In Figure 2 we compare them with a circle: its diameter
+			lies on the line of the apsides and reaches from the nearest
+			distance to the farthest.
+		</p>
+
+		<!-- Figure 2: Mars triangulated, 2010 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the points, from above the ecliptic</p>
+						<canvas id="triangle-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) the distance from ☉, less the circle's</p>
+						<canvas id="triangle-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				In (a), follow one pair: the Earth at O and at O′, one sidereal
+				period of Mars later, and the two lines of sight meeting at P. In
+				(b), notice that the points meet the circle only near the apsides A
+				and Π, and fall farthest inside it halfway between them.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>dashed</dt>
+						<dd>in (a), the circle through the apsides</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Near the apsides the points lie on the circle, and between them
+			they fall inside it, by up to 0.0064 au, six times the scatter of the
+			points. Mars' path is narrower than a circle across its long axis.
+		</p>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Kepler's ellipse and the area law</h2>
+
+		<h3>The ellipse</h3>
+
+		<div class="row">
+			<p>
+				An ellipse is the set of points whose distances from two fixed
+				points, its foci, add up to the same length $2a$. Its center C lies
+				halfway between them, $a$ is the semi-major axis, and the foci are
+				at the distance $ea$ from C, with $e$ the eccentricity. Kepler put
+				the Sun ☉ at one focus. We call the other focus Q, and the ends of
+				the long axis the aphelion A, the point farthest from the Sun, and
+				the perihelion Π.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			The circle on the long axis, of center C and radius $a$, squeezed
+			towards the axis in the ratio $b/a$, gives the ellipse, where $b = a
+			\sqrt{1 - e^2}$ is the semi-minor axis. The point P′ of the circle at
+			the angle $E$ from the aphelion, seen from C, goes to the point P of
+			the ellipse straight below or above it. $E$ is the <em>eccentric
+			anomaly</em> (not page 2.2's equation of time). Measured from the Sun,
+			with $x$ along the axis towards A, P is at
+		</p>
+
+		$$\bigl(a(e + \cos E),\ b\sin E\bigr), \qquad r = {\odot}\text{P} = a(1 + e\cos E).$$
+
+		<p>
+			The distance follows from the sum of the squares, since $b^2 = a^2(1 -
+			e^2)$. The squeeze is largest across the long axis, at $E =
+			90^\circ$, where the ellipse lies inside its circle by $a - b \approx
+			ae^2/2$. The circle through the apsides of Figure 2 is this circle,
+			so the points falling inside it there are this squeeze: with the
+			values of Mars found in section 3, $a - b$ is 0.0067 au.
+		</p>
+
+		<h3>Equal areas in equal times</h3>
+
+		<div class="row">
+			<p>
+				Kepler's second rule fixes how fast the body goes round: the line
+				from the Sun to the body sweeps equal areas in equal times. The
+				area swept between two moments is about $\tfrac12 r^2$ times the
+				angle turned, so the angular speed seen from the Sun varies as
+				$1/r^2$, which is what the Sun showed in Figure 1.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			To place the body on a given date we need the area swept since the
+			aphelion as a function of $E$. In the circle, the region swept from
+			A to P′ about the focus ☉ is the sector A C P′ plus the triangle C ☉
+			P′, whose base C☉ = $ea$ has the height $a\sin E$:
+		</p>
+
+		$$\text{area}_\text{circle} = \tfrac12 a^2 E + \tfrac12\,ea \cdot a\sin E = \tfrac12 a^2 (E + e\sin E),$$
+
+		<p>
+			with $E$ in radians. Squeezing towards the axis multiplies every area
+			by $b/a$, and the whole ellipse has the area $\pi ab$. The fraction
+			of the period since the aphelion is the fraction of the area swept,
+			$\tfrac12 ab(E + e\sin E)/(\pi ab)$. Writing $M$ for $2\pi$ times
+			that fraction, the mean anomaly, counted from the aphelion as it was
+			counted from the apogee on every page since 2.1, we get
+			<em>Kepler's equation</em>:
+		</p>
+
+		<div class="box">
+			$$M = E + e\sin E.$$
+		</div>
+
+		<p>
+			Fitzpatrick counts $M$ and $E$ from the perihelion and writes it $M =
+			E - e\sin E$. Given the date we know $M$, and we need $E$. The
+			equation cannot be solved for $E$ in closed form, but it is easy to
+			solve by iteration. Starting from $E = M$, either repeat $E \leftarrow
+			M - e\sin E$, or take Newton's steps
+		</p>
+
+		$$E \leftarrow E - \frac{E + e\sin E - M}{1 + e\cos E}.$$
+
+		<p>
+			Exercise 1 compares the two. With $E$ known, P is placed by the
+			coordinates above, and its direction from the Sun, the <em>true
+			anomaly</em>, is $M + q$, where $q$ is the equation of center of page
+			2.1. In Figure 3 you can follow the body across areas swept in equal
+			times.
+		</p>
+
+		<!-- Figure 3: the ellipse and the area law; date, play, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="ellipse-views"></div>
+				<div class="fig-row">
+					<div>
+						<canvas id="ellipse-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="ellipse-day">days from A</label>
+							<input id="ellipse-day" type="range" min="0" max="687" step="0.25" value="57" data-unit=" d">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="ellipse-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="ellipse-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="ellipse-play">Play</button>
+						</div>
+						<div class="readout" id="ellipse-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Start with $e$ = 0.6 and play: P crosses each shaded sector in the
+				same time, slowly near A and fast near Π. Then choose Mars, whose
+				ellipse is hard to tell from its circle, and watch the line QP turn
+				almost uniformly.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">sectors</dt>
+						<dd>the areas swept from ☉ in each twelfth of the period</dd>
+						<dt>dashed circle</dt>
+						<dd>the circle on the long axis</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>The ellipse and the equant</h3>
+
+		<div class="row">
+			<p>
+				The ellipse keeps more of Ptolemy's model than its shape suggests.
+				Expanded in $e$ (page 4.2, Exercise 1), it gives $q \approx -2e\sin
+				M + \tfrac54 e^2\sin 2M$ and $r \approx a(1 + e\cos M + e^2\sin^2
+				M)$, and page 4.2's equant with the same $e$ has the same
+				first-order terms. Seen from the empty focus Q, the point of the
+				ellipse turns uniformly to first order, as K turns about the
+				equant. Kepler, who had first given up Ptolemy's equal division of
+				the eccentricity, restored it as the two foci of the ellipse
+				(<em>HAMA</em> p. 172).
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Page 2.1's eccentric needs $2e$ for the same directions, so its
+			distance varies twice as much as the ellipse's. The Sun's speed in
+			Figure 1 told the two apart: on the ellipse the distance changes by
+			the factor $(1 + e)/(1 - e)$ between perihelion and aphelion, and the
+			angular speed by its square.
+		</p>
+
+		<h3>The third law</h3>
+
+		<div class="row">
+			<p>
+				Copernicus' arrangement gave each orbit a size relative to the
+				Earth's, measured from its elongations or its loops (page 4.3), but
+				no rule linked that size to anything else. Kepler found one that
+				ties it to the period $P$ (page 4.3's symbol): the square of the
+				period is proportional to the cube of the semi-major axis. In years
+				and astronomical units,
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<div class="box">
+			$$P^2 = a^3.$$
+		</div>
+
+		<p>
+			The periods in the law are sidereal, measured against the stars. In
+			the table, page 4.3's periods about the Sun are made sidereal with
+			the precession and set beside its distances. For Venus, Mars,
+			Jupiter and Saturn the distance agrees within 0.3% with the one the
+			law gives, so $P^2/a^3$ is 1 within 1%. Mercury's distance is 1.9%
+			short, the error page 4.3 found for its elongated path.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>planet</th>
+					<th>$P$ (years)</th>
+					<th>$a$, page 4.3 (au)</th>
+					<th>$P^2/a^3$</th>
+					<th>$a$ from $P$ (au)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercury</td><td>0.2408</td><td>0.3796</td><td>1.060</td><td>0.3871</td></tr>
+				<tr><td>Venus</td><td>0.6152</td><td>0.7226</td><td>1.003</td><td>0.7233</td></tr>
+				<tr><td>Mars</td><td>1.8808</td><td>1.5197</td><td>1.008</td><td>1.5237</td></tr>
+				<tr><td>Jupiter</td><td>11.8643</td><td>5.2009</td><td>1.001</td><td>5.2019</td></tr>
+				<tr><td>Saturn</td><td>29.4325</td><td>9.5623</td><td>0.991</td><td>9.5327</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<h3>Mars seen from the Earth</h3>
+
+		<p>
+			In Kepler's model every planet and the Earth move on their own
+			ellipses about the Sun. Seen from the Earth, the Sun is at the
+			ecliptic longitude $\lambda_\odot$ and the distance $R$ (not the
+			deferent's radius), the Earth's
+			ellipse described from the Earth, and Mars at its heliocentric
+			ecliptic longitude $\lambda_\text{h}$ and the distance $r$ from the
+			Sun. Leaving out the small tilt of Mars' plane to the ecliptic, the
+			planet's direction from the Earth is that of
+		</p>
+
+		$$\bigl(r\cos\lambda_\text{h} + R\cos\lambda_\odot,\ \ r\sin\lambda_\text{h} + R\sin\lambda_\odot\bigr).$$
+
+		<p>
+			This is page 4.2's residual model, the epicycle turned by the real
+			Sun, with the equant's circle replaced by Mars' ellipse and the
+			epicycle by the Earth's.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The Earth's ellipse and Mars'</h2>
+
+		<p>
+			Each ellipse has five parameters: the mean motion $n$, the mean
+			ecliptic longitude $L_0$ at J2000.0, the ecliptic longitude of the
+			aphelion $\lambda_A$, the eccentricity $e$ and the semi-major axis
+			$a$. The Earth's comes first, since every sighting of Mars is made
+			from it. Seen from the Earth it is the Sun's ellipse, its apogee
+			opposite the Earth's aphelion, and we fit it in that form, as page
+			2.1 fitted the eccentric.
+		</p>
+
+		<h3>The Sun's ellipse from the seasons</h3>
+
+		<p>
+			Page 2.1 fitted the eccentric to the lengths of spring and summer,
+			Hipparchus' method, and the same two lengths fix the ellipse. Only
+			the law of the motion changes. The time from one ecliptic longitude
+			of the Sun to another is now the difference of the two values of $M$
+			given by Kepler's equation, divided by $n$, where each $M$ comes from
+			the Sun's true anomaly $v$ through $\tan(E/2) = \sqrt{(1 + e)/(1 -
+			e)}\,\tan(v/2)$. Two seasons give two equations in $e$ and the
+			apogee, which Newton's method solves in a few steps.
+		</p>
+
+		<p>
+			With the seasons of 2026 and page 1.3's mean motion, the ellipse has
+			$e$ = 0.016655, where page 2.1's eccentric needed twice as much, and
+			its apogee at the ecliptic longitude 103.38°. The seasons of any
+			other year of 2016–2025 change $e$ by less than 1%. The mean
+			ecliptic longitude follows from the moment of the spring equinox,
+			the apogee moves at page 2.3's rate, and $a$ = 1 au by definition.
+		</p>
+
+		<h3>Mars from its oppositions to the real Sun</h3>
+
+		<div class="row">
+			<p>
+				At an opposition to the real Sun the Earth lies between the Sun and
+				Mars, so the planet's geocentric ecliptic longitude is its
+				heliocentric one, whatever the two distances. The eight oppositions
+				of 2010–2025 therefore give eight heliocentric directions of Mars at
+				known moments, as the oppositions to the mean Sun gave the
+				directions of K on page 4.2.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			We keep page 4.1's mean motion, fitted to oppositions 79 years apart
+			on the earlier reference sky (as the Sun's mean motion and its
+			apogee's rate come from pages 1.3 and 2.3), and fit the other three parameters by least squares, with the
+			aphelion fixed among the stars as on page 4.2. The ellipse passes
+			within 0.75′ of the eight oppositions, with $e$ = 0.0934. Page 4.2's
+			equant, refitted with the real Sun, had found 0.0935, as its first
+			order agreement with the ellipse requires.
+		</p>
+
+		<p>
+			For the size we use the third law. Page 4.1's mean motion, less the
+			precession, is one turn among the stars in 686.981 days, 1.88082
+			sidereal years, so $a$ = 1.5237 au, where page 4.3 found 1.5197 au
+			from the loops. No observation of distance enters this fit, so every
+			distance the model gives is a prediction.
+		</p>
+
+		<!-- History block: Kepler's Mars -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Kepler's Mars</h3>
+
+			<div class="row">
+				<p>
+					Kepler joined Tycho in 1600 and was set to work on the theory of
+					Mars. He was the first to refer all the observations to the true
+					Sun instead of the mean Sun (<em>HAMA</em> p. 171).
+				</p>
+				<aside>
+					<div class="note" data-origin="kepler"></div>
+					<div class="note detour" data-topic="tycho"></div>
+				</aside>
+			</div>
+
+			<p>
+				From the observations of Mars he also worked out the Earth's
+				motion, and found that the Earth, too, moved faster near the Sun
+				(Voelkel ch. 3). He gave its circle an equant, as Ptolemy had for
+				the planets (<em>HAMA</em> p. 155), and so halved the eccentricity
+				of the Sun's eccentric (Fitzpatrick § 1.4).
+			</p>
+
+			<p>
+				For Mars he first fitted a circle with an equant to the
+				oppositions, the two points placed freely. It served the ecliptic
+				longitudes but not the distances, and for a time he used one model
+				for the longitudes and another for the distances (<em>HAMA</em>
+				pp. 98, 172). With the eccentricity halved, as the distances
+				required, the longitudes erred by up to about 8′ (Fitzpatrick §
+				1.4).
+			</p>
+
+			<p>
+				Taking the speed as inversely proportional to the distance, so
+				that the sum of the distances measures the time, and taking that
+				sum as an area, he came to the area law. On an eccentric
+				circle it kept Mars too long on the sides of its orbit (Exercise 3
+				computes by how much), so the orbit had to be squeezed in there,
+				"as though you held a fat-bellied sausage and squeezed it in the
+				middle", in Voelkel's words. A first ellipse erred by almost
+				exactly the opposite amount, and the one in between had the Sun
+				at a focus (Voelkel ch. 3). The <em>Astronomia Nova</em>, which
+				set out the ellipse and the area law, appeared in 1609.
+			</p>
+
+			<p>
+				The third law came last, on 15 May 1618, as Kepler finished the
+				<em>Harmonices Mundi</em>, from periods known for centuries and
+				distances derived from Tycho's observations (Voelkel ch. 4),
+				the numbers of Exercise 2.
+			</p>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>The ellipses against the real Mars and Sun</h2>
+
+		<p>
+			To see how much of the equant's error the ellipses remove, Figure 4
+			gives the error curve of the two ellipses fitted to 2010–2025, with
+			page 4.2's equant as a ghost, both against VSOP87's Mars.
+		</p>
+
+		<!-- Figure 4: Kepler's Mars against the reference, with page 4.2's equant -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Point at the oppositions, the dots, where page 4.2's equant erred
+				most, and read the error of the ellipses there. Then switch to two
+				hundred years and watch the band widen slowly on both sides of the
+				fitted years.
+			</figcaption>
+		</figure>
+
+		<p>
+			Over 2010–2025 the ellipses stay within 5.7′ of the real Mars, where
+			page 4.2's equant is off by up to 0.81° on this reference. Over the
+			two centuries 1926–2126 the error grows to 18′, the subject of the
+			residual.
+		</p>
+
+		<p>
+			The distances are the stronger test, since none entered the fit.
+			Mars' distance from the Earth stays within 0.0019 au of the real one
+			over 2010–2025, ten times closer than page 4.2's equant on page 4.3's
+			scale (0.0205 au), and the triangulated points of Figure 2 lie within 0.0010 au of the
+			ellipse.
+		</p>
+
+		<p>
+			The same test for the Sun, in Figure 5, sets the ellipse against
+			page 2.1's eccentric, its apogee moving at page 2.3's rate. In 2026
+			the ellipse stays within a quarter of an arcminute of the real Sun,
+			where the eccentric is off by 1.74′, and over the centuries its error stays below the
+			eccentric's.
+		</p>
+
+		<!-- Figure 5: the Sun's ellipse against the reference, with page 2.1's eccentric -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-sun"></div>
+			</div>
+			<figcaption>
+				Compare the two curves over 2026: the ellipse removes most of the
+				eccentric's error, and what is left wobbles once a month. Then
+				switch to a thousand years: both errors grow slowly away from
+				2026, the eccentric's faster.
+			</figcaption>
+		</figure>
+
+		<p>
+			The Sun's distance tests what pages 2.1 and 3.2 left open. In 2026
+			the real Sun's greatest distance was 1.0339 times its least. The
+			ellipse gives the same ratio, within 0.0001 au at either end, and
+			page 2.1's eccentric 1.0693.
+		</p>
+
+		<p>
+			To compare the whole course at once, Figure 6 sets the largest error
+			of every model of the Sun and of Mars on one scale, each over the
+			years its test used.
+		</p>
+
+		<!-- Figure 6: every model of the Sun and of Mars (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) the Sun, over 2026</p>
+						<canvas id="summary-sun"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Mars, over 2010–2025</p>
+						<canvas id="summary-mars"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Read each dot against the scale, ten times larger at each line, and
+				follow each body from page to page. Notice the one step that made
+				the error larger: Copernicus' epicyclet in place of the equant.
+			</figcaption>
+		</figure>
+
+		<!-- History block: the Rudolphine Tables and the transit of 1631 -->
+		<div class="history">
+			<h3><span class="history-label">History</span>The Rudolphine Tables</h3>
+
+			<div class="row">
+				<p>
+					Kepler's models reached other astronomers through the
+					<em>Rudolphine Tables</em>, printed in 1627, from which anyone
+					could compute a planet's place for any date. They were some
+					fifty times more accurate than Ptolemy's and Copernicus' (Voelkel
+					ch. 6).
+				</p>
+				<aside>
+					<div class="note" data-origin="kepler"></div>
+				</aside>
+			</div>
+
+			<p>
+				From them Kepler predicted that Mercury would cross the face of the
+				Sun on 7 November 1631. He died before the day, and the transit
+				came within six hours of his time. "I have found him, I have seen
+				him where no one has ever seen him before!", wrote Gassendi in an
+				open letter from France (Voelkel ch. 7).
+			</p>
+
+			<figure class="photo" id="frontispiece">
+				<img src="images/rudolphine-frontispiece.jpg" width="700" height="1167" loading="lazy"
+					alt="An engraving of a domed temple on twelve columns, plain ones at the back and ornate ones at the front, with astronomers standing and seated among them, the names Copernicus and Tycho Brahe on two pedestals, allegorical women on the roof, an eagle above, and in the base panels a map of an island and a man at a table.">
+				<figcaption>
+					<span class="fig-label">Photo.</span>
+					The frontispiece of the <em>Rudolphine Tables</em> (1627) draws
+					astronomy as a temple whose columns improve from age to age.
+					Follow them from the rough ones at the back, where a Babylonian
+					observer stands, to the brick of Hipparchus and Ptolemy and to the
+					columns of Copernicus and Tycho at the front, named on their
+					pedestals. Then look at the base, on the left, where Kepler works
+					by candlelight on a model of the temple's roof (Voelkel ch. 6).
+					<span class="credit">Johannes Kepler, <em>Tabulae Rudolphinae</em>,
+						Ulm, 1627, the copy of the John Carter Brown Library, via the
+						<a href="https://archive.org/details/tabulrudolphinqu00kepl">Internet Archive</a>,
+						public domain.</span>
+				</figcaption>
+			</figure>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>What the ellipses leave</h2>
+
+		<div class="row">
+			<p>
+				What is left of Mars' error, a few arcminutes, comes from the
+				planets' pulls on one another, which Newton's gravitation explains
+				and Kepler's model leaves out. Some of it is periodic. The rest
+				grows with time, because each ellipse slowly turns and changes. Fitted
+				to the oppositions of 1931–1946 as well as 2010–2025, Mars' aphelion
+				turns 0.43° a century among the stars. With that turn, and the mean
+				motion fitted again to the same oppositions on this page's
+				reference, the error over 1926–2126 falls from 18′ to 8.4′.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="perturbations"></div>
+				<div class="note detour" data-topic="newton"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				The model also leaves out the tilt of Mars' plane, 1.85° to the
+				ecliptic, which changes the heliocentric ecliptic longitude by at
+				most 0.9′.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="latitudes"></div>
+				<div class="note today">
+					Positions are computed today by integrating Newton's equations
+					(JPL's ephemerides) or from series such as VSOP87, which start
+					from Kepler's ellipses and add the planets' pulls as further
+					terms.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			About half of the Sun's remaining error comes from the Moon. Each
+			month the Earth goes round the center of mass of the Earth and the
+			Moon, which moves the Sun seen from the Earth by up to 6.9″ either
+			way, the wobble of Figure 5. Averaged over a month, the error stays
+			under 0.13′. Part of that is the nutation, which the reference
+			includes and the model leaves out, and which grows in the tests over
+			centuries.
+		</p>
+
+		<h3>The Moon after Kepler</h3>
+
+		<p>
+			An ellipse is also the first term of the Moon's motion, the 6.29° of
+			page 3.1. The Sun, though, pulls on the Moon far more than the
+			planets pull on one another, and the ellipse leaves large terms. The
+			two largest are the evection of page 3.2, 1.27°, and the variation,
+			0.66°. Smaller ones follow, and the perigee and the nodes turn round,
+			in 8.85 and 18.61 years. All of them come from the Sun's pull, which
+			is Newton's subject, not Kepler's.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Solve Kepler's equation for Mars, $e$ = 0.0934, at $M = 30^\circ$,
+				first by repeating $E \leftarrow M - e\sin E$, then by Newton's
+				method, both from $E = M$, and count the steps until $E$ changes by
+				less than $10^{-8}$ degrees. Find the true anomaly $M + q$ and $r$.
+				Then do the same for the view $e$ = 0.6 of Figure 3 at $M =
+				90^\circ$, checking $E$ in the read-out, and for Halley's comet, $e$
+				= 0.967, at $M = 30^\circ$. Why does the first method slow down?
+			</p>
+			<details class="hint">
+				<p>
+					Keep $e\sin E$ in radians, multiplied by $180^\circ/\pi$, when $E$ is
+					in degrees. For the first method, compare the error before and after
+					a step: $E_{k+1} - E = -e(\sin E_k - \sin E)$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					For Mars, $E$ = 27.526769°: the first method takes 9 steps
+					(27.3243°, 27.5436°, 27.5254°, 27.5269°, …), Newton's 3 (27.52452063°,
+					27.52676909°, 27.52676909°). The point is at $(e + \cos E,\
+					\sqrt{1 - e^2}\sin E)$ = (0.9802, 0.4601) in units of $a$, so $M + q$
+					= 25.1472°, $q$ = −4.8528°, and $r = 1 + e\cos E$ = 1.08283 $a$.
+				</p>
+				<p>
+					For $e$ = 0.6 at $M = 90^\circ$, $E$ = 60.175677°: 19 steps against
+					Newton's 5. For Halley's comet, $E$ = 15.341451°: the first method
+					jumps between 2.30°, 27.78°, 4.18°, 25.96°, … and takes 312 steps,
+					Newton's method 4.
+				</p>
+				<p>
+					Near the root, $E_{k+1} - E \approx -e\cos E\,(E_k - E)$: each step
+					multiplies the error by $e|\cos E|$, 0.083 for Mars, 0.298 for $e$ =
+					0.6 and 0.933 for the comet. Newton's method squares the error at each
+					step, once it is small: for Mars the errors are $2.2 \times 10^{-3}$
+					degrees, then $1.8 \times 10^{-9}$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Kepler had these periods (days) and distances (thousandths of the
+				Earth's): Mercury 88 and 388, Venus 225 and 724, the Earth 365 and
+				1000, Mars 687 and 1524, Jupiter 4333 and 5200, Saturn 10·759 and
+				9510 (Voelkel ch. 4). Compute $P/a$ and $P^2/a^3$, in years and
+				astronomical units, for each. Then find Mars' distance from page
+				4.1's sidereal period of 686.981 days and the sidereal year of
+				365.2564 days, and compare it with the fit.
+			</p>
+			<details class="hint">
+				<p>
+					Divide the periods by 365 and the distances by 1000 first.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$P/a$ runs from 0.621 (Mercury) to 3.100 (Saturn): the period grows
+					faster than the distance. $P^2/a^3$ is 0.995, 1.001, 1.000, 1.001,
+					1.002 and 1.010 from Mercury to Saturn, the same within 1%.
+				</p>
+				<p>
+					Mars: $P$ = 686.981/365.2564 = 1.88082 years, and $a = P^{2/3}$ =
+					1.52369 au, the fit's value, against Kepler's 1.524 and page 4.3's
+					1.5197.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Kepler's first try put Mars on an eccentric circle of radius $a$,
+				with the Sun at the distance $ea$ from its center, moving by the area
+				law. Show that it leads to Kepler's equation, with the angle $E'$
+				at the center in place of $E$. Expand its equation of center to
+				second order, compare it with the ellipse's and the equant's, and
+				find the largest difference from the ellipse for Mars, $e$ = 0.0934.
+			</p>
+			<details class="hint">
+				<p>
+					The area swept is the one of section 2 with $b = a$, and the
+					direction from the Sun is $\operatorname{atan2}(\sin E',\ e +
+					\cos E')$. Expand it with $E' \approx M - e\sin M +
+					\tfrac12 e^2\sin 2M$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					With $b = a$ the area swept from the aphelion is $\tfrac12 a^2(E'
+					+ e\sin E')$, so the area law gives $M = E' + e\sin E'$.
+					The direction from the Sun is $E' - e\sin E' + \tfrac12
+					e^2\sin 2E'$ to second order, and with $\sin E' \approx \sin M
+					- \tfrac12 e\sin 2M$ this is $M - 2e\sin M + \tfrac32 e^2\sin 2M$. The
+					ellipse, squeezed by $b/a$, has $\tfrac54 e^2$, the equant $e^2$:
+					computed at $e$ = 0.001 the three coefficients are 1.5000, 1.2500 and
+					1.0000.
+				</p>
+				<p>
+					So the circle with the area law errs by $+\tfrac14 e^2\sin 2M$ and the
+					equant by $-\tfrac14 e^2\sin 2M$: they fail in opposite directions,
+					and the ellipse lies halfway between them. For Mars the circle is off
+					by up to 7.53′ in heliocentric ecliptic longitude and the equant by up
+					to 8.96′, where the second order gives $e^2/4$ = 7.50′.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				ch. 3 (Mars, the Sun's actual position, the Earth's uneven motion, the
+				area law, the sausage, the ellipse), ch. 4 (the third law and Kepler's
+				periods and distances), ch. 6 (the <em>Rudolphine Tables</em> and their
+				frontispiece), ch. 7 (the transit of Mercury of 1631).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Part One: p. 98 (Kepler's two models of Mars, for longitudes and
+				for distances), p. 155 (the equant restored, also for the Earth),
+				pp. 171–172 (the true Sun; the foci).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 1.4 (Kepler's
+				discrepancy of 8′), § 4.2 (Kepler's model, his equation, the expansions
+				in $e$).</li>
+			<li>P. Bretagnon and G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988), 309–315: the reference of this page,
+				from the IMCCE's files, checked against JPL Horizons (DE441).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): the reference sky of the earlier pages.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 30
+				(Kepler's equation), Table 47.A (the Moon's terms).</li>
+			<li>Every number on this page: <code>tools/numbers/4.5-kepler.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

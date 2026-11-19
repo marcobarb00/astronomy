@@ -6,10 +6,11 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 4.2 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   pages 1.1 to 4.5 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
    solar-eccentric.js, equation-of-time.js, precession.js,
    lunar-epicycle.js, ..., planet-epicycle.js, planet-equant.js,
-   planet-arrangement.js).
+   planet-arrangement.js, kepler.js) and the VSOP87 reference of page
+   4.5 (vsop87.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -34,7 +35,8 @@
 	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
 	21. Copernicus' arrangement (De Revolutionibus V 1, V 21; page 4.3)
 	22. Phases and parallax: Tycho's system, the phase of Venus, parallax (Meeus ch. 41; page 4.4)
-	23. Run
+	23. Kepler's ellipses and the reference of page 4.5 (Meeus ch. 30; Fitzpatrick § 4.2; VSOP87; page 4.5)
+	24. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -2326,7 +2328,108 @@ function testWhatMoves() {
 }
 
 /* ==========================================================================
-   23. RUN
+   23. KEPLER'S ELLIPSES AND THE REFERENCE OF PAGE 4.5
+   ========================================================================== */
+
+function testKepler() {
+	group("Kepler's ellipses and the reference of page 4.5");
+
+	// Meeus' Example 30.a counts from the perihelion (M = E - e sin E):
+	// e = 0.1, M = 5° gives E = 5.554589°; from the aphelion, both + 180°
+	check({
+		name: "Kepler's equation, Newton's method (M = 185°, e = 0.1, from the aphelion)",
+		source: 'Meeus, Example 30.a: E = 5.554589° from the perihelion',
+		expected: 185.554589,
+		computed: Kepler.newton(185, 0.1).E,
+		tol: 1e-6,
+		unit: '°',
+		show: x => x.toFixed(6)
+	});
+
+	check({
+		name: "Kepler's equation, fixed point against Newton (e = 0.967, M = 30°)",
+		source: 'the two iterations converge to one root',
+		expected: Kepler.newton(30, 0.967).E,
+		computed: Kepler.fixedPoint(30, 0.967).E,
+		tol: 1e-9,
+		unit: '°',
+		show: x => x.toFixed(9)
+	});
+
+	// the second-order term of the equation of center, 5/4 e^2 sin 2M
+	// (Fitzpatrick (4.23)): its coefficient at a small e, by projection
+	const e = 0.001;
+	let sum = 0;
+
+	for (let M = 0.5; M < 360; M += 1) {
+		sum += Kepler.atAnomaly(M, e).q * sin(2 * M);
+	}
+
+	check({
+		name: 'The coefficient of sin 2M in q, in units of e^2',
+		source: 'Fitzpatrick (4.23): 5/4',
+		expected: 1.25,
+		computed: sum / 180 / (e * e * R2D),
+		tol: 1e-3,
+		show: x => x.toFixed(4)
+	});
+
+	// Hipparchus' method with the ellipse gives back the ellipse that
+	// made the seasons
+	const sun = Kepler.SUN_2026;
+	const crossing = lon => {
+		const M = Kepler.meanAnomalyAt(lon, sun.e, 103);
+
+		return M / sun.n;
+	};
+	const fit = Kepler.fitSeasons(crossing(90) - crossing(0), crossing(180) - crossing(90), sun.n);
+
+	check({
+		name: 'fitSeasons gives back the apogee of the ellipse that made the seasons',
+		source: 'an ellipse with e = 0.016655 and its apogee at 103°',
+		expected: 103,
+		computed: fit.apogee,
+		tol: 1e-6,
+		unit: '°',
+		show: x => x.toFixed(6)
+	});
+
+	check({
+		name: 'The third law: a body with the period of the year is at 1 au',
+		source: 'a^3 = P^2 (years, au)',
+		expected: 1,
+		computed: Kepler.thirdLaw(365.2564, 365.2564),
+		tol: 1e-12,
+		show: x => x.toFixed(6)
+	});
+
+	// VSOP87 against JPL Horizons (DE441), heliocentric ecliptic J2000,
+	// 2026 Jun 29 0h TDB (tools/numbers/data/vsop87/horizons-vectors-*.txt)
+	const jd = 2461220.5;
+	const horizons = {
+		mars: [1.186200620337555, 0.8160933000207807, -0.0119839457613301],
+		earth: [0.1226292418698563, -1.009103279148473, 6.245863354903853e-5]
+	};
+
+	Object.entries(horizons).forEach(([body, v]) => {
+		const computed = Vsop87.heliocentricJ2000(body, jd);
+
+		check({
+			name: `VSOP87 (truncated): ${body}, heliocentric ecliptic longitude, 2026 Jun 29`,
+			source: 'JPL Horizons, DE441',
+			expected: atan2d(v[1], v[0]),
+			computed: atan2d(computed[1], computed[0]),
+			tol: 0.5,
+			unit: '″',
+			scale: 3600,
+			angle: true,
+			show: x => x.toFixed(5)
+		});
+	});
+}
+
+/* ==========================================================================
+   24. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2354,5 +2457,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	testPlanetEquant();
 	testPlanetArrangement();
 	testWhatMoves();
+	testKepler();
 	render();
 });

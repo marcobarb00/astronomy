@@ -55,8 +55,9 @@ section.
   answer, every number from a script. → STRUCTURE.md §7.2
 - **Page 4.5 (Kepler) cannot be judged by the planetary reference.** The
   reference is itself Keplerian (Standish), so the error would be near
-  zero by construction; the page needs another yardstick. → STRUCTURE.md
-  §11
+  zero by construction; the page needs another yardstick. On 2026-11-19
+  it became VSOP87 (see "Page 4.5 is judged against VSOP87" below). →
+  STRUCTURE.md §11
 - **A historical journey, not a claim about what moves.** The course
   follows the astronomers before Kepler and rebuilds their models as
   theirs; it never presents one as true. Directions seen from the Earth
@@ -192,6 +193,27 @@ section.
   `act4-planets/04-phases-parallax/` and
   `tools/numbers/4.4-phases-parallax.js`. Decided by Marco on
   2026-11-18. → shared/site-map.js, STRUCTURE.md §4, §9
+
+- **Page 4.5 is judged against VSOP87.** The site's Standish planets
+  are Kepler ellipses; the *Rudolphine Tables* are not in the library. So
+  the Earth and Mars of page 4.5 come from VSOP87B, truncated to 826
+  terms (within 0.61″ of DE441 for Mars seen from the Earth, 1900–2150),
+  through `Ephem`'s new option `theory: 'vsop87'`; its observations,
+  fits, tests and ghosts all use it. The earlier pages keep Standish.
+  Approved by Marco on 2026-11-19 with the plan of the page. →
+  STRUCTURE.md §4 (page 4.5), §8, §11; shared/vsop87.js
+- **Page 4.5's plan.** Observation: the Sun's speed against its apparent
+  size (the area law), and Mars triangulated from sightings one sidereal
+  period apart, inside the circle through its apsides. The Earth's
+  ellipse is fitted to the seasons of 2026 (page 2.1's method with
+  Kepler's equation) and Mars' to its oppositions to the real Sun of
+  2010–2025, with $a$ from the third law, so no distance enters the fit.
+  Mars' aphelion stays fixed among the stars, as on page 4.2; its turning
+  is in the Residual. "All previous error curves overlaid" became a
+  chart of the largest error of every model of the Sun and Mars on a
+  scale of powers of ten. The Sun section stays on trial; the Moon after
+  Kepler is an h3 of the Residual. Approved by Marco on 2026-11-19. →
+  STRUCTURE.md §4 (page 4.5)
 
 ## Look
 
@@ -457,9 +479,10 @@ section.
   the session. On 2026-10-26 a session with the `astronomy_reference`
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
-- **Where page 4.5 (Kepler) gets its yardstick** (see Course).
-- **Whether page 4.5 keeps its section on the Sun** (see Course), once the
-  page is built. If it goes, the hub's sentence on the Earth's orbit still
+- **Whether page 4.5 keeps its section on the Sun** (see Course), now
+  that the page is built: the Earth's ellipse is part of Mars' model, so
+  only Figure 5 (the Sun's error curve) and the Sun's distances are in
+  question. If it goes, the hub's sentence on the Earth's orbit still
   holds, since it states history, not the page's content.
 - **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
   region right ascension 105° to 195°, declination −20° to +20°, and drop

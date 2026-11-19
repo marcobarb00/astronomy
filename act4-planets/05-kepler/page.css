@@ -1,0 +1,65 @@
+/* ==========================================================================
+   PAGE 4.5 · KEPLER - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls
+	 2. The drawings
+	 3. The table of the third law
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS
+   ========================================================================== */
+
+/* The slider of Figure 3 shows up to "687 days". */
+figure.fig {
+	--ctl-output: 5.6em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* The choice of a view, above the drawing of Figure 3. */
+#ellipse-views {
+	justify-content: center;
+	margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   2. THE DRAWINGS
+   The canvases set their own square size (page.js); center them.
+   ========================================================================== */
+
+#triangle-canvas,
+#ellipse-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. THE TABLE OF THE THIRD LAW
+   The planet on the left, the numbers centered.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+}
