@@ -1427,8 +1427,12 @@ function page43(c) {
 		JSON.stringify(inContext(c, 'DISTANCE_RANGE')),
 		JSON.stringify(inContext(c, 'DISTANCE_ERROR_RANGE')),
 		JSON.stringify(inContext(c, 'SATURN_VIEW')),
-		JSON.stringify(inContext(c, 'ARRANGEMENT_VIEWS'))
+		JSON.stringify(inContext(c, 'ARRANGEMENT_VIEWS')),
+		JSON.stringify(inContext(c, 'LOOP_RANGE')),
+		JSON.stringify(inContext(c, 'DIFFERENCE_RANGE')),
+		num(inContext(c, 'EPICYCLET_E'))
 	);
+	row('loopDirection', [-60, -37, 0, 37, 60].map(t => num(c.loopDirection(t))).join(' '));
 }
 
 function page44(c) {

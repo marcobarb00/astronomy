@@ -1730,37 +1730,42 @@ Regenerate with: node tools/check/smoke.js --update
 === act4-planets/03-new-center/index.html ===
   as loaded
     OUTPUT (arrangement-day): 6 Dec 2014
-    #arrangement-readout: \text{6 Dec 2014:}\quad \lambda - \bar\lambda_\odot = 46.5^\circ | \lambda = 301.19^\circ \text{ in (a)},\quad 301.19^\circ \text{ in (b)} | \text{OP} = 1.216 \text{ in (a)},\quad 1.847\ \text{au in (b)}
+    #arrangement-readout: \text{6 Dec 2014:}\quad \lambda - \bar\lambda_\odot = 46.48^\circ | \lambda = 301.19^\circ \text{ in (a)},\quad 301.19^\circ \text{ in (b)}
+    OUTPUT (epicyclet-anomaly): 60°
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #arrangement-day = 0
     OUTPUT (arrangement-day): 1 Jan 2010
-    #arrangement-readout: \text{1 Jan 2010:}\quad \lambda - \bar\lambda_\odot = -141.8^\circ | \lambda = 138.77^\circ \text{ in (a)},\quad 138.77^\circ \text{ in (b)} | \text{OP} = 0.485 \text{ in (a)},\quad 0.736\ \text{au in (b)}
+    #arrangement-readout: \text{1 Jan 2010:}\quad \lambda - \bar\lambda_\odot = -141.77^\circ | \lambda = 138.77^\circ \text{ in (a)},\quad 138.77^\circ \text{ in (b)}
   slider #arrangement-day = 5843
     OUTPUT (arrangement-day): 31 Dec 2025
-    #arrangement-readout: \text{31 Dec 2025:}\quad \lambda - \bar\lambda_\odot = 2.4^\circ | \lambda = 282.06^\circ \text{ in (a)},\quad 282.06^\circ \text{ in (b)} | \text{OP} = 1.587 \text{ in (a)},\quad 2.411\ \text{au in (b)}
+    #arrangement-readout: \text{31 Dec 2025:}\quad \lambda - \bar\lambda_\odot = 2.38^\circ | \lambda = 282.06^\circ \text{ in (a)},\quad 282.06^\circ \text{ in (b)}
   slider #arrangement-day = 2921.5
     OUTPUT (arrangement-day): 31 Dec 2017
-    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.8^\circ | \lambda = 223.31^\circ \text{ in (a)},\quad 223.31^\circ \text{ in (b)} | \text{OP} = 1.282 \text{ in (a)},\quad 1.948\ \text{au in (b)}
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.79^\circ | \lambda = 223.31^\circ \text{ in (a)},\quad 223.31^\circ \text{ in (b)}
   slider #arrangement-day + one key step
     OUTPUT (arrangement-day): 31 Dec 2017
-    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.9^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)} | \text{OP} = 1.281 \text{ in (a)},\quad 1.946\ \text{au in (b)}
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.89^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)}
+  slider #epicyclet-anomaly = 0
+    OUTPUT (epicyclet-anomaly): 0°
+  slider #epicyclet-anomaly = 360
+    OUTPUT (epicyclet-anomaly): 360°
+  slider #epicyclet-anomaly = 180
+    OUTPUT (epicyclet-anomaly): 180°
+  slider #epicyclet-anomaly + one key step
+    OUTPUT (epicyclet-anomaly): 181°
   button "Mars"
     OUTPUT (arrangement-day): 31 Dec 2017
-    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.9^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)} | \text{OP} = 1.281 \text{ in (a)},\quad 1.946\ \text{au in (b)}
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.89^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)}
   button "Venus"
     OUTPUT (arrangement-day): 31 Dec 2017
-    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.2^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)} | \text{OP} = 1.721 \text{ in (a)},\quad 1.721\ \text{au in (b)}
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.24^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)}
   button "‹ previous day"
     OUTPUT (arrangement-day): 30 Dec 2017
-    #arrangement-readout: \text{30 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.5^\circ | \lambda = 276.87^\circ \text{ in (a)},\quad 276.87^\circ \text{ in (b)} | \text{OP} = 1.720 \text{ in (a)},\quad 1.720\ \text{au in (b)}
+    #arrangement-readout: \text{30 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.50^\circ | \lambda = 276.87^\circ \text{ in (a)},\quad 276.87^\circ \text{ in (b)}
   button "next day ›"
     OUTPUT (arrangement-day): 31 Dec 2017
-    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.2^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)} | \text{OP} = 1.721 \text{ in (a)},\quad 1.721\ \text{au in (b)}
-  button "4 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
-  button "16 years"
-    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.24^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)}
   hover #elongation-inner at 0.3
   hover #elongation-inner at 0.6
   hover #elongation-inner at 0.9
@@ -1769,13 +1774,25 @@ Regenerate with: node tools/check/smoke.js --update
   hover #elongation-outer at 0.6
   hover #elongation-outer at 0.9
   hover #elongation-outer left
+  hover #loop-directions at 0.3
+  hover #loop-directions at 0.6
+  hover #loop-directions at 0.9
+  hover #loop-directions left
   hover #error-mars-plot at 0.3
-    .errorcurve-readout: 11 Feb 2014 · page 4.2's equant: −0.67° · Copernicus' epicyclet: −0.71°
+    .errorcurve-readout: 11 Jan 2017 · page 4.2's equant: +0.28° · Copernicus' epicyclet: +0.34°
   hover #error-mars-plot at 0.6
-    .errorcurve-readout: 29 Apr 2019 · page 4.2's equant: −0.18° · Copernicus' epicyclet: −0.14°
+    .errorcurve-readout: 1 May 2018 · page 4.2's equant: −0.06° · Copernicus' epicyclet: −0.28°
   hover #error-mars-plot at 0.9
-    .errorcurve-readout: 15 Jul 2024 · page 4.2's equant: +0.38° · Copernicus' epicyclet: +0.30°
+    .errorcurve-readout: 20 Aug 2019 · page 4.2's equant: −0.05° · Copernicus' epicyclet: −0.05°
   hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #distance-plot at 0.3
   hover #distance-plot at 0.6

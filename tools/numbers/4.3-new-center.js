@@ -412,7 +412,7 @@ PLANETS.forEach(planet => {
    7. TEST
    ========================================================================== */
 
-title("Test: the directions of Mars, page 4.2's equant in Copernicus' arrangement (Figure 5)");
+title("Test: the directions of Mars, page 4.2's equant in Copernicus' arrangement (page 4.2's Figure 7)");
 {
 	const helio = PlanetArrangement.make('mars');
 	const geo = PlanetEquant.make(MARS);
@@ -425,7 +425,7 @@ title("Test: the directions of Mars, page 4.2's equant in Copernicus' arrangemen
 	console.log(`the two descriptions differ by at most ${worst.toExponential(1)}° over 1926 - 2125`);
 }
 
-title("Test: Mars' distance from the Earth (Figure 6)");
+title("Test: Mars' distance from the Earth (Figure 8)");
 {
 	const model = PlanetArrangement.makeDistance('mars');
 	const real = jd => Ephem.planet('mars', jd).dist;
@@ -597,14 +597,82 @@ title("Exercise 3: Mercury's greatest elongations, 1986 - 2025");
    9. THE SCALES OF THE FIGURES
    ========================================================================== */
 
-title('Scales: Figure 6, the difference in distance over 2010 - 2025');
+title('Scales: Figure 4, the lines of sight of Mars about an opposition, on two circles');
+{
+	// the Earth at the mean Sun's rate, Mars slower by one turn per synodic
+	// period; nine places 15 days apart, the opposition in the middle
+	const a = FIT.mars.a;
+	const nEarth = MeanSun.MODERN.n;
+	const nMars = nEarth - 360 / FIT.mars.S;
+	const direction = t => {
+		const E = [cos(90 + nEarth * t), sin(90 + nEarth * t)];
+		const M = [a * cos(90 + nMars * t), a * sin(90 + nMars * t)];
+
+		return norm180(atan2d(M[1] - E[1], M[0] - E[0]) - 90);
+	};
+	let widest = 0;
+	let station = 0;
+
+	for (let t = -65; t <= 65; t += 0.1) {
+		widest = Math.max(widest, Math.abs(direction(t)));
+
+		if (t > 0 && direction(t + 0.1) > direction(t) && direction(t) <= direction(t - 0.1)) {
+			station = t;
+		}
+	}
+
+	console.log(
+		`nine places 15 days apart; over 65 days either side the line of sight turns at most ${f(widest, 1)}° from the opposition; the stations ${f(station, 0)} days either side; the axis is ±10°`
+	);
+}
+
+title("Scales: Figure 5, Copernicus' epicyclet beside the equant, e three times Mars'");
+{
+	const e = 3 * MARS.e;
+	let apart = 0;
+
+	for (let M = 0; M < 360; M += 0.5) {
+		const K = PlanetEquant.centreOfEpicycle(M, e, 2 * e);
+		const c = PlanetArrangement.epicyclet(M, e).point;
+
+		apart = Math.max(apart, Math.hypot(K[0] - c[0], K[1] - c[1]));
+	}
+
+	console.log(
+		`e = ${f(e, 3)}: the epicyclet's radius ${f(e / 2, 3)}, the two points at most ${f(apart, 3)} apart (radius 1); the drawing reaches ${f(1.5 * e + 1 + e / 2, 3)} from the Sun`
+	);
+}
+
+title('Scales: Figure 6 (b), the epicyclet less the equant, 2010 - 2025');
+{
+	const equant = PlanetEquant.make(MARS);
+	const device = PlanetArrangement.makeEpicyclet(MARS);
+	let worst = 0;
+
+	for (let jd = JD(2010, 1, 1); jd < DATA_END; jd += 0.5) {
+		worst = Math.max(worst, Math.abs(norm180(device(jd) - equant(jd))));
+	}
+
+	console.log(`at most ${f(60 * worst, 1)}'; the axis is ±30'`);
+}
+
+title('Scales: Figure 8, the distances at the oppositions and the error over 2010 - 2025');
 {
 	const model = PlanetArrangement.makeDistance('mars');
+	const oppositions = EVENTS.mars.filter(jd => jd >= JD(2010, 1, 1));
+	const values = oppositions.flatMap(jd => [
+		Ephem.planet('mars', jd, { apparent: false }).dist,
+		model(jd),
+		FIT.mars.a - 1
+	]);
 	let worst = 0;
 
 	for (let jd = JD(2010, 1, 1); jd < DATA_END; jd += 1) {
 		worst = Math.max(worst, Math.abs(model(jd) - Ephem.planet('mars', jd, { apparent: false }).dist));
 	}
 
-	console.log(`model less reference (geometric, as the figure): at most ${f(worst, 4)} au; the axis is ±0.03 au`);
+	console.log(
+		`(a) ${oppositions.length} oppositions, the distances ${range(values, 3)} au; the axis is 0.3 to 0.8 au`
+	);
+	console.log(`(b) model less reference (geometric, as the figure): at most ${f(worst, 4)} au; the axis is ±0.03 au`);
 }

@@ -99,6 +99,7 @@
 					<div>
 						<p class="panel-title">(b) Mars, Jupiter and Saturn</p>
 						<canvas id="elongation-outer"></canvas>
+						<div id="elongation-legend"></div>
 					</div>
 				</div>
 			</div>
@@ -244,26 +245,27 @@
 						</div>
 					</div>
 					<div>
-						<div class="readout" id="arrangement-readout" data-lines="3"></div>
+						<div class="readout" id="arrangement-readout" data-lines="2"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Play, and compare the two panels: the triangle O ☉ P is the same
-				shape in both, only moved so that ☉ stands still, and the line of sight
-				from O to P points the same way. Then choose Venus, and notice that
-				the circle that becomes the Earth's is now the deferent.
+				Play, and compare the triangle O ☉ P in the two panels: its violet side
+				O☉ is the copy of KP, its green side ☉P the copy of OK, and (b) only
+				moves it so that ☉ stands still, as the same λ in both read-outs shows.
+				Then choose Venus, and notice that the circle that becomes the Earth's
+				is now the deferent.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt>colours</dt>
-						<dd>each circle of (b) keeps its colour of (a): deferent green, epicycle violet</dd>
+						<dt class="c-deferent">green</dt>
+						<dd>the deferent, OK and its copy ☉P, in both panels</dd>
+						<dt class="c-epicycle">violet</dt>
+						<dd>the epicycle, KP and its copy O☉, in both panels</dd>
 						<dt>dashed</dt>
-						<dd>in (a), the other two sides of the parallelogram O K P ☉</dd>
-						<dt class="c-planet">faint</dt>
-						<dd>in (a), the path of P over the last synodic period</dd>
+						<dd>in (a), O☉ and ☉P, the copies of KP and OK that close the parallelogram</dd>
 					</dl>
 				</div>
 				<div>
@@ -271,8 +273,6 @@
 					<dl class="key">
 						<dt>$\lambda$</dt>
 						<dd>the ecliptic longitude of P seen from O</dd>
-						<dt>OP</dt>
-						<dd>in units of the deferent in (a)</dd>
 					</dl>
 				</div>
 			</div>
@@ -308,7 +308,7 @@
 		<!-- Figure 3: Ptolemy's five models and Copernicus' arrangement (static) -->
 		<figure class="fig">
 			<div class="frame">
-				<p class="panel-title">(a) Ptolemy's five models, each deferent the same size</p>
+				<p class="panel-title">(a) Ptolemy's five models, each on its own scale, the deferent 60</p>
 				<canvas id="ptolemy-canvas"></canvas>
 				<div class="panels">
 					<div>
@@ -316,7 +316,7 @@
 						<canvas id="orbits-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(c) the same, out to Mars</p>
+						<p class="panel-title">(c) the dashed square of (b), enlarged</p>
 						<canvas id="inner-canvas"></canvas>
 					</div>
 				</div>
@@ -481,11 +481,48 @@
 				phenomena, which the ancient astronomers sought [to explain] by means
 				of an epicycle for each planet, happen on account of the single
 				motion of the earth" (V 3).
-			</p>
-			<aside>
-				<div class="note" data-origin="copernicus"></div>
-			</aside>
-		</div>
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+				</div>
+
+				<p>
+					Figure 4 checks this for Mars on two circles about ☉, with this
+					page's distance and synodic period, so that only the Earth's motion
+					can turn the line of sight back.
+				</p>
+
+				<!-- Figure 4: the loops from the Earth's motion, Mars about an opposition (static) -->
+				<figure class="fig">
+					<div class="frame">
+						<div class="panels">
+							<div>
+								<p class="panel-title">(a) the Earth and Mars every 15 days</p>
+								<canvas id="loop-plan"></canvas>
+							</div>
+							<div>
+								<p class="panel-title">(b) Mars' ecliptic longitude, less that at opposition</p>
+								<canvas id="loop-directions"></canvas>
+							</div>
+						</div>
+					</div>
+					<figcaption>
+						Follow the numbers. The Earth moves faster than Mars and passes it at
+						5, the opposition. From 3 to 7 the lines of sight in (a) turn clockwise,
+						and Mars goes back in ecliptic longitude, the thick stretch of (b).
+						Notice that the drawing has no epicycle.
+					</figcaption>
+					<div class="keys">
+						<div>
+							<p class="key-title">In panel (a)</p>
+							<dl class="key">
+								<dt class="c-planet">lines</dt>
+								<dd>the line of sight from each numbered place of the Earth through Mars at the same moment</dd>
+							</dl>
+						</div>
+					</div>
+				</figure>
 
 		<div class="row">
 			<p>
@@ -516,18 +553,62 @@
 			<p>
 				Copernicus rejected the equant, a motion uniform about a point that
 				is not the center of its circle (V 2, page 4.2). For Mars, Jupiter
-				and Saturn he moved the center of the deferent to $\tfrac32 e$ from
+				and Saturn he placed the center D of his deferent at $\tfrac32 e$ from
 				☉, where Ptolemy's C was at $e$ and Q at $2e$, and put on it a small
 				epicycle, the <em>epicyclet</em>, of radius a third of that, $\tfrac12
 				e$. The planet goes round the epicyclet once for each turn of the
 				deferent, counted from the deferent's radius, which is twice
 				relative to fixed directions (V 4).
-			</p>
-			<aside>
-				<div class="note" data-origin="debated"></div>
-				<div class="note detour" data-topic="islamic"></div>
-			</aside>
-		</div>
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+					<div class="note detour" data-topic="islamic"></div>
+				</aside>
+				</div>
+
+				<p>
+					Figure 5 draws both on the deferent of Mars, with the eccentricity
+					enlarged so that the epicyclet can be seen.
+				</p>
+
+				<!-- Figure 5: Copernicus' epicyclet beside page 4.2's equant; mean anomaly, play -->
+				<figure class="fig">
+					<div class="frame">
+						<div class="fig-row">
+							<div>
+								<p class="panel-title">page 4.2's deferent and Copernicus', Mars' eccentricity tripled</p>
+								<canvas id="epicyclet-canvas"></canvas>
+							</div>
+							<div>
+								<div class="ctl">
+									<label for="epicyclet-anomaly">mean anomaly M</label>
+									<input id="epicyclet-anomaly" type="range" min="0" max="360" step="0.5" value="60">
+									<output></output>
+								</div>
+								<div class="presets">
+									<button type="button" class="play" id="epicyclet-play">Play</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<figcaption>
+						Play, and watch the line QK and the radius from D: they stay parallel,
+						each turning steadily about its own point, while the blue point on the
+						epicyclet stays close to K. Notice where the two points part a little,
+						near M = 90° and 270°.
+					</figcaption>
+					<div class="keys">
+						<div>
+							<p class="key-title">In the figure</p>
+							<dl class="key">
+								<dt class="c-deferent">green</dt>
+								<dd>page 4.2's deferent, about C, with its equant Q</dd>
+								<dt class="c-earth">blue</dt>
+								<dd>Copernicus' deferent, about D, with its epicyclet</dd>
+							</dl>
+						</div>
+					</div>
+				</figure>
 
 		<p>
 			The epicyclet gives the equant's directions to second order and its
@@ -542,21 +623,24 @@
 			Put in place of the equant in page 4.2's Mars, with the same
 			parameters, the epicyclet moves the planet by up to 25′, and the
 			largest error over 2010–2025 grows from 0.88° to 0.91°: giving up the
-			equant made the model a little worse. Figure 4 compares the two
-			against the real Mars.
+			equant made the model a little worse. Figure 6 compares the two
+			against the real Mars and with each other.
 		</p>
 
-		<!-- Figure 4: the error curve of Mars with Copernicus' epicyclet, page 4.2's equant as ghost -->
+		<!-- Figure 6: the error curve of Mars with Copernicus' epicyclet, page 4.2's equant as ghost; their difference -->
 		<figure class="fig">
 			<div class="frame">
+				<p class="panel-title">(a) the error of each model against the real Mars, 2016–2019</p>
 				<div id="error-mars"></div>
+				<p class="panel-title">(b) the epicyclet less the equant, 2010–2025</p>
+				<canvas id="error-difference"></canvas>
 			</div>
 			<figcaption>
-				Point at the oppositions, the dots, and compare the epicyclet's error
-				with the equant's ghost: the two part most there, where the epicycle
-				magnifies any shift of K. Then switch to sixteen years: the
-				epicyclet's band is wider in some years and narrower in others, and
-				reaches a little farther overall.
+				Point at the oppositions, the dots of (a), and compare the epicyclet's
+				error with the equant's ghost: the two part most around them, where the
+				epicycle magnifies any shift of K. Then follow (b) through the sixteen
+				years of page 4.2's fit: the difference swings from one side to the
+				other across every opposition, by a different amount each time.
 			</figcaption>
 		</figure>
 
@@ -612,7 +696,7 @@
 			$\cos\psi = 1/a$. The angle $\psi$ at ☉ would come from the time since
 			the opposition, at $360^\circ/S$ a day. For Saturn, though, $\psi$ is
 			84°, close to a right angle itself, and to first order a day's error in
-			the timing changes the distance by 16% (Figure 5).
+			the timing changes the distance by 16% (Figure 7).
 		</p>
 
 		<p>
@@ -623,7 +707,7 @@
 			same way, give the same distance within a thousandth of an au.
 		</p>
 
-		<!-- Figure 5: the two right triangles (static) -->
+		<!-- Figure 7: the two right triangles (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels stacked">
@@ -704,9 +788,10 @@
 					away from opposition and solved the triangle of the planet, the Earth
 					and the center of the Earth's circle (V 9, V 14, V 19). It is the
 					general case of the quadrature above, with the angle at the center
-					taken from his mean motions rather than timed. For Venus he used two greatest elongations taken with the Earth in
-					opposite directions from the center of Venus' circle (V 21, Exercise
-					1), and for Mercury he found a radius that changed (V 27, Exercise 3).
+					taken from his mean motions rather than timed. For Venus he used two
+					greatest elongations taken with the Earth in opposite directions from
+					the center of Venus' circle (V 21, Exercise 1), and for Mercury he
+					found a radius that changed (V 27, Exercise 3).
 				</p>
 				<aside>
 					<div class="note" data-origin="copernicus"></div>
@@ -741,7 +826,7 @@
 		<p>
 			The distances from the Earth are a prediction that Ptolemy's separate
 			models could not make, since each had its own unit. Over 2010–2025 the
-			model follows the real Mars within 0.020 au, at most 1.6% (Figure 6),
+			model follows the real Mars within 0.020 au, at most 1.6% (Figure 8),
 			and over the two centuries 1926–2125 it stays almost as close.
 		</p>
 
@@ -754,13 +839,14 @@
 			M$.
 		</p>
 
-		<!-- Figure 6: Mars' distance from the Earth, 2010 - 2025 (static) -->
+		<!-- Figure 8: Mars' distance from the Earth, 2010 - 2025 (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<div class="panels stacked">
 					<div>
-						<p class="panel-title">(a) the distance of Mars from the Earth</p>
+						<p class="panel-title">(a) the distance of Mars from the Earth at each opposition</p>
 						<canvas id="distance-plot"></canvas>
+						<div id="distance-legend"></div>
 					</div>
 					<div>
 						<p class="panel-title">(b) the model less the real Mars</p>
@@ -769,25 +855,11 @@
 				</div>
 			</div>
 			<figcaption>
-				Read the dips of (a), the oppositions: the real Mars comes nearer in
-				some than in others, and page 4.2's model in Copernicus' arrangement
-				follows it, where the concentric circle comes to the same distance
-				every time. In (b) the error stays within a fiftieth of an
-				astronomical unit.
-			</figcaption>
-			<div class="keys">
-				<div>
-					<p class="key-title">In panel (a)</p>
-					<dl class="key">
-						<dt class="c-planet">red</dt>
-						<dd>the real Mars</dd>
-						<dt class="c-deferent">green</dt>
-						<dd>page 4.2's equant in Copernicus' arrangement</dd>
-						<dt class="c-epicycle">faint, dashed</dt>
-						<dd>the same model with a concentric deferent ($e = 0$)</dd>
-					</dl>
-				</div>
-			</div>
+				Compare the dots of (a), one for each opposition: the real Mars comes
+				nearer at some oppositions than at others, and page 4.2's model in
+				Copernicus' arrangement follows it, whereas the concentric deferent
+				gives the same distance every time.
+				</figcaption>
 		</figure>
 
 		<div class="row">
@@ -916,8 +988,10 @@
 			<p>
 				In 2025 Venus reached its greatest elongation east of the Sun on 10
 				January, 47.166°, and west of it on 31 May, 45.838°. Find the distance
-				of Venus from each, and check the fitted value in Figure 2 by finding
-				a greatest elongation of the model. Why do the two elongations of 2025
+				of Venus from each, and check the fitted radius of Venus' circle by
+				stepping Figure 2's Venus view to a greatest elongation of the model,
+				where $\lambda - \bar\lambda_\odot$ in the read-out reaches its largest
+				size. Why do the two elongations of 2025
 				differ? Then redo Copernicus' computation of V 21: his two greatest
 				elongations, 44°48′ (44.8°) and 47°16′ (47.27°), were taken with the
 				Earth in opposite directions from the center of Venus' circle, the
@@ -935,8 +1009,8 @@
 				<p>
 					The sines are 0.7333 and 0.7174, a mean of 0.7254; the fit to the 50
 					greatest elongations of 1986–2025 gives 0.7226, so the model's greatest
-					elongation, which Figure 2 shows in the Venus view, is 46.27° on
-					either side.
+					elongation, the largest $\lambda - \bar\lambda_\odot$ in the read-out of
+					Figure 2's Venus view, is 46.27° on either side.
 				</p>
 				<p>
 					The real distances are not constant. On 10 January 2025 Venus was

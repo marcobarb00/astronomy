@@ -801,16 +801,23 @@ The first anomaly and the simplest complete model.
 - **Figures:** the elongations of the five planets, 2022–2025, thick where
   they go back (static); one planet in Ptolemy's description (O fixed,
   the parallelogram O K P ☉) beside Copernicus' (☉ fixed), each circle in
-  its colour of (a) (date, play; views Mars, page 4.2's equant, and
-  Venus); Ptolemy's five models with deferents of one size, and the same
-  numbers on one scale, out to Saturn and out to Mars (static); a photo:
-  Copernicus' manuscript, f. 9v (Jagiellonian Library, public domain);
-  the error curve of Mars with Copernicus' epicyclet in place of the
-  equant, page 4.2's equant as ghost (4 and 16 years), in the Model;
-  the two right triangles of the fit, Venus at greatest elongation and
-  Saturn at quadrature, with the quadrature a day early (static); Mars' distance from the Earth, 2010–2025, the
-  equant on Copernicus' scale and without the equant, and the difference
-  (static).
+  its colour of (a), and each side too, green for OK, violet for KP
+  (date, play; views Mars, in page 4.2's model, and Venus); Ptolemy's
+  five models with deferents of one size, and the same numbers on one
+  scale, out to Saturn and out to Mars (static); a photo: Copernicus'
+  manuscript, f. 9v (Jagiellonian Library, public domain); the loops from
+  the Earth's motion (V 3), the Earth and Mars on their circles every 15
+  days about an opposition, with the lines of sight, and Mars' ecliptic
+  longitude seen from the Earth (static); Copernicus' eccentric with an
+  epicyclet beside page 4.2's equant on one deferent, the eccentricity
+  three times Mars' (mean anomaly, play); the error curve of Mars with
+  Copernicus' epicyclet in place of the equant, page 4.2's equant as
+  ghost (4 years), and the difference of the two over 2010–2025, in the
+  Model; the two right triangles of the fit, Venus at greatest
+  elongation and Saturn at quadrature, with the quadrature a day early
+  (static); Mars' distance from the Earth at each opposition of
+  2010–2025, the equant on Copernicus' scale and with a concentric
+  deferent, and the difference over every date (static).
 - **Point to make:** the predicted directions do not change. What changed
   is that the system now has a scale and an order, and the distances
   are a new prediction. They come from the arrangement: fixing the Sun
