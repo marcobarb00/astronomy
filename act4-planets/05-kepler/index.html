@@ -457,15 +457,18 @@
 		</p>
 
 		<p>
-			A season begins and ends when the Sun reaches a given ecliptic
-			longitude $\lambda$: 0° at the spring equinox, 90° at the summer
-			solstice, 180° at the autumn equinox. Its length is the time between
-			two such moments, and time is what $M$ measures: the days from one
-			ecliptic longitude to the next are the difference of the two values
-			of $M$, divided by the mean motion $n$. So for each ecliptic longitude
-			we need $M$. The ecliptic longitude gives the Sun's direction from
-			the apogee, the true anomaly $v = \lambda - \lambda_A$, and two steps
-			lead from $v$ back to $M$: first $E$, then Kepler's equation.
+			The equinoxes and solstices are positions of the real Sun, at the
+			ecliptic longitudes 0°, 90° and 180°, and what we observe is the
+			moments it reaches them. In the model the Sun's position depends on
+			the time only through $M$, which grows uniformly, $M = n(t - t_A)$.
+			So to find when the model's Sun reaches a given ecliptic longitude we
+			go back from that position to $M$, and the days between two positions
+			are the difference of their values of $M$, divided by $n$. In 2026,
+			for instance, the fitted ellipse gives 91.404° of $M$ over spring,
+			the observed 92.735 days at $n$ = 0.98565° a day. Going back takes
+			three steps: the ecliptic longitude gives the true anomaly $v =
+			\lambda - \lambda_A$, then $v$ gives $E$, and Kepler's equation gives
+			$M$.
 		</p>
 
 		<p>
