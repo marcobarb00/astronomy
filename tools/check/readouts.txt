@@ -1809,7 +1809,7 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (systems-day): 6 Dec 2014
     #systems-readout: \text{6 Dec 2014} | \lambda_\text{P} = 301.186^\circ \text{ in (a)},\quad 301.186^\circ \text{ in (b)} | \text{OP} = 1.847 \text{ in (a)},\quad 1.847\ \text{au in (b)}
     OUTPUT (orders-day): 22 Oct 2024
-    #orders-readout: \text{22 Oct 2024:}\quad \lambda - \bar\lambda_\odot = 35.0^\circ | k = 0.40,\quad \chi = 102^\circ | \text{OP} = 1.26\ \text{OK}
+    #orders-readout: \text{22 Oct 2024:}\quad \lambda - \bar\lambda_\odot = 35.0^\circ | \text{OP} = 1.26\ \text{OK}
     OUTPUT (parallax-day): 28 May 2026
     #parallax-readout: \text{28 May 2026} | \Delta\lambda\cos\beta = 0.290'',\quad \Delta\beta = -0.003''
   opened 6 hints and answers
@@ -1827,16 +1827,16 @@ Regenerate with: node tools/check/smoke.js --update
     #systems-readout: \text{31 Dec 2017} | \lambda_\text{P} = 223.468^\circ \text{ in (a)},\quad 223.468^\circ \text{ in (b)} | \text{OP} = 1.946 \text{ in (a)},\quad 1.946\ \text{au in (b)}
   slider #orders-day = 0
     OUTPUT (orders-day): 4 Jun 2024
-    #orders-readout: \text{4 Jun 2024:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | k = 0.01,\quad \chi = 168^\circ | \text{OP} = 1.72\ \text{OK}
+    #orders-readout: \text{4 Jun 2024:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | \text{OP} = 1.72\ \text{OK}
   slider #orders-day = 584
     OUTPUT (orders-day): 9 Jan 2026
-    #orders-readout: \text{9 Jan 2026:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | k = 0.01,\quad \chi = 168^\circ | \text{OP} = 1.72\ \text{OK}
+    #orders-readout: \text{9 Jan 2026:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | \text{OP} = 1.72\ \text{OK}
   slider #orders-day = 292
     OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.1^\circ | k = 0.00,\quad \chi = 176^\circ | \text{OP} = 0.28\ \text{OK}
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.1^\circ | \text{OP} = 0.28\ \text{OK}
   slider #orders-day + one key step
     OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | k = 0.00,\quad \chi = 176^\circ | \text{OP} = 0.28\ \text{OK}
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | \text{OP} = 0.28\ \text{OK}
   slider #parallax-day = 0
     OUTPUT (parallax-day): 1 Jan 2026
     #parallax-readout: \text{1 Jan 2026} | \Delta\lambda\cos\beta = -0.235'',\quad \Delta\beta = -0.121''
@@ -1855,21 +1855,12 @@ Regenerate with: node tools/check/smoke.js --update
   button "next day ›"
     OUTPUT (systems-day): 31 Dec 2017
     #systems-readout: \text{31 Dec 2017} | \lambda_\text{P} = 223.468^\circ \text{ in (a)},\quad 223.468^\circ \text{ in (b)} | \text{OP} = 1.946 \text{ in (a)},\quad 1.946\ \text{au in (b)}
-  button "below the Sun"
-    OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | k = 0.00,\quad \chi = 176^\circ | \text{OP} = 0.28\ \text{OK}
-  button "around the Sun"
-    OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | k = 0.00,\quad \chi = 175^\circ | \text{OP} = 0.28\ \text{OK}
-  button "above the Sun"
-    OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | k = 0.99,\quad \chi = 9^\circ | \text{OP} = 0.28\ \text{OK}
   button "‹ previous day"
     OUTPUT (orders-day): 22 Mar 2025
-    #orders-readout: \text{22 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -1.9^\circ | k = 1.00,\quad \chi = 5^\circ | \text{OP} = 0.28\ \text{OK}
+    #orders-readout: \text{22 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -1.9^\circ | \text{OP} = 0.28\ \text{OK}
   button "next day ›"
     OUTPUT (orders-day): 23 Mar 2025
-    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | k = 0.99,\quad \chi = 9^\circ | \text{OP} = 0.28\ \text{OK}
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | \text{OP} = 0.28\ \text{OK}
   button "‹ previous day"
     OUTPUT (parallax-day): 1 Jul 2026
     #parallax-readout: \text{1 Jul 2026} | \Delta\lambda\cos\beta = 0.245'',\quad \Delta\beta = 0.123''

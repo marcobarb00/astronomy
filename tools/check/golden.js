@@ -1445,9 +1445,9 @@ function page44(c) {
 		num(inContext(c, 'ORDERS_ROOM')),
 		num(inContext(c, 'PARALLAX_ROOM')),
 		num(inContext(c, 'PARALLAX_RANGE')),
-		JSON.stringify(inContext(c, 'PHASE_RANGE_X')),
+		JSON.stringify(inContext(c, 'FIT_RANGE_X')),
 		JSON.stringify(inContext(c, 'TEST_ERROR_RANGE')),
-		JSON.stringify(inContext(c, 'ORDER_VIEWS'))
+		JSON.stringify(inContext(c, 'ORDER_DISKS'))
 	);
 }
 
