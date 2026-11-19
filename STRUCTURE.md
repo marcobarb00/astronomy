@@ -995,7 +995,7 @@ The first anomaly and the simplest complete model.
 - **Learn:** the area law seen in the Sun (its daily motion varies as the
   square of its apparent diameter, 7.0% against 3.4%, $r^2$ times the
   speed constant within 0.10%, so page 2.1's eccentric needs twice the
-  distance's variation); Mars triangulated as Kepler did, from pairs of
+  distance's variation); Mars triangulated from pairs of
   sightings one sidereal period apart (103 points of 2010–2025, within
   0.0010 au of the reference), inside the circle through the apsides by up
   to 0.0064 au; the ellipse (foci ☉ and Q, center C, $b = a\sqrt{1 -
@@ -1044,27 +1044,31 @@ The first anomaly and the simplest complete model.
   refit 0.0935), the aphelion at 156.15° (J2000) fixed among the stars,
   within 0.75′; $a$ = 1.5237 au from the third law (686.981 days), so no
   distance enters the fit. History block: the true Sun (*HAMA* p. 171),
-  the Earth's orbit from Mars and its equant (Voelkel ch. 3; *HAMA* p.
-  155), the 8′ (Fitzpatrick § 1.4), longitudes and distances from two
-  models (*HAMA* p. 98), the area law, the sausage and the ellipse
+  the Earth's faster motion near the Sun, found from Mars (Voelkel ch. 3),
+  and its equant (*HAMA* p. 155; the halved eccentricity, Fitzpatrick §
+  1.4), the free equant for the longitudes and another model for the
+  distances (*HAMA* pp. 98, 172), the 8′ of the halved eccentricity
+  (Fitzpatrick § 1.4), the area law, the sausage and the ellipse
   (Voelkel ch. 3), the third law of 15 May 1618 (ch. 4).
-- **Test:** Mars within 5.8′ over 2010–2025 (page 4.2's equant 0.81° on
+- **Test:** Mars within 5.7′ over 2010–2025 (page 4.2's equant 0.81° on
   this reference, 0.88° on its own), 18′ over 1926–2126; its distance from
   the Earth within 0.0019 au (page 4.3: 0.0205 au); the triangulated
-  points within 0.0010 au of the ellipse. The Sun within 0.25′ in 2026
+  points within 0.0010 au of the ellipse. The Sun within a quarter of an arcminute in 2026
   (page 2.1's eccentric 1.74′), 1.2′ and 2.7′ within fifty years and five
-  centuries (2.0′, 4.0′); its distance 0.98335–1.01665 au against the real
+  centuries (2.0′, 3.9′); its distance 0.98335–1.01665 au against the real
   0.98330–1.01664 (the eccentric 0.9665–1.0335). History block: the
   *Rudolphine Tables*, fifty times more accurate (Voelkel ch. 6), the
   transit of Mercury of 1631 within six hours, Gassendi (ch. 7), the
   frontispiece.
 - **Residual:** the planets' pulls (detours *perturbations*, *newton*):
   Mars' aphelion turns 0.43° a century among the stars (fitted to the
-  oppositions of 1931–1946 and 2010–2025), and with it the two-century
-  error falls from 18′ to 8.4′; the tilt of Mars' plane, at most 0.9′
-  (detour *latitudes*); the Sun's quarter of an arcminute, mostly the
-  Earth's monthly swing about the Earth–Moon center of mass (6.9″), under
-  0.13′ averaged over a month. **The Moon after Kepler** (an h3, no
+  oppositions of 1931–1946 and 2010–2025), and with it and the mean motion
+  refitted to the same oppositions the two-century error falls from 18′
+  to 8.4′; the tilt of Mars' plane, at most 0.9′
+  (detour *latitudes*); the Sun's quarter of an arcminute, about half of
+  it the Earth's monthly swing about the Earth–Moon center of mass (6.9″),
+  under 0.13′ averaged over a month, with the nutation the model leaves
+  out. **The Moon after Kepler** (an h3, no
   figure): the ellipse's 6.29°, then the evection 1.27°, the variation
   0.66°, the annual equation 11′, the perigee (8.85 years) and the nodes
   (18.61 years), from the Sun's pull; the epilogue.
@@ -1258,6 +1262,7 @@ once on the page.
 | $e$ (ellipse) | C☉ / $a$, C the center, ☉ and Q the foci (page 4.5); page 4.2's OC = $e$ |
 | $E$ (ellipse) | the eccentric anomaly, from the aphelion, $M = E + e\sin E$ (not the equation of time; Fitzpatrick counts from the perihelion) (page 4.5) |
 | $r$ (ellipse) | ☉P, the distance from the Sun (page 4.5; not the epicycle's radius) |
+| $R$ (page 4.5) | the Earth–Sun distance (not the deferent's radius); $\lambda_\text{h}$ a heliocentric ecliptic longitude; P′ the point of the circle on the long axis, Π the perihelion |
 
 Angles are in degrees in prose and figures. Code works in degrees through the
 helpers in `shared/common.js`. An angle quoted from a historical source is

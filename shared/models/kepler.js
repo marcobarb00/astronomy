@@ -281,7 +281,7 @@ const Kepler = (function () {
 		return 360 / (n - p);
 	}
 
-	/* Triangulation (Kepler, Astronomia Nova): the point where the line
+	/* Triangulation: the point where the line
 	   from the Earth at E1 in the direction lon1 meets the line from the
 	   Earth at E2 in the direction lon2 (points [x, y] in au, directions
 	   in deg, one frame). Returns { point, angle (between the lines,
@@ -305,8 +305,7 @@ const Kepler = (function () {
 		};
 	}
 
-	/* Mars' path triangulated, as Kepler did (Voelkel ch. 3), from
-	   observations: the planet returns to the same point of its path
+	/* Mars' path triangulated from observations (page 4.5, Figure 2): the planet returns to the same point of its path
 	   after one sidereal period, so two sightings 'period' days apart,
 	   from two places of the Earth, fix that point. options: sun(jd) ->
 	   { lon, dist } (the Sun seen from the Earth: its direction, and its

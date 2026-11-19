@@ -611,7 +611,7 @@ const sunErrorFigure = {
 /* ==========================================================================
    5. FIGURE 6: EVERY MODEL OF THE SUN AND OF MARS
    Static. The largest error of each model against the reference: the Sun
-   every day of 2026, Mars every two days of 2010 - 2025, on a scale of
+   every day of 2026, Mars every day of 2010 - 2025, on a scale of
    powers of ten (the logarithm of the error in arcminutes). The errors run
    from 0.24' (the Sun's ellipse) to 53.7° (the uniform Mars)
    (tools/numbers/4.5-kepler.js): the axis runs from 0.1' to 100°, with
@@ -650,7 +650,7 @@ const summaryFigure = {
 	init() {
 		this.panels = [
 			this.panel('sun', 'summary-sun', realSun, 2026, 2027, 1),
-			this.panel('mars', 'summary-mars', realMars, 2010, 2026, 2)
+			this.panel('mars', 'summary-mars', realMars, 2010, 2026, 1)
 		];
 	},
 
