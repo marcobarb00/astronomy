@@ -553,7 +553,7 @@ function leastSquares(xs, ys) {
    ephemeris' dates, so nothing is shaded: within 2.6' over 2000 years
    and 18' over 6000. (b) The Sun: the eccentric with its moving apogee
    (SolarEccentric.MOVING_2026), with the fixed apogee of page 2.1 as a
-   ghost. Both centred on 2026.
+   ghost. Both centered on 2026.
    ========================================================================== */
 
 const CENTRE_2026 = Time.julianDay(2026, 7, 2);

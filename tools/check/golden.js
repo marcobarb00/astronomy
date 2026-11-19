@@ -53,6 +53,8 @@ const SHARED_FILES = [
 	'shared/common.js',
 	'shared/time.js',
 	'shared/ephemeris.js',
+	'shared/vsop87-data.js',
+	'shared/vsop87.js',
 	'shared/stars.js',
 	'shared/plate-stars.js',
 	'shared/models/diurnal.js',
@@ -67,6 +69,9 @@ const SHARED_FILES = [
 	'shared/models/lunar-latitude.js',
 	'shared/models/eclipses.js',
 	'shared/models/planet-epicycle.js',
+	'shared/models/planet-equant.js',
+	'shared/models/planet-arrangement.js',
+	'shared/models/kepler.js',
 	'shared/plot2d.js',
 	'shared/errorcurve.js'
 ];
@@ -83,7 +88,11 @@ const PAGE_FILES = [
 	'act3-moon/01-first-anomaly/index.html',
 	'act3-moon/02-evection/index.html',
 	'act3-moon/03-eclipses/index.html',
-	'act4-planets/01-going-backwards/index.html'
+	'act4-planets/01-going-backwards/index.html',
+	'act4-planets/02-equant/index.html',
+	'act4-planets/03-new-center/index.html',
+	'act4-planets/04-phases-parallax/index.html',
+	'act4-planets/05-kepler/index.html'
 ];
 
 /* ==========================================================================
@@ -797,6 +806,223 @@ function planetEpicycleSection(c) {
 	});
 }
 
+function planetEquantSection(c) {
+	const { Time, PlanetEquant } = c;
+
+	title('6k. THE PLANETARY EQUANT (models/planet-equant.js)');
+	Object.entries({
+		MARS_FIT: PlanetEquant.MARS_FIT,
+		MARS_SEPARATE: PlanetEquant.MARS_SEPARATE,
+		PTOLEMY: PlanetEquant.PTOLEMY
+	}).forEach(([name, p]) => {
+		const o = PlanetEquant.offsets(p);
+
+		row(
+			name,
+			num(p.L0),
+			num(p.n, 12),
+			num(p.epoch),
+			num(p.apogee),
+			num(p.apogeeRate, 12),
+			num(o.center),
+			num(o.equant),
+			num(p.r)
+		);
+	});
+	row(
+		'zodiacal e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const z = PlanetEquant.zodiacal(M, 0.1, 0.2);
+
+				return `${num(z.q)}/${num(z.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'kepler e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const k = PlanetEquant.kepler(M, 0.1);
+
+				return `${num(k.q)}/${num(k.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'loopAt PTOLEMY mars',
+		[0, 90, 180]
+			.map(M => {
+				const loop = PlanetEquant.loopAt(M, 0.1, 0.2, 39.5 / 60, 0.524059, 0.985635);
+
+				return `${num(loop.lon)}/${num(loop.arc)}/${num(loop.days)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'oppositionInterval e = 0.1',
+		[0, 90, 180].map(M => num(PlanetEquant.oppositionInterval(M, 0.1, 0.2, 0.524, 0.9856))).join(' ')
+	);
+
+	const three = PlanetEquant.threeOppositions();
+
+	row(
+		'threeOppositions',
+		num(three.first.e),
+		num(three.first.apogee),
+		num(three.exact.e),
+		num(three.exact.apogee),
+		num(three.exact.M)
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const s = PlanetEquant.state(PlanetEquant.MARS_FIT, jd);
+		const t = PlanetEquant.state(PlanetEquant.PTOLEMY, jd);
+
+		row(`${label}`, num(s.meanLongitude), num(s.M), num(s.q), num(s.rho), num(s.eta), num(s.lambda), num(t.lambda));
+	});
+}
+
+function planetArrangementSection(c) {
+	const { Time, PlanetArrangement } = c;
+
+	title("6l. COPERNICUS' ARRANGEMENT (models/planet-arrangement.js)");
+	PlanetArrangement.PLANETS.forEach(name => {
+		const fit = PlanetArrangement.FIT[name];
+		const kind = PlanetArrangement.KIND[name];
+
+		row(
+			name,
+			kind,
+			num(fit.S),
+			num(fit.a),
+			num(PlanetArrangement.PTOLEMY[name].a),
+			num(PlanetArrangement.COPERNICUS[name].a),
+			num(PlanetArrangement.periodAboutSun(kind, fit.S, 365.25636)),
+			num(
+				PlanetArrangement.synodicPeriod(
+					kind,
+					PlanetArrangement.periodAboutSun(kind, fit.S, 365.25636),
+					365.25636
+				)
+			)
+		);
+	});
+	row(
+		'VENUS_FIT',
+		num(PlanetArrangement.VENUS_FIT.mu0),
+		num(PlanetArrangement.VENUS_FIT.nMu, 12),
+		num(PlanetArrangement.VENUS_FIT.r)
+	);
+	row(
+		'greatestElongation quadratureAngle',
+		num(PlanetArrangement.greatestElongation(0.7)),
+		num(PlanetArrangement.quadratureAngle(5))
+	);
+	row(
+		'epicyclet e = 0.1',
+		[0, 45, 90, 135, 180, 270]
+			.map(M => {
+				const z = PlanetArrangement.epicyclet(M, 0.1);
+
+				return `${num(z.q)}/${num(z.distance)}`;
+			})
+			.join(' ')
+	);
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const mars = PlanetArrangement.moment('mars', jd);
+		const venus = PlanetArrangement.moment('venus', jd);
+
+		row(
+			`${label}`,
+			num(mars.lambda),
+			num(mars.distance),
+			num(mars.heliostatic.O[0]),
+			num(mars.heliostatic.P[1]),
+			num(venus.lambda),
+			num(venus.distance),
+			num(PlanetArrangement.makeEpicyclet()(jd))
+		);
+	});
+
+	// page 4.4: Tycho's system, the orders of Venus, the phase and the
+	// apparent diameter of the reference Venus, the parallax of 61 Cygni
+	row('ORDERS', JSON.stringify(PlanetArrangement.ORDERS));
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const tycho = PlanetArrangement.moment('mars', jd).tychonic;
+		const phase = c.Ephem.phase('venus', jd);
+		const shift = c.Stars.parallax(c.Stars.find('61 Cygni'), jd);
+
+		row(
+			`${label} 4.4`,
+			num(tycho.S[0]),
+			num(tycho.P[1]),
+			['below', 'around', 'above']
+				.map(o => num(PlanetArrangement.venusPhase(jd, PlanetArrangement.ORDERS[o]).k))
+				.join(' '),
+			num(phase.k),
+			num(phase.diameter),
+			num(shift.dlon),
+			num(shift.dlat)
+		);
+	});
+}
+
+function keplerSection(c) {
+	const { Time, Ephem, Kepler } = c;
+	const vsop = { theory: 'vsop87' };
+
+	title("6m. KEPLER'S ELLIPSES (models/kepler.js) AND THE VSOP87 REFERENCE (vsop87.js)");
+	row('SUN_2026', JSON.stringify(Kepler.SUN_2026));
+	row('MARS_FIT', JSON.stringify(Kepler.MARS_FIT));
+	row(
+		"Kepler's equation e = 0.1, 0.6, 0.967",
+		[
+			[185, 0.1],
+			[90, 0.6],
+			[30, 0.967]
+		]
+			.map(([M, e]) => `${num(Kepler.newton(M, e).E)}/${num(Kepler.fixedPoint(M, e).E)}`)
+			.join(' ')
+	);
+	row(
+		'atAnomaly e = 0.0934',
+		[0, 30, 90, 180, 270]
+			.map(M => {
+				const a = Kepler.atAnomaly(M, 0.0934);
+
+				return `${num(a.q)}/${num(a.distance)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'fitSeasons, thirdLaw, siderealPeriod',
+		JSON.stringify(Kepler.fitSeasons(92.735, 93.653, 0.98564734824)),
+		num(Kepler.thirdLaw(686.981, 365.2564)),
+		num(Kepler.siderealPeriod(0.524070384))
+	);
+	row('triangulate', JSON.stringify(Kepler.triangulate([1, 0], 90, [0, 1], 0)));
+
+	DATES.forEach(([label, year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+		const g = Kepler.geocentric(Kepler.MARS_FIT, Kepler.SUN_2026, jd);
+
+		row(
+			`${label}`,
+			num(g.lon),
+			num(g.dist),
+			num(Kepler.makeSun()(jd)),
+			num(Ephem.longitude('mars', jd, vsop)),
+			num(Ephem.sun(jd, vsop).lon),
+			num(Ephem.sun(jd, vsop).dist)
+		);
+	});
+}
+
 function displaySection(c) {
 	const samples = [-181.25, -12.5, -0.001, 0, 0.0083, 0.99999, 1.5, 23.99999, 59.99, 61.25, 359.9999];
 
@@ -1163,6 +1389,83 @@ function page41(c) {
 	);
 }
 
+function page42(c) {
+	title('8k. PAGE 4.2 (act4-planets/02-equant/page.js)');
+	row('quarterTicks', JSON.stringify(c.quarterTicks()));
+	row(
+		'modelLoops',
+		JSON.stringify(
+			c
+				.modelLoops(0.1, 0.2, 0.658, 151, true)
+				.arcs.slice(0, 6)
+				.map(x => num(x, 6))
+		)
+	);
+	row('FIT_APOGEE TEST_APOGEE', num(inContext(c, 'FIT_APOGEE')), num(inContext(c, 'TEST_APOGEE')));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'EQUATION_RANGE')),
+		JSON.stringify(inContext(c, 'ARC_RANGE')),
+		JSON.stringify(inContext(c, 'FIT_ARC_RANGE')),
+		JSON.stringify(inContext(c, 'INTERVAL_RANGE')),
+		JSON.stringify(inContext(c, 'EQUANT_VIEWS')),
+		JSON.stringify(inContext(c, 'JOBS_SPEED_RANGE')),
+		JSON.stringify(inContext(c, 'JOBS_DISTANCE_RANGE')),
+		JSON.stringify(inContext(c, 'KEPLER_RANGE'))
+	);
+}
+
+function page43(c) {
+	title('8l. PAGE 4.3 (act4-planets/03-new-center/page.js)');
+	row('yearOf', [2451545.0, 2460676.5].map(jd => num(c.yearOf(jd))).join(' '));
+	row('yearTicks', JSON.stringify(c.yearTicks(2)(2010, 2026)));
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'INNER_RANGE')),
+		JSON.stringify(inContext(c, 'OUTER_RANGE')),
+		JSON.stringify(inContext(c, 'DISTANCE_RANGE')),
+		JSON.stringify(inContext(c, 'DISTANCE_ERROR_RANGE')),
+		JSON.stringify(inContext(c, 'SATURN_VIEW')),
+		JSON.stringify(inContext(c, 'ARRANGEMENT_VIEWS')),
+		JSON.stringify(inContext(c, 'LOOP_RANGE')),
+		JSON.stringify(inContext(c, 'DIFFERENCE_RANGE')),
+		num(inContext(c, 'EPICYCLET_E'))
+	);
+	row('loopDirection', [-60, -37, 0, 37, 60].map(t => num(c.loopDirection(t))).join(' '));
+}
+
+function page44(c) {
+	title('8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js)');
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		num(inContext(c, 'TELESCOPE_LARGEST')),
+		num(inContext(c, 'SYSTEMS_ROOM')),
+		num(inContext(c, 'ORDERS_ROOM')),
+		num(inContext(c, 'PARALLAX_ROOM')),
+		num(inContext(c, 'PARALLAX_RANGE')),
+		JSON.stringify(inContext(c, 'FIT_RANGE_X')),
+		JSON.stringify(inContext(c, 'TEST_ERROR_RANGE')),
+		JSON.stringify(inContext(c, 'ORDER_DISKS'))
+	);
+}
+
+function page45(c) {
+	title('8n. PAGE 4.5 (act4-planets/05-kepler/page.js)');
+	row('screenDirection', num(c.screenDirection({ x: 0, y: 0 }, { x: 1, y: -1 })));
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'SUN_RANGE')),
+		num(inContext(c, 'TRIANGLE_ROOM')),
+		JSON.stringify(inContext(c, 'TRIANGLE_RANGE')),
+		num(inContext(c, 'ELLIPSE_ROOM')),
+		num(inContext(c, 'ELLIPSE_PERIOD')),
+		JSON.stringify(inContext(c, 'ELLIPSE_VIEWS')),
+		JSON.stringify(inContext(c, 'SUMMARY_RANGE'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1231,6 +1534,9 @@ function buildTable() {
 	lunarCrankSection(shared);
 	lunarLatitudeSection(shared);
 	planetEpicycleSection(shared);
+	planetEquantSection(shared);
+	planetArrangementSection(shared);
+	keplerSection(shared);
 	displaySection(shared);
 	page11(pages[0]);
 	page12(pages[1]);
@@ -1242,6 +1548,10 @@ function buildTable() {
 	page32(pages[7]);
 	page33(pages[8]);
 	page41(pages[9]);
+	page42(pages[10]);
+	page43(pages[11]);
+	page44(pages[12]);
+	page45(pages[13]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

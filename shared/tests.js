@@ -6,9 +6,11 @@
    ERFA test values of the long-term precession, positions from JPL
    Horizons (DE441), and a few internal consistency checks, and prints
    pass / fail with the error. Also checks stars.js and the models of
-   pages 1.1 to 4.1 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
+   pages 1.1 to 4.5 (models/diurnal.js, frames.js, mean-sun.js, clock.js,
    solar-eccentric.js, equation-of-time.js, precession.js,
-   lunar-epicycle.js).
+   lunar-epicycle.js, ..., planet-epicycle.js, planet-equant.js,
+   planet-arrangement.js, kepler.js) and the VSOP87 reference of page
+   4.5 (vsop87.js).
 
    TABLE OF CONTENTS
 	 1. Test harness       (cases, comparison, table rows)
@@ -30,7 +32,11 @@
 	17. The lunar epicycle (Almagest IV 5-10; De Rev. IV 5; page 3.1)
 	18. Ptolemy's crank (Almagest V 4-7, V 13; page 3.2)
 	19. The simple planetary epicycle (Almagest IX 3, XII 1, XII 4; page 4.1)
-	20. Run
+	20. The planetary equant (Almagest X 7, XII 4; page 4.2)
+	21. Copernicus' arrangement (De Revolutionibus V 1, V 21; page 4.3)
+	22. Phases and parallax: Tycho's system, the phase of Venus, parallax (Meeus ch. 41; page 4.4)
+	23. Kepler's ellipses and the reference of page 4.5 (Meeus ch. 30; Fitzpatrick § 4.2; VSOP87; page 4.5)
+	24. Run
    ========================================================================== */
 
 /* ==========================================================================
@@ -684,7 +690,7 @@ function testPrecession() {
    10. EPHEMERIS: JPL HORIZONS SPOT CHECKS (DE441)
    Apparent geocentric ecliptic longitude of date from JPL Horizons
    (ssd.jpl.nasa.gov/api/horizons.api: CENTER='500@399', QUANTITIES='31',
-   TIME_TYPE='TT'; Mars, Jupiter, Saturn as system barycentres 4, 5, 6),
+   TIME_TYPE='TT'; Mars, Jupiter, Saturn as system barycenters 4, 5, 6),
    retrieved 2026-10-17. Tolerances: the accuracy measured over
    500 BC - 2500 AD in the header of ephemeris.js, rounded up.
    ========================================================================== */
@@ -1300,7 +1306,7 @@ function testSolarEccentric() {
 		show: showDeg
 	});
 
-	// III 4: Hipparchus' 94 1/2 and 92 1/2 days give the centres 2;29 1/2
+	// III 4: Hipparchus' 94 1/2 and 92 1/2 days give the centers 2;29 1/2
 	// apart (on a radius of 60), the apogee 24;30° before the summer
 	// solstice, and 88 1/8 and 90 1/8 days for autumn and winter.
 	const yearPtolemy = 365 + 14 / 60 + 48 / 3600;
@@ -1805,7 +1811,7 @@ function testLunarCrank() {
 		name: 'The perigee of the eccentric, OG',
 		source: 'Almagest V 4 (39;22)',
 		expected: 39 + 22 / 60,
-		computed: parts(LunarCrank.centreDistance(P.c, 180)),
+		computed: parts(LunarCrank.centeredistance(P.c, 180)),
 		tol: 0.02,
 		unit: 'parts',
 		show: x => x.toFixed(3)
@@ -1838,7 +1844,7 @@ function testLunarCrank() {
 	});
 
 	// V 7: OK = 43;43 and the greatest equation 6;54 at 2D = 120°
-	const rho = LunarCrank.centreDistance(P.c, 120);
+	const rho = LunarCrank.centeredistance(P.c, 120);
 
 	check({
 		name: 'The greatest equation at 2D = 120°',
@@ -1889,7 +1895,7 @@ function testLunarLatitude() {
 	group("The Moon's latitude and eclipses · models/lunar-latitude.js, models/eclipses.js (page 3.3)");
 
 	// VI 5: with i = 5°, the Moon 8;20° and 10;36° from the node along its
-	// circle; Ptolemy finds the two distances from the shadow's centre
+	// circle; Ptolemy finds the two distances from the shadow's center
 	// 0;11,47° apart
 	check({
 		name: 'The latitudes 8;20° and 10;36° from the node, their difference',
@@ -2072,7 +2078,358 @@ function testPlanetEpicycle() {
 }
 
 /* ==========================================================================
-   20. RUN
+   20. THE PLANETARY EQUANT (Almagest X 7, XII 4; page 4.2)
+   ========================================================================== */
+
+function testPlanetEquant() {
+	group('The planetary equant · models/planet-equant.js (page 4.2)');
+
+	// X 7: Ptolemy's three oppositions of Mars give his double
+	// eccentricity 12 (where the deferent is 60) and his apogee, Cancer 25;30
+	const solution = PlanetEquant.threeOppositions();
+
+	check({
+		name: "Mars' double eccentricity from Ptolemy's three oppositions",
+		source: 'Almagest X 7 (12 where the deferent is 60)',
+		expected: 12,
+		computed: 120 * solution.exact.e,
+		tol: 0.02,
+		show: x => x.toFixed(4)
+	});
+
+	check({
+		name: "Mars' apogee from Ptolemy's three oppositions",
+		source: 'Almagest X 7 (Cancer 25;30°)',
+		expected: 115.5,
+		computed: solution.exact.apogee,
+		tol: 0.05,
+		unit: '°',
+		show: showDeg
+	});
+
+	// XII 4: Ptolemy's arcs of retrogradation of Mars at greatest and least
+	// distance, 19;53,32° and 11;12,14°, computed with approximations of his
+	// own: the exact model is within a few minutes of them
+	const mars = PlanetEpicycle.PTOLEMY.mars;
+	const { e, r } = PlanetEquant.PTOLEMY;
+
+	check({
+		name: "Mars' arc of retrogradation at greatest distance",
+		source: 'Almagest XII 4 (19;53,32°)',
+		expected: 19 + 53 / 60 + 32 / 3600,
+		computed: PlanetEquant.loopAt(0, e, 2 * e, r, mars.n, mars.n + mars.nMu).arc,
+		tol: 6,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	check({
+		name: "Mars' arc of retrogradation at least distance",
+		source: 'Almagest XII 4 (11;12,14°)',
+		expected: 11 + 12 / 60 + 14 / 3600,
+		computed: PlanetEquant.loopAt(180, e, 2 * e, r, mars.n, mars.n + mars.nMu).arc,
+		tol: 6,
+		unit: '′',
+		scale: 60,
+		show: showDeg
+	});
+
+	// the model's longitude is the direction of its constructed planet
+	const jd = Time.julianDay(2025, 1, 16);
+	const s = PlanetEquant.state(PlanetEquant.MARS_FIT, jd);
+	const point = PlanetEquant.construction(PlanetEquant.MARS_FIT, s).planet;
+
+	check({
+		name: 'The longitude against the construction, 16 January 2025',
+		source: 'OP = OK + r u(λ̄☉)',
+		expected: atan2d(point[1], point[0]),
+		computed: s.lambda,
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// with no eccentricity the model is page 4.1's epicycle
+	const flat = Object.assign({}, PlanetEquant.MARS_FIT, { e: 0 }, PlanetEpicycle.MARS_FIT);
+
+	check({
+		name: "With e = 0, page 4.1's epicycle",
+		source: 'λ = λ̄ + η',
+		expected: PlanetEpicycle.state(PlanetEpicycle.MARS_FIT, jd).lambda,
+		computed: PlanetEquant.state(Object.assign(flat, { apogee: 0, apogeeRate: 0 }), jd).lambda,
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// the equant and Kepler's ellipse differ by -e^2/4 sin 2M to second order
+	const small = 0.001;
+
+	check({
+		name: "The equant less Kepler's ellipse at M = 45°, e = 0.001",
+		source: '-e² / 4 sin 2M (Fitzpatrick § 4.2, 4.4)',
+		expected: (-(small * small) / 4) * R2D,
+		computed: PlanetEquant.zodiacal(45, small, 2 * small).q - PlanetEquant.kepler(45, small).q,
+		tol: 1e-3,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(3)
+	});
+}
+
+/* ==========================================================================
+   21. COPERNICUS' ARRANGEMENT (DE REVOLUTIONIBUS V 1, V 21; PAGE 4.3)
+   ========================================================================== */
+
+function testPlanetArrangement() {
+	group("Copernicus' arrangement · models/planet-arrangement.js (page 4.3)");
+
+	// the exchange of the two vectors turns no direction: Copernicus'
+	// arrangement sees Mars where page 4.2's equant does
+	const jd = Time.julianDay(2025, 1, 16);
+
+	check({
+		name: "Mars in Copernicus' arrangement against page 4.2's equant, 16 January 2025",
+		source: 'OP = OK + KP = O☉ + ☉P',
+		expected: PlanetEquant.make(PlanetEquant.MARS_FIT)(jd),
+		computed: PlanetArrangement.make('mars')(jd),
+		tol: 1e-9,
+		unit: '°',
+		show: showDeg
+	});
+
+	// Copernicus' period relations (V 1): Venus goes round the Sun 13 times
+	// while the Earth goes round 8 times and passes it 5 times
+	const venus = PlanetArrangement.COPERNICUS.venus;
+	const year = 365.25;
+
+	check({
+		name: "Venus' period from 5 synodic periods in 8 years",
+		source: 'De Revolutionibus V 1 (13 turns in 8 years)',
+		expected: (8 * year) / 13,
+		computed: PlanetArrangement.periodAboutSun('inner', (venus.years * year) / venus.synodic, year),
+		tol: 1e-9,
+		unit: ' d',
+		show: x => x.toFixed(4)
+	});
+
+	// V 21: Copernicus' greatest elongations of Venus give its radius
+	// 7193 and the center 208 parts from the Sun's mean place
+	const sinA = sin(44.8);
+	const sinB = sin(47 + 16 / 60);
+	const radius = 2 / (1 / sinA + 1 / sinB);
+
+	check({
+		name: "Venus' radius from Copernicus' two greatest elongations",
+		source: 'De Revolutionibus V 21 (7193 parts of 10000)',
+		expected: 0.7193,
+		computed: radius,
+		tol: 2e-4,
+		show: x => x.toFixed(4)
+	});
+
+	// the eccentric with an epicyclet has the equant's direction to second
+	// order (Fitzpatrick § 4.4 - 4.5)
+	const small = 0.001;
+
+	check({
+		name: 'The epicyclet less the equant at M = 45°, e = 0.001',
+		source: 'equal to second order (Fitzpatrick § 4.4 - 4.5)',
+		expected: 0,
+		computed: PlanetArrangement.epicyclet(45, small).q - PlanetEquant.zodiacal(45, small, 2 * small).q,
+		tol: 1e-4,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(3)
+	});
+}
+
+/* ==========================================================================
+   22. PHASES AND PARALLAX: TYCHO'S SYSTEM, THE PHASE OF VENUS, PARALLAX (PAGE 4.4)
+   ========================================================================== */
+
+function testWhatMoves() {
+	group("Tycho's system, phases, parallax · ephemeris.js, stars.js, models/planet-arrangement.js (page 4.4)");
+
+	// Meeus Example 41.a: Venus on 1992 December 20.0 TD, i = 72.96°,
+	// k = 0.647
+	const venus = Ephem.phase('venus', 2448976.5);
+
+	check({
+		name: 'The phase angle of Venus, 1992 Dec 20.0 TD',
+		source: 'Meeus Ex. 41.a (72.96°)',
+		expected: 72.96,
+		computed: venus.phaseAngle,
+		tol: 0.01,
+		unit: '°',
+		show: x => x.toFixed(2)
+	});
+	check({
+		name: 'The illuminated fraction of Venus, 1992 Dec 20.0 TD',
+		source: 'Meeus Ex. 41.a (0.647)',
+		expected: 0.647,
+		computed: venus.k,
+		tol: 0.0005,
+		show: x => x.toFixed(3)
+	});
+
+	// Tycho's system: every place less the Earth's, so Mars' direction
+	// from the Earth is Copernicus' exactly
+	const jd = Time.julianDay(2025, 1, 16);
+	const m = PlanetArrangement.moment('mars', jd);
+	const T = m.tychonic;
+
+	check({
+		name: "Mars' ecliptic longitude, Tycho's system less Copernicus'",
+		source: 'equal by construction (page 4.4)',
+		expected: 0,
+		computed: norm180(atan2d(T.P[1] - T.O[1], T.P[0] - T.O[0]) - m.lambda),
+		tol: 1e-9,
+		unit: '″',
+		scale: 3600,
+		show: x => x.toExponential(2)
+	});
+
+	// the order of Venus around the Sun: half lit at greatest elongation,
+	// where the line of sight touches the circle about the Sun
+	const r = PlanetArrangement.VENUS_FIT.r;
+	const tangent = [1 - r * r, r * Math.sqrt(1 - r * r)];
+
+	check({
+		name: 'Venus around the Sun, at greatest elongation',
+		source: 'k = 1/2 when the radius is perpendicular to the line of sight',
+		expected: 0.5,
+		computed: PlanetArrangement.phaseAt(tangent, [1, 0]).k,
+		tol: 1e-12,
+		show: x => x.toFixed(6)
+	});
+
+	// the annual parallax of 61 Cygni is at most its parallax times the
+	// Sun's distance, along the ecliptic when the Sun is 90° from the star
+	const star = Stars.find('61 Cygni');
+	let largest = 0;
+
+	for (let t = jd; t < jd + 366; t += 1) {
+		const p = Stars.parallax(star, t);
+
+		largest = Math.max(largest, Math.hypot(p.dlon, p.dlat) / Ephem.sun(t, { apparent: false }).dist);
+	}
+
+	check({
+		name: 'The largest annual parallax of 61 Cygni, per au',
+		source: 'SIMBAD (Gaia DR3), 285.9949 mas',
+		expected: 0.2859949,
+		computed: largest,
+		tol: 2e-5,
+		unit: '″',
+		show: x => x.toFixed(4)
+	});
+}
+
+/* ==========================================================================
+   23. KEPLER'S ELLIPSES AND THE REFERENCE OF PAGE 4.5
+   ========================================================================== */
+
+function testKepler() {
+	group("Kepler's ellipses and the reference of page 4.5");
+
+	// Meeus' Example 30.a counts from the perihelion (M = E - e sin E):
+	// e = 0.1, M = 5° gives E = 5.554589°; from the aphelion, both + 180°
+	check({
+		name: "Kepler's equation, Newton's method (M = 185°, e = 0.1, from the aphelion)",
+		source: 'Meeus, Example 30.a: E = 5.554589° from the perihelion',
+		expected: 185.554589,
+		computed: Kepler.newton(185, 0.1).E,
+		tol: 1e-6,
+		unit: '°',
+		show: x => x.toFixed(6)
+	});
+
+	check({
+		name: "Kepler's equation, fixed point against Newton (e = 0.967, M = 30°)",
+		source: 'the two iterations converge to one root',
+		expected: Kepler.newton(30, 0.967).E,
+		computed: Kepler.fixedPoint(30, 0.967).E,
+		tol: 1e-9,
+		unit: '°',
+		show: x => x.toFixed(9)
+	});
+
+	// the second-order term of the equation of center, 5/4 e^2 sin 2M
+	// (Fitzpatrick (4.23)): its coefficient at a small e, by projection
+	const e = 0.001;
+	let sum = 0;
+
+	for (let M = 0.5; M < 360; M += 1) {
+		sum += Kepler.atAnomaly(M, e).q * sin(2 * M);
+	}
+
+	check({
+		name: 'The coefficient of sin 2M in q, in units of e^2',
+		source: 'Fitzpatrick (4.23): 5/4',
+		expected: 1.25,
+		computed: sum / 180 / (e * e * R2D),
+		tol: 1e-3,
+		show: x => x.toFixed(4)
+	});
+
+	// Hipparchus' method with the ellipse gives back the ellipse that
+	// made the seasons
+	const sun = Kepler.SUN_2026;
+	const crossing = lon => {
+		const M = Kepler.meanAnomalyAt(lon, sun.e, 103);
+
+		return M / sun.n;
+	};
+	const fit = Kepler.fitSeasons(crossing(90) - crossing(0), crossing(180) - crossing(90), sun.n);
+
+	check({
+		name: 'fitSeasons gives back the apogee of the ellipse that made the seasons',
+		source: 'an ellipse with e = 0.016655 and its apogee at 103°',
+		expected: 103,
+		computed: fit.apogee,
+		tol: 1e-6,
+		unit: '°',
+		show: x => x.toFixed(6)
+	});
+
+	check({
+		name: 'The third law: a body with the period of the year is at 1 au',
+		source: 'a^3 = P^2 (years, au)',
+		expected: 1,
+		computed: Kepler.thirdLaw(365.2564, 365.2564),
+		tol: 1e-12,
+		show: x => x.toFixed(6)
+	});
+
+	// VSOP87 against JPL Horizons (DE441), heliocentric ecliptic J2000,
+	// 2026 Jun 29 0h TDB (tools/numbers/data/vsop87/horizons-vectors-*.txt)
+	const jd = 2461220.5;
+	const horizons = {
+		mars: [1.186200620337555, 0.8160933000207807, -0.0119839457613301],
+		earth: [0.1226292418698563, -1.009103279148473, 6.245863354903853e-5]
+	};
+
+	Object.entries(horizons).forEach(([body, v]) => {
+		const computed = Vsop87.heliocentricJ2000(body, jd);
+
+		check({
+			name: `VSOP87 (truncated): ${body}, heliocentric ecliptic longitude, 2026 Jun 29`,
+			source: 'JPL Horizons, DE441',
+			expected: atan2d(v[1], v[0]),
+			computed: atan2d(computed[1], computed[0]),
+			tol: 0.5,
+			unit: '″',
+			scale: 3600,
+			angle: true,
+			show: x => x.toFixed(5)
+		});
+	});
+}
+
+/* ==========================================================================
+   24. RUN
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2097,5 +2454,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	testLunarCrank();
 	testLunarLatitude();
 	testPlanetEpicycle();
+	testPlanetEquant();
+	testPlanetArrangement();
+	testWhatMoves();
+	testKepler();
 	render();
 });

@@ -431,7 +431,7 @@ details.fold[open] > summary {
 	border-bottom: 1px solid var(--line);
 }
 
-/* Display equations are centred in the text column (STYLE.md §4.6). An
+/* Display equations are centered in the text column (STYLE.md §4.6). An
    equation is never cut by KaTeX, so the prose's display equations are
    split by wrapDisplayMath (common.js) into pieces that wrap, below; any
    overflow left (a single piece wider than a phone) scrolls quietly. */
@@ -450,6 +450,16 @@ details.fold[open] > summary {
 	scrollbar-width: none;
 }
 
+/* The boxes that clip a display equation leave it a little room above and
+   below: KaTeX draws an accent such as the bar of \bar\lambda on the top
+   row of its own box, or half a pixel above it, and a clip at the box's
+   edge cut it away at some zoom levels. The same amount comes off the
+   margin, so a boxed equation keeps its place. */
+.katex-display,
+.eq-split {
+	padding-block: 0.15em;
+}
+
 .eq::-webkit-scrollbar,
 .katex-display::-webkit-scrollbar {
 	display: none;
@@ -459,7 +469,7 @@ details.fold[open] > summary {
    kept to the text column here rather than by an article > selector. */
 .katex-display {
 	max-width: var(--text-width);
-	margin: 0.8em 0;
+	margin: 0.65em 0;
 }
 
 .katex {
@@ -490,7 +500,7 @@ details.fold[open] > summary {
 	column-gap: 2.5em;
 	row-gap: 0.9em;
 	max-width: var(--text-width);
-	margin: 0.8em 0;
+	margin: 0.65em 0;
 }
 
 .eq-split::-webkit-scrollbar {
@@ -510,6 +520,7 @@ details.fold[open] > summary {
 .eq-split .katex-display {
 	overflow: visible;
 	margin: 0;
+	padding: 0;
 }
 
 /* A piece still wider than the column breaks after a binary operator
@@ -933,7 +944,7 @@ canvas.sphere3d:focus-visible {
 	outline-offset: 2px;
 }
 
-/* A slider with previous / next buttons on a second line, centred under
+/* A slider with previous / next buttons on a second line, centered under
    the row, so the track keeps the length of the other rows.
 	 <div class="ctl stepper"> label, input, output,
 		 <span class="stepper-buttons"> two button.stepper-btn </span></div> */
@@ -1088,6 +1099,7 @@ button.play {
 [data-origin="hipparchus"],
 [data-origin="ptolemy"],
 [data-origin="copernicus"],
+[data-origin="tycho"],
 [data-origin="kepler"] {
 	--origin: var(--epicycle-text);
 }

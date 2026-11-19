@@ -8,14 +8,14 @@
 									   of 2026, with its four seasons)
 	 2. the Earth or the Sun at rest (2D, static: the eccentric and the
 									   equal circle that carries the Earth)
-	 3. the equation of centre       (2D: (a) the eccentric with M and q,
+	 3. the equation of center       (2D: (a) the eccentric with M and q,
 									   (b) q through 2026; date, and two
 									   views, e = 0.2 and the Sun's e)
 	 4. the four seasons             (2D, static: the eccentric cut by the
 									   lines to the equinoxes and solstices,
 									   at e = 0.2 and at the Sun's e)
 	 5. Hipparchus' construction     (2D: (a) the right triangles of the
-									   construction, (b) the centre
+									   construction, (b) the center
 									   magnified; spring and summer)
 	 6. the first error curve        (the eccentric fitted to 2026, over
 									   1, 100 and 1000 years)
@@ -28,7 +28,7 @@
 	 1. Figure 1: the Sun's daily motion
 	 2. The drawing of an eccentric (Figures 2 to 4)
 	 3. Figure 2: the Earth at rest, the Sun at rest
-	 4. Figure 3: the equation of centre
+	 4. Figure 3: the equation of center
 	 5. Figure 4: the four seasons
 	 6. Figure 5: Hipparchus' construction
 	 7. Figure 6: the error curve
@@ -121,7 +121,7 @@ function drawArrow(ctx, from, to, style, gap = 0) {
    Static. For each day from the September equinox of 2025 to that of
    2026, the last documented year of seasons (STRUCTURE.md §5), the arc
    (arcmin) the reference Sun moves between 0 h the day before and 0 h
-   the day after, divided by two (centred on the day); the mean daily
+   the day after, divided by two (centered on the day); the mean daily
    motion n; the four seasons, with their names and lengths above the
    plot. Fixed scale 56' to 62' (the motion ranges from 57.19' to 61.14',
    tools/numbers/2.1-uneven-year.js).
@@ -219,7 +219,7 @@ const motionFigure = {
 		this.labelSeasons();
 	},
 
-	/* The name and length of each season, centred above it. */
+	/* The name and length of each season, centered above it. */
 	labelSeasons() {
 		const p = this.plot;
 		const ctx = p.ctx;
@@ -246,36 +246,36 @@ const motionFigure = {
    Figures 2 to 4, seen from the north ecliptic pole (longitude
    anticlockwise, gamma to the right). A view is an owner set up by
    squareCanvas, with 'scale' (pixels per unit of the radius) and
-   'centre' ({ h, k }, the point of the drawing shown at the centre of
+   'center' ({ h, k }, the point of the drawing shown at the center of
    the canvas). Points are given in units of the radius, with the Earth
    (Figures 3, 4) or the body at rest (Figure 2) at the origin.
    ========================================================================== */
 
 /* A point (x, y), in units of the radius, on the canvas of 'view'. */
 function toCanvas(view, x, y) {
-	return { x: view.cx + view.scale * (x - view.centre.h), y: view.cy - view.scale * (y - view.centre.k) };
+	return { x: view.cx + view.scale * (x - view.center.h), y: view.cy - view.scale * (y - view.center.k) };
 }
 
 /* The distance from the origin, along the direction 'lon', to the circle
-   of radius 1 centred on (h, k). */
+   of radius 1 centered on (h, k). */
 function reachCircle(lon, h, k) {
 	const along = h * cos(lon) + k * sin(lon);
 
 	return along + Math.sqrt(along * along - h * h - k * k + 1);
 }
 
-/* The circle of radius 1 centred on (h, k). */
-function drawEccentric(view, centre) {
-	circle(view.ctx, toCanvas(view, centre.h, centre.k), view.scale, { color: COL.deferent, width: 2.5 });
+/* The circle of radius 1 centered on (h, k). */
+function drawEccentric(view, center) {
+	circle(view.ctx, toCanvas(view, center.h, center.k), view.scale, { color: COL.deferent, width: 2.5 });
 }
 
 /* The dotted line of apsides, from the perigee through O and C to the
    apogee, with the two names just outside the circle. */
-function drawApsides(view, centre, apogee, labels) {
+function drawApsides(view, center, apogee, labels) {
 	const ctx = view.ctx;
-	const C = toCanvas(view, centre.h, centre.k);
-	const far = toCanvas(view, centre.h + cos(apogee), centre.k + sin(apogee));
-	const near = toCanvas(view, centre.h - cos(apogee), centre.k - sin(apogee));
+	const C = toCanvas(view, center.h, center.k);
+	const far = toCanvas(view, center.h + cos(apogee), center.k + sin(apogee));
+	const near = toCanvas(view, center.h - cos(apogee), center.k - sin(apogee));
 
 	segment(ctx, far, near, { color: COL.muted, width: 1.2, dash: [2, 4] });
 	drawDot(ctx, far.x, far.y, 3.5, COL.deferent);
@@ -288,16 +288,16 @@ function drawApsides(view, centre, apogee, labels) {
    circle, with their labels outside it; 'points' is a subset of
    CARDINAL_POINTS. labelShift (deg): the labels turn by this angle about
    the Earth, to leave room for the names of the apogee and the perigee. */
-function drawCardinalLines(view, centre, points, labelShift, labels) {
-	const C = toCanvas(view, centre.h, centre.k);
+function drawCardinalLines(view, center, points, labelShift, labels) {
+	const C = toCanvas(view, center.h, center.k);
 
 	points.forEach(({ lon, label }) => {
-		const reach = reachCircle(lon, centre.h, centre.k);
+		const reach = reachCircle(lon, center.h, center.k);
 		const end = { x: reach * cos(lon), y: reach * sin(lon) };
 
 		// the label just outside the circle, beyond the end of the line as
 		// seen from C, turned by labelShift
-		const fromC = Math.atan2(end.y - centre.k, end.x - centre.h) * R2D;
+		const fromC = Math.atan2(end.y - center.k, end.x - center.h) * R2D;
 
 		segment(view.ctx, toCanvas(view, 0, 0), toCanvas(view, end.x, end.y), { color: COL.sun, width: 1.5 });
 		labelOutside(view.ctx, label, C, view.scale, fromC + labelShift, COL.sun, labels);
@@ -307,7 +307,7 @@ function drawCardinalLines(view, centre, points, labelShift, labels) {
 /* ==========================================================================
    3. FIGURE 2: THE EARTH AT REST, THE SUN AT REST
    Static. (a) the eccentric about the Earth at rest, (b) the equal circle
-   that carries the Earth about the Sun at rest, its centre offset the
+   that carries the Earth about the Sun at rest, its center offset the
    opposite way; in both, the arrow from the Earth to the Sun at the same
    moment, the same in length and direction. The offset is drawn at
    REST_E, six times the Sun's, so that it can be seen.
@@ -315,12 +315,12 @@ function drawCardinalLines(view, centre, points, labelShift, labels) {
 
 const REST_E = 0.2;
 
-/* The moment drawn: the Sun's mean longitude (deg), seen from the centre
+/* The moment drawn: the Sun's mean longitude (deg), seen from the center
    of the eccentric. */
 const REST_MEAN_LONGITUDE = 40;
 
-/* The drawing, centred on the centre of the circle, fits this many radii
-   from the centre of the canvas (the circle and the names outside it). */
+/* The drawing, centered on the center of the circle, fits this many radii
+   from the center of the canvas (the circle and the names outside it). */
 const REST_REACH = 1.3;
 
 const restFigure = {
@@ -350,10 +350,10 @@ const restFigure = {
 		return view;
 	},
 
-	/* Prepare a panel for a new drawing, centred on 'centre'. */
-	begin(view, centre) {
+	/* Prepare a panel for a new drawing, centered on 'center'. */
+	begin(view, center) {
 		view.scale = view.R / REST_REACH;
-		view.centre = centre;
+		view.center = center;
 		view.ctx.clearRect(0, 0, view.width, view.width);
 	},
 
@@ -363,14 +363,14 @@ const restFigure = {
 
 		this.begin(view, offset);
 
-		const centre = toCanvas(view, offset.h, offset.k);
+		const center = toCanvas(view, offset.h, offset.k);
 		const earth = toCanvas(view, 0, 0);
 		const S = toCanvas(view, sun.x, sun.y);
 
 		drawEccentric(view, offset);
-		segment(ctx, earth, centre, { color: COL.muted, width: 1.2, dash: [2, 4] });
+		segment(ctx, earth, center, { color: COL.muted, width: 1.2, dash: [2, 4] });
 		drawArrow(ctx, earth, S, { color: COL.planet, width: 2 }, 10);
-		drawDot(ctx, centre.x, centre.y, 3.5, COL.ink);
+		drawDot(ctx, center.x, center.y, 3.5, COL.ink);
 		drawDot(ctx, earth.x, earth.y, 6, COL.earth);
 		drawDot(ctx, S.x, S.y, 8, COL.sun);
 
@@ -379,25 +379,25 @@ const restFigure = {
 		const arrowLon = Math.atan2(sun.y, sun.x) * R2D;
 
 		labelOutside(ctx, 'Earth', earth, 6, arrowLon + 180, COL.earth);
-		labelOutside(ctx, 'Sun', centre, view.scale, REST_MEAN_LONGITUDE, COL.sun);
+		labelOutside(ctx, 'Sun', center, view.scale, REST_MEAN_LONGITUDE, COL.sun);
 	},
 
 	/* (b) The Sun at rest at the origin, the Earth on the equal circle
-	   centred at -offset, always opposite the Sun's place in (a). */
+	   centered at -offset, always opposite the Sun's place in (a). */
 	drawSunAtRest(view, offset, sun) {
 		const ctx = view.ctx;
 		const centreOffset = { h: -offset.h, k: -offset.k };
 
 		this.begin(view, centreOffset);
 
-		const centre = toCanvas(view, centreOffset.h, centreOffset.k);
+		const center = toCanvas(view, centreOffset.h, centreOffset.k);
 		const S = toCanvas(view, 0, 0);
 		const earth = toCanvas(view, -sun.x, -sun.y);
 
 		drawEccentric(view, centreOffset);
-		segment(ctx, S, centre, { color: COL.muted, width: 1.2, dash: [2, 4] });
+		segment(ctx, S, center, { color: COL.muted, width: 1.2, dash: [2, 4] });
 		drawArrow(ctx, earth, S, { color: COL.planet, width: 2 }, 10);
-		drawDot(ctx, centre.x, centre.y, 3.5, COL.ink);
+		drawDot(ctx, center.x, center.y, 3.5, COL.ink);
 		drawDot(ctx, S.x, S.y, 8, COL.sun);
 		drawDot(ctx, earth.x, earth.y, 6, COL.earth);
 
@@ -406,12 +406,12 @@ const restFigure = {
 		const arrowLon = Math.atan2(sun.y, sun.x) * R2D;
 
 		labelOutside(ctx, 'Sun', S, 8, arrowLon, COL.sun);
-		labelOutside(ctx, 'Earth', centre, view.scale, REST_MEAN_LONGITUDE + 180, COL.earth);
+		labelOutside(ctx, 'Earth', center, view.scale, REST_MEAN_LONGITUDE + 180, COL.earth);
 	}
 };
 
 /* ==========================================================================
-   4. FIGURE 3: THE EQUATION OF CENTRE
+   4. FIGURE 3: THE EQUATION OF CENTER
    (a) the eccentric with the apogee fixed at the 2026 fit, the Sun S at
    the chosen date, the angles M (at C) and q (at the Earth O); (b) q
    through 2026, exact and to first order. Two views, chosen by the
@@ -429,7 +429,7 @@ const EOC_VIEWS = [
 	{ name: `the Sun, e = ${fixed(SolarEccentric.FIT_2026.e, 4)}`, e: SolarEccentric.FIT_2026.e, qRange: SUN_Q_RANGE }
 ];
 
-/* The drawing is centred on C: the circle, and the labels just outside
+/* The drawing is centered on C: the circle, and the labels just outside
    it, fit ECCENTRIC_REACH radii. */
 const ECCENTRIC_REACH = 1.27;
 
@@ -542,23 +542,23 @@ const centreFigure = {
 		const ctx = this.ctx;
 		const { parameters, now } = this.state;
 		const { e, apogee } = parameters;
-		const centre = { h: e * cos(apogee), k: e * sin(apogee) };
+		const center = { h: e * cos(apogee), k: e * sin(apogee) };
 
 		this.scale = this.R / ECCENTRIC_REACH;
-		this.centre = centre;
+		this.center = center;
 		ctx.clearRect(0, 0, this.width, this.width);
 		this.labels.begin(canvasBounds(this));
 
-		drawApsides(this, centre, apogee, this.labels);
-		drawEccentric(this, centre);
-		drawCardinalLines(this, centre, [CARDINAL_POINTS[0]], 0, this.labels);
-		this.drawSun(centre, now);
-		this.labelCentre(centre, now);
+		drawApsides(this, center, apogee, this.labels);
+		drawEccentric(this, center);
+		drawCardinalLines(this, center, [CARDINAL_POINTS[0]], 0, this.labels);
+		this.drawSun(center, now);
+		this.labelCentre(center, now);
 	},
 
 	/* The names of the Earth O and of C (CENTRE_LABEL_TURN), clear of the
 	   mean direction, the Sun and the middle of the arc M. */
-	labelCentre(centre, now) {
+	labelCentre(center, now) {
 		const apogee = this.state.parameters.apogee;
 		const busy = [now.meanLongitude, now.lambda, apogee + now.M / 2, 0];
 		const clearance = lon => Math.min(...busy.map(b => Math.abs(norm180(lon - b))));
@@ -566,21 +566,21 @@ const centreFigure = {
 		const earthSide = better(apogee + 180 - CENTRE_LABEL_TURN, apogee + 180 + CENTRE_LABEL_TURN);
 		const cSide = better(apogee - CENTRE_LABEL_TURN, apogee + CENTRE_LABEL_TURN);
 		const O = toCanvas(this, 0, 0);
-		const C = toCanvas(this, centre.h, centre.k);
+		const C = toCanvas(this, center.h, center.k);
 
-		centredLabel(this.ctx, 'O', towards(O, earthSide, EARTH_LABEL_DISTANCE), COL.earth, this.labels);
-		centredLabel(this.ctx, 'C', towards(C, cSide, CENTRE_LABEL_DISTANCE * this.scale), COL.ink, this.labels);
+		centeredLabel(this.ctx, 'O', towards(O, earthSide, EARTH_LABEL_DISTANCE), COL.earth, this.labels);
+		centeredLabel(this.ctx, 'C', towards(C, cSide, CENTRE_LABEL_DISTANCE * this.scale), COL.ink, this.labels);
 	},
 
 	/* The Sun S, the mean direction from C and from O, and the angles M
 	   and q. */
-	drawSun(centre, now) {
+	drawSun(center, now) {
 		const ctx = this.ctx;
 		const { meanLongitude, q } = now;
 		const apogee = this.state.parameters.apogee;
 		const O = toCanvas(this, 0, 0);
-		const C = toCanvas(this, centre.h, centre.k);
-		const S = toCanvas(this, centre.h + cos(meanLongitude), centre.k + sin(meanLongitude));
+		const C = toCanvas(this, center.h, center.k);
+		const S = toCanvas(this, center.h + cos(meanLongitude), center.k + sin(meanLongitude));
 		const meanEnd = toCanvas(this, cos(meanLongitude), sin(meanLongitude));
 		const sweepM = norm360(meanLongitude - apogee);
 
@@ -611,13 +611,13 @@ const centreFigure = {
 		const outside = q >= 0 ? -90 : 90;
 		const onLine = towards(O, meanLongitude, (ARC_RADIUS.q + 0.05) * this.scale);
 
-		centredLabel(ctx, 'q', towards(onLine, meanLongitude + outside, Q_LABEL_GAP), COL.planet, this.labels);
+		centeredLabel(ctx, 'q', towards(onLine, meanLongitude + outside, Q_LABEL_GAP), COL.planet, this.labels);
 	},
 
 	/* An angle's name at radius r (units of the radius) from a canvas
 	   point, in the direction 'lon'. */
 	angleLabel(text, from, r, lon, color) {
-		centredLabel(this.ctx, text, towards(from, lon, r * this.scale), color, this.labels);
+		centeredLabel(this.ctx, text, towards(from, lon, r * this.scale), color, this.labels);
 	},
 
 	/* Panel (b). */
@@ -677,26 +677,26 @@ const seasonsFigure = {
 	drawPanel(view, e) {
 		const ctx = view.ctx;
 		const apogee = SolarEccentric.FIT_2026.apogee;
-		const centre = { h: e * cos(apogee), k: e * sin(apogee) };
+		const center = { h: e * cos(apogee), k: e * sin(apogee) };
 		const lengths = SolarEccentric.seasonLengths(e, apogee, YEAR_LENGTH);
 
 		view.scale = view.R / ECCENTRIC_REACH;
-		view.centre = centre;
+		view.center = center;
 		ctx.clearRect(0, 0, view.width, view.width);
 		view.labels.begin(canvasBounds(view));
 
-		drawApsides(view, centre, apogee, view.labels);
-		drawEccentric(view, centre);
-		drawCardinalLines(view, centre, CARDINAL_POINTS, SEASONS_LABEL_SHIFT, view.labels);
-		this.labelArcs(view, centre, lengths);
+		drawApsides(view, center, apogee, view.labels);
+		drawEccentric(view, center);
+		drawCardinalLines(view, center, CARDINAL_POINTS, SEASONS_LABEL_SHIFT, view.labels);
+		this.labelArcs(view, center, lengths);
 
 		const O = toCanvas(view, 0, 0);
-		const C = toCanvas(view, centre.h, centre.k);
+		const C = toCanvas(view, center.h, center.k);
 
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
 		drawDot(ctx, C.x, C.y, 3.5, COL.ink);
-		centredLabel(ctx, 'O', towards(O, SEASONS_O_LABEL.lon, SEASONS_O_LABEL.distance), COL.earth, view.labels);
-		centredLabel(
+		centeredLabel(ctx, 'O', towards(O, SEASONS_O_LABEL.lon, SEASONS_O_LABEL.distance), COL.earth, view.labels);
+		centeredLabel(
 			ctx,
 			'C',
 			towards(C, apogee + SEASONS_C_LABEL.turn, SEASONS_C_LABEL.distance),
@@ -706,14 +706,14 @@ const seasonsFigure = {
 	},
 
 	/* Each season's name and length, inside its quarter of the circle. */
-	labelArcs(view, centre, lengths) {
+	labelArcs(view, center, lengths) {
 		const ctx = view.ctx;
 
 		SEASON_NAMES.forEach((name, i) => {
 			const lon = 45 + 90 * i;
-			const at = toCanvas(view, centre.h + 0.62 * cos(lon), centre.k + 0.62 * sin(lon));
+			const at = toCanvas(view, center.h + 0.62 * cos(lon), center.k + 0.62 * sin(lon));
 
-			centredLabel(ctx, name, { x: at.x, y: at.y - 10 }, COL.ink);
+			centeredLabel(ctx, name, { x: at.x, y: at.y - 10 }, COL.ink);
 			ctx.font = FONT_TICK;
 			ctx.fillText(`${fixed(lengths[i], 2)} d`, at.x, at.y + 11);
 		});
@@ -723,9 +723,9 @@ const seasonsFigure = {
 /* ==========================================================================
    6. FIGURE 5: HIPPARCHUS' CONSTRUCTION
    From the lengths of spring and summer (sliders, 90 to 96 days) and the
-   modern year: the centre C = (h, k), e and the apogee
+   modern year: the center C = (h, k), e and the apogee
    (SolarEccentric.fitSeasons).
-   (a) the construction of section 3, centred on C, with C drawn
+   (a) the construction of section 3, centered on C, with C drawn
 	   FIT_EXAGGERATION times farther from the Earth than the fit puts it,
 	   so that the small angles arcsin h and arcsin k can be seen: the
 	   axes through the Earth, the parallels to them through C, the radii
@@ -733,7 +733,7 @@ const seasonsFigure = {
 	   two right triangles of the text, each with its short leg (k from
 	   the parallel to the x axis, h from the parallel to the y axis) and
 	   its angle at C; the arcs a1 (spring) and a2 (summer).
-   (b) the centre at its true place, magnified: h and k from -0.1 to 0.1
+   (b) the center at its true place, magnified: h and k from -0.1 to 0.1
 	   of the radius; over the whole range of the sliders e stays under
 	   0.081 (tools/numbers/2.1-uneven-year.js), so C never leaves the
 	   panel, and the drawn offset in (a) stays under 0.49 of the radius.
@@ -744,7 +744,7 @@ const CENTRE_RANGE = [-0.1, 0.1];
 /* Panel (a) draws C this many times farther from the Earth. */
 const FIT_EXAGGERATION = 6;
 
-/* Panel (a): the drawing, centred on C, fits this many radii (the circle
+/* Panel (a): the drawing, centered on C, fits this many radii (the circle
    and the names of the axes outside it). */
 const FIT_REACH = 1.27;
 
@@ -775,7 +775,7 @@ const APOGEE_LABEL_HALF = { width: 12, height: 11 };
    smallest step of a slider, 0.01 day, gives at least 0.00008. */
 const NO_ECCENTRICITY = 5e-5;
 
-/* "arcsin k": the function upright, the variable in italics, centred at a
+/* "arcsin k": the function upright, the variable in italics, centered at a
    canvas point, in the text colour of 'color'. */
 const ARCSIN_FONT = '500 16px Spectral, Georgia, serif';
 const ARCSIN_SPACE = 4;
@@ -880,7 +880,7 @@ const fitFigure = {
 		return { x: this.cx + this.scale * x, y: this.cy - this.scale * y };
 	},
 
-	/* Panel (a): the construction, centred on C. */
+	/* Panel (a): the construction, centered on C. */
 	draw() {
 		if (!this.fit) {
 			return;
@@ -908,8 +908,8 @@ const fitFigure = {
 
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
 		drawDot(ctx, C.x, C.y, 4, COL.ink);
-		centredLabel(ctx, 'O', { x: O.x - 13, y: O.y + 13 }, COL.earth, this.labels);
-		centredLabel(ctx, 'C', { x: C.x - 13, y: C.y - 13 }, COL.ink, this.labels);
+		centeredLabel(ctx, 'O', { x: O.x - 13, y: O.y + 13 }, COL.earth, this.labels);
+		centeredLabel(ctx, 'C', { x: C.x - 13, y: C.y - 13 }, COL.ink, this.labels);
 	},
 
 	/* The parallels to the axes through C, dashed, across the circle. */
@@ -982,8 +982,8 @@ const fitFigure = {
 		segment(ctx, hTop, hEnd, legStyle);
 
 		// the legs' names, inside their triangles
-		centredLabel(ctx, 'k', { x: kTop.x - LEG_LABEL_GAP, y: (kTop.y + kEnd.y) / 2 }, COL.planet, this.labels);
-		centredLabel(ctx, 'h', { x: (hTop.x + hEnd.x) / 2, y: hTop.y + LEG_LABEL_GAP }, COL.planet, this.labels);
+		centeredLabel(ctx, 'k', { x: kTop.x - LEG_LABEL_GAP, y: (kTop.y + kEnd.y) / 2 }, COL.planet, this.labels);
+		centeredLabel(ctx, 'h', { x: (hTop.x + hEnd.x) / 2, y: hTop.y + LEG_LABEL_GAP }, COL.planet, this.labels);
 
 		// the angles' names, across the parallel from their angle: arcsin k
 		// above the parallel to the x axis when the angle opens below it;
@@ -1094,17 +1094,17 @@ const fitFigure = {
 		const right = h < 0 ? 1 : -1; // the side of the y axis away from C
 		const below = k < 0 ? -1 : 1; // the side of the x axis away from C
 
-		centredLabel(p.ctx, 'O', { x: p.px(0) + 12 * right, y: p.py(0) + 14 * below }, COL.earth, p.labels);
-		centredLabel(p.ctx, 'C', { x: p.px(h) - 14 * right, y: p.py(k) - 12 }, COL.ink, p.labels);
-		centredLabel(p.ctx, 'h', { x: p.px(h / 2), y: p.py(0) + 14 * below }, COL.planet, p.labels);
-		centredLabel(p.ctx, 'k', { x: p.px(0) + 12 * right, y: p.py(k / 2) }, COL.planet, p.labels);
+		centeredLabel(p.ctx, 'O', { x: p.px(0) + 12 * right, y: p.py(0) + 14 * below }, COL.earth, p.labels);
+		centeredLabel(p.ctx, 'C', { x: p.px(h) - 14 * right, y: p.py(k) - 12 }, COL.ink, p.labels);
+		centeredLabel(p.ctx, 'h', { x: p.px(h / 2), y: p.py(0) + 14 * below }, COL.planet, p.labels);
+		centeredLabel(p.ctx, 'k', { x: p.px(0) + 12 * right, y: p.py(k / 2) }, COL.planet, p.labels);
 	}
 };
 
 /* ==========================================================================
    7. FIGURE 6: THE ERROR CURVE
    The eccentric fitted to 2026 against the reference Sun, over 1, 100
-   and 1000 years centred on 2026 (the model takes JD(TT) and returns a
+   and 1000 years centered on 2026 (the model takes JD(TT) and returns a
    longitude, models/solar-eccentric.js; the widget compares it with the
    reference Sun, shared/errorcurve.js). No slider changes the model, so
    the widget fits its scale to each span. The uniform circle of page 1.3

@@ -617,7 +617,7 @@ function risingPoint(eps, phi, theta) {
 });
 
 // sunset at Rome on the two equinoxes: the Sun's upper limb on the seen
-// horizon (centre at -50', page 1.1), the turn theta then, and the angle
+// horizon (center at -50', page 1.1), the turn theta then, and the angle
 // between the ecliptic and the horizon
 [
 	[2026, 3, 20, 'March equinox'],

@@ -3,13 +3,13 @@
    PREDICTING THE SKY - MODEL: PTOLEMY'S CRANK (models/lunar-crank.js)
    The model of page 3.2, the Moon's second anomaly (Almagest V 2-7). It
    keeps the epicycle of page 3.1 (models/lunar-epicycle.js) and carries
-   its centre K on an eccentric whose centre C turns westward about the
+   its center K on an eccentric whose center C turns westward about the
    Earth O, so that K is farthest from the Earth at the mean new and full
    Moon and nearest at the mean quarters.
 
    Units: OA = 1, the greatest distance of K (Ptolemy's 60). With the
    mean elongation D = lambdaBar - lambdaBarSun:
-	 C = c u(lambdaBar - 2D)      the centre of the eccentric, radius
+	 C = c u(lambdaBar - 2D)      the center of the eccentric, radius
 								  1 - c, its apogee A at lambdaBar - 2D;
 	 K = rho u(lambdaBar)         seen from O at the mean longitude, with
 	 rho = c cos 2D + sqrt((1 - c)^2 - c^2 sin^2 2D)  (triangle O C K);
@@ -68,7 +68,7 @@ const LunarCrank = (function () {
 	   ====================================================================== */
 
 	/* The distance OK (units of OA) at the double elongation 2D (deg). */
-	function centreDistance(c, twoD) {
+	function centeredistance(c, twoD) {
 		const s = c * sin(twoD);
 
 		return c * cos(twoD) + Math.sqrt((1 - c) * (1 - c) - s * s);
@@ -80,7 +80,7 @@ const LunarCrank = (function () {
 	   from N, which is 0 for the direction from O); the equation q (deg)
 	   and the distance OL. 'M' is the anomaly from the mean apogee. */
 	function geometry(e, c, twoD, M, direction = true) {
-		const rho = centreDistance(c, twoD);
+		const rho = centeredistance(c, twoD);
 		const C = [c * cos(twoD), -c * sin(twoD)];
 		const K = [rho, 0];
 		const N = [-C[0], -C[1]];
@@ -167,7 +167,7 @@ const LunarCrank = (function () {
 	return {
 		PTOLEMY,
 		FIT_2026,
-		centreDistance,
+		centeredistance,
 		geometry,
 		state,
 		make,

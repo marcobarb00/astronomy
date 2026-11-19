@@ -55,14 +55,15 @@ section.
   answer, every number from a script. → STRUCTURE.md §7.2
 - **Page 4.5 (Kepler) cannot be judged by the planetary reference.** The
   reference is itself Keplerian (Standish), so the error would be near
-  zero by construction; the page needs another yardstick. → STRUCTURE.md
-  §11
+  zero by construction; the page needs another yardstick. On 2026-11-19
+  it became VSOP87 (see "Page 4.5 is judged against VSOP87" below). →
+  STRUCTURE.md §11
 - **A historical journey, not a claim about what moves.** The course
   follows the astronomers before Kepler and rebuilds their models as
   theirs; it never presents one as true. Directions seen from the Earth
   cannot decide which body is at rest, so the text says what each model
   takes as at rest (geostatic, heliostatic), keeps the frame apart from
-  the arrangement, and never speaks of a true centre. Adopted on
+  the arrangement, and never speaks of a true center. Adopted on
   2026-10-27 at Marco's request, with a new page 4.4, "What moves?", on
   the question; Kepler became page 4.5. → WRITING.md §9, STRUCTURE.md §4
 - **The Sun and the Moon are connected to the models used today, without
@@ -114,6 +115,105 @@ section.
   years, and the text gives both numbers. Later pages keep earlier models
   as ghosts where the scales allow. Decided by Marco on 2026-11-11. →
   STRUCTURE.md §4 (page 2.1), §7.3
+
+- **Page 4.2 fits the deferent's center and the equant apart, then adopts
+  the bisection.** The oppositions fix OQ and the loops OC (to first
+  order K's speed depends only on OQ, its distance only on OC); fitted
+  alternately to 2010–2025 they give OC/OQ = 0.49, so Ptolemy's model
+  is then fitted with OC = $e$, OQ = $2e$. Its apogee is fixed among the
+  stars, as Ptolemy's (IX 5), moving at page 2.3's rate. Notation: OC =
+  $e$, so $e$ compares directly with Kepler's. Approved by Marco on
+  2026-11-13. → STRUCTURE.md §4 (page 4.2), §6
+- **Page 4.2's error curve keeps page 4.1's epicycle as ghost**, though
+  it is about forty times larger: the shrink is the point of the figure,
+  and the pointer reads the equant's own error. Unlike page 2.1. Decided
+  by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
+- **No Today note on page 4.2; the equant is compared with Kepler's
+  ellipse as geometry** (the same circle's center and foci O and Q),
+  without the two orbits about the Sun, which would answer page 4.3's
+  question. Approved by Marco on 2026-11-13. → STRUCTURE.md §4 (page 4.2)
+
+- **Page 4.3: the arrangement changes no direction; its distances are
+  the test.** Ptolemy's models of pages 4.1 and 4.2 are moved into
+  Copernicus' arrangement exactly (the vectors exchanged, each model
+  scaled so that the Earth–☉ distance is 1), so the error curve is page
+  4.2's, unchanged; the distances from the Earth, a new prediction, are
+  tested on Mars. STRUCTURE.md's "the predictions barely improved"
+  became "the predicted directions do not change"; Copernicus' own models
+  are not rebuilt. Approved by Marco on 2026-11-16, who asked that the
+  page say Copernicus removed the equant, which made his model (a little)
+  worse, and that Kepler restored it with the ellipse: the page compares
+  Copernicus' eccentric with an epicyclet (V 4) with page 4.2's equant
+  (largest error of Mars 0.88° to 0.91°). → STRUCTURE.md §4 (page 4.3)
+- **Page 4.3's error curve shows Copernicus' epicyclet, not the
+  arrangement.** The arrangement's error curve is page 4.2's exactly,
+  so repeating it showed nothing (its ghost lay hidden under the curve,
+  and the scale, without page 4.1's ghost, made it look different from
+  page 4.2's). Figure 4, in the Model, has Mars with Copernicus'
+  eccentric and epicyclet as the model and page 4.2's equant as ghost,
+  over 4 and 16 years; the Test says in a sentence that the directions
+  are page 4.2's. Decided by Marco on 2026-11-17. → STRUCTURE.md §4
+  (page 4.3)
+- **"Copernicus fixed the Sun".** On page 4.3 the frame is stated as
+  Copernicus' act ("Copernicus fixed the Sun"), not as "taking ☉ as at
+  rest"; the page's question became "What changes when the Sun is
+  fixed?". Asked by Marco on 2026-11-16. → STRUCTURE.md §4 (page 4.3),
+  shared/site-map.js
+- **A Today note on page 4.3**, beside the distances: the modern first
+  approximation keeps the arrangement, every planet and the Earth on a
+  Kepler ellipse about the Sun. Pages 4.1 and 4.2 left it out so that
+  4.3 could say it. Approved by Marco on 2026-11-16. → STRUCTURE.md §7.5
+- **Page 4.4: the arrangement fitted from the phases of Venus; no
+  error curve.** The page keeps the full rhythm: the arrangement of
+  Venus, where the center K of its epicycle lies on the line to the Sun
+  (the ratio O☉ : OK, which turns no direction), is fitted from the
+  phase at greatest elongation ($k = \tfrac12$ only when O☉ = OK) and
+  K at the Sun is adopted; the Test sets the phase of 2026–2033 against
+  the real Venus, with Ptolemy's order as ghost, and the parallax of 61
+  Cygni against Tycho's stars. Mars in Tycho's system has page 4.2's
+  directions exactly, so, as on page 4.3, its error curve is not
+  repeated: Figure 2's read-out shows the two longitudes. The phases
+  figure has three orders, below, around and above the Sun (IX 1 gives
+  both of Ptolemy's). Notation $k$, $\chi$, $\varpi$. Approved by Marco
+  on 2026-11-17. → STRUCTURE.md §4 (page 4.4), §6
+- **A Tycho origin.** Tycho's system gets an origin of its own, in the
+  colour of the other authors, rather than "Debated" for Ursus' rival
+  claim; Galileo, Bradley, Bessel, Newton and Foucault are "Modern".
+  Decided by Marco on 2026-11-17. → shared/site-map.js, STRUCTURE.md §7.1
+- **Page 4.4 tells Tycho's argument from the size of the stars** (the
+  missing parallax would make the stars as large as the Earth's orbit),
+  from secondary sources (Graney), in the Test's history block; and has
+  a Today note, beside Newton, on the barycentric frame in which
+  positions are computed today. Decided by Marco on 2026-11-17. →
+  STRUCTURE.md §4 (page 4.4), §7.5
+- **Page 4.4 is titled "Phases and parallax"**, the two observations
+  that decide the arrangement, instead of "What moves?", a question
+  heading (CLAUDE.md, Writing); the question stays as the subtitle. The
+  folder and the numbers script take the new slug,
+  `act4-planets/04-phases-parallax/` and
+  `tools/numbers/4.4-phases-parallax.js`. Decided by Marco on
+  2026-11-18. → shared/site-map.js, STRUCTURE.md §4, §9
+
+- **Page 4.5 is judged against VSOP87.** The site's Standish planets
+  are Kepler ellipses; the *Rudolphine Tables* are not in the library. So
+  the Earth and Mars of page 4.5 come from VSOP87B, truncated to 826
+  terms (within 0.61″ of DE441 for Mars seen from the Earth, 1900–2150),
+  through `Ephem`'s new option `theory: 'vsop87'`; its observations,
+  fits, tests and ghosts all use it. The earlier pages keep Standish.
+  Approved by Marco on 2026-11-19 with the plan of the page. →
+  STRUCTURE.md §4 (page 4.5), §8, §11; shared/vsop87.js
+- **Page 4.5's plan.** Observation: the Sun's speed against its apparent
+  size (the area law), and Mars triangulated from sightings one sidereal
+  period apart, inside the circle through its apsides. The Earth's
+  ellipse is fitted to the seasons of 2026 (page 2.1's method with
+  Kepler's equation) and Mars' to its oppositions to the real Sun of
+  2010–2025, with $a$ from the third law, so no distance enters the fit.
+  Mars' aphelion stays fixed among the stars, as on page 4.2; its turning
+  is in the Residual. "All previous error curves overlaid" became a
+  chart of the largest error of every model of the Sun and Mars on a
+  scale of powers of ten. The Sun section stays on trial; the Moon after
+  Kepler is an h3 of the Residual. Approved by Marco on 2026-11-19. →
+  STRUCTURE.md §4 (page 4.5)
 
 ## Look
 
@@ -379,9 +479,10 @@ section.
   the session. On 2026-10-26 a session with the `astronomy_reference`
   repository attached could read every chapter through its copy of the
   skill (`astronomy_reference/.claude/skills/astronomy-sources/`).
-- **Where page 4.5 (Kepler) gets its yardstick** (see Course).
-- **Whether page 4.5 keeps its section on the Sun** (see Course), once the
-  page is built. If it goes, the hub's sentence on the Earth's orbit still
+- **Whether page 4.5 keeps its section on the Sun** (see Course), now
+  that the page is built: the Earth's ellipse is part of Mars' model, so
+  only Figure 5 (the Sun's error curve) and the Sun's distances are in
+  question. If it goes, the hub's sentence on the Earth's orbit still
   holds, since it states history, not the page's content.
 - **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
   region right ascension 105° to 195°, declination −20° to +20°, and drop

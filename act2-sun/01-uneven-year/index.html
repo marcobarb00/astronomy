@@ -2,7 +2,7 @@
 <!-- ==========================================================================
      PAGE 2.1 · THE UNEVEN YEAR
      Act II, the Sun. The four seasons are unequal; the eccentric circle
-     of Hipparchus explains them, with the equation of centre
+     of Hipparchus explains them, with the equation of center
      lambda = lambdaBar + q; its eccentricity and apogee are fitted from two
      season lengths; the first error curve of the site.
      Numbers: tools/numbers/2.1-uneven-year.js.
@@ -63,7 +63,7 @@
 
 		<p>
 			Hipparchus measured this unevenness and explained it with a single
-			circle whose centre is not the Earth. With his circle we can predict
+			circle whose center is not the Earth. With his circle we can predict
 			the Sun's ecliptic longitude to within two arcminutes, and from here
 			on we judge every model by its error curve, the difference between
 			the model and the real sky, plotted against time.
@@ -186,7 +186,7 @@
 				Greek astronomers required every celestial motion to be
 				uniform and circular. Ptolemy states the rule precisely: if we
 				imagine each body carried around by a straight line, "the
-				straight line in question describes equal angles at the centre
+				straight line in question describes equal angles at the center
 				of its revolution in equal times" (<em>Almagest</em> III 3).
 			</p>
 			<aside>
@@ -196,9 +196,9 @@
 
 		<p>
 			Seen from the Earth, the Sun's motion is uneven, so the rule allows
-			two explanations. Either the centre of the Sun's circle is not the
+			two explanations. Either the center of the Sun's circle is not the
 			Earth, or the Sun moves uniformly on a second, smaller circle whose
-			centre is carried around the first. These are the
+			center is carried around the first. These are the
 			<em>eccentric</em> and the <em>epicycle</em>.
 		</p>
 
@@ -231,7 +231,7 @@
 
 		<p>
 			The eccentric can therefore be turned into a <em>heliostatic</em>
-			description. An equal circle, its centre offset the opposite way,
+			description. An equal circle, its center offset the opposite way,
 			carries the Earth about a resting Sun (Figure 2), and the line from the Earth
 			to the Sun is at every moment the same, in length and direction, as
 			in Hipparchus' eccentric. The Sun is seen exactly where the eccentric
@@ -257,7 +257,7 @@
 			<figcaption>
 				Compare the two arrows from the Earth to the Sun: they have the
 				same length and the same direction. The dotted lines, from each
-				body at rest to the centre of its circle, are equal and opposite.
+				body at rest to the center of its circle, are equal and opposite.
 			</figcaption>
 		</figure>
 
@@ -272,10 +272,10 @@
 				1473 and still reprinted a century later. The Sun is carried by the broad
 				dark ring, the <em>deferent</em>, set inside the thin rings of the
 				zodiac, with the poles of the zodiac at the top left and the
-				bottom right. Notice the two parallel rods near the centre,
+				bottom right. Notice the two parallel rods near the center,
 				labelled <em>axis deferentis</em> and <em>axis Zodiaci</em>: the
 				Sun's ring turns about an axis that does not pass through the
-				centre of the zodiac, where the Earth is, and the distance between
+				center of the zodiac, where the Earth is, and the distance between
 				the two rods is the eccentricity, drawn much larger than it is.
 				<span class="credit">Georg Peurbach, <em>Theoricae novae planetarum</em>, Basel, 1573
 					(Observatoire de Paris, via Gallica, BnF),
@@ -284,11 +284,11 @@
 			</figcaption>
 		</figure>
 
-		<h3>The equation of centre</h3>
+		<h3>The equation of center</h3>
 
 		<p>
 			Let the Sun move uniformly, at the rate $n$ of page 1.3, on a circle
-			of radius 1 whose centre C lies at a distance $e$ from the Earth O.
+			of radius 1 whose center C lies at a distance $e$ from the Earth O.
 			The point of the circle farthest from the Earth, in the direction
 			from O through C, is the <em>apogee</em>, at ecliptic longitude
 			$\lambda_A$, and the nearest, opposite it, is the <em>perigee</em>.
@@ -300,7 +300,7 @@
 			angle from the apogee, the <em>mean anomaly</em> $M = \bar\lambda -
 			\lambda_A$. Seen from O, it is the true ecliptic longitude
 			$\lambda$, and the difference $q = \lambda - \bar\lambda$ is called
-			the <em>equation of centre</em> (Figure 3).
+			the <em>equation of center</em> (Figure 3).
 		</p>
 
 		<!-- Figure 3: the eccentric with M and q, and q through the year -->
@@ -312,7 +312,7 @@
 						<canvas id="eoc-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) the equation of centre through 2026</p>
+						<p class="panel-title">(b) the equation of center through 2026</p>
 						<canvas id="eoc-plot"></canvas>
 					</div>
 				</div>
@@ -417,7 +417,7 @@
 				Kepler's ellipse, which the modern theory keeps as the first
 				approximation to the Sun's path relative to the Earth, gives to
 				first order $q \approx -2e_\text{K} \sin M$, where $e_\text{K}$ is its eccentricity. The
-				eccentric gives the same directions if its centre is offset by $e
+				eccentric gives the same directions if its center is offset by $e
 				= 2e_\text{K}$, as the fit in section 3 confirms. Page 4.2 compares the two to second order.
 			</p>
 			<aside>
@@ -430,7 +430,7 @@
 		<p>
 			The lines from the Earth towards the equinoxes and the solstices
 			cut the eccentric into four arcs. Because the Earth is not at the
-			centre of the eccentric, the arcs are unequal, and the Sun, covering each of them at
+			center of the eccentric, the arcs are unequal, and the Sun, covering each of them at
 			the same uniform rate, takes longest over the longest.
 		</p>
 
@@ -443,7 +443,7 @@
 
 		<p>
 			The Sun's eccentricity is so small that, drawn to scale, the circle
-			looks centred on the Earth. In Figure 4 it is therefore drawn beside
+			looks centered on the Earth. In Figure 4 it is therefore drawn beside
 			a circle with $e = 0.2$, six times the Sun's, on which the same
 			geometry gives seasons that differ far more.
 		</p>
@@ -474,22 +474,22 @@
 		<h2 id="fit"><span class="step">3 · Fit</span>Eccentricity and apogee from two seasons</h2>
 
 		<p>
-			The offset centre of the eccentric is what makes the seasons
-			unequal, so their lengths reveal it: two of them fix the centre, its
+			The offset center of the eccentric is what makes the seasons
+			unequal, so their lengths reveal it: two of them fix the center, its
 			distance $e$ from the Earth and the direction of the apogee
 			$\lambda_A$. The mean motion $n$ is already known from the length of
 			the year (page 1.3), and $L_0$ needs one moment at which the Sun's
 			ecliptic longitude is known exactly, an equinox.
 		</p>
 
-		<h3>The centre from two seasons</h3>
+		<h3>The center from two seasons</h3>
 
 		<div class="row">
 			<p>
 				Put the Earth at the origin, with the $x$ axis towards γ and the
 				$y$ axis towards the summer solstice, so that the two axes are the
 				four lines from the Earth towards the equinoxes and the solstices.
-				We write the centre of the eccentric as $C = (h, k) =
+				We write the center of the eccentric as $C = (h, k) =
 				e\,(\cos\lambda_A, \sin\lambda_A)$, in units of its radius, and
 				keep $x$ and $y$ for the axes.
 			</p>
@@ -516,7 +516,7 @@
 						<canvas id="fit-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) the centre at the fitted distance, magnified</p>
+						<p class="panel-title">(b) the center at the fitted distance, magnified</p>
 						<canvas id="fit-plot"></canvas>
 					</div>
 				</div>
@@ -564,7 +564,7 @@
 					<p class="key-title">Read-out</p>
 					<dl class="key">
 						<dt>$|q|_\text{max}$</dt>
-						<dd>the greatest equation of centre, $\arcsin e$ (Exercise 2)</dd>
+						<dd>the greatest equation of center, $\arcsin e$ (Exercise 2)</dd>
 					</dl>
 				</div>
 			</div>
@@ -600,7 +600,7 @@
 
 		<p>
 			Adding and subtracting the two equations separates the unknowns,
-			and the centre then gives the eccentricity and the direction of
+			and the center then gives the eccentricity and the direction of
 			the apogee:
 		</p>
 
@@ -609,7 +609,7 @@
 		</div>
 
 		<p>
-			The other two seasons follow from the same centre, with the arcs
+			The other two seasons follow from the same center, with the arcs
 			$a_3 = 90^\circ - \arcsin h - \arcsin k$ for autumn and $a_4 =
 			90^\circ + \arcsin h - \arcsin k$ for winter. Two seasons therefore
 			predict the other two, which makes the model testable even before
@@ -639,7 +639,7 @@
 			Sun's ecliptic longitude is exactly 0°. The Sun is then at γ, at the
 			angle $-\arcsin k$ as seen from C, which is therefore its mean
 			ecliptic longitude. In 2026 the equinox came on 20 March at 14:32 TT
-			(14:31 UT in the table of section 1), and the centre fitted to 2026
+			(14:31 UT in the table of section 1), and the center fitted to 2026
 			gives $-\arcsin k = 358.137^\circ$. Going back to the epoch J2000.0 at
 			the rate $n$,
 		</p>
@@ -657,7 +657,7 @@
 
 			<div class="row">
 				<p>
-					Ptolemy reports that Hipparchus found the centre from these two
+					Ptolemy reports that Hipparchus found the center from these two
 					seasons alone (section 1), and gives his own computation of it (III
 					4). Hipparchus quotes equinoxes observed on a bronze ring at
 					Alexandria, fixed in the plane of the equator, which marks the
@@ -801,7 +801,7 @@
 
 		<p>
 			The small monthly ripples of Figure 6 come from the Moon. The
-			Earth and the Moon both turn about their common centre of mass, so
+			Earth and the Moon both turn about their common center of mass, so
 			the Earth swings a little to and fro every month, and the Sun, seen
 			from the Earth, moves the opposite way by a few arcseconds.
 		</p>
@@ -860,9 +860,9 @@
 		<div class="exercise" data-kind="compute">
 			<p>
 				Hipparchus' spring lasts 94½ days and his summer 92½ days, with
-				Ptolemy's year of 365.24667 days. Find the centre
+				Ptolemy's year of 365.24667 days. Find the center
 				$C = (h, k)$ of his eccentric, then $e$, $\lambda_A$, the lengths
-				of autumn and winter and the greatest equation of centre, and
+				of autumn and winter and the greatest equation of center, and
 				compare them with Ptolemy's values. Check with the preset
 				"Hipparchus" of Figure 5, then with "141 BC", the real seasons of
 				his time.
@@ -1018,7 +1018,7 @@
 				Copernicus, found to have moved).</li>
 			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.3 (Hipparchus' model
 				of an orbit: the same angles to first order, twice the variation in
-				distance), §§ 5.1 and 5.3 (the equation of centre, with $M$ from the
+				distance), §§ 5.1 and 5.3 (the equation of center, with $M$ from the
 				perigee; the lengths of the seasons).</li>
 			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998), ch. 25
 				(the Sun's mean ecliptic longitude) and ch. 55 (its

@@ -27,7 +27,18 @@
 	 - Nutation: the short series of Meeus ch. 22 (0.5" in longitude).
 	 - Aberration: Meeus 25.10 (Sun) and 23.2 (planets).
 	 - Equation of time: Meeus 28.1.
+	 - Phase and apparent diameter of a planet: Meeus 41.1 and 41.2; the
+	   radii of the IAU (Archinal et al. 2018).
 	 - Atmospheric refraction: Meeus 16.3 (Bennett) and 16.4 (Saemundsson).
+
+   THE THEORY OF PAGE 4.5
+	 The planets above are Kepler ellipses, so a Kepler model would match
+	 them by construction. sun, planet, position, longitude, phase and
+	 heliocentric therefore accept { theory: 'vsop87' } for the Earth and
+	 Mars: the same light-time, aberration, nutation and precession, with
+	 the heliocentric places from VSOP87 (vsop87.js, loaded after this
+	 file by the pages that need it, adds the theory with addTheory;
+	 within 0.61" of DE441 for Mars seen from the Earth, 1900 - 2150).
 
    VALID RANGE
 	 3000 BC to 3000 AD (Ephem.RANGE), the range of Standish's Table 2.
@@ -38,7 +49,7 @@
 	 Largest difference from JPL Horizons (DE441, observer quantity 31,
 	 apparent ecliptic longitude of date, TT), sampled every 5 days in
 	 1800-2050 and every 73 days over 3000 BC - 3000 AD (retrieved 2026-10-17;
-	 Mars, Jupiter, Saturn as system barycentres). RMS in brackets.
+	 Mars, Jupiter, Saturn as system barycenters). RMS in brackets.
 	                     1800 - 2050      500 BC - 2500 AD    3000 BC - 3000 AD
 	   Sun              0.7'  (0.2')       0.8'  (0.2')        1.1'  (0.3')
 	   Moon             0.3'  (0.05')      1.7'  (0.5')        11'   (3.3')
@@ -88,6 +99,16 @@ const Ephem = (function () {
 	const LIGHT_TIME_PER_AU = 0.0057755183; // days for light to cross 1 AU
 	const EARTH_MOON_MASS_RATIO = 81.30056; // M_earth / M_moon
 	const ABERRATION_CONSTANT = 20.49552; // kappa (arcsec)
+
+	/* Equatorial radii of the planets (km), IAU WGCCRE 2015, for their
+	   apparent diameters (phase()). */
+	const RADIUS_KM = {
+		mercury: 2440.53,
+		venus: 6051.8,
+		mars: 3396.19,
+		jupiter: 71492,
+		saturn: 60268
+	};
 
 	const RANGE = {
 		start: Time.julianDay(-2999, 1, 1), // 3000 BC January 1
@@ -656,9 +677,50 @@ const Ephem = (function () {
 	   7. GEOCENTRIC POSITIONS
 	   ====================================================================== */
 
-	/* Heliocentric position of the Earth (au, J2000 ecliptic): the
-	   Earth-Moon barycentre minus the Moon's share of the Earth-Moon vector. */
-	function earthJ2000(jdTT) {
+	/* The theories of the planets: Standish's (the default, section 2)
+	   and those that other files add with addTheory: vsop87.js adds
+	   'vsop87' (the Earth and Mars, for page 4.5: the Standish planets
+	   are Kepler ellipses and cannot judge Kepler's model). Every
+	   function below that takes options reads options.theory. */
+	const THEORIES = {};
+
+	/* Add a theory: placeOf(body, jdTT) -> [x, y, z] (au, J2000
+	   ecliptic, the Sun at the origin), for 'earth' and the planets it
+	   holds. */
+	function addTheory(name, placeOf) {
+		THEORIES[name] = placeOf;
+	}
+
+	/* The heliocentric function of a theory, or null for Standish's. */
+	function theoryOf(name) {
+		if (name === undefined || name === 'standish') {
+			return null;
+		}
+
+		if (!THEORIES[name]) {
+			throw new Error(`Ephem: unknown theory "${name}" (is its file loaded?)`);
+		}
+
+		return THEORIES[name];
+	}
+
+	/* Heliocentric position of a planet (au, J2000 ecliptic) in a theory. */
+	function bodyJ2000(body, jdTT, theory) {
+		const other = theoryOf(theory);
+
+		return other ? other(body, jdTT) : heliocentricJ2000(body, jdTT);
+	}
+
+	/* Heliocentric position of the Earth (au, J2000 ecliptic): in
+	   Standish's theory the Earth-Moon barycentre minus the Moon's share of
+	   the Earth-Moon vector; another theory gives the Earth itself. */
+	function earthJ2000(jdTT, theory) {
+		const other = theoryOf(theory);
+
+		if (other) {
+			return other('earth', jdTT);
+		}
+
 		const emb = heliocentricJ2000('emb', jdTT);
 		const moonNow = moonGeometric(jdTT);
 		const moonOfDate = fromLonLat(moonNow.lon, moonNow.lat, moonNow.dist / AU_KM);
@@ -677,8 +739,8 @@ const Ephem = (function () {
 
 	/* The Sun: { lon, lat (deg), dist (au) }. */
 	function sun(jdTT, options = {}) {
-		const { apparent = true } = options;
-		const result = ofDate(negate(earthJ2000(jdTT)), jdTT);
+		const { apparent = true, theory } = options;
+		const result = ofDate(negate(earthJ2000(jdTT, theory)), jdTT);
 
 		if (apparent) {
 			result.lon = norm360(result.lon + nutation(jdTT).dpsi - (20.4898 * ARCSEC) / result.dist);
@@ -718,8 +780,8 @@ const Ephem = (function () {
 	/* Heliocentric planet { lon, lat (deg), r (au) }, frame 'date' (mean
 	   ecliptic and equinox of date, default) or 'J2000'. */
 	function heliocentric(body, jdTT, options = {}) {
-		const { frame = 'date' } = options;
-		const v = heliocentricJ2000(body, jdTT);
+		const { frame = 'date', theory } = options;
+		const v = bodyJ2000(body, jdTT, theory);
 		const s = toLonLat(v);
 
 		if (frame === 'J2000') {
@@ -735,15 +797,15 @@ const Ephem = (function () {
 	   Apparent positions include light-time (the planet is taken where it
 	   was when the light left it), annual aberration and nutation. */
 	function planet(body, jdTT, options = {}) {
-		const { apparent = true } = options;
-		const earth = earthJ2000(jdTT);
-		let geocentric = sub3(heliocentricJ2000(body, jdTT), earth);
+		const { apparent = true, theory } = options;
+		const earth = earthJ2000(jdTT, theory);
+		let geocentric = sub3(bodyJ2000(body, jdTT, theory), earth);
 
 		if (apparent) {
 			for (let i = 0; i < 3; i++) {
 				const tau = LIGHT_TIME_PER_AU * length3(geocentric);
 
-				geocentric = sub3(heliocentricJ2000(body, jdTT - tau), earth);
+				geocentric = sub3(bodyJ2000(body, jdTT - tau, theory), earth);
 			}
 		}
 
@@ -774,6 +836,39 @@ const Ephem = (function () {
 		}
 
 		return planet(body, jdTT, options);
+	}
+
+	/* The phase of a planet seen from the Earth: { phaseAngle (deg, at the
+	   planet between the Sun and the Earth, Meeus' i), k (the illuminated
+	   fraction of the disk, (1 + cos i) / 2), diameter (the apparent
+	   equatorial diameter, arcsec), dist (au) }, from the triangle of the
+	   Sun, the Earth and the planet (Meeus 41.1, 41.2). Apparent (the
+	   default) takes the planet where it was when the light left it. */
+	function phase(body, jdTT, options = {}) {
+		const { apparent = true, theory } = options;
+		const earth = earthJ2000(jdTT, theory);
+		let helio = bodyJ2000(body, jdTT, theory);
+
+		if (apparent) {
+			for (let i = 0; i < 3; i++) {
+				const tau = LIGHT_TIME_PER_AU * length3(sub3(helio, earth));
+
+				helio = bodyJ2000(body, jdTT - tau, theory);
+			}
+		}
+
+		const r = length3(helio);
+		const delta = length3(sub3(helio, earth));
+		const R = length3(earth);
+		const cosI = (r * r + delta * delta - R * R) / (2 * r * delta);
+		const phaseAngle = acos(cosI);
+
+		return {
+			phaseAngle,
+			k: (1 + cos(phaseAngle)) / 2,
+			diameter: (2 * Math.atan(RADIUS_KM[body] / (delta * AU_KM)) * 180 * 3600) / Math.PI,
+			dist: delta
+		};
 	}
 
 	/* Geocentric ecliptic longitude only: what the error curves compare. */
@@ -855,6 +950,7 @@ const Ephem = (function () {
 	return {
 		RANGE,
 		PLANETS,
+		addTheory,
 		ELEMENTS,
 		AU_KM,
 		inRange,
@@ -863,6 +959,7 @@ const Ephem = (function () {
 		planet,
 		position,
 		longitude,
+		phase,
 		heliocentric,
 		heliocentricJ2000,
 		solveKepler,

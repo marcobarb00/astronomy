@@ -575,8 +575,8 @@ const directionZoomFigure = {
 		labelOutside(ctx, 'K', K, 4, 200, COL.ink, this.labels);
 		labelOutside(ctx, 'L', moon, 8, g.meanApogee - DIRECTION_M - 15, COL.planet, this.labels);
 		labelOutside(ctx, 'L′', ghost, 6, g.trueApogee - DIRECTION_M + 15, COL.muted, this.labels);
-		centredLabel(ctx, 'from O', { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
-		centredLabel(ctx, 'from N', { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
+		centeredLabel(ctx, 'from O', { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
+		centeredLabel(ctx, 'from N', { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
 	}
 };
 
@@ -589,7 +589,7 @@ const directionZoomFigure = {
 
 /* Figure 4: the crank fitted to 2025 - 2026, with page 3.1's epicycle and the
    crank without the direction as ghosts, over the year 2026, and over two
-   months and a century centred on it; dots at the quarters. */
+   months and a century centered on it; dots at the quarters. */
 const ourErrorFigure = {
 	init() {
 		const start = YEAR_START;

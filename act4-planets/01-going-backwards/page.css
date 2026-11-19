@@ -4,7 +4,7 @@
 
    TABLE OF CONTENTS
 	 1. Controls
-	 2. The square drawing
+	 2. The square drawings
 	 3. The table of the loops
 	 4. Phone width
    ========================================================================== */
@@ -23,20 +23,20 @@ figure.fig .ctl {
 	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 }
 
-/* The choice of a planet, above the plot of Figure 2 and the panels of
-   Figure 3. */
-#motion-views,
-#epicycle-views {
+/* The choice of a planet, above the plot of Figure 2. */
+#motion-views {
 	justify-content: center;
 	margin-bottom: 12px;
 }
 
 /* ==========================================================================
-   2. THE SQUARE DRAWING
-   The canvas sets its own square size (page.js); centre it.
+   2. THE SQUARE DRAWINGS
+   Figures 3(a) and 6: the canvas sets its own square size (page.js);
+   center it.
    ========================================================================== */
 
-#epicycle-canvas {
+#epicycle-canvas,
+#magnify-canvas {
 	display: block;
 	margin: 0 auto;
 }
@@ -44,7 +44,7 @@ figure.fig .ctl {
 /* ==========================================================================
    3. THE TABLE OF THE LOOPS
    A narrow table: the planet and the middle of the loop, words, on the
-   left; the numbers centred, as in the shared tables.
+   left; the numbers centered, as in the shared tables.
    ========================================================================== */
 
 table.prose-table {

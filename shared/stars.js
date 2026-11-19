@@ -20,12 +20,18 @@
 	 alf02 Cru 1.58, table "flux", retrieved 2026-10-19,
 	 tools/numbers/data/acrux-components-2026-10-19.csv); their combined
 	 light, -2.5 log10(10^(-0.4 * 1.28) + 10^(-0.4 * 1.58)), is 0.67.
+	 61 Cygni A was added for page 4.4 with its parallax (plx, mas: Gaia
+	 DR3, as SIMBAD gives it), retrieved 2026-11-17 from SIMBAD's mirror
+	 at Harvard (tools/numbers/data/fetch-stars-4.4.sh,
+	 stars-4.4-2026-11-17.csv).
 
    POSITIONS OF DATE
 	 Stars.ofDate(star, jdTT) applies the proper motion linearly (as a
 	 vector on the sphere, so it also works near the poles), then the
 	 long-term precession of ephemeris.js: mean equator and equinox of date.
-	 Annual aberration (up to 20") and nutation (up to 17") are left out.
+	 Annual aberration (up to 20") and nutation (up to 17") are left out,
+	 and so is the annual parallax (under 1"). Stars.parallax(star, jdTT)
+	 gives the parallax alone, for the one star that has a plx.
 
    TABLE OF CONTENTS
 	 1. The catalogue
@@ -71,11 +77,13 @@ const Stars = (function () {
 	   the forehead of Scorpius, one of the stars whose longitudes
 	   Timocharis, Ptolemy and al-Battani recorded (Almagest VII 3,
 	   De Revolutionibus III 2), and Thuban, the pole star around 2800 BC
-	   (page 2.3). */
+	   (page 2.3), and 61 Cygni A, whose parallax Bessel published in 1838
+	   (page 4.4), with its parallax plx (mas). */
 	// prettier-ignore
 	const MORE = [
 		{ name: 'β Scorpii',  id: 'bet01 Sco', ra: 241.3592999275,     dec: -19.805452782777778, pmra: -5.2,    pmdec: -24.04, mag: 2.62 },
-		{ name: 'Thuban',     id: 'alf Dra',   ra: 211.09732332021125, dec: 64.3758696175675,    pmra: -56.351, pmdec: 12.329, mag: 3.68 }
+		{ name: 'Thuban',     id: 'alf Dra',   ra: 211.09732332021125, dec: 64.3758696175675,    pmra: -56.351, pmdec: 12.329, mag: 3.68 },
+		{ name: '61 Cygni',   id: '61 Cyg A',  ra: 316.7247482895925,  dec: 38.74941731943694,   pmra: 4164.209, pmdec: 3249.614, mag: 5.21, plx: 285.9949 }
 	];
 
 	const MAS_TO_DEG = 1 / 3.6e6;
@@ -130,6 +138,29 @@ const Stars = (function () {
 		return Ephem.precessEquatorial(p.ra, p.dec, Time.J2000, jdTT);
 	}
 
+	/* The annual parallax of a star with a parallax plx (mas), seen from
+	   the Earth: { dlon, dlat } in arcseconds, in ecliptic longitude
+	   (dlon, along the ecliptic, already multiplied by cos beta) and
+	   ecliptic latitude. A star at rest about the Sun, seen from an Earth
+	   at the Sun's distance R in the direction opposite the Sun, is shifted
+	   towards the Sun by R plx (R in au), to first order:
+		   dlon = plx R sin(lambdaSun - lambda),
+		   dlat = -plx R sin(beta) cos(lambdaSun - lambda).
+	   The star's ecliptic place (mean of date) and the Sun's geometric
+	   one come from ephemeris.js. */
+	function parallax(star, jdTT) {
+		const p = atEpoch(star, jdTT);
+		const eq = Ephem.precessEquatorial(p.ra, p.dec, Time.J2000, jdTT);
+		const ecl = Ephem.equatorialToEcliptic(eq.ra, eq.dec, Ephem.meanObliquity(jdTT));
+		const sun = Ephem.sun(jdTT, { apparent: false });
+		const plx = (star.plx ?? 0) / 1000;
+
+		return {
+			dlon: plx * sun.dist * sin(sun.lon - ecl.lon),
+			dlat: -plx * sun.dist * sin(ecl.lat) * cos(sun.lon - ecl.lon)
+		};
+	}
+
 	/* ======================================================================
 	   3. EXPORT
 	   ====================================================================== */
@@ -141,6 +172,7 @@ const Stars = (function () {
 		vectorJ2000,
 		atEpoch,
 		ofDate,
-		ofDateByName
+		ofDateByName,
+		parallax
 	};
 })();

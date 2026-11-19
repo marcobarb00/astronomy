@@ -168,7 +168,7 @@ function fitCanvas(owner, canvas, heightFor, maxWidth = Infinity) {
 	});
 }
 
-/* A text label centred at a canvas point, or set from it to the right
+/* A text label centered at a canvas point, or set from it to the right
    ('left') or to the left ('right'), in the atlas fonts and the text
    colour of 'color'. For the labels of a static drawing, which never
    move. */
@@ -288,7 +288,7 @@ const plateFigure = {
 		Plate.line(chart, ecliptic, 'ecliptic', [eclipticName.ra, eclipticName.dec, -8, 18]);
 
 		// the Moon's path (apparent position of date, as seen from the
-		// Earth's centre), every two hours
+		// Earth's center), every two hours
 		const path = [];
 		const ticks = [];
 
@@ -660,7 +660,7 @@ const shadowFigure = {
 		this.draw();
 	},
 
-	/* The layout for the canvas' size: the Earth's centre O and radius;
+	/* The layout for the canvas' size: the Earth's center O and radius;
 	   the tip of the umbra near the right edge; the Moon's distance half
 	   way, where the umbra has half the Earth's radius; the angle 'half'
 	   (deg) of the grazing ray to the axis; and the Sun, which the same
@@ -699,7 +699,7 @@ const shadowFigure = {
 		const { axisY, radius, O, tip, half, sun, moonX, A, U, E } = at;
 		// where the ray touches a circle, above ('side' 1) or below (-1)
 		// the axis: its radius there is square to the ray
-		const touch = (centre, r, side) => ({ x: centre.x + r * sin(half), y: centre.y - side * r * cos(half) });
+		const touch = (center, r, side) => ({ x: center.x + r * sin(half), y: center.y - side * r * cos(half) });
 
 		ctx.clearRect(0, 0, w, h);
 
@@ -793,7 +793,7 @@ const moonShadowFigure = {
 		this.draw();
 	},
 
-	/* The layout for the canvas' size: the Earth, centre O, on the right;
+	/* The layout for the canvas' size: the Earth, center O, on the right;
 	   the line from O to the Sun, to the left; the point G of the plane
 	   through O where the shadow's axis meets it; the Moon M on that axis. */
 	layout() {
@@ -899,7 +899,7 @@ const moonShadowFigure = {
 };
 
 /* ---------- The parallax triangle (in the fold of Figure 4) ----------
-   Static, not to scale: the Earth, centre O and radius R; the Moon M at
+   Static, not to scale: the Earth, center O and radius R; the Moon M at
    the distance d; the line from M that grazes the Earth at T, square to
    the radius OT. The angle at M is the horizontal parallax pi, and
    sin pi = R / d. A diagram of the fold, not a numbered figure: it sits
@@ -984,14 +984,14 @@ const parallaxDiagram = {
 		const { O, M, T, r, atO, parallax, arcRadius } = at;
 		const middle = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
 
-		centredLabel(ctx, 'O', { x: O.x - 14, y: O.y + 14 }, COL.earth);
-		centredLabel(ctx, 'T', towards(O, atO, r + 14), COL.earth);
-		centredLabel(ctx, 'M', { x: M.x + 16, y: M.y }, COL.planet);
+		centeredLabel(ctx, 'O', { x: O.x - 14, y: O.y + 14 }, COL.earth);
+		centeredLabel(ctx, 'T', towards(O, atO, r + 14), COL.earth);
+		centeredLabel(ctx, 'M', { x: M.x + 16, y: M.y }, COL.planet);
 		// R beside the radius, on the side away from the angle at O
-		centredLabel(ctx, 'R', towards(middle(O, T), atO + 90, 12), COL.earth);
-		centredLabel(ctx, 'd', { x: (O.x + M.x) / 2 + 0.1 * (M.x - O.x), y: O.y + 16 }, COL.ink);
+		centeredLabel(ctx, 'R', towards(middle(O, T), atO + 90, 12), COL.earth);
+		centeredLabel(ctx, 'd', { x: (O.x + M.x) / 2 + 0.1 * (M.x - O.x), y: O.y + 16 }, COL.ink);
 		// pi just inside the arc, in the middle of the angle
-		centredLabel(ctx, 'π', towards(M, 180 - parallax / 2, arcRadius - 14), COL.ink);
+		centeredLabel(ctx, 'π', towards(M, 180 - parallax / 2, arcRadius - 14), COL.ink);
 	}
 };
 
@@ -1002,7 +1002,7 @@ const parallaxDiagram = {
    Earth seen from the Sun, and the Moon's shadow on it (the penumbra,
    and a dot on its axis for the umbra), in Earth radii, north up; (b)
    the full Moon, at the other node: the Earth's umbra and the Moon, in
-   degrees about the shadow's centre, north up and east to the left, as
+   degrees about the shadow's center, north up and east to the left, as
    on the sky, in a fixed window of +-2° (the latitude reaches 1.71° at
    20° from the node); (c) the Moon's path near the node, the latitude of
    the new Moon against x, with a box for each limit: as wide as the
@@ -1034,10 +1034,10 @@ function limitsState(x, km) {
 	};
 }
 
-/* Panel (a) in Earth radii, on the plane through the Earth's centre
+/* Panel (a) in Earth radii, on the plane through the Earth's center
    square to the line from the Sun. An observer gamma Earth radii north
-   of the Earth's centre, across that line, sees the Moon shifted south by
-   gamma pi and the Sun by gamma pi_sun: the two centres coincide, and
+   of the Earth's center, across that line, sees the Moon shifted south by
+   gamma pi and the Sun by gamma pi_sun: the two centers coincide, and
    the observer is on the shadow's axis, at gamma = beta / (pi - pi_sun),
    and the discs still touch (s + s_sun) / (pi - pi_sun) further out, the
    penumbra's radius. 'total' tells the two central eclipses apart. */
@@ -1127,12 +1127,12 @@ function drawMoonPath(ctx, at, north, F, halfWidth) {
 }
 
 /* A filled disc with an outline, in degrees on a panel. */
-function disc(ctx, centre, radiusPx, fill, stroke) {
+function disc(ctx, center, radiusPx, fill, stroke) {
 	ctx.fillStyle = fill;
 	ctx.beginPath();
-	ctx.arc(centre.x, centre.y, radiusPx, 0, TAU);
+	ctx.arc(center.x, center.y, radiusPx, 0, TAU);
 	ctx.fill();
-	circle(ctx, centre, radiusPx, { color: stroke, width: 1.5 });
+	circle(ctx, center, radiusPx, { color: stroke, width: 1.5 });
 }
 
 /* The mark on the shadow's axis in panel (a) (px): larger than the umbra
@@ -1168,7 +1168,7 @@ const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, 
 	}
 });
 
-/* Panel (b): the full Moon, its centre at -beta from the shadow's. */
+/* Panel (b): the full Moon, its center at -beta from the shadow's. */
 const lunarPanel = limitsPanel('limits-lunar', LIMITS_WINDOW, (ctx, at, scalePx, st, labels, halfWidth) => {
 	const shadow = at(0, 0);
 	const moon = at(0, st.betaFull);

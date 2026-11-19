@@ -297,7 +297,7 @@ const day = Time.julianDay(2026, 3, 20);
 const lengths = {};
 
 [
-	['centre on the geometric horizon', 'geometric', 0],
+	['center on the geometric horizon', 'geometric', 0],
 	["with refraction (-34')", 'refraction', -34 / 60],
 	["upper limb with refraction (-50')", 'limb', -50 / 60]
 ].forEach(([label, key, h0]) => {

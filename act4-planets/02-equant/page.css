@@ -1,0 +1,75 @@
+/* ==========================================================================
+   PAGE 4.2 · THE EQUANT - FIGURE LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. Controls and panels
+	 2. The square drawings
+	 3. The table of the expansions
+	 4. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CONTROLS AND PANELS
+   ========================================================================== */
+
+/* Slider values here run up to "31 Dec 2025"; the labels "mean anomaly
+   M" and "center OC" need a wider first column. */
+figure.fig {
+	--ctl-output: 7.4em;
+}
+
+figure.fig .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+/* The choice of a view, above the drawing of Figure 4. */
+#planet-views {
+	justify-content: center;
+	margin-bottom: 12px;
+}
+
+/* Figure 1: the two plots one above the other, on the same axis of
+   ecliptic longitude, so that the dotted lines run through both. */
+.panels.stacked {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* ==========================================================================
+   2. THE SQUARE DRAWINGS
+   The canvases set their own square size (page.js); center them.
+   ========================================================================== */
+
+#jobs-canvas,
+#planet-canvas,
+#perp-center,
+#perp-earth,
+#kepler-canvas {
+	display: block;
+	margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. THE TABLE OF THE EXPANSIONS
+   The model on the left, in words; the expansions centered.
+   ========================================================================== */
+
+table.prose-table {
+	max-width: 70ch;
+	margin: 14px 0;
+}
+
+table.prose-table th:first-child,
+table.prose-table td:first-child {
+	text-align: left;
+}
+
+/* ==========================================================================
+   4. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	figure.fig .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+}

@@ -324,7 +324,7 @@ console.log(
 
 title('Model: the greatest equation at 2D = 120° (Almagest V 7, a check)');
 {
-	const rho = LunarCrank.centreDistance(P.c, 120);
+	const rho = LunarCrank.centeredistance(P.c, 120);
 
 	console.log(
 		`OK = ${f(60 * rho, 3)} parts (Ptolemy 43;43); greatest equation ${dms(asin(P.e / rho))} (Ptolemy 6;54)`

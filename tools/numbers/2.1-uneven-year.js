@@ -14,7 +14,7 @@
 	 2. Formatting and searching
 	 3. The reference Sun's equinoxes and solstices
 	 4. Observation: unequal seasons, the Sun's uneven daily motion
-	 5. Model: the equation of centre and its greatest value
+	 5. Model: the equation of center and its greatest value
 	 6. Fit: Hipparchus' method, on his numbers and on 2026
 	 7. Test: the error curves; the day of page 1.3
 	 8. Residual: the apogee moves; the distance
@@ -259,7 +259,7 @@ printSeasons('AD 140', sAD140);
    5. MODEL
    ========================================================================== */
 
-title('Model: the equation of centre');
+title('Model: the equation of center');
 [1 / 24, SolarEccentric.FIT_2026.e, 0.1].forEach(e => {
 	const g = SolarEccentric.greatestEquation(e);
 	let worst = 0;

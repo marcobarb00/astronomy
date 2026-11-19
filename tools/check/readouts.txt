@@ -481,23 +481,23 @@ Regenerate with: node tools/check/smoke.js --update
   slider #sid-time + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.81^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   slider #sid-lon = -180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180.00^\circ = 101.31^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 180
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 180.00° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.30^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180.00^\circ = 101.31^\circ | \alpha = 69.35^\circ,\quad H = 31.95^\circ
   slider #sid-lon = 0
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   slider #sid-lon + one key step
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.01° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.01^\circ = 281.32^\circ | \alpha = 69.35^\circ,\quad H = -148.04^\circ
   slider #transit-lat = -60
     OUTPUT (transit-lat): −60.0°
     #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 46.8^\circ
@@ -545,35 +545,35 @@ Regenerate with: node tools/check/smoke.js --update
   button "Greenwich"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 0.00°
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.30^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0.00^\circ = 281.31^\circ | \alpha = 69.35^\circ,\quad H = -148.05^\circ
   button "Rome"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 12.50° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.80^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12.50^\circ = 293.81^\circ | \alpha = 69.35^\circ,\quad H = -135.55^\circ
   button "Alexandria"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 29.92° E
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.22^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29.92^\circ = 311.23^\circ | \alpha = 69.35^\circ,\quad H = -118.13^\circ
   button "New York"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Aldebaran"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 69.35^\circ,\quad H = 137.94^\circ
   button "Vega"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 279.45^\circ,\quad H = -72.16^\circ
   button "Sirius"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 101.57^\circ,\quad H = 105.72^\circ
   button "Arcturus"
     OUTPUT (sid-time): 12:01
     OUTPUT (sid-lon): 74.01° W
-    #sid-readout: d = 9497.0004 | \theta_G = 281.30^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.29^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ
+    #sid-readout: d = 9497.0004 | \theta_G = 281.31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74.01^\circ = 207.30^\circ | \alpha = 214.21^\circ,\quad H = -6.92^\circ
   button "Sirius"
     OUTPUT (transit-lat): 0.1°
     #transit-readout: \text{Sirius, night of 1 Jan 2026} | \text{transit } \text{00:00},\quad \text{sky: dark} |  | a = 73.1^\circ
@@ -1412,11 +1412,25 @@ Regenerate with: node tools/check/smoke.js --update
 
 === act4-planets/01-going-backwards/index.html ===
   as loaded
+    OUTPUT (motion-loop): 16 Jan 2025
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
     OUTPUT (epi-day): 27 Oct 2024
     OUTPUT (epi-r): 0.658
     #epicycle-readout: \text{27 Oct 2024:}\quad \bar\lambda = 66.8^\circ,\quad \mu = 149.1^\circ | \eta = +37.8^\circ,\quad \lambda = \bar\lambda + \eta = 104.6^\circ | \text{daily motion } +0.325^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
+  slider #motion-loop = 0
+    OUTPUT (motion-loop): 24 Dec 2007
+    #motion-readout: \text{goes back } 18.4^\circ \text{ in } 77 \text{ days} | \text{centered on ecliptic longitude } 92.6^\circ
+  slider #motion-loop = 8
+    OUTPUT (motion-loop): 16 Jan 2025
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
+  slider #motion-loop = 4
+    OUTPUT (motion-loop): 22 May 2016
+    #motion-readout: \text{goes back } 15.8^\circ \text{ in } 73 \text{ days} | \text{centered on ecliptic longitude } 241.8^\circ
+  slider #motion-loop + one key step
+    OUTPUT (motion-loop): 27 Jul 2018
+    #motion-readout: \text{goes back } 10.6^\circ \text{ in } 62 \text{ days} | \text{centered on ecliptic longitude } 304.1^\circ
   slider #epi-day = 0
     OUTPUT (epi-day): 1 Jan 2024
     OUTPUT (epi-r): 0.658
@@ -1450,38 +1464,46 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (epi-r): 0.401
     #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +5.7^\circ,\quad \lambda = \bar\lambda + \eta = 334.6^\circ | \text{daily motion } +0.654^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   button "Mars"
+    OUTPUT (motion-loop): 16 Jan 2025
+    #motion-readout: \text{goes back } 19.2^\circ \text{ in } 79 \text{ days} | \text{centered on ecliptic longitude } 116.2^\circ
   button "Jupiter"
+    OUTPUT (motion-loop): 7 Dec 2024
+    #motion-readout: \text{goes back } 10.1^\circ \text{ in } 118 \text{ days} | \text{centered on ecliptic longitude } 76.2^\circ
   button "Saturn"
+    OUTPUT (motion-loop): 8 Sep 2024
+    #motion-readout: \text{goes back } 6.7^\circ \text{ in } 139 \text{ days} | \text{centered on ecliptic longitude } 346.0^\circ
   button "Venus"
+    OUTPUT (motion-loop): 23 Mar 2025
+    #motion-readout: \text{goes back } 16.2^\circ \text{ in } 42 \text{ days} | \text{centered on ecliptic longitude } 2.7^\circ
   button "Mercury"
-  button "Mars"
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
+  button "‹ previous loop"
+    OUTPUT (motion-loop): 24 Mar 2025
+    #motion-readout: \text{goes back } 12.8^\circ \text{ in } 23 \text{ days} | \text{centered on ecliptic longitude } 4.4^\circ
+  button "next loop ›"
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
+  button "‹ previous day"
+    OUTPUT (epi-day): 10 Mar 2026
+    OUTPUT (epi-r): 0.401
+    #epicycle-readout: \text{10 Mar 2026:}\quad \bar\lambda = 328.4^\circ,\quad \mu = 19.5^\circ | \eta = +5.5^\circ,\quad \lambda = \bar\lambda + \eta = 334.0^\circ | \text{daily motion } +0.654^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+  button "next day ›"
+    OUTPUT (epi-day): 11 Mar 2026
+    OUTPUT (epi-r): 0.401
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +5.7^\circ,\quad \lambda = \bar\lambda + \eta = 334.6^\circ | \text{daily motion } +0.654^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+  button "Ptolemy"
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.658
     #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +7.9^\circ,\quad \lambda = \bar\lambda + \eta = 336.9^\circ | \text{daily motion } +0.706^\circ \text{ (forward)} | \text{stations at } \mu = 163.2^\circ, 196.8^\circ;\ \text{back } 16.2^\circ
-  button "Venus"
-    OUTPUT (epi-day): 11 Mar 2026
-    OUTPUT (epi-r): 0.719
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +16.2^\circ,\quad \lambda = \bar\lambda + \eta = 5.1^\circ | \text{daily motion } +1.237^\circ \text{ (forward)} | \text{stations at } \mu = 167.1^\circ, 192.9^\circ;\ \text{back } 15.2^\circ
-  button "‹ previous day"
-    OUTPUT (epi-day): 10 Mar 2026
-    OUTPUT (epi-r): 0.719
-    #epicycle-readout: \text{10 Mar 2026:}\quad \bar\lambda = 347.9^\circ,\quad \mu = 38.4^\circ | \eta = +15.9^\circ,\quad \lambda = \bar\lambda + \eta = 3.9^\circ | \text{daily motion } +1.238^\circ \text{ (forward)} | \text{stations at } \mu = 167.1^\circ, 192.9^\circ;\ \text{back } 15.2^\circ
-  button "next day ›"
-    OUTPUT (epi-day): 11 Mar 2026
-    OUTPUT (epi-r): 0.719
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +16.2^\circ,\quad \lambda = \bar\lambda + \eta = 5.1^\circ | \text{daily motion } +1.237^\circ \text{ (forward)} | \text{stations at } \mu = 167.1^\circ, 192.9^\circ;\ \text{back } 15.2^\circ
-  button "Ptolemy"
-    OUTPUT (epi-day): 11 Mar 2026
-    OUTPUT (epi-r): 0.719
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +16.2^\circ,\quad \lambda = \bar\lambda + \eta = 5.1^\circ | \text{daily motion } +1.237^\circ \text{ (forward)} | \text{stations at } \mu = 167.1^\circ, 192.9^\circ;\ \text{back } 15.2^\circ
   button "no loop"
     OUTPUT (epi-day): 11 Mar 2026
-    OUTPUT (epi-r): 0.615
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +14.7^\circ,\quad \lambda = \bar\lambda + \eta = 3.6^\circ | \text{daily motion } +1.212^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    OUTPUT (epi-r): 0.531
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +6.9^\circ,\quad \lambda = \bar\lambda + \eta = 335.9^\circ | \text{daily motion } +0.682^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   button "no epicycle"
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   button "4 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "16 years"
@@ -1489,25 +1511,41 @@ Regenerate with: node tools/check/smoke.js --update
   button "200 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #motion-plot at 0.3
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot at 0.6
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot at 0.9
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #motion-plot left
+    OUTPUT (motion-loop): 31 Jul 2025
+    #motion-readout: \text{goes back } 11.3^\circ \text{ in } 24 \text{ days} | \text{centered on ecliptic longitude } 129.0^\circ
   hover #epicycle-plot at 0.3
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   hover #epicycle-plot at 0.6
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   hover #epicycle-plot at 0.9
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
   hover #epicycle-plot left
     OUTPUT (epi-day): 11 Mar 2026
     OUTPUT (epi-r): 0.000
-    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 348.9^\circ,\quad \mu = 39.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 348.9^\circ | \text{daily motion } +0.986^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.615
+    #epicycle-readout: \text{11 Mar 2026:}\quad \bar\lambda = 329.0^\circ,\quad \mu = 20.0^\circ | \eta = +0.0^\circ,\quad \lambda = \bar\lambda + \eta = 329.0^\circ | \text{daily motion } +0.524^\circ \text{ (forward)} | \text{no loop: } r \le n/(n + n_\mu) = 0.532
+  hover #ratio-arc-plot at 0.3
+  hover #ratio-arc-plot at 0.6
+  hover #ratio-arc-plot at 0.9
+  hover #ratio-arc-plot left
+  hover #ratio-station-plot at 0.3
+  hover #ratio-station-plot at 0.6
+  hover #ratio-station-plot at 0.9
+  hover #ratio-station-plot left
   hover #error-mars-plot at 0.3
     .errorcurve-readout: 3 Jun 1969 · uniform planet: +13.61° · epicycle: +32.79°
   hover #error-mars-plot at 0.6
@@ -1524,6 +1562,412 @@ Regenerate with: node tools/check/smoke.js --update
   hover #intervals-plot at 0.6
   hover #intervals-plot at 0.9
   hover #intervals-plot left
+  dragged 0 spheres
+
+=== act4-planets/02-equant/index.html ===
+  as loaded
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+    OUTPUT (planet-day): 28 Jun 2018
+    #planet-readout: \text{28 Jun 2018:}\quad \bar\lambda = 294.2^\circ,\quad M = 142.8^\circ | q = -16.18^\circ,\quad \rho = \text{OK} = 0.868 | \mu = 161.9^\circ,\quad \eta = +6.05^\circ | \lambda = \bar\lambda + q + \eta = 284.0^\circ
+    OUTPUT (fit-oc): 0.098
+    #fit-readout: \text{OC} = 0.098 = 0.49\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #jobs-oc = 0
+    OUTPUT (jobs-oc): 0.000
+    #jobs-readout: \text{OC} = 0.000 = 0.00\,\text{OQ} | \text{speed: } 0.800\,n \text{ to } 1.200\,n | \text{OK: } 1.000 \text{ to } 1.000
+  slider #jobs-oc = 0.2
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  slider #jobs-oc = 0.1
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+  slider #jobs-oc + one key step
+    OUTPUT (jobs-oc): 0.101
+    #jobs-readout: \text{OC} = 0.101 = 0.51\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.899 \text{ to } 1.101
+  slider #planet-day = 0
+    OUTPUT (planet-day): 1 Jan 2010
+    #planet-readout: \text{1 Jan 2010:}\quad \bar\lambda = 109.5^\circ,\quad M = 318.3^\circ | q = +13.13^\circ,\quad \rho = \text{OK} = 1.171 | \mu = 171.0^\circ,\quad \eta = +23.82^\circ | \lambda = \bar\lambda + q + \eta = 146.5^\circ
+  slider #planet-day = 5844
+    OUTPUT (planet-day): 1 Jan 2026
+    #planet-readout: \text{1 Jan 2026:}\quad \bar\lambda = 292.2^\circ,\quad M = 140.8^\circ | q = -16.82^\circ,\quad \rho = \text{OK} = 0.874 | \mu = 348.5^\circ,\quad \eta = +2.26^\circ | \lambda = \bar\lambda + q + \eta = 277.7^\circ
+  slider #planet-day = 2922
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 200.9^\circ,\quad M = 49.5^\circ | q = -15.23^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.7^\circ,\quad \eta = +30.75^\circ | \lambda = \bar\lambda + q + \eta = 216.4^\circ
+  slider #planet-day + one key step
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
+  slider #fit-oc = 0
+    OUTPUT (fit-oc): 0.000
+    #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
+  slider #fit-oc = 0.2007
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  slider #fit-oc = 0.1003
+    OUTPUT (fit-oc): 0.100
+    #fit-readout: \text{OC} = 0.100 = 0.50\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  slider #fit-oc + one key step
+    OUTPUT (fit-oc): 0.100
+    #fit-readout: \text{OC} = 0.100 = 0.50\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  button "C at O"
+    OUTPUT (jobs-oc): 0.000
+    #jobs-readout: \text{OC} = 0.000 = 0.00\,\text{OQ} | \text{speed: } 0.800\,n \text{ to } 1.200\,n | \text{OK: } 1.000 \text{ to } 1.000
+  button "Ptolemy"
+    OUTPUT (jobs-oc): 0.100
+    #jobs-readout: \text{OC} = 0.100 = 0.50\,\text{OQ} | \text{speed: } 0.818\,n \text{ to } 1.222\,n | \text{OK: } 0.900 \text{ to } 1.100
+  button "C at Q"
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  button "e = 0.2"
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -15.26^\circ,\quad \rho = \text{OK} = 1.159 | \mu = 79.8^\circ,\quad \eta = +30.79^\circ | \lambda = \bar\lambda + q + \eta = 216.5^\circ
+  button "Mars"
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  button "‹ previous day"
+    OUTPUT (planet-day): 31 Dec 2017
+    #planet-readout: \text{31 Dec 2017:}\quad \bar\lambda = 200.5^\circ,\quad M = 49.1^\circ | q = -8.14^\circ,\quad \rho = \text{OK} = 1.074 | \mu = 79.4^\circ,\quad \eta = +30.82^\circ | \lambda = \bar\lambda + q + \eta = 223.2^\circ
+  button "next day ›"
+    OUTPUT (planet-day): 1 Jan 2018
+    #planet-readout: \text{1 Jan 2018:}\quad \bar\lambda = 201.0^\circ,\quad M = 49.7^\circ | q = -8.21^\circ,\quad \rho = \text{OK} = 1.073 | \mu = 79.8^\circ,\quad \eta = +30.98^\circ | \lambda = \bar\lambda + q + \eta = 223.8^\circ
+  button "an opposition"
+    OUTPUT (planet-day): 23 May 2016
+    #planet-readout: \text{23 May 2016:}\quad \bar\lambda = 253.0^\circ,\quad M = 101.7^\circ | q = -11.41^\circ,\quad \rho = \text{OK} = 0.994 | \mu = 168.5^\circ,\quad \eta = +0.08^\circ | \lambda = \bar\lambda + q + \eta = 241.6^\circ
+  button "C at O"
+    OUTPUT (fit-oc): 0.000
+    #fit-readout: \text{OC} = 0.000 = 0.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 8.2^\circ,\quad \text{oppositions } 33'
+  button "fitted"
+    OUTPUT (fit-oc): 0.098
+    #fit-readout: \text{OC} = 0.098 = 0.49\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 0.5^\circ,\quad \text{oppositions } 8'
+  button "C at Q"
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  button "4 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "16 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "200 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #observed-oppositions at 0.3
+  hover #observed-oppositions at 0.6
+  hover #observed-oppositions at 0.9
+  hover #observed-oppositions left
+  hover #observed-arcs at 0.3
+  hover #observed-arcs at 0.6
+  hover #observed-arcs at 0.9
+  hover #observed-arcs left
+  hover #jobs-speed at 0.3
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed at 0.6
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed at 0.9
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-speed left
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.3
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.6
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance at 0.9
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #jobs-distance left
+    OUTPUT (jobs-oc): 0.200
+    #jobs-readout: \text{OC} = 0.200 = 1.00\,\text{OQ} | \text{speed: } 0.833\,n \text{ to } 1.250\,n | \text{OK: } 0.800 \text{ to } 1.200
+  hover #kepler-plot at 0.3
+  hover #kepler-plot at 0.6
+  hover #kepler-plot at 0.9
+  hover #kepler-plot left
+  hover #fit-directions at 0.3
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions at 0.6
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions at 0.9
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-directions left
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.3
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.6
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs at 0.9
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #fit-arcs left
+    OUTPUT (fit-oc): 0.201
+    #fit-readout: \text{OC} = 0.201 = 1.00\,\text{OQ},\quad \text{OQ} = 0.201 | \text{rms: loops } 10.2^\circ,\quad \text{oppositions } 18'
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 Jun 1969 · page 4.1's epicycle: +32.79° · equant: +0.40°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 Jul 2034 · page 4.1's epicycle: −2.08° · equant: −0.03°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 Sep 2099 · page 4.1's epicycle: −21.04° · equant: −0.15°
+  hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #test-arcs at 0.3
+  hover #test-arcs at 0.6
+  hover #test-arcs at 0.9
+  hover #test-arcs left
+  hover #test-intervals at 0.3
+  hover #test-intervals at 0.6
+  hover #test-intervals at 0.9
+  hover #test-intervals left
+  dragged 0 spheres
+
+=== act4-planets/03-new-center/index.html ===
+  as loaded
+    OUTPUT (arrangement-day): 6 Dec 2014
+    #arrangement-readout: \text{6 Dec 2014:}\quad \lambda - \bar\lambda_\odot = 46.48^\circ | \lambda = 301.19^\circ \text{ in (a)},\quad 301.19^\circ \text{ in (b)}
+    OUTPUT (epicyclet-anomaly): 60°
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #arrangement-day = 0
+    OUTPUT (arrangement-day): 1 Jan 2010
+    #arrangement-readout: \text{1 Jan 2010:}\quad \lambda - \bar\lambda_\odot = -141.77^\circ | \lambda = 138.77^\circ \text{ in (a)},\quad 138.77^\circ \text{ in (b)}
+  slider #arrangement-day = 5843
+    OUTPUT (arrangement-day): 31 Dec 2025
+    #arrangement-readout: \text{31 Dec 2025:}\quad \lambda - \bar\lambda_\odot = 2.38^\circ | \lambda = 282.06^\circ \text{ in (a)},\quad 282.06^\circ \text{ in (b)}
+  slider #arrangement-day = 2921.5
+    OUTPUT (arrangement-day): 31 Dec 2017
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.79^\circ | \lambda = 223.31^\circ \text{ in (a)},\quad 223.31^\circ \text{ in (b)}
+  slider #arrangement-day + one key step
+    OUTPUT (arrangement-day): 31 Dec 2017
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.89^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)}
+  slider #epicyclet-anomaly = 0
+    OUTPUT (epicyclet-anomaly): 0°
+  slider #epicyclet-anomaly = 360
+    OUTPUT (epicyclet-anomaly): 360°
+  slider #epicyclet-anomaly = 180
+    OUTPUT (epicyclet-anomaly): 180°
+  slider #epicyclet-anomaly + one key step
+    OUTPUT (epicyclet-anomaly): 181°
+  button "Mars"
+    OUTPUT (arrangement-day): 31 Dec 2017
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -56.89^\circ | \lambda = 223.47^\circ \text{ in (a)},\quad 223.47^\circ \text{ in (b)}
+  button "Venus"
+    OUTPUT (arrangement-day): 31 Dec 2017
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.24^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)}
+  button "‹ previous day"
+    OUTPUT (arrangement-day): 30 Dec 2017
+    #arrangement-readout: \text{30 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.50^\circ | \lambda = 276.87^\circ \text{ in (a)},\quad 276.87^\circ \text{ in (b)}
+  button "next day ›"
+    OUTPUT (arrangement-day): 31 Dec 2017
+    #arrangement-readout: \text{31 Dec 2017:}\quad \lambda - \bar\lambda_\odot = -2.24^\circ | \lambda = 278.11^\circ \text{ in (a)},\quad 278.11^\circ \text{ in (b)}
+  hover #elongation-inner at 0.3
+  hover #elongation-inner at 0.6
+  hover #elongation-inner at 0.9
+  hover #elongation-inner left
+  hover #elongation-outer at 0.3
+  hover #elongation-outer at 0.6
+  hover #elongation-outer at 0.9
+  hover #elongation-outer left
+  hover #loop-directions at 0.3
+  hover #loop-directions at 0.6
+  hover #loop-directions at 0.9
+  hover #loop-directions left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 11 Jan 2017 · page 4.2's equant: +0.28° · Copernicus' epicyclet: +0.34°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 1 May 2018 · page 4.2's equant: −0.06° · Copernicus' epicyclet: −0.28°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 20 Aug 2019 · page 4.2's equant: −0.05° · Copernicus' epicyclet: −0.05°
+  hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.3
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.6
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference at 0.9
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-difference left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #distance-plot at 0.3
+  hover #distance-plot at 0.6
+  hover #distance-plot at 0.9
+  hover #distance-plot left
+  hover #distance-error at 0.3
+  hover #distance-error at 0.6
+  hover #distance-error at 0.9
+  hover #distance-error left
+  dragged 0 spheres
+
+=== act4-planets/04-phases-parallax/index.html ===
+  as loaded
+    OUTPUT (systems-day): 6 Dec 2014
+    #systems-readout: \text{6 Dec 2014} | \lambda_\text{P} = 301.186^\circ \text{ in (a)},\quad 301.186^\circ \text{ in (b)} | \text{OP} = 1.847 \text{ in (a)},\quad 1.847\ \text{au in (b)}
+    OUTPUT (orders-day): 22 Oct 2024
+    #orders-readout: \text{22 Oct 2024:}\quad \lambda - \bar\lambda_\odot = 35.0^\circ | \text{OP} = 1.26\ \text{OK}
+    OUTPUT (parallax-day): 28 May 2026
+    #parallax-readout: \text{28 May 2026} | \Delta\lambda\cos\beta = 0.290'',\quad \Delta\beta = -0.003''
+  opened 6 hints and answers
+  slider #systems-day = 0
+    OUTPUT (systems-day): 1 Jan 2010
+    #systems-readout: \text{1 Jan 2010} | \lambda_\text{P} = 138.769^\circ \text{ in (a)},\quad 138.769^\circ \text{ in (b)} | \text{OP} = 0.736 \text{ in (a)},\quad 0.736\ \text{au in (b)}
+  slider #systems-day = 5843
+    OUTPUT (systems-day): 31 Dec 2025
+    #systems-readout: \text{31 Dec 2025} | \lambda_\text{P} = 282.055^\circ \text{ in (a)},\quad 282.055^\circ \text{ in (b)} | \text{OP} = 2.411 \text{ in (a)},\quad 2.411\ \text{au in (b)}
+  slider #systems-day = 2921.5
+    OUTPUT (systems-day): 31 Dec 2017
+    #systems-readout: \text{31 Dec 2017} | \lambda_\text{P} = 223.314^\circ \text{ in (a)},\quad 223.314^\circ \text{ in (b)} | \text{OP} = 1.948 \text{ in (a)},\quad 1.948\ \text{au in (b)}
+  slider #systems-day + one key step
+    OUTPUT (systems-day): 31 Dec 2017
+    #systems-readout: \text{31 Dec 2017} | \lambda_\text{P} = 223.468^\circ \text{ in (a)},\quad 223.468^\circ \text{ in (b)} | \text{OP} = 1.946 \text{ in (a)},\quad 1.946\ \text{au in (b)}
+  slider #orders-day = 0
+    OUTPUT (orders-day): 4 Jun 2024
+    #orders-readout: \text{4 Jun 2024:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | \text{OP} = 1.72\ \text{OK}
+  slider #orders-day = 584
+    OUTPUT (orders-day): 9 Jan 2026
+    #orders-readout: \text{9 Jan 2026:}\quad \lambda - \bar\lambda_\odot = 0.5^\circ | \text{OP} = 1.72\ \text{OK}
+  slider #orders-day = 292
+    OUTPUT (orders-day): 23 Mar 2025
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.1^\circ | \text{OP} = 0.28\ \text{OK}
+  slider #orders-day + one key step
+    OUTPUT (orders-day): 23 Mar 2025
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | \text{OP} = 0.28\ \text{OK}
+  slider #parallax-day = 0
+    OUTPUT (parallax-day): 1 Jan 2026
+    #parallax-readout: \text{1 Jan 2026} | \Delta\lambda\cos\beta = -0.235'',\quad \Delta\beta = -0.121''
+  slider #parallax-day = 365
+    OUTPUT (parallax-day): 1 Jan 2027
+    #parallax-readout: \text{1 Jan 2027} | \Delta\lambda\cos\beta = -0.236'',\quad \Delta\beta = -0.120''
+  slider #parallax-day = 182.5
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.243'',\quad \Delta\beta = 0.125''
+  slider #parallax-day + one key step
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  button "‹ previous day"
+    OUTPUT (systems-day): 30 Dec 2017
+    #systems-readout: \text{30 Dec 2017} | \lambda_\text{P} = 222.851^\circ \text{ in (a)},\quad 222.851^\circ \text{ in (b)} | \text{OP} = 1.954 \text{ in (a)},\quad 1.954\ \text{au in (b)}
+  button "next day ›"
+    OUTPUT (systems-day): 31 Dec 2017
+    #systems-readout: \text{31 Dec 2017} | \lambda_\text{P} = 223.468^\circ \text{ in (a)},\quad 223.468^\circ \text{ in (b)} | \text{OP} = 1.946 \text{ in (a)},\quad 1.946\ \text{au in (b)}
+  button "‹ previous day"
+    OUTPUT (orders-day): 22 Mar 2025
+    #orders-readout: \text{22 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -1.9^\circ | \text{OP} = 0.28\ \text{OK}
+  button "next day ›"
+    OUTPUT (orders-day): 23 Mar 2025
+    #orders-readout: \text{23 Mar 2025:}\quad \lambda - \bar\lambda_\odot = -3.5^\circ | \text{OP} = 0.28\ \text{OK}
+  button "‹ previous day"
+    OUTPUT (parallax-day): 1 Jul 2026
+    #parallax-readout: \text{1 Jul 2026} | \Delta\lambda\cos\beta = 0.245'',\quad \Delta\beta = 0.123''
+  button "next day ›"
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  hover #parallax-sky at 0.3
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  hover #parallax-sky at 0.6
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  hover #parallax-sky at 0.9
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  hover #parallax-sky left
+    OUTPUT (parallax-day): 2 Jul 2026
+    #parallax-readout: \text{2 Jul 2026} | \Delta\lambda\cos\beta = 0.242'',\quad \Delta\beta = 0.126''
+  hover #phase-plot at 0.3
+  hover #phase-plot at 0.6
+  hover #phase-plot at 0.9
+  hover #phase-plot left
+  hover #test-phase at 0.3
+  hover #test-phase at 0.6
+  hover #test-phase at 0.9
+  hover #test-phase left
+  hover #test-error at 0.3
+  hover #test-error at 0.6
+  hover #test-error at 0.9
+  hover #test-error left
+  dragged 0 spheres
+
+=== act4-planets/05-kepler/index.html ===
+  as loaded
+    OUTPUT (ellipse-day): 57 days
+    #ellipse-readout: M = 29.9^\circ | E = 18.8^\circ | \angle\text{AQP} = 36.6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 9.5^\circ | r = 1.568\,a
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #ellipse-day = 0
+    OUTPUT (ellipse-day): 0 days
+    #ellipse-readout: M = 0.0^\circ | E = 0.0^\circ | \angle\text{AQP} = 0.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0.0^\circ | r = 1.600\,a
+  slider #ellipse-day = 687
+    OUTPUT (ellipse-day): 687 days
+    #ellipse-readout: M = 360.0^\circ | E = 360.0^\circ | \angle\text{AQP} = 0.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0.0^\circ | r = 1.600\,a
+  slider #ellipse-day = 343.5
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.0^\circ | E = 180.0^\circ | \angle\text{AQP} = 180.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.0^\circ | r = 0.400\,a
+  slider #ellipse-day + one key step
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | \angle\text{AQP} = 180.2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.7^\circ | r = 0.400\,a
+  button "e = 0.6"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | \angle\text{AQP} = 180.2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.7^\circ | r = 0.400\,a
+  button "Mars"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | \angle\text{AQP} = 180.1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.2^\circ | r = 0.907\,a
+  button "‹ previous day"
+    OUTPUT (ellipse-day): 343 days
+    #ellipse-readout: M = 179.6^\circ | E = 179.6^\circ | \angle\text{AQP} = 179.6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 179.5^\circ | r = 0.907\,a
+  button "next day ›"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | \angle\text{AQP} = 180.1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.2^\circ | r = 0.907\,a
+  button "4 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "16 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "200 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #sun-plot at 0.3
+  hover #sun-plot at 0.6
+  hover #sun-plot at 0.9
+  hover #sun-plot left
+  hover #triangle-plot at 0.3
+  hover #triangle-plot at 0.6
+  hover #triangle-plot at 0.9
+  hover #triangle-plot left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 Jun 1969 · page 4.2's equant: +21.7′ · ellipses: +1.5′
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 Jul 2034 · page 4.2's equant: −2.4′ · ellipses: −0.2′
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 Sep 2099 · page 4.2's equant: −12.3′ · ellipses: +0.1′
+  hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: 2 Aug 1783 · page 2.1's eccentric: +0.9′ · ellipse: +0.1′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: 3 May 2109 · page 2.1's eccentric: +0.5′ · ellipse: +0.4′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: 1 Feb 2435 · page 2.1's eccentric: −0.8′ · ellipse: −0.7′
+  hover #error-sun-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #summary-sun at 0.3
+  hover #summary-sun at 0.6
+  hover #summary-sun at 0.9
+  hover #summary-sun left
+  hover #summary-mars at 0.3
+  hover #summary-mars at 0.6
+  hover #summary-mars at 0.9
+  hover #summary-mars left
   dragged 0 spheres
 
 === archive/copernican_revolution/index.html ===
@@ -2906,7 +3350,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 166 tests pass.
+    #summary: All 189 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 

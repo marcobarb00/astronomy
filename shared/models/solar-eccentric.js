@@ -2,13 +2,13 @@
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE SOLAR ECCENTRIC (models/solar-eccentric.js)
    The model of page 2.1, Hipparchus' Sun: the Sun moves uniformly on a
-   circle whose centre C is not the Earth O but lies at a distance e (in
+   circle whose center C is not the Earth O but lies at a distance e (in
    units of the circle's radius) towards the apogee, at longitude lambdaA.
    Seen from C its longitude is the mean longitude lambdaBar of
    models/mean-sun.js; seen from O it is
 	   lambda = lambdaBar + q,
 	   q = -atan2(e sin M, 1 + e cos M),   M = lambdaBar - lambdaA,
-   the equation of centre q, with the mean anomaly M counted from the
+   the equation of center q, with the mean anomaly M counted from the
    apogee (STRUCTURE.md §6). q is negative from the apogee to the perigee
    (0 < M < 180°), where the Sun lags the mean Sun, as in Ptolemy, who
    subtracts the equation there (Almagest III 8).
@@ -44,7 +44,7 @@
 
    TABLE OF CONTENTS
 	 1. Parameter sets
-	 2. The equation of centre
+	 2. The equation of center
 	 3. The model
 	 4. The seasons and the fit
 	 5. Export
@@ -104,7 +104,7 @@ const SolarEccentric = (function () {
 	}
 
 	/* ======================================================================
-	   2. THE EQUATION OF CENTRE
+	   2. THE EQUATION OF CENTER
 	   ====================================================================== */
 
 	/* q (deg) for the mean anomaly M (deg, from the apogee) and e. */
@@ -117,7 +117,7 @@ const SolarEccentric = (function () {
 		return -e * sin(M) * R2D;
 	}
 
-	/* The greatest equation of centre: |q| = asin e, reached at M = 90° +
+	/* The greatest equation of center: |q| = asin e, reached at M = 90° +
 	   asin e (and 270° - asin e), where the Sun is 90° from the apogee as
 	   seen from the Earth (Almagest III 4: 2;23° at 92;23°). */
 	function greatestEquation(e) {
@@ -159,7 +159,7 @@ const SolarEccentric = (function () {
 	   ====================================================================== */
 
 	/* The arcs (deg, seen from C) of spring, summer, autumn and winter for
-	   the centre C = (h, k). */
+	   the center C = (h, k). */
 	function seasonArcs(h, k) {
 		const sh = asin(h);
 		const sk = asin(k);
@@ -174,7 +174,7 @@ const SolarEccentric = (function () {
 	}
 
 	/* Hipparchus' method: from the lengths of spring and summer (days) and
-	   the year Y, the centre { h, k }, e, the apogee, the four arcs and
+	   the year Y, the center { h, k }, e, the apogee, the four arcs and
 	   season lengths, and the mean longitude at the spring equinox. */
 	function fitSeasons(spring, summer, Y) {
 		const a1 = (360 * spring) / Y;

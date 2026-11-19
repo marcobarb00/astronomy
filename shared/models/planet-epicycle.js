@@ -3,8 +3,8 @@
    PREDICTING THE SKY - MODEL: THE SIMPLE PLANETARY EPICYCLE
    (models/planet-epicycle.js)
    The model of page 4.1, the planets' anomaly relative to the Sun with a
-   single epicycle on a deferent centred on the Earth (Almagest IX 5,
-   X 6, XII 1). The centre K of the epicycle moves uniformly on the
+   single epicycle on a deferent centered on the Earth (Almagest IX 5,
+   X 6, XII 1). The center K of the epicycle moves uniformly on the
    deferent (radius R = 1, the unit of every length here) at the mean
    longitude lambdaBar, and the planet moves uniformly on the epicycle
    (radius r) by the anomaly mu, counted from the apogee of the epicycle
@@ -145,7 +145,7 @@ const PlanetEpicycle = (function () {
 	   ====================================================================== */
 
 	/* The equation of the epicycle eta (deg) at the anomaly mu (deg, from
-	   the apogee, eastward) for the ratio r: the solar equation of centre
+	   the apogee, eastward) for the ratio r: the solar equation of center
 	   of page 2.1 with the sign reversed, since mu counts the other way. */
 	function equationOfEpicycle(mu, r) {
 		return atan2d(r * sin(mu), 1 + r * cos(mu));
@@ -269,7 +269,7 @@ const PlanetEpicycle = (function () {
 
 	/* The points of one moment, in units of the deferent's radius, with
 	   the Earth at the origin and x towards the vernal point: K, the
-	   centre of the epicycle, and planet, the planet; and the direction
+	   center of the epicycle, and planet, the planet; and the direction
 	   of the mean Sun (deg). */
 	function construction(s, r) {
 		const K = [cos(s.meanLongitude), sin(s.meanLongitude)];
@@ -299,7 +299,7 @@ const PlanetEpicycle = (function () {
 	}
 
 	/* The reference planet's daily motion (deg / day) at JD(TT): the
-	   change of its longitude over the half day centred there. */
+	   change of its longitude over the half day centered there. */
 	function referenceMotion(body, jd, apparent = true) {
 		const before = referenceLongitude(body, jd - 0.25, apparent);
 		const after = referenceLongitude(body, jd + 0.25, apparent);
