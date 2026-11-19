@@ -453,12 +453,38 @@
 		<p>
 			Page 2.1 fitted the eccentric to the lengths of spring and summer,
 			Hipparchus' method, and the same two lengths fix the ellipse. Only
-			the law of the motion changes. The time from one ecliptic longitude
-			of the Sun to another is now the difference of the two values of $M$
-			given by Kepler's equation, divided by $n$, where each $M$ comes from
-			the Sun's true anomaly $v$ through $\tan(E/2) = \sqrt{(1 + e)/(1 -
-			e)}\,\tan(v/2)$. Two seasons give two equations in $e$ and the
-			apogee, which Newton's method solves in a few steps.
+			the law of the motion changes.
+		</p>
+
+		<p>
+			A season begins and ends when the Sun reaches a given ecliptic
+			longitude $\lambda$: 0° at the spring equinox, 90° at the summer
+			solstice, 180° at the autumn equinox. Its length is the time between
+			two such moments, and time is what $M$ measures: the days from one
+			ecliptic longitude to the next are the difference of the two values
+			of $M$, divided by the mean motion $n$. So for each ecliptic longitude
+			we need $M$. The ecliptic longitude gives the Sun's direction from
+			the apogee, the true anomaly $v = \lambda - \lambda_A$, and two steps
+			lead from $v$ back to $M$: first $E$, then Kepler's equation.
+		</p>
+
+		<p>
+			The first step uses the place of the body found in section 2. Seen
+			from the focus it is at $a(e + \cos E,\ \sqrt{1 - e^2}\sin E)$, at the
+			distance $a(1 + e\cos E)$, so $\cos v = (e + \cos E)/(1 + e\cos E)$.
+			Putting this into the half-angle formula $\tan^2(v/2) = (1 - \cos
+			v)/(1 + \cos v)$, the denominators cancel and
+		</p>
+
+		$$\tan^2\frac{v}{2} = \frac{(1 - e)(1 - \cos E)}{(1 + e)(1 + \cos E)} = \frac{1 - e}{1 + e}\,\tan^2\frac{E}{2}, \qquad \tan\frac{E}{2} = \sqrt{\frac{1 + e}{1 - e}}\,\tan\frac{v}{2}.$$
+
+		<p>
+			Of the two roots we take the one with the sign of $\tan(v/2)$, since
+			$E$ and $v$ always lie on the same side of the long axis. Kepler's equation then gives
+			$M = E + e\sin E$. For a trial $e$ and apogee, the three ecliptic
+			longitudes give three values of $M$, and so the lengths of the two
+			seasons. Newton's method adjusts $e$ and the apogee until these
+			match the observed ones, in a few steps.
 		</p>
 
 		<p>
