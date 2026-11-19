@@ -367,6 +367,35 @@ title('Model: the ellipse and the area law, for Mars and for the Sun');
 	);
 }
 
+title('Model: the ellipse seen from the empty focus Q (Figure 3)');
+{
+	/* The largest angle, over one period, between the direction of P seen
+	   from Q (or from the Sun) and the uniform direction at M from A. */
+	const largestOff = (e, fromFocus) => {
+		const b = Math.sqrt(1 - e * e);
+		let worst = 0;
+
+		for (let M = 0; M < 360; M += 0.05) {
+			const E = Kepler.eccentricAnomaly(M, e);
+			const seen = atan2d(b * sin(E), cos(E) + fromFocus * e);
+
+			worst = Math.max(worst, Math.abs(norm180(seen - M)));
+		}
+
+		return worst;
+	};
+
+	[
+		['e = 0.6', 0.6],
+		['Mars', Kepler.MARS_FIT.e]
+	].forEach(([label, e]) => {
+		console.log(
+			`${label}: QP within ${f(largestOff(e, -1), 2)}° = ${f(arcmin(largestOff(e, -1)), 1)}' of the uniform line; ` +
+				`the Sun's P within ${f(largestOff(e, 1), 2)}°`
+		);
+	});
+}
+
 title("Model: the third law against page 4.3's distances");
 
 /* The sidereal year: page 1.3's mean Sun and page 2.3's precession. */
@@ -597,6 +626,22 @@ title("Test: the Sun's ellipse against the reference (Figure 5)");
 	console.log(
 		`distance in 2026: ${show('real', real)}; ${show('ellipse', model)}; ${show("page 2.1's eccentric", ecc)}`
 	);
+}
+
+title("Test: the Sun's ellipse and page 2.1's eccentric, century by century (Figure 5, 1000 years)");
+{
+	const ellipse = Kepler.makeSun();
+	const ghost = SolarEccentric.make(SolarEccentric.MOVING_2026);
+
+	for (let year = 1526; year < 2526; year += 100) {
+		const e1 = errors(ellipse, sunLon, JD(year, 1, 1), JD(year + 100, 1, 1), 3);
+		const e2 = errors(ghost, sunLon, JD(year, 1, 1), JD(year + 100, 1, 1), 3);
+		const larger = e1.max > e2.max ? 'the ellipse' : 'the eccentric';
+
+		console.log(
+			`${year} - ${year + 100}: ellipse ${f(arcmin(e1.max), 2)}', eccentric ${f(arcmin(e2.max), 2)}' (larger: ${larger})`
+		);
+	}
 }
 
 title('Test: every model of the Sun (2026) and of Mars (2010 - 2025) (Figure 6)');
@@ -846,6 +891,22 @@ console.log(
 		4
 	)} to ${f(Math.max(...triangulated.map(q => q.belowCircle)), 4)} au`
 );
+console.log(
+	'Figure 3: the ellipse and its circle reach 1 a from C; the labels A, Π and P need about 0.15 a beyond: the drawing reaches 1.17 a'
+);
+{
+	/* Figure 4: the widest span is 200 years about 2018.0 (1918 - 2118);
+	   its bands reach half a synodic period (390 days) beyond: 1916 - 2120. */
+	const a = errors(kepler, marsLon, JD(1916, 1, 1), JD(2120, 1, 1), 1);
+	const b = errors(equant, marsLon, JD(1916, 1, 1), JD(2120, 1, 1), 1);
+
+	console.log(
+		`Figure 4: over 1916 - 2120 the ellipses within ${f(arcmin(a.max), 1)}', page 4.2's equant within ${f(
+			arcmin(b.max),
+			1
+		)}': the axis is ±60' for every span`
+	);
+}
 console.log(
 	"Figure 6: from the ellipse of the Sun (0.24') to the uniform Mars (53.7°): the axis runs from 0.1' to 100°"
 );

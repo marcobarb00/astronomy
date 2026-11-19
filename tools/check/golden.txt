@@ -2379,7 +2379,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 
 === 8n. PAGE 4.5 (act4-planets/05-kepler/page.js) ===
   screenDirection                45.000000000
-  fixed ranges                   [-4,4]  1.800000000  [-0.008,0.002]  1.080000000  686.980760172  {"e = 0.6":0.6,"Mars":0.093409}  [-1,4.178151250383644]
+  fixed ranges                   [-4,4]  1.800000000  [-0.008,0.002]  1.170000000  686.980760172  {"e = 0.6":0.6,"Mars":0.093409}  [-1,3.778151250383644]
 
 === 9. tools/numbers/1.1-turning-sky.js ===
 
@@ -4363,6 +4363,10 @@ Mars, e = 0.0934: distance ratio 1.206, speed ratio about the Sun 1.455
 the Sun, e = 0.0167: distance ratio 1.0339, speed ratio 1.0689
 Mars: b / a = 0.99563, a - b = 0.00437 a = 0.0067 au (a e^2 / 2 = 0.0066 au)
 
+=== Model: the ellipse seen from the empty focus Q (Figure 3) ===
+e = 0.6: QP within 10.03° = 601.6' of the uniform line; the Sun's P within 72.28°
+Mars: QP within 0.14° = 8.2' of the uniform line; the Sun's P within 10.71°
+
 === Model: the third law against page 4.3's distances ===
 sidereal year 365.2564 days
 mercury  a 0.3796 au, P 0.2408 years: P^2 / a^3 1.060; a from the law 0.3871 (page 4.3 -1.93%)
@@ -4409,6 +4413,18 @@ the triangulated distances within 0.0010 au of the ellipse
 1526 - 2526: ellipse within 2.66', page 2.1's eccentric (moving apogee) 3.95'
 (page 2.1's eccentric fitted to 2026, fixed apogee, in 2026: 1.72')
 distance in 2026: real 0.98330 to 1.01664 (ratio 1.0339); ellipse 0.98335 to 1.01665 (ratio 1.0339); page 2.1's eccentric 0.96653 to 1.03347 (ratio 1.0693)
+
+=== Test: the Sun's ellipse and page 2.1's eccentric, century by century (Figure 5, 1000 years) ===
+1526 - 1626: ellipse 2.66', eccentric 2.43' (larger: the ellipse)
+1626 - 1726: ellipse 2.23', eccentric 2.03' (larger: the ellipse)
+1726 - 1826: ellipse 1.68', eccentric 1.97' (larger: the eccentric)
+1826 - 1926: ellipse 1.51', eccentric 1.81' (larger: the eccentric)
+1926 - 2026: ellipse 1.23', eccentric 1.99' (larger: the eccentric)
+2026 - 2126: ellipse 0.91', eccentric 2.22' (larger: the eccentric)
+2126 - 2226: ellipse 0.91', eccentric 2.58' (larger: the eccentric)
+2226 - 2326: ellipse 1.29', eccentric 2.96' (larger: the eccentric)
+2326 - 2426: ellipse 1.75', eccentric 3.40' (larger: the eccentric)
+2426 - 2526: ellipse 2.24', eccentric 3.95' (larger: the eccentric)
 
 === Test: every model of the Sun (2026) and of Mars (2010 - 2025) (Figure 6) ===
 Sun   uniform (1.3)    114.721' = 1.912°
@@ -4472,4 +4488,6 @@ second order e^2 / 4 = 7.50'; b / a = 0.99563
 === Scales of the figures ===
 Figure 1: the three curves stay within ±3.5%: the axis is ±4%
 Figure 2: the points within 1.665 au of the Sun; against the circle -0.0064 to 0.0001 au
+Figure 3: the ellipse and its circle reach 1 a from C; the labels A, Π and P need about 0.15 a beyond: the drawing reaches 1.17 a
+Figure 4: over 1916 - 2120 the ellipses within 17.7', page 4.2's equant within 56.0': the axis is ±60' for every span
 Figure 6: from the ellipse of the Sun (0.24') to the uniform Mars (53.7°): the axis runs from 0.1' to 100°

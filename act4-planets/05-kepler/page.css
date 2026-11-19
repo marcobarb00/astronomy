@@ -39,6 +39,11 @@ figure.fig .ctl {
 	margin: 0 auto;
 }
 
+/* Figure 6: the two panels one above the other, on the same scale. */
+#summary-panels {
+	grid-template-columns: minmax(0, 1fr);
+}
+
 /* ==========================================================================
    3. THE TABLE OF THE THIRD LAW
    The planet on the left, the numbers centered.
