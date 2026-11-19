@@ -2375,7 +2375,7 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
 
 === 8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js) ===
   screenDirection                45.000000000
-  fixed ranges                   60.000000000  2.850000000  1.920000000  2.750000000  0.350000000  [-50,50]  [-0.04,0.04]  {"below the Sun":1.7968114051724138,"around the Sun":1,"above the Sun":0.2}
+  fixed ranges                   60.000000000  2.850000000  1.920000000  2.750000000  0.350000000  [0,2]  [-0.04,0.04]  [{"name":"below","ratio":1.7968114051724138},{"name":"around","ratio":1},{"name":"above","ratio":0.2}]
 
 === 8n. PAGE 4.5 (act4-planets/05-kepler/page.js) ===
   screenDirection                45.000000000
@@ -4315,11 +4315,21 @@ the whole yearly shift 0.572″; 1′ is 105 times as much
 === Scales: Figure 2, the farthest point of Tycho's drawing, 2010 - 2025 ===
 Mars' circle in Tycho's drawing reaches 2.672 au from O; Venus' 1.723 au
 
-=== Scales: Figure 3, the drawing and the disk ===
+=== Scales: Figure 3, the drawing and the disks ===
 the drawing reaches 1.797 (OK = 1)
 the disk: from 0.581 to 3.604 times its size at OP = OK
 
-=== Scales: Figure 4 (c), 61 Cygni in arcseconds ===
+=== Scales: Figure 5, the phase at greatest elongation against the order ===
+k at greatest elongation: 1.000 at O☉ = 0, 0.284 at O☉ = 2 OK; the axes 0 - 2 OK and 0 - 1
+above the Sun (O☉ < 0.277 OK): k over 0.964; below it (O☉ > 1.723 OK): k under 0.314
+the 50 dates (JD):
+2446669.36, 2446811.59, 2447254.32, 2447396.58, 2447839.14, 2447981.17, 2448421.67, 2448562.78, 2449007.20, 2449148.82
+2449588.97, 2449731.18, 2450173.99, 2450316.24, 2450758.67, 2450900.71, 2451341.26, 2451482.42, 2451926.83, 2452068.47
+2452508.61, 2452650.74, 2453093.63, 2453235.86, 2453678.17, 2453820.24, 2454260.86, 2454402.10, 2454846.49, 2454988.13
+2455428.24, 2455570.27, 2456013.24, 2456155.46, 2456597.64, 2456739.81, 2457180.50, 2457321.80, 2457766.18, 2457907.77
+2458347.84, 2458489.76, 2458932.83, 2459075.06, 2459517.14, 2459659.41, 2460100.18, 2460241.50, 2460685.87, 2460827.39
+
+=== Scales: Figure 4 (b), 61 Cygni in arcseconds ===
 largest shift 0.290″; the axes are ±0.35″
 
 === Scales: Figure 6 (b), the order around the Sun less the real Venus ===

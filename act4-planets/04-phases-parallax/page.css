@@ -21,29 +21,20 @@ figure.fig .ctl {
 	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
 }
 
-/* The choice of an order, above the two drawings of Figure 3. */
-#orders-views {
-	justify-content: center;
-	margin-bottom: 12px;
-}
-
-/* Figures 1, 4 and 6: plots and drawings one above the other, on the
+/* Figures 1 and 6: plots and drawings one above the other, on the
    whole width of the frame. */
 .panels.stacked {
 	grid-template-columns: minmax(0, 1fr);
 }
 
-/* Figure 3: the drawing wider than the disk seen from O. */
+/* Figure 3: the three disks of (b) level with the middle of the drawing
+   (a) beside them; one above the other on a phone (theme.css). */
 .panels.orders-panels {
-	grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+	align-items: center;
 }
 
-/* Figure 4: the sky of (c) under the two drawings, narrow enough that
-   its two axes have the same scale (page.js: aspect 0.96). */
-.panels + .panels.stacked {
-	margin-top: 14px;
-}
-
+/* Figure 4: the sky of (b), narrow enough that its two axes have the
+   same scale (page.js: aspect 0.96). */
 #parallax-sky {
 	max-width: 440px;
 	margin: 0 auto;
@@ -58,7 +49,6 @@ figure.fig .ctl {
 #tycho-canvas,
 #orders-canvas,
 #disk-canvas,
-#parallax-sun,
 #parallax-earth,
 #telescope-east,
 #telescope-west {
@@ -73,9 +63,5 @@ figure.fig .ctl {
 @media (max-width: 800px) {
 	figure.fig .ctl {
 		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
-	}
-
-	.panels.orders-panels {
-		grid-template-columns: minmax(0, 1fr);
 	}
 }

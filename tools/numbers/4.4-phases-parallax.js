@@ -510,13 +510,39 @@ title("Scales: Figure 2, the farthest point of Tycho's drawing, 2010 - 2025");
 	console.log(`Mars' circle in Tycho's drawing reaches ${f(most, 3)} au from O; Venus' ${f(1 + VENUS_FIT.r, 3)} au`);
 }
 
-title('Scales: Figure 3, the drawing and the disk');
+title('Scales: Figure 3, the drawing and the disks');
 console.log(`the drawing reaches ${f(Math.max(ORDERS.below, 1 + VENUS_FIT.r), 3)} (OK = 1)`);
 console.log(
 	`the disk: from ${f(1 / (1 + VENUS_FIT.r), 3)} to ${f(1 / (1 - VENUS_FIT.r), 3)} times its size at OP = OK`
 );
 
-title('Scales: Figure 4 (c), 61 Cygni in arcseconds');
+title('Scales: Figure 5, the phase at greatest elongation against the order');
+{
+	const r = VENUS_FIT.r;
+
+	// the curve falls from k = 1 (the Sun at O) as the Sun moves out
+	console.log(
+		`k at greatest elongation: ${f(kAtGreatest(0, r), 3)} at O☉ = 0, ${f(kAtGreatest(2, r), 3)} at O☉ = 2 OK; the axes 0 - 2 OK and 0 - 1`
+	);
+
+	// the edges of the shaded bands: every order above the Sun is more
+	// lit than this, every order below it less (the caption)
+	console.log(
+		`above the Sun (O☉ < ${f(1 - r, 3)} OK): k over ${f(kAtGreatest(1 - r, r), 3)}; below it (O☉ > ${f(1 + r, 3)} OK): k under ${f(kAtGreatest(1 + r, r), 3)}`
+	);
+
+	// the 50 dates of the fit, in the page's table FIT_GREATEST (JD, TT)
+	console.log(`the ${GREATEST.length} dates (JD):`);
+	for (let i = 0; i < GREATEST.length; i += 10) {
+		console.log(
+			GREATEST.slice(i, i + 10)
+				.map(g => f(g.jd, 2))
+				.join(', ')
+		);
+	}
+}
+
+title('Scales: Figure 4 (b), 61 Cygni in arcseconds');
 {
 	let most = 0;
 

@@ -277,10 +277,10 @@
 				</div>
 			</div>
 			<figcaption>
-				Play, and watch the lines of sight from O: they turn alike in the two
-				panels, and the read-out gives Mars the same ecliptic longitude in
-				both. Notice in (b) that Mars' circle, carried by the Sun, crosses the
-				Sun's own circle.
+				Play, and watch the shaded triangle O☉P. In (b) it is the triangle of
+				(a) moved without turning, so on every date OP has the same direction
+				and length in both panels, as the read-out shows. Notice in (b) that
+				Mars' circle, carried by the Sun, crosses the Sun's own circle.
 			</figcaption>
 			<div class="keys">
 				<div>
@@ -288,10 +288,6 @@
 					<dl class="key">
 						<dt>V, P</dt>
 						<dd>Venus and Mars</dd>
-						<dt>blue, gold</dt>
-						<dd>in (a), the Earth's circle about ☉; in (b), the Sun's circle about O</dd>
-						<dt class="c-planet">faint</dt>
-						<dd>in (b), Mars' path about the Earth over its last synodic period</dd>
 					</dl>
 				</div>
 				<div>
@@ -428,17 +424,16 @@
 			order. In Figure 3 we put the Sun in each of the three places.
 		</p>
 
-		<!-- Figure 3: three orders of Venus; date over a synodic period, play, three views -->
+		<!-- Figure 3: three orders of Venus at once; date over a synodic period, play -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="presets" id="orders-views"></div>
 				<div class="panels orders-panels">
 					<div>
 						<p class="panel-title">(a) from above the ecliptic</p>
 						<canvas id="orders-canvas"></canvas>
 					</div>
 					<div>
-						<p class="panel-title">(b) Venus seen from O</p>
+						<p class="panel-title">(b) Venus seen from O in the three orders, east to the left</p>
 						<canvas id="disk-canvas"></canvas>
 					</div>
 				</div>
@@ -460,24 +455,23 @@
 						</div>
 					</div>
 					<div>
-						<div class="readout" id="orders-readout" data-lines="3"></div>
+						<div class="readout" id="orders-readout" data-lines="2"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Play each order through a synodic period. The line of sight and the
-				size of the disk in (b) are the same in all three; only the phase
-				changes. Below the Sun Venus never passes half lit, above it never
-				falls below half.
+				Play through a synodic period and compare the three disks in (b): at
+				every date they have the same size, and only the phase differs.
+				Below the Sun Venus is never more than half lit, above it never less.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-sun">dashed circle</dt>
-						<dd>the Sun's circle about O</dd>
-						<dt>(b)</dt>
-						<dd>east is to the left, so the lit side is on the right when Venus is east of ☉</dd>
+						<dt class="c-sun">gold dots</dt>
+						<dd>the Sun in each order: the farthest from O for "below", the one at K for "around", the nearest for "above"</dd>
+						<dt class="c-sun">gold dashed</dt>
+						<dd>the sunlight reaching P from each</dd>
 					</dl>
 				</div>
 				<div>
@@ -545,17 +539,11 @@
 			<div class="frame">
 				<div class="panels">
 					<div>
-						<p class="panel-title">(a) ☉ at rest, the star drawn 3 au away</p>
-						<canvas id="parallax-sun"></canvas>
-					</div>
-					<div>
-						<p class="panel-title">(b) the Earth O at rest</p>
+						<p class="panel-title">(a) both stars about the Earth O at rest, not to scale</p>
 						<canvas id="parallax-earth"></canvas>
 					</div>
-				</div>
-				<div class="panels stacked">
 					<div>
-						<p class="panel-title">(c) 61 Cygni on the sky, relative to T</p>
+						<p class="panel-title">(b) 61 Cygni on the sky, relative to T</p>
 						<canvas id="parallax-sky"></canvas>
 					</div>
 				</div>
@@ -582,19 +570,17 @@
 				</div>
 			</div>
 			<figcaption>
-				Play a year. In (a) the line of sight swings because the Earth moves;
-				in (b) the Earth stands still and the star goes round in step with the
-				Sun, so the line of sight swings the same way. In (c), notice how
-				small the real path is: never a third of an arcsecond from T.
+				Play a year. In (a) Copernicus' star goes round in step with the Sun
+				while Tycho's star T stays still, so the line of sight to Copernicus'
+				star swings about the fixed direction of T. In (b), notice how small
+				the real path is, never more than a third of an arcsecond from T.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-planet">T, faint</dt>
-						<dd>Tycho's star, at rest on its sphere about the Earth</dd>
-						<dt>dashed line</dt>
-						<dd>the direction of the star from ☉, and of T from O</dd>
+						<dt class="c-planet">solid star, dashed circle</dt>
+						<dd>Copernicus' star and its yearly circle of 1 au about T</dd>
 					</dl>
 				</div>
 				<div>
@@ -715,22 +701,21 @@
 			fitted $r$, and read the real Venus' phase at each. Every one gives a
 			ratio within 3% of 1, and their mean is O☉ = 0.998 OK. K is at the Sun,
 			the order is Copernicus' and Tycho's, and the model of Venus is page
-			4.3's. Figure 5 shows how far the other two orders are from the real
-			phases, by most of the disk rather than by a few percent.
+			4.3's. Figure 5 reads each of the 50 phases on the curve of $k$ at
+			greatest elongation, against the orders below and above the Sun.
 		</p>
 
-		<!-- Figure 5: the illuminated fraction against the elongation (static) -->
+		<!-- Figure 5: the phase at greatest elongation against the order, with the fit (static) -->
 		<figure class="fig">
 			<div class="frame">
 				<canvas id="phase-plot"></canvas>
 				<div id="phase-legend"></div>
 			</div>
 			<figcaption>
-				Compare the real Venus with the three curves, from 4 June 2024 to 6
-				January 2026. Only the order around the Sun passes through the dots
-				and through $k = \tfrac12$ at the greatest elongations; the order
-				below the Sun never reaches the dashed line of $k = \tfrac12$, the
-				order above never falls under it.
+				Read the curve from a phase at greatest elongation to an order O☉ : OK.
+				The real Venus is half lit at each of its 50 greatest elongations,
+				which places the Sun at K. Below the Sun, as in Ptolemy's order, Venus
+				would be less than a third lit, and above it almost full.
 			</figcaption>
 		</figure>
 

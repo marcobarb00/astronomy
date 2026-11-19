@@ -10,17 +10,19 @@
 									 point of the mean Sun fixed (a) and with
 									 the Earth fixed (b); date 2010 - 2025,
 									 play)
-	 3. three orders of Venus       (2D: (a) the drawing from above, (b) the
-									 disk seen from O; date over a synodic
-									 period, play; views below, around and
-									 above the Sun)
-	 4. a star's parallax           (2D: (a) the Sun at rest, (b) the Earth
-									 at rest, (c) 61 Cygni's place in
-									 arcseconds; date over 2026, play)
+	 3. three orders of Venus       (2D: (a) the drawing from above, with
+									 the Sun below, around and above Venus,
+									 (b) the disk seen from O in the three
+									 orders; date over a synodic period,
+									 play)
+	 4. a star's parallax           (2D: (a) the Earth at rest, Tycho's
+									 star and Copernicus', (b) 61 Cygni's
+									 place in arcseconds; date over 2026,
+									 play)
 	 5. the phase and the order     (2D, static: the illuminated fraction
-									 against the elongation, the three
-									 orders and the real Venus; coded
-									 before Figure 4)
+									 at greatest elongation against the
+									 order, with the real Venus at the 50
+									 greatest elongations of the fit)
 	 6. the phase, 2026 - 2033      (2D, static: (a) the real Venus, the
 									 order around the Sun and Ptolemy's
 									 order; (b) the difference)
@@ -35,8 +37,8 @@
 	 1. Figure 1: Venus through a telescope
 	 2. Figure 2: Copernicus and Tycho
 	 3. Figure 3: three orders of Venus
-	 4. Figure 5: the phase and the order
-	 5. Figure 4: a star's parallax
+	 4. Figure 4: a star's parallax
+	 5. Figure 5: the phase at greatest elongation and the order
 	 6. Figure 6: the phase, 2026 - 2033
 	 7. Page start
    ========================================================================== */
@@ -225,7 +227,9 @@ const telescopeFigure = {
    Earth's circle, Venus' circle and Mars' circle about it; (b) Tycho's
    system, the same places less the Earth's (moment().tychonic): the
    Sun's circle about the Earth, and the two planets' circles carried by
-   the Sun, with Mars' path over the last synodic period. The farthest
+   the Sun. Both panels shade the triangle O sun P, with its sides O sun
+   and sun P dashed (page 4.3's parallelogram, cut along OP): the same
+   triangle, moved, so OP has the same direction in both. The farthest
    point of (b) is 2.672 au from O (tools/numbers/4.4-phases-parallax.js): the
    scale reaches 2.85 au. The date runs over 2010 - 2025.
    ========================================================================== */
@@ -235,9 +239,6 @@ const SYSTEMS_ROOM = 2.85;
 
 /* Play: a synodic period of Mars in about twenty seconds. */
 const SYSTEMS_DAYS_PER_SECOND = 40;
-
-/* The step of Mars' path (days). */
-const SYSTEMS_PATH_STEP = 2;
 
 const systemsFigure = {
 	state: null,
@@ -264,23 +265,11 @@ const systemsFigure = {
 		this.state = {
 			jd,
 			mars: PlanetArrangement.moment('mars', jd),
-			venus: PlanetArrangement.moment('venus', jd),
-			path: this.path(jd)
+			venus: PlanetArrangement.moment('venus', jd)
 		};
 		this.showReadout();
 		this.copernicus.draw();
 		this.tycho.draw();
-	},
-
-	/* Mars' places in Tycho's system over the synodic period before jd. */
-	path(jd) {
-		const points = [];
-
-		for (let t = jd - PlanetArrangement.FIT.mars.S; t <= jd + 1e-9; t += SYSTEMS_PATH_STEP) {
-			points.push(PlanetArrangement.moment('mars', t).tychonic.P);
-		}
-
-		return points;
 	},
 
 	/* Mars' direction and distance from the Earth, computed in each panel
@@ -314,20 +303,34 @@ const systemsFigure = {
 		return point => ({ x: owner.cx + scale * point[0], y: owner.cy - scale * point[1] });
 	},
 
+	/* The triangle O sun P of Mars, shaded, with its sides O sun and
+	   sun P dashed; its third side, OP, is the line of sight. */
+	drawTriangle(ctx, O, S, P) {
+		ctx.fillStyle = withAlpha(COL.ink, 0.1);
+		ctx.beginPath();
+		ctx.moveTo(O.x, O.y);
+		ctx.lineTo(S.x, S.y);
+		ctx.lineTo(P.x, P.y);
+		ctx.closePath();
+		ctx.fill();
+		segment(ctx, O, S, { color: COL.ink, width: 1.2, dash: [5, 4] });
+		segment(ctx, S, P, { color: COL.ink, width: 1.2, dash: [5, 4] });
+	},
+
 	/* What both panels draw: the circles of Venus and Mars about the Sun,
-	   the two planets, the lines of sight from O, and the letters. The
-	   panels differ in what stands still and in the third circle. */
+	   Mars' triangle O sun P, the planets, Mars' line of sight from O,
+	   and the letters. The panels differ in what stands still and in the
+	   third circle. */
 	drawCommon(owner, places, sunCircle) {
 		const ctx = owner.ctx;
 		const at = this.projector(owner);
 		const scale = owner.R / SYSTEMS_ROOM;
-		const { mars, venus } = this.state;
+		const { mars } = this.state;
 		const O = at(places.mars.O);
 		const S = at(places.mars.S);
 		const P = at(places.mars.P);
 		const V = at(places.venus.P);
 		const lambda = mars.lambda;
-		const lambdaV = venus.lambda;
 
 		// the circles of Venus and Mars, about the Sun (Mars' about the
 		// center C of its deferent, near the Sun)
@@ -335,8 +338,8 @@ const systemsFigure = {
 		circle(ctx, at(places.mars.C), mars.scale * scale, { color: COL.deferent, width: 1.8 });
 		circle(ctx, sunCircle.center, scale, { color: sunCircle.color, width: 1.8 });
 
-		// the lines of sight
-		segment(ctx, O, towards(O, lambdaV, 2 * owner.R), { color: COL.epicycle, width: 1 });
+		// Mars' triangle, then its line of sight
+		this.drawTriangle(ctx, O, S, P);
 		segment(ctx, O, towards(O, lambda, 2 * owner.R), { color: COL.planet, width: 1.5 });
 
 		drawDot(ctx, S.x, S.y, 6, COL.sun);
@@ -344,7 +347,8 @@ const systemsFigure = {
 		drawDot(ctx, V.x, V.y, 5, COL.epicycle);
 		drawDot(ctx, P.x, P.y, 6, COL.planet);
 
-		// letters only, each on the side clearest of its lines (CLAUDE.md)
+		// letters only, each on the side clearest of its lines (CLAUDE.md);
+		// V inside its circle, towards the Sun
 		labelOutside(
 			ctx,
 			'☉',
@@ -354,30 +358,14 @@ const systemsFigure = {
 			COL.sun,
 			owner.labels
 		);
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([screenDirection(O, S), lambda, lambdaV]),
-			COL.earth,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'V',
-			V,
-			6,
-			clearestDirection([screenDirection(V, O), screenDirection(V, S)]),
-			COL.epicycle,
-			owner.labels
-		);
+		labelOutside(ctx, 'O', O, 7, clearestDirection([screenDirection(O, S), lambda]), COL.earth, owner.labels);
+		labelOutside(ctx, 'V', V, 6, screenDirection(V, S), COL.epicycle, owner.labels);
 		labelOutside(
 			ctx,
 			'P',
 			P,
 			7,
-			clearestDirection([screenDirection(P, O), screenDirection(P, S)]),
+			clearestDirection([screenDirection(P, O), lambda, screenDirection(P, S)]),
 			COL.planet,
 			owner.labels
 		);
@@ -423,14 +411,6 @@ const systemsFigure = {
 		segment(ctx, center, towards(center, 0, owner.R), { color: COL.muted, width: 1 });
 		centeredLabel(ctx, 'γ', towards(center, 0, owner.R - 8), COL.muted, owner.labels);
 
-		// Mars' path about the Earth over the last synodic period
-		ctx.strokeStyle = withAlpha(COL.planet, 0.35);
-		ctx.lineWidth = 1.5;
-		ctx.setLineDash([]);
-		ctx.beginPath();
-		this.state.path.map(at).forEach((q, i) => (i === 0 ? ctx.moveTo(q.x, q.y) : ctx.lineTo(q.x, q.y)));
-		ctx.stroke();
-
 		// the Sun's circle about the Earth
 		this.drawCommon(owner, places, { center, color: COL.sun });
 	}
@@ -439,44 +419,48 @@ const systemsFigure = {
 /* ==========================================================================
    3. FIGURE 3: THREE ORDERS OF VENUS
    Page 4.3's simple model of Venus (PlanetArrangement.venusPhase), OK = 1,
-   with the Sun on the line OK at O sun = ORDERS[view] times OK: below the
-   Sun (1.797, Ptolemy's nested spheres: PlanetArrangement.NESTED), around it
-   (1), above it (0.2). (a) The drawing from above the ecliptic: the
-   Earth O at the center, the deferent, the epicycle about K, the Sun and
-   its circle, Venus P with its lit half towards the Sun, the line of
-   sight. (b) The disk seen from O, its size proportional to 1 / OP: from
-   0.581 to 3.604 times its size at OP = OK (tools/numbers/4.4-phases-parallax.js),
-   the largest filling the panel. The date runs over one synodic period
-   from the superior conjunction of 4 June 2024.
+   with the Sun on the line OK in the three orders at once: below the Sun
+   (O sun = 1.797 OK, Ptolemy's nested spheres: PlanetArrangement.NESTED),
+   around it (1) and above it (0.2). (a) The drawing from above the
+   ecliptic: the Earth O at the center, the deferent, the epicycle about
+   K, Venus P, the line of sight, and the three Suns on the line OK, with
+   the sunlight reaching P from each (dashed). (b) The disk seen from O in
+   the three orders, side by side: one size, proportional to 1 / OP, from
+   0.581 to 3.604 times its size at OP = OK
+   (tools/numbers/4.4-phases-parallax.js), the largest nearly filling its
+   slot; under each, the order and its illuminated fraction. The date runs
+   over one synodic period from the superior conjunction of 4 June 2024.
    ========================================================================== */
 
 const ORDERS_START = Time.julianDay(2024, 6, 4);
 
-/* The three views: their order (O sun / OK). */
-const ORDER_VIEWS = {
-	'below the Sun': PlanetArrangement.ORDERS.below,
-	'around the Sun': PlanetArrangement.ORDERS.around,
-	'above the Sun': PlanetArrangement.ORDERS.above
-};
+/* The three disks of (b), from left to right: their name and their order
+   (O sun / OK). */
+const ORDER_DISKS = [
+	{ name: 'below', ratio: PlanetArrangement.ORDERS.below },
+	{ name: 'around', ratio: PlanetArrangement.ORDERS.around },
+	{ name: 'above', ratio: PlanetArrangement.ORDERS.above }
+];
 
 /* The drawing reaches 1.797 (OK = 1): the scale reaches 1.92. */
 const ORDERS_ROOM = 1.92;
 
-/* The disk at OP = 1 - r, the largest, fills this fraction of panel (b). */
-const ORDERS_LARGEST_DISK = 0.94;
+/* The disk at OP = 1 - r, the largest, fills this fraction of its slot
+   in (b); under it, room for two lines of text (px). */
+const ORDERS_LARGEST_DISK = 0.9;
+const ORDERS_DISK_TEXT = 44;
 
 /* Play: a synodic period in about twenty seconds. */
 const ORDERS_DAYS_PER_SECOND = 30;
 
 const ordersFigure = {
-	view: 'below the Sun',
 	state: null,
 
 	init() {
 		this.top = { labels: new LabelPlacer(), draw: () => this.drawTop() };
-		this.disk = { draw: () => this.drawDisk() };
+		this.disks = { draw: () => this.drawDisks() };
 		squareCanvas(this.top, byId('orders-canvas'), 380, 10);
-		squareCanvas(this.disk, byId('disk-canvas'), 260, 6);
+		wideCanvas(this.disks, byId('disk-canvas'), width => this.diskAspect(width), 620);
 
 		wireSlider(
 			byId('orders-day'),
@@ -485,29 +469,29 @@ const ordersFigure = {
 		);
 		wirePresets(byId('orders-day').closest('figure'));
 		wirePlayButton(byId('orders-play'), byId('orders-day'), ORDERS_DAYS_PER_SECOND);
-		buildChoice(byId('orders-views'), Object.keys(ORDER_VIEWS), this.view, name => {
-			this.view = name;
-			this.update();
-		});
 		this.update();
 	},
 
 	update() {
 		const jd = ORDERS_START + readNumber('orders-day');
-		const ratio = ORDER_VIEWS[this.view];
 
-		this.state = { jd, ratio, now: PlanetArrangement.venusPhase(jd, ratio) };
+		this.state = {
+			jd,
+			phases: ORDER_DISKS.map(order => PlanetArrangement.venusPhase(jd, order.ratio))
+		};
 		this.showReadout();
 		this.top.draw();
-		this.disk.draw();
+		this.disks.draw();
 	},
 
+	/* The elongation and the distance are the same in every order: read
+	   them from the first. */
 	showReadout() {
-		const { jd, now } = this.state;
+		const { jd, phases } = this.state;
+		const now = phases[0];
 
 		showLines('orders-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\lambda - \\bar\\lambda_\\odot = ${fixed(now.elongation, 1).replace('−', '-')}^\\circ`,
-			`k = ${fixed(now.k, 2)},\\quad \\chi = ${fixed(now.chi, 0)}^\\circ`,
 			`\\text{OP} = ${fixed(now.distance, 2)}\\ \\text{OK}`
 		]);
 	},
@@ -521,13 +505,13 @@ const ordersFigure = {
 			return;
 		}
 
-		const { now, ratio } = this.state;
+		const now = this.state.phases[0];
 		const scale = owner.R / ORDERS_ROOM;
 		const at = point => ({ x: owner.cx + scale * point[0], y: owner.cy - scale * point[1] });
 		const O = at([0, 0]);
 		const K = at(now.K);
 		const P = at(now.P);
-		const S = at(now.sun);
+		const suns = this.state.phases.map(phase => at(phase.sun));
 		const r = PlanetArrangement.VENUS_FIT.r;
 		const sunLon = atan2d(now.K[1], now.K[0]);
 		const sightLon = atan2d(now.P[1], now.P[0]);
@@ -535,195 +519,98 @@ const ordersFigure = {
 		ctx.clearRect(0, 0, owner.width, owner.width);
 		owner.labels.begin({ x0: 0, y0: 0, x1: owner.width, y1: owner.width });
 
-		// the Sun's circle about O, the deferent, the epicycle
-		circle(ctx, O, ratio * scale, { color: COL.sun, width: 1.2, dash: [5, 4] });
+		// the deferent, the epicycle
 		circle(ctx, O, scale, { color: COL.deferent, width: 2 });
 		circle(ctx, K, r * scale, { color: COL.epicycle, width: 2 });
 
-		// the line to the Sun through K, the line of sight
+		// the line OK out to the farthest Sun, the sunlight on P from each
+		// Sun, the line of sight
 		segment(ctx, O, towards(O, sunLon, owner.R), { color: COL.sun, width: 1, dash: [2, 4] });
+		suns.forEach(S => segment(ctx, S, P, { color: COL.sun, width: 1.2, dash: [5, 4] }));
 		segment(ctx, O, towards(O, sightLon, owner.R), { color: COL.planet, width: 1.5 });
 
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
-		drawDot(ctx, K.x, K.y, 3.5, COL.ink);
-		drawDot(ctx, S.x, S.y, 7, COL.sun);
+		suns.forEach(S => drawDot(ctx, S.x, S.y, 5.5, COL.sun));
+		drawDot(ctx, K.x, K.y, 2.5, COL.ink, false);
+		drawDot(ctx, P.x, P.y, 6, COL.planet);
 
-		// Venus: a small disk, its half towards the Sun lit
-		this.drawLitBall(ctx, P, 7.5, screenDirection(P, S));
-
+		// letters only, each on the side clearest of its lines (CLAUDE.md)
 		labelOutside(ctx, 'O', O, 7, clearestDirection([sunLon, sightLon, sunLon + 180]), COL.earth, owner.labels);
 		labelOutside(
 			ctx,
 			'K',
 			K,
-			4,
+			6,
 			clearestDirection([screenDirection(K, O), screenDirection(K, P), sunLon]),
 			COL.ink,
 			owner.labels
 		);
 		labelOutside(
 			ctx,
-			'☉',
-			S,
-			7,
-			clearestDirection([screenDirection(S, O), sunLon, screenDirection(S, P)]),
-			COL.sun,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
 			'P',
 			P,
-			8,
-			clearestDirection([screenDirection(P, O), screenDirection(P, K), screenDirection(P, S)]),
+			7,
+			clearestDirection([screenDirection(P, O), sightLon, ...suns.map(S => screenDirection(P, S))]),
 			COL.planet,
 			owner.labels
 		);
 	},
 
-	/* A small ball at p, its half facing the direction 'toSun' (screen
-	   longitude) lit. */
-	drawLitBall(ctx, p, radius, toSun) {
-		ctx.fillStyle = COL.card;
-		ctx.beginPath();
-		ctx.arc(p.x, p.y, radius, 0, TAU);
-		ctx.fill();
-		ctx.fillStyle = withAlpha(COL.sun, 0.85);
-		ctx.beginPath();
-		ctx.arc(p.x, p.y, radius, (-toSun - 90) * D2R, (-toSun + 90) * D2R);
-		ctx.closePath();
-		ctx.fill();
-		ctx.strokeStyle = COL.ink;
-		ctx.lineWidth = 1.2;
-		ctx.beginPath();
-		ctx.arc(p.x, p.y, radius, 0, TAU);
-		ctx.stroke();
+	/* Height / width of (b): three slots side by side, the largest disk
+	   nearly filling one, and two lines of text under it. */
+	diskAspect(width) {
+		const slot = width / ORDER_DISKS.length;
+
+		return (ORDERS_LARGEST_DISK * slot + ORDERS_DISK_TEXT + 8) / width;
 	},
 
-	/* Panel (b): the disk seen from O, east to the left: the Sun is to
-	   the right of Venus when Venus is east of it. */
-	drawDisk() {
-		const owner = this.disk;
+	/* Panel (b): the disk seen from O in each order, east to the left:
+	   the Sun is to the right of Venus when Venus is east of it. Under
+	   each disk, the order and its illuminated fraction. */
+	drawDisks() {
+		const owner = this.disks;
 		const ctx = owner.ctx;
 
 		if (!ctx || !this.state) {
 			return;
 		}
 
-		const { now } = this.state;
 		const r = PlanetArrangement.VENUS_FIT.r;
+		const slot = owner.width / ORDER_DISKS.length;
 		const largest = 1 / (1 - r);
-		const R = (ORDERS_LARGEST_DISK * owner.R) / now.distance / largest;
+		const centerY = (ORDERS_LARGEST_DISK * slot) / 2 + 2;
+		const textY = ORDERS_LARGEST_DISK * slot + 6;
 
-		ctx.clearRect(0, 0, owner.width, owner.width);
-		drawPhase(ctx, owner.cx, owner.cy, R, now.k, now.elongation >= 0 ? 1 : -1);
+		ctx.clearRect(0, 0, owner.width, owner.height);
+
+		this.state.phases.forEach((phase, i) => {
+			const x = slot * (i + 0.5);
+			const R = (ORDERS_LARGEST_DISK * slot) / 2 / phase.distance / largest;
+
+			drawPhase(ctx, x, centerY, R, phase.k, phase.elongation >= 0 ? 1 : -1);
+
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'top';
+			ctx.fillStyle = COL.ink;
+			ctx.font = FONT_NAME;
+			ctx.fillText(ORDER_DISKS[i].name, x, textY);
+			ctx.font = FONT_TICK;
+			ctx.fillText(`k = ${fixed(phase.k, 2)}`, x, textY + 22);
+		});
 	}
 };
 
 /* ==========================================================================
-   4. FIGURE 5: THE PHASE AND THE ORDER
-   Static. The illuminated fraction k against the elongation over one
-   synodic period from the superior conjunction of 4 June 2024: the three
-   orders of Figure 3 (curves, PlanetArrangement.venusPhase) and the real
-   Venus (dots every 6 days, Ephem.phase). The elongations stay within
-   47.2° (tools/numbers/4.4-phases-parallax.js): the axis runs from -50° to 50°.
-   ========================================================================== */
-
-const PHASE_RANGE_X = [-50, 50];
-const PHASE_RANGE_K = [0, 1];
-
-/* The three orders and their colours, named in the legend under the
-   plot. */
-const PHASE_ORDERS = [
-	{ name: 'below the Sun', ratio: PlanetArrangement.ORDERS.below, color: COL.epicycle },
-	{ name: 'around the Sun', ratio: PlanetArrangement.ORDERS.around, color: COL.deferent },
-	{ name: 'above the Sun', ratio: PlanetArrangement.ORDERS.above, color: COL.earth }
-];
-
-/* Under this plot width (px) the dots of the real Venus are drawn smaller,
-   so that they stay apart. */
-const PHASE_NARROW = 500;
-
-const phaseFigure = {
-	samples: null,
-
-	init() {
-		const period = PlanetArrangement.FIT.venus.S;
-
-		this.samples = {
-			orders: PHASE_ORDERS.map(order => {
-				const xs = [];
-				const ks = [];
-
-				for (let day = 0; day <= period; day += 1) {
-					const p = PlanetArrangement.venusPhase(ORDERS_START + day, order.ratio);
-
-					xs.push(p.elongation);
-					ks.push(p.k);
-				}
-
-				return { order, xs, ks };
-			}),
-			real: []
-		};
-
-		for (let day = 0; day <= period; day += 6) {
-			const jd = ORDERS_START + day;
-			const elongation = norm180(Ephem.planet('venus', jd).lon - Ephem.sun(jd).lon);
-
-			this.samples.real.push({ x: elongation, k: Ephem.phase('venus', jd).k });
-		}
-
-		this.plot = new Plot2D(byId('phase-plot'), {
-			x: PHASE_RANGE_X,
-			y: PHASE_RANGE_K,
-			xLabel: 'elongation from the Sun, east positive (°)',
-			yLabel: 'illuminated fraction k',
-			aspect: 0.55,
-			maxHeight: 380,
-			minHeight: 240,
-			onDraw: () => this.draw()
-		});
-
-		Plot2D.legend(byId('phase-legend'), [
-			...PHASE_ORDERS.map(order => ({ label: order.name, color: order.color })),
-			{ label: 'the real Venus', color: COL.planet, mark: 'dot' }
-		]);
-	},
-
-	draw() {
-		const p = this.plot;
-
-		if (!this.samples) {
-			return;
-		}
-
-		p.frame();
-		p.hline(0.5, { color: COL.muted, width: 1, dash: [3, 4] });
-
-		this.samples.orders.forEach(({ order, xs, ks }) => {
-			p.curve(xs, ks, { color: order.color, width: 2 });
-		});
-
-		const radius = p.width < PHASE_NARROW ? 2.4 : 3.5;
-
-		this.samples.real.forEach(point => p.marker(point.x, point.k, { color: COL.planet, radius }));
-	}
-};
-
-/* ==========================================================================
-   5. FIGURE 4: A STAR'S PARALLAX
-   61 Cygni (Stars.find, with its parallax) over 2026. (a) The Sun at
-   rest: the Earth on its circle (the reference Sun's distance and
-   ecliptic longitude), the star drawn in the ecliptic plane at its
-   ecliptic longitude, 3 au from the Sun (not to scale), the lines of
-   sight from the Earth and from the Sun. (b) The same with the Earth at
-   rest: the Sun on its circle about O, the star on a circle of the same
-   size about its place in (a), turning with the Sun; Tycho's star, at
-   rest on its sphere about the Earth, faint. (c) The star's place on the
-   sky relative to Tycho's, in arcseconds (Stars.parallax), east on the
-   left: within 0.290″ (tools/numbers/4.4-phases-parallax.js), so the axes are
-   ±0.35″.
+   4. FIGURE 4: A STAR'S PARALLAX
+   61 Cygni (Stars.find, with its parallax) over 2026. (a) Copernicus'
+   arrangement with the Earth at rest: the Sun on its circle about O (the
+   reference Sun's distance and ecliptic longitude), Tycho's star T, at
+   rest, drawn in the ecliptic plane at the star's ecliptic longitude,
+   3 au from O (not to scale), faint, and Copernicus' star on a circle of
+   1 au about T, turning with the Sun; the lines of sight to both.
+   (b) The star's place on the sky relative to T, in arcseconds
+   (Stars.parallax), east on the left: within 0.290″
+   (tools/numbers/4.4-phases-parallax.js), so the axes are ±0.35″.
    ========================================================================== */
 
 const PARALLAX_START = Time.julianDay(2026, 1, 1);
@@ -735,14 +622,16 @@ const PARALLAX_RANGE = 0.35;
 /* Play: a year in about twelve seconds. */
 const PARALLAX_DAYS_PER_SECOND = 30;
 
-/* Ticks every 0.1″ on the axes of (c), from left to right (the x axis
-   runs from east to west, so its values decrease). */
+/* Ticks every 0.1″ on the axes of (b), from left to right (the x axis
+   runs from east to west, so its values decrease), with a true minus
+   sign. */
 const TENTHS = [-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3];
+const tenthLabel = value => fixed(value, 1).replace('-', '−');
 const tenthTicksX = () =>
 	TENTHS.slice()
 		.reverse()
-		.map(value => ({ value, label: fixed(value, 1) }));
-const tenthTicksY = () => TENTHS.map(value => ({ value, label: fixed(value, 1) }));
+		.map(value => ({ value, label: tenthLabel(value) }));
+const tenthTicksY = () => TENTHS.map(value => ({ value, label: tenthLabel(value) }));
 
 const parallaxFigure = {
 	state: null,
@@ -759,9 +648,7 @@ const parallaxFigure = {
 			this.path.push(Stars.parallax(PARALLAX_STAR, jd + day));
 		}
 
-		this.sunFrame = { labels: new LabelPlacer(), draw: () => this.drawSunAtRest() };
 		this.earthFrame = { labels: new LabelPlacer(), draw: () => this.drawEarthAtRest() };
-		squareCanvas(this.sunFrame, byId('parallax-sun'), 380, 10);
 		squareCanvas(this.earthFrame, byId('parallax-earth'), 380, 10);
 
 		this.sky = new Plot2D(byId('parallax-sky'), {
@@ -793,7 +680,6 @@ const parallaxFigure = {
 
 		this.state = { jd, sun, shift: Stars.parallax(PARALLAX_STAR, jd) };
 		this.showReadout();
-		this.sunFrame.draw();
 		this.earthFrame.draw();
 		this.sky.redraw();
 	},
@@ -807,7 +693,8 @@ const parallaxFigure = {
 		]);
 	},
 
-	/* The star's place in the drawings (au, the Sun at the origin). */
+	/* Tycho's star in the drawing (au, the Earth at the origin), at the
+	   star's ecliptic longitude: Copernicus' star seen from the Sun. */
 	starPlace() {
 		return [PARALLAX_DRAWN_AU * cos(this.starLon), PARALLAX_DRAWN_AU * sin(this.starLon)];
 	},
@@ -822,58 +709,7 @@ const parallaxFigure = {
 		ctx.restore();
 	},
 
-	/* Panel (a): the Sun at rest. */
-	drawSunAtRest() {
-		const owner = this.sunFrame;
-		const ctx = owner.ctx;
-
-		if (!ctx || !this.state) {
-			return;
-		}
-
-		const { sun } = this.state;
-		const scale = owner.R / PARALLAX_ROOM;
-		const place = this.starPlace();
-
-		// the drawing is centered halfway between the Sun and the star
-		const at = q => ({ x: owner.cx + scale * (q[0] - place[0] / 2), y: owner.cy - scale * (q[1] - place[1] / 2) });
-		const S = at([0, 0]);
-		const O = at([-sun.dist * cos(sun.lon), -sun.dist * sin(sun.lon)]);
-		const star = at(place);
-
-		ctx.clearRect(0, 0, owner.width, owner.width);
-		owner.labels.begin({ x0: 0, y0: 0, x1: owner.width, y1: owner.width });
-
-		circle(ctx, S, scale, { color: COL.earth, width: 1.8 });
-		segment(ctx, S, star, { color: COL.ink, width: 1, dash: [4, 4] });
-		segment(ctx, O, star, { color: COL.planet, width: 1.5 });
-
-		drawDot(ctx, S.x, S.y, 7, COL.sun);
-		drawDot(ctx, O.x, O.y, 6, COL.earth);
-		this.drawMark(ctx, star, false);
-
-		labelOutside(
-			ctx,
-			'☉',
-			S,
-			7,
-			clearestDirection([screenDirection(S, O), screenDirection(S, star)]),
-			COL.sun,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([screenDirection(O, S), screenDirection(O, star)]),
-			COL.earth,
-			owner.labels
-		);
-		centeredLabel(ctx, '61 Cygni', { x: star.x, y: star.y - 22 }, COL.planet, owner.labels);
-	},
-
-	/* Panel (b): the Earth at rest. */
+	/* Panel (a): the Earth at rest. */
 	drawEarthAtRest() {
 		const owner = this.earthFrame;
 		const ctx = owner.ctx;
@@ -921,7 +757,7 @@ const parallaxFigure = {
 		centeredLabel(ctx, 'T', { x: tycho.x + 14, y: tycho.y + 14 }, COL.planet, owner.labels);
 	},
 
-	/* Panel (c): the place on the sky, relative to Tycho's star. */
+	/* Panel (b): the place on the sky, relative to Tycho's star. */
 	drawSky() {
 		const p = this.sky;
 
@@ -938,6 +774,116 @@ const parallaxFigure = {
 		p.star(0, 0, { color: COL.planet, alpha: 0.4, ring: true });
 		p.star(this.state.shift.dlon, this.state.shift.dlat, { color: COL.planet, ring: true });
 		p.text('T', 0, 0, { color: COL.planet, kind: 'symbol', dx: 8, dy: 22 });
+	}
+};
+
+/* ==========================================================================
+   5. FIGURE 5: THE PHASE AT GREATEST ELONGATION AND THE ORDER
+   Static. The illuminated fraction k of page 4.3's Venus at greatest
+   elongation against the order O sun / OK (the curve: the line of sight
+   touches the epicycle, as in tools/numbers/4.4-phases-parallax.js,
+   kAtGreatest), from 1 with the Sun at O to 0.284 at O sun = 2 OK; the
+   orders above the Sun (O sun < (1 - r) OK) and below it (O sun >
+   (1 + r) OK) shaded; Ptolemy's order (1.797) marked. The real Venus at
+   the 50 greatest elongations of 1986 - 2025 to which page 4.3 fitted r
+   (Ephem.phase), each at the order its phase gives: the fit of section 3.
+   The axes run from 0 to 2 OK and from 0 to 1.
+   ========================================================================== */
+
+/* The 50 greatest elongations of the fit (JD, TT), as
+   tools/numbers/4.4-phases-parallax.js finds them. */
+const FIT_GREATEST = [
+	2446669.36, 2446811.59, 2447254.32, 2447396.58, 2447839.14, 2447981.17, 2448421.67, 2448562.78, 2449007.2,
+	2449148.82, 2449588.97, 2449731.18, 2450173.99, 2450316.24, 2450758.67, 2450900.71, 2451341.26, 2451482.42,
+	2451926.83, 2452068.47, 2452508.61, 2452650.74, 2453093.63, 2453235.86, 2453678.17, 2453820.24, 2454260.86,
+	2454402.1, 2454846.49, 2454988.13, 2455428.24, 2455570.27, 2456013.24, 2456155.46, 2456597.64, 2456739.81,
+	2457180.5, 2457321.8, 2457766.18, 2457907.77, 2458347.84, 2458489.76, 2458932.83, 2459075.06, 2459517.14,
+	2459659.41, 2460100.18, 2460241.5, 2460685.87, 2460827.39
+];
+
+const FIT_RANGE_X = [0, 2];
+const PHASE_RANGE_K = [0, 1];
+
+/* The illuminated fraction at greatest elongation for the order 'ratio'
+   (O sun / OK), OK = 1: the line of sight touches the epicycle at
+   P = (1 - r^2, r sqrt(1 - r^2)), the Sun on the x axis. */
+function phaseAtGreatest(ratio) {
+	const r = PlanetArrangement.VENUS_FIT.r;
+	const c = Math.sqrt(1 - r * r);
+
+	return PlanetArrangement.phaseAt([c * c, r * c], [ratio, 0]).k;
+}
+
+/* The order whose phase at greatest elongation is k, by bisection: the
+   phase falls as the order grows. */
+function orderOfPhase(k) {
+	let low = 0.3;
+	let high = 1.7;
+
+	for (let i = 0; i < 50; i++) {
+		const middle = (low + high) / 2;
+
+		if (phaseAtGreatest(middle) > k) {
+			low = middle;
+		} else {
+			high = middle;
+		}
+	}
+
+	return (low + high) / 2;
+}
+
+const phaseFigure = {
+	real: null,
+
+	init() {
+		this.real = FIT_GREATEST.map(jd => {
+			const k = Ephem.phase('venus', jd).k;
+
+			return { k, ratio: orderOfPhase(k) };
+		});
+
+		this.plot = new Plot2D(byId('phase-plot'), {
+			x: FIT_RANGE_X,
+			y: PHASE_RANGE_K,
+			xLabel: 'the order O☉ : OK',
+			yLabel: 'k at greatest elongation',
+			aspect: 0.55,
+			maxHeight: 380,
+			minHeight: 240,
+			onDraw: () => this.draw()
+		});
+
+		Plot2D.legend(byId('phase-legend'), [
+			{ label: 'Venus above the Sun', color: COL.earth, mark: 'band' },
+			{ label: 'Venus below the Sun', color: COL.epicycle, mark: 'band' },
+			{ label: 'the real Venus, 1986–2025', color: COL.planet, mark: 'dot' }
+		]);
+	},
+
+	draw() {
+		const p = this.plot;
+
+		if (!this.real) {
+			return;
+		}
+
+		const r = PlanetArrangement.VENUS_FIT.r;
+		const ptolemy = PlanetArrangement.ORDERS.below;
+
+		p.frame();
+
+		// the orders above the Sun and below it
+		p.band([0, 1 - r], [0, 0], [1, 1], { color: COL.earth, alpha: 0.16 });
+		p.band([1 + r, 2], [0, 0], [1, 1], { color: COL.epicycle, alpha: 0.16 });
+
+		// the model, and Ptolemy's order on it
+		p.fn(phaseAtGreatest, { color: COL.ink, width: 2 });
+		p.marker(ptolemy, phaseAtGreatest(ptolemy), { color: COL.epicycle, radius: 5 });
+		p.text('Ptolemy', ptolemy, phaseAtGreatest(ptolemy), { color: COL.epicycle, align: 'center', dx: 0, dy: -12 });
+
+		// the real Venus, each greatest elongation at the order it gives
+		this.real.forEach(point => p.marker(point.ratio, point.k, { color: COL.planet, radius: 3 }));
 	}
 };
 
@@ -1039,5 +985,5 @@ const testFigure = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	Site.initPage();
-	startFigures([telescopeFigure, systemsFigure, ordersFigure, phaseFigure, parallaxFigure, testFigure]);
+	startFigures([telescopeFigure, systemsFigure, ordersFigure, parallaxFigure, phaseFigure, testFigure]);
 });
