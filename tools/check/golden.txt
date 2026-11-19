@@ -2370,7 +2370,8 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   yearOf                         2000.000000000 2025.000684463
   yearTicks                      [{"value":2010,"label":"2010"},{"value":2012,"label":"2012"},{"value":2014,"label":"2014"},{"value":2016,"label":"2016"},{"value":2018,"label":"2018"},{"value":2020,"label":"2020"},{"value":2022,"label":"2022"},{"value":2024,"label":"2024"},{"value":2026,"label":"2026"}]
   screenDirection                45.000000000
-  fixed ranges                   [-50,50]  [0,360]  [0,2.8]  [-0.03,0.03]  {"x0":-0.7,"x1":10.2,"y0":-0.4,"y1":1.5}  {"Mars":{"planet":"mars","room":2.018968},"Venus":{"planet":"venus","room":1.882563}}
+  fixed ranges                   [-50,50]  [0,360]  [0.3,0.8]  [-0.03,0.03]  {"x0":-0.7,"x1":10.2,"y0":-0.4,"y1":1.5}  {"Mars":{"planet":"mars","room":2.018968},"Venus":{"planet":"venus","room":1.882563}}  [-10,10]  [-30,30]  0.301407000
+  loopDirection                  4.788965553 8.125069792 0.000000000 -8.125069792 -4.788965553
 
 === 8m. PAGE 4.4 (act4-planets/04-phases-parallax/page.js) ===
   screenDirection                45.000000000
@@ -4161,10 +4162,10 @@ Mars     fitted a = 1.520, Ptolemy 1.519, Copernicus 1.520
 Jupiter  fitted a = 5.201, Ptolemy 5.217, Copernicus 5.219
 Saturn   fitted a = 9.562, Ptolemy 9.231, Copernicus 9.174
 
-=== Test: the directions of Mars, page 4.2's equant in Copernicus' arrangement (Figure 5) ===
+=== Test: the directions of Mars, page 4.2's equant in Copernicus' arrangement (page 4.2's Figure 7) ===
 the two descriptions differ by at most 6.1e-12° over 1926 - 2125
 
-=== Test: Mars' distance from the Earth (Figure 6) ===
+=== Test: Mars' distance from the Earth (Figure 8) ===
 1 Jan 2010 - 1 Jan 2026: the real Mars 0.38 to 2.68 au; the model within 0.020 au (16 Nov 2015), 1.6% at most
 1 Jan 1926 - 1 Jan 2126: the real Mars 0.37 to 2.68 au; the model within 0.022 au (20 Nov 2094), 1.8% at most
    opposition 29 Jan 2010: real 0.664 au, model 0.660 au
@@ -4206,8 +4207,18 @@ mean of r_M / r_E at the greatest elongations 0.3881, mean of sin epsilon 0.3796
 Venus: mean of r_V / r_E 0.7233, mean of sin epsilon 0.7226
 Copernicus V 27: radius 0.3573 to 0.3953
 
-=== Scales: Figure 6, the difference in distance over 2010 - 2025 ===
-model less reference (geometric, as the figure): at most 0.0204 au; the axis is ±0.03 au
+=== Scales: Figure 4, the lines of sight of Mars about an opposition, on two circles ===
+nine places 15 days apart; over 65 days either side the line of sight turns at most 8.1° from the opposition; the stations 37 days either side; the axis is ±10°
+
+=== Scales: Figure 5, Copernicus' epicyclet beside the equant, e three times Mars' ===
+e = 0.301: the epicyclet's radius 0.151, the two points at most 0.047 apart (radius 1); the drawing reaches 1.603 from the Sun
+
+=== Scales: Figure 6 (b), the epicyclet less the equant, 2010 - 2025 ===
+at most 25.0'; the axis is ±30'
+
+=== Scales: Figure 8, the distances at the oppositions and the error over 2010 - 2025 ===
+(a) 8 oppositions, the distances 0.382 to 0.674 au; the axis is 0.3 to 0.8 au
+(b) model less reference (geometric, as the figure): at most 0.0204 au; the axis is ±0.03 au
 
 === 9. tools/numbers/4.4-phases-parallax.js ===
 
