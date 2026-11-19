@@ -1885,6 +1885,83 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-error left
   dragged 0 spheres
 
+=== act4-planets/05-kepler/index.html ===
+  as loaded
+    OUTPUT (ellipse-day): 57 days
+    #ellipse-readout: M = 29.9^\circ | E = 18.8^\circ | M + q = 9.5^\circ | r = 1.568\,a
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 6 hints and answers
+  slider #ellipse-day = 0
+    OUTPUT (ellipse-day): 0 days
+    #ellipse-readout: M = 0.0^\circ | E = 0.0^\circ | M + q = 0.0^\circ | r = 1.600\,a
+  slider #ellipse-day = 687
+    OUTPUT (ellipse-day): 687 days
+    #ellipse-readout: M = 360.0^\circ | E = 360.0^\circ | M + q = 0.0^\circ | r = 1.600\,a
+  slider #ellipse-day = 343.5
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.0^\circ | E = 180.0^\circ | M + q = 180.0^\circ | r = 0.400\,a
+  slider #ellipse-day + one key step
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | M + q = 180.7^\circ | r = 0.400\,a
+  button "e = 0.6"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | M + q = 180.7^\circ | r = 0.400\,a
+  button "Mars"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | M + q = 180.2^\circ | r = 0.907\,a
+  button "‹ previous day"
+    OUTPUT (ellipse-day): 343 days
+    #ellipse-readout: M = 179.6^\circ | E = 179.6^\circ | M + q = 179.5^\circ | r = 0.907\,a
+  button "next day ›"
+    OUTPUT (ellipse-day): 344 days
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | M + q = 180.2^\circ | r = 0.907\,a
+  button "4 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "16 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "200 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1 year"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "100 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "1000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #sun-plot at 0.3
+  hover #sun-plot at 0.6
+  hover #sun-plot at 0.9
+  hover #sun-plot left
+  hover #triangle-plot at 0.3
+  hover #triangle-plot at 0.6
+  hover #triangle-plot at 0.9
+  hover #triangle-plot left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 Jun 1969 · page 4.2's equant: +21.7′ · ellipses: +1.5′
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 Jul 2034 · page 4.2's equant: −2.4′ · ellipses: −0.2′
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 Sep 2099 · page 4.2's equant: −12.3′ · ellipses: +0.1′
+  hover #error-mars-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: 2 Aug 1783 · page 2.1's eccentric: +0.9′ · ellipse: +0.1′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: 3 May 2109 · page 2.1's eccentric: +0.5′ · ellipse: +0.4′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: 1 Feb 2435 · page 2.1's eccentric: −0.8′ · ellipse: −0.7′
+  hover #error-sun-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #summary-sun at 0.3
+  hover #summary-sun at 0.6
+  hover #summary-sun at 0.9
+  hover #summary-sun left
+  hover #summary-mars at 0.3
+  hover #summary-mars at 0.6
+  hover #summary-mars at 0.9
+  hover #summary-mars left
+  dragged 0 spheres
+
 === archive/copernican_revolution/index.html ===
   as loaded
     OUTPUT (R): 1.52
@@ -3265,7 +3342,7 @@ Regenerate with: node tools/check/smoke.js --update
 
 === shared/tests.html ===
   as loaded
-    #summary: All 182 tests pass.
+    #summary: All 189 tests pass.
   opened 0 hints and answers
   dragged 0 spheres
 
