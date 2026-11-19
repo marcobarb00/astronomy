@@ -4378,6 +4378,7 @@ saturn   a 9.5623 au, P 29.4325 years: P^2 / a^3 0.991; a from the law 9.5327 (p
 === Fit: the Sun's ellipse from the seasons of 2026 (page 2.1's method with Kepler's equation) ===
 spring equinox 20 Mar 2026; spring 92.735 d, summer 93.653 d
 e = 0.016655, apogee 103.381° (Newton, 4 steps); page 2.1's eccentric: e = 0.033473 (= 2 x 0.01674), apogee 103.732°
+M at 0°, 90°, 180°: -105.232°, -13.828°, 78.481°; over spring 91.404° = 92.735 d at n = 0.98565°/d; over summer 92.309°
 L0 (J2000) = 280.461044°; apogee at J2000 102.92153° (for Kepler.SUN_2026)
 each year of 2016 - 2025 alone: e 0.01665 to 0.01675, apogee (carried to 2026) 103.29° to 103.58°
 check Kepler.SUN_2026: L0 280.461044 (0.00"), apogee 102.92153, e 0.016655
