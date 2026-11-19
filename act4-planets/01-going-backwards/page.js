@@ -449,6 +449,11 @@ const MU_ARC_RADIUS = 0.35;
 const ANGLE_ARC_MIN = 14;
 const PATH_STEP = 2;
 
+/* K's name stands this far (deg) clockwise from the mean direction, clear
+   of the deferent, of the line from the Earth and, for most of the
+   period, of the arc mu. */
+const K_NAME_TURN = 45;
+
 /* Width of the shaded retrograde arc on the epicycle (px). */
 const RETROGRADE_ARC_WIDTH = 7;
 
@@ -463,7 +468,7 @@ const epicycleFigure = {
 	plot: null,
 	state: null,
 	view: 'Mars',
-	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 
 	init() {
 		const figure = byId('epicycle-canvas').closest('figure');
@@ -658,8 +663,12 @@ const epicycleFigure = {
 	},
 
 	/* The labels: single letters and symbols for the moving points and
-	   directions (O the Earth, K, P, the Sun's ☉, gamma, mu), never words,
-	   which would jump from side to side as the points turn (CLAUDE.md). */
+	   directions (O the Earth, K, P, the Sun's ☉, gamma, mu), never words
+	   (CLAUDE.md). Each letter keeps a side of its point that turns
+	   smoothly with the construction, and passes over a line for a moment
+	   rather than jumping to the other side of its point: K behind the
+	   mean direction, outside the arc mu for most of the period; P off the
+	   line of sight, which it never crosses; O below the Earth. */
 	drawLabels(O, K, P, now, r, edge) {
 		const ctx = this.ctx;
 		const { meanLongitude, mu, sun, lambda } = now;
@@ -672,17 +681,9 @@ const epicycleFigure = {
 			labelOutside(ctx, 'μ', K, radius, meanLongitude + mu / 2, COL.epicycle, this.labels);
 		}
 
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			4,
-			clearestDirection([meanLongitude, meanLongitude + 180, sun]),
-			COL.ink,
-			this.labels
-		);
-		labelOutside(ctx, 'P', P, 7, clearestDirection([sun + 180, lambda + 180, lambda]), COL.planet, this.labels);
-		labelOutside(ctx, 'O', O, 7, clearestDirection([0, meanLongitude, sun, lambda]), COL.earth, this.labels);
+		labelOutside(ctx, 'K', K, 4, meanLongitude - K_NAME_TURN, COL.ink, this.labels);
+		labelOutside(ctx, 'P', P, 7, lambda + SIGHT_NAME_TURN, COL.planet, this.labels);
+		labelOutside(ctx, 'O', O, 7, 270, COL.earth, this.labels);
 	},
 
 	/* Panel (b). */

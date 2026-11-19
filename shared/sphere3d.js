@@ -140,10 +140,9 @@ class Sphere3D {
 	}
 
 	/* Clear and call the page's drawing function. Its labels are kept
-	   until the drawing is done, then placed words first and single
-	   symbols after (drawLabels): a word keeps its place (CLAUDE.md), so
-	   it is a symbol that steps aside when the two would meet, whatever
-	   order the page drew them in. */
+	   until the drawing is done, then drawn over everything else
+	   (drawLabels), each at its own place: two labels that meet pass over
+	   each other for a moment, neither steps aside (CLAUDE.md). */
 	redraw() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
 		this.labels.begin({ x0: 0, y0: 0, x1: this.width, y1: this.height });
@@ -434,12 +433,9 @@ class Sphere3D {
 		}
 	}
 
-	/* The labels of one drawing: the words first, then the symbols. */
+	/* The labels of one drawing, over everything else. */
 	drawLabels(labels) {
-		const words = labels.filter(l => !LabelPlacer.mayMove(l.text));
-		const symbols = labels.filter(l => LabelPlacer.mayMove(l.text));
-
-		[...words, ...symbols].forEach(l => this.drawLabel(l.text, l.q, l.style));
+		labels.forEach(l => this.drawLabel(l.text, l.q, l.style));
 	}
 
 	/* A label at the projected point q (see label). */
@@ -452,11 +448,11 @@ class Sphere3D {
 		ctx.textAlign = 'left';
 		ctx.textBaseline = 'alphabetic';
 
-		// the designed place first; a single symbol goes elsewhere round
-		// the point only if it would cover an earlier label or leave the
-		// canvas (on a phone), a word only slides inside the canvas
+		// the designed place, slid inside the canvas if it would leave it
+		// (on a phone); it never steps aside from another label, which
+		// would make it jump as the sphere turns (LabelPlacer)
 		const designed = { x: q.x + (style.dx ?? 6), y: q.y + (style.dy ?? -6) };
-		const place = this.labels.choose(ctx, text, LabelPlacer.candidates(ctx, text, designed, q));
+		const place = this.labels.place(ctx, text, designed);
 
 		ctx.fillText(text, place.x, place.y);
 		ctx.globalAlpha = 1;

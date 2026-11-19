@@ -264,6 +264,23 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **Letters do not jump either: a label passes over a line or another
+  label rather than change sides.** On 2026-11-19 Marco found the letters
+  of many figures jumping (page 3.2, Figure 2: O, C, K, L and A leapt by
+  15 to 45 px). Two things moved them: `LabelPlacer` sent a label of one
+  or two characters round its point whenever it touched another label,
+  and pages chose a letter's side with `clearestDirection`, which flips
+  to another gap whenever two gaps trade places. Marco preferred a
+  letter that passes over another object for a split second, which stays
+  readable, to one that teleports. Now no label moves round its point:
+  each keeps a side that turns smoothly with the drawing (outward from
+  the center of its circle, off a line of sight, a fixed screen
+  direction), `LabelPlacer` only slides labels inside the canvas, and
+  `tools/check/label-jumps.js` finds the labels that still jump. The
+  only jumps left are those of the names of angles drawn as arcs (M, μ,
+  λ, F, Ω), at the middle of their arc, when the angle goes through 360°
+  and the arc itself goes from a full turn to nothing. → CLAUDE.md,
+  "Rules for every figure"
 - **A fast and a slow motion in one figure: two views, not a faster
   play.** Playing the slow motion at the speed it needs (years a second)
   made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing

@@ -136,9 +136,10 @@ export default [
 		}
 	},
 
-	// in-page functions of the smoke test run in the browser
+	// in-page functions of the smoke test and of the label check run in
+	// the browser
 	{
-		files: ['tools/check/smoke.js'],
+		files: ['tools/check/smoke.js', 'tools/check/label-jumps.js'],
 		languageOptions: {
 			globals: { ...globals.browser }
 		}

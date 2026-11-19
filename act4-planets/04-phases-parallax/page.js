@@ -47,10 +47,6 @@
    0. HELPERS SHARED BY THE FIGURES
    ========================================================================== */
 
-/* The direction (deg, anticlockwise from the right, as towards()) of
-   screen point b seen from screen point a. */
-const screenDirection = (a, b) => atan2d(a.y - b.y, b.x - a.x);
-
 /* A planet's disk of radius R px at (x, y), lit on the fraction k of its
    face, seen by the observer: the lit limb on the side 'litSide' (+1 the
    right, -1 the left). The bright limb is a half circle; the terminator,
@@ -347,28 +343,16 @@ const systemsFigure = {
 		drawDot(ctx, V.x, V.y, 5, COL.epicycle);
 		drawDot(ctx, P.x, P.y, 6, COL.planet);
 
-		// letters only, each on the side clearest of its lines (CLAUDE.md);
-		// V inside its circle, towards the Sun
-		labelOutside(
-			ctx,
-			'☉',
-			S,
-			6,
-			clearestDirection([screenDirection(S, O), screenDirection(S, P), screenDirection(S, V), 0]),
-			COL.sun,
-			owner.labels
-		);
-		labelOutside(ctx, 'O', O, 7, clearestDirection([screenDirection(O, S), lambda]), COL.earth, owner.labels);
+		// letters only (CLAUDE.md), each on a side of its point that turns
+		// smoothly with the drawing, so that it passes over a line for a
+		// moment rather than jumping to the other side of its point: the
+		// Sun opposite the Earth, O outward from the Sun, V inside its
+		// circle, towards the Sun, P off the line of sight, which it never
+		// crosses
+		labelOutside(ctx, '☉', S, 6, screenDirection(O, S), COL.sun, owner.labels);
+		labelOutside(ctx, 'O', O, 7, screenDirection(S, O), COL.earth, owner.labels);
 		labelOutside(ctx, 'V', V, 6, screenDirection(V, S), COL.epicycle, owner.labels);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([screenDirection(P, O), lambda, screenDirection(P, S)]),
-			COL.planet,
-			owner.labels
-		);
+		labelOutside(ctx, 'P', P, 7, lambda + SIGHT_NAME_TURN, COL.planet, owner.labels);
 	},
 
 	/* Panel (a): Copernicus, the point of the mean Sun at the center. */
@@ -444,6 +428,10 @@ const ORDER_DISKS = [
 
 /* The drawing reaches 1.797 (OK = 1): the scale reaches 1.92. */
 const ORDERS_ROOM = 1.92;
+
+/* K's name in (a) stands this far (deg) clockwise from the line OK, clear
+   of it and of the deferent, as on page 4.1. */
+const K_NAME_TURN = 45;
 
 /* The disk at OP = 1 - r, the largest, fills this fraction of its slot
    in (b); under it, room for two lines of text (px). */
@@ -534,26 +522,14 @@ const ordersFigure = {
 		drawDot(ctx, K.x, K.y, 2.5, COL.ink, false);
 		drawDot(ctx, P.x, P.y, 6, COL.planet);
 
-		// letters only, each on the side clearest of its lines (CLAUDE.md)
-		labelOutside(ctx, 'O', O, 7, clearestDirection([sunLon, sightLon, sunLon + 180]), COL.earth, owner.labels);
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			6,
-			clearestDirection([screenDirection(K, O), screenDirection(K, P), sunLon]),
-			COL.ink,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([screenDirection(P, O), sightLon, ...suns.map(S => screenDirection(P, S))]),
-			COL.planet,
-			owner.labels
-		);
+		// letters only (CLAUDE.md), each on a side of its point that turns
+		// smoothly with the drawing, so that it passes over a line for a
+		// moment rather than jumping to the other side of its point: O
+		// opposite the line of sight, K behind the line OK, P off the line
+		// of sight, which it never crosses
+		labelOutside(ctx, 'O', O, 7, sightLon + 180, COL.earth, owner.labels);
+		labelOutside(ctx, 'K', K, 6, sunLon - K_NAME_TURN, COL.ink, owner.labels);
+		labelOutside(ctx, 'P', P, 7, sightLon + SIGHT_NAME_TURN, COL.planet, owner.labels);
 	},
 
 	/* Height / width of (b): three slots side by side, the largest disk
@@ -744,16 +720,11 @@ const parallaxFigure = {
 		this.drawMark(ctx, tycho, true);
 		this.drawMark(ctx, star, false);
 
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([screenDirection(O, S), screenDirection(O, star), screenDirection(O, tycho)]),
-			COL.earth,
-			owner.labels
-		);
-		labelOutside(ctx, '☉', S, 7, clearestDirection([screenDirection(S, O)]), COL.sun, owner.labels);
+		// O on the side away from Tycho's star, which stays still, and the
+		// Sun outward from O: the Sun's line passes over O's name for a
+		// moment once a year
+		labelOutside(ctx, 'O', O, 7, screenDirection(tycho, O), COL.earth, owner.labels);
+		labelOutside(ctx, '☉', S, 7, screenDirection(O, S), COL.sun, owner.labels);
 		centeredLabel(ctx, 'T', { x: tycho.x + 14, y: tycho.y + 14 }, COL.planet, owner.labels);
 	},
 

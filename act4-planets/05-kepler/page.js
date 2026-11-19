@@ -52,10 +52,6 @@ const realMars = jd => Ephem.longitude('mars', jd, VSOP);
    for AD 1000 to 3000 (vsop87.js). */
 const VSOP_RANGE = { start: Time.julianDay(1000, 1, 1), end: Time.julianDay(3000, 12, 31) };
 
-/* The direction (deg, anticlockwise from the right, as towards()) of
-   screen point b seen from screen point a. */
-const screenDirection = (a, b) => atan2d(a.y - b.y, b.x - a.x);
-
 /* ==========================================================================
    1. FIGURE 1: THE SUN'S SPEED AND SIZE
    Static. Every day of 2025: the Sun's daily motion along the ecliptic,
@@ -345,6 +341,10 @@ const ELLIPSE_PERIOD = Kepler.siderealPeriod(PlanetEpicycle.MARS_FIT.n);
 const ELLIPSE_ROOM = 1.17;
 const ELLIPSE_SECTORS = 12;
 
+/* The names of P and P' stand this far (deg) ahead of and behind the
+   outward direction from the center C. */
+const P_NAME_TURN = 45;
+
 /* Play: a period in about twenty seconds. */
 const ELLIPSE_DAYS_PER_SECOND = 35;
 
@@ -494,34 +494,15 @@ const ellipseFigure = {
 			labelOutside(ctx, 'C', C, 3, 90, COL.ink, owner.labels);
 		}
 
-		// P and P' also keep off the directions of the long axis (0° and
-		// 180° on the screen), so that at A and Π they go above or below it,
-		// clear of the labels A and Π
-		const raysAtP = [screenDirection(P, S), screenDirection(P, Q), 0, 180];
+		// P and P' are letters on a side of their point that turns smoothly
+		// as P goes round, so that they pass over a line for a moment
+		// rather than jump to the other side of their point: P outward
+		// and ahead, P' outward and behind, so that at A and Π they stand
+		// above and below the long axis, clear of the labels A and Π
+		labelOutside(ctx, 'P', P, 6, screenDirection(C, P) + P_NAME_TURN, COL.planet, owner.labels);
 
 		if (construction) {
-			raysAtP.push(screenDirection(P, P1), screenDirection(P1, P));
-		}
-
-		labelOutside(ctx, 'P', P, 6, clearestDirection(raysAtP), COL.planet, owner.labels);
-
-		if (construction) {
-			labelOutside(
-				ctx,
-				'P′',
-				P1,
-				3,
-				clearestDirection([
-					screenDirection(P1, C),
-					screenDirection(P1, P),
-					screenDirection(C, P1) + 90,
-					screenDirection(C, P1) - 90,
-					0,
-					180
-				]),
-				COL.ink,
-				owner.labels
-			);
+			labelOutside(ctx, 'P′', P1, 3, now.E - P_NAME_TURN, COL.ink, owner.labels);
 		}
 	},
 

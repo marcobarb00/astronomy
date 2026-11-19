@@ -523,7 +523,8 @@ class Plot2D {
 	/* Text at data coordinates. style: color (a line colour is drawn in its
 	   text colour), align, baseline, dx, dy, font, kind ('name' or 'symbol',
 	   see labelFont), alternatives (other data points [{ x, y }] where the
-	   text may go instead, when its own place is taken: see LabelPlacer). */
+	   text may go instead, when its own place is taken: only for a label
+	   that no control moves, see LabelPlacer). */
 	text(label, x, y, style = {}) {
 		const { ctx } = this;
 
@@ -535,21 +536,15 @@ class Plot2D {
 		// the designed place first; if it would cover an earlier label or
 		// leave the plot box (on a phone): the page's alternatives, if any
 		// (style.alternatives, data points such as other points of the same
-		// curve), with the same offset; then the designed place moved inside
-		// the box, and one or two lines above or below it, so the label
-		// stays beside what it names
+		// curve), with the same offset; then the designed place slid inside
+		// the box, which it keeps even if it covers another label: a label
+		// never steps aside, or it would jump as a control moves
 		const dx = style.dx ?? 4;
 		const dy = style.dy ?? -4;
 		const designed = { x: this.px(x) + dx, y: this.py(y) + dy };
 		const alternatives = (style.alternatives ?? []).map(p => ({ x: this.px(p.x) + dx, y: this.py(p.y) + dy }));
 		const inside = this.labels.clampInside(ctx, label, designed);
-		const box = LabelPlacer.boxOf(ctx, label, 0, 0);
-		const line = box.y1 - box.y0 + 2;
-		const candidates = [designed, ...alternatives, inside];
-
-		[1, -1, 2, -2].forEach(k => candidates.push({ x: inside.x, y: inside.y + k * line }));
-
-		const place = this.labels.choose(ctx, label, candidates);
+		const place = this.labels.choose(ctx, label, [designed, ...alternatives, inside]);
 
 		ctx.fillText(label, place.x, place.y);
 	}

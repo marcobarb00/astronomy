@@ -71,22 +71,26 @@ same style:
   or obvious (WRITING.md §7). The key is `<div class="keys">` with one or
   more `<dl class="key">` ("In the figure", "Read-out"), one line per
   entry, styled by `shared/theme.css` (see `templates/page.html`).
-- A label never jumps. A point that moves when a control moves or the
-  sphere turns (the Moon on its epicycle, the center of a moving circle,
-  the Earth at a center crossed by turning lines) is named by a single
-  letter that the text defines (O, K, L, C, A), or not named at all when
-  the panel title, the caption or the key already says what it is. A
-  word or an expression (Vega, mean Sun, deferent, 90° − a) may label a
-  moving object only if it stays on the same side of it, or turns
-  smoothly round it, as the object moves: it is never sent to the other
-  side of its point to avoid a line or another label. `LabelPlacer`
-  (`shared/common.js`) does this for `centeredLabel` and `Sphere3D.label`:
-  only a label of one or two characters may move round its point, a
-  longer one keeps its place and only slides inside the canvas. A page
-  that chooses a label's side itself (by the clearest direction, the sign
-  of a coordinate) does it for letters only. Check by moving every
-  control slowly, and dragging every sphere: a word that jumps is
-  replaced by a letter or removed.
+- A label never jumps, not even a single letter. A point that moves when
+  a control moves or the sphere turns (the Moon on its epicycle, the
+  center of a moving circle, the Earth at a center crossed by turning
+  lines) is named by a single letter that the text defines (O, K, L, C,
+  A), or not named at all when the panel title, the caption or the key
+  already says what it is. Every label, letter or word, stays on a side
+  of its point that turns smoothly as the drawing moves (outward from
+  the center of its circle, off a line it would otherwise cross, a fixed
+  direction on the screen): when a line, a point or another label comes
+  by, they pass over each other for a moment, and the label is never sent
+  to the other side of its point. A word or an expression (Vega, mean
+  Sun, deferent, 90° − a) labels a moving object only if it can keep such
+  a side. `LabelPlacer` (`shared/common.js`) keeps every label of
+  `centeredLabel`, `Sphere3D.label` and `Plot2D.text` at its designed
+  place, only slid inside the canvas. A page never chooses a moving
+  label's side by the clearest direction (`clearestDirection` is for
+  figures that no control moves) or by the sign of a coordinate (glide
+  between the two sides instead, as page 1.2 does). Check with
+  `node tools/check/label-jumps.js --only <page>`, which moves every
+  control, drags every sphere and reports every label that jumps.
 - The caption says what to do with the figure and what to notice, in two
   or three sentences; it does not describe the figure.
 - Not every figure needs controls. A figure that makes one point is drawn

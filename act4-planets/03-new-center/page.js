@@ -100,10 +100,6 @@ function rightAngleMark(ctx, corner, a, b, size) {
 	ctx.stroke();
 }
 
-/* The direction (deg, anticlockwise from the right, as towards()) of
-   screen point b seen from screen point a. */
-const screenDirection = (a, b) => atan2d(a.y - b.y, b.x - a.x);
-
 /* The oppositions of Mars in [start, end] (JD), from geometric positions:
    a daily scan of the elongation less 180°, which falls through zero at
    an opposition (Mars falls behind the Sun), each change of sign refined
@@ -435,48 +431,21 @@ const arrangementFigure = {
 		drawDot(ctx, S.x, S.y, 5, COL.sun);
 		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
 
-		// letters only, each on the side clearest of its lines (CLAUDE.md)
+		// letters only (CLAUDE.md), each on a side of its point that turns
+		// smoothly with the construction, so that it passes over a line
+		// for a moment rather than jumping to the other side of its
+		// point: O opposite the line of sight, K outward from the
+		// deferent's center, the Sun outward from O, P off the line of
+		// sight, which it never crosses
 		centeredLabel(ctx, 'γ', towards(O, 0, edge - 8), COL.muted, owner.labels);
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([0, now.sun, now.lambda, screenDirection(O, K)]),
-			COL.earth,
-			owner.labels
-		);
+		labelOutside(ctx, 'O', O, 7, now.lambda + 180, COL.earth, owner.labels);
 
 		if (isMars) {
-			labelOutside(
-				ctx,
-				'K',
-				K,
-				4,
-				clearestDirection([screenDirection(K, O), screenDirection(K, P), screenDirection(K, O) + 180]),
-				COL.ink,
-				owner.labels
-			);
+			labelOutside(ctx, 'K', K, 4, screenDirection(at(g.C), K), COL.ink, owner.labels);
 		}
 
-		labelOutside(
-			ctx,
-			'☉',
-			S,
-			5,
-			clearestDirection([screenDirection(S, O), screenDirection(S, P)]),
-			COL.sun,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([screenDirection(P, O), screenDirection(P, K), screenDirection(P, S), now.lambda]),
-			COL.planet,
-			owner.labels
-		);
+		labelOutside(ctx, '☉', S, 5, screenDirection(O, S), COL.sun, owner.labels);
+		labelOutside(ctx, 'P', P, 7, now.lambda + SIGHT_NAME_TURN, COL.planet, owner.labels);
 	},
 
 	/* Panel (b): the same points less O sun, the mean Sun at the center, on
@@ -527,35 +496,12 @@ const arrangementFigure = {
 		drawDot(ctx, O.x, O.y, 6, COL.earth);
 		drawDot(ctx, P.x, P.y, 6.5, COL.planet);
 
+		// as in (a): the Sun opposite the Earth, O outward from the Sun,
+		// P off the line of sight
 		centeredLabel(ctx, 'γ', towards(S, 0, edge - 8), COL.muted, owner.labels);
-		labelOutside(
-			ctx,
-			'☉',
-			S,
-			5,
-			clearestDirection([0, screenDirection(S, O), screenDirection(S, P)]),
-			COL.sun,
-			owner.labels
-		);
-
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([screenDirection(O, S), now.lambda, now.lambda + 180]),
-			COL.earth,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([screenDirection(P, O), screenDirection(P, S), now.lambda]),
-			COL.planet,
-			owner.labels
-		);
+		labelOutside(ctx, '☉', S, 5, screenDirection(O, S), COL.sun, owner.labels);
+		labelOutside(ctx, 'O', O, 7, screenDirection(S, O), COL.earth, owner.labels);
+		labelOutside(ctx, 'P', P, 7, now.lambda + SIGHT_NAME_TURN, COL.planet, owner.labels);
 	}
 };
 
@@ -1001,27 +947,18 @@ const epicycletFigure = {
 		drawDot(ctx, K.x, K.y, 6, COL.deferent);
 		drawDot(ctx, P.x, P.y, 4, COL.earth);
 
-		// the fixed points: D and Q on the side of the apsidal line away
-		// from their turning lines (single letters, CLAUDE.md), C on the
-		// other side, between them; the Sun below
-		const away = sin(M) >= 0 ? 270 : 90;
-
+		// the fixed points, single letters (CLAUDE.md) that keep their
+		// side of the apsidal line: D, Q and the Sun below, C above,
+		// between them. A turning line passes over D or Q for a moment
+		// once a turn, rather than sending them to the other side.
 		labelOutside(ctx, '☉', sun, 5, 270, COL.sun, owner.labels);
-		labelOutside(ctx, 'C', C, 3, 360 - away, COL.ink, owner.labels);
-		labelOutside(ctx, 'D', D, 3, away, COL.ink, owner.labels);
-		labelOutside(ctx, 'Q', Q, 3, away, COL.ink, owner.labels);
+		labelOutside(ctx, 'C', C, 3, 90, COL.ink, owner.labels);
+		labelOutside(ctx, 'D', D, 3, 270, COL.ink, owner.labels);
+		labelOutside(ctx, 'Q', Q, 3, 270, COL.ink, owner.labels);
 
-		// the equant's moving point, a letter on the side clearest of the
-		// line QK, the two deferents and the epicyclet with its point
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			6,
-			clearestDirection([screenDirection(K, Q), M + 90, M - 90, screenDirection(K, P), screenDirection(K, A)]),
-			COL.deferent,
-			owner.labels
-		);
+		// the equant's moving point, outward from the deferent's center,
+		// clear of the line QK and of the epicyclet with its point
+		labelOutside(ctx, 'K', K, 6, screenDirection(C, K), COL.deferent, owner.labels);
 	}
 };
 
