@@ -27,14 +27,27 @@ const MeanSun = (function () {
 	   the turning Earth's, as every ancient count of days was.
 	   ====================================================================== */
 
-	/* J. Meeus, Astronomical Algorithms (2nd ed., 1998), 25.2: the linear
-	   part of L0 = 280.46646 + 36000.76983 T + 0.0003032 T^2, with T in
-	   Julian centuries from J2000.0. The daily motion n = 0.98564736°
-	   gives the tropical year 360° / n = 365.24219 days
-	   (tools/numbers/1.3-clocks.js). */
+	/* The mean Sun fitted on page 1.3 to the reference Sun as it is seen
+	   (tools/numbers/1.3-clocks.js), from documented observations only
+	   (STRUCTURE.md §5): the year is the mean of the four years given by
+	   lines through the moments of each equinox and solstice of 1926 -
+	   2025, n = 360° / Y; L0 is the mean of lambda - n d over the 19 whole
+	   years 2007 - 2025, which also cover a turn of the nutation. */
 	const MODERN = {
-		L0: 280.46646,
-		n: 36000.76983 / 36525,
+		L0: 280.461355,
+		n: 0.98564734824,
+		epoch: 2451545.0
+	};
+
+	/* The two constants that define Universal Time, fixed by convention
+	   since 1984 (J. Meeus, Astronomical Algorithms, 2nd ed., 1998, 12.4,
+	   the linear part of Greenwich mean sidereal time): the mean Sun's
+	   right ascension at J2000.0 and its daily motion. The reference sky's
+	   sidereal time (time.js) uses them; the site's models use the fitted
+	   MODERN, and page 1.3 compares the two. */
+	const UT_CONVENTION = {
+		L0: 280.46061837,
+		n: 0.98564736629,
 		epoch: 2451545.0
 	};
 
@@ -88,6 +101,7 @@ const MeanSun = (function () {
 
 	return {
 		MODERN,
+		UT_CONVENTION,
 		PTOLEMY,
 		daysSinceEpoch,
 		meanLongitude,

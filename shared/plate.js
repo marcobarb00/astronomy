@@ -215,17 +215,50 @@ const Plate = (function () {
 				['tet Leo', 'bet Leo']
 			],
 			name: [165, 26]
+		},
+		'GEMINI': {
+			lines: [
+				['alf Gem', 'tau Gem'],
+				['tau Gem', 'tet Gem'],
+				['tau Gem', 'eps Gem'],
+				['eps Gem', 'mu. Gem'],
+				['mu. Gem', 'eta Gem'],
+				['eps Gem', 'nu. Gem'],
+				['tau Gem', 'iot Gem'],
+				['iot Gem', 'ups Gem'],
+				['ups Gem', 'bet Gem'],
+				['ups Gem', 'kap Gem'],
+				['ups Gem', 'del Gem'],
+				['del Gem', 'zet Gem'],
+				['zet Gem', 'gam Gem'],
+				['del Gem', 'lam Gem'],
+				['lam Gem', 'ksi Gem']
+			],
+			name: [97, 33.5]
+		},
+		'CANCER': {
+			lines: [
+				['iot Cnc', 'gam Cnc'],
+				['gam Cnc', 'del Cnc'],
+				['del Cnc', 'bet Cnc'],
+				['del Cnc', 'alf Cnc']
+			],
+			name: [134, 26]
 		}
 	};
 
-	/* Every star that a figure line touches (drawn whatever its magnitude). */
-	const FIGURE_STARS = new Set(Object.values(FIGURES).flatMap(figure => figure.lines.flat()));
+	/* The stars that the lines of the given figures touch (drawn whatever
+	   their magnitude, on the charts that draw those figures). */
+	const figureStars = names => new Set(names.flatMap(name => FIGURES[name].lines.flat()));
 
-	/* The stars brighter than MAG_LIMIT and those of the figures, through
-	   project(ra, dec) -> { x, y }, or null outside the chart. */
-	function drawStars(group, project) {
+	/* The stars brighter than MAG_LIMIT and those of the chart's figures
+	   ('names'), through project(ra, dec) -> { x, y }, or null outside the
+	   chart. */
+	function drawStars(group, project, names) {
+		const forced = figureStars(names);
+
 		STARS.forEach(star => {
-			if (star.mag > MAG_LIMIT && !FIGURE_STARS.has(star.id)) {
+			if (star.mag > MAG_LIMIT && !forced.has(star.id)) {
 				return;
 			}
 
@@ -307,7 +340,7 @@ const Plate = (function () {
 	/* ======================================================================
 	   3. THE MILKY WAY
 	   Fine stipple spread about the galactic equator (Gaussian in latitude,
-	   sigma 4°, cut at ±12°), denser towards the galactic centre: a drawing
+	   sigma 4°, cut at ±12°), denser towards the galactic center: a drawing
 	   of the band, not catalogue data, and the keys say so. A fixed seed
 	   draws the same points every time. Equatorial coordinates (J2000) from
 	   the galactic ones, with the IAU galactic pole.
@@ -372,7 +405,7 @@ const Plate = (function () {
 	   ====================================================================== */
 
 	/* An hour ring about (cx, cy) between the radii inner and outer: 24
-	   segments, light and dark in turn, hour h centred at angleOf(h)
+	   segments, light and dark in turn, hour h centered at angleOf(h)
 	   (degrees clockwise from the top), labelled at the radius 'label'.
 	   Odd hours are 'minor' labels, left out on a phone (theme.css). */
 	function drawHourRing(svg, ring, angleOf) {
@@ -388,7 +421,7 @@ const Plate = (function () {
 				{ d: ringSegment(point, angleOf(h), inner, outer), class: h % 2 === 0 ? 'light' : 'dark' },
 				group
 			);
-			// centred on its point, whatever the size of the text
+			// centered on its point, whatever the size of the text
 			svgText(group, `${h}h`, at.x, at.y, {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'central',
@@ -400,14 +433,14 @@ const Plate = (function () {
 		svgEl('circle', { cx: cx, cy: cy, r: outer, class: 'edge' }, group);
 	}
 
-	/* The SVG path of one hour of the ring (15° centred on 'centre'), from
-	   centre - 7.5° to centre + 7.5°, clockwise on the screen along the
+	/* The SVG path of one hour of the ring (15° centered on 'center'), from
+	   center - 7.5° to center + 7.5°, clockwise on the screen along the
 	   inner edge (SVG sweep flag 1), and back along the outer one. */
-	function ringSegment(point, centre, inner, outer) {
-		const p0 = point(centre - 7.5, inner);
-		const p1 = point(centre + 7.5, inner);
-		const p2 = point(centre + 7.5, outer);
-		const p3 = point(centre - 7.5, outer);
+	function ringSegment(point, center, inner, outer) {
+		const p0 = point(center - 7.5, inner);
+		const p1 = point(center + 7.5, inner);
+		const p2 = point(center + 7.5, outer);
+		const p3 = point(center - 7.5, outer);
 
 		return (
 			`M${p0.x} ${p0.y} A${inner} ${inner} 0 0 1 ${p1.x} ${p1.y} ` +
@@ -437,8 +470,10 @@ const Plate = (function () {
 			svgEl('rect', { x: x, y: y, width: w, height: h, class: light ? 'light' : 'dark' }, border);
 		};
 
+		// the last band of each side stops at the corner, when the side is
+		// not a whole number of steps long
 		for (let ra = raMin, i = 0; ra < raMax - 1e-9; ra += raStep, i++) {
-			const x = at(ra + raStep, 0).x;
+			const x = at(Math.min(ra + raStep, raMax), 0).x;
 			const w = at(ra, 0).x - x;
 
 			box(x, topLeft.y - band, w, band, i % 2 === 0);
@@ -446,7 +481,7 @@ const Plate = (function () {
 		}
 
 		for (let dec = decMin, i = 0; dec < decMax - 1e-9; dec += decStep, i++) {
-			const y = at(0, dec + decStep).y;
+			const y = at(0, Math.min(dec + decStep, decMax)).y;
 			const h = at(0, dec).y - y;
 
 			box(topLeft.x - band, y, band, h, i % 2 === 0);
@@ -475,7 +510,7 @@ const Plate = (function () {
 	}
 
 	/* Hours under the border, degrees on its left: the hours hang from a
-	   line under the border, the degrees are centred on their line, so a
+	   line under the border, the degrees are centered on their line, so a
 	   larger text (on a phone) grows away from the chart. */
 	function drawBorderLabels(border, area, at, band) {
 		const { raMin, raMax, decMin, decMax } = area;
@@ -544,11 +579,11 @@ const Plate = (function () {
 	   6. CHARTS: POLAR AND RECTANGULAR
 	   ====================================================================== */
 
-	/* A chart centred on the north celestial pole, as seen from the ground
+	/* A chart centered on the north celestial pole, as seen from the ground
 	   looking up (right ascension increases clockwise), down to declination
 	   rimDec, with an hour ring. options: rimDec, figures, names, keep (the
 	   ids of the star names still shown on a phone), label.
-	   Returns { svg, at, project, radius, centre }. */
+	   Returns { svg, at, project, radius, center }. */
 	function polar(container, options) {
 		const size = 640;
 		const R = 250;
@@ -561,7 +596,7 @@ const Plate = (function () {
 
 		// a label stays inside the rim of the chart, clear of the hour ring
 		const inside = box => boxCorners(box).every(p => Math.hypot(p.x - c, p.y - c) <= R - 2);
-		const chart = { svg, at, project, radius, centre: c, inside, labels: [], obstacles: [] };
+		const chart = { svg, at, project, radius, center: c, inside, labels: [], obstacles: [] };
 
 		// graticule: declination every 10°, right ascension every 2 h
 		const grid = svgEl('g', { class: 'grid' }, svg);
@@ -590,7 +625,7 @@ const Plate = (function () {
 			options.figures,
 			project
 		);
-		drawStars(svgEl('g', { class: 'stars' }, svg), project);
+		drawStars(svgEl('g', { class: 'stars' }, svg), project, options.figures);
 		drawStarNames(chart, svgEl('g', { class: 'star-names' }, svg), options.names, at, options.keep);
 
 		const pole = svgText(svg, 'P', c - 16, c + 18, { class: 'symbol' });
@@ -604,7 +639,10 @@ const Plate = (function () {
 	/* A rectangular (equirectangular) chart as seen looking south: north
 	   up, east (greater right ascension) to the left, with a graduated
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
-	   figures, names, keep (as for polar), label. The equator is drawn, and
+	   figures, names, keep (as for polar), label, margins { left, right }
+	   (the room beside the border in units of the drawing, 108 each by
+	   default; a chart with nothing to name on its right, page 4.1, keeps
+	   less there, so that the chart fills the plate). The equator is drawn, and
 	   named at the
 	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
 	   highlight in 'layer', clipped to the chart. */
@@ -612,12 +650,13 @@ const Plate = (function () {
 		const area = options.area;
 		const { raMin, raMax, decMin, decMax } = area;
 		const scale = 8;
-		const left = 108;
+		const left = options.margins?.left ?? 108;
+		const right = options.margins?.right ?? left;
 		const top = 40;
 		const band = 10;
 		const width = (raMax - raMin) * scale;
 		const height = (decMax - decMin) * scale;
-		const svg = newSvg(container, width + 2 * left, height + top + 70, options.label);
+		const svg = newSvg(container, width + left + right, height + top + 70, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
 		const project = (ra, dec) => {
 			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
@@ -659,7 +698,7 @@ const Plate = (function () {
 			options.figures,
 			project
 		);
-		drawStars(svgEl('g', { class: 'stars' }, layer), project);
+		drawStars(svgEl('g', { class: 'stars' }, layer), project, options.figures);
 		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
 
 		if (decMin < 0 && decMax > 0) {
@@ -683,7 +722,7 @@ const Plate = (function () {
 		}
 
 		drawBorder(svg, area, at, { band: band, raStep: 7.5, decStep: 5 });
-		fitText(chart, width + 2 * left);
+		fitText(chart, width + left + right);
 
 		return chart;
 	}
@@ -695,14 +734,15 @@ const Plate = (function () {
 
 	/* A circle of declination on a polar chart. */
 	function highlightCircle(chart, dec) {
-		svgEl('circle', { cx: chart.centre, cy: chart.centre, r: chart.radius(dec), class: 'highlight' }, chart.svg);
+		svgEl('circle', { cx: chart.center, cy: chart.center, r: chart.radius(dec), class: 'highlight' }, chart.svg);
 	}
 
 	/* A curve through (ra, dec) points on a rectangular chart, named at the
 	   point given by nameAt [ra, dec, dx, dy]; with a short tick across it
-	   at each of 'marks' [{ ra, dec, text }] (page 3.3: the Moon's path,
-	   one tick a day), its text, if any, on the side 'side' (+1 below the
-	   curve, -1 above it). */
+	   at each of 'marks' [{ ra, dec, text, place }] (page 3.3: the Moon's
+	   path, one tick a day), its text, if any, on the side 'side' (+1 below
+	   the curve, -1 above it), or on the side 'place' of the mark ('left',
+	   'right', 'above', 'below'; page 4.1: the stations of Mars). */
 	function highlightCurve(chart, points, name, nameAt, marks = [], side = 1) {
 		const screen = points.map(p => chart.at(p.ra, p.dec));
 
@@ -728,6 +768,15 @@ const Plate = (function () {
 
 	/* A tick across a curve (screen points) at the point of 'mark', at
 	   right angles to the curve there, and the mark's text beside it. */
+	/* The sides a tick's label may be given (mark.place): a screen
+	   direction, and the text anchor that keeps the label on that side. */
+	const MARK_PLACES = {
+		left: { x: -1, y: 0, anchor: 'end' },
+		right: { x: 1, y: 0, anchor: 'start' },
+		above: { x: 0, y: -1, anchor: 'middle' },
+		below: { x: 0, y: 1, anchor: 'middle' }
+	};
+
 	function drawCurveTick(chart, screen, mark, side) {
 		const tickLength = 6;
 		const q = chart.at(mark.ra, mark.dec);
@@ -760,9 +809,13 @@ const Plate = (function () {
 
 		if (mark.text) {
 			const away = 3 * tickLength;
-			const element = svgText(chart.layer, mark.text, q.x + away * u.x, q.y + away * u.y, {
+			// the label beyond the tick, along the normal; or, where the curve
+			// turns back on itself (a planet's station), on the side the page
+			// gives (mark.place), so that it never lies on the curve
+			const place = MARK_PLACES[mark.place] ?? { x: u.x, y: u.y, anchor: 'middle' };
+			const element = svgText(chart.layer, mark.text, q.x + away * place.x, q.y + away * place.y, {
 				class: 'circle-name highlight-text',
-				'text-anchor': 'middle',
+				'text-anchor': place.anchor,
 				'dominant-baseline': 'central'
 			});
 
@@ -795,11 +848,11 @@ const Plate = (function () {
 	/* A path through (ra, dec) points on a polar chart (page 2.3: the path
 	   of the celestial pole around the ecliptic pole), with a short tick
 	   across it at each of 'marks' [{ ra, dec, text }]. A tick points away
-	   from the point 'centre' { ra, dec } that the path goes round, and
+	   from the point 'center' { ra, dec } that the path goes round, and
 	   its text, if any, goes beside it on that side. */
-	function highlightPath(chart, points, centre, marks = []) {
+	function highlightPath(chart, points, center, marks = []) {
 		const screen = points.map(p => chart.at(p.ra, p.dec));
-		const c = chart.at(centre.ra, centre.dec);
+		const c = chart.at(center.ra, center.dec);
 		const tickLength = 6;
 
 		svgLine(chart.svg, screen, { class: 'highlight' });
@@ -833,7 +886,7 @@ const Plate = (function () {
 		placeLabels(chart);
 	}
 
-	/* The Sun at a point: the sign ☉ itself, a ring and a dot, centred
+	/* The Sun at a point: the sign ☉ itself, a ring and a dot, centered
 	   on the Sun's place, not a label beside a cross. A label can be moved
 	   off its point to stay clear of a line; the Sun's sign, which reads as
 	   the Sun, must stay where the Sun is (page 3.3: on the ecliptic, where
@@ -938,7 +991,7 @@ const Plate = (function () {
 		});
 	}
 
-	/* Places for a name centred on a point (a constellation's name): moved
+	/* Places for a name centered on a point (a constellation's name): moved
 	   up or down by up to three lines, and sideways by up to four thirds of
 	   its width, in steps of a third, the nearest first. */
 	function aroundCentre(c, box, k) {

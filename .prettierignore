@@ -17,6 +17,7 @@
 # Not ours to format: the earlier pages, generated data, outputs.
 archive/
 shared/plate-stars.js
+shared/vsop87-data.js
 node_modules/
 tools/check/out/
 .claude/

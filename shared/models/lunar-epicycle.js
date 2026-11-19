@@ -2,8 +2,8 @@
 /* ==========================================================================
    PREDICTING THE SKY - MODEL: THE LUNAR EPICYCLE (models/lunar-epicycle.js)
    The model of page 3.1, the Moon's first anomaly (Almagest IV 5-10): the
-   centre K of an epicycle of radius r moves uniformly on a deferent of
-   radius R centred on the Earth O, at the mean longitude
+   center K of an epicycle of radius r moves uniformly on a deferent of
+   radius R centered on the Earth O, at the mean longitude
 	   lambdaBar = L0 + n t,
    and the Moon moves uniformly on the epicycle, westward near its apogee
    (the point farthest from the Earth), by the anomaly
@@ -12,7 +12,7 @@
 	   OMoon = R u(lambdaBar) + r u(lambdaBar - M),
    so with e = r / R the Moon is seen at
 	   lambda = lambdaBar + q,   q = -atan2(e sin M, 1 + e cos M),
-   the equation of centre of the solar eccentric (models/solar-eccentric.js)
+   the equation of center of the solar eccentric (models/solar-eccentric.js)
    with r / R for e: q is negative from the apogee to the perigee, as in
    Ptolemy, who subtracts the equation there (Almagest IV 10).
    Needs common.js, time.js, models/mean-sun.js and
@@ -23,7 +23,7 @@
 
    The equivalent eccentric (page 3.1, Almagest IV 5)
 	 Vector addition commutes: the same point is r u(lambdaBar - M) +
-	 R u(lambdaBar), the Moon on a circle of radius R whose centre C lies
+	 R u(lambdaBar), the Moon on a circle of radius R whose center C lies
 	 at the distance r from the Earth towards lambdaBar - M. This eccentric
 	 has its apogee at lambdaA = lambdaBar - M, which moves eastward at
 	 n - nM, and the Moon moves on it at the mean longitude, as seen from C.
@@ -90,16 +90,18 @@ const LunarEpicycle = (function () {
 	   (tools/numbers/3.1-first-anomaly.js). */
 	const ECLIPSES_2026 = [2460926.256636, 2461102.986269, 2461280.680274];
 
-	/* Our fit (page 3.1, section 3): the three-eclipse method applied to
-	   those eclipses, with Meeus' mean motions; the epoch J2000.0
-	   (tools/numbers/3.1-first-anomaly.js). */
+	/* Our fit (page 3.1, section 3): the mean motions from the new Moons
+	   of 1926 - 2025 (n = n_sun + 360° / P_s with the mean Sun of page
+	   1.3, n_M from 251 synodic = 269 anomalistic months), and the
+	   three-eclipse method applied to those eclipses with these motions;
+	   the epoch J2000.0 (tools/numbers/3.1-first-anomaly.js). */
 	const FIT_2026 = {
-		L0: 218.320909,
-		n: MEEUS.n,
-		M0: 320.013246,
-		nM: MEEUS.nM,
+		L0: 218.311196,
+		n: 13.176397489,
+		M0: 320.072803,
+		nM: 13.064987203,
 		epoch: 2451545.0,
-		e: 0.084402
+		e: 0.084404
 	};
 
 	/* ======================================================================
@@ -107,7 +109,7 @@ const LunarEpicycle = (function () {
 	   ====================================================================== */
 
 	/* The equation of anomaly q (deg) for the anomaly M (deg, from the
-	   apogee of the epicycle) and e = r / R: the equation of centre of the
+	   apogee of the epicycle) and e = r / R: the equation of center of the
 	   eccentric (page 3.1, section 2). */
 	const equationOfAnomaly = SolarEccentric.equationOfCentre;
 
@@ -157,7 +159,7 @@ const LunarEpicycle = (function () {
 
 	/* The two constructions of one moment, in units of the deferent's
 	   radius R, with the Earth at the origin and x towards the vernal
-	   point: K, the centre of the epicycle; C, the centre of the
+	   point: K, the center of the epicycle; C, the center of the
 	   equivalent eccentric; moon, the Moon, the fourth corner of the
 	   parallelogram O K moon C. */
 	function construction(s, e) {

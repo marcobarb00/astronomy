@@ -47,7 +47,7 @@ give it where it's needed.
   "The reason is the uniform Sun.", "The Sun keeps the clock's 24 hours,
   but only on average." Say the thing itself.
 - **Fewer colons and semicolons.** One per paragraph is plenty. A colon
-  chain ("…: a great circle tilted by ε to the equator, so it is centred
+  chain ("…: a great circle tilted by ε to the equator, so it is centered
   on its own pole K: …") is a sign the sentence should be two.
 - **Transitions that carry meaning**: "so", "but", "this is why", "now
   that…", "it turns out that". Not "Then", "Here", "Thus" at the start of
@@ -171,7 +171,7 @@ generated.
 11. The same sentence shape repeated: "X is Y. It does Z. That is W."
 12. "Not X, but Y" and "X, not Y" framings where a plain statement works.
 13. A model presented as true or as ours ("our eccentric"), or a body that
-    is "really" at the centre (§9).
+    is "really" at the center (§9).
 
 ## 9. Models, frames and what moves
 
@@ -189,9 +189,9 @@ are.
   description give the same directions, because only relative motion is
   observed. Write "geostatic" and "heliostatic" for the frame;
   "geocentric" keeps its standard meaning, a position seen from the
-  Earth's centre (the geocentric longitude of the reference sky). Never
-  write that a model puts "the wrong body at the centre", or that the Sun
-  is "really" at the centre.
+  Earth's center (the geocentric longitude of the reference sky). Never
+  write that a model puts "the wrong body at the center", or that the Sun
+  is "really" at the center.
 - **Keep two questions apart.** The first is the frame: what is taken as
   at rest, which observations of direction cannot decide. The second is
   the arrangement: how the motions are linked, in what order the planets
@@ -206,7 +206,7 @@ are.
   Revolutionibus* I 8). He explained the missing parallax of the stars by
   their immense distance and argued for his arrangement from the way it
   links the periods and the sizes of the orbits (I 10). Since Newton, the
-  laws of motion hold in frames in which the solar system's centre of
+  laws of motion hold in frames in which the solar system's center of
   mass, near the Sun, is at rest or moves uniformly, and they are
   simplest where it is at rest. Physics makes the heliostatic description
   simpler; the geostatic one stays correct once the forces of an
@@ -223,7 +223,7 @@ are.
 |---|---|
 | "The real orbit is an ellipse." | "Kepler's ellipse, which the modern theory keeps as the first approximation to the Sun's path relative to the Earth, …" (page 2.1) |
 | "Over 2026 our eccentric stays within 1.7′ of the real Sun." | "Over 2026 the eccentric fitted to that year stays within 1.7′ of the real Sun." |
-| "Ptolemy put the wrong body at the centre." | "Ptolemy takes the Earth as at rest. Seen from the Earth, his directions would be the same with the Sun at rest; what the observations test is his arrangement." |
+| "Ptolemy put the wrong body at the center." | "Ptolemy takes the Earth as at rest. Seen from the Earth, his directions would be the same with the Sun at rest; what the observations test is his arrangement." |
 | "Copernicus moved the Sun to its true place." | "Copernicus took the Sun as at rest, and linked every planet's motion to the Earth's." |
 
 ## 10. What stays the same

@@ -595,7 +595,7 @@ def find_hama_heading(lines, page_of_line, pdf_pages, patterns, after=0):
 
 def hama_section_patterns(number, title):
     """
-    Regular expressions for a centred heading "§ 3. Mercury". The OCR
+    Regular expressions for a centered heading "§ 3. Mercury". The OCR
     sometimes reads 1 as I or l and drops the space after §; the first
     letters of the title are required, to skip references in the text.
     """

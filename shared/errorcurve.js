@@ -94,7 +94,7 @@ const ERROR_READOUT_HINT = "Point at the plot to read each curve's error on a da
 
 class ErrorCurve {
 	/* options: body | reference, start, end (JD TT), spans
-	   ([{ label, years, yMax, units }] centred on the current range),
+	   ([{ label, years, yMax, units }] centered on the current range),
 	   resolution (days), period (days, the error's main period: sets the
 	   band's window), units ('auto' | 'arcmin' | 'deg'), yMax (fixed
 	   half-range, in the chosen units), xLabel, ghostButtons (false: no
@@ -299,16 +299,16 @@ class ErrorCurve {
 		this.update();
 	}
 
-	/* Span presets keep the centre of the current range. */
+	/* Span presets keep the center of the current range. */
 	chooseSpan(span, button) {
-		const centre = (this.start + this.end) / 2;
+		const center = (this.start + this.end) / 2;
 		const halfDays = (span.years * 365.25) / 2;
 
 		this.span = span;
 
 		markChosen([...this.spanButtons.querySelectorAll('button')], button);
 
-		this.setRange(centre - halfDays, centre + halfDays);
+		this.setRange(center - halfDays, center + halfDays);
 	}
 
 	/* Recompute and redraw (call after a model parameter changes). */
@@ -575,7 +575,7 @@ class ErrorCurve {
 	}
 
 	/* Can the plot reach beyond the dates where the ephemeris is valid, now
-	   or with one of the span presets (centred on the current range)? The
+	   or with one of the span presets (centered on the current range)? The
 	   legend entry for the shading is then always shown, so the widget does
 	   not change size when the reader changes the span (CLAUDE.md). */
 	canLeaveRange() {
@@ -584,8 +584,8 @@ class ErrorCurve {
 		}
 
 		const range = this.validRange;
-		const centre = (this.start + this.end) / 2;
-		const reaches = halfDays => centre - halfDays < range.start || centre + halfDays > range.end;
+		const center = (this.start + this.end) / 2;
+		const reaches = halfDays => center - halfDays < range.start || center + halfDays > range.end;
 
 		return reaches((this.end - this.start) / 2) || this.spans.some(span => reaches((span.years * 365.25) / 2));
 	}
@@ -628,7 +628,7 @@ class ErrorCurve {
    HELPERS
    ========================================================================== */
 
-/* Extreme (Math.min or Math.max) of values over a centred window of
+/* Extreme (Math.min or Math.max) of values over a centered window of
    'window' columns: the envelope of an oscillation shorter than a column
    group, without moire. */
 function runningExtreme(values, window, pick) {

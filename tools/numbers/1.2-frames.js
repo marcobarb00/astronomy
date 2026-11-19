@@ -12,7 +12,7 @@
 	 3. Observation: The three coordinate systems
 	 4. Model: the matrices, checked
 	 5. Fit: the obliquity from the solstices; the equinox
-	 6. Test: Ptolemy's tables; the nutation error (Figure 4)
+	 6. Test: Ptolemy's tables; the nutation error (Figure 6)
 	 7. Exercises
 	 8. Residual: the angle between the frames drifts
    ========================================================================== */
@@ -232,8 +232,9 @@ console.log(
 
 /* ==========================================================================
    5. FIT: THE OBLIQUITY FROM THE SOLSTICES; THE EQUINOX
-   Noon altitudes of the reference Sun at Alexandria in 2026, as seen
-   (with refraction), at the two solstices.
+   Noon altitudes of the reference Sun at Alexandria in 2025, as seen
+   (with refraction), at the two solstices: the last whole year before
+   today, so that both are documented (STRUCTURE.md §5).
    ========================================================================== */
 
 title('Model: the Sun along the ecliptic (Figure 2)');
@@ -250,7 +251,11 @@ console.log(
 );
 console.log(`21 May 2026, 0h TT: lambda = ${f(may21.lon, 2)}, beta = ${arcsec(may21.lat, 1)}`);
 
-title('Fit: the obliquity from two noon shadows (Alexandria, 2026)');
+/* The fit uses the last whole year before today, so that both solstices
+   are documented: 2025. */
+const FIT_YEAR = 2025;
+
+title(`Fit: the obliquity from two noon shadows (Alexandria, ${FIT_YEAR})`);
 
 /* Seen noon altitude (deg) of the Sun on day jd0 (0h UT) at a place. */
 function noonAltitude(jd0, place) {
@@ -265,7 +270,7 @@ let highest = { a: -99 };
 let lowest = { a: 99 };
 
 for (let day = 0; day < 365; day++) {
-	const jd0 = Time.julianDay(2026, 1, 1) + day;
+	const jd0 = Time.julianDay(FIT_YEAR, 1, 1) + day;
 	const a = noonAltitude(jd0, ALEXANDRIA);
 
 	if (a > highest.a) {
@@ -279,7 +284,7 @@ for (let day = 0; day < 365; day++) {
 
 const epsFit = (highest.a - lowest.a) / 2;
 const phiFit = 90 - (highest.a + lowest.a) / 2;
-const eps2026Mid = epsOfYear(2026);
+const epsFitYear = epsOfYear(FIT_YEAR);
 
 console.log(
 	`highest noon Sun ${f(highest.a, 3)} on ${dateText(highest.jd0)}, lowest ${f(lowest.a, 3)} on ${dateText(lowest.jd0)}`
@@ -288,8 +293,32 @@ console.log(
 	`refraction lifts them by ${arcmin(Ephem.refraction(highest.a - 0.002), 2)} and ${arcmin(Ephem.refraction(lowest.a - 0.02), 2)}`
 );
 console.log(
-	`fit: eps = ${f(epsFit, 4)} (${arcmin(epsFit - eps2026Mid, 2)} from the mean ${f(eps2026Mid, 4)}),` +
+	`fit: eps = ${f(epsFit, 4)} (${arcmin(epsFit - epsFitYear, 2)} from the mean ${f(epsFitYear, 4)}),` +
 		` phi = ${f(phiFit, 4)} (${arcmin(phiFit - ALEXANDRIA.phi, 2)} from ${ALEXANDRIA.phi})`
+);
+
+/* Figure 5 plots these noon altitudes through FIT_YEAR on a fixed scale, and
+   marks the March equinox where they rise through 90° - phi: between the
+   noons of two days, taken to change evenly. */
+const equatorAltitude = 90 - ALEXANDRIA.phi;
+let equinoxDay = null;
+
+for (let day = 1; day < 365 && equinoxDay === null; day++) {
+	const before = noonAltitude(Time.julianDay(FIT_YEAR, 1, 1) + day - 1, ALEXANDRIA);
+	const after = noonAltitude(Time.julianDay(FIT_YEAR, 1, 1) + day, ALEXANDRIA);
+
+	if (before < equatorAltitude && after >= equatorAltitude) {
+		equinoxDay = day - 1 + (equatorAltitude - before) / (after - before);
+	}
+}
+
+console.log(
+	`Figure 5 scale: noon altitudes from ${f(lowest.a, 2)} to ${f(highest.a, 2)} -> fixed range [25, 95];` +
+		` the equator's altitude is ${f(equatorAltitude, 1)}`
+);
+console.log(
+	`Figure 5 dot: the noon Sun rises through ${f(equatorAltitude, 1)} ${f(equinoxDay % 1, 2)} of the way from the noon of` +
+		` ${dateText(Time.julianDay(FIT_YEAR, 1, 1) + Math.floor(equinoxDay))} to the next`
 );
 
 title('Ptolemy and the others');
@@ -316,11 +345,28 @@ console.log(`Ptolemy's bounds: 47°40' < 2 eps < 47°45' -> ${f(dms(47, 40) / 2,
 });
 console.log(`Copernicus (De Rev. II 2): "not more than 23°29'" = ${f(dms(23, 29), 4)}`);
 
-title('The origin: the March equinox 2026');
-const equinox = sunAtLongitude(0, Time.julianDay(2026, 3, 20));
+title(`The origin: the March equinox ${FIT_YEAR}`);
+const equinox = sunAtLongitude(0, Time.julianDay(FIT_YEAR, 3, 20));
 console.log(
 	`reference Sun at lambda = 0: ${dateText(Time.utFromTt(equinox))} UT; delta there = ${arcsec(realSun(equinox).dec, 1)}`
 );
+{
+	/* The published moment (US Naval Observatory, aa.usno.navy.mil/api/
+	   seasons?year=2025, retrieved 2026-11-12) is for the apparent Sun
+	   and the true equinox; the reference sky's apparent Sun, with
+	   nutation and aberration, for comparison. */
+	const usno = Time.julianDayTime(2025, 3, 20, 9, 1, 0);
+	let apparent = equinox;
+
+	for (let i = 0; i < 20; i++) {
+		apparent += norm180(-Ephem.longitude('sun', apparent)) / 0.9856;
+	}
+
+	console.log(
+		`USNO 20 Mar 2025 09:01 UT: the mean equinox above ${f((Time.utFromTt(equinox) - usno) * 1440, 0)} min from it;` +
+			` the reference's apparent Sun ${dateText(Time.utFromTt(apparent))} UT, ${f((Time.utFromTt(apparent) - usno) * 1440, 0)} min`
+	);
+}
 
 /* ==========================================================================
    6. TEST: PTOLEMY'S TABLES; THE REAL SUN; FIGURE SCALES
@@ -394,7 +440,7 @@ console.log(
 );
 console.log(`largest |Ptolemy - real| right ascension: ${worstRA137.toFixed(1)} arcmin`);
 
-title('Test 2 (Figure 4): the nutation error over 2026');
+title('Test 2 (Figure 6): the nutation error over 2026');
 
 /* Each day of 2026 at 0h TT: the reference Sun's apparent (lambda, beta)
    turned into (alpha, delta) with the MEAN obliquity of date (the model:
@@ -443,7 +489,34 @@ console.log(
 	`December solstice (day ${december.day}): d delta = ${f(december.dDec, 2)}", +d eps = ${f(december.deps, 2)}"`
 );
 console.log(
-	`Figure 4 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`
+	`Figure 6 scale: every value within ${f(Math.max(Math.abs(depsMin.deps), Math.abs(depsMax.deps), Math.abs(decMax.dDec), Math.abs(raMax.dRA)), 2)}" -> fixed range [-12", +12"]`
+);
+
+/* The ripple on the curves of Figure 6 (its key): the period of the
+   short-period term of d eps, counted on the curve itself. The slow terms
+   are removed with a running mean over 27 days; two changes of sign of
+   what is left make one ripple. */
+const RIPPLE_WINDOW = 13; // days on each side of the running mean
+const rippleDays = [];
+
+for (let day = RIPPLE_WINDOW; day <= 365 - RIPPLE_WINDOW; day++) {
+	const around = nutationDays.slice(day - RIPPLE_WINDOW, day + RIPPLE_WINDOW + 1);
+	const mean = around.reduce((sum, d) => sum + d.deps, 0) / around.length;
+
+	rippleDays.push(nutationDays[day].deps - mean);
+}
+
+const rippleCrossings = rippleDays.filter((value, i) => i > 0 && value * rippleDays[i - 1] < 0).length;
+const ripplePeriod = (2 * (rippleDays.length - 1)) / rippleCrossings;
+
+/* The Moon's tropical month (days), from the rate of its mean longitude
+   in the nutation series of Ephem.nutation (Meeus ch. 22), deg / century. */
+const MOON_MEAN_MOTION = 481267.8813;
+const tropicalMonth = (360 * 36525) / MOON_MEAN_MOTION;
+
+console.log(
+	`ripple of Figure 6: ${rippleCrossings} changes of sign in ${rippleDays.length - 1} days -> period ${f(ripplePeriod, 1)} days,` +
+		` half the Moon's tropical month of ${f(tropicalMonth, 2)} days (${f(tropicalMonth / 2, 2)} days)`
 );
 
 title('Residual: an old obliquity used today');
@@ -544,7 +617,7 @@ function risingPoint(eps, phi, theta) {
 });
 
 // sunset at Rome on the two equinoxes: the Sun's upper limb on the seen
-// horizon (centre at -50', page 1.1), the turn theta then, and the angle
+// horizon (center at -50', page 1.1), the turn theta then, and the angle
 // between the ecliptic and the horizon
 [
 	[2026, 3, 20, 'March equinox'],

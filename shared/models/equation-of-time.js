@@ -8,7 +8,7 @@
 	   E = alpha_m - alpha = lambdaBar - alpha        (degrees; 1° = 4 min)
 	     = (lambdaBar - lambda) + (lambda - alpha)
 	     = -q + (lambda - alpha),
-   the sum of two parts: the equation of centre q of the solar model
+   the sum of two parts: the equation of center q of the solar model
    (models/solar-eccentric.js, page 2.1), and the reduction to the
    equator lambda - alpha, which the obliquity causes (models/frames.js,
    page 1.2). E is positive when the sundial is ahead of the clock
@@ -25,7 +25,7 @@
 	 From tan alpha = cos eps tan lambda,
 		 tan(lambda - alpha) = e_eps sin 2 lambda / (1 + e_eps cos 2 lambda),
 		 e_eps = tan^2(eps / 2) = (1 - cos eps) / (1 + cos eps),
-	 the form of the equation of centre with e -> e_eps and M -> 2 lambda:
+	 the form of the equation of center with e -> e_eps and M -> 2 lambda:
 		 alpha - lambda = q(2 lambda, e_eps)   (SolarEccentric.equationOfCentre),
 	 so to first order lambda - alpha = e_eps sin 2 lambda, and its
 	 greatest value is asin e_eps, at 2 lambda = 90° + asin e_eps, where
@@ -60,7 +60,7 @@ const EquationOfTime = (function () {
 	}
 
 	/* alpha - lambda (deg) for a point of the ecliptic at longitude lon:
-	   the equation of centre for the argument 2 lon and e_eps. Equal to
+	   the equation of center for the argument 2 lon and e_eps. Equal to
 	   Frames.reduction(lon, eps). */
 	function reduction(lon, eps) {
 		return SolarEccentric.equationOfCentre(2 * lon, reductionEccentricity(eps));

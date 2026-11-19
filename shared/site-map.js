@@ -40,7 +40,7 @@ const SITE_MAP = (function () {
 			id: 4,
 			name: 'Act IV',
 			title: 'The planets',
-			blurb: 'Loops, the equant, a new centre, what the observations can decide, and the ellipse that removes the last error.'
+			blurb: 'Loops, the equant, a new center, what the observations can decide, and the ellipse that removes the last error.'
 		},
 		{
 			id: 5,
@@ -136,7 +136,7 @@ const SITE_MAP = (function () {
 		{
 			number: '4.1',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'Going backwards',
 			question: 'Why do planets loop, and why always at opposition?',
 			path: 'act4-planets/01-going-backwards/index.html'
@@ -144,7 +144,7 @@ const SITE_MAP = (function () {
 		{
 			number: '4.2',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'The equant',
 			question: 'What does the simple model miss?',
 			path: 'act4-planets/02-equant/index.html'
@@ -152,23 +152,23 @@ const SITE_MAP = (function () {
 		{
 			number: '4.3',
 			act: 4,
-			ready: false,
-			title: 'Same geometry, new centre',
-			question: 'What changes if the Sun is taken as at rest?',
-			path: 'act4-planets/03-new-centre/index.html'
+			ready: true,
+			title: 'Same geometry, new center',
+			question: 'What changes when the Sun is fixed?',
+			path: 'act4-planets/03-new-center/index.html'
 		},
 		{
 			number: '4.4',
 			act: 4,
-			ready: false,
-			title: 'What moves?',
+			ready: true,
+			title: 'Phases and parallax',
 			question: 'Can the observations decide which body is at rest?',
-			path: 'act4-planets/04-what-moves/index.html'
+			path: 'act4-planets/04-phases-parallax/index.html'
 		},
 		{
 			number: '4.5',
 			act: 4,
-			ready: false,
+			ready: true,
 			title: 'Kepler',
 			question: 'What shape removes the last error?',
 			path: 'act4-planets/05-kepler/index.html'
@@ -195,7 +195,7 @@ const SITE_MAP = (function () {
 		aberration: {
 			title: 'aberration',
 			sentence:
-				"the Earth's yearly motion relative to the solar system's centre of mass tilts the incoming starlight by about 20″",
+				"the Earth's yearly motion relative to the solar system's center of mass tilts the incoming starlight by about 20″",
 			path: null,
 			ready: false
 		},
@@ -219,7 +219,7 @@ const SITE_MAP = (function () {
 		},
 		islamic: {
 			title: 'the Islamic critiques of the equant',
-			sentence: "al-Tusi's couple and Ibn al-Shatir's models, which Copernicus reused",
+			sentence: "al-Tusi's couple and Ibn al-Shatir's models, whose devices reappear in Copernicus",
 			path: null,
 			ready: false
 		},
@@ -264,13 +264,14 @@ const SITE_MAP = (function () {
 		hipparchus: 'Hipparchus',
 		ptolemy: 'Ptolemy',
 		copernicus: 'Copernicus',
+		tycho: 'Tycho',
 		kepler: 'Kepler',
 		debated: 'Debated',
 		modern: 'Modern'
 	};
 
 	/* The hub's key of origins: one line per kind of origin. 'origin' picks
-	   the colour of the label; the four authors share one line. */
+	   the colour of the label; the five authors share one line. */
 	const ORIGIN_KEY = [
 		{
 			origin: 'babylonian',
@@ -284,7 +285,7 @@ const SITE_MAP = (function () {
 		},
 		{
 			origin: 'ptolemy',
-			label: 'Hipparchus, Ptolemy, Copernicus, Kepler',
+			label: 'Hipparchus, Ptolemy, Copernicus, Tycho, Kepler',
 			text: "the author's own contribution, as far as the sources allow"
 		},
 		{

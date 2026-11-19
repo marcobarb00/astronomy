@@ -104,7 +104,7 @@ const DAYS_PER_YEAR = 365.25;
 const equinoxShift = jd => Ephem.precessEcliptic(0, 0, Time.J2000, jd).lon;
 
 /* The rate of precession in longitude (arcsec a Julian year) at JD,
-   from the shift over the century centred on it. */
+   from the shift over the century centered on it. */
 function rateAt(jd) {
 	const half = 36525 / 2;
 
@@ -273,7 +273,12 @@ const FIGURE_1_STARS = ['Aldebaran', 'Regulus', 'Spica', 'Antares', 'Vega', 'Pol
    ========================================================================== */
 
 const EPS_2026 = Ephem.meanObliquity(J2026);
-const P = rateAt(J2026) / 3600; // deg a Julian year, fitted in section 5
+/* The rate of the model (deg a Julian year), fitted in section 5: the
+   shift of gamma along the ecliptic over the last documented century,
+   1926.0 to 2026.0 (STRUCTURE.md §5). */
+const P_FROM = jdOf(1926);
+const P_TO = jdOf(2026);
+const P = norm180(equinoxShift(P_TO) - equinoxShift(P_FROM)) / 100;
 
 title("Model: the pole's circle and the change of declination");
 console.log(`radius of P's circle about K: the obliquity, ${f(EPS_2026, 4)}° (page 1.2)`);
@@ -350,7 +355,7 @@ console.log(`period 360° / p = ${f(360 / P, 0)} years`);
 	});
 	console.log(`Polaris from the pole in 2026: ${f(fromPole('Polaris', J2026), 2)}°`);
 	console.log(
-		`Figure 3: one turn centred on 2026, from ${year(Math.round(2026 - 180 / P))} to ${year(Math.round(2026 + 180 / P))}`
+		`Figure 3: one turn centered on 2026, from ${year(Math.round(2026 - 180 / P))} to ${year(Math.round(2026 + 180 / P))}`
 	);
 }
 
@@ -430,13 +435,17 @@ title("Fit: the rate from Spica's records");
 	);
 }
 
-title('Fit: the rate from the reference sky, around 2026');
+title('Fit: the rate from the reference sky, 1926.0 to 2026.0');
 console.log(
 	`Precession.MODERN in precession.js: rate ${f(Precession.MODERN.rate * 3600, 3)}" a year, obliquity ${Precession.MODERN.obliquity}° (here ${f(EPS_2026, 5)}°), epoch ${Time.formatDate(Precession.MODERN.epoch)}`
 );
 console.log(
-	`p = ${f(P * 3600, 3)}" a year = ${f(P * 100, 4)}° a century, 1° in ${f(1 / P, 2)} years; from Spica alone ${f((norm180(ofDate(star('Spica'), J2026 + 36525 / 2).lon - ofDate(star('Spica'), J2026 - 36525 / 2).lon) * 3600) / 100, 3)}" a year`
+	`p = ${f(P * 3600, 3)}" a year = ${f(P * 100, 4)}° a century, 1° in ${f(1 / P, 2)} years; from Spica alone ${f((norm180(ofDate(star('Spica'), P_TO).lon - ofDate(star('Spica'), P_FROM).lon) * 3600) / 100, 3)}" a year`
 );
+console.log(
+	`the stars of Figure 1 over the same century: ${FIGURE_1_STARS.map(name => `${name} ${f((norm180(ofDate(star(name), P_TO).lon - ofDate(star(name), P_FROM).lon) * 3600) / 100, 2)}"`).join(', ')}`
+);
+console.log(`(the century centered on 2026, which runs into the future: ${f(rateAt(J2026), 3)}" a year)`);
 {
 	const copernicus = (23 + 57 / 60) / 1717; // deg per Egyptian year of 365 days (De Rev. III 6)
 
@@ -449,10 +458,13 @@ console.log(
 	);
 }
 
-title("Fit: the apogee's motion (Hipparchus' method on the seasons of seventeen years)");
+/* Hipparchus' method on the seasons of every year of the last two
+   documented centuries, 1826 to 2025 (STRUCTURE.md §5), and a straight
+   line through the apogees by least squares. */
+title("Fit: the apogee's motion (Hipparchus' method on the seasons of 1826 to 2025)");
 const FIT_YEARS = [];
 
-for (let y = -1000; y <= 3000; y += 250) {
+for (let y = 1826; y <= 2025; y++) {
 	FIT_YEARS.push(y);
 }
 
@@ -460,7 +472,9 @@ const apogees = FIT_YEARS.map(y => {
 	const [spring, summer] = springAndSummer(Time.julianDay(y, 3, 1));
 	const fit = SolarEccentric.fitSeasons(spring, summer, Y_TROPICAL);
 
-	console.log(`${year(y).padStart(7)}: apogee ${f(fit.apogee, 2)}°, e = ${f(fit.e, 5)}`);
+	if (y % 50 === 26 || y === 2025) {
+		console.log(`${year(y).padStart(7)}: apogee ${f(fit.apogee, 2)}°, e = ${f(fit.e, 5)}`);
+	}
 
 	return fit;
 });
@@ -469,6 +483,18 @@ const apogeeLine = lineFit(
 	apogees.map(a => a.apogee)
 );
 const APOGEE_RATE = apogeeLine.b * 100; // deg a century
+{
+	/* The scatter of the yearly apogees about the line, and the standard
+	   error of its slope. */
+	const residuals = FIT_YEARS.map((y, i) => apogees[i].apogee - (apogeeLine.a + apogeeLine.b * y));
+	const scatter = Math.sqrt(residuals.reduce((sum, r) => sum + r * r, 0) / (FIT_YEARS.length - 2));
+	const meanYear = FIT_YEARS.reduce((sum, y) => sum + y, 0) / FIT_YEARS.length;
+	const spread = FIT_YEARS.reduce((sum, y) => sum + (y - meanYear) ** 2, 0);
+
+	console.log(
+		`${FIT_YEARS.length} years; scatter about the line ${f(scatter, 3)}° (largest ${f(Math.max(...residuals.map(Math.abs)), 3)}°); slope ${f(APOGEE_RATE, 3)} ± ${f((scatter / Math.sqrt(spread)) * 100, 3)}° a century`
+	);
+}
 console.log(
 	`least squares: ${f(APOGEE_RATE, 3)}° a century relative to the equinox; minus p: ${f(APOGEE_RATE - P * 100, 3)}° a century relative to the stars`
 );
@@ -539,9 +565,9 @@ title('Test: the equation of time with a moving apogee (page 2.2)');
 
 	[100, 1000].forEach(span => {
 		const half = (span / 2) * DAYS_PER_YEAR;
-		const centre = Time.julianDay(2026, 7, 2.5);
+		const center = Time.julianDay(2026, 7, 2.5);
 		const worst = parameters => {
-			const e = extremes(jd => (modelE(parameters, jd) - ephemE(jd)) * 60, centre - half, centre + half, 5);
+			const e = extremes(jd => (modelE(parameters, jd) - ephemE(jd)) * 60, center - half, center + half, 5);
 
 			return Math.max(-e.low, e.high);
 		};
@@ -656,7 +682,13 @@ console.log(
 
 title("Residual: what is left of the Sun's error");
 console.log(
-	`the eccentricity fitted by Hipparchus' method: ${f(apogees[0].e, 4)} (1000 BC), ${f(apogees[FIT_YEARS.indexOf(2000)].e, 4)} (2000), ${f(apogees[apogees.length - 1].e, 4)} (3000)`
+	`the eccentricity fitted by Hipparchus' method: ${[-1000, 2000, 3000]
+		.map(y => {
+			const [spring, summer] = springAndSummer(Time.julianDay(y, 3, 1));
+
+			return `${f(SolarEccentric.fitSeasons(spring, summer, Y_TROPICAL).e, 4)} (${year(y)})`;
+		})
+		.join(', ')}`
 );
 console.log(
 	`Meeus 25.2, the quadratic term of the mean longitude: 0.0003032 T^2 deg = ${f(0.0003032 * 100 * 60, 2)}' at T = +-10 centuries`

@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.3 · SAME GEOMETRY, NEW CENTER
+     Act IV, the planets. In Ptolemy's models of pages 4.1 and 4.2 the mean
+     Sun enters every planet's motion, five times over, and each planet
+     has an epicycle of its own size. Adding the two vectors of each model
+     in the other order gives every planet the same point, the mean Sun;
+     scaling each model by its own factor makes the five share it, so the
+     ratios become distances and the planets fall into an order
+     (Copernicus, De Revolutionibus I 10, V 1 - 4). Copernicus fixed the
+     Sun. The directions seen from the Earth do not change; the distances
+     are a new prediction, tested on Mars. Numbers:
+     tools/numbers/4.3-new-center.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.3 · Same geometry, new center · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			In Ptolemy's models the epicycles of Mars, Jupiter and Saturn all keep
+			step with the mean Sun, and the centers of the epicycles of Venus and
+			Mercury move with it, which page 4.2 left without a reason. Copernicus
+			linked the motions of the five planets to one point, the place of the
+			mean Sun, on a single scale for all of them, and he fixed that point.
+		</p>
+
+		<p>
+			The geometry of each model stays Ptolemy's, so the directions it
+			predicts do not change, and the error curve of page 4.2 comes out the
+			same. The five separate models become one system instead: the planets
+			fall into an order, and their distances become a prediction that the
+			real sky can test.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Observation</span>The Sun in the motion of every planet</h2>
+
+		<p>
+			Each planet repeats its anomaly related to the Sun once in its synodic
+			period, and each phase of it comes at the same place relative to the
+			Sun. Figure 1 follows the five planets through 2022–2025 by their
+			<em>elongation</em>, the ecliptic longitude of the planet less that of
+			the Sun.
+		</p>
+
+		<!-- Figure 1: the elongations of the five planets, 2022 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) Venus and Mercury</p>
+						<canvas id="elongation-inner"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Mars, Jupiter and Saturn</p>
+						<canvas id="elongation-outer"></canvas>
+						<div id="elongation-legend"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Follow the thick stretches, where a planet goes back among the stars.
+				In (a) every one sits on the line of zero elongation, in (b) on the
+				line of 180°: each planet goes back only in one position relative to
+				the Sun, whatever the date.
+			</figcaption>
+		</figure>
+
+		<p>
+			Venus and Mercury swing from one side of the Sun to the other, and in
+			these years never got farther from it than 47.2° and 27.4°. Mars,
+			Jupiter and Saturn fall behind the Sun through every elongation. The
+			table gives the synodic period of each planet, the mean time between
+			two of its loops over the century 1926–2025.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>planet</th>
+					<th>synodic period $S$</th>
+					<th>Ptolemy's epicycle, where the deferent is 60</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercury</td><td>115.88 days</td><td>22.5</td></tr>
+				<tr><td>Venus</td><td>583.92 days</td><td>43.17</td></tr>
+				<tr><td>Mars</td><td>779.93 days</td><td>39.5</td></tr>
+				<tr><td>Jupiter</td><td>398.88 days</td><td>11.5</td></tr>
+				<tr><td>Saturn</td><td>378.10 days</td><td>6.5</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="row">
+			<p>
+				Ptolemy builds the Sun into each of his five models separately. For
+				Mars, Jupiter and Saturn the radius KP of the epicycle stays parallel
+				to the line from the Earth to the mean Sun (X 6). For Venus and
+				Mercury the center K of the epicycle moves at the mean Sun's motion
+				(IX 3), so that it lies in the direction of the mean Sun, as seen
+				from the equant rather than from the Earth (X 1–3 for Venus).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Each model also has a ratio of its own, the size of its epicycle in
+			the last column of the table, fitted to that planet alone, so the
+			models do not say which planet is nearer.
+		</p>
+
+		<div class="row">
+			<p>
+				In Ptolemy's time the order of Saturn, Jupiter and Mars was agreed,
+				but Venus and Mercury were put below the Sun by the older
+				astronomers and above it by some of their successors, and the
+				question could not be settled, "since none of the stars has a
+				noticeable parallax". He kept the older order, with the Sun in
+				the middle (IX 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Model</span>Copernicus' arrangement</h2>
+
+		<h3>Exchanging the deferent and the epicycle</h3>
+
+		<p>
+			Take Mars in page 4.2's model and write its place as the sum of two
+			vectors, from the Earth O to the center K of the epicycle, and from K to
+			the planet P. The second always has the length $r$ and points to the
+			mean Sun, at the ecliptic longitude $\bar\lambda_\odot$:
+		</p>
+
+		$$\vec{\text{OP}} = \vec{\text{OK}} + \vec{\text{KP}}, \qquad \vec{\text{KP}} = r\,\hat u(\bar\lambda_\odot).$$
+
+		<p>
+			Two vectors can be added in either order. Draw $\vec{\text{KP}}$ from O
+			instead of from K, and call its end ☉. Then O, K, P and ☉ are the
+			corners of a parallelogram, and
+		</p>
+
+		$$\vec{\text{OP}} = \vec{\text{O}\odot} + \vec{\odot\text{P}}, \qquad \vec{\text{O}\odot} = \vec{\text{KP}}, \qquad \vec{\odot\text{P}} = \vec{\text{OK}}.$$
+
+		<p>
+			P is the same point, so it is seen in the same direction at every
+			moment. This is page 3.1's exchange of an epicycle and an eccentric,
+			applied to a planet. The epicycle has become a circle of radius $r$
+			about the Earth, on which ☉ goes round once a year in the direction of
+			the mean Sun, and the deferent, with its center C and its equant Q, has
+			moved as a whole from O to ☉.
+		</p>
+
+		<p>
+			For Venus and Mercury we use the simple model of page 4.1, in which
+			the deferent, of radius 1 about the Earth, carries K at the mean Sun's
+			ecliptic longitude. K is then the point ☉ itself, and the planet goes
+			round it on the epicycle, so the two circles exchange their roles. (In
+			Ptolemy's full model K is in that direction as seen from the equant,
+			and ☉ moves on an eccentric.) Figure 2 draws Mars, in page 4.2's
+			model, and Venus, in the simple one, in both descriptions.
+		</p>
+
+		<!-- Figure 2: one planet in Ptolemy's description and in Copernicus'; date, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="arrangement-views"></div>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) Ptolemy: the Earth O fixed</p>
+						<canvas id="geostatic-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Copernicus: ☉ fixed</p>
+						<canvas id="heliostatic-canvas"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="arrangement-day">date</label>
+							<input id="arrangement-day" type="range" min="0" max="5843" step="0.25" value="1800">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="arrangement-day" data-step="-1"
+									aria-label="previous day">‹ previous day</button>
+								<button type="button" class="stepper-btn" data-target="arrangement-day" data-step="1"
+									aria-label="next day">next day ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="arrangement-play">Play</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="arrangement-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Play, and compare the triangle O ☉ P in the two panels: its violet side
+				O☉ is the copy of KP, its green side ☉P the copy of OK, and (b) only
+				moves it so that ☉ stands still, as the same λ in both read-outs shows.
+				Then choose Venus, and notice that the circle that becomes the Earth's
+				is now the deferent.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-deferent">green</dt>
+						<dd>the deferent, OK and its copy ☉P, in both panels</dd>
+						<dt class="c-epicycle">violet</dt>
+						<dd>the epicycle, KP and its copy O☉, in both panels</dd>
+						<dt>dashed</dt>
+						<dd>in (a), O☉ and ☉P, the copies of KP and OK that close the parallelogram</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\lambda$</dt>
+						<dd>the ecliptic longitude of P seen from O</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>One scale for five planets</h3>
+
+		<p>
+			Each of Ptolemy's models measures its lengths in units of its own
+			deferent, so nothing ties one model to another. Multiplying every
+			length of a model by the same number changes no direction seen from O,
+			so each model may be enlarged or shrunk as we like. For each planet we
+			choose the number that makes the length O☉ equal to 1: we divide an
+			outer planet's model by $r$ and leave an inner planet's as it is.
+		</p>
+
+		<p>
+			Then all five models have the same vector $\vec{\text{O}\odot}$, of
+			length 1 towards the mean Sun, and so the same point ☉, and they can be
+			drawn as one figure. The unit of length is now the distance from the
+			Earth to ☉, the <em>astronomical unit</em> (au). The radius $a$ of
+			each planet's circle about ☉, its mean distance from ☉, is its
+			epicycle read in a new way:
+		</p>
+
+		$$a = \frac{1}{r} \ \text{(Mars, Jupiter, Saturn)}, \qquad a = r \ \text{(Venus, Mercury)}.$$
+
+		<p>
+			Ptolemy's epicycles give the distances of Figure 3 and of the table
+			below.
+		</p>
+
+		<!-- Figure 3: Ptolemy's five models and Copernicus' arrangement (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) Ptolemy's five models, each on its own scale, the deferent 60</p>
+				<canvas id="ptolemy-canvas"></canvas>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(b) one scale, out to Saturn</p>
+						<canvas id="orbits-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(c) the dashed square of (b), enlarged</p>
+						<canvas id="inner-canvas"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the sizes of the epicycles in (a) with the places of the
+				circles in (b) and (c): the largest epicycles belong to the planets
+				nearest the Earth's circle, and Saturn's tiny epicycle puts it
+				farthest out.
+			</figcaption>
+		</figure>
+
+		<h3>Copernicus fixed the Sun</h3>
+
+		<div class="row">
+			<p>
+				Copernicus took one more step: "At rest, however, in the middle of
+				everything is the sun", and "whatever appears as a motion of the sun
+				is really due rather to the motion of the earth" (I 10). Subtracting
+				$\vec{\text{O}\odot}$ from every place moves the whole figure without
+				turning it, as panel (b) of Figure 2 does. ☉ stands still, the Earth
+				goes round it once a year at the heliocentric longitude
+				$\bar\lambda_\odot + 180^\circ$, its direction seen from ☉, and every
+				direction from the Earth to a planet stays as it was.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Copernicus' center is, strictly, the center of the Earth's circle,
+			which lies near the Sun because the Earth's circle is an eccentric, as
+			the Sun's was on page 2.1 (V 4). The point ☉ of this page, at the
+			distance 1 in the direction of the mean Sun, is that center for an Earth
+			moving uniformly on a circle about it.
+		</p>
+
+		<p>
+			Directions from the Earth depend only on where the bodies are relative
+			to one another, so fixing the Sun changes no prediction. The
+			predictions come from the arrangement: one point ☉ for the five
+			planets, and their distances from it.
+		</p>
+
+		<!-- A photo: Copernicus' own drawing of the order of the spheres -->
+		<figure class="photo">
+			<img src="images/manuscript-9v.jpg" width="700" height="1022" loading="lazy"
+				alt="A handwritten page with concentric circles around the word Sol, each band labelled in Latin, with text above, beside and below them.">
+			<figcaption>
+				<span class="fig-label">Photo.</span>
+				Copernicus' manuscript of <em>De Revolutionibus</em>, folio 9 verso,
+				with the order of the spheres of I 10. Read the labels from the
+				outside in, below the fixed stars: Saturn goes round in 30 years,
+				Jupiter in 12, Mars in 2, the Earth with the Moon in 1, Venus in 9
+				months and Mercury in 80 days, about Sol, the Sun. Notice that the
+				periods shorten towards the Sun; the circles are not drawn to scale,
+				so they give the order and not the distances of Figure 3.
+				<span class="credit">Nicolaus Copernicus, 1520–1541, Jagiellonian Library, Kraków,
+					via <a href="https://commons.wikimedia.org/wiki/File:De_Revolutionibus_manuscript_p9b.jpg">Wikimedia Commons</a>,
+					public domain.</span>
+			</figcaption>
+		</figure>
+
+		<h3>The periods about the Sun, and the order</h3>
+
+		<p>
+			Seen from ☉, an outer planet is in the direction of
+			$\vec{\text{OK}}$: its heliocentric longitude is the ecliptic longitude
+			of K, $\bar\lambda + q$, which grows on average at the planet's mean
+			motion, so it goes round ☉ in its period in ecliptic longitude
+			$P_\lambda$ of page 4.1. An inner planet is in the direction of $\vec{\text{KP}}$, which
+			turns at $n_\odot + n_\mu$. With the synodic period $S$ and the year
+			$Y$, the time $P$ a planet takes to go once round ☉ is therefore
+		</p>
+
+		$$\frac{1}{P} = \frac{1}{Y} - \frac{1}{S} \ \text{(outer)}, \qquad \frac{1}{P} = \frac{1}{Y} + \frac{1}{S} \ \text{(inner)}.$$
+
+		<p>
+			The first is page 4.1's relation $1/P_\lambda + 1/S = 1/Y$. With the
+			sidereal year $Y_\text{s}$ of page 2.3 in place of the tropical year,
+			$P$ is counted against the stars, as Copernicus counts it (V 1).
+		</p>
+
+		<div class="row">
+			<p>
+				Multiplied by the length of a period relation, the equations become
+				sums of whole numbers. Ptolemy already noted that for the outer
+				planets the years equal the turns in longitude plus the returns in
+				anomaly (IX 3), as in Mars' 79 = 42 + 37. For Venus and Mercury his
+				relations have the planet go round the zodiac as often as the Sun; in
+				Copernicus' arrangement the returns in anomaly are added to the
+				years instead, and Venus goes round the Sun 8 + 5 = 13 times in 8
+				years (V 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="babylonian"></div>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>planet</th>
+					<th>Ptolemy's epicycle as a distance $a$</th>
+					<th>synodic periods in years (IX 3)</th>
+					<th>turns about the Sun (V 1)</th>
+					<th>one turn in</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercury</td><td>0.375 au</td><td>145 in 46</td><td>46 + 145 = 191</td><td>0.241 years</td></tr>
+				<tr><td>Venus</td><td>0.719 au</td><td>5 in 8</td><td>8 + 5 = 13</td><td>0.615 years</td></tr>
+				<tr><td>Mars</td><td>1.519 au</td><td>37 in 79</td><td>79 − 37 = 42</td><td>1.881 years</td></tr>
+				<tr><td>Jupiter</td><td>5.217 au</td><td>65 in 71</td><td>71 − 65 = 6</td><td>11.833 years</td></tr>
+				<tr><td>Saturn</td><td>9.231 au</td><td>57 in 59</td><td>59 − 57 = 2</td><td>29.500 years</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="row">
+			<p>
+				The two columns put the planets in the same order: the farther from
+				the Sun, the longer the turn. Copernicus kept the principle of the
+				ancient philosophers, "that the size of the spheres is measured by the
+				length of the time", and found in it "a marvelous symmetry of the
+				universe, and an established harmonious linkage between the motion of
+				the spheres and their size, such as can be found in no other way"
+				(I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<h3>Greatest elongations and loops</h3>
+
+		<p>
+			In this arrangement the observations of pages 4.1 and 4.2 take a
+			simple form. Venus and Mercury are farthest from the Sun in the sky
+			when the line of sight from O touches their circle about ☉. The radius
+			☉P is then perpendicular to OP, and the right triangle O P ☉ gives
+		</p>
+
+		$$\sin\varepsilon_\text{max} = a,$$
+
+		<p>
+			with $\varepsilon_\text{max}$ the greatest elongation (not the
+			obliquity). Ptolemy's epicycle of Venus, 43.17 where the deferent is
+			60, gives $a$ = 0.719 and a greatest elongation of 46.0°, within the
+			range of the real ones, 45.3° to 47.2° (page 4.1).
+		</p>
+
+		<div class="row">
+			<p>
+				An outer planet goes back when the Earth, moving faster on its
+				smaller circle, overtakes it, so a loop comes at opposition, the
+				planet and ☉ on opposite sides of the Earth. Copernicus calls this
+				effect of the Earth's motion a "parallax" (V 1), and explains: "all these
+				phenomena, which the ancient astronomers sought [to explain] by means
+				of an epicycle for each planet, happen on account of the single
+				motion of the earth" (V 3).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+				</div>
+
+				<p>
+					Figure 4 checks this for Mars on two circles about ☉, with this
+					page's distance and synodic period, so that only the Earth's motion
+					can turn the line of sight back.
+				</p>
+
+				<!-- Figure 4: the loops from the Earth's motion, Mars about an opposition (static) -->
+				<figure class="fig">
+					<div class="frame">
+						<div class="panels">
+							<div>
+								<p class="panel-title">(a) the Earth and Mars every 15 days</p>
+								<canvas id="loop-plan"></canvas>
+							</div>
+							<div>
+								<p class="panel-title">(b) Mars' ecliptic longitude, less that at opposition</p>
+								<canvas id="loop-directions"></canvas>
+							</div>
+						</div>
+					</div>
+					<figcaption>
+						Follow the numbers. The Earth moves faster than Mars and passes it at
+						5, the opposition. From 3 to 7 the lines of sight in (a) turn clockwise,
+						and Mars goes back in ecliptic longitude, the thick stretch of (b).
+						Notice that the drawing has no epicycle.
+					</figcaption>
+					<div class="keys">
+						<div>
+							<p class="key-title">In panel (a)</p>
+							<dl class="key">
+								<dt class="c-planet">lines</dt>
+								<dd>the line of sight from each numbered place of the Earth through Mars at the same moment</dd>
+							</dl>
+						</div>
+					</div>
+				</figure>
+
+		<div class="row">
+			<p>
+				A farther planet has a smaller $r = 1/a$ and goes back less, so its
+				loops are shorter: the arcs "appear greater in Jupiter than in Saturn
+				and smaller than in Mars" (I 10), as in the table of page 4.1.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				The distance from the Earth changes too. Mars is $a - 1 = 0.52$ au
+				away at opposition and $a + 1 = 2.52$ au at conjunction, almost five
+				times as far, and Copernicus notes that "when it shines all night, [it]
+				seems to equal Jupiter in size" (I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<h3>Copernicus without the equant</h3>
+
+		<div class="row">
+			<p>
+				Copernicus rejected the equant, a motion uniform about a point that
+				is not the center of its circle (V 2, page 4.2). For Mars, Jupiter
+				and Saturn he placed the center D of his deferent at $\tfrac32 e$ from
+				☉, where Ptolemy's C was at $e$ and Q at $2e$, and put on it a small
+				epicycle, the <em>epicyclet</em>, of radius a third of that, $\tfrac12
+				e$. The planet goes round the epicyclet once for each turn of the
+				deferent, counted from the deferent's radius, which is twice
+				relative to fixed directions (V 4).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+					<div class="note detour" data-topic="islamic"></div>
+				</aside>
+				</div>
+
+				<p>
+					Figure 5 draws both on the deferent of Mars, with the eccentricity
+					enlarged so that the epicyclet can be seen.
+				</p>
+
+				<!-- Figure 5: Copernicus' epicyclet beside page 4.2's equant; mean anomaly, play -->
+				<figure class="fig">
+					<div class="frame">
+						<div class="fig-row">
+							<div>
+								<p class="panel-title">page 4.2's deferent and Copernicus', Mars' eccentricity tripled</p>
+								<canvas id="epicyclet-canvas"></canvas>
+							</div>
+							<div>
+								<div class="ctl">
+									<label for="epicyclet-anomaly">mean anomaly M</label>
+									<input id="epicyclet-anomaly" type="range" min="0" max="360" step="0.5" value="60">
+									<output></output>
+								</div>
+								<div class="presets">
+									<button type="button" class="play" id="epicyclet-play">Play</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<figcaption>
+						Play, and watch the line QK and the radius from D: they stay parallel,
+						each turning steadily about its own point, while the blue point on the
+						epicyclet stays close to K. Notice where the two points part a little,
+						near M = 90° and 270°.
+					</figcaption>
+					<div class="keys">
+						<div>
+							<p class="key-title">In the figure</p>
+							<dl class="key">
+								<dt class="c-deferent">green</dt>
+								<dd>page 4.2's deferent, about C, with its equant Q</dd>
+								<dt class="c-earth">blue</dt>
+								<dd>Copernicus' deferent, about D, with its epicyclet</dd>
+							</dl>
+						</div>
+					</div>
+				</figure>
+
+		<p>
+			The epicyclet gives the equant's directions to second order and its
+			distances to first order (Exercise 2). At second order the distances
+			differ: those of the equant exceed the distances of Kepler's ellipse
+			by up to $\tfrac12 e^2$, those of the epicyclet by up to $e^2$.
+			Fitzpatrick calls Copernicus' device "a marginally less accurate
+			approximation" than Ptolemy's (§ 1.3).
+		</p>
+
+		<p>
+			Put in place of the equant in page 4.2's Mars, with the same
+			parameters, the epicyclet moves the planet by up to 25′, and the
+			largest error over 2010–2025 grows from 0.88° to 0.91°: giving up the
+			equant made the model a little worse. Figure 6 compares the two
+			against the real Mars and with each other.
+		</p>
+
+		<!-- Figure 6: the error curve of Mars with Copernicus' epicyclet, page 4.2's equant as ghost; their difference -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) the error of each model against the real Mars, 2016–2019</p>
+				<div id="error-mars"></div>
+				<p class="panel-title">(b) the epicyclet less the equant, 2010–2025</p>
+				<canvas id="error-difference"></canvas>
+			</div>
+			<figcaption>
+				Point at the oppositions, the dots of (a), and compare the epicyclet's
+				error with the equant's ghost: the two part most around them, where the
+				epicycle magnifies any shift of K. Then follow (b) through the sixteen
+				years of page 4.2's fit: the difference swings from one side to the
+				other across every opposition, by a different amount each time.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				Kepler brought the equant's point back. In Neugebauer's words, he "not
+				only reintroduced the equant for the planetary motion but applied it
+				also for better representation of the earth's motion, eventually to
+				become the second focus of the elliptic orbit" (<em>HAMA</em> p. 155).
+				Page 4.2 found that, to first order, the empty focus of an ellipse is
+				an equant, and page 4.5 tests the ellipse itself.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Fit</span>The periods and the distances of the five planets</h2>
+
+		<p>
+			No planet gains a parameter: its period and its distance are the
+			motions and the epicycle of pages 4.1 and 4.2. Now that the distances
+			of different planets can be compared, we fit all five, from
+			observations already made, as every fit of the course.
+		</p>
+
+		<h3>The periods</h3>
+
+		<p>
+			Events far apart fix a period best, since the error of each is divided
+			by the time between them. The synodic periods of section 1 are the
+			slopes of straight lines through the times of every opposition, or
+			inferior conjunction, of 1926–2025. The zodiacal anomaly moves single
+			intervals by days, but over a century the variations average out, and
+			the relations of section 2, with the sidereal year, give the periods
+			about ☉.
+		</p>
+
+		<h3>The distances</h3>
+
+		<p>
+			For Venus and Mercury each greatest elongation gives a distance,
+			$a = \sin\varepsilon_\text{max}$, exactly for a circle. Over 1986–2025
+			they fall in every part of the zodiac, so we take the mean of their
+			sines. Venus' greatest elongations hardly vary, Mercury's vary widely
+			(Exercise 3).
+		</p>
+
+		<p>
+			For an outer planet the simplest triangle would be a quadrature, the
+			planet 90° from the Sun, where the angle at the Earth is right and
+			$\cos\psi = 1/a$. The angle $\psi$ at ☉ would come from the time since
+			the opposition, at $360^\circ/S$ a day. For Saturn, though, $\psi$ is
+			84°, close to a right angle itself, and to first order a day's error in
+			the timing changes the distance by 16% (Figure 7).
+		</p>
+
+		<p>
+			The arc of a loop needs no timing, since it is the difference of two
+			places. So for Jupiter and Saturn we measure the epicycle as page 4.1
+			did for Mars, from the mean arc of their loops of 1986–2025, and take
+			$a = 1/r$. Mars keeps page 4.2's equant; its loops alone, measured the
+			same way, give the same distance within a thousandth of an au.
+		</p>
+
+		<!-- Figure 7: the two right triangles (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) Venus at greatest elongation</p>
+						<canvas id="venus-triangle"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Saturn at quadrature, to scale</p>
+						<canvas id="saturn-triangle"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the two right triangles. In (a) the right angle is at the
+				planet and the triangle is open, so the angle at O fixes $a$ well. In
+				(b) the angles at O and ☉ are both close to 90°, and turning the
+				line from ☉ by a single day's motion moves P far along the line of
+				sight.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In panel (b)</p>
+					<dl class="key">
+						<dt>dashed</dt>
+						<dd>the angle at ☉ one day earlier, $\psi - 360^\circ/S$, and the planet P′ it would give</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			The table gives the fitted periods and distances, which section 4
+			sets against the reference sky. Venus' circle is also the one Figure 2
+			draws, with its synodic period.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>planet</th>
+					<th>period about the Sun $P$</th>
+					<th>distance $a$</th>
+					<th>from</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercury</td><td>87.97 days</td><td>0.380 au</td><td>greatest elongations</td></tr>
+				<tr><td>Venus</td><td>224.70 days</td><td>0.723 au</td><td>greatest elongations</td></tr>
+				<tr><td>Mars</td><td>686.99 days</td><td>1.520 au</td><td>page 4.2's equant</td></tr>
+				<tr><td>Jupiter</td><td>4333.50 days</td><td>5.201 au</td><td>loops</td></tr>
+				<tr><td>Saturn</td><td>10·750.40 days</td><td>9.562 au</td><td>loops</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Copernicus' periods and distances -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Copernicus' periods and distances</h3>
+
+			<div class="row">
+				<p>
+					Copernicus took his periods from the period relations that Ptolemy
+					had received from Hipparchus, counted in years "measured by the
+					fixed stars", since he had found that years counted from the
+					equinoxes "are not entirely uniform", and corrected them with
+					observations of his own (V 1).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					For the distance of each outer planet he used a single observation
+					away from opposition and solved the triangle of the planet, the Earth
+					and the center of the Earth's circle (V 9, V 14, V 19). It is the
+					general case of the quadrature above, with the angle at the center
+					taken from his mean motions rather than timed. For Venus he used two
+					greatest elongations taken with the Earth in opposite directions from
+					the center of Venus' circle (V 21, Exercise 1), and for Mercury he
+					found a radius that changed (V 27, Exercise 3).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					His distances are Ptolemy's epicycles inverted, as he noted planet by
+					planet: for Mars the result "differs only slightly from what Ptolemy
+					found, and is almost identical therewith" (V 19). Neugebauer's verdict
+					is that "the Ptolemaic theory excellently, however unknowingly,
+					represents the order of magnitude of the actual dimensions of the
+					planetary system" (<em>HAMA</em> p. 147).
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Test</span>Directions and distances against the real sky</h2>
+
+		<p>
+			In Copernicus' arrangement, with page 4.2's model, Mars is seen in the
+			directions that page 4.2 gave it: over the two centuries 1926–2125 the
+			two descriptions agree almost exactly. Their error curve is therefore
+			page 4.2's Figure 7, within 0.88° over 2010–2025.
+		</p>
+
+		<p>
+			The distances from the Earth are a prediction that Ptolemy's separate
+			models could not make, since each had its own unit. Over 2010–2025 the
+			model follows the real Mars within 0.020 au, at most 1.6% (Figure 8),
+			and over the two centuries 1926–2125 it stays almost as close.
+		</p>
+
+		<p>
+			The real oppositions of 2010–2025 came at distances from 0.39 to 0.67
+			au. On a circle of radius $a$ centered on ☉, a deferent with $e = 0$,
+			Mars would be 0.52 au away at every one of them. The model follows the
+			real oppositions because its deferent is eccentric: page 4.2 found that
+			the distance of K depends on the center C, $\rho \approx 1 + \text{OC}\cos
+			M$.
+		</p>
+
+		<!-- Figure 8: Mars' distance from the Earth, 2010 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) the distance of Mars from the Earth at each opposition</p>
+						<canvas id="distance-plot"></canvas>
+						<div id="distance-legend"></div>
+					</div>
+					<div>
+						<p class="panel-title">(b) the model less the real Mars</p>
+						<canvas id="distance-error"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Compare the dots of (a), one for each opposition: the real Mars comes
+				nearer at some oppositions than at others, and page 4.2's model in
+				Copernicus' arrangement follows it, whereas the concentric deferent
+				gives the same distance every time.
+				</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				Against the reference sky, the fitted periods agree within 0.1%, and
+				the distances within 0.3% except Mercury's, which comes out 1.9%
+				short. Mercury's path is elongated, so at a greatest elongation the
+				line of sight is not quite perpendicular to its radius, and the sine
+				gives less than the distance (Exercise 3).
+			</p>
+			<aside>
+				<div class="note today">
+					The modern first approximation keeps this arrangement: every
+					planet, the Earth included, moves on a Kepler ellipse about the Sun.
+					The reference sky of this site uses such ellipses (Standish's
+					elements), with Mars' semi-major axis 1.524 au.
+				</div>
+			</aside>
+		</div>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>planet</th>
+					<th>$a$ fitted</th>
+					<th>$a$ of the reference</th>
+					<th>$P$ fitted</th>
+					<th>$P$ of the reference</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercury</td><td>0.380 au</td><td>0.387 au</td><td>0.241 years</td><td>0.241 years</td></tr>
+				<tr><td>Venus</td><td>0.723 au</td><td>0.723 au</td><td>0.615 years</td><td>0.615 years</td></tr>
+				<tr><td>Mars</td><td>1.520 au</td><td>1.524 au</td><td>1.881 years</td><td>1.881 years</td></tr>
+				<tr><td>Jupiter</td><td>5.201 au</td><td>5.202 au</td><td>11.864 years</td><td>11.862 years</td></tr>
+				<tr><td>Saturn</td><td>9.562 au</td><td>9.541 au</td><td>29.432 years</td><td>29.457 years</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Copernicus' check and how his distances fared -->
+		<div class="history">
+			<h3><span class="history-label">History</span>Copernicus' check</h3>
+
+			<div class="row">
+				<p>
+					Copernicus checked his mean motions as Ptolemy had, against
+					observations far apart. For Jupiter he compared his own opposition of
+					1529 with Ptolemy's last, 1392 Egyptian years earlier, and found the
+					motion "certain and confirmed because it agrees with the results
+					obtained visually" (V 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<p>
+				Copernicus' distances were not accurate enough for the next step.
+				Tycho Brahe, who had observed the planets for decades, wrote to Kepler
+				that they would not serve his purpose, and suggested that Kepler use
+				Tycho's own observations instead (Voelkel ch. 2).
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residual</span>The Earth's own unevenness</h2>
+
+		<p>
+			Copernicus' arrangement gives the directions of Ptolemy's models, so it
+			keeps their errors. In it the epicycle of every outer planet is a copy
+			of the Earth's circle, on which the Earth moves uniformly about ☉,
+			while the Sun's path is not uniform (page 2.1). The Earth's unevenness
+			is one and the same for every planet, and the model of this page
+			leaves it out of Mars, Jupiter and Saturn alike.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy could absorb it only into each planet's own deferent. In
+				Neugebauer's words, the Earth's and the planet's eccentricities
+				"produce a resultant eccentricity e which is the vector sum", and
+				"Ptolemy, who did not realize this situation, ascribed the resultant
+				eccentricity e to the deferent of the planetary orbit" (<em>HAMA</em>
+				p. 147). Page 4.2's residual turned Mars' epicycle by the real Sun,
+				in direction and distance, instead of the mean one, which gives the
+				Earth's circle the real Sun's unevenness, and the error fell
+				markedly.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernicus referred the planets to the center of the Earth's circle,
+				the place of the mean Sun. Kepler found that Mars' orbit "had to take
+				into account the sun's actual position", the true Sun rather than the
+				mean one, and that the Earth "too speeded up when it approached the
+				sun and slowed down as it receded" (Voelkel ch. 3): the unevenness
+				that this page leaves out.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Before Kepler, Tycho Brahe kept Copernicus' arrangement of the
+				planets about the Sun and held the Earth fixed instead. Seen from the
+				Earth, his planets have the same directions. Whether any observation
+				can decide between the two is the question of page 4.4.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Exercises</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				In 2025 Venus reached its greatest elongation east of the Sun on 10
+				January, 47.166°, and west of it on 31 May, 45.838°. Find the distance
+				of Venus from each, and check the fitted radius of Venus' circle by
+				stepping Figure 2's Venus view to a greatest elongation of the model,
+				where $\lambda - \bar\lambda_\odot$ in the read-out reaches its largest
+				size. Why do the two elongations of 2025
+				differ? Then redo Copernicus' computation of V 21: his two greatest
+				elongations, 44°48′ (44.8°) and 47°16′ (47.27°), were taken with the
+				Earth in opposite directions from the center of Venus' circle, the
+				Earth's circle having radius 1. Find the radius of Venus' circle and
+				how far its center is from the center of the Earth's.
+			</p>
+			<details class="hint">
+				<p>
+					In Copernicus' case the radius $a$ is the same in both triangles,
+					and the distances from the Earth to the center of Venus' circle are
+					$a/\sin\varepsilon_\text{max}$ in each; they add up to 2.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The sines are 0.7333 and 0.7174, a mean of 0.7254; the fit to the 50
+					greatest elongations of 1986–2025 gives 0.7226, so the model's greatest
+					elongation, the largest $\lambda - \bar\lambda_\odot$ in the read-out of
+					Figure 2's Venus view, is 46.27° on either side.
+				</p>
+				<p>
+					The real distances are not constant. On 10 January 2025 Venus was
+					0.7213 au from the Sun and the Earth 0.9834 au, a ratio of 0.7335, the
+					sine of the elongation; on 31 May they were 0.7280 and 1.0140 au, a
+					ratio of 0.7179. Venus was nearer the Sun in January, which narrows
+					the angle, but the Earth was nearer too, by a larger fraction, and
+					the angle came out wider.
+				</p>
+				<p>
+					Copernicus: $\sin 44.8^\circ = 0.7046$ and $\sin 47.267^\circ =
+					0.7345$, so the distances to the center are $a/0.7046$ and
+					$a/0.7345$, and their sum is 2. This gives $a = 0.7193$ and the two
+					distances 1.0208 and 0.9792, so the center of Venus' circle is 0.0208
+					from the center of the Earth's: his 7193 and 208 in 10·000 parts.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Copernicus replaced the equant by an eccentric whose center is $d_1$
+				from the center of motion towards the apogee, carrying an epicyclet of
+				radius $d_2$ (V 4). In the frame of the apsidal line the planet is at
+				$(d_1 + \cos M - d_2\cos 2M,\ \sin M - d_2\sin 2M)$. Find $d_1$ and
+				$d_2$ that give the equant's direction and distance to first order,
+				then expand the direction and the distance to second order and compare
+				them with the equant's. Copernicus' Mars has 1460 and 500 where the
+				deferent is 10·000 (V 19): how close is that to Ptolemy's 6 and 12
+				where it is 60?
+			</p>
+			<details class="hint">
+				<p>
+					To first order $q$ is the component of the offset across the line of
+					K, and the distance is 1 plus its component along it. For the second
+					order, write the planet as $e^{iM}(1 + z)$ with $z = d_1 e^{-iM} -
+					d_2 e^{iM}$, so that $q$ is the argument of $1 + z$, $z - z^2/2$ to
+					second order.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Across the radius at $M$ the offsets give $-d_1\sin M - d_2(\sin
+					2M\cos M - \cos 2M\sin M) = -(d_1 + d_2)\sin M$, and along it $d_1\cos
+					M - d_2(\cos 2M\cos M + \sin 2M\sin M) = (d_1 - d_2)\cos M$. So $q
+					\approx -(d_1 + d_2)\sin M$ and $\rho \approx 1 + (d_1 - d_2)\cos M$,
+					and the equant's $2e$ and $e$ need $d_1 = \tfrac32 e$ and $d_2 =
+					\tfrac12 e$.
+				</p>
+				<p>
+					Direction: the imaginary part of $z$ is $-(d_1 + d_2)\sin M = -2e\sin
+					M$, and that of $z^2$ is $(d_2^2 - d_1^2)\sin 2M = -2e^2\sin 2M$, so $q
+					\approx -2e\sin M + e^2\sin 2M$, the equant's direction to second
+					order (page 4.2's table). Distance: $\rho^2 = 1 + d_1^2 + d_2^2 + 2(d_1
+					- d_2)\cos M - 2d_1 d_2\cos 2M = 1 + 2e\cos M + e^2(1 + 3\sin^2 M)$,
+					whose root is $1 + e\cos M + 2e^2\sin^2 M$, against the equant's $1 +
+					e\cos M + \tfrac32 e^2\sin^2 M$ (Fitzpatrick § 4.4–4.5).
+				</p>
+				<p>
+					A numerical check at $e$ = 0.001 gives the coefficient of $\sin 2M$
+					as $1.0000\,e^2$ for both, and $(\rho - 1)/e^2$ at $M = 90^\circ$ as
+					2.000 and 1.500. For Mars, $e$ = 0.1005, the two differ by up to 3.4′
+					in the direction of K and 0.0050 in its distance. Copernicus' Mars
+					has $d_1 + d_2$ = 0.196 and $d_1 - d_2$ = 0.096, against Ptolemy's
+					$2e$ = 0.2 and $e$ = 0.1, and $d_1/d_2$ = 2.92 against 3.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Between 1986 and 2025 Mercury's greatest elongations ranged from
+				17.835°, on 26 September 2003, to 27.789°, on 28 March 2000. What
+				does a circle of radius $a$ = 0.3796 about ☉ predict? On those two
+				dates the reference sky has Mercury 0.3075 au and 0.4661 au from the
+				Sun, and the Earth 1.0025 au and 0.9984 au. Explain the range. Then
+				explain why the mean of the sines, 0.3796, falls short of Mercury's
+				mean distance from the Sun divided by the Earth's at the same
+				moments, 0.3881.
+			</p>
+			<details class="hint">
+				<p>
+					At a greatest elongation the line of sight touches Mercury's path.
+					For a circle the radius is perpendicular to it there; for an
+					elongated path that holds only at its nearest and farthest points.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					The circle gives 22.31° at every greatest elongation. On 26 September
+					2003 the ratio of the distances was 0.3068, against $\sin 17.835^\circ
+					= 0.3063$; on 28 March 2000 it was 0.4669, against $\sin 27.789^\circ
+					= 0.4662$. Mercury was then near its nearest and its farthest points
+					from the Sun, 0.3075 au and 0.4667 au in the reference ellipse. Its
+					distance changes by half again between the two, and the greatest
+					elongations follow it, so no circle about ☉ can give them.
+				</p>
+				<p>
+					Elsewhere the radius is not perpendicular to the line of sight, and
+					$\sin\varepsilon_\text{max}$ is the ratio of the distances times the
+					sine of the angle at Mercury. Over the 252 greatest elongations that
+					sine runs from 0.956 to 0.999, which is why their mean comes out short
+					of the mean ratio. Copernicus too found that no single circle fits:
+					in his model Mercury's radius changes from 0.3573 to 0.3953 with the
+					Earth's place relative to Mercury's apsides (V 27).
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): IX 1 (the order
+				of the spheres, no parallax); IX 3 (the period relations, the years
+				the sum of the turns and the returns in anomaly); X 1–3 (Venus, K
+				seen from the equant); X 6 (the epicycle's radius parallel to the line
+				to the mean Sun).</li>
+			<li>N. Copernicus, <em>De Revolutionibus</em> (transl. E. Rosen): I 10
+				[f. 7v–10r] (the order of the spheres, the Sun at rest, the size of
+				the spheres measured by the time, the arcs of retrogradation, Mars at
+				opposition); V 1 [f. 133v–135r] (the periods, in sidereal years, the
+				planets' "parallax"); V 2 (the objection to the equant); V 3 [f.
+				141r–v] (the loops from the Earth's motion); V 4 [f. 142r–143r] (the
+				eccentric with an epicyclet); V 9, V 12, V 14, V 19 [f.
+				159v–160r], V 21 [f. 161v], V 27 [f. 166v–167r] (the distances, the
+				check of Jupiter's motion); manuscript, f. 9v (the photo).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Part One: Introduction (p. 11: al-Tusi, Ibn ash-Shatir and
+				Copernicus); I C 1 (pp. 145–147: the epicycles as distances, the
+				eccentricities as vector sums); I C 2 (p. 155: Kepler and the
+				equant).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 1.3 (Copernicus' scale
+				of the system), § 4.4–4.5 (Ptolemy's and Copernicus' orbits to second
+				order).</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				ch. 2 (Tycho on Copernicus' distances) and ch. 3 (Kepler, the Sun's
+				actual position and the Earth's orbit).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): the reference planets, their semi-major axes
+				and periods.</li>
+			<li>Every number on this page: <code>tools/numbers/4.3-new-center.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

@@ -31,6 +31,7 @@
 	 4. Frame: grid, axes, labels
 	 5. Marks: curves, bands, markers, lines, text
 	 6. Legend (HTML)
+	 7. Helpers for the pages' plots
    ========================================================================== */
 
 /* ==========================================================================
@@ -132,12 +133,12 @@ class Plot2D {
 		};
 	}
 
-	/* The width an x-axis title may take: it is centred on the plot box,
+	/* The width an x-axis title may take: it is centered on the plot box,
 	   so it has the room of the shorter side, to the canvas edge. */
 	titleRoom(width) {
-		const centre = (this.margin.left + width - this.margin.right) / 2;
+		const center = (this.margin.left + width - this.margin.right) / 2;
 
-		return 2 * (Math.min(centre, width - centre) - AXIS_TITLE_INSET);
+		return 2 * (Math.min(center, width - center) - AXIS_TITLE_INSET);
 	}
 
 	/* The x-axis title as one line, or as two when it is wider than its
@@ -640,4 +641,36 @@ function drawSegment(ctx, x1, y1, x2, y2) {
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
+}
+
+/* ==========================================================================
+   7. HELPERS FOR THE PAGES' PLOTS
+   Used by more than one page (pages 4.1 to 4.4).
+   ========================================================================== */
+
+/* A JD as a year with its fraction, for the axes in years (pages 4.3,
+   4.4). */
+const yearOf = jd => 2000 + (jd - 2451545.0) / 365.25;
+
+/* Ticks every 90° on an axis of [0, 360] degrees. */
+const quarterTicks = () => [0, 90, 180, 270, 360].map(value => ({ value, label: `${value}°` }));
+
+/* A word above the plot box, at x (e.g. "opposition" over its line):
+   centered on x, or starting at the left edge or ending at the right edge
+   of the box, so that it never leaves the canvas. */
+function nameAbove(plot, text, x) {
+	const ctx = plot.ctx;
+	let align = 'center';
+
+	if (x <= plot.x[0]) {
+		align = 'left';
+	} else if (x >= plot.x[1]) {
+		align = 'right';
+	}
+
+	ctx.fillStyle = textColor(COL.muted);
+	ctx.font = FONT_TICK;
+	ctx.textAlign = align;
+	ctx.textBaseline = 'bottom';
+	ctx.fillText(text, plot.px(x), plot.box.top - 4);
 }
