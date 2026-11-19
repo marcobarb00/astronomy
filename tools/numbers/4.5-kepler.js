@@ -421,6 +421,17 @@ console.log(
 	`e = ${f(sunFit.e, 6)}, apogee ${f(sunFit.apogee, 3)}° (Newton, ${sunFit.steps} steps);` +
 		` page 2.1's eccentric: e = ${SolarEccentric.FIT_2026.e} (= 2 x ${f(SolarEccentric.FIT_2026.e / 2, 5)}), apogee ${SolarEccentric.FIT_2026.apogee}°`
 );
+{
+	// the mean anomaly at each crossing, and the spring's length from it
+	const M = [0, 90, 180].map(lon => Kepler.meanAnomalyAt(lon, sunFit.e, sunFit.apogee));
+
+	console.log(
+		`M at 0°, 90°, 180°: ${M.map(m => f(m, 3)).join('°, ')}°; over spring ${f(M[1] - M[0], 3)}° = ${f(
+			(M[1] - M[0]) / N_SUN,
+			3
+		)} d at n = ${f(N_SUN, 5)}°/d; over summer ${f(M[2] - M[1], 3)}°`
+	);
+}
 console.log(`L0 (J2000) = ${f(sunL0, 6)}°; apogee at J2000 ${f(sunApogeeJ2000, 5)}° (for Kepler.SUN_2026)`);
 {
 	const es = [];
