@@ -314,24 +314,33 @@
 						<div class="presets">
 							<button type="button" class="play" id="ellipse-play">Play</button>
 						</div>
-						<div class="readout" id="ellipse-readout" data-lines="4"></div>
+						<div class="readout" id="ellipse-readout" data-lines="5"></div>
 					</div>
 				</div>
 			</div>
 			<figcaption>
-				Start with $e$ = 0.6 and play: P crosses each shaded sector in the
-				same time, slowly near A and fast near Π. Then choose Mars, whose
-				ellipse is hard to tell from its circle, and watch the line QP turn
-				almost uniformly.
+				Start with $e$ = 0.6 and play: ☉P sweeps each shaded sector, a
+				twelfth of the period, in the same time, slowly near A and fast
+				near Π. Meanwhile QP runs ahead of the dashed line from Q and behind
+				it in turn. With Mars, whose ellipse is hard to tell from its
+				circle, compare ∠AQP and ∠A☉P with $M$ in the read-out: only QP
+				stays on the dashed line.
 			</figcaption>
 			<div class="keys">
 				<div>
 					<p class="key-title">In the figure</p>
 					<dl class="key">
-						<dt class="c-deferent">sectors</dt>
-						<dd>the areas swept from ☉ in each twelfth of the period</dd>
 						<dt>dashed circle</dt>
 						<dd>the circle on the long axis</dd>
+						<dt class="c-epicycle">dashed, from Q</dt>
+						<dd>the direction that turns uniformly, at the angle $M$ from A</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>∠AQP, ∠A☉P</dt>
+						<dd>counted from A in the direction of motion</dd>
 					</dl>
 				</div>
 			</div>
@@ -347,7 +356,8 @@
 				M)$, and page 4.2's equant with the same $e$ has the same
 				first-order terms. Seen from the empty focus Q, the point of the
 				ellipse turns uniformly to first order, as K turns about the
-				equant. Kepler, who had first given up Ptolemy's equal division of
+				equant. In Figure 3, for Mars, the direction of P seen from Q stays
+				within 8.2′ of $M$, and seen from ☉ within 10.7°. Kepler, who had first given up Ptolemy's equal division of
 				the eccentricity, restored it as the two foci of the ellipse
 				(<em>HAMA</em> p. 172).
 			</p>
@@ -638,8 +648,9 @@
 			<figcaption>
 				Compare the two curves over 2026: the ellipse removes most of the
 				eccentric's error, and what is left wobbles once a month. Then
-				switch to a thousand years: both errors grow slowly away from
-				2026, the eccentric's faster.
+				switch to a thousand years: after 2026 the eccentric's error grows
+				faster, while in the sixteenth and seventeenth centuries the
+				ellipse's is the larger.
 			</figcaption>
 		</figure>
 
@@ -659,7 +670,7 @@
 		<!-- Figure 6: every model of the Sun and of Mars (static) -->
 		<figure class="fig">
 			<div class="frame">
-				<div class="panels">
+				<div class="panels" id="summary-panels">
 					<div>
 						<p class="panel-title">(a) the Sun, over 2026</p>
 						<canvas id="summary-sun"></canvas>
@@ -671,9 +682,10 @@
 				</div>
 			</div>
 			<figcaption>
-				Read each dot against the scale, ten times larger at each line, and
-				follow each body from page to page. Notice the one step that made
-				the error larger: Copernicus' epicyclet in place of the equant.
+				Read the largest error of each model against the scale, and follow
+				each body down its rows, page by page. Notice the one step that
+				made the error larger: Copernicus' epicyclet in place of the
+				equant.
 			</figcaption>
 		</figure>
 

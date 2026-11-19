@@ -17,8 +17,8 @@
 									  4.2's equant as ghost)
 	 5. the Sun's error curve        (the ellipse against VSOP87, page 2.1's
 									  eccentric as ghost)
-	 6. every model of the Sun and   (2D, static: the largest error of each
-		of Mars                       model, on a scale of powers of ten)
+	 6. every model of the Sun and   (2D, static: one row per model, its
+		of Mars                       largest error on a logarithmic scale)
    The reference of the page is Ephem with { theory: 'vsop87' } (the site's
    Standish planets are ellipses: STRUCTURE.md, page 4.5).
    Shared code: common.js, time.js, ephemeris.js, vsop87-data.js,
@@ -121,7 +121,7 @@ const sunFigure = {
 		});
 
 		Plot2D.legend(byId('sun-legend'), [
-			{ label: 'daily motion', color: COL.sun },
+			{ label: 'daily motion', color: COL.sun, mark: 'band' },
 			{ label: 'apparent diameter', color: COL.earth },
 			{ label: 'diameter squared', color: COL.deferent }
 		]);
@@ -139,8 +139,9 @@ const sunFigure = {
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
 		// the daily motion wide and pale, so that the square of the diameter
-		// shows on top of it
-		p.curve(days, speed, { color: COL.sun, width: 6, alpha: 0.45 });
+		// shows on top of it; its legend sample is a pale band of the same
+		// look
+		p.curve(days, speed, { color: COL.sun, width: 8, alpha: 0.45 });
 		p.curve(days, diameter, { color: COL.earth, width: 2 });
 		p.curve(days, square, { color: COL.deferent, width: 1.6 });
 	}
@@ -325,10 +326,15 @@ const triangleFigure = {
    circle on the long axis, and the twelve sectors swept from ☉ in each
    twelfth of the period, every other one shaded. P is the body at the
    date, P' the point of the circle above or below it, at the angle E
-   from A seen from C. The date runs over one period of Mars, 686.98
-   days, in both views; e is 0.6 or Mars' 0.0934. The ellipse reaches
-   1 + e = 1.6 from ☉ on the right and its circle 1 from C: the drawing
-   reaches 1.08 a from C.
+   from A seen from C. From Q, the line QP and, faint and dashed, the
+   direction that turns uniformly, at the angle M from A, as from page
+   4.2's equant: QP leaves it by up to 10° for e = 0.6 and 8.2' for Mars
+   (tools/numbers/4.5-kepler.js). The view Mars leaves out C, P' and the
+   construction of E, since P' lies on P there. The date runs over one
+   period of Mars, 686.98 days, in both views; e is 0.6 or Mars' 0.0934.
+   The ellipse reaches 1 + e = 1.6 from ☉ on the right and its circle 1
+   from C: the drawing reaches 1.17 a from C, room for the labels A, Π
+   and P beyond the circle.
    ========================================================================== */
 
 const ELLIPSE_VIEWS = {
@@ -336,11 +342,25 @@ const ELLIPSE_VIEWS = {
 	Mars: Kepler.MARS_FIT.e
 };
 const ELLIPSE_PERIOD = Kepler.siderealPeriod(PlanetEpicycle.MARS_FIT.n);
-const ELLIPSE_ROOM = 1.08;
+const ELLIPSE_ROOM = 1.17;
 const ELLIPSE_SECTORS = 12;
 
 /* Play: a period in about twenty seconds. */
 const ELLIPSE_DAYS_PER_SECOND = 35;
+
+/* The direction of the point at the eccentric anomaly E seen from the
+   empty focus Q (a = 1, Q at e from C towards A), counted from A in the
+   direction of motion, 0° to 360°. */
+function directionFromQ(E, e) {
+	return norm360(atan2d(Math.sqrt(1 - e * e) * sin(E), cos(E) - e));
+}
+
+/* How far the ray from Q at the angle M from A runs before it meets the
+   circle on the long axis (radius 1 about C): the root t > 0 of
+   |Q + t (cos M, sin M)| = 1. */
+function rayToCircle(e, M) {
+	return -e * cos(M) + Math.sqrt(1 - e * e * sin(M) * sin(M));
+}
 
 const ellipseFigure = {
 	view: 'e = 0.6',
@@ -367,19 +387,23 @@ const ellipseFigure = {
 	update() {
 		const e = ELLIPSE_VIEWS[this.view];
 		const M = (360 * readNumber('ellipse-day')) / ELLIPSE_PERIOD;
+		const now = Kepler.atAnomaly(M, e);
 
-		this.state = { e, M, now: Kepler.atAnomaly(M, e) };
+		this.state = { e, M, now, fromQ: directionFromQ(now.E, e) };
 		this.showReadout();
 		this.draw();
 	},
 
+	/* The angles from A, counted in the direction of motion: at Q, then
+	   at ☉ (the true anomaly M + q). */
 	showReadout() {
-		const { M, now } = this.state;
+		const { M, now, fromQ } = this.state;
 
 		showLines('ellipse-readout', [
 			`M = ${fixed(M, 1)}^\\circ`,
 			`E = ${fixed(now.E, 1)}^\\circ`,
-			`M + q = ${fixed(norm360(M + now.q), 1)}^\\circ`,
+			`\\angle\\text{AQP} = ${fixed(fromQ, 1)}^\\circ`,
+			`\\angle\\text{A}{\\odot}\\text{P} = M + q = ${fixed(norm360(M + now.q), 1)}^\\circ`,
 			`r = ${fixed(now.distance, 3)}\\,a`
 		]);
 	},
@@ -392,9 +416,10 @@ const ellipseFigure = {
 			return;
 		}
 
-		const { e, now } = this.state;
+		const { e, M, now } = this.state;
 		const scale = owner.R / ELLIPSE_ROOM;
 		const b = Math.sqrt(1 - e * e);
+		const construction = this.view !== 'Mars';
 
 		// points in units of a, the center C at the origin, x towards A
 		const at = q => ({ x: owner.cx + scale * q[0], y: owner.cy - scale * q[1] });
@@ -432,53 +457,72 @@ const ellipseFigure = {
 		segment(ctx, Pi, A, { color: COL.muted, width: 1 });
 
 		// E at C: the line to P', and P' straight above or below P
-		segment(ctx, C, P1, { color: COL.muted, width: 1 });
-		segment(ctx, P1, P, { color: COL.muted, width: 1, dash: [2, 3] });
+		if (construction) {
+			segment(ctx, C, P1, { color: COL.muted, width: 1 });
+			segment(ctx, P1, P, { color: COL.muted, width: 1, dash: [2, 3] });
+		}
 
-		// the lines from the two foci
-		segment(ctx, Q, P, { color: COL.epicycle, width: 1.3, dash: [5, 4] });
+		// from Q: the uniform direction, faint, as far as the circle, then
+		// the line to P; from ☉: the line to P
+		const reach = rayToCircle(e, M);
+
+		segment(ctx, Q, at([e + reach * cos(M), reach * sin(M)]), {
+			color: withAlpha(COL.epicycle, 0.6),
+			width: 1.2,
+			dash: [5, 4]
+		});
+		segment(ctx, Q, P, { color: COL.epicycle, width: 1.4 });
 		segment(ctx, S, P, { color: COL.planet, width: 1.6 });
 
-		drawDot(ctx, C.x, C.y, 3, COL.ink);
+		if (construction) {
+			drawDot(ctx, C.x, C.y, 3, COL.ink);
+			drawDot(ctx, P1.x, P1.y, 3, COL.ink);
+		}
+
 		drawDot(ctx, Q.x, Q.y, 3.5, COL.epicycle);
-		drawDot(ctx, P1.x, P1.y, 3, COL.ink);
 		drawDot(ctx, S.x, S.y, 7, COL.sun);
 		drawDot(ctx, P.x, P.y, 6, COL.planet);
 
-		// fixed points keep their sides; P and P' are letters (CLAUDE.md)
+		// fixed points keep their sides, A and Π beyond the dot of P when
+		// it passes; P and P' are letters (CLAUDE.md)
 		labelOutside(ctx, '☉', S, 7, 270, COL.sun, owner.labels);
-		labelOutside(ctx, 'C', C, 3, 90, COL.ink, owner.labels);
 		labelOutside(ctx, 'Q', Q, 4, 270, COL.epicycle, owner.labels);
-		labelOutside(ctx, 'A', A, 3, 0, COL.ink, owner.labels);
-		labelOutside(ctx, 'Π', Pi, 3, 180, COL.ink, owner.labels);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			6,
-			clearestDirection([
-				screenDirection(P, S),
-				screenDirection(P, Q),
-				screenDirection(P, P1),
-				screenDirection(P1, P)
-			]),
-			COL.planet,
-			owner.labels
-		);
-		labelOutside(
-			ctx,
-			'P′',
-			P1,
-			3,
-			clearestDirection([
-				screenDirection(P1, C),
-				screenDirection(P1, P),
-				screenDirection(C, P1) + 90,
-				screenDirection(C, P1) - 90
-			]),
-			COL.ink,
-			owner.labels
-		);
+		labelOutside(ctx, 'A', A, 8, 0, COL.ink, owner.labels);
+		labelOutside(ctx, 'Π', Pi, 8, 180, COL.ink, owner.labels);
+
+		if (construction) {
+			labelOutside(ctx, 'C', C, 3, 90, COL.ink, owner.labels);
+		}
+
+		// P and P' also keep off the directions of the long axis (0° and
+		// 180° on the screen), so that at A and Π they go above or below it,
+		// clear of the labels A and Π
+		const raysAtP = [screenDirection(P, S), screenDirection(P, Q), 0, 180];
+
+		if (construction) {
+			raysAtP.push(screenDirection(P, P1), screenDirection(P1, P));
+		}
+
+		labelOutside(ctx, 'P', P, 6, clearestDirection(raysAtP), COL.planet, owner.labels);
+
+		if (construction) {
+			labelOutside(
+				ctx,
+				'P′',
+				P1,
+				3,
+				clearestDirection([
+					screenDirection(P1, C),
+					screenDirection(P1, P),
+					screenDirection(C, P1) + 90,
+					screenDirection(C, P1) - 90,
+					0,
+					180
+				]),
+				COL.ink,
+				owner.labels
+			);
+		}
 	},
 
 	/* The twelve sectors of equal time, from ☉, every other one shaded:
@@ -513,7 +557,9 @@ const ellipseFigure = {
    VSOP87's Mars, page 4.2's equant as ghost, dots at the oppositions to
    the real Sun of 2010 - 2025. Figure 5: the Sun's ellipse against VSOP87's
    Sun, page 2.1's eccentric with its apogee moving at page 2.3's rate as
-   ghost. No sliders: the scales follow the curves of each span.
+   ghost. No sliders. Figure 4 keeps one scale, ±60', for every span, so
+   the ellipses' error is not flattened by the scale the curves would
+   choose (±100'); Figure 5's scales follow the curves of each span.
    ========================================================================== */
 
 /* The oppositions of Mars to the real Sun in [start, end], from the
@@ -536,6 +582,11 @@ function oppositions(start, end) {
 	return found;
 }
 
+/* Figure 4's half-range ('), the same for every span: the curves stay
+   within 56.0' (page 4.2's equant, 1916 - 2120, the widest span and the
+   band's half window beyond it; tools/numbers/4.5-kepler.js). */
+const MARS_ERROR_HALF = 60;
+
 const marsErrorFigure = {
 	init() {
 		const curve = new ErrorCurve(byId('error-mars'), {
@@ -550,6 +601,7 @@ const marsErrorFigure = {
 				{ label: '200 years', years: 200 }
 			],
 			units: 'arcmin',
+			yMax: MARS_ERROR_HALF,
 			ghostButtons: false
 		});
 		const model = Kepler.make();
@@ -611,11 +663,13 @@ const sunErrorFigure = {
 /* ==========================================================================
    5. FIGURE 6: EVERY MODEL OF THE SUN AND OF MARS
    Static. The largest error of each model against the reference: the Sun
-   every day of 2026, Mars every day of 2010 - 2025, on a scale of
-   powers of ten (the logarithm of the error in arcminutes). The errors run
-   from 0.24' (the Sun's ellipse) to 53.7° (the uniform Mars)
-   (tools/numbers/4.5-kepler.js): the axis runs from 0.1' to 100°, with
-   room above for the names.
+   every day of 2026, Mars every day of 2010 - 2025. One row per model,
+   named on the left with its page, in the order of the course, its dot on
+   a horizontal scale of the logarithm of the error in arcminutes, and the
+   dots of a body joined from row to row. The two panels, one above the
+   other, share the scale. The errors run from 0.24' (the Sun's ellipse)
+   to 53.7° (the uniform Mars) (tools/numbers/4.5-kepler.js): the axis
+   runs from 0.1' to 100°.
    ========================================================================== */
 
 /* The marks of the scale: their value in arcminutes and their label. */
@@ -627,10 +681,15 @@ const SUMMARY_MARKS = [
 	{ arcmin: 600, label: '10°' },
 	{ arcmin: 6000, label: '100°' }
 ];
-const SUMMARY_RANGE = [-1, Math.log10(6000) + 0.4];
+const SUMMARY_RANGE = [Math.log10(0.1), Math.log10(6000)];
 
-/* The models of each panel: the page it comes from, its name, the model
-   (jd -> longitude), and below: true for a name set under its dot. */
+/* The height of a row, and the room for the row names on the left (px):
+   "4.3 epicyclet" is the longest. */
+const SUMMARY_ROW = 34;
+const SUMMARY_NAMES = 100;
+
+/* The models of each panel, in the order of the course: the page it comes
+   from, its name and the model (jd -> longitude). */
 const SUMMARY_MODELS = {
 	sun: [
 		{ page: '1.3', name: 'uniform', fn: MeanSun.make(MeanSun.MODERN) },
@@ -641,7 +700,7 @@ const SUMMARY_MODELS = {
 		{ page: '4.1', name: 'uniform', fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT) },
 		{ page: '4.1', name: 'epicycle', fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT) },
 		{ page: '4.2', name: 'equant', fn: PlanetEquant.make(PlanetEquant.MARS_FIT) },
-		{ page: '4.3', name: 'epicyclet', fn: PlanetArrangement.makeEpicyclet(), below: true },
+		{ page: '4.3', name: 'epicyclet', fn: PlanetArrangement.makeEpicyclet() },
 		{ page: '4.5', name: 'ellipses', fn: Kepler.make() }
 	]
 };
@@ -669,19 +728,26 @@ const summaryFigure = {
 			});
 		}
 
-		const values = worst.map(degrees => Math.log10(degrees * 60));
-		const panel = { models, values, plot: null };
+		const panel = {
+			models,
+			values: worst.map(degrees => Math.log10(degrees * 60)),
+			rows: models.map((model, i) => summaryRow(i, models.length)),
+			plot: null
+		};
+
+		// a fixed height: the rows, and the margins of Plot2D for the
+		// scale's ticks and title below
+		const height = models.length * SUMMARY_ROW + 52;
 
 		panel.plot = new Plot2D(byId(canvasId), {
-			x: [-0.6, models.length - 0.4],
-			y: SUMMARY_RANGE,
-			xTicks: () => models.map((model, i) => ({ value: i, label: model.page })),
-			yTicks: () => SUMMARY_MARKS.map(mark => ({ value: Math.log10(mark.arcmin), label: mark.label })),
-			xLabel: 'page',
-			yLabel: 'largest error',
-			aspect: 0.9,
-			maxHeight: 360,
-			minHeight: 260,
+			x: SUMMARY_RANGE,
+			y: [0.5, models.length + 0.5],
+			xTicks: () => SUMMARY_MARKS.map(mark => ({ value: Math.log10(mark.arcmin), label: mark.label })),
+			yTicks: () => models.map((model, i) => ({ value: panel.rows[i], label: `${model.page} ${model.name}` })),
+			xLabel: 'largest error',
+			margin: { left: SUMMARY_NAMES },
+			minHeight: height,
+			maxHeight: height,
 			onDraw: () => this.draw(panel)
 		});
 
@@ -696,18 +762,16 @@ const summaryFigure = {
 		}
 
 		p.frame();
-		panel.values.forEach((value, i) => {
-			const color = i === panel.values.length - 1 ? COL.deferent : COL.planet;
-
-			p.marker(i, value, { color, radius: 5.5 });
-			// a name above its dot, or below it where it would meet its
-			// neighbour's (the epicyclet, beside the equant)
-			const dy = panel.models[i].below ? 28 : -12;
-
-			p.text(panel.models[i].name, i, value, { color, kind: 'name', align: 'center', dx: 0, dy });
-		});
+		p.curve(panel.values, panel.rows, { color: withAlpha(COL.planet, 0.5), width: 1.2 });
+		panel.values.forEach((value, i) => p.marker(value, panel.rows[i], { color: COL.planet, radius: 5.5 }));
 	}
 };
+
+/* The y value of row i of n, the first row at the top: from n down to 1,
+   so that no row falls on y = 0, where Plot2D draws a stronger line. */
+function summaryRow(i, n) {
+	return n - i;
+}
 
 /* ==========================================================================
    6. PAGE START

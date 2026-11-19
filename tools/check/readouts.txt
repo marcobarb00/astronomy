@@ -1896,34 +1896,34 @@ Regenerate with: node tools/check/smoke.js --update
 === act4-planets/05-kepler/index.html ===
   as loaded
     OUTPUT (ellipse-day): 57 days
-    #ellipse-readout: M = 29.9^\circ | E = 18.8^\circ | M + q = 9.5^\circ | r = 1.568\,a
+    #ellipse-readout: M = 29.9^\circ | E = 18.8^\circ | \angle\text{AQP} = 36.6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 9.5^\circ | r = 1.568\,a
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   opened 6 hints and answers
   slider #ellipse-day = 0
     OUTPUT (ellipse-day): 0 days
-    #ellipse-readout: M = 0.0^\circ | E = 0.0^\circ | M + q = 0.0^\circ | r = 1.600\,a
+    #ellipse-readout: M = 0.0^\circ | E = 0.0^\circ | \angle\text{AQP} = 0.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0.0^\circ | r = 1.600\,a
   slider #ellipse-day = 687
     OUTPUT (ellipse-day): 687 days
-    #ellipse-readout: M = 360.0^\circ | E = 360.0^\circ | M + q = 0.0^\circ | r = 1.600\,a
+    #ellipse-readout: M = 360.0^\circ | E = 360.0^\circ | \angle\text{AQP} = 0.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0.0^\circ | r = 1.600\,a
   slider #ellipse-day = 343.5
     OUTPUT (ellipse-day): 344 days
-    #ellipse-readout: M = 180.0^\circ | E = 180.0^\circ | M + q = 180.0^\circ | r = 0.400\,a
+    #ellipse-readout: M = 180.0^\circ | E = 180.0^\circ | \angle\text{AQP} = 180.0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.0^\circ | r = 0.400\,a
   slider #ellipse-day + one key step
     OUTPUT (ellipse-day): 344 days
-    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | M + q = 180.7^\circ | r = 0.400\,a
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | \angle\text{AQP} = 180.2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.7^\circ | r = 0.400\,a
   button "e = 0.6"
     OUTPUT (ellipse-day): 344 days
-    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | M + q = 180.7^\circ | r = 0.400\,a
+    #ellipse-readout: M = 180.1^\circ | E = 180.3^\circ | \angle\text{AQP} = 180.2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.7^\circ | r = 0.400\,a
   button "Mars"
     OUTPUT (ellipse-day): 344 days
-    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | M + q = 180.2^\circ | r = 0.907\,a
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | \angle\text{AQP} = 180.1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.2^\circ | r = 0.907\,a
   button "‹ previous day"
     OUTPUT (ellipse-day): 343 days
-    #ellipse-readout: M = 179.6^\circ | E = 179.6^\circ | M + q = 179.5^\circ | r = 0.907\,a
+    #ellipse-readout: M = 179.6^\circ | E = 179.6^\circ | \angle\text{AQP} = 179.6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 179.5^\circ | r = 0.907\,a
   button "next day ›"
     OUTPUT (ellipse-day): 344 days
-    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | M + q = 180.2^\circ | r = 0.907\,a
+    #ellipse-readout: M = 180.1^\circ | E = 180.2^\circ | \angle\text{AQP} = 180.1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180.2^\circ | r = 0.907\,a
   button "4 years"
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   button "16 years"
