@@ -544,6 +544,15 @@ section.
   planets, since Standish's planets are ellipses themselves. →
   STRUCTURE.md §4 (Epilogue), shared/models/kepler.js, shared/vsop87.js
 
+- **The smoke test fixes the browser's clock** at 2026-11-20 21:00 UT
+  (`FIXED_NOW`): the toolbox's calculator and the hub's plate start from
+  the date of the visit, and the read-outs must be the same on every run.
+  Added with the toolbox on 2026-11-20. → tools/check/smoke.js
+- **The error ladder is shared** (`shared/ladder.js`): page 4.5's Figure
+  6 and the toolbox's Figure 2 draw it; a panel whose rows are different
+  bodies leaves its dots unjoined. Moved out of page 4.5 on 2026-11-20,
+  with no change to that figure. → shared/ladder.js
+
 ## Workflow
 
 - **Work on temporary branches, merged by Marco.** Branch names use `_`,

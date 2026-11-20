@@ -57,7 +57,7 @@ const Site = (function () {
 	   1. SITE MAP (site-map.js)
 	   ====================================================================== */
 
-	const { ACTS, PAGES, ASTRONOMERS, TOPICS, ORIGINS, EXERCISE_KINDS } = SITE_MAP;
+	const { ACTS, PAGES, ASTRONOMERS, TOOLBOX, TOPICS, TOPIC_GROUPS, ORIGINS, EXERCISE_KINDS } = SITE_MAP;
 
 	/* ======================================================================
 	   2. PATHS
@@ -71,16 +71,31 @@ const Site = (function () {
 
 	const href = path => ROOT + path;
 
+	/* A page by its number ('2.1', 'beyond'), or the toolbox. */
 	function findPage(number) {
+		if (String(number) === TOOLBOX.number) {
+			return TOOLBOX;
+		}
+
 		return PAGES.find(page => page.number === String(number));
+	}
+
+	/* "2.1 · " before a numbered page's title; nothing before the
+	   epilogue's or the toolbox's. */
+	function numberPrefix(page) {
+		return /^\d/.test(page.number) ? `${page.number} · ` : '';
 	}
 
 	function actOf(page) {
 		return ACTS.find(act => act.id === page.act);
 	}
 
-	/* "Act II · 2.1", or "Epilogue". */
+	/* "Act II · 2.1", "Epilogue", or the toolbox's own kicker. */
 	function pageKicker(page) {
+		if (page.kicker) {
+			return page.kicker;
+		}
+
 		const act = actOf(page);
 
 		return /^\d/.test(page.number) ? `${act.name} · ${page.number}` : act.name;
@@ -139,7 +154,7 @@ const Site = (function () {
 				makeEl('p', 'subtitle', page.question)
 			);
 
-			document.title = `${page.number === 'beyond' ? '' : page.number + ' · '}${page.title} · Predicting the Sky`;
+			document.title = `${numberPrefix(page)}${page.title} · Predicting the Sky`;
 		}
 
 		return head;
@@ -374,7 +389,7 @@ const Site = (function () {
 	/* One side of the pager: a link if the page is ready, a grey label if not. */
 	function pagerLink(page, direction) {
 		const word = direction === 'prev' ? '← Previous' : 'Next →';
-		const label = `${page.number === 'beyond' ? '' : page.number + ' · '}${page.title}`;
+		const label = `${numberPrefix(page)}${page.title}`;
 
 		if (page.ready) {
 			const link = makeEl('a', direction, `<small>${word}</small>${label}`);
@@ -421,7 +436,7 @@ const Site = (function () {
 	   that the pages need not load thumbs.js. */
 	function pageRow(page, drawPage) {
 		const row = makeEl(page.ready ? 'a' : 'div', page.ready ? 'page-row' : 'page-row unready');
-		const number = page.number === 'beyond' ? '' : page.number;
+		const number = /^\d/.test(page.number) ? page.number : '';
 		const soon = page.ready ? '' : '<span class="soon">in preparation</span>';
 
 		if (page.ready) {
@@ -504,6 +519,35 @@ const Site = (function () {
 		const era = TIMELINE.eras.find(e => year >= e.from && year <= e.to);
 
 		return era.x0 + ((year - era.from) * (era.x1 - era.x0)) / (era.to - era.from);
+	}
+
+	/* The epilogue's topic cards (STRUCTURE.md §4, Epilogue): one list per
+	   group of TOPIC_GROUPS, each topic with its sentence, a link when its
+	   page is ready, greyed and marked "in preparation" until then. */
+	function renderTopics(container) {
+		container.classList.add('topics');
+
+		TOPIC_GROUPS.forEach(group => {
+			const section = makeEl('section', 'topic-group');
+			const list = makeEl('ul', 'topic-list');
+
+			section.append(makeEl('p', 'act-label', group.title), list);
+
+			group.topics.forEach(id => {
+				const topic = TOPICS[id];
+				const ready = topic.ready && topic.path;
+				const title = capitalise(topic.title);
+				const item = makeEl('li', ready ? 'topic' : 'topic unready');
+				const head = ready
+					? `<a class="topic-title" href="${href(topic.path)}">${title}</a>`
+					: `<span class="topic-title">${title}<span class="soon">in preparation</span></span>`;
+
+				item.innerHTML = `${head}<span class="topic-sentence">${capitalise(topic.sentence)}.</span>`;
+				list.appendChild(item);
+			});
+
+			container.appendChild(section);
+		});
 	}
 
 	/* The links to an astronomer's pages, in a row centered on x. */
@@ -651,7 +695,8 @@ const Site = (function () {
 		findPage,
 		initPage,
 		renderHub,
-		renderTimeline
+		renderTimeline,
+		renderTopics
 	};
 })();
 

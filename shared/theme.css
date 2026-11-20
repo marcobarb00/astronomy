@@ -1746,6 +1746,24 @@ a.begin:hover {
 	font-size: 16px;
 }
 
+/* The button to the toolbox, beside the filled link: as tall, outlined
+   in the accent colour; the only way to the toolbox (STYLE.md §4.9). */
+a.toolbox-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 7px 21px;
+	border: 1px solid var(--accent);
+	color: var(--accent);
+	font: 17px/1.2 var(--font-text);
+	text-decoration: none;
+}
+
+a.toolbox-link:hover {
+	background: var(--card);
+}
+
 /* ---------- Star rules ---------- */
 
 /* The hub's sections are parted by the double rule with the four-pointed
@@ -2128,6 +2146,60 @@ svg.thumb .label.epicycle {
 	padding-top: 16px;
 	border-top: 1px solid var(--line);
 	font-size: 15px;
+	color: var(--muted);
+}
+
+/* ---------- The epilogue's topic cards (Site.renderTopics) ---------- */
+
+/* Three groups, each a small-caps label over a list ruled like the hub's
+   chapters: the topic's name, then its sentence. A topic without a page
+   is greyed and marked "in preparation", as a page row is. */
+.topics .topic-group {
+	margin-top: 26px;
+}
+
+.topic-list {
+	margin: 6px 0 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--ink);
+}
+
+.topic-list .topic {
+	padding: 10px 6px;
+	border-bottom: 1px solid var(--line);
+}
+
+.topic .topic-title {
+	display: block;
+	font: 600 22px/1.25 var(--font-title);
+	color: var(--ink);
+}
+
+a.topic-title {
+	color: var(--accent);
+}
+
+.topic .topic-sentence {
+	display: block;
+	margin-top: 2px;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.topic .soon {
+	display: inline-block;
+	white-space: nowrap;
+	margin-left: 10px;
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
+.topic.unready .topic-title,
+.topic.unready .topic-sentence {
 	color: var(--muted);
 }
 

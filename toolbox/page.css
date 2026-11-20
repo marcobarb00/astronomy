@@ -1,0 +1,187 @@
+/* ==========================================================================
+   THE TOOLBOX - LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. The calculator
+	 2. The error ladder
+	 3. The formulas
+	 4. The tables of parameters and notation
+	 5. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. THE CALCULATOR
+   Controls in two columns above the strip, then the two tables one above
+   the other, each with one row per body, so the figure keeps its size.
+   ========================================================================== */
+
+/* The slider of the date shows up to "31 Dec 2100". */
+#calculator {
+	--ctl-output: 7.2em;
+}
+
+#calculator .ctl {
+	grid-template-columns: 96px minmax(0, 1fr) var(--ctl-output);
+}
+
+.calc-controls {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 8px 28px;
+	margin-bottom: 14px;
+}
+
+/* The date field and the button for now, under the date's slider. */
+.calc-date-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	margin-top: 8px;
+	font-size: 16px;
+}
+
+.calc-date-row input[type="date"] {
+	min-height: 40px;
+	padding: 4px 8px;
+	border: 1px solid var(--ink);
+	background: var(--card);
+	color: var(--ink);
+	font: 16px var(--font-text);
+}
+
+.calc-date-row button {
+	min-height: 40px;
+	padding: 4px 16px;
+	border: 1px solid var(--ink);
+	background: var(--card);
+	color: var(--ink);
+	font: 16px var(--font-text);
+	cursor: pointer;
+}
+
+.calc-date-row button:hover {
+	background: var(--bg);
+}
+
+#calc-places {
+	margin-top: 8px;
+}
+
+/* The tables: the body's name on the left, the numbers centered, with
+   tabular figures (theme.css) so they do not move as they change. */
+.calc-tables {
+	display: grid;
+	gap: 16px;
+	margin-top: 14px;
+}
+
+.calc-table th:first-child,
+.calc-table td:first-child {
+	text-align: left;
+	white-space: nowrap;
+}
+
+.calc-table td {
+	white-space: nowrap;
+}
+
+/* The caption names what the table gives, as the panels' titles do. */
+.calc-table caption {
+	padding-bottom: 4px;
+	text-align: left;
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
+#calc-readout {
+	margin-top: 12px;
+}
+
+/* ==========================================================================
+   2. THE ERROR LADDER
+   The four panels one above the other, on the same scale.
+   ========================================================================== */
+
+.ladder-panels {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* ==========================================================================
+   3. THE FORMULAS
+   One block per formula: the page that derives it and what it gives, then
+   the formula, set as a display.
+   ========================================================================== */
+
+.formula {
+	max-width: var(--text-width);
+	margin: 18px 0;
+	padding-top: 10px;
+	border-top: 1px solid var(--line);
+}
+
+.formula-name {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.formula-name a {
+	margin-right: 8px;
+	font-family: var(--font-label);
+	font-weight: 600;
+	letter-spacing: 0.1em;
+}
+
+/* ==========================================================================
+   4. THE TABLES OF PARAMETERS AND NOTATION
+   Left-aligned text; a table wider than the column scrolls inside its own
+   box rather than the page.
+   ========================================================================== */
+
+.table-scroll {
+	max-width: var(--text-width);
+	overflow-x: auto;
+	margin: 14px 0;
+}
+
+.params-table th,
+.params-table td,
+.notation-table th,
+.notation-table td {
+	text-align: left;
+	vertical-align: top;
+}
+
+.params-table td.params {
+	white-space: nowrap;
+}
+
+.notation-table td:first-child {
+	white-space: nowrap;
+}
+
+/* ==========================================================================
+   5. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	.calc-controls {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	#calculator .ctl {
+		grid-template-columns: 84px minmax(0, 1fr) var(--ctl-output);
+	}
+
+	/* Narrower cells, so that the first table fits and the second
+	   scrolls less; the figures keep their 16 px. */
+	.calc-table th,
+	.calc-table td {
+		padding: 4px 4px;
+	}
+}

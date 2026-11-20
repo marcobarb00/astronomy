@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     EPILOGUE · BEYOND KEPLER
+     After Kepler the question changed from what shape the paths have to
+     why. Newton's law of gravitation is named as the answer, without its
+     mathematics, and the page follows the errors that remained after
+     Kepler, each a test of that law: the Moon's perigee, Jupiter and
+     Saturn, the Moon's acceleration and the Earth's clock, Uranus and
+     Neptune, and Mercury's perihelion, where the story stops. Then the
+     topics the course left out, and further reading. No rhythm of
+     observation, model, fit, test and residual, and no exercises
+     (STRUCTURE.md §4, Epilogue). Numbers: tools/numbers/beyond-kepler.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Beyond Kepler · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's layout (no new colours) -->
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../shared/common.js"></script>
+	<script defer src="../shared/time.js"></script>
+	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/vsop87-data.js"></script>
+	<script defer src="../shared/vsop87-planets.js"></script>
+	<script defer src="../shared/vsop87.js"></script>
+	<script defer src="../shared/models/mean-sun.js"></script>
+	<script defer src="../shared/models/precession.js"></script>
+	<script defer src="../shared/models/kepler.js"></script>
+	<script defer src="../shared/plot2d.js"></script>
+	<script defer src="../shared/site-map.js"></script>
+	<script defer src="../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="beyond">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Page 4.5 left Mars within 6′ of the real planet and the Sun within a
+			quarter of an arcminute. Kepler had found the shape of the planets'
+			paths, and the question his successors asked was why the paths have
+			that shape.
+		</p>
+
+		<!-- ======================= NEWTON'S LAW OF GRAVITATION ======================= -->
+		<h2 id="newton">Newton's law of gravitation</h2>
+
+		<div class="row">
+			<p>
+				In the <em>Principia</em> (1687) Newton showed that a body attracted
+				by the Sun with a force inversely proportional to the square of its
+				distance, and bound to it, moves on an ellipse with the Sun at a
+				focus, sweeps equal areas in equal times, and has a period whose
+				square is as the cube of its mean distance. Kepler's three laws became consequences of Newton's
+				laws of motion and his law of gravitation (Voelkel ch. 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			The same law said why the ellipses could not be exact. Every body
+			attracts every other, so each planet is pulled by the other planets
+			as well as by the Sun, and the Moon by the Sun as well as by the
+			Earth. Kepler's laws hold exactly only for two bodies alone. From then
+			on, each error left in the tables was a test of the law: either the
+			pulls it adds explain the error, or the law fails.
+		</p>
+
+		<!-- ============================ THE MOON'S PERIGEE ============================ -->
+		<h2 id="perigee">The Moon's perigee</h2>
+
+		<div class="row">
+			<p>
+				The Moon showed the pulls first, because the Sun changes its orbit
+				by degrees within weeks, while the planets' pulls on one another
+				take decades or centuries to grow as large. In Newton's theory its orbit is an ellipse that the Sun's
+				pull keeps changing. Ptolemy
+				had found the largest of the changes, the evection of page 3.2, and
+				Tycho a second one, the variation, largest between the new or full
+				Moon and the quarters (HAMA p. 85); page 4.5 listed them with the
+				others.
+			</p>
+			<aside>
+				<div class="note" data-origin="tycho"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				The ellipse itself turns: its perigee advances 3.04° each time the
+				Moon goes round in ecliptic longitude (from page 3.1's rates). In
+				the <em>Principia</em> the Sun's pull, worked out for a nearly
+				circular orbit, moves the perigee by 1.52° a revolution (1°31′28″),
+				half as much, and Newton remarked that "the apses of the moon
+				progress around twice as fast" (Book I, Proposition 45).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			In the 1740s Euler, d'Alembert and Clairaut, working separately, all
+			found the same half. Clairaut proposed in 1747 to change the law of
+			gravitation by adding a term to it, and found in 1749 that the
+			missing half came from the same law, carried to a higher
+			approximation.
+		</p>
+
+		<!-- ============================ JUPITER AND SATURN ============================ -->
+		<h2 id="jupiter-saturn">Jupiter and Saturn</h2>
+
+		<div class="row">
+			<p>
+				Halley compared the ancient observations of Jupiter and Saturn, those
+				of the <em>Almagest</em>, with the modern ones, and found that no
+				single mean motion fitted both: Jupiter had sped up and Saturn had
+				slowed down. His tables, published after his death, added a
+				correction to each that grew with time.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Laplace explained it in 1785 by the two planets' pull on each other.
+			Five turns of Jupiter take 59.3 years and two of Saturn 58.9, so the
+			planets meet at nearly the same places for centuries, and the pulls
+			add up from one meeting to the next before they reverse. The result
+			is a periodic change of about 900 years, the great inequality, not a
+			change that grows for ever.
+		</p>
+
+		<!-- Figure 1: Jupiter's and Saturn's ellipses over four millennia (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="drift-canvas"></canvas>
+			</div>
+			<figcaption>
+				Start from the shaded years, 1926–2025, to whose oppositions both
+				ellipses were fitted, and follow the curves back in time. Notice that
+				they go opposite ways: what Saturn gains from Jupiter's pull, Jupiter
+				loses, which is why Halley found one planet speeding up and the other
+				slowing down.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt>curves</dt>
+						<dd>the ellipse's heliocentric ecliptic longitude less VSOP87's, in the frame of J2000, averaged over about one turn of the planet</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Over 1926–2025 both ellipses stay within 9′ of the planets, but a
+			century sees only a short piece of a 900-year wave and takes it for
+			part of the mean motion. Run back to 1000 BC, Saturn's ellipse is
+			13° behind the planet on average. Tables that last for centuries need the pulls
+			as periodic terms, as VSOP87, the reference of page 4.5, carries
+			them.
+		</p>
+
+		<p>
+			Besides such long swings, the pulls turn each ellipse steadily: page
+			4.5 found Mars' aphelion turning 0.43° a century among the stars.
+		</p>
+
+		<!-- =================== THE MOON'S ACCELERATION AND THE EARTH'S CLOCK =================== -->
+		<h2 id="clock">The Moon's acceleration and the Earth's clock</h2>
+
+		<div class="row">
+			<p>
+				Halley also noticed, in 1695, that the ancient eclipses happened
+				where the Moon would have been had it moved a little more slowly then
+				than now: the Moon seemed to accelerate. In 1787 Laplace found a
+				cause in the planets' pulls, which slowly change the eccentricity of
+				the Earth's orbit and with it the Sun's pull on the Moon.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			In 1853 Adams showed that Laplace's cause gives only about half of
+			the acceleration. Delaunay and Ferrel proposed in the 1860s that most
+			of the rest is in the clock: the tides slow the Earth's rotation, so
+			the day by which the eclipses were timed grows longer. This is the ΔT
+			of page 1.3, about 2½ hours in Ptolemy's time, which every page from
+			2.1 on applies to an ancient timing.
+		</p>
+
+		<!-- ============================ URANUS AND NEPTUNE ============================ -->
+		<h2 id="neptune">Uranus and Neptune</h2>
+
+		<div class="row">
+			<p>
+				Herschel discovered Uranus in 1781. Its tables, with the pulls of
+				Jupiter and Saturn included, kept failing: Bouvard's of 1821 drifted
+				away from the planet within a few years. Le Verrier, and Adams
+				independently, supposed a planet beyond Uranus and computed where it
+				would have to be to cause the errors.
+			</p>
+			<aside>
+				<div class="note" data-origin="debated"></div>
+			</aside>
+		</div>
+
+		<p>
+			Galle and d'Arrest found Neptune at Berlin on the night of 23
+			September 1846, within 1° of Le Verrier's place. It was the first
+			planet found from its pull on another.
+		</p>
+
+		<!-- ========================== MERCURY'S PERIHELION ========================== -->
+		<h2 id="mercury">Mercury's perihelion</h2>
+
+		<div class="row">
+			<p>
+				Le Verrier also worked on Mercury. In 1859 he found that its
+				perihelion advances faster than the planets' pulls allow, by 38″ a
+				century, and Newcomb in 1882 put the excess at 43″. The table gives
+				the budget as Clemence set it out in 1947.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<table class="prose-table budget-table">
+			<thead>
+				<tr><th>the advance of Mercury's perihelion in a century</th><th>arcseconds</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>observed, against the equinox of date</td><td>5599.7</td></tr>
+				<tr><td>the precession of the equinoxes</td><td>5025.6</td></tr>
+				<tr><td>the pulls of the planets</td><td>531.5</td></tr>
+				<tr class="hl"><td>left over</td><td>42.6 ± 0.9</td></tr>
+			</tbody>
+		</table>
+
+		<p>
+			A planet inside Mercury's orbit, which would have explained the
+			excess, was searched for and never found. In 1915 Einstein's general
+			theory of relativity, which changes Newton's law slightly close to
+			the Sun, gave 43″ a century for Mercury (42.98″ with today's
+			constants), which accounts for the excess.
+		</p>
+
+		<!-- ========================= WHERE THE STORY GOES NEXT ========================= -->
+		<h2 id="next">Where the story goes next</h2>
+
+		<p>
+			Each topic below was left out of the course or leads beyond it. A
+			topic becomes a link when its page exists.
+		</p>
+
+		<div id="topics"></div>
+
+		<!-- ============================= FURTHER READING ============================= -->
+		<h2 id="reading">Further reading</h2>
+
+		<ul class="sources reading">
+			<li>J. Evans, <em>The History and Practice of Ancient Astronomy</em>
+				(1998): the ancient models with the instruments and the
+				observations, for a reader who wants to redo them.</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975): how the <em>Almagest</em>'s methods and parameters were found,
+				and Babylonian astronomy.</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em>
+				(1999): a short life of Kepler, with the road to the ellipse.</li>
+			<li>C. M. Linton, <em>From Eudoxus to Einstein: A History of
+				Mathematical Astronomy</em> (2004): the whole story of this page,
+				with the mathematics.</li>
+			<li>R. Fitzpatrick, <em>An Introduction to Celestial Mechanics</em>
+				(2012): Newton's laws applied to the planets and the Moon, including
+				the variation and the motion of the perigee.</li>
+			<li>N. T. Roseveare, <em>Mercury's Perihelion from Le Verrier to
+				Einstein</em> (1982): the last section of this page in full.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2nd ed., 1998): how
+				positions are computed today, step by step.</li>
+		</ul>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				ch. 7 (Newton derives Kepler's laws).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), I B 4, p. 85 (Tycho's variation).</li>
+			<li>I. Newton, <em>Philosophiae Naturalis Principia Mathematica</em>
+				(3rd ed., 1726), Book I, Proposition 45, Corollary 2, transl. I. Bruce
+				(17centurymaths.com): the apse of 1°31′28″ a revolution.</li>
+			<li>S. Bodenmann, "The 18th-century battle over lunar motion",
+				<em>Physics Today</em> 63, 1 (2010): Clairaut, Euler and d'Alembert.</li>
+			<li>J. Laskar, "Is the Solar System stable?", arXiv:1209.5996 (2012):
+				Halley's and Laplace's Jupiter and Saturn.</li>
+			<li>"Tidal acceleration", Wikipedia, the history of the Moon's secular
+				acceleration (Halley, Laplace, Adams, Delaunay and Ferrel), retrieved
+				20 November 2026.</li>
+			<li>MacTutor History of Mathematics (St Andrews), "Mathematical
+				discovery of planets": Uranus, Bouvard, Le Verrier, Adams and
+				Galle.</li>
+			<li>G. M. Clemence, "The relativity effect in planetary motions",
+				<em>Reviews of Modern Physics</em> 19 (1947), 361–364: the budget of
+				Mercury's perihelion; with C. M. Will, "The confrontation between
+				general relativity and experiment", <em>Living Reviews in
+				Relativity</em> (2014), for Le Verrier's and Newcomb's values.</li>
+			<li>P. Bretagnon and G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988): the reference of Figure 1.</li>
+			<li>Every number on this page: <code>tools/numbers/beyond-kepler.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

@@ -6,7 +6,9 @@
    headers, the previous / next links and the margin notes. Touches no DOM.
 
    Publishing a page = setting ready: true on its entry in PAGES. The hub,
-   the previous / next links and the detour cards all follow.
+   the previous / next links and the detour cards all follow. The
+   toolbox (TOOLBOX) is not in PAGES: it is reached only from the hub's
+   button, with no previous / next and no row in the chapters.
    ========================================================================== */
 
 const SITE_MAP = (function () {
@@ -227,6 +229,18 @@ const SITE_MAP = (function () {
 		{ name: 'Kepler', year: 1609, date: '1609', work: 'the ellipse', pages: ['4.5'], above: true }
 	];
 
+	/* The toolbox (STRUCTURE.md §4, Epilogue): every model of the course
+	   gathered to be used, reached only from the hub. kicker replaces the
+	   act line of a page in PAGES. */
+	const TOOLBOX = {
+		number: 'toolbox',
+		kicker: 'Toolbox',
+		ready: true,
+		title: 'The toolbox',
+		question: 'Every model of the course, ready to use on any date',
+		path: 'toolbox/index.html'
+	};
+
 	/* Topics outside the scope (STRUCTURE.md §3, §7.4). A detour card
 	   becomes a link when its topic has a ready page. */
 	const TOPICS = {
@@ -269,13 +283,20 @@ const SITE_MAP = (function () {
 		},
 		newton: {
 			title: 'Newton and gravitation',
-			sentence: "why Kepler's laws hold",
+			sentence: "why Kepler's laws hold nearly, and where they fail",
 			path: null,
 			ready: false
 		},
 		perturbations: {
 			title: 'perturbations',
 			sentence: 'why the ellipses themselves slowly turn and change',
+			path: null,
+			ready: false
+		},
+		moon: {
+			title: 'the Moon after Kepler',
+			sentence:
+				"the evection, the variation and the annual equation as effects of the Sun's pull, and the series of terms that compute the Moon today",
 			path: null,
 			ready: false
 		},
@@ -298,6 +319,24 @@ const SITE_MAP = (function () {
 			ready: false
 		}
 	};
+
+	/* The topic cards of the epilogue (Site.renderTopics), in three
+	   groups: what the course left out, where the story went after Kepler,
+	   and what stood around the story. */
+	const TOPIC_GROUPS = [
+		{
+			title: 'Left out of the course',
+			topics: ['nutation', 'aberration', 'parallax', 'latitudes', 'deltaT']
+		},
+		{
+			title: 'Where the story went',
+			topics: ['newton', 'perturbations', 'moon']
+		},
+		{
+			title: 'Around the story',
+			topics: ['tycho', 'islamic', 'instruments', 'calendars']
+		}
+	];
 
 	/* Origins (STRUCTURE.md §7.1): the label of each margin note
 	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5); the
@@ -326,7 +365,9 @@ const SITE_MAP = (function () {
 		ACTS,
 		PAGES,
 		ASTRONOMERS,
+		TOOLBOX,
 		TOPICS,
+		TOPIC_GROUPS,
 		ORIGINS,
 		EXERCISE_KINDS
 	};
