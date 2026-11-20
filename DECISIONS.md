@@ -344,16 +344,17 @@ section.
   and the zodiacal anomaly are named so, not first and second, which
   the Moon's pages use the other way round.
   Approved by Marco on 2026-11-09. → STRUCTURE.md §6
-- **A term is bold where the page defines it (on trial, page 3.2).**
-  On 2026-11-19 Marco asked whether bold words would help the reader.
-  Italics did three jobs: book titles, terms at their definition, and,
-  in KaTeX, every symbol, so a new term looked like a title or a
-  variable. Bold now marks a term the page defines for the first time on
-  the site, where it is defined, so that a reader can find the
-  definition again; never a phrase or a result, to stress it. Tried on
-  page 3.2 on 2026-11-20 (mean elongation, crank, double elongation,
-  octants, mean apogee, true apogee, variation); Marco decides whether
-  it goes to every page. → WRITING.md §11
+- **A term is bold where the site defines it.** On 2026-11-19 Marco
+  asked whether bold words would help the reader. Italics did three
+  jobs: book titles, terms at their definition, and, in KaTeX, every
+  symbol, so a new term looked like a title or a variable. Bold now marks
+  a term where the site defines it for the first time, so that a reader
+  can find the definition again; never a phrase, a number or a result,
+  to stress it. Tried on page 3.2 on 2026-11-20 (mean elongation, crank,
+  double elongation, octants, mean apogee, true apogee, variation), and
+  approved by Marco the same day for every page. The italics of terms
+  defined on an earlier page became plain, and page 1.1's bold "23 h 56
+  min 4 s" lost its bold. → WRITING.md §11, CLAUDE.md "Writing"
 
 ## Code
 

@@ -173,6 +173,10 @@ same style:
     "coordinates", not "address" or "name"; "refraction", not "the lift";
     "the error", not "the miss"; not "buys 14 minutes" or "gave the idea
     away". Use the term the sources use, and define it once.
+- A term is bold where the site defines it for the first time, and
+  nowhere else (WRITING.md §11): never a phrase, a number or a result to
+  stress it, and not in captions or keys. Italics are for book titles,
+  foreign words and the rare stressed word.
 - Every longitude and latitude says which one it is: "ecliptic
   longitude", "ecliptic latitude", "geographic latitude", "heliocentric
   longitude", in the prose, the captions, the keys, the labels and the
