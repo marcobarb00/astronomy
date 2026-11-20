@@ -358,7 +358,6 @@ const PLATE_STARS = [
 	{ id: 'kap Per', ra: 47.37418183354417, dec: 44.85745828572973, pmra: 165.691, pmdec: -138.559, mag: 3.81 },
 	{ id: 'HIP 21393', ra: 68.8877, dec: -30.5623, pmra: 0, pmdec: 0, mag: 3.81 },
 	{ id: 'lam And', ra: 354.39101158367913, dec: 46.45815131141917, pmra: 159.606, pmdec: -421.822, mag: 3.82 },
-	{ id: 'alf Psc', ra: 30.5118, dec: 2.7638, pmra: 0, pmdec: 0, mag: 3.82 },
 	{ id: 'lam Oph', ra: 247.7284, dec: 1.9839, pmra: 0, pmdec: 0, mag: 3.82 },
 	{ id: 'omi Her', ra: 271.8856296342288, dec: 28.762491065638883, pmra: -0.018, pmdec: 8.153, mag: 3.827 },
 	{ id: '46 LMi', ra: 163.32787152823542, dec: 34.214892133082785, pmra: 90.625, pmdec: -278.664, mag: 3.83 },

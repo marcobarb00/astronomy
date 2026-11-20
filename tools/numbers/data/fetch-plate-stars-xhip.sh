@@ -22,7 +22,8 @@
 # right ascension 195° to 15° (through 0°) from declination -47° to +20°,
 # and right ascension 15° to 195° from -47° to -20°; and, whatever their
 # magnitude, the stars of the zodiac's figures from Virgo to Pisces
-# (FIGURE_STARS, as plate.js names them). North of +20° and the rest of
+# (FIGURE_STARS, as plate.js names them; alf Psc is SIMBAD's alf Psc A,
+# already in the SIMBAD files). North of +20° and the rest of
 # the band are already in the SIMBAD files. On 2026-11-20 CDS did not
 # answer from the session that built the hub either.
 #
@@ -67,7 +68,7 @@ alf Sco,bet Sco,del Sco,pi. Sco,sig Sco,tau Sco,eps Sco,mu. Sco,zet Sco,eta Sco,
 gam Sgr,del Sgr,eps Sgr,lam Sgr,phi Sgr,zet Sgr,sig Sgr,tau Sgr,
 alf Cap,bet Cap,psi Cap,ome Cap,zet Cap,del Cap,gam Cap,iot Cap,tet Cap,
 alf Aqr,bet Aqr,gam Aqr,del Aqr,eps Aqr,zet Aqr,eta Aqr,tet Aqr,lam Aqr,
-alf Psc,gam Psc,kap Psc,lam Psc,iot Psc,tet Psc,ome Psc,del Psc,eps Psc,zet Psc,mu. Psc,nu. Psc,omi Psc,eta Psc,phi Psc,tau Psc
+gam Psc,kap Psc,lam Psc,iot Psc,tet Psc,ome Psc,del Psc,eps Psc,zet Psc,mu. Psc,nu. Psc,omi Psc,eta Psc,phi Psc,tau Psc
 '''.replace('\n', '').split(','))
 figures_done = set()
 names_used = set()

@@ -346,8 +346,8 @@ const Plate = (function () {
 				['eps Psc', 'zet Psc'],
 				['zet Psc', 'mu. Psc'],
 				['mu. Psc', 'nu. Psc'],
-				['nu. Psc', 'alf Psc'],
-				['alf Psc', 'omi Psc'],
+				['nu. Psc', 'alf Psc A'],
+				['alf Psc A', 'omi Psc'],
 				['omi Psc', 'eta Psc'],
 				['eta Psc', 'phi Psc'],
 				['phi Psc', 'tau Psc']
