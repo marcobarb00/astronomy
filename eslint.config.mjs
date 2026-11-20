@@ -111,9 +111,16 @@ export default [
 		rules: BROWSER_RULES
 	})),
 
-	// the pages, the templates and the test page see every shared name
+	// the pages, the templates, the test page and the design mockups see
+	// every shared name
 	{
-		files: ['act*/**/*.js', 'templates/**/*.js', 'shared/tests.js', 'beyond-kepler/**/*.js'],
+		files: [
+			'act*/**/*.js',
+			'templates/**/*.js',
+			'shared/tests.js',
+			'beyond-kepler/**/*.js',
+			'design/**/*.js'
+		],
 		languageOptions: {
 			ecmaVersion: 2022,
 			sourceType: 'script',

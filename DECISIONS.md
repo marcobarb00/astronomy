@@ -26,7 +26,7 @@ section.
   → STRUCTURE.md §4
 - **Act I comes first even though it is the least exciting.** The
   foundations (the turning sky, frames, clocks) are needed to state any
-  prediction. Act 0, a hook ("Where is Mars tonight?"), is built last,
+  prediction. Act 0, the intro ("Where is Mars tonight?"), is built last,
   because it needs the Act IV models. → STRUCTURE.md §4, §12
 - **The story ends with Kepler.** Newton, perturbations and modern
   ephemerides are in a short epilogue, "Beyond Kepler", with pointers to
@@ -214,6 +214,10 @@ section.
   scale of powers of ten. The Sun section stays on trial; the Moon after
   Kepler is an h3 of the Residual. Approved by Marco on 2026-11-19. →
   STRUCTURE.md §4 (page 4.5)
+- **Act 0 is called "Intro", not "The hook".** Its role is unchanged (a
+  first page, "Where is Mars tonight?", built last); the name is the one
+  the reader sees on the hub. Its folder is `act0-intro/`. Decided by
+  Marco on 2026-11-20. → STRUCTURE.md §4, §9; shared/site-map.js
 
 ## Look
 

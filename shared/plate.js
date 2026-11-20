@@ -31,7 +31,7 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights (and a plain line, a symbol, the Sun)
+	 7. Highlights (and a plain line, a symbol, the Sun, a body)
 	 8. Label placement
    ========================================================================== */
 
@@ -904,6 +904,23 @@ const Plate = (function () {
 		placeLabels(chart);
 	}
 
+	/* A body at its place, highlighted (the hub: the Moon and the planets
+	   of tonight): a disk in --plate-accent, radius r in chart units, and
+	   its name beside it, placed clear of the other labels. */
+	function body(chart, ra, dec, name, r = 6) {
+		const q = chart.at(ra, dec);
+		const group = svgEl('g', { class: 'body' }, chart.svg);
+
+		svgEl('circle', { cx: q.x.toFixed(1), cy: q.y.toFixed(1), r: r, class: 'body-mark' }, group);
+
+		const element = svgText(group, name, q.x, q.y - r - 6, { class: 'body-name', 'text-anchor': 'middle' });
+
+		// labels keep clear of the disk, as of another label
+		chart.obstacles.push({ x: q.x - r, y: q.y - r, w: 2 * r, h: 2 * r });
+		addLabel(chart, element, LABEL_ORDER.highlight, (box, k) => aroundPoint(q, box, r + LABEL_GAP * k));
+		placeLabels(chart);
+	}
+
 	/* A point named by a symbol (e.g. the ecliptic pole K): a small cross
 	   in the ink of the plate and the symbol beside it, kept on a phone as
 	   the pole's P is. */
@@ -1122,6 +1139,7 @@ const Plate = (function () {
 		highlightPath,
 		line: plainLine,
 		symbol,
+		body,
 		sun
 	};
 })();

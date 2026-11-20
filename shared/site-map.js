@@ -15,7 +15,7 @@ const SITE_MAP = (function () {
 		{
 			id: 0,
 			name: 'Act 0',
-			title: 'The hook',
+			title: 'Intro',
 			blurb: "Ptolemy's Mars against tonight's sky: how can circles do this well, and why are they still wrong?"
 		},
 		{
@@ -59,7 +59,7 @@ const SITE_MAP = (function () {
 			ready: false,
 			title: 'Where is Mars tonight?',
 			question: 'How good was a model built from circles?',
-			path: 'act0-hook/01-mars-tonight/index.html'
+			path: 'act0-intro/01-mars-tonight/index.html'
 		},
 		{
 			number: '1.1',

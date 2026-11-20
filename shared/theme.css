@@ -1570,6 +1570,21 @@ figure.plate-figure {
 	fill: var(--plate-ink);
 }
 
+/* A highlighted body (Plate.body): a disk and its name in the accent. */
+.plate .body-mark {
+	fill: var(--plate-accent);
+	stroke: var(--plate);
+	stroke-width: 1.5;
+}
+
+.plate .body-name {
+	fill: var(--plate-accent);
+	font-family: var(--font-label);
+	font-size: calc(16px * var(--k, 1));
+	font-weight: 600;
+	letter-spacing: 0.08em;
+}
+
 /* The cross of a point named by a symbol (the ecliptic pole K). */
 .plate .symbol-mark {
 	stroke: var(--plate-ink);

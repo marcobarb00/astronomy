@@ -1,0 +1,668 @@
+/* ==========================================================================
+   PREDICTING THE SKY - HOME CONCEPTS (concepts.css)
+   Layout for the three mockups of a new home page. Only the variables of
+   shared/theme.css are used: no new colours (STYLE.md §2).
+
+   TABLE OF CONTENTS
+	 1. Switcher between the concepts
+	 2. Hub header and opening
+	 3. Page thumbnails
+	 4. Concept A: the sky today, illustrated tiles
+	 5. Concept B: the error of every model, the index
+	 6. Concept C: the loop, the timeline, the chapters
+	 7. Phone width
+   ========================================================================== */
+
+/* ==========================================================================
+   1. SWITCHER BETWEEN THE CONCEPTS (mockup only, not part of a design)
+   ========================================================================== */
+
+.concept-bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 18px;
+	align-items: baseline;
+	margin: 0 0 28px;
+	padding: 8px 0;
+	border-bottom: 1px dashed var(--line);
+	font-family: var(--font-label);
+	font-size: 16px;
+	letter-spacing: 0.12em;
+	color: var(--muted);
+}
+
+.concept-bar a {
+	color: var(--accent);
+}
+
+.concept-bar a[aria-current="page"] {
+	color: var(--ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+/* ==========================================================================
+   2. HUB HEADER AND OPENING
+   ========================================================================== */
+
+.hub-sub {
+	margin: 4px 0 0;
+	font: italic 500 24px/1.3 var(--font-title);
+	color: var(--muted);
+}
+
+/* The way in: a Play-style button to the first page, and a quieter link. */
+.start {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 24px;
+	align-items: center;
+	margin: 22px 0 8px;
+}
+
+a.begin {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 8px 22px;
+	background: var(--accent);
+	color: var(--card);
+	font: 17px/1.2 var(--font-text);
+	text-decoration: none;
+}
+
+a.begin:hover {
+	background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+a.begin .arrow {
+	font-size: 20px;
+}
+
+.start .aside-link {
+	font-size: 16px;
+	color: var(--accent);
+}
+
+/* The four-pointed star in the middle of a double rule (STYLE.md §4.3). */
+.star-rule {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin: 52px 0 8px;
+}
+
+.star-rule::before,
+.star-rule::after {
+	content: "";
+	flex: 1;
+	height: 4px;
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
+}
+
+.star-rule svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	fill: var(--ink);
+}
+
+/* ==========================================================================
+   3. PAGE THUMBNAILS (thumbs.js)
+   ========================================================================== */
+
+svg.thumb {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+
+svg.thumb * {
+	fill: none;
+	stroke-width: 1.4;
+	stroke-linecap: round;
+}
+
+svg.thumb .thin {
+	stroke-width: 0.8;
+}
+
+svg.thumb .dashed {
+	stroke-dasharray: 3 3;
+}
+
+svg.thumb .ghost {
+	stroke-dasharray: 2 2;
+	opacity: 0.7;
+}
+
+svg.thumb .ink {
+	stroke: var(--ink);
+}
+
+svg.thumb .earth {
+	stroke: var(--earth);
+}
+
+svg.thumb .sun {
+	stroke: var(--sun);
+}
+
+svg.thumb .planet {
+	stroke: var(--planet);
+}
+
+svg.thumb .deferent {
+	stroke: var(--deferent);
+}
+
+svg.thumb .epicycle {
+	stroke: var(--epicycle);
+}
+
+/* Filled marks take the colour of their line. */
+svg.thumb .fill {
+	stroke: none;
+}
+
+svg.thumb .ink.fill {
+	fill: var(--ink);
+}
+
+svg.thumb .earth.fill {
+	fill: var(--earth);
+}
+
+svg.thumb .sun.fill {
+	fill: var(--sun);
+}
+
+svg.thumb .planet.fill {
+	fill: var(--planet);
+}
+
+svg.thumb .epicycle.fill {
+	fill: var(--epicycle);
+}
+
+svg.thumb .fill-soft {
+	fill: color-mix(in srgb, var(--sun) 35%, transparent);
+}
+
+svg.thumb .fill-dark {
+	fill: var(--ink);
+}
+
+/* Letters in the text colour of their line, 13 px at a tile's width. */
+svg.thumb .label {
+	stroke: none;
+	font: italic 600 9px var(--font-title);
+}
+
+svg.thumb .label.ink {
+	fill: var(--ink);
+}
+
+svg.thumb .label.earth {
+	fill: var(--earth-text);
+}
+
+svg.thumb .label.sun {
+	fill: var(--sun-text);
+}
+
+svg.thumb .label.epicycle {
+	fill: var(--epicycle-text);
+}
+
+/* An unready page: its drawing fades with its tile. */
+.unready svg.thumb {
+	opacity: 0.45;
+}
+
+/* ==========================================================================
+   4. CONCEPT A: THE SKY TODAY, ILLUSTRATED TILES
+   ========================================================================== */
+
+/* The plate of the zodiac spans the page: the chart takes the full width,
+   the caption sits under it in two columns. */
+.hero-plate .plate {
+	padding: 22px 24px 26px;
+}
+
+.hero-plate .plate .chart {
+	flex: 1 1 100%;
+	max-width: none;
+}
+
+.hero-plate .plate .side {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 6px 36px;
+	flex: 1 1 100%;
+	max-width: none;
+}
+
+.hero-plate .plate .side .plate-head {
+	grid-column: 1 / -1;
+}
+
+.hero-plate .plate .side p {
+	margin: 0;
+}
+
+/* Illustrated tiles: a drawing over the number, title and question. */
+.tiles.illustrated .tile {
+	display: grid;
+	grid-template-rows: auto auto;
+	padding: 0;
+}
+
+.tiles.illustrated .tile-art {
+	padding: 14px 22px 10px;
+	border-bottom: 1px solid var(--line);
+	background: var(--bg);
+}
+
+.tiles.illustrated .tile-text {
+	padding: 10px 16px 14px;
+}
+
+.tiles.illustrated a.tile:hover .tile-art {
+	background: var(--card);
+}
+
+/* ==========================================================================
+   5. CONCEPT B: THE ERROR OF EVERY MODEL, THE INDEX
+   ========================================================================== */
+
+.ladder-figure {
+	margin: 36px 0 12px;
+}
+
+.ladder-figure .fig-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 8px;
+	padding: 16px 20px;
+}
+
+/* The read-out under the chart, beside its hint. */
+.ladder-side {
+	display: grid;
+	grid-template-columns: 200px minmax(0, 1fr);
+	gap: 4px 24px;
+	align-items: start;
+	max-width: 760px;
+	margin-left: 64px;
+}
+
+svg.ladder {
+	display: block;
+	width: 100%;
+	height: auto;
+	font-family: var(--font-text);
+}
+
+svg.ladder .axis {
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+
+svg.ladder .grid {
+	stroke: var(--line);
+	stroke-width: 1;
+}
+
+svg.ladder .tick-label {
+	fill: var(--muted);
+	font-size: 14px;
+}
+
+svg.ladder .act-band {
+	fill: var(--bg);
+}
+
+svg.ladder .act-name {
+	fill: var(--accent);
+	font-family: var(--font-label);
+	font-size: 15px;
+	letter-spacing: 0.2em;
+}
+
+svg.ladder .page-label {
+	fill: var(--ink);
+	font-family: var(--font-label);
+	font-size: 14px;
+	letter-spacing: 0.08em;
+}
+
+svg.ladder .series {
+	fill: none;
+	stroke-width: 2;
+}
+
+svg.ladder .series.sun {
+	stroke: var(--sun);
+}
+
+svg.ladder .series.moon {
+	stroke: var(--earth);
+}
+
+svg.ladder .series.mars {
+	stroke: var(--planet);
+}
+
+svg.ladder .point {
+	stroke: var(--card);
+	stroke-width: 2;
+	cursor: pointer;
+}
+
+svg.ladder .point.sun {
+	fill: var(--sun);
+}
+
+svg.ladder .point.moon {
+	fill: var(--earth);
+}
+
+svg.ladder .point.mars {
+	fill: var(--planet);
+}
+
+svg.ladder .point.active {
+	stroke: var(--ink);
+}
+
+svg.ladder .series-name {
+	font: italic 600 18px var(--font-title);
+}
+
+svg.ladder .series-name.sun {
+	fill: var(--sun-text);
+}
+
+svg.ladder .series-name.moon {
+	fill: var(--earth-text);
+}
+
+svg.ladder .series-name.mars {
+	fill: var(--planet-text);
+}
+
+/* The read-out of the chosen model, and its link to the page. */
+.ladder-side .readout a {
+	color: var(--accent);
+}
+
+.ladder-side .hint {
+	margin: 6px 0 0;
+	font-size: 16px;
+	color: var(--muted);
+}
+
+/* The index: one line per page, in two columns of acts. */
+.index-acts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px 48px;
+	margin-top: 28px;
+}
+
+.index-act {
+	break-inside: avoid;
+}
+
+.index-act h2 {
+	margin: 2px 0 6px;
+	font-size: 30px;
+}
+
+ol.index {
+	margin: 0 0 22px;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--ink);
+}
+
+ol.index li {
+	display: grid;
+	grid-template-columns: 3.2em minmax(0, 1fr);
+	gap: 0 10px;
+	padding: 8px 0 9px;
+	border-bottom: 1px solid var(--line);
+}
+
+ol.index .n {
+	font-family: var(--font-label);
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	color: var(--accent);
+}
+
+ol.index a,
+ol.index .off {
+	font: 600 22px/1.2 var(--font-title);
+	color: var(--ink);
+	text-decoration: none;
+}
+
+ol.index a:hover {
+	color: var(--accent);
+}
+
+ol.index .off {
+	color: var(--muted);
+}
+
+ol.index .q {
+	grid-column: 2;
+	font-size: 15px;
+	font-style: italic;
+	color: var(--muted);
+}
+
+/* ==========================================================================
+   6. CONCEPT C: THE LOOP, THE TIMELINE, THE CHAPTERS
+   ========================================================================== */
+
+.hero-split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+	gap: 40px;
+	align-items: start;
+	margin-top: 20px;
+}
+
+.hero-split .lead {
+	margin-top: 0;
+}
+
+.loop-figure {
+	margin: 0;
+}
+
+.loop-figure canvas {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1 / 0.82;
+}
+
+.loop-figure .loop-controls {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	padding: 4px 12px 12px;
+}
+
+.loop-figure .readout {
+	flex: 1;
+	margin: 0;
+}
+
+/* A small-caps label that opens a section of the hub. */
+.section-label {
+	margin-top: 8px;
+}
+
+/* The timeline of the astronomers: a broken axis, the pages under it. */
+.timeline {
+	margin: 20px 0 8px;
+}
+
+svg.time {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+
+svg.time .axis {
+	stroke: var(--ink);
+	stroke-width: 1.2;
+}
+
+svg.time .tick {
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+
+svg.time .year {
+	fill: var(--muted);
+	font-size: 14px;
+	font-family: var(--font-text);
+}
+
+svg.time .who {
+	fill: var(--ink);
+	font: 600 19px var(--font-title);
+}
+
+svg.time .what {
+	fill: var(--muted);
+	font: italic 15px var(--font-text);
+}
+
+svg.time .break {
+	fill: var(--bg);
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+
+svg.time a .chip rect {
+	fill: var(--card);
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+
+svg.time a:hover .chip rect {
+	fill: var(--ink);
+}
+
+svg.time .chip text {
+	fill: var(--accent);
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+}
+
+svg.time a:hover .chip text {
+	fill: var(--card);
+}
+
+svg.time .stem {
+	stroke: var(--line);
+	stroke-width: 1;
+}
+
+/* The chapters: one row per page, the question first. */
+.chapter {
+	margin-top: 8px;
+}
+
+.chapter-head {
+	display: flex;
+	gap: 16px;
+	align-items: baseline;
+	margin: 34px 0 10px;
+}
+
+.chapter-head h2 {
+	margin: 0;
+}
+
+.chapter-head .act-blurb {
+	margin: 0;
+}
+
+.rows {
+	display: grid;
+	gap: 0;
+	border-top: 1px solid var(--ink);
+}
+
+.rows .row-page {
+	display: grid;
+	grid-template-columns: 120px 3.2em minmax(0, 1fr);
+	gap: 4px 18px;
+	align-items: center;
+	padding: 10px 6px;
+	border-bottom: 1px solid var(--line);
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.rows a.row-page:hover {
+	background: var(--card);
+}
+
+.rows .row-page .n {
+	font-family: var(--font-label);
+	font-size: 17px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	color: var(--accent);
+}
+
+.rows .row-page .q {
+	display: block;
+	font: italic 600 25px/1.2 var(--font-title);
+}
+
+.rows .row-page .t {
+	display: block;
+	font-size: 15px;
+	color: var(--muted);
+}
+
+.rows .row-page.unready {
+	color: var(--muted);
+}
+
+/* ==========================================================================
+   7. PHONE WIDTH
+   ========================================================================== */
+
+@media (max-width: 800px) {
+	.hero-plate .plate .side,
+	.ladder-side,
+	.index-acts,
+	.hero-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.rows .row-page {
+		grid-template-columns: 80px 2.6em minmax(0, 1fr);
+	}
+
+	.rows .row-page .q {
+		font-size: 21px;
+	}
+}

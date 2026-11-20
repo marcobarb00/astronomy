@@ -53,7 +53,7 @@ Five acts, sixteen pages, plus a hub and an epilogue. Pages are numbered
 the main figures, exercise ideas, and the residual that hands over to the
 next page.
 
-### Act 0: The hook
+### Act 0: Intro
 
 #### 0.1 · Where is Mars tonight?
 
@@ -1395,7 +1395,7 @@ shared/                    see §8
 templates/                 page template and a demo of the shared components
 tools/numbers/             the script behind each page's numbers (§7.2)
 tools/check/               checks run after every change (golden values, smoke test)
-act0-hook/
+act0-intro/
   01-mars-tonight/         index.html, page.js, page.css (optional)
 act1-stage/
   01-turning-sky/
