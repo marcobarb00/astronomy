@@ -411,7 +411,8 @@ const Site = (function () {
 	   7. HUB
 	   The acts in order as chapters: a small-caps label and a title, then
 	   one row per page, with the drawing of the page (thumbs.js), its
-	   number, its question and its title, greyed until ready. The
+	   number, its title and its question under it (as in the page's own
+	   header), greyed until ready. The
 	   timeline of the astronomers, with the pages under each. The hub's plate of tonight's sky is its own (hub.js).
 	   ====================================================================== */
 
@@ -421,7 +422,7 @@ const Site = (function () {
 	function pageRow(page, drawPage) {
 		const row = makeEl(page.ready ? 'a' : 'div', page.ready ? 'page-row' : 'page-row unready');
 		const number = page.number === 'beyond' ? '' : page.number;
-		const soon = page.ready ? '' : ' · in preparation';
+		const soon = page.ready ? '' : '<span class="soon">in preparation</span>';
 
 		if (page.ready) {
 			row.href = href(page.path);
@@ -435,8 +436,8 @@ const Site = (function () {
 			makeEl(
 				'span',
 				'page-words',
-				`<span class="page-question">${page.question}</span>` +
-					`<span class="page-title">${page.title}${soon}</span>`
+				`<span class="page-title">${page.title}${soon}</span>` +
+					`<span class="page-question">${page.question}</span>`
 			)
 		);
 

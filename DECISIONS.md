@@ -501,6 +501,10 @@ section.
   declination −45° for Scorpius' tail. A rectangular plate may cross 0h
   (`Plate.rectangular`, `unwrap`), so the hub's plate is always the
   twelve hours opposite the Sun. → shared/plate.js (FIGURES), hub.js
+- **The hub's chapter rows show the title, then the question under it**,
+  the order of each page's own header and of the links that name pages
+  by their titles (Marco, 2026-11-20; the first version put the
+  question first). → STYLE.md §4.9
 - **The hub's plate twinkles** (study 3 of the motion studies, chosen by
   Marco on 2026-11-20): the stars low on the chart more, as seen from
   mid-northern latitudes, the planets not at all. Off for reduced

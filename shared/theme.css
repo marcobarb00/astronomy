@@ -1679,7 +1679,8 @@ figure.plate-figure {
    14. HUB
    The opening and the way in, then, between star rules: the plate of
    tonight's sky (hub.js), the timeline of the astronomers, the story, and
-   the acts as chapters, one row per page with its drawing (thumbs.js).
+   the acts as chapters, one row per page with its drawing (thumbs.js),
+   its title and its question.
    Then the key of origins and the sources.
    ========================================================================== */
 
@@ -1976,14 +1977,32 @@ a.page-row:hover {
 	color: var(--accent);
 }
 
-.page-row .page-question {
-	display: block;
-	font: italic 600 25px/1.2 var(--font-title);
-}
-
+/* The title as on the page's own header, smaller; the question under
+   it in italics, as the page's subtitle. */
 .page-row .page-title {
 	display: block;
+	font: 600 25px/1.2 var(--font-title);
+}
+
+.page-row .page-question {
+	display: block;
+	margin-top: 2px;
 	font-size: 15px;
+	font-style: italic;
+	line-height: 1.45;
+	color: var(--muted);
+}
+
+/* "in preparation" after the title of a page not yet ready, kept on one
+   line (it goes under the title on a phone). */
+.page-row .soon {
+	display: inline-block;
+	white-space: nowrap;
+	margin-left: 10px;
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
 	color: var(--muted);
 }
 
@@ -2265,8 +2284,8 @@ svg.thumb .label.epicycle {
 		gap: 4px 12px;
 	}
 
-	.page-row .page-question {
-		font-size: 21px;
+	.page-row .page-title {
+		font-size: 22px;
 	}
 
 	/* 82px: the longest word of a label ("geographic", in "geographic

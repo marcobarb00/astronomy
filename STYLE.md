@@ -201,9 +201,9 @@ styled by `shared/theme.css`.
 4. A chapter is a small-caps act label and its title over a 1 px `--ink`
    rule, then one row per page: a small drawing of the page's main
    construction (`shared/thumbs.js`, the figure colours of §2, a letter
-   or two at most), the number, the question in Cormorant Garamond
-   italic and the title under it. A page not yet ready is greyed and not
-   a link.
+   or two at most), the number, the title in Cormorant Garamond and the
+   question under it in italics, the order of the page's own header. A
+   page not yet ready is greyed, marked "in preparation" and not a link.
 5. The sources and the footer.
 
 ## 5. Stars

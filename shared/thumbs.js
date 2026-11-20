@@ -307,9 +307,13 @@ const Thumbs = (function () {
 	function sphereView(cx, cy, radius) {
 		const rad = Math.PI / 180;
 		const latitude = 45 * rad;
-		const a = VIEW.azimuth * rad;
-		const e = VIEW.elevation * rad;
-		const eye = [Math.cos(e) * Math.cos(a), Math.cos(e) * Math.sin(a), Math.sin(e)];
+		const azimuth = VIEW.azimuth * rad;
+		const elevation = VIEW.elevation * rad;
+		const eye = [
+			Math.cos(elevation) * Math.cos(azimuth),
+			Math.cos(elevation) * Math.sin(azimuth),
+			Math.sin(elevation)
+		];
 		const flat = Math.hypot(eye[0], eye[1]);
 		const right = [-eye[1] / flat, eye[0] / flat, 0];
 		const up = [
