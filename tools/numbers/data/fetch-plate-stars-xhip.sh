@@ -18,11 +18,20 @@
 #
 # With the argument "hub", the rest of the band of the zodiac for the
 # plate of tonight's sky on the hub (index.html), which can show any
-# twelve hours of right ascension between declinations -30° and +34°:
-# right ascension 195° to 15° (through 0°) from declination -32° to +20°,
-# and right ascension 15° to 195° from -32° to -20°. North of +20° and
-# the rest of the band are already in the SIMBAD files. On 2026-11-20 CDS
-# did not answer from the session that built the hub either.
+# twelve hours of right ascension between declinations -45° and +34°:
+# right ascension 195° to 15° (through 0°) from declination -47° to +20°,
+# and right ascension 15° to 195° from -47° to -20°; and, whatever their
+# magnitude, the stars of the zodiac's figures from Virgo to Pisces
+# (FIGURE_STARS, as plate.js names them). North of +20° and the rest of
+# the band are already in the SIMBAD files. On 2026-11-20 CDS did not
+# answer from the session that built the hub either.
+#
+# XHIP writes some double stars without their index (alf Lib, bet Sco,
+# mu. Sco, zet Sco, alf Cap): the stars are listed brightest first, and
+# the first of a name keeps it, the bright component that the figures
+# join; in "hub" mode the next ones are written as their HIP number, so
+# that tools/make-plate-stars.py, which keeps one star per name, loses
+# none (two stars XHIP calls ups Eri are 3° apart).
 # Usage: sh fetch-plate-stars-xhip.sh hub > plate-stars-xhip-hub-YYYY-MM-DD.csv
 set -e
 REGION=${1:-page-3.3}
@@ -50,16 +59,43 @@ def identifier(hip):
         return n['flam'] + ' ' + n['c']
     return 'HIP %d' % hip
 
+# The stars of the figures from Virgo to Pisces (plate.js, FIGURES).
+FIGURE_STARS = set('''
+alf Vir,bet Vir,gam Vir,del Vir,eps Vir,zet Vir,eta Vir,tet Vir,
+alf Lib,bet Lib,gam Lib,sig Lib,ups Lib,
+alf Sco,bet Sco,del Sco,pi. Sco,sig Sco,tau Sco,eps Sco,mu. Sco,zet Sco,eta Sco,tet Sco,kap Sco,lam Sco,
+gam Sgr,del Sgr,eps Sgr,lam Sgr,phi Sgr,zet Sgr,sig Sgr,tau Sgr,
+alf Cap,bet Cap,psi Cap,ome Cap,zet Cap,del Cap,gam Cap,iot Cap,tet Cap,
+alf Aqr,bet Aqr,gam Aqr,del Aqr,eps Aqr,zet Aqr,eta Aqr,tet Aqr,lam Aqr,
+alf Psc,gam Psc,kap Psc,lam Psc,iot Psc,tet Psc,ome Psc,del Psc,eps Psc,zet Psc,mu. Psc,nu. Psc,omi Psc,eta Psc,phi Psc,tau Psc
+'''.replace('\n', '').split(','))
+figures_done = set()
+names_used = set()
+
+
+def unique(hip):
+    """The identifier, or 'HIP n' when an earlier star took it (hub mode)."""
+    name = identifier(hip)
+    if region == 'hub' and name in names_used:
+        return 'HIP %d' % hip
+    names_used.add(name)
+    return name
+
 print('main_id,ra,dec,pmra,pmdec,V')
 for f in sorted(stars, key=lambda f: f['properties']['mag']):
     ra, dec = f['geometry']['coordinates']
     ra = ra % 360
     mag = f['properties']['mag']
     if region == 'hub':
-        inside = (-32 <= dec <= 20 and (ra > 195 or ra < 15)) or (15 <= ra <= 195 and -32 <= dec < -20)
+        inside = (-47 <= dec <= 20 and (ra > 195 or ra < 15)) or (15 <= ra <= 195 and -47 <= dec < -20)
+        if identifier(f['id']) in FIGURE_STARS and identifier(f['id']) not in figures_done:
+            figures_done.add(identifier(f['id']))
+            if mag >= 5.0 or not inside:
+                print('"* %s",%s,%s,,,%s' % (unique(f['id']), ra, dec, mag))
+                continue
     else:
         inside = 105 < ra <= 195 and -20 <= dec <= 20
     if mag < 5.0 and inside:
-        print('"* %s",%s,%s,,,%s' % (identifier(f['id']), ra, dec, mag))
+        print('"* %s",%s,%s,,,%s' % (unique(f['id']), ra, dec, mag))
 PY
 rm -rf "$WORK"

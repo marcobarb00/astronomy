@@ -244,6 +244,115 @@ const Plate = (function () {
 				['del Cnc', 'alf Cnc']
 			],
 			name: [134, 26]
+		},
+
+		// the rest of the zodiac, for the hub's plate of tonight's sky; some
+		// double stars carry XHIP's name without its index (alf Lib for
+		// alf02 Lib, bet Sco for bet01 Sco, mu. Sco, zet Sco for zet02 Sco,
+		// alf Cap for alf02 Cap: tools/numbers/data/fetch-plate-stars-xhip.sh)
+		'VIRGO': {
+			lines: [
+				['alf Vir', 'tet Vir'],
+				['tet Vir', 'gam Vir'],
+				['gam Vir', 'eta Vir'],
+				['eta Vir', 'bet Vir'],
+				['gam Vir', 'del Vir'],
+				['del Vir', 'eps Vir'],
+				['alf Vir', 'zet Vir'],
+				['zet Vir', 'del Vir']
+			],
+			name: [186, 9]
+		},
+		'LIBRA': {
+			lines: [
+				['alf Lib', 'bet Lib'],
+				['bet Lib', 'gam Lib'],
+				['gam Lib', 'alf Lib'],
+				['alf Lib', 'sig Lib'],
+				['gam Lib', 'ups Lib']
+			],
+			name: [229, -3]
+		},
+		'SCORPIUS': {
+			lines: [
+				['bet Sco', 'del Sco'],
+				['del Sco', 'pi. Sco'],
+				['del Sco', 'sig Sco'],
+				['sig Sco', 'alf Sco'],
+				['alf Sco', 'tau Sco'],
+				['tau Sco', 'eps Sco'],
+				['eps Sco', 'mu. Sco'],
+				['mu. Sco', 'zet Sco'],
+				['zet Sco', 'eta Sco'],
+				['eta Sco', 'tet Sco'],
+				['tet Sco', 'kap Sco'],
+				['kap Sco', 'lam Sco']
+			],
+			name: [258, -21]
+		},
+		'SAGITTARIUS': {
+			lines: [
+				['gam Sgr', 'del Sgr'],
+				['del Sgr', 'eps Sgr'],
+				['eps Sgr', 'gam Sgr'],
+				['del Sgr', 'lam Sgr'],
+				['lam Sgr', 'phi Sgr'],
+				['phi Sgr', 'del Sgr'],
+				['phi Sgr', 'sig Sgr'],
+				['sig Sgr', 'tau Sgr'],
+				['tau Sgr', 'zet Sgr'],
+				['zet Sgr', 'phi Sgr'],
+				['zet Sgr', 'eps Sgr']
+			],
+			name: [281, -19]
+		},
+		'CAPRICORNUS': {
+			lines: [
+				['alf Cap', 'bet Cap'],
+				['bet Cap', 'psi Cap'],
+				['psi Cap', 'ome Cap'],
+				['ome Cap', 'zet Cap'],
+				['zet Cap', 'del Cap'],
+				['del Cap', 'gam Cap'],
+				['gam Cap', 'iot Cap'],
+				['iot Cap', 'tet Cap'],
+				['tet Cap', 'bet Cap']
+			],
+			name: [316, -8]
+		},
+		'AQUARIUS': {
+			lines: [
+				['eps Aqr', 'bet Aqr'],
+				['bet Aqr', 'alf Aqr'],
+				['alf Aqr', 'gam Aqr'],
+				['gam Aqr', 'zet Aqr'],
+				['zet Aqr', 'eta Aqr'],
+				['alf Aqr', 'tet Aqr'],
+				['tet Aqr', 'lam Aqr'],
+				['lam Aqr', 'del Aqr']
+			],
+			name: [333, 6]
+		},
+		'PISCES': {
+			lines: [
+				['gam Psc', 'kap Psc'],
+				['kap Psc', 'lam Psc'],
+				['lam Psc', 'iot Psc'],
+				['iot Psc', 'tet Psc'],
+				['tet Psc', 'gam Psc'],
+				['iot Psc', 'ome Psc'],
+				['ome Psc', 'del Psc'],
+				['del Psc', 'eps Psc'],
+				['eps Psc', 'zet Psc'],
+				['zet Psc', 'mu. Psc'],
+				['mu. Psc', 'nu. Psc'],
+				['nu. Psc', 'alf Psc'],
+				['alf Psc', 'omi Psc'],
+				['omi Psc', 'eta Psc'],
+				['eta Psc', 'phi Psc'],
+				['phi Psc', 'tau Psc']
+			],
+			name: [7, 14]
 		}
 	};
 
@@ -521,11 +630,12 @@ const Plate = (function () {
 
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
+			const hour = ((hours % 24) + 24) % 24; // an area may cross 0h
 
-			svgText(border, `${hours}h`, q.x, q.y + band + 6, {
+			svgText(border, `${hour}h`, q.x, q.y + band + 6, {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'hanging',
-				class: wide && hours % 2 === 1 ? 'hour minor' : 'hour'
+				class: wide && hour % 2 === 1 ? 'hour minor' : 'hour'
 			});
 		}
 
@@ -649,8 +759,11 @@ const Plate = (function () {
 	   default; bottom, under it, 70 by default; a chart with nothing to name on its right, page 4.1, keeps
 	   less there, so that the chart fills the plate). The equator is drawn, and
 	   named at the
-	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
-	   highlight in 'layer', clipped to the chart. */
+	   western (right) end, when it is in the area. The area may cross 0h
+	   (raMin below 0 or raMax above 360). Returns { svg, layer, at,
+	   project, unwrap }: unwrap(ra) takes a right ascension into the
+	   chart's range, for at(); the page draws its highlight in 'layer',
+	   clipped to the chart. */
 	function rectangular(container, options) {
 		const area = options.area;
 		const { raMin, raMax, decMin, decMax } = area;
@@ -664,10 +777,16 @@ const Plate = (function () {
 		const bottom = options.margins?.bottom ?? 70;
 		const svg = newSvg(container, width + left + right, height + top + bottom, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
-		const project = (ra, dec) => {
-			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
 
-			return isInside ? at(ra, dec) : null;
+		// a right ascension taken into [raMin, raMin + 360), so that an area
+		// may cross 0h (raMin < 0 or raMax > 360: the hub's plate); a page
+		// drawing on such a chart passes right ascensions taken the same way
+		const unwrap = ra => raMin + norm360(ra - raMin);
+		const project = (ra, dec) => {
+			const r = unwrap(ra);
+			const isInside = r <= raMax && dec >= decMin && dec <= decMax;
+
+			return isInside ? at(r, dec) : null;
 		};
 
 		// a label stays inside the chart, clear of the border and its labels
@@ -685,7 +804,7 @@ const Plate = (function () {
 		svgEl('rect', { x: left, y: top, width: width, height: height }, clip);
 
 		const layer = svgEl('g', { 'clip-path': `url(#${clipId})` }, svg);
-		const chart = { svg, layer, at, project, inside, labels: [], obstacles: [] };
+		const chart = { svg, layer, at, project, unwrap, inside, labels: [], obstacles: [] };
 		const grid = svgEl('g', { class: 'grid' }, layer);
 
 		for (let ra = Math.ceil(raMin / 15) * 15; ra <= raMax; ra += 15) {
@@ -705,7 +824,13 @@ const Plate = (function () {
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, layer), project, options.figures);
-		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
+		drawStarNames(
+			chart,
+			svgEl('g', { class: 'star-names' }, layer),
+			options.names,
+			(ra, dec) => at(unwrap(ra), dec),
+			options.keep
+		);
 
 		if (decMin < 0 && decMax > 0) {
 			const y = at(0, 0).y;

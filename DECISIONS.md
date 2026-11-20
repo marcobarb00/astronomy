@@ -486,11 +486,22 @@ section.
 - **The stars of the rest of the zodiac come from XHIP.** The hub's
   plate can show any twelve hours of the zodiac, and the plate stars
   covered only 0h to 13h south of +20°. CDS did not answer on 2026-11-20,
-  so the rest (right ascension 195° to 15° from −32° to +20°, and below
-  −20° elsewhere) comes from XHIP, as page 3.3's region did; no existing
-  plate reaches it, and no star already listed changed. Constellation
-  figures are drawn from Aries to Leo only. → tools/numbers/data/
-  fetch-plate-stars-xhip.sh, tools/make-plate-stars.py
+  so the rest (right ascension 195° to 15° from −47° to +20°, and below
+  −20° elsewhere) comes from XHIP, as page 3.3's region did, with the
+  stars of the figures from Virgo to Pisces whatever their magnitude; no
+  existing plate reaches it, and no star already listed was lost. XHIP
+  gives some double stars one name (two stars called ups Eri, 3° apart):
+  the brightest keeps it, the others are written by HIP number. → tools/
+  numbers/data/fetch-plate-stars-xhip.sh, tools/make-plate-stars.py
+- **All twelve figures of the zodiac on the hub's plate**, at Marco's
+  request (2026-11-20), with the usual stick figures; the chart reaches
+  declination −45° for Scorpius' tail. A rectangular plate may cross 0h
+  (`Plate.rectangular`, `unwrap`), so the hub's plate is always the
+  twelve hours opposite the Sun. → shared/plate.js (FIGURES), hub.js
+- **The hub's filled link leads to the first ready page**: the intro
+  (0.1) once it is published, page 1.1 until then. Marco asked for the
+  intro on 2026-11-20; it is not built yet (it needs the Act IV models,
+  see Course). → hub.js
 
 ## Workflow
 
@@ -542,9 +553,7 @@ section.
   holds, since it states history, not the page's content.
 - **The plate stars of page 3.3 and the hub from SIMBAD** (see Code):
   refetch the region right ascension 105° to 195°, declination −20° to
-  +20°, and the hub's (right ascension 195° to 15°, declination −32° to
-  +20°; below −20° elsewhere), and drop the XHIP files.
-- **Constellation figures for the rest of the zodiac on the hub's
-  plate** (Virgo to Pisces): from about March to September its chart has
-  stars but no figures. Each needs its stars named in `plate.js`
-  (FIGURES) and fetched by name.
+  +20°, and the hub's (right ascension 195° to 15°, declination −47° to
+  +20°; below −20° elsewhere, and the figure stars by name), give the
+  double stars their SIMBAD names (alf02 Lib, bet01 Sco, mu.01 Sco,
+  zet02 Sco, alf02 Cap) in plate.js, and drop the XHIP files.

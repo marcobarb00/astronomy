@@ -1119,7 +1119,7 @@ The site's `index.html` (its layout is STYLE.md §4.9): an opening in the
 author's voice, saying why the course exists (the books Marco studied
 from gave the old models a paragraph and a drawing, never how they were
 found or how their parameters were fitted) and what each page does about
-it; a link to page 1.1; a blue plate of tonight's sky (`hub.js`); the
+it; a link to the first ready page (the intro once published); a blue plate of tonight's sky (`hub.js`); the
 timeline of the astronomers, with the pages that rebuild their models or
 use their observations (`ASTRONOMERS` in `shared/site-map.js`); the story
 in a few short paragraphs; the acts as chapters, one row per page with

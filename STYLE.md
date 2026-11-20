@@ -187,7 +187,8 @@ styled by `shared/theme.css`.
 
 1. The header (act line, h1, italic subtitle) and the double rule.
 2. The opening with its drop cap, in the author's voice (WRITING.md §1),
-   then a link to page 1.1 filled like the Play button (§8) and a plain
+   then a link to the first ready page (the intro once it is published,
+   page 1.1 until then) filled like the Play button (§8) and a plain
    link to the chapters.
 3. Sections parted by double rules with the four-pointed star in the
    middle: the blue plate of tonight's sky (§7, `hub.js`); the timeline of
@@ -265,8 +266,9 @@ blue.
 **Use it only for static 2D charts of the sky**: a map of the sky around the
 pole, a planisphere, the zodiac band, the path of an eclipse. **At most one
 per page**, and only where the page is about the sky itself. The hub has
-one: twelve hours of the zodiac opposite the Sun, with the Moon and the
-planets highlighted where they are when the page opens (§4.9).
+one: the twelve hours of the zodiac opposite the Sun (it may cross 0h),
+with the twelve zodiac figures and Orion, and the Moon and the planets
+highlighted where they are when the page opens (§4.9).
 
 **Never** for mathematical constructions (spheres with axes, eccentrics,
 epicycles, equants, error curves). Those are always ink on parchment, in a

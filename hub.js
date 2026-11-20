@@ -1,13 +1,14 @@
 // @ts-check
 /* ==========================================================================
    PREDICTING THE SKY - THE HUB (hub.js)
-   The hub's own figure, the plate of tonight's sky, and the building of
-   the hub from the shared components: the chapters with the drawing of
+   The hub's own figure, the plate of tonight's sky, the link to the
+   first page, and the building of the hub from the shared components: the chapters with the drawing of
    each page, the timeline of the astronomers and the key of origins.
 
    TABLE OF CONTENTS
 	 1. The plate of tonight's sky
-	 2. Entry point
+	 2. The way in
+	 3. Entry point
    ========================================================================== */
 
 /* ==========================================================================
@@ -21,9 +22,10 @@
    ========================================================================== */
 
 /* The area shown: twelve hours of right ascension, between these
-   declinations (deg), wide enough for the ecliptic and the Moon. */
+   declinations (deg), wide enough for the ecliptic, the Moon and the
+   figures of the zodiac (Scorpius' tail reaches -43°). */
 const TONIGHT_WIDTH = 180;
-const TONIGHT_DEC = { min: -30, max: 34 };
+const TONIGHT_DEC = { min: -45, max: 34 };
 
 /* Room on the screen (px) beside the chart's border: on the left for the
    declinations ("−30°"), on the right for half of the last hour ("0h"),
@@ -37,6 +39,23 @@ const DEFAULT_MARGIN = { left: 108, bottom: 70 }; // chart units (Plate.rectangu
 /* The ecliptic is named this fraction of the chart's width inside its
    western edge. */
 const ECLIPTIC_NAME_INSET = 0.22;
+
+/* The figures drawn: the twelve of the zodiac, and Orion. */
+const ZODIAC_FIGURES = [
+	'ARIES',
+	'TAURUS',
+	'ORION',
+	'GEMINI',
+	'CANCER',
+	'LEO',
+	'VIRGO',
+	'LIBRA',
+	'SCORPIUS',
+	'SAGITTARIUS',
+	'CAPRICORNUS',
+	'AQUARIUS',
+	'PISCES'
+];
 
 /* The bodies, in the order of the caption's list, and their disks on the
    plate (chart units). */
@@ -58,7 +77,7 @@ const tonightFigure = {
 		const area = this.area(bodies[0].ra);
 		const chart = Plate.rectangular(container, {
 			area: area,
-			figures: ['ARIES', 'TAURUS', 'ORION', 'GEMINI', 'CANCER', 'LEO'],
+			figures: ZODIAC_FIGURES,
 			keep: [],
 			names: [['alf Tau', 'Aldebaran', 8, 22]],
 			margins: this.fitMargins(container.clientWidth),
@@ -67,7 +86,12 @@ const tonightFigure = {
 
 		this.drawEcliptic(chart, area);
 
-		const shown = bodies.filter(body => body.id !== 'sun' && this.inside(body.ra, area));
+		// right ascensions taken into the chart's range, which may cross 0h
+		bodies.forEach(body => {
+			body.ra = chart.unwrap(body.ra);
+		});
+
+		const shown = bodies.filter(body => body.id !== 'sun' && body.ra <= area.raMax);
 		const hidden = bodies.filter(body => !shown.includes(body));
 
 		shown.forEach(body => {
@@ -85,13 +109,10 @@ const tonightFigure = {
 		return Ephem.equatorial(ecliptic, jdTT);
 	},
 
-	/* Twelve hours centered opposite the Sun. A chart may not cross 0h
-	   (Plate.rectangular draws right ascension increasing to the east
-	   without a wrap), so the window is moved to end at 0h or 24h when the
-	   center lies within six hours of 0h. */
+	/* Twelve hours centered opposite the Sun (the area may cross 0h:
+	   raMin below 0 or raMax above 360). */
 	area(sunRa) {
-		const centre = (sunRa + 180) % 360;
-		const raMin = Math.min(Math.max(centre - TONIGHT_WIDTH / 2, 0), 360 - TONIGHT_WIDTH);
+		const raMin = norm360(sunRa + 180) - TONIGHT_WIDTH / 2;
 
 		return { raMin: raMin, raMax: raMin + TONIGHT_WIDTH, decMin: TONIGHT_DEC.min, decMax: TONIGHT_DEC.max };
 	},
@@ -113,32 +134,27 @@ const tonightFigure = {
 		};
 	},
 
-	inside(ra, area) {
-		return ra >= area.raMin && ra <= area.raMax;
-	},
-
 	/* The ecliptic of the plate's epoch, inside the chart, in order of
-	   right ascension. */
+	   right ascension (taken into the chart's range). */
 	drawEcliptic(chart, area) {
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const points = [];
 
 		for (let lon = 0; lon < 360; lon += 1) {
 			const point = Frames.eclipticPoint(lon, eps);
+			const ra = chart.unwrap(point.ra);
 
-			if (this.inside(point.ra, area)) {
-				points.push(point);
+			if (ra <= area.raMax) {
+				points.push({ ra: ra, dec: point.dec });
 			}
 		}
 
 		points.sort((a, b) => a.ra - b.ra);
 
-		const nameAt = Frames.eclipticPoint(
-			this.longitudeAt(area.raMin + ECLIPTIC_NAME_INSET * (area.raMax - area.raMin), eps),
-			eps
-		);
+		const nameRa = area.raMin + ECLIPTIC_NAME_INSET * (area.raMax - area.raMin);
+		const nameAt = Frames.eclipticPoint(this.longitudeAt(nameRa, eps), eps);
 
-		Plate.line(chart, points, 'ecliptic', [nameAt.ra, nameAt.dec, 8, 18]);
+		Plate.line(chart, points, 'ecliptic', [chart.unwrap(nameAt.ra), nameAt.dec, 8, 18]);
 	},
 
 	/* The ecliptic longitude (deg) at a right ascension: the inverse of
@@ -154,10 +170,27 @@ const tonightFigure = {
 };
 
 /* ==========================================================================
-   2. ENTRY POINT
+   2. THE WAY IN
+   The filled link under the opening leads to the first page of the
+   course that is ready, in reading order: the intro (0.1) once it is
+   published, page 1.1 until then. index.html writes the link to 1.1, so
+   that it works without the script.
+   ========================================================================== */
+
+function pointStartLink() {
+	const first = SITE_MAP.PAGES.find(page => page.ready);
+	const link = byId('begin');
+
+	link.href = first.path;
+	byId('begin-text').textContent = `Begin with ${first.number}, ${first.title}`;
+}
+
+/* ==========================================================================
+   3. ENTRY POINT
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+	pointStartLink();
 	Site.renderHub(byId('map'), Thumbs.svg);
 	Site.renderTimeline(byId('timeline'));
 	Site.renderOriginKey(byId('origins'));
