@@ -21,6 +21,9 @@ a little warm, and always clear about *why* the next step is worth taking.
   machine describing itself.
 - **Light contractions are fine** ("we'll", "doesn't", "isn't") where they
   read naturally. Don't force them into mathematics.
+- **The hub's opening is in the author's voice ("I")**: why the course
+  was written, from Marco's own study of these models. Only there; the
+  rest of the hub and every page keep "we" and "you".
 
 ## 2. Say why before what
 
@@ -234,3 +237,33 @@ are.
   (STRUCTURE.md §5), and the section headings unless a heading is itself
   stiff.
 - Exercises keep their exact numbers in the answers.
+
+## 11. Bold for a term where it is defined
+
+A term is set in bold where the site defines it, and only there: "Let
+$D$ be the **mean elongation**, …". A reader who meets "the mean apogee"
+three sections later can then find its definition by scanning back for
+the bold word.
+
+- Only where the term is defined for the first time on the site, in the
+  order of the course. A term defined on an earlier page (the quarters on
+  page 3.2, the mean anomaly on page 4.2) is plain, even when the page
+  recalls its definition. A page that gives a term a sense of its own
+  (the frame on page 4.4, which body is taken as at rest) defines it
+  again.
+- Only a term the course uses again, on the same page or a later one, by
+  its name or by its symbol (the mean elongation as $D$). A name that
+  appears once needs no marker.
+- Usually one bold term in a paragraph, two at most, and none in most
+  paragraphs: a paragraph that would define three terms is split (page
+  1.3, mean solar time). A heading that already names the term (the
+  direction of the epicycle) needs no bold in the text below it.
+- Never a phrase, a number, a result or a sentence, to stress it: that
+  reads like slides, or like the slogans of §8. A run-in label that opens
+  a paragraph ("**The rate.**", "**Step 1: …**") is bold too, but it is a
+  label, not a term.
+- Not in captions, keys or read-outs, where the labels of the figure do
+  the naming.
+- Italics stay for book titles (*Almagest*), words in another language
+  (*axis deferentis*) and the rare word that carries the stress of a
+  sentence; mathematical symbols are italic in KaTeX.

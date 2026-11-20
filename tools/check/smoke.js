@@ -261,9 +261,13 @@ async function settle(page, ms = SETTLE_MS) {
 	await page.waitForTimeout(ms);
 }
 
-/* Every local link of the page must lead to an existing file of 'root'. */
+/* Every local link of the page must lead to an existing file of 'root'.
+   Each link is resolved from its attribute: the href property of a link
+   inside an SVG (the hub's timeline) is not a string. */
 async function checkLinks(page, root, base, problems) {
-	const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.href));
+	const links = await page.evaluate(() =>
+		[...document.querySelectorAll('a[href]')].map(a => new URL(a.getAttribute('href'), document.baseURI).href)
+	);
 	const local = [...new Set(links.map(href => href.split('#')[0]))].filter(href => href.startsWith(base));
 
 	for (const href of local) {
@@ -930,7 +934,8 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 		await checkEquationsFit(page, problems);
 
 		fs.mkdirSync(path.join(shotDir, viewportName), { recursive: true });
-		await page.screenshot({ path: path.join(shotDir, name), fullPage: true });
+		// animations at rest (the hub's twinkling stars), so that two runs match
+		await page.screenshot({ path: path.join(shotDir, name), fullPage: true, animations: 'disabled' });
 
 		if (viewportName === 'desktop') {
 			log.push(`\n=== ${pageFile} ===`);

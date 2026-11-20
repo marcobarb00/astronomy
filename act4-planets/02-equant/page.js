@@ -303,7 +303,7 @@ function speedSeenFromEarth(M, center, equant) {
 }
 
 const jobsFigure = {
-	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 	center: 0.1,
 
 	init() {
@@ -662,7 +662,7 @@ const EQUANT_VIEWS = {
 
 const planetFigure = {
 	state: null,
-	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 
 	view: 'e = 0.2',
 	params: null,
@@ -805,28 +805,17 @@ const planetFigure = {
 		this.drawLabels({ O, C, Q, K, P }, now, edge);
 	},
 
-	/* The labels: single letters and symbols, never words, which would
-	   jump from side to side as the points turn (CLAUDE.md). O, C and Q
-	   take the two sides of the line of the apsides alternately. */
+	/* The labels: single letters and symbols, never words (CLAUDE.md).
+	   Each keeps a side of its point that turns smoothly with the
+	   construction, and passes over a line for a moment rather than
+	   jumping to the other side of its point: O, C and Q take the two
+	   sides of the line of the apsides alternately, K stands outward from
+	   C, P off the line of sight (as in Figure 3), M at the middle of its
+	   arc. */
 	drawLabels(points, now, edge) {
 		const ctx = this.ctx;
 		const { O, C, Q, K, P } = points;
 		const side = now.apogee + 90;
-		const DOT_ROOM = 8;
-
-		const reserveDots = dots =>
-			dots.forEach(point =>
-				this.labels.reserve({
-					x0: point.x - DOT_ROOM,
-					y0: point.y - DOT_ROOM,
-					x1: point.x + DOT_ROOM,
-					y1: point.y + DOT_ROOM
-				})
-			);
-
-		// the Earth and the planet are the labels' obstacles too: near an
-		// opposition P passes by the angle M at Q
-		reserveDots([O, P]);
 
 		centeredLabel(ctx, 'γ', towards(O, 0, edge + 12), COL.muted, this.labels);
 		centeredLabel(ctx, '☉', towards(O, now.sun, edge + 12), COL.sun, this.labels);
@@ -837,13 +826,9 @@ const planetFigure = {
 			COL.muted,
 			this.labels
 		);
-		// O, C and Q first, so that M steps aside rather than C
 		labelOutside(ctx, 'O', O, 7, side + 180, COL.earth, this.labels);
 		labelOutside(ctx, 'C', C, 4, side, COL.ink, this.labels);
 		labelOutside(ctx, 'Q', Q, 4, side + 180, COL.ink, this.labels);
-
-		// then M, which must not cover the dots C and Q either
-		reserveDots([C, Q]);
 		centeredLabel(
 			ctx,
 			'M',
@@ -851,24 +836,8 @@ const planetFigure = {
 			COL.ink,
 			this.labels
 		);
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			4,
-			clearestDirection([now.meanLongitude + 180, now.centreLongitude, now.sun]),
-			COL.ink,
-			this.labels
-		);
-		labelOutside(
-			ctx,
-			'P',
-			P,
-			7,
-			clearestDirection([now.sun + 180, now.lambda + 180, now.lambda]),
-			COL.planet,
-			this.labels
-		);
+		labelOutside(ctx, 'K', K, 4, screenDirection(C, K), COL.ink, this.labels);
+		labelOutside(ctx, 'P', P, 7, now.lambda + SIGHT_NAME_TURN, COL.planet, this.labels);
 	}
 };
 

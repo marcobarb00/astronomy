@@ -438,14 +438,21 @@ const ECCENTRIC_REACH = 1.27;
 const ARC_RADIUS = { M: 0.16, q: 0.62 };
 const Q_LABEL_GAP = 13;
 
-/* The Earth is named O, 45° to one side of the line of apsides away from
-   C, EARTH_LABEL_DISTANCE px from it; C 45° to one side of the line of
-   apsides beyond C, CENTRE_LABEL_DISTANCE radii away. Each takes the side
-   farther from the other lines through its point: single letters, which
-   may change sides (CLAUDE.md). */
+/* The Earth is named O, 45° from the line of apsides away from C,
+   EARTH_LABEL_DISTANCE px from it; C 45° from the line of apsides beyond
+   C, on its other side, CENTRE_LABEL_DISTANCE radii away. They keep these
+   sides all year: the Sun's lines pass over them for a moment (CLAUDE.md,
+   "A label never jumps"), and C's name stays clear of the arc M, which
+   opens on the other side of the line. */
 const CENTRE_LABEL_TURN = 45;
 const CENTRE_LABEL_DISTANCE = 0.2;
 const EARTH_LABEL_DISTANCE = 16;
+
+/* The name q stands beside the mean direction from O, on the side away
+   from the angle q; within this fraction of q's greatest value (about 2e
+   radians) of zero, it turns round its place on the line, through the
+   side of the Earth, instead of jumping to the line's other side. */
+const Q_SIDE_RAMP = 0.15;
 
 const centreFigure = {
 	plot: null,
@@ -532,8 +539,7 @@ const centreFigure = {
 		]);
 	},
 
-	/* Panel (a). The names that never move (apogee, perigee, γ) are set
-	   first; the letters then keep clear of them (LabelPlacer). */
+	/* Panel (a). */
 	draw() {
 		if (!this.state) {
 			return;
@@ -553,20 +559,17 @@ const centreFigure = {
 		drawEccentric(this, center);
 		drawCardinalLines(this, center, [CARDINAL_POINTS[0]], 0, this.labels);
 		this.drawSun(center, now);
-		this.labelCentre(center, now);
+		this.labelCentre(center);
 	},
 
-	/* The names of the Earth O and of C (CENTRE_LABEL_TURN), clear of the
-	   mean direction, the Sun and the middle of the arc M. */
-	labelCentre(center, now) {
+	/* The names of the Earth O and of C (CENTRE_LABEL_TURN), on either
+	   side of the line of apsides. */
+	labelCentre(center) {
 		const apogee = this.state.parameters.apogee;
-		const busy = [now.meanLongitude, now.lambda, apogee + now.M / 2, 0];
-		const clearance = lon => Math.min(...busy.map(b => Math.abs(norm180(lon - b))));
-		const better = (a, b) => (clearance(a) >= clearance(b) ? a : b);
-		const earthSide = better(apogee + 180 - CENTRE_LABEL_TURN, apogee + 180 + CENTRE_LABEL_TURN);
-		const cSide = better(apogee - CENTRE_LABEL_TURN, apogee + CENTRE_LABEL_TURN);
 		const O = toCanvas(this, 0, 0);
 		const C = toCanvas(this, center.h, center.k);
+		const earthSide = apogee + 180 - CENTRE_LABEL_TURN;
+		const cSide = apogee - CENTRE_LABEL_TURN;
 
 		centeredLabel(this.ctx, 'O', towards(O, earthSide, EARTH_LABEL_DISTANCE), COL.earth, this.labels);
 		centeredLabel(this.ctx, 'C', towards(C, cSide, CENTRE_LABEL_DISTANCE * this.scale), COL.ink, this.labels);
@@ -607,8 +610,10 @@ const centreFigure = {
 
 		// q beside the mean direction from O, outside the angle (q is too
 		// narrow to hold its name; on the other side, beyond the line O-S,
-		// runs the line C-S): a single letter, which changes sides with q
-		const outside = q >= 0 ? -90 : 90;
+		// runs the line C-S); it turns to the other side through the
+		// Earth's as q goes through zero (Q_SIDE_RAMP), clear of the Sun
+		const ramp = Q_SIDE_RAMP * 2 * this.state.parameters.e * R2D;
+		const outside = -180 + 90 * clamp(q / ramp, -1, 1);
 		const onLine = towards(O, meanLongitude, (ARC_RADIUS.q + 0.05) * this.scale);
 
 		centeredLabel(ctx, 'q', towards(onLine, meanLongitude + outside, Q_LABEL_GAP), COL.planet, this.labels);
@@ -762,12 +767,15 @@ const SMALL_ANGLE_LABEL = { along: { k: 0.64, h: 0.42 }, gap: 7, ramp: 3 };
    their leg (px), inside the triangle. */
 const LEG_LABEL_GAP = 12;
 
-/* Panel (b): the radius of the arc lambdaA about the Earth, the two radii
-   where its name may go, inside and outside the arc (units of the radius
-   of the eccentric), and the half size of the name (px). */
+/* Panel (b): the radius of the arc lambdaA about the Earth, and that of
+   its name, just outside it (units of the radius of the eccentric). */
 const APOGEE_ARC_RADIUS = 0.05;
-const APOGEE_LABEL_RADII = [0.031, 0.069];
-const APOGEE_LABEL_HALF = { width: 12, height: 11 };
+const APOGEE_LABEL_RADIUS = 0.069;
+
+/* Panel (b): the names of O, C, h and k stand on the side of an axis
+   away from C, and glide across it as C comes within this distance of
+   it (units of the radius of the eccentric). */
+const AXIS_SIDE_RAMP = 0.01;
 
 /* Below this eccentricity the read-out shows e = 0.0000 and C is at the
    Earth, so there is no apogee to show. The preset "equal" (91.31 days,
@@ -1047,8 +1055,7 @@ const fitFigure = {
 	},
 
 	/* The line from the Earth through C to the edge of the panel, and the
-	   angle lambdaA from gamma, with its name inside the arc (kept clear
-	   of the letters, which are set after it). */
+	   angle lambdaA from gamma, with its name just outside the arc. */
 	drawApogee() {
 		const p = this.plot;
 		const apogee = this.fit.apogee;
@@ -1065,36 +1072,30 @@ const fitFigure = {
 
 		p.curve(arc.xs, arc.ys, { color: COL.muted, width: 1.5, clip: true });
 
-		// inside the arc or just outside it, whichever is farther from the
-		// axes and the dashed parallels (λA, two characters, may move)
-		const { h, k } = this.fit;
-		const lines = { xs: [p.px(0), p.px(h)], ys: [p.py(0), p.py(k)] };
-		const clearance = point =>
-			Math.min(
-				...lines.xs.map(x => Math.abs(point.x - x) - APOGEE_LABEL_HALF.width),
-				...lines.ys.map(y => Math.abs(point.y - y) - APOGEE_LABEL_HALF.height)
-			);
-		const places = APOGEE_LABEL_RADII.map(r => ({ x: p.px(r * cos(half)), y: p.py(r * sin(half)) }));
-		const at = clearance(places[0]) >= clearance(places[1]) ? places[0] : places[1];
+		// just outside the arc, where it stays as C moves: an axis or a
+		// parallel passes under it for a moment rather than sending it
+		// inside the arc (CLAUDE.md, "A label never jumps")
+		const at = { x: p.px(APOGEE_LABEL_RADIUS * cos(half)), y: p.py(APOGEE_LABEL_RADIUS * sin(half)) };
 
 		subscriptLabel(p.ctx, 'λ', 'A', at, COL.ink);
-		p.labels.reserve({ x0: at.x - 12, y0: at.y - 12, x1: at.x + 12, y1: at.y + 14 });
 	},
 
-	/* The names in panel (b): the Earth O, C, h and k, single letters
-	   that may change sides as C crosses an axis (CLAUDE.md), and move
-	   round their point when another name takes their place (LabelPlacer).
+	/* The names in panel (b): the Earth O, C, h and k, single letters.
 	   Each goes on the side of the axes away from C, so that none sits on
-	   the dashed parallels: O in the quadrant opposite C, h under (or
-	   over) the x axis, k beside the y axis, C on its far side from the y
-	   axis. The axis titles say where the axes lead. */
+	   the dashed parallels: O opposite C, h under (or over) the x axis, k
+	   beside the y axis, C on its far side from the y axis. As C comes
+	   near an axis, they glide across it rather than jump to its other
+	   side (AXIS_SIDE_RAMP, CLAUDE.md). The axis titles say where the axes
+	   lead. */
 	labelPlot() {
 		const p = this.plot;
-		const { h, k } = this.fit;
-		const right = h < 0 ? 1 : -1; // the side of the y axis away from C
-		const below = k < 0 ? -1 : 1; // the side of the x axis away from C
+		const { h, k, e } = this.fit;
+		const right = -clamp(h / AXIS_SIDE_RAMP, -1, 1); // the side of the y axis away from C
+		const below = clamp(k / AXIS_SIDE_RAMP, -1, 1); // the side of the x axis away from C
+		const O = { x: p.px(0), y: p.py(0) };
+		const awayFromC = e > NO_ECCENTRICITY ? screenDirection({ x: p.px(h), y: p.py(k) }, O) : 225;
 
-		centeredLabel(p.ctx, 'O', { x: p.px(0) + 12 * right, y: p.py(0) + 14 * below }, COL.earth, p.labels);
+		centeredLabel(p.ctx, 'O', towards(O, awayFromC, EARTH_LABEL_DISTANCE + 2), COL.earth, p.labels);
 		centeredLabel(p.ctx, 'C', { x: p.px(h) - 14 * right, y: p.py(k) - 12 }, COL.ink, p.labels);
 		centeredLabel(p.ctx, 'h', { x: p.px(h / 2), y: p.py(0) + 14 * below }, COL.planet, p.labels);
 		centeredLabel(p.ctx, 'k', { x: p.px(0) + 12 * right, y: p.py(k / 2) }, COL.planet, p.labels);

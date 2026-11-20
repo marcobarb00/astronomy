@@ -207,10 +207,20 @@ const Q_ARC_RADIUS = 0.45;
 const M_ARC_RADIUS = 0.45;
 const ANGLE_ARC_MIN = 14;
 
+/* The name q stands this far (deg) past the end of its arc, once the arc
+   is at least as long; K's name stands this far (deg) anticlockwise from
+   the mean direction, outside the arc M (and a small epicycle), clear of
+   the deferent and of the line from the Earth; L's name this far clockwise
+   from the outward direction from K, clear of K and of the line of sight
+   for most of the month. */
+const Q_NAME_ASIDE = 6;
+const K_NAME_TURN = 45;
+const L_NAME_TURN = 45;
+
 const epicycleFigure = {
 	plot: null,
 	state: null,
-	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 
 	init() {
 		const figure = byId('epicycle-canvas').closest('figure');
@@ -356,43 +366,29 @@ const epicycleFigure = {
 	},
 
 	/* The labels: the angles first, then the points, each just outside
-	   what it names and kept clear of the others. Moving points are named
-	   by single letters (O the Earth, K, L the Moon), never by words,
-	   which would jump from side to side as the points turn (CLAUDE.md);
-	   the panel title names the two circles. */
+	   what it names. Moving points are named by single letters (O the
+	   Earth, K, L the Moon), never by words (CLAUDE.md); the panel title
+	   names the two circles. Each letter keeps a side of its point that
+	   turns smoothly with the construction, and passes over a line for a
+	   moment rather than jumping to the other side of its point: L
+	   outward from K, turned clockwise, K ahead of the mean direction, O
+	   opposite it. q
+	   stands just past the end of its arc, a little further as the arc
+	   grows, so that it goes smoothly through zero. */
 	drawLabels(O, K, moon, now, r) {
 		const ctx = this.ctx;
 		const { meanLongitude, M, q } = now;
 		const mRadius = Math.max(ANGLE_ARC_MIN, M_ARC_RADIUS * r);
-		const qSide = q < 0 ? -1 : 1;
+		const qAside = Q_NAME_ASIDE * clamp(q / Q_NAME_ASIDE, -1, 1);
 
 		if (r > 0) {
-			labelOutside(
-				ctx,
-				'q',
-				O,
-				Q_ARC_RADIUS * this.scale,
-				meanLongitude + q + 6 * qSide,
-				COL.planet,
-				this.labels
-			);
+			labelOutside(ctx, 'q', O, Q_ARC_RADIUS * this.scale, meanLongitude + q + qAside, COL.planet, this.labels);
 			labelOutside(ctx, 'M', K, mRadius, meanLongitude - M / 2, COL.epicycle, this.labels);
 		}
 
-		const kSide = clearestDirection([meanLongitude, meanLongitude + 180, meanLongitude - M]);
-		const lambda = now.lambda;
-
-		labelOutside(ctx, 'K', K, 4, kSide, COL.ink, this.labels);
-		labelOutside(
-			ctx,
-			'L',
-			moon,
-			8,
-			clearestDirection([meanLongitude - M + 180, lambda + 180]),
-			COL.planet,
-			this.labels
-		);
-		labelOutside(ctx, 'O', O, 7, clearestDirection([0, meanLongitude, lambda]), COL.earth, this.labels);
+		labelOutside(ctx, 'K', K, Math.min(r, mRadius), meanLongitude + K_NAME_TURN, COL.ink, this.labels);
+		labelOutside(ctx, 'L', moon, 8, meanLongitude - M - L_NAME_TURN, COL.planet, this.labels);
+		labelOutside(ctx, 'O', O, 7, meanLongitude + 180, COL.earth, this.labels);
 	},
 
 	/* "new" or "full" above the plot box, over the line of that phase. */
@@ -573,8 +569,8 @@ const equivalenceFigure = {
 		const ctx = this.ctx;
 		const apogee = now.apogee;
 
-		labelOutside(ctx, 'C', C, 4, clearestDirection([apogee, apogee + 180]), COL.ink, this.labels);
-		labelOutside(ctx, 'O', O, 7, clearestDirection([apogee, apogee + 180]), COL.earth, this.labels);
+		labelOutside(ctx, 'C', C, 4, apogee + 90, COL.ink, this.labels);
+		labelOutside(ctx, 'O', O, 7, apogee - 90, COL.earth, this.labels);
 		labelOutside(ctx, 'A', O, this.scale * (1 + e), apogee, COL.earth, this.labels);
 	},
 
@@ -589,34 +585,19 @@ const equivalenceFigure = {
 
 	/* The labels, each just outside what it names: single letters for the
 	   moving points (O the Earth, K, C, L the Moon, A the eccentric's
-	   apogee), never words, which would jump from side to side as the
-	   points turn (CLAUDE.md). The key tells the circles apart by their
-	   centers. */
+	   apogee), never words (CLAUDE.md). The key tells the circles apart by
+	   their centers. As in Figure 2, each letter keeps a side of its point
+	   that turns smoothly, and passes over a line for a moment rather than
+	   jumping: L outward from K, turned clockwise, K ahead of the mean
+	   direction, C and O on either side of the line of apsides. */
 	drawLabels(O, K, C, moon, now, e) {
 		const ctx = this.ctx;
-		const { meanLongitude, apogee, M } = now;
-		const lambda = now.lambda;
+		const { meanLongitude, apogee } = now;
 
-		labelOutside(
-			ctx,
-			'L',
-			moon,
-			8,
-			clearestDirection([meanLongitude - M + 180, meanLongitude + 180, lambda + 180]),
-			COL.planet,
-			this.labels
-		);
-		labelOutside(ctx, 'K', K, 4, clearestDirection([meanLongitude + 180, meanLongitude - M]), COL.ink, this.labels);
-		labelOutside(ctx, 'C', C, 4, clearestDirection([apogee, apogee + 180, meanLongitude]), COL.ink, this.labels);
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([meanLongitude, apogee, apogee + 180, lambda]),
-			COL.earth,
-			this.labels
-		);
+		labelOutside(ctx, 'L', moon, 8, apogee - L_NAME_TURN, COL.planet, this.labels);
+		labelOutside(ctx, 'K', K, 4, meanLongitude + K_NAME_TURN, COL.ink, this.labels);
+		labelOutside(ctx, 'C', C, 4, apogee + 90, COL.ink, this.labels);
+		labelOutside(ctx, 'O', O, 7, apogee - 90, COL.earth, this.labels);
 		labelOutside(ctx, 'A', O, this.scale * (1 + e), apogee, COL.earth, this.labels);
 	}
 };

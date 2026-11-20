@@ -15,7 +15,7 @@ const SITE_MAP = (function () {
 		{
 			id: 0,
 			name: 'Act 0',
-			title: 'The hook',
+			title: 'Intro',
 			blurb: "Ptolemy's Mars against tonight's sky: how can circles do this well, and why are they still wrong?"
 		},
 		{
@@ -59,7 +59,7 @@ const SITE_MAP = (function () {
 			ready: false,
 			title: 'Where is Mars tonight?',
 			question: 'How good was a model built from circles?',
-			path: 'act0-hook/01-mars-tonight/index.html'
+			path: 'act0-intro/01-mars-tonight/index.html'
 		},
 		{
 			number: '1.1',
@@ -183,6 +183,50 @@ const SITE_MAP = (function () {
 		}
 	];
 
+	/* The astronomers on the hub's timeline (components.js, renderTimeline),
+	   in order. year places the mark on the axis; date is the text beside
+	   it; work is what the course takes from them; pages are the pages that
+	   rebuild their models or use their observations (a page may sit under
+	   two). above: the label goes above the axis, so that neighbours
+	   alternate. */
+	const ASTRONOMERS = [
+		{
+			name: 'Babylonian records',
+			year: -721,
+			date: '721 BC',
+			work: 'eclipses and periods',
+			pages: ['3.1', '3.3'],
+			above: true
+		},
+		{
+			name: 'Greek geometers',
+			year: -350,
+			date: '4th century BC',
+			work: 'the sphere',
+			pages: ['1.1'],
+			above: false
+		},
+		{
+			name: 'Hipparchus',
+			year: -130,
+			date: 'c. 130 BC',
+			work: 'the eccentric, precession',
+			pages: ['2.1', '2.3', '3.1'],
+			above: true
+		},
+		{
+			name: 'Ptolemy',
+			year: 150,
+			date: 'c. AD 150',
+			work: 'the Almagest',
+			pages: ['1.2', '1.3', '2.2', '3.2', '3.3', '4.1', '4.2'],
+			above: false
+		},
+		{ name: 'Copernicus', year: 1543, date: '1543', work: 'De revolutionibus', pages: ['4.3'], above: true },
+		{ name: 'Tycho', year: 1588, date: '1588', work: 'his system', pages: ['4.4'], above: false },
+		{ name: 'Kepler', year: 1609, date: '1609', work: 'the ellipse', pages: ['4.5'], above: true }
+	];
+
 	/* Topics outside the scope (STRUCTURE.md §3, §7.4). A detour card
 	   becomes a link when its topic has a ready page. */
 	const TOPICS = {
@@ -256,8 +300,8 @@ const SITE_MAP = (function () {
 	};
 
 	/* Origins (STRUCTURE.md §7.1): the label of each margin note
-	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5): the
-	   hub explains the origins once, with ORIGIN_KEY. */
+	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5); the
+	   labels say enough on their own. */
 	const ORIGINS = {
 		babylonian: 'Babylonian',
 		greek: 'Greek',
@@ -270,36 +314,6 @@ const SITE_MAP = (function () {
 		modern: 'Modern'
 	};
 
-	/* The hub's key of origins: one line per kind of origin. 'origin' picks
-	   the colour of the label; the five authors share one line. */
-	const ORIGIN_KEY = [
-		{
-			origin: 'babylonian',
-			label: 'Babylonian',
-			text: 'inherited from Mesopotamian astronomy'
-		},
-		{
-			origin: 'greek',
-			label: 'Greek',
-			text: 'from earlier Greek astronomers and mathematicians'
-		},
-		{
-			origin: 'ptolemy',
-			label: 'Hipparchus, Ptolemy, Copernicus, Tycho, Kepler',
-			text: "the author's own contribution, as far as the sources allow"
-		},
-		{
-			origin: 'debated',
-			label: 'Debated',
-			text: 'attribution or details still discussed by historians'
-		},
-		{
-			origin: 'modern',
-			label: 'Modern',
-			text: 'the modern understanding or notation'
-		}
-	];
-
 	/* Exercise kinds (STRUCTURE.md §7.2). */
 	const EXERCISE_KINDS = {
 		compute: 'Compute, then check',
@@ -311,9 +325,9 @@ const SITE_MAP = (function () {
 	return {
 		ACTS,
 		PAGES,
+		ASTRONOMERS,
 		TOPICS,
 		ORIGINS,
-		ORIGIN_KEY,
 		EXERCISE_KINDS
 	};
 })();

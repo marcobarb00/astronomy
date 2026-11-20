@@ -12,65 +12,131 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
 
-	<!-- Shared theme and components (the site map is shared/site-map.js) -->
+	<!-- Shared theme (the hub's layout is theme.css §14) -->
 	<link rel="stylesheet" href="shared/theme.css">
+
+	<!-- Shared code in dependency order (the site map is shared/site-map.js),
+		 then the hub's own script -->
 	<script defer src="shared/common.js"></script>
+	<script defer src="shared/time.js"></script>
+	<script defer src="shared/ephemeris.js"></script>
+	<script defer src="shared/stars.js"></script>
+	<script defer src="shared/plate-stars.js"></script>
+	<script defer src="shared/plate.js"></script>
+	<script defer src="shared/models/diurnal.js"></script>
+	<script defer src="shared/models/frames.js"></script>
 	<script defer src="shared/site-map.js"></script>
+	<script defer src="shared/thumbs.js"></script>
 	<script defer src="shared/components.js"></script>
+	<script defer src="hub.js"></script>
 </head>
 
 <body>
 <main class="page hub">
-	<!-- Header: title, then the double rule (theme.css) -->
+	<!-- Header: title and subtitle, then the double rule (theme.css) -->
 	<header class="page-head hub-head">
 		<div class="titles">
 			<p class="act-line">An interactive course in classical positional astronomy</p>
 			<h1>Predicting the Sky</h1>
+			<p class="hub-sub">From the celestial sphere to Kepler&#8217;s ellipse</p>
 		</div>
 	</header>
 
+	<!-- The opening, in the author's voice (DECISIONS.md, Writing) -->
 	<p class="lead">
-		For almost two thousand years, astronomers tried to say where the Sun,
-		the Moon and the planets would be on a given night.
-		Hipparchus and Ptolemy did it with circles. Kepler replaced them with ellipses,
-		which are still the first approximation used today for the orbits of the planets
-		and for the Sun's path relative to the Earth.
+		When I studied astronomy, the old models of the sky kept coming up:
+		Hipparchus&#8217; Sun on an off-center circle, Ptolemy&#8217;s epicycles and
+		equant, Copernicus&#8217; circles about the Sun, Kepler&#8217;s ellipse. The
+		books and courses I learned from gave each of them a paragraph and a
+		drawing, and then moved on to the modern theory.
 	</p>
 	<p>
-		This course follows that story, from Hipparchus and Ptolemy to Copernicus, Tycho and Kepler.
-		We rebuild each model as its author conceived it and test it against a modern reference sky,
-		with a running error curve that shows what each step removes.
-		Some steps refine an astronomer's own model, as Ptolemy did for the Moon;
-		others change its form, as Kepler did.
+		So these models always stayed a little mysterious to me. I kept
+		wondering how anyone had thought of them, with the naked eye and a few
+		simple instruments, and above all where their numbers came from: the
+		size of an epicycle, the direction of an apogee, the rate of a mean
+		motion. A drawing shows the shape of a model, but not how its author
+		found it or chose its parameters.
 	</p>
 	<p>
-		Circles come close: the Sun's circle fitted to 2026 stays within two arcminutes
-		of the real Sun all year, and Ptolemy's Moon fitted to the same year within two degrees.
-		Much of what we meet on the way, from the coordinates of the sky and sidereal time
-		to the equation of time, precession and the limits of eclipses, is used as it is today.
+		This course is my attempt to answer those questions. Each page
+		rebuilds one model as its author conceived it: the observations it
+		starts from, its geometry, and how its parameters are fitted to the
+		sky. Then we test it against a modern reference sky, to see how close
+		it comes and where it fails, and the next page starts from what it
+		still gets wrong.
 	</p>
 	<p>
-		The planets show the limits of circles most clearly. Kepler found his ellipse in the motion of Mars,
-		and the same law then holds for the Earth's orbit, and so for the Sun.
-		The Moon needs more than an ellipse, because the Sun's pull keeps changing its orbit;
-		the epilogue follows the story from there.
-	</p>
-	<p>
-		By the end you will be able to compute where the Sun, the Moon and a planet are on any date,
-		using models you have derived yourself, and you will know how wrong each one is and why.
+		By the end you will be able to compute where the Sun, the Moon and a
+		planet are on any date, using models you have derived yourself, and
+		you will know how wrong each one is and why.
 	</p>
 
-	<!-- The five acts and the epilogue, built from the site map -->
+	<!-- The way in: the first ready page (hub.js), or the chapters below -->
+	<div class="start">
+		<a class="begin" id="begin" href="act1-stage/01-turning-sky/index.html"><span id="begin-text">Begin with 1.1, The turning sky</span> <span aria-hidden="true">›</span></a>
+		<a class="to-chapters" href="#map">or choose a page below</a>
+	</div>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- Tonight's sky: the hub's one blue plate (STYLE.md §7), drawn by hub.js -->
+	<figure class="plate-figure tonight">
+		<div class="plate">
+			<div class="chart" id="plate-tonight"></div>
+			<div class="side">
+				<div class="plate-head">
+					<div class="plate-label">Tonight</div>
+					<div class="plate-title">The night sky of <span id="tonight-date"></span></div>
+				</div>
+				<p>
+					The half of the zodiac opposite the Sun, the part above the
+					horizon tonight, seen looking south: north up, east to the left.
+					Off the chart: <span id="tonight-off"></span>.
+				</p>
+				<p>
+					<span class="hl">Gold:</span> the Moon and the planets as this
+					page opens; by page 4.5 you compute these positions yourself. The
+					stars low on the chart twinkle more: seen from mid-northern
+					latitudes they stay low in the south, and their light crosses more
+					air. The planets show small disks and hardly twinkle.
+				</p>
+			</div>
+		</div>
+	</figure>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- The astronomers in time, with the pages that rebuild their models -->
+	<p class="act-label">The astronomers</p>
+	<div class="timeline" id="timeline"></div>
+
+	<!-- The story (STRUCTURE.md §4, Hub) -->
+	<p>
+		The story runs from Hipparchus and Ptolemy to Copernicus, Tycho and
+		Kepler. Some steps refine an astronomer&#8217;s own model, as Ptolemy did
+		for the Moon; others change its form, as Kepler did.
+	</p>
+	<p>
+		Circles come close: the Sun&#8217;s circle fitted to 2026 stays within two
+		arcminutes of the real Sun all year, and Ptolemy&#8217;s Moon fitted to the
+		same year within two degrees. Much of what we meet on the way, from
+		the coordinates of the sky to the equation of time, precession and the
+		limits of eclipses, is used as it is today.
+	</p>
+	<p>
+		The planets show the limits of circles most clearly. Kepler found his
+		ellipse in the motion of Mars, and the same law then holds for the
+		Earth&#8217;s orbit, and so for the Sun. The Moon needs more than an
+		ellipse, because the Sun&#8217;s pull keeps changing its orbit; the
+		epilogue follows the story from there.
+	</p>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- The acts as chapters, one row per page with its drawing, built
+		 from the site map -->
 	<div id="map"></div>
-
-	<!-- The key of the origin notes in the margins of the pages -->
-	<section class="origins" id="origins">
-		<p class="act-label">Origins</p>
-		<p>
-			A note in the margin of a page says where the idea in the paragraph
-			beside it comes from:
-		</p>
-	</section>
 
 	<!-- The sources of the whole course; each page lists its own -->
 	<footer class="hub-foot">
@@ -99,17 +165,11 @@
 			<li>SIMBAD (CDS, Strasbourg): the positions, proper motions and
 				magnitudes of the stars; two magnitudes on the blue plates come from
 				the Hipparcos catalogue (ESA).</li>
+			<li>E. Anderson and C. Francis, "XHIP: An Extended Hipparcos
+				Compilation", <em>Astronomy Letters</em> 38 (2012): the stars of the
+				blue plates south of declination +20° outside Taurus and Orion.</li>
 		</ul>
 	</footer>
 </main>
-
-<script>
-	/* The hub: draw the map of acts and the key of origins once the shared
-	   scripts have loaded. */
-	document.addEventListener('DOMContentLoaded', () => {
-		Site.renderHub(byId('map'));
-		Site.renderOriginKey(byId('origins'));
-	});
-</script>
 </body>
 </html>

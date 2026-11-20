@@ -26,7 +26,7 @@ section.
   → STRUCTURE.md §4
 - **Act I comes first even though it is the least exciting.** The
   foundations (the turning sky, frames, clocks) are needed to state any
-  prediction. Act 0, a hook ("Where is Mars tonight?"), is built last,
+  prediction. Act 0, the intro ("Where is Mars tonight?"), is built last,
   because it needs the Act IV models. → STRUCTURE.md §4, §12
 - **The story ends with Kepler.** Newton, perturbations and modern
   ephemerides are in a short epilogue, "Beyond Kepler", with pointers to
@@ -214,6 +214,10 @@ section.
   scale of powers of ten. The Sun section stays on trial; the Moon after
   Kepler is an h3 of the Residual. Approved by Marco on 2026-11-19. →
   STRUCTURE.md §4 (page 4.5)
+- **Act 0 is called "Intro", not "The hook".** Its role is unchanged (a
+  first page, "Where is Mars tonight?", built last); the name is the one
+  the reader sees on the hub. Its folder is `act0-intro/`. Decided by
+  Marco on 2026-11-20. → STRUCTURE.md §4, §9; shared/site-map.js
 
 ## Look
 
@@ -235,10 +239,12 @@ section.
   page 1.2 the zodiac around Taurus, page 2.3 the path of the pole (on
   trial, 2026-10-24: Marco decides whether to keep it), page 3.3 the
   Moon's path near Regulus in August 2026 (approved by Marco on
-  2026-10-30). → STYLE.md §7
-- **Origin notes show the heading only** ("Origin · Greek"); the hub
-  explains the origins once, in a key. A one-sentence explanation per note
-  may come later. → STRUCTURE.md §7.1
+  2026-10-30), the hub tonight's half of the zodiac with the Moon and the
+  planets (2026-11-20). → STYLE.md §7
+- **Origin notes show the heading only** ("Origin · Greek"). A
+  one-sentence explanation per note may come later. The hub's key of
+  origins was removed on 2026-11-20: Marco found the labels
+  self-explanatory. → STRUCTURE.md §7.1
 - **Detours are margin notes**, not cards. → STRUCTURE.md §7.4
 - **Today notes are a third kind of margin note**, headed "Today" in the
   colour of the Modern origin, saying what replaces the page's model as
@@ -246,9 +252,11 @@ section.
   STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
-- **The link back to the hub is sticky and starts with «**, so it can
-  be clicked from anywhere on a long page and reads as a way back
-  (2026-11-12). → STYLE.md §4.2
+- **The link back to the hub is sticky**, so it can be clicked from
+  anywhere on a long page (2026-11-12). It started with « until
+  2026-11-20; it now starts with a small star that darts west with a
+  short trail on hover (study 1C of the motion studies, chosen by Marco),
+  which says "back" without the «. → STYLE.md §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md
   §4.6
 - **Figures follow strict rules**: one size whatever the controls,
@@ -264,6 +272,23 @@ section.
   or not named when the title or the key says what it is; a word keeps
   its side of its object, and `LabelPlacer` moves only labels of one or
   two characters. → CLAUDE.md, "Rules for every figure"
+- **Letters do not jump either: a label passes over a line or another
+  label rather than change sides.** On 2026-11-19 Marco found the letters
+  of many figures jumping (page 3.2, Figure 2: O, C, K, L and A leapt by
+  15 to 45 px). Two things moved them: `LabelPlacer` sent a label of one
+  or two characters round its point whenever it touched another label,
+  and pages chose a letter's side with `clearestDirection`, which flips
+  to another gap whenever two gaps trade places. Marco preferred a
+  letter that passes over another object for a split second, which stays
+  readable, to one that teleports. Now no label moves round its point:
+  each keeps a side that turns smoothly with the drawing (outward from
+  the center of its circle, off a line of sight, a fixed screen
+  direction), `LabelPlacer` only slides labels inside the canvas, and
+  `tools/check/label-jumps.js` finds the labels that still jump. The
+  only jumps left are those of the names of angles drawn as arcs (M, μ,
+  λ, F, Ω), at the middle of their arc, when the angle goes through 360°
+  and the arc itself goes from a full turn to nothing. → CLAUDE.md,
+  "Rules for every figure"
 - **A fast and a slow motion in one figure: two views, not a faster
   play.** Playing the slow motion at the speed it needs (years a second)
   made the fast one flicker (pages 3.1 and 3.3, Figure 3), and drawing
@@ -273,6 +298,16 @@ section.
   moves slowly, and the play button plays the chosen view at its own
   speed. What is drawn changes only when the reader changes the view. →
   CLAUDE.md, "Rules for every figure"
+- **The hub: an opening in Marco's voice, the plate of tonight's sky, the
+  timeline of the astronomers, the acts as chapters with a drawing of
+  each page.** Marco found the old hub plain and chose this from four
+  mockups on 2026-11-20. Set aside: the tiles; a chart of the largest
+  error of every model (page 4.5's Figure 6) at the top; an animation of
+  Mars on its epicycle. The double rule with the star in the middle
+  parts the hub's sections; the drawings of the pages are the only
+  ornament beyond STYLE.md §1.4, and only on the hub. A page sits on the
+  timeline under each astronomer whose model it rebuilds or whose
+  observations it uses. → STYLE.md §4.9, STRUCTURE.md §4 (Hub)
 
 ## Writing
 
@@ -327,6 +362,22 @@ section.
   and the zodiacal anomaly are named so, not first and second, which
   the Moon's pages use the other way round.
   Approved by Marco on 2026-11-09. → STRUCTURE.md §6
+- **A term is bold where the site defines it.** On 2026-11-19 Marco
+  asked whether bold words would help the reader. Italics did three
+  jobs: book titles, terms at their definition, and, in KaTeX, every
+  symbol, so a new term looked like a title or a variable. Bold now marks
+  a term where the site defines it for the first time, so that a reader
+  can find the definition again; never a phrase, a number or a result,
+  to stress it. Tried on page 3.2 on 2026-11-20 (mean elongation, crank,
+  double elongation, octants, mean apogee, true apogee, variation), and
+  approved by Marco the same day for every page. The italics of terms
+  defined on an earlier page became plain, and page 1.1's bold "23 h 56
+  min 4 s" lost its bold. → WRITING.md §11, CLAUDE.md "Writing"
+- **The hub's opening is in the first person.** It says why the course
+  exists: the books Marco studied from gave the old models a paragraph
+  and a drawing, never how they were found or how their parameters were
+  fitted. Only there; everywhere else "we" and "you". Marco, 2026-11-20.
+  → WRITING.md §1
 
 ## Code
 
@@ -435,6 +486,37 @@ section.
   (tools/numbers/4.1-going-backwards.js). One function,
   `PlanetEpicycle.referenceEvents`, with the option `apparent`, serves
   both. Decided on 2026-11-09. → shared/models/planet-epicycle.js
+- **The stars of the rest of the zodiac come from XHIP.** The hub's
+  plate can show any twelve hours of the zodiac, and the plate stars
+  covered only 0h to 13h south of +20°. CDS did not answer on 2026-11-20,
+  so the rest (right ascension 195° to 15° from −47° to +20°, and below
+  −20° elsewhere) comes from XHIP, as page 3.3's region did, with the
+  stars of the figures from Virgo to Pisces whatever their magnitude; no
+  existing plate reaches it, and no star already listed was lost. XHIP
+  gives some double stars one name (two stars called ups Eri, 3° apart):
+  the brightest keeps it, the others are written by HIP number. → tools/
+  numbers/data/fetch-plate-stars-xhip.sh, tools/make-plate-stars.py
+- **All twelve figures of the zodiac on the hub's plate**, at Marco's
+  request (2026-11-20), with the usual stick figures; the chart reaches
+  declination −45° for Scorpius' tail. A rectangular plate may cross 0h
+  (`Plate.rectangular`, `unwrap`), so the hub's plate is always the
+  twelve hours opposite the Sun. → shared/plate.js (FIGURES), hub.js
+- **The hub's chapter rows show the title, then the question under it**,
+  the order of each page's own header and of the links that name pages
+  by their titles (Marco, 2026-11-20; the first version put the
+  question first). → STYLE.md §4.9
+- **The hub's plate twinkles** (study 3 of the motion studies, chosen by
+  Marco on 2026-11-20): the stars low on the chart more, as seen from
+  mid-northern latitudes, the planets not at all. Off for reduced
+  motion; the smoke test takes its screenshots with animations at rest.
+  → hub.js, theme.css §14
+- **Orion is drawn with his bow, raised club and the hem of his tunic**
+  (Marco, 2026-11-20), on every plate that draws him (pages 1.2 and the
+  hub). → shared/plate.js (FIGURES)
+- **The hub's filled link leads to the first ready page**: the intro
+  (0.1) once it is published, page 1.1 until then. Marco asked for the
+  intro on 2026-11-20; it is not built yet (it needs the Act IV models,
+  see Course). → hub.js
 
 ## Workflow
 
@@ -484,6 +566,9 @@ section.
   only Figure 5 (the Sun's error curve) and the Sun's distances are in
   question. If it goes, the hub's sentence on the Earth's orbit still
   holds, since it states history, not the page's content.
-- **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
-  region right ascension 105° to 195°, declination −20° to +20°, and drop
-  the XHIP file.
+- **The plate stars of page 3.3 and the hub from SIMBAD** (see Code):
+  refetch the region right ascension 105° to 195°, declination −20° to
+  +20°, and the hub's (right ascension 195° to 15°, declination −47° to
+  +20°; below −20° elsewhere, and the figure stars by name), give the
+  double stars their SIMBAD names (alf02 Lib, bet01 Sco, mu.01 Sco,
+  zet02 Sco, alf02 Cap) in plate.js, and drop the XHIP files.

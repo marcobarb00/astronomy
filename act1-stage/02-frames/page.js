@@ -523,6 +523,11 @@ const AZIMUTH_NAME_RADIUS = 0.86;
    they glide across their arcs there. */
 const MERIDIAN_SIDE_CHANGE_DEGREES = 16;
 
+/* The symbol of the declination changes sides of its arc as the object
+   crosses the equator, over this many degrees of declination, so that it
+   glides across the arc there. */
+const DEC_SIDE_CHANGE_DEGREES = 8;
+
 const horizonFigure = {
 	sphere: null,
 	subject: OBSERVATION.star,
@@ -685,8 +690,10 @@ const horizonFigure = {
 		// +1 west of the meridian, -1 east of it, in between near it
 		const westward = clamp(sin(hor.H) / sin(MERIDIAN_SIDE_CHANGE_DEGREES / 2), -1, 1);
 		// a northern star's declination arc is on the meridian's side of
-		// its altitude arc; a southern star's is the other way round
-		const decSide = ARC_NAME_GAP * westward * (eq.dec >= 0 ? 1 : -1);
+		// its altitude arc; a southern star's is the other way round, with
+		// a glide between the two near the equator
+		const northward = clamp(eq.dec / (DEC_SIDE_CHANGE_DEGREES / 2), -1, 1);
+		const decSide = ARC_NAME_GAP * westward * northward;
 
 		// alpha, beside the equator
 		this.drawTick(hor.H, TRACK_DEC.alpha);

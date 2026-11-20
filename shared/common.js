@@ -625,10 +625,9 @@ function wideCanvas(owner, canvas, aspect, maxWidth) {
 }
 
 /* A text label centered at a screen point, in the atlas fonts and the text
-   colour of 'color' (labelFont, textColor). With a LabelPlacer, a single
-   symbol that would cover an earlier label or leave the canvas (on a
-   phone) moves next to its point instead; a word stays where it is, only
-   moved inside the canvas (LabelPlacer.candidates). 'kind' ('name' or
+   colour of 'color' (labelFont, textColor). With a LabelPlacer, a label
+   that would leave the canvas (on a phone) slides inside it; it never
+   steps aside from another label (LabelPlacer). 'kind' ('name' or
    'symbol') overrides the font labelFont would choose, e.g. 'symbol' for a
    formula such as "CQ sin M". */
 function centeredLabel(ctx, text, point, color, labels = null, kind = null) {
@@ -637,7 +636,7 @@ function centeredLabel(ctx, text, point, color, labels = null, kind = null) {
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 
-	const place = labels ? labels.choose(ctx, text, LabelPlacer.candidates(ctx, text, point, point)) : point;
+	const place = labels ? labels.place(ctx, text, point) : point;
 
 	ctx.fillText(text, place.x, place.y);
 }
@@ -700,6 +699,18 @@ function towards(from, lon, r) {
 	return { x: from.x + r * cos(lon), y: from.y - r * sin(lon) };
 }
 
+/* A planet's name stands this far (deg) anticlockwise from its line of
+   sight, the line from the Earth through it, which the name then never
+   crosses (pages 4.1 to 4.4): labelOutside(ctx, 'P', P, r,
+   lambda + SIGHT_NAME_TURN, ...). */
+const SIGHT_NAME_TURN = 135;
+
+/* The direction (deg, anticlockwise from the right, as towards()) of
+   screen point b seen from screen point a. */
+function screenDirection(a, b) {
+	return atan2d(a.y - b.y, b.x - a.x);
+}
+
 /* A circle on a canvas. */
 function circle(ctx, center, r, style) {
 	ctx.strokeStyle = style.color;
@@ -729,7 +740,10 @@ function labelOutside(ctx, text, center, r, lon, color, labels, kind = null) {
 
 /* The direction (deg) from a point that is farthest from every line
    leaving it ('rays', their directions in deg), where the point's name
-   goes: the best of 72 directions, 5° apart. */
+   goes: the best of 72 directions, 5° apart. Only for a figure that no
+   control moves: as the lines turn, the best direction leaps from one gap
+   to another, and the name with it (CLAUDE.md, "A label never jumps").
+   A moving figure gives each name a side that turns smoothly instead. */
 function clearestDirection(rays) {
 	let best = 0;
 	let bestGap = -1;
@@ -782,27 +796,24 @@ function whenCanvasFontsReady() {
 	return canvasFontsPromise;
 }
 
-/* ---------- Labels that keep clear of one another ----------
+/* ---------- Labels that stay inside the canvas ----------
    On a phone a figure shrinks but its labels keep their size (13 px or
-   more, CLAUDE.md), so two labels can land on each other or past the edge
-   of the canvas. A LabelPlacer remembers the boxes of the labels already
-   drawn in one drawing (begin() starts a new one) and gives each new label
-   the first of its candidate places that stays inside the bounds and
-   touches no earlier label. A label's designed place comes first, so it
-   moves only where it would collide: on a wide screen, nowhere. Used by
-   Sphere3D.label and Plot2D.text.
+   more, CLAUDE.md), so a label can land past the edge of the canvas. A
+   LabelPlacer keeps every label of one drawing (begin() starts a new one)
+   at its designed place, slid inside the bounds if it would leave them.
+   Used by centeredLabel, Sphere3D.label and Plot2D.text.
 
-   Only a single symbol (K, γ, P′) may move round its point: its step
-   aside is a few pixels. A word or an expression (Vega, mean Sun,
-   90° − a) keeps its designed place, slid inside the canvas if it would
-   leave it, even when that place is taken: a name that jumped from one
-   side of its point to the other whenever a control moves is worse than
-   one that briefly touches another (CLAUDE.md, "Rules for every
-   figure"). */
+   No label, a single letter included, ever steps to another place round
+   its point to keep clear of a line or another label: a label that jumped
+   from one side of its point to the other whenever a control moves is
+   far more distracting than one that passes over another for a moment
+   (CLAUDE.md, "A label never jumps"). The slide inside the bounds follows
+   the designed place smoothly. Only Plot2D.text may still choose among
+   places a page lists (style.alternatives), for a label of a drawing that
+   no control moves. */
 
-/* Clear space between two labels, and between a point and its label (px). */
+/* Clear space between two labels (px). */
 const LABEL_CLEARANCE = 1;
-const LABEL_POINT_GAP = 7;
 
 class LabelPlacer {
 	constructor() {
@@ -830,44 +841,11 @@ class LabelPlacer {
 		};
 	}
 
-	/* Candidate places all round a point q, 'gap' px away: right, left,
-	   above, below, then the four diagonals; each is the (x, y) to draw at
-	   with the context's current alignment and baseline. */
-	static around(ctx, text, q, gap = LABEL_POINT_GAP) {
-		const box = LabelPlacer.boxOf(ctx, text, 0, 0);
-		const w = box.x1 - box.x0;
-		const h = box.y1 - box.y0;
-		const d = 0.7 * gap;
-		const at = (left, top) => ({ x: left - box.x0, y: top - box.y0 });
-
-		return [
-			at(q.x + gap, q.y - h / 2),
-			at(q.x - gap - w, q.y - h / 2),
-			at(q.x - w / 2, q.y - gap - h),
-			at(q.x - w / 2, q.y + gap),
-			at(q.x + d, q.y - d - h),
-			at(q.x + d, q.y + d),
-			at(q.x - d - w, q.y - d - h),
-			at(q.x - d - w, q.y + d)
-		];
-	}
-
-	/* May this label move round its point to stay clear of the others?
-	   Only a single symbol, of one or two characters (K, γ, P′). */
-	static mayMove(text) {
-		return [...text].length <= 2;
-	}
-
-	/* The candidate places of a label: its designed place, then, for a
-	   single symbol only, the places all round its point q (around). */
-	static candidates(ctx, text, designed, q, gap = LABEL_POINT_GAP) {
-		return LabelPlacer.mayMove(text) ? [designed, ...LabelPlacer.around(ctx, text, q, gap)] : [designed];
-	}
-
-	/* Keep later labels clear of a box drawn some other way ({ x0, y0, x1,
-	   y1 }, e.g. a label with a subscript). */
-	reserve(box) {
-		this.boxes.push(box);
+	/* The designed place of a label, slid inside the bounds if it would
+	   leave them; remembered, so that Plot2D's alternatives keep clear of
+	   it. */
+	place(ctx, text, designed) {
+		return this.choose(ctx, text, [designed]);
 	}
 
 	/* The same place moved inside the bounds, if it was past an edge. */
@@ -900,7 +878,9 @@ class LabelPlacer {
 	/* The first candidate inside the bounds and clear of every earlier
 	   label; failing that, the one inside that overlaps least; failing
 	   that, the first one moved inside. The chosen box is remembered.
-	   Without begin() (no bounds), the first candidate is kept as it is. */
+	   Without begin() (no bounds), the first candidate is kept as it is.
+	   With a single candidate (place), the label keeps its place, slid
+	   inside the bounds, whatever it covers. */
 	choose(ctx, text, candidates) {
 		if (!this.bounds) {
 			return candidates[0];

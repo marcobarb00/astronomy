@@ -398,7 +398,6 @@ const wheelFigure = {
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
 		ctx.fillText('meridian', this.cx, this.cy - this.R - 12);
-		this.labels.reserve(LabelPlacer.boxOf(ctx, 'meridian', this.cx, this.cy - this.R - 12));
 	},
 
 	/* The bright stars, as four-pointed stars sized by brightness (STYLE.md
@@ -457,14 +456,13 @@ const wheelFigure = {
 		}
 	},
 
-	/* A label to the right of point q, 'gap' px away; a single symbol goes
-	   elsewhere round the point if it would cover an earlier label or
-	   leave the canvas (on a phone), a name such as Sirius only slides
-	   inside the canvas (LabelPlacer.candidates). Font, alignment and
-	   colour are set by the caller. */
+	/* A label to the right of point q, 'gap' px away, slid inside the
+	   canvas if it would leave it (on a phone); it never steps aside from
+	   another label (LabelPlacer). Font, alignment and colour are set by
+	   the caller. */
 	drawLabel(text, q, gap) {
 		const designed = { x: q.x + gap, y: q.y };
-		const place = this.labels.choose(this.ctx, text, LabelPlacer.candidates(this.ctx, text, designed, q, gap));
+		const place = this.labels.place(this.ctx, text, designed);
 
 		this.ctx.fillText(text, place.x, place.y);
 	}
@@ -556,8 +554,7 @@ const anglesFigure = {
 
 	/* Where the name of the mean Sun is centered: inside the equator, which
 	   it must not cross, and above the dashed line from P to the mean Sun,
-	   as near the mean Sun as the two allow. Drawn before the name of P,
-	   which steps aside on a phone, where the circle is small. */
+	   as near the mean Sun as the two allow. */
 	meanSunLabelPlace() {
 		const ctx = this.ctx;
 
@@ -611,20 +608,6 @@ const anglesFigure = {
 
 		polarArc(this, from, sweep, ANGLES_RING[ring] * this.R, color);
 		angleName(this, name, point, color);
-		this.reserveName(name, point);
-	},
-
-	/* The other labels keep clear of the name of an angle. */
-	reserveName([base, sub], point) {
-		const ctx = this.ctx;
-
-		ctx.font = FONT_SYMBOL;
-		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
-
-		const box = LabelPlacer.boxOf(ctx, base + sub, point.x, point.y);
-
-		this.labels.reserve({ x0: box.x0, y0: box.y0, x1: box.x1, y1: box.y1 + 5 });
 	},
 
 	dot(point, color, radius) {
@@ -811,14 +794,15 @@ const siderealFigure = {
 		return (SID_NAME_ASIDE / (SID_RING.equator * this.R - 15)) * R2D;
 	},
 
-	/* P, named on the side farthest from the four lines that leave it (a
-	   single letter may move round its point). */
+	/* P, named on the side opposite the observer's meridian, clear of it
+	   and of Greenwich's; the lines to the vernal point and the star turn
+	   with the sky and pass over the name for a moment, rather than sending
+	   it to the other side of the pole. */
 	drawPole(at) {
 		const center = { x: this.cx, y: this.cy };
-		const rays = [0, at.observer, at.gamma, at.star].map(angle => 90 - angle);
 
 		drawDot(this.ctx, center.x, center.y, 3.5, COL.ink);
-		angleName(this, 'P', towards(center, clearestDirection(rays), 14), COL.ink);
+		angleName(this, 'P', towards(center, 270 - at.observer, 14), COL.ink);
 	}
 };
 

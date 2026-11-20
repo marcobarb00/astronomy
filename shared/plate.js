@@ -31,7 +31,7 @@
 	 4. Graduated ring and border
 	 5. Readable labels
 	 6. Charts: polar and rectangular
-	 7. Highlights (and a plain line, a symbol, the Sun)
+	 7. Highlights (and a plain line, a symbol, the Sun, a body)
 	 8. Label placement
    ========================================================================== */
 
@@ -188,6 +188,11 @@ const Plate = (function () {
 			],
 			name: [36, 27]
 		},
+		// the head, the shoulders and the belt; the legs to Saiph (kap) and
+		// Rigel (bet) and the hem of the tunic between them; the raised
+		// club, from Betelgeuse (alf) up through mu, ksi and nu to the chi
+		// stars; the bow (or lion's skin) held out from Bellatrix (gam), the
+		// arc of the six pi stars
 		'ORION': {
 			lines: [
 				['lam Ori', 'alf Ori'],
@@ -197,7 +202,19 @@ const Plate = (function () {
 				['del Ori', 'eps Ori'],
 				['eps Ori', 'zet Ori'],
 				['zet Ori', 'kap Ori'],
-				['del Ori', 'bet Ori']
+				['del Ori', 'bet Ori'],
+				['bet Ori', 'kap Ori'],
+				['alf Ori', 'mu. Ori A'],
+				['mu. Ori A', 'ksi Ori'],
+				['ksi Ori', 'nu. Ori'],
+				['nu. Ori', 'chi02 Ori'],
+				['chi02 Ori', 'chi01 Ori'],
+				['gam Ori', 'pi.03 Ori'],
+				['pi.01 Ori', 'pi.02 Ori'],
+				['pi.02 Ori', 'pi.03 Ori'],
+				['pi.03 Ori', 'pi.04 Ori'],
+				['pi.04 Ori', 'pi.05 Ori'],
+				['pi.05 Ori', 'pi.06 Ori']
 			],
 			name: [71, 1]
 		},
@@ -244,6 +261,115 @@ const Plate = (function () {
 				['del Cnc', 'alf Cnc']
 			],
 			name: [134, 26]
+		},
+
+		// the rest of the zodiac, for the hub's plate of tonight's sky; some
+		// double stars carry XHIP's name without its index (alf Lib for
+		// alf02 Lib, bet Sco for bet01 Sco, mu. Sco, zet Sco for zet02 Sco,
+		// alf Cap for alf02 Cap: tools/numbers/data/fetch-plate-stars-xhip.sh)
+		'VIRGO': {
+			lines: [
+				['alf Vir', 'tet Vir'],
+				['tet Vir', 'gam Vir'],
+				['gam Vir', 'eta Vir'],
+				['eta Vir', 'bet Vir'],
+				['gam Vir', 'del Vir'],
+				['del Vir', 'eps Vir'],
+				['alf Vir', 'zet Vir'],
+				['zet Vir', 'del Vir']
+			],
+			name: [186, 9]
+		},
+		'LIBRA': {
+			lines: [
+				['alf Lib', 'bet Lib'],
+				['bet Lib', 'gam Lib'],
+				['gam Lib', 'alf Lib'],
+				['alf Lib', 'sig Lib'],
+				['gam Lib', 'ups Lib']
+			],
+			name: [229, -3]
+		},
+		'SCORPIUS': {
+			lines: [
+				['bet Sco', 'del Sco'],
+				['del Sco', 'pi. Sco'],
+				['del Sco', 'sig Sco'],
+				['sig Sco', 'alf Sco'],
+				['alf Sco', 'tau Sco'],
+				['tau Sco', 'eps Sco'],
+				['eps Sco', 'mu. Sco'],
+				['mu. Sco', 'zet Sco'],
+				['zet Sco', 'eta Sco'],
+				['eta Sco', 'tet Sco'],
+				['tet Sco', 'kap Sco'],
+				['kap Sco', 'lam Sco']
+			],
+			name: [258, -21]
+		},
+		'SAGITTARIUS': {
+			lines: [
+				['gam Sgr', 'del Sgr'],
+				['del Sgr', 'eps Sgr'],
+				['eps Sgr', 'gam Sgr'],
+				['del Sgr', 'lam Sgr'],
+				['lam Sgr', 'phi Sgr'],
+				['phi Sgr', 'del Sgr'],
+				['phi Sgr', 'sig Sgr'],
+				['sig Sgr', 'tau Sgr'],
+				['tau Sgr', 'zet Sgr'],
+				['zet Sgr', 'phi Sgr'],
+				['zet Sgr', 'eps Sgr']
+			],
+			name: [281, -19]
+		},
+		'CAPRICORNUS': {
+			lines: [
+				['alf Cap', 'bet Cap'],
+				['bet Cap', 'psi Cap'],
+				['psi Cap', 'ome Cap'],
+				['ome Cap', 'zet Cap'],
+				['zet Cap', 'del Cap'],
+				['del Cap', 'gam Cap'],
+				['gam Cap', 'iot Cap'],
+				['iot Cap', 'tet Cap'],
+				['tet Cap', 'bet Cap']
+			],
+			name: [316, -8]
+		},
+		'AQUARIUS': {
+			lines: [
+				['eps Aqr', 'bet Aqr'],
+				['bet Aqr', 'alf Aqr'],
+				['alf Aqr', 'gam Aqr'],
+				['gam Aqr', 'zet Aqr'],
+				['zet Aqr', 'eta Aqr'],
+				['alf Aqr', 'tet Aqr'],
+				['tet Aqr', 'lam Aqr'],
+				['lam Aqr', 'del Aqr']
+			],
+			name: [333, 6]
+		},
+		'PISCES': {
+			lines: [
+				['gam Psc', 'kap Psc'],
+				['kap Psc', 'lam Psc'],
+				['lam Psc', 'iot Psc'],
+				['iot Psc', 'tet Psc'],
+				['tet Psc', 'gam Psc'],
+				['iot Psc', 'ome Psc'],
+				['ome Psc', 'del Psc'],
+				['del Psc', 'eps Psc'],
+				['eps Psc', 'zet Psc'],
+				['zet Psc', 'mu. Psc'],
+				['mu. Psc', 'nu. Psc'],
+				['nu. Psc', 'alf Psc A'],
+				['alf Psc A', 'omi Psc'],
+				['omi Psc', 'eta Psc'],
+				['eta Psc', 'phi Psc'],
+				['phi Psc', 'tau Psc']
+			],
+			name: [7, 14]
 		}
 	};
 
@@ -515,13 +641,18 @@ const Plate = (function () {
 	function drawBorderLabels(border, area, at, band) {
 		const { raMin, raMax, decMin, decMax } = area;
 
+		// on a chart of more than six hours (the hub's twelve), the odd
+		// hours are minor: a phone shows every other hour (theme.css §16)
+		const wide = raMax - raMin > 90;
+
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
+			const hour = ((hours % 24) + 24) % 24; // an area may cross 0h
 
-			svgText(border, `${hours}h`, q.x, q.y + band + 6, {
+			svgText(border, `${hour}h`, q.x, q.y + band + 6, {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'hanging',
-				class: 'hour'
+				class: wide && hour % 2 === 1 ? 'hour minor' : 'hour'
 			});
 		}
 
@@ -529,10 +660,11 @@ const Plate = (function () {
 			const q = at(raMax, dec);
 			const text = dec > 0 ? `+${dec}°` : `${dec}°`.replace('-', '−');
 
+			// on a wide chart, a phone shows every other line of declination
 			svgText(border, text, q.x - band - 6, q.y, {
 				'text-anchor': 'end',
 				'dominant-baseline': 'central',
-				class: 'hour'
+				class: wide && (dec / 10) % 2 !== 0 ? 'hour minor' : 'hour'
 			});
 		}
 	}
@@ -641,11 +773,14 @@ const Plate = (function () {
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
 	   figures, names, keep (as for polar), label, margins { left, right }
 	   (the room beside the border in units of the drawing, 108 each by
-	   default; a chart with nothing to name on its right, page 4.1, keeps
+	   default; bottom, under it, 70 by default; a chart with nothing to name on its right, page 4.1, keeps
 	   less there, so that the chart fills the plate). The equator is drawn, and
 	   named at the
-	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
-	   highlight in 'layer', clipped to the chart. */
+	   western (right) end, when it is in the area. The area may cross 0h
+	   (raMin below 0 or raMax above 360). Returns { svg, layer, at,
+	   project, unwrap }: unwrap(ra) takes a right ascension into the
+	   chart's range, for at(); the page draws its highlight in 'layer',
+	   clipped to the chart. */
 	function rectangular(container, options) {
 		const area = options.area;
 		const { raMin, raMax, decMin, decMax } = area;
@@ -656,12 +791,19 @@ const Plate = (function () {
 		const band = 10;
 		const width = (raMax - raMin) * scale;
 		const height = (decMax - decMin) * scale;
-		const svg = newSvg(container, width + left + right, height + top + 70, options.label);
+		const bottom = options.margins?.bottom ?? 70;
+		const svg = newSvg(container, width + left + right, height + top + bottom, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
-		const project = (ra, dec) => {
-			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;
 
-			return isInside ? at(ra, dec) : null;
+		// a right ascension taken into [raMin, raMin + 360), so that an area
+		// may cross 0h (raMin < 0 or raMax > 360: the hub's plate); a page
+		// drawing on such a chart passes right ascensions taken the same way
+		const unwrap = ra => raMin + norm360(ra - raMin);
+		const project = (ra, dec) => {
+			const r = unwrap(ra);
+			const isInside = r <= raMax && dec >= decMin && dec <= decMax;
+
+			return isInside ? at(r, dec) : null;
 		};
 
 		// a label stays inside the chart, clear of the border and its labels
@@ -679,7 +821,7 @@ const Plate = (function () {
 		svgEl('rect', { x: left, y: top, width: width, height: height }, clip);
 
 		const layer = svgEl('g', { 'clip-path': `url(#${clipId})` }, svg);
-		const chart = { svg, layer, at, project, inside, labels: [], obstacles: [] };
+		const chart = { svg, layer, at, project, unwrap, inside, labels: [], obstacles: [] };
 		const grid = svgEl('g', { class: 'grid' }, layer);
 
 		for (let ra = Math.ceil(raMin / 15) * 15; ra <= raMax; ra += 15) {
@@ -699,7 +841,13 @@ const Plate = (function () {
 			project
 		);
 		drawStars(svgEl('g', { class: 'stars' }, layer), project, options.figures);
-		drawStarNames(chart, svgEl('g', { class: 'star-names' }, layer), options.names, at, options.keep);
+		drawStarNames(
+			chart,
+			svgEl('g', { class: 'star-names' }, layer),
+			options.names,
+			(ra, dec) => at(unwrap(ra), dec),
+			options.keep
+		);
 
 		if (decMin < 0 && decMax > 0) {
 			const y = at(0, 0).y;
@@ -901,6 +1049,23 @@ const Plate = (function () {
 
 		// labels keep clear of the sign, as of another label
 		chart.obstacles.push({ x: q.x - 7, y: q.y - 7, w: 14, h: 14 });
+		placeLabels(chart);
+	}
+
+	/* A body at its place, highlighted (the hub: the Moon and the planets
+	   of tonight): a disk in --plate-accent, radius r in chart units, and
+	   its name beside it, placed clear of the other labels. */
+	function body(chart, ra, dec, name, r = 6) {
+		const q = chart.at(ra, dec);
+		const group = svgEl('g', { class: 'body' }, chart.svg);
+
+		svgEl('circle', { cx: q.x.toFixed(1), cy: q.y.toFixed(1), r: r, class: 'body-mark' }, group);
+
+		const element = svgText(group, name, q.x, q.y - r - 6, { class: 'body-name', 'text-anchor': 'middle' });
+
+		// labels keep clear of the disk, as of another label
+		chart.obstacles.push({ x: q.x - r, y: q.y - r, w: 2 * r, h: 2 * r });
+		addLabel(chart, element, LABEL_ORDER.highlight, (box, k) => aroundPoint(q, box, r + LABEL_GAP * k));
 		placeLabels(chart);
 	}
 
@@ -1122,6 +1287,7 @@ const Plate = (function () {
 		highlightPath,
 		line: plainLine,
 		symbol,
+		body,
 		sun
 	};
 })();

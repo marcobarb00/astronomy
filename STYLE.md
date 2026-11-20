@@ -19,7 +19,8 @@ Open it next to this file. When the two disagree, this file wins.
    static 2D charts of the sky, at most one per page, and never for
    mathematical constructions.
 4. **Restraint.** One ornament (the four-pointed star), one frame (§6), one
-   rule style (§4.3). Nothing else decorative.
+   rule style (§4.3). Nothing else decorative. The hub alone adds a small
+   drawing beside each page (§4.9).
 
 ## 2. Palette
 
@@ -98,9 +99,12 @@ Rules:
 
 ### 4.2 Header
 
-1. "« Predicting the Sky" link (small caps), the way back to the hub. It
-   stays at the top of the window while the page scrolls, on a parchment
-   band as wide as the window.
+1. "Predicting the Sky" link (small caps) after a small four-pointed star
+   in `--accent`, the way back to the hub. On hover or keyboard focus the
+   star darts west (to the left) with a short trail and comes back, in a
+   loop; no motion for reduced motion. The link stays at the top of the
+   window while the page scrolls, on a parchment band as wide as the
+   window.
 2. The act line, h1 title, italic subtitle. In the contents column on the
    left (§4.1): the table of contents, small caps, with a 1 px `--ink` rule
    on its left; the current section in `--accent`. Each entry is the
@@ -116,6 +120,8 @@ Rules:
 - Single rule: 1 px `--ink` (structure) or `--line` (light separation).
 - The four-pointed star (§5) may sit in the middle of a double rule as the
   page's only ornament, or not at all. Pick one and use it everywhere.
+  The articles have none; on the hub, double rules with the star part its
+  sections (§4.9).
 
 ### 4.4 Sections
 
@@ -131,8 +137,8 @@ Everything that comments on a paragraph moves into the margin:
   (colour per origin, from the figure "Text" colours), with a 1 px `--ink`
   rule on top. For now the note is the heading only, with no tooltip
   (tooltips do not work on phones); a one-sentence explanation will be
-  added later, with the content work. The hub explains the origins once
-  (Babylonian, Greek, an author, Debated, Modern) in a short key.
+  added later, with the content work. The labels are explained nowhere
+  else: "Origin · Ptolemy", "Origin · Debated" say enough on their own.
 - **Citations** ("Almagest I 3, transl. Toomer"): plain, 15 px, no rule.
 - **Detours**: heading "Detour · coming later" in `--accent`, a 1 px dashed
   `--accent` rule on top. Becomes a link when the page exists.
@@ -177,6 +183,28 @@ small-caps label "History" (`<span class="history-label">`, Cormorant SC
 15 px, `--epicycle-text`). Its paragraphs, rows and figures follow the
 same grid as the rest of the article. Written in `templates/page.html`;
 styled by `shared/theme.css`.
+
+### 4.9 The hub
+
+`index.html`, one column, in this order (`shared/theme.css` §14):
+
+1. The header (act line, h1, italic subtitle) and the double rule.
+2. The opening with its drop cap, in the author's voice (WRITING.md §1),
+   then a link to the first ready page (the intro once it is published,
+   page 1.1 until then) filled like the Play button (§8) and a plain
+   link to the chapters.
+3. Sections parted by double rules with the four-pointed star in the
+   middle: the blue plate of tonight's sky (§7, `hub.js`); the timeline of
+   the astronomers, each with the numbers of his pages as small framed
+   links (`Site.renderTimeline`, a list on a phone); the story; the acts
+   as chapters (`Site.renderHub`).
+4. A chapter is a small-caps act label and its title over a 1 px `--ink`
+   rule, then one row per page: a small drawing of the page's main
+   construction (`shared/thumbs.js`, the figure colours of §2, a letter
+   or two at most), the number, the title in Cormorant Garamond and the
+   question under it in italics, the order of the page's own header. A
+   page not yet ready is greyed, marked "in preparation" and not a link.
+5. The sources and the footer.
 
 ## 5. Stars
 
@@ -240,7 +268,13 @@ blue.
 
 **Use it only for static 2D charts of the sky**: a map of the sky around the
 pole, a planisphere, the zodiac band, the path of an eclipse. **At most one
-per page**, and only where the page is about the sky itself.
+per page**, and only where the page is about the sky itself. The hub has
+one: the twelve hours of the zodiac opposite the Sun (it may cross 0h),
+with the twelve zodiac figures and Orion, and the Moon and the planets
+highlighted where they are when the page opens (§4.9). Its stars
+twinkle, more towards the bottom of the chart (lower in the sky seen from
+mid-northern latitudes), and the planets do not; no motion for reduced
+motion. It is the only plate that moves.
 
 **Never** for mathematical constructions (spheres with axes, eccentrics,
 epicycles, equants, error curves). Those are always ink on parchment, in a

@@ -186,7 +186,7 @@ const MEAN_SUN_REACH = 1.1;
 const crankFigure = {
 	plot: null,
 	state: null,
-	labels: new LabelPlacer(), // keeps the labels of one drawing apart
+	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 
 	init() {
 		squareCanvas(this, byId('crank-canvas'), 420, 10);
@@ -303,36 +303,23 @@ const crankFigure = {
 		this.drawLabels({ O, C, A, K, L }, s, apogee);
 	},
 
-	/* The labels, each just outside its point: single letters, never words,
-	   which would jump from side to side as the points turn (CLAUDE.md).
-	   The panel title and the caption name the circles. */
+	/* The labels, each just outside its point: single letters, never words
+	   (CLAUDE.md). Each letter keeps a side of its point that turns
+	   smoothly with the construction, and passes over a line for a moment
+	   rather than jumping to the other side of its point: L outward from
+	   K, K outside the epicycle and outward from C, A beyond the apogee,
+	   C and O on either side of the line of apsides. The panel title and
+	   the caption name the circles. */
 	drawLabels(points, s, apogee) {
 		const ctx = this.ctx;
 		const { O, C, A, K, L } = points;
-		const lambda = s.lambda;
-		const moonFromK = norm360(Math.atan2(-(L.y - K.y), L.x - K.x) * R2D);
+		const scale = this.R / CRANK_REACH;
 
-		labelOutside(ctx, 'L', L, 8, clearestDirection([moonFromK + 180, lambda + 180]), COL.planet, this.labels);
-		labelOutside(
-			ctx,
-			'K',
-			K,
-			4,
-			clearestDirection([s.meanLongitude + 180, moonFromK, s.meanLongitude]),
-			COL.ink,
-			this.labels
-		);
+		labelOutside(ctx, 'L', L, 8, screenDirection(K, L), COL.planet, this.labels);
+		labelOutside(ctx, 'K', K, scale * CRANK.e, screenDirection(C, K), COL.ink, this.labels);
 		labelOutside(ctx, 'A', A, 4, apogee, COL.ink, this.labels);
-		labelOutside(ctx, 'C', C, 4, clearestDirection([apogee, apogee + 180]), COL.ink, this.labels);
-		labelOutside(
-			ctx,
-			'O',
-			O,
-			7,
-			clearestDirection([s.meanLongitude, s.meanSun, apogee, apogee + 180, lambda]),
-			COL.earth,
-			this.labels
-		);
+		labelOutside(ctx, 'C', C, 4, apogee + 90, COL.ink, this.labels);
+		labelOutside(ctx, 'O', O, 7, apogee - 90, COL.earth, this.labels);
 	},
 
 	/* A phase's name above the plot box, over the line of that phase. */
