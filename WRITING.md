@@ -234,3 +234,26 @@ are.
   (STRUCTURE.md §5), and the section headings unless a heading is itself
   stiff.
 - Exercises keep their exact numbers in the answers.
+
+## 11. Bold for a term where it is defined (on trial, page 3.2)
+
+A term the page defines is set in bold where it is defined, and only
+there: "Let $D$ be the **mean elongation**, …". A reader who meets "the
+mean apogee" three sections later can then find its definition by
+scanning back for the bold word.
+
+- Only a term this page defines for the first time on the site. A term
+  defined on an earlier page (the quarters, the evection, the equation of
+  anomaly) is plain, even when it is recalled.
+- Only a term the page uses again. A name that appears once needs no
+  marker.
+- Usually one bold term in a paragraph, two at most, and none in most
+  paragraphs. A heading that already names the term (the direction of the
+  epicycle) needs no bold in the text below it.
+- Never a phrase, a result or a sentence, to stress it: that reads like
+  slides, or like the slogans of §8.
+- Not in captions, keys or read-outs, where the labels of the figure do
+  the naming.
+- Italics stay for book titles (*Almagest*) and for the rare word that
+  carries the stress of a sentence; mathematical symbols are italic in
+  KaTeX.
