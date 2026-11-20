@@ -3,7 +3,7 @@
    PREDICTING THE SKY - THE HUB (hub.js)
    The hub's own figure, the plate of tonight's sky, the link to the
    first page, and the building of the hub from the shared components: the chapters with the drawing of
-   each page, the timeline of the astronomers and the key of origins.
+   each page, the timeline of the astronomers.
 
    TABLE OF CONTENTS
 	 1. The plate of tonight's sky
@@ -57,6 +57,13 @@ const ZODIAC_FIGURES = [
 	'PISCES'
 ];
 
+/* The twinkling of the stars (theme.css §14): each star's brightness
+   dips by up to 'depth' (a fraction), more for the stars low on the
+   chart, whose light crosses more air when they culminate as seen from
+   mid-northern latitudes; each star has its own period, between min and
+   max seconds. The planets do not twinkle: they show small disks. */
+const TWINKLE = { depthHigh: 0.06, depthLow: 0.6, periodMin: 1.6, periodMax: 4.2 };
+
 /* The bodies, in the order of the caption's list, and their disks on the
    plate (chart units). */
 const TONIGHT_BODIES = [
@@ -97,6 +104,8 @@ const tonightFigure = {
 		shown.forEach(body => {
 			Plate.body(chart, body.ra, body.dec, body.name, body.radius);
 		});
+
+		this.twinkle(chart, area);
 
 		byId('tonight-date').textContent = this.dateText(new Date());
 		byId('tonight-off').textContent = hidden.map(body => body.name).join(', ');
@@ -163,6 +172,37 @@ const tonightFigure = {
 		return norm360(atan2d(sin(ra), cos(ra) * cos(eps)));
 	},
 
+	/* Give each star of the chart its twinkle: a depth that grows towards
+	   the bottom of the chart and a period of its own. Nothing for readers
+	   who ask for reduced motion. The periods come from a fixed sequence, so
+	   that the chart twinkles the same way at every visit. */
+	twinkle(chart, area) {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			return;
+		}
+
+		const top = chart.at(area.raMin, area.decMax).y;
+		const bottom = chart.at(area.raMin, area.decMin).y;
+		let seed = 1;
+		const next = () => {
+			seed = (seed * 16807) % 2147483647;
+
+			return seed / 2147483647;
+		};
+
+		chart.svg.querySelectorAll('.stars path').forEach(star => {
+			const box = star.getBBox();
+			const low = clamp((box.y + box.height / 2 - top) / (bottom - top), 0, 1);
+			const depth = TWINKLE.depthHigh + (TWINKLE.depthLow - TWINKLE.depthHigh) * low * low;
+			const period = TWINKLE.periodMin + (TWINKLE.periodMax - TWINKLE.periodMin) * next();
+
+			star.style.setProperty('--twinkle-depth', depth.toFixed(2));
+			star.style.animationDuration = `${period.toFixed(2)}s`;
+			star.style.animationDelay = `${(-period * next()).toFixed(2)}s`;
+			star.classList.add('twinkle');
+		});
+	},
+
 	/* "20 November 2026", the date of the page's opening. */
 	dateText(date) {
 		return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -193,6 +233,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	pointStartLink();
 	Site.renderHub(byId('map'), Thumbs.svg);
 	Site.renderTimeline(byId('timeline'));
-	Site.renderOriginKey(byId('origins'));
 	tonightFigure.init();
 });

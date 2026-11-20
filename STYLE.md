@@ -99,9 +99,12 @@ Rules:
 
 ### 4.2 Header
 
-1. "« Predicting the Sky" link (small caps), the way back to the hub. It
-   stays at the top of the window while the page scrolls, on a parchment
-   band as wide as the window.
+1. "Predicting the Sky" link (small caps) after a small four-pointed star
+   in `--accent`, the way back to the hub. On hover or keyboard focus the
+   star darts west (to the left) with a short trail and comes back, in a
+   loop; no motion for reduced motion. The link stays at the top of the
+   window while the page scrolls, on a parchment band as wide as the
+   window.
 2. The act line, h1 title, italic subtitle. In the contents column on the
    left (§4.1): the table of contents, small caps, with a 1 px `--ink` rule
    on its left; the current section in `--accent`. Each entry is the
@@ -134,8 +137,8 @@ Everything that comments on a paragraph moves into the margin:
   (colour per origin, from the figure "Text" colours), with a 1 px `--ink`
   rule on top. For now the note is the heading only, with no tooltip
   (tooltips do not work on phones); a one-sentence explanation will be
-  added later, with the content work. The hub explains the origins once
-  (Babylonian, Greek, an author, Debated, Modern) in a short key.
+  added later, with the content work. The labels are explained nowhere
+  else: "Origin · Ptolemy", "Origin · Debated" say enough on their own.
 - **Citations** ("Almagest I 3, transl. Toomer"): plain, 15 px, no rule.
 - **Detours**: heading "Detour · coming later" in `--accent`, a 1 px dashed
   `--accent` rule on top. Becomes a link when the page exists.
@@ -201,7 +204,7 @@ styled by `shared/theme.css`.
    or two at most), the number, the question in Cormorant Garamond
    italic and the title under it. A page not yet ready is greyed and not
    a link.
-5. The key of origins, the sources and the footer.
+5. The sources and the footer.
 
 ## 5. Stars
 
@@ -268,7 +271,10 @@ pole, a planisphere, the zodiac band, the path of an eclipse. **At most one
 per page**, and only where the page is about the sky itself. The hub has
 one: the twelve hours of the zodiac opposite the Sun (it may cross 0h),
 with the twelve zodiac figures and Orion, and the Moon and the planets
-highlighted where they are when the page opens (§4.9).
+highlighted where they are when the page opens (§4.9). Its stars
+twinkle, more towards the bottom of the chart (lower in the sky seen from
+mid-northern latitudes), and the planets do not; no motion for reduced
+motion. It is the only plate that moves.
 
 **Never** for mathematical constructions (spheres with axes, eccentrics,
 epicycles, equants, error curves). Those are always ink on parchment, in a

@@ -934,7 +934,8 @@ async function checkPage(browser, site, pageFile, viewportName, shotDir, log) {
 		await checkEquationsFit(page, problems);
 
 		fs.mkdirSync(path.join(shotDir, viewportName), { recursive: true });
-		await page.screenshot({ path: path.join(shotDir, name), fullPage: true });
+		// animations at rest (the hub's twinkling stars), so that two runs match
+		await page.screenshot({ path: path.join(shotDir, name), fullPage: true, animations: 'disabled' });
 
 		if (viewportName === 'desktop') {
 			log.push(`\n=== ${pageFile} ===`);

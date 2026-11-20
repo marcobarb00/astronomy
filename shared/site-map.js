@@ -300,8 +300,8 @@ const SITE_MAP = (function () {
 	};
 
 	/* Origins (STRUCTURE.md §7.1): the label of each margin note
-	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5): the
-	   hub explains the origins once, with ORIGIN_KEY. */
+	   "Origin · Greek". The notes carry no explanation (STYLE.md §4.5); the
+	   labels say enough on their own. */
 	const ORIGINS = {
 		babylonian: 'Babylonian',
 		greek: 'Greek',
@@ -313,36 +313,6 @@ const SITE_MAP = (function () {
 		debated: 'Debated',
 		modern: 'Modern'
 	};
-
-	/* The hub's key of origins: one line per kind of origin. 'origin' picks
-	   the colour of the label; the five authors share one line. */
-	const ORIGIN_KEY = [
-		{
-			origin: 'babylonian',
-			label: 'Babylonian',
-			text: 'inherited from Mesopotamian astronomy'
-		},
-		{
-			origin: 'greek',
-			label: 'Greek',
-			text: 'from earlier Greek astronomers and mathematicians'
-		},
-		{
-			origin: 'ptolemy',
-			label: 'Hipparchus, Ptolemy, Copernicus, Tycho, Kepler',
-			text: "the author's own contribution, as far as the sources allow"
-		},
-		{
-			origin: 'debated',
-			label: 'Debated',
-			text: 'attribution or details still discussed by historians'
-		},
-		{
-			origin: 'modern',
-			label: 'Modern',
-			text: 'the modern understanding or notation'
-		}
-	];
 
 	/* Exercise kinds (STRUCTURE.md §7.2). */
 	const EXERCISE_KINDS = {
@@ -358,7 +328,6 @@ const SITE_MAP = (function () {
 		ASTRONOMERS,
 		TOPICS,
 		ORIGINS,
-		ORIGIN_KEY,
 		EXERCISE_KINDS
 	};
 })();

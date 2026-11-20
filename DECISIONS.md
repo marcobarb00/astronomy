@@ -241,9 +241,10 @@ section.
   Moon's path near Regulus in August 2026 (approved by Marco on
   2026-10-30), the hub tonight's half of the zodiac with the Moon and the
   planets (2026-11-20). → STYLE.md §7
-- **Origin notes show the heading only** ("Origin · Greek"); the hub
-  explains the origins once, in a key. A one-sentence explanation per note
-  may come later. → STRUCTURE.md §7.1
+- **Origin notes show the heading only** ("Origin · Greek"). A
+  one-sentence explanation per note may come later. The hub's key of
+  origins was removed on 2026-11-20: Marco found the labels
+  self-explanatory. → STRUCTURE.md §7.1
 - **Detours are margin notes**, not cards. → STRUCTURE.md §7.4
 - **Today notes are a third kind of margin note**, headed "Today" in the
   colour of the Modern origin, saying what replaces the page's model as
@@ -251,9 +252,11 @@ section.
   STYLE.md §4.5, STRUCTURE.md §7.5
 - **Table of contents: section number and the `<h2>` title, in the
   contents column on the left, sticky.** → STYLE.md §4.1, §4.2
-- **The link back to the hub is sticky and starts with «**, so it can
-  be clicked from anywhere on a long page and reads as a way back
-  (2026-11-12). → STYLE.md §4.2
+- **The link back to the hub is sticky**, so it can be clicked from
+  anywhere on a long page (2026-11-12). It started with « until
+  2026-11-20; it now starts with a small star that darts west with a
+  short trail on hover (study 1C of the motion studies, chosen by Marco),
+  which says "back" without the «. → STYLE.md §4.2
 - **An equation is numbered only when the text refers to it.** → STYLE.md
   §4.6
 - **Figures follow strict rules**: one size whatever the controls,
@@ -498,6 +501,14 @@ section.
   declination −45° for Scorpius' tail. A rectangular plate may cross 0h
   (`Plate.rectangular`, `unwrap`), so the hub's plate is always the
   twelve hours opposite the Sun. → shared/plate.js (FIGURES), hub.js
+- **The hub's plate twinkles** (study 3 of the motion studies, chosen by
+  Marco on 2026-11-20): the stars low on the chart more, as seen from
+  mid-northern latitudes, the planets not at all. Off for reduced
+  motion; the smoke test takes its screenshots with animations at rest.
+  → hub.js, theme.css §14
+- **Orion is drawn with his bow, raised club and the hem of his tunic**
+  (Marco, 2026-11-20), on every plate that draws him (pages 1.2 and the
+  hub). → shared/plate.js (FIGURES)
 - **The hub's filled link leads to the first ready page**: the intro
   (0.1) once it is published, page 1.1 until then. Marco asked for the
   intro on 2026-11-20; it is not built yet (it needs the Act IV models,

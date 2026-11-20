@@ -106,13 +106,24 @@ const Thumbs = (function () {
 
 		/* The sphere, its axis, the daily circles and the horizon. */
 		'1.1'(k) {
+			const view = sphereView(60, 36, 30);
+			const pole = view.pole;
+
 			k.circle(60, 36, 30);
-			k.ellipse(60, 36, 30, 8, 'deferent');
-			k.line(44, 8, 76, 64);
-			k.ellipse(60, 36, 26, 7, 'earth thin', 28);
-			k.ellipse(52, 22, 17, 4.5, 'earth thin', 28);
-			k.star(48, 15, 2.6);
-			k.text(43, 7, 'P');
+			k.poly(view.circle([0, 0, 0], [1, 0, 0], [0, 1, 0]), 'deferent');
+
+			// the daily circles: perpendicular to the axis, about it
+			[55, 15, -25].forEach(dec => {
+				k.poly(view.dailyCircle(dec), 'earth thin');
+			});
+
+			const top = view.project([1.12 * pole[0], 0, 1.12 * pole[2]]);
+			const bottom = view.project([-1.12 * pole[0], 0, -1.12 * pole[2]]);
+			const star = view.onDailyCircle(55, -1.1);
+
+			k.line(bottom.x, bottom.y, top.x, top.y);
+			k.star(star.x, star.y, 2.6);
+			k.text(top.x - 9, top.y + 2, 'P');
 		},
 
 		/* The equator and the ecliptic, crossing at the equinox. */
@@ -281,6 +292,71 @@ const Thumbs = (function () {
 			k.dot(60, 36, 3, 'sun');
 		}
 	};
+
+	/* The celestial sphere of page 1.1 seen from outside, in the horizon
+	   frame (north, east, up) of an observer at geographic latitude 45°,
+	   viewed from the azimuth VIEW.azimuth (from north through east) and
+	   VIEW.elevation above the horizon: from the south-east and a little
+	   above, as textbooks draw it, the axis leans towards the viewer and the
+	   daily circles open into wide ellipses. Returns project(vector) ->
+	   {x, y}, circle(center, a, b) -> the points of center + cos t a +
+	   sin t b, and the daily circle of a declination, perpendicular to the
+	   axis through the pole. */
+	const VIEW = { azimuth: 160, elevation: 18 };
+
+	function sphereView(cx, cy, radius) {
+		const rad = Math.PI / 180;
+		const latitude = 45 * rad;
+		const a = VIEW.azimuth * rad;
+		const e = VIEW.elevation * rad;
+		const eye = [Math.cos(e) * Math.cos(a), Math.cos(e) * Math.sin(a), Math.sin(e)];
+		const flat = Math.hypot(eye[0], eye[1]);
+		const right = [-eye[1] / flat, eye[0] / flat, 0];
+		const up = [
+			eye[1] * right[2] - eye[2] * right[1],
+			eye[2] * right[0] - eye[0] * right[2],
+			eye[0] * right[1] - eye[1] * right[0]
+		];
+		const pole = [Math.cos(latitude), 0, Math.sin(latitude)];
+		const across = [-Math.sin(latitude), 0, Math.cos(latitude)]; // in the equator's plane
+		const dot = (u, v) => u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+
+		function project(v) {
+			return { x: cx + radius * dot(v, right), y: cy - radius * dot(v, up) };
+		}
+
+		function point(center, a, b, t) {
+			return [0, 1, 2].map(i => center[i] + Math.cos(t) * a[i] + Math.sin(t) * b[i]);
+		}
+
+		function circle(center, a, b) {
+			const points = [];
+
+			for (let i = 0; i <= 48; i++) {
+				const q = project(point(center, a, b, (2 * Math.PI * i) / 48));
+
+				points.push([q.x, q.y]);
+			}
+
+			return points;
+		}
+
+		/* The center and the two radii of the daily circle of 'dec' (deg). */
+		function daily(dec) {
+			const d = (dec * Math.PI) / 180;
+			const scale = v => v.map(c => c * Math.cos(d));
+
+			return [pole.map(c => c * Math.sin(d)), scale(across), scale([0, 1, 0])];
+		}
+
+		return {
+			pole,
+			project,
+			circle,
+			dailyCircle: dec => circle(...daily(dec)),
+			onDailyCircle: (dec, t) => project(point(...daily(dec), t))
+		};
+	}
 
 	/* The lit part of a disk seen from the Earth, lit from the right:
 	   lit = the fraction of the diameter that is bright. */

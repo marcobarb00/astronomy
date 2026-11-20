@@ -207,15 +207,17 @@ article {
 	min-width: 0;
 }
 
-/* "« Predicting the Sky" above the header: the way back to the hub. It
-   stays at the top of the window while the page scrolls, on a band of
-   parchment as wide as the window (a shadow, so that only the words are
-   clickable) that hides the text passing under it. */
+/* "Predicting the Sky" above the header, after a small star: the way back
+   to the hub. It stays at the top of the window while the page scrolls,
+   on a band of parchment as wide as the window (a shadow, so that only the
+   words are clickable) that hides the text passing under it. */
 .site-link {
 	position: sticky;
 	top: 0;
 	z-index: 10;
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	width: fit-content;
 	height: var(--site-link-height);
 	line-height: var(--site-link-height);
@@ -233,11 +235,93 @@ article {
 	color: var(--accent);
 }
 
-/* The arrow that says the link leads back (hidden from screen readers,
-   which announce a link anyway). */
-.site-link::before {
-	content: "\00ab\00a0";
-	content: "\00ab\00a0" / "";
+/* The star before the words: on hover or keyboard focus it darts west
+   (to the left, the way back) and fades, leaving a short trail, then
+   comes back; in a loop while the pointer stays. No motion for readers
+   who ask for less. */
+.back-mark {
+	position: relative;
+	flex: none;
+	width: 12px;
+	height: 12px;
+}
+
+.back-star {
+	display: block;
+	width: 12px;
+	height: 12px;
+	fill: var(--accent);
+}
+
+.back-trail {
+	position: absolute;
+	left: 6px;
+	top: 50%;
+	width: 0;
+	height: 1px;
+	background: linear-gradient(to right, transparent, var(--accent));
+	opacity: 0;
+}
+
+.site-link:hover .back-star,
+.site-link:focus-visible .back-star {
+	animation: back-dart 1.4s cubic-bezier(0.5, 0, 0.3, 1) infinite;
+}
+
+.site-link:hover .back-trail,
+.site-link:focus-visible .back-trail {
+	animation: back-trail 1.4s cubic-bezier(0.5, 0, 0.3, 1) infinite;
+}
+
+@keyframes back-dart {
+	0% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	55% {
+		transform: translateX(-14px);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes back-trail {
+	0% {
+		width: 0;
+		transform: translateX(0);
+		opacity: 0;
+	}
+
+	25% {
+		width: 14px;
+		transform: translateX(-6px);
+		opacity: 0.9;
+	}
+
+	55% {
+		width: 0;
+		transform: translateX(-14px);
+		opacity: 0;
+	}
+
+	100% {
+		width: 0;
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-link:hover .back-star,
+	.site-link:focus-visible .back-star,
+	.site-link:hover .back-trail,
+	.site-link:focus-visible .back-trail {
+		animation: none;
+	}
 }
 
 /* The header: the titles, then a double rule (two 1 px ink lines 3 px
@@ -1717,6 +1801,31 @@ a.begin:hover {
 	margin: 0;
 }
 
+/* The stars of the hub's plate twinkle (hub.js sets each one's depth and
+   period); the planets, drawn by Plate.body, do not. */
+.tonight .stars path.twinkle {
+	animation-name: twinkle;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+@keyframes twinkle {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: calc(1 - var(--twinkle-depth, 0.1));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tonight .stars path.twinkle {
+		animation: none;
+	}
+}
+
 /* ---------- The timeline of the astronomers ---------- */
 
 .timeline {
@@ -1994,32 +2103,9 @@ svg.thumb .label.epicycle {
 	fill: var(--epicycle-text);
 }
 
-/* The key of origins: the heading of each margin note and its meaning. */
-.origins {
-	max-width: var(--text-width);
-	margin-top: 56px;
-}
-
-dl.origin-key {
-	margin: 12px 0 0;
-	padding: 4px 0 10px;
-	border-top: 1px solid var(--ink);
-	border-bottom: 1px solid var(--ink);
-	font-size: 16px;
-	line-height: 1.5;
-}
-
-dl.origin-key dt {
-	margin-top: 8px;
-}
-
-dl.origin-key dd {
-	margin: 0;
-}
-
 .hub-foot {
 	max-width: var(--text-width);
-	margin-top: 40px;
+	margin-top: 56px;
 	padding-top: 16px;
 	border-top: 1px solid var(--line);
 	font-size: 15px;

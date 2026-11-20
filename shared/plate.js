@@ -188,6 +188,11 @@ const Plate = (function () {
 			],
 			name: [36, 27]
 		},
+		// the head, the shoulders and the belt; the legs to Saiph (kap) and
+		// Rigel (bet) and the hem of the tunic between them; the raised
+		// club, from Betelgeuse (alf) up through mu, ksi and nu to the chi
+		// stars; the bow (or lion's skin) held out from Bellatrix (gam), the
+		// arc of the six pi stars
 		'ORION': {
 			lines: [
 				['lam Ori', 'alf Ori'],
@@ -197,7 +202,19 @@ const Plate = (function () {
 				['del Ori', 'eps Ori'],
 				['eps Ori', 'zet Ori'],
 				['zet Ori', 'kap Ori'],
-				['del Ori', 'bet Ori']
+				['del Ori', 'bet Ori'],
+				['bet Ori', 'kap Ori'],
+				['alf Ori', 'mu. Ori A'],
+				['mu. Ori A', 'ksi Ori'],
+				['ksi Ori', 'nu. Ori'],
+				['nu. Ori', 'chi02 Ori'],
+				['chi02 Ori', 'chi01 Ori'],
+				['gam Ori', 'pi.03 Ori'],
+				['pi.01 Ori', 'pi.02 Ori'],
+				['pi.02 Ori', 'pi.03 Ori'],
+				['pi.03 Ori', 'pi.04 Ori'],
+				['pi.04 Ori', 'pi.05 Ori'],
+				['pi.05 Ori', 'pi.06 Ori']
 			],
 			name: [71, 1]
 		},

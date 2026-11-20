@@ -5,7 +5,7 @@
    style of STYLE.md: the link to the hub, the sticky table of contents on
    the left, the page header, margin notes (origins, detours), exercises,
    figure numbers, the graduated frame of figures, previous / next
-   navigation, and the hub's chapters, timeline and key of origins.
+   navigation, and the hub's chapters and timeline.
    Needs common.js and site-map.js (and KaTeX with its auto-render
    extension). The hub passes the drawings of its pages (thumbs.js).
 
@@ -57,7 +57,7 @@ const Site = (function () {
 	   1. SITE MAP (site-map.js)
 	   ====================================================================== */
 
-	const { ACTS, PAGES, ASTRONOMERS, TOPICS, ORIGINS, ORIGIN_KEY, EXERCISE_KINDS } = SITE_MAP;
+	const { ACTS, PAGES, ASTRONOMERS, TOPICS, ORIGINS, EXERCISE_KINDS } = SITE_MAP;
 
 	/* ======================================================================
 	   2. PATHS
@@ -94,12 +94,20 @@ const Site = (function () {
 	   ====================================================================== */
 
 	/* The way back to the hub, above the header. */
+	/* The mark before the link's words: a four-pointed star that darts
+	   west (to the left, the way back) with a short trail while the
+	   pointer is on the link (theme.css §3). Hidden from screen readers,
+	   which announce the link by its words. */
+	const BACK_MARK =
+		'<span class="back-mark" aria-hidden="true"><span class="back-trail"></span>' +
+		`<svg class="back-star" viewBox="-9 -9 18 18"><path d="${starPath(0, 0, 9)}"/></svg></span>`;
+
 	function buildSiteLink() {
 		if (document.querySelector('.site-link')) {
 			return;
 		}
 
-		const link = makeEl('a', 'site-link', 'Predicting the Sky');
+		const link = makeEl('a', 'site-link', `${BACK_MARK}Predicting the Sky`);
 		const container = document.querySelector('.page') ?? document.body;
 
 		link.href = href('index.html');
@@ -404,8 +412,7 @@ const Site = (function () {
 	   The acts in order as chapters: a small-caps label and a title, then
 	   one row per page, with the drawing of the page (thumbs.js), its
 	   number, its question and its title, greyed until ready. The
-	   timeline of the astronomers, with the pages under each. Then the key
-	   of origins. The hub's plate of tonight's sky is its own (hub.js).
+	   timeline of the astronomers, with the pages under each. The hub's plate of tonight's sky is its own (hub.js).
 	   ====================================================================== */
 
 	/* One page of a chapter: a link when the page is ready. drawPage
@@ -576,21 +583,6 @@ const Site = (function () {
 		return list;
 	}
 
-	/* The key of origins, once for the whole site (STYLE.md §4.5): each
-	   line is the heading of a margin note, in its colour, and what it means. */
-	function renderOriginKey(container) {
-		const list = makeEl('dl', 'origin-key');
-
-		ORIGIN_KEY.forEach(entry => {
-			const term = makeEl('dt', 'note-head', `Origin · ${entry.label}`);
-
-			term.dataset.origin = entry.origin;
-			list.append(term, makeEl('dd', '', entry.text));
-		});
-
-		container.appendChild(list);
-	}
-
 	/* ======================================================================
 	   8. FOOTER: COPYRIGHT AND LICENCES
 	   One line at the foot of every page that loads this file (the
@@ -652,15 +644,13 @@ const Site = (function () {
 		PAGES,
 		TOPICS,
 		ORIGINS,
-		ORIGIN_KEY,
 		EXERCISE_KINDS,
 		ROOT,
 		href,
 		findPage,
 		initPage,
 		renderHub,
-		renderTimeline,
-		renderOriginKey
+		renderTimeline
 	};
 })();
 

@@ -1302,8 +1302,7 @@ the equation there (*Almagest* III 8).
 Each idea is tagged with where it came from, by a note in the margin next
 to its paragraph (`STYLE.md` §4.5): a small-caps heading "Origin · Greek",
 coloured by origin. For now the note is the heading only; a one-sentence
-explanation comes later, with the content work. The hub explains the
-origins once, in a key:
+explanation comes later, with the content work. The labels need no key:
 
 - **Babylonian:** inherited from Mesopotamian astronomy.
 - **Greek:** from earlier Greek astronomers and mathematicians.
