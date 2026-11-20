@@ -1104,14 +1104,131 @@ The first anomaly and the simplest complete model.
 
 ### Epilogue
 
-#### Beyond Kepler
+Two pages, planned on 2026-11-20 (DECISIONS.md, Course): a story, last in
+the reading order, and a toolbox, reached only from the hub. Neither
+follows the rhythm of §5 and neither has exercises. The numbers below are
+the plan's, computed against the full VSOP87 series; the pages' scripts
+(`tools/numbers/beyond-kepler.js`, `tools/numbers/toolbox.js`) recompute
+them on the site's own reference before they are written.
 
-One short page: where the story goes next. Each entry has one sentence on why
-it matters, and becomes a link when its page exists. Unbuilt entries are
-shown greyed out. Candidates: Tycho's observations, Newton and gravitation,
-perturbations, the Moon after Kepler (the evection, the variation and the
-annual equation as effects of the Sun's pull; modern lunar series), nutation, aberration and stellar parallax, planetary latitudes,
-the Islamic critiques of the equant, calendars, instruments.
+#### Beyond Kepler (the story)
+
+- **Question:** where does the story go next?
+- **Idea:** after Kepler the question changed from *what shape* to *why*.
+  Newton is named as the answer, in a paragraph, without his mathematics
+  (no derivations, no force law, no simulator: his topic card points to a
+  future page). From then on each residual of the best model of its time
+  was a test of his law, and the page follows that chain of residuals in
+  time, stopping at Mercury and Einstein. Mostly prose, a few static
+  figures, no controls, no exercises.
+- **Sections** (each an `h2`, no step labels):
+  1. **After Kepler** (the lead): Kepler's ellipses leave Mars within 6′
+     and the Sun within a quarter of an arcminute (page 4.5); Newton's
+     *Principia* (1687) derives the three laws for one planet and one Sun
+     from one law of gravitation, and, since every body pulls every
+     other, says why they cannot be exact (Voelkel ch. 7).
+  2. **The Moon's perigee:** Tycho's variation and annual equation (HAMA
+     p. 85; Fitzpatrick § 6.1), the Moon's terms that page 4.5's residual
+     lists; the perigee turns 3.04° a revolution (page 3.1's rates), and
+     Newton's theory gave about half, 1.51° (the first order, $\tfrac34
+     m^2$ with $m = n_\odot / n$, quoted, not derived); Clairaut doubted
+     the law (1747) and found the missing half in higher orders of the
+     same law (1749).
+  3. **Jupiter and Saturn:** Halley found Jupiter speeding up and Saturn
+     slowing down, from ancient and modern observations; Laplace (1785)
+     explained it by their mutual pull, near the ratio 5 : 2 of their
+     periods (the great inequality, about 900 years). Mars' aphelion
+     turning 0.43° a century (page 4.5) as the slower kind of change.
+  4. **The Moon's acceleration and the Earth's clock** (on trial):
+     Halley's secular acceleration of the Moon from ancient eclipses;
+     Laplace's explanation and Adams' finding (1853) that it covers only
+     half; the rest is the tidal slowing of the Earth, the ΔT applied
+     since page 2.1.
+  5. **Uranus and Neptune:** Uranus' residuals by the 1840s; Le Verrier's
+     and Adams' predictions (the priority is Debated); Galle finds Neptune
+     on 23 September 1846, near Le Verrier's place.
+  6. **Mercury's perihelion:** Le Verrier (1859) finds an advance the
+     planets do not explain, Newcomb (1882) 43″ a century; Einstein's
+     general relativity (1915) gives 42.98″ (computed by the script). The
+     last residual that Newton's law could not remove; the story stops
+     here.
+  7. **Where the story goes next:** the topic cards (`SITE_MAP.TOPICS`),
+     grouped: left out of the course (nutation, aberration, stellar
+     parallax, planetary latitudes, ΔT), where the story went (Newton and
+     gravitation, perturbations, the Moon after Kepler), around the story
+     (Tycho's observations, the Islamic critiques of the equant,
+     instruments, calendars). One sentence each; greyed and marked "in
+     preparation" until a page exists, then a link (`Site.renderTopics`).
+  8. **Further reading:** a short annotated list (which book for which
+     question), then the Sources.
+- **Figures (all static):** the error of Kepler's ellipses for Jupiter and
+  Saturn, fitted to their oppositions of 1926–2025, in heliocentric
+  ecliptic longitude over 1000 BC – AD 3000 (the toolbox's fits, against
+  VSOP87: a century sees part of a 900-year wave as a change in mean
+  motion, and Saturn's ellipse is about 17° off by 1000 BC); the budget of
+  Mercury's perihelion advance in a century, as bars: the precession of
+  page 2.3 (5028″), the planets' pulls (about 532″), and the 43″ left
+  (Clemence, 1947). Optional: one photo (the title page of the
+  *Principia*, 1687, public domain).
+- **Origins:** Tycho (the variation, the annual equation), Modern (Newton,
+  Clairaut, Laplace, Le Verrier, Einstein), Debated (Adams and Le
+  Verrier). No detour notes: section 7 replaces them.
+- **Sources:** Voelkel ch. 7; HAMA p. 85; Fitzpatrick, *A Modern Almagest*
+  § 6.1; outside the library: Newton, *Principia* (I 45, III 25–35);
+  Clairaut (1749); Laplace (1785); Adams (1853); Le Verrier (1846, 1859);
+  Newcomb (1882); Einstein (1915); Clemence, *Rev. Mod. Phys.* 19 (1947);
+  C. Linton, *From Eudoxus to Einstein* (2004); C. Wilson on Newton and
+  Clairaut; N. T. Roseveare, *Mercury's Perihelion from Le Verrier to
+  Einstein* (1982). Every historical claim is checked before it is written.
+- **Code:** `tools/numbers/beyond-kepler.js`; `Site.renderTopics` in
+  `components.js`; the hub's row keeps `thumbs.js`' drawing `beyond`.
+
+#### The toolbox
+
+- **Reached only from the hub:** a button beside the hub's filled link
+  (the one above the plate of tonight's sky), as tall, outlined in
+  `--accent`. Not in `PAGES`, so it has no previous / next and no row in
+  the chapters; its entry is `SITE_MAP.TOOLBOX`. Path
+  `toolbox/index.html`.
+- **Idea:** everything the reader built, gathered to be used: the
+  objective of §1 as a working instrument. No rhythm, no exercises.
+- **Sections:**
+  1. **Where everything is on a date:** the calculator. A date and time
+     (UT) and a place (geographic latitude and longitude, a few presets);
+     for the Sun, the Moon and the five planets, the model's ecliptic
+     longitude beside the reference's and their difference, the right
+     ascension and declination (page 1.2), and the times of rising,
+     transit and setting at the place (page 1.3); a strip of the zodiac
+     with the model's places and the reference's. The models: the Sun's
+     ellipse (page 4.5), the Moon's crank (page 3.2) with page 3.3's
+     latitude, Mars' ellipse (page 4.5), and ellipses for Mercury, Venus,
+     Jupiter and Saturn fitted here by page 4.5's method: the
+     heliocentric ecliptic longitudes at the oppositions (outer) and the
+     conjunctions (inner) of 1926–2025, the aphelion fixed among the
+     stars, $a$ from the third law. Plan values in 2026: Mercury 11′,
+     Venus 10′, Mars 5′, Jupiter 3′, Saturn 6′ at most, against VSOP87.
+     Fixed read-out lines, fixed scales.
+  2. **How far each model can be trusted:** the largest error of every
+     model of the course, for the Sun, the Moon and each planet, on a
+     scale of powers of ten (page 4.5's Figure 6, extended), static.
+  3. **Formulas:** the key results, one line each, grouped by act, each
+     with the page that derives it (frames, sidereal time, day length, the
+     equation of center, the equation of time, precession, the Moon's
+     equation of anomaly and crank, eclipse limits, stations, the equant,
+     periods, phases, Kepler's equation, the third law).
+  4. **Parameters:** every fitted parameter set, read from the models in
+     `shared/models/` at load (never copied), with the observations it
+     was fitted to and its page.
+  5. **Notation:** the table of §6.
+  6. **Sources.**
+- **Reference:** VSOP87 for the Earth and all five planets (Ephem's theory
+  `vsop87`, extended from page 4.5's two bodies and checked against JPL
+  Horizons the same way); the Moon of Meeus ch. 47.
+- **Code:** `toolbox/index.html`, `page.js`, `page.css`;
+  `tools/make-vsop87.js` and `fetch-vsop87.sh` for Mercury, Venus,
+  Jupiter and Saturn; `Kepler.PLANETS_FIT` and `Kepler.fitEvents` in
+  `models/kepler.js`; `tools/numbers/toolbox.js`; the button in
+  `index.html` and `theme.css` §14.
 
 ### Hub
 
@@ -1123,7 +1240,9 @@ it; a link to the first ready page (the intro once published); a blue plate of t
 timeline of the astronomers, with the pages that rebuild their models or
 use their observations (`ASTRONOMERS` in `shared/site-map.js`); the story
 in a few short paragraphs; the acts as chapters, one row per page with
-its drawing, ending with *Beyond Kepler*. Optional: a notation page (§6).
+its drawing, ending with *Beyond Kepler*. Beside the filled link, a
+button to the toolbox, the only way to reach it (see Epilogue). The
+toolbox holds the notation (§6).
 The opening and the story say, as part of the story and not as a warning:
 
 - each page rebuilds a historical model as its author conceived it
@@ -1206,7 +1325,8 @@ styled by `shared/theme.css` (STYLE.md §4.8; see `templates/page.html`).
 
 Followed by:
 
-- **Exercises** (two or three, see §7.2).
+- **Exercises** (two or three, see §7.2; none on the two epilogue pages,
+  which do not follow this anatomy either).
 - **Sources** for the page (primary and modern).
 - **Previous / next** navigation.
 
@@ -1423,7 +1543,8 @@ act4-planets/
   03-new-center/
   04-phases-parallax/
   05-kepler/
-beyond-kepler/
+beyond-kepler/             the epilogue (the story)
+toolbox/                   the toolbox, reached only from the hub
 archive/                   earlier pages, kept for reference, not linked
 ```
 

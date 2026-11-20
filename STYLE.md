@@ -191,8 +191,9 @@ styled by `shared/theme.css`.
 1. The header (act line, h1, italic subtitle) and the double rule.
 2. The opening with its drop cap, in the author's voice (WRITING.md §1),
    then a link to the first ready page (the intro once it is published,
-   page 1.1 until then) filled like the Play button (§8) and a plain
-   link to the chapters.
+   page 1.1 until then) filled like the Play button (§8), beside it the
+   button to the toolbox, as tall, outlined in `--accent` (the only way
+   to the toolbox), and a plain link to the chapters.
 3. Sections parted by double rules with the four-pointed star in the
    middle: the blue plate of tonight's sky (§7, `hub.js`); the timeline of
    the astronomers, each with the numbers of his pages as small framed
