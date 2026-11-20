@@ -21,6 +21,9 @@ a little warm, and always clear about *why* the next step is worth taking.
   machine describing itself.
 - **Light contractions are fine** ("we'll", "doesn't", "isn't") where they
   read naturally. Don't force them into mathematics.
+- **The hub's opening is in the author's voice ("I")**: why the course
+  was written, from Marco's own study of these models. Only there; the
+  rest of the hub and every page keep "we" and "you".
 
 ## 2. Say why before what
 

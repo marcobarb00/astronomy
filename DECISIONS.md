@@ -239,7 +239,8 @@ section.
   page 1.2 the zodiac around Taurus, page 2.3 the path of the pole (on
   trial, 2026-10-24: Marco decides whether to keep it), page 3.3 the
   Moon's path near Regulus in August 2026 (approved by Marco on
-  2026-10-30). → STYLE.md §7
+  2026-10-30), the hub tonight's half of the zodiac with the Moon and the
+  planets (2026-11-20). → STYLE.md §7
 - **Origin notes show the heading only** ("Origin · Greek"); the hub
   explains the origins once, in a key. A one-sentence explanation per note
   may come later. → STRUCTURE.md §7.1
@@ -294,6 +295,16 @@ section.
   moves slowly, and the play button plays the chosen view at its own
   speed. What is drawn changes only when the reader changes the view. →
   CLAUDE.md, "Rules for every figure"
+- **The hub: an opening in Marco's voice, the plate of tonight's sky, the
+  timeline of the astronomers, the acts as chapters with a drawing of
+  each page.** Marco found the old hub plain and chose this from four
+  mockups on 2026-11-20. Set aside: the tiles; a chart of the largest
+  error of every model (page 4.5's Figure 6) at the top; an animation of
+  Mars on its epicycle. The double rule with the star in the middle
+  parts the hub's sections; the drawings of the pages are the only
+  ornament beyond STYLE.md §1.4, and only on the hub. A page sits on the
+  timeline under each astronomer whose model it rebuilds or whose
+  observations it uses. → STYLE.md §4.9, STRUCTURE.md §4 (Hub)
 
 ## Writing
 
@@ -359,6 +370,11 @@ section.
   approved by Marco the same day for every page. The italics of terms
   defined on an earlier page became plain, and page 1.1's bold "23 h 56
   min 4 s" lost its bold. → WRITING.md §11, CLAUDE.md "Writing"
+- **The hub's opening is in the first person.** It says why the course
+  exists: the books Marco studied from gave the old models a paragraph
+  and a drawing, never how they were found or how their parameters were
+  fitted. Only there; everywhere else "we" and "you". Marco, 2026-11-20.
+  → WRITING.md §1
 
 ## Code
 
@@ -467,6 +483,14 @@ section.
   (tools/numbers/4.1-going-backwards.js). One function,
   `PlanetEpicycle.referenceEvents`, with the option `apparent`, serves
   both. Decided on 2026-11-09. → shared/models/planet-epicycle.js
+- **The stars of the rest of the zodiac come from XHIP.** The hub's
+  plate can show any twelve hours of the zodiac, and the plate stars
+  covered only 0h to 13h south of +20°. CDS did not answer on 2026-11-20,
+  so the rest (right ascension 195° to 15° from −32° to +20°, and below
+  −20° elsewhere) comes from XHIP, as page 3.3's region did; no existing
+  plate reaches it, and no star already listed changed. Constellation
+  figures are drawn from Aries to Leo only. → tools/numbers/data/
+  fetch-plate-stars-xhip.sh, tools/make-plate-stars.py
 
 ## Workflow
 
@@ -516,6 +540,11 @@ section.
   only Figure 5 (the Sun's error curve) and the Sun's distances are in
   question. If it goes, the hub's sentence on the Earth's orbit still
   holds, since it states history, not the page's content.
-- **The plate stars of page 3.3 from SIMBAD** (see Code): refetch the
-  region right ascension 105° to 195°, declination −20° to +20°, and drop
-  the XHIP file.
+- **The plate stars of page 3.3 and the hub from SIMBAD** (see Code):
+  refetch the region right ascension 105° to 195°, declination −20° to
+  +20°, and the hub's (right ascension 195° to 15°, declination −32° to
+  +20°; below −20° elsewhere), and drop the XHIP files.
+- **Constellation figures for the rest of the zodiac on the hub's
+  plate** (Virgo to Pisces): from about March to September its chart has
+  stars but no figures. Each needs its stars named in `plate.js`
+  (FIGURES) and fetched by name.

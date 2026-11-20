@@ -1593,12 +1593,20 @@ figure.plate-figure {
 
 /* ==========================================================================
    14. HUB
-   The acts in order, each with its pages as tiles; then the key of
-   origins and the sources.
+   The opening and the way in, then, between star rules: the plate of
+   tonight's sky (hub.js), the timeline of the astronomers, the story, and
+   the acts as chapters, one row per page with its drawing (thumbs.js).
+   Then the key of origins and the sources.
    ========================================================================== */
 
 .hub-head .titles {
 	max-width: none;
+}
+
+.hub-sub {
+	margin: 4px 0 0;
+	font: italic 500 24px/1.3 var(--font-title);
+	color: var(--muted);
 }
 
 /* The hub and the test page have no article: their paragraphs keep to
@@ -1606,10 +1614,6 @@ figure.plate-figure {
 .page > p,
 .single > p {
 	max-width: var(--text-width);
-}
-
-.act {
-	margin: 48px 0 0;
 }
 
 .act-label {
@@ -1622,74 +1626,372 @@ figure.plate-figure {
 }
 
 .act-title {
-	margin: 2px 0 0;
+	margin: 0;
 }
 
-.act-blurb {
-	max-width: var(--text-width);
-	margin: 4px 0 16px;
+/* ---------- The way in ---------- */
+
+/* A link to the first page, filled like the Play button (§8), and a
+   quieter link to the chapters. */
+.start {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 24px;
+	align-items: center;
+	margin: 22px 0 8px;
+}
+
+a.begin {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 44px;
+	padding: 8px 22px;
+	background: var(--accent);
+	color: var(--card);
+	font: 17px/1.2 var(--font-text);
+	text-decoration: none;
+}
+
+a.begin:hover {
+	background: color-mix(in srgb, var(--accent) 85%, var(--ink));
+}
+
+.start .to-chapters {
+	font-size: 16px;
+}
+
+/* ---------- Star rules ---------- */
+
+/* The hub's sections are parted by the double rule with the four-pointed
+   star in its middle (STYLE.md §4.3); the star is drawn by its own svg. */
+.star-rule {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin: 52px 0 12px;
+}
+
+.star-rule::before,
+.star-rule::after {
+	content: "";
+	flex: 1;
+	height: 4px;
+	border-top: 1px solid var(--ink);
+	border-bottom: 1px solid var(--ink);
+}
+
+.star-rule svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	fill: var(--ink);
+}
+
+/* ---------- The plate of tonight's sky ---------- */
+
+/* The chart takes the plate's whole width; its title and caption sit
+   under it, the caption in two columns. */
+.tonight .plate {
+	padding: 22px 24px 26px;
+}
+
+.tonight .plate .chart {
+	flex: 1 1 100%;
+	max-width: none;
+}
+
+.tonight .plate .side {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 6px 36px;
+	flex: 1 1 100%;
+	max-width: none;
+}
+
+.tonight .plate .side .plate-head {
+	grid-column: 1 / -1;
+}
+
+.tonight .plate .side p {
+	margin: 0;
+}
+
+/* ---------- The timeline of the astronomers ---------- */
+
+.timeline {
+	margin: 12px 0 8px;
+}
+
+svg.timeline-chart {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+	font-family: var(--font-text);
+}
+
+.timeline-chart .axis,
+.timeline-chart .tick {
+	stroke: var(--ink);
+	stroke-width: 1.2;
+}
+
+.timeline-chart .date {
+	fill: var(--muted);
+	font-size: 14px;
+}
+
+.timeline-chart .name {
+	fill: var(--ink);
+	font: 600 19px var(--font-title);
+}
+
+.timeline-chart .work {
+	fill: var(--muted);
+	font-size: 15px;
+	font-style: italic;
+}
+
+/* A page's number, a link: framed in ink, filled on hover. */
+.timeline-chart .chip rect {
+	fill: var(--card);
+	stroke: var(--ink);
+	stroke-width: 1;
+}
+
+.timeline-chart .chip text {
+	fill: var(--accent);
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+}
+
+.timeline-chart .chip:hover rect {
+	fill: var(--ink);
+}
+
+.timeline-chart .chip:hover text {
+	fill: var(--card);
+}
+
+/* The same astronomers as a list, for a phone, where the chart's text
+   would fall below 13 px (§16). */
+ol.timeline-list {
+	display: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--ink);
+}
+
+ol.timeline-list li {
+	display: grid;
+	grid-template-columns: 7.5em minmax(0, 1fr);
+	gap: 2px 12px;
+	padding: 8px 0 10px;
+	border-bottom: 1px solid var(--line);
+}
+
+ol.timeline-list .date {
+	font-size: 15px;
 	color: var(--muted);
 }
 
-.tiles {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-	gap: 14px;
+ol.timeline-list .name {
+	font: 600 21px/1.2 var(--font-title);
 }
 
-.tile {
-	display: block;
-	padding: 12px 16px 14px;
+ol.timeline-list .work {
+	grid-column: 2;
+	font-size: 15px;
+	font-style: italic;
+	color: var(--muted);
+}
+
+ol.timeline-list .chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	grid-column: 2;
+	margin-top: 4px;
+}
+
+ol.timeline-list .chips a {
+	padding: 2px 8px;
 	border: 1px solid var(--ink);
 	background: var(--card);
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-decoration: none;
+}
+
+/* ---------- The chapters ---------- */
+
+.chapter-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+	align-items: baseline;
+	margin: 34px 0 10px;
+}
+
+.page-rows {
+	border-top: 1px solid var(--ink);
+}
+
+/* One page: its drawing, its number, its question over its title. */
+.page-row {
+	display: grid;
+	grid-template-columns: 120px 3.2em minmax(0, 1fr);
+	gap: 4px 18px;
+	align-items: center;
+	padding: 10px 6px;
+	border-bottom: 1px solid var(--line);
 	color: var(--ink);
 	text-decoration: none;
 }
 
-a.tile:hover {
-	box-shadow: inset 0 0 0 1px var(--ink);
+a.page-row:hover {
+	background: var(--card);
 }
 
-.tile-number {
+.page-row .page-number {
 	font-family: var(--font-label);
-	font-size: 16px;
+	font-size: 17px;
 	font-weight: 600;
-	letter-spacing: 0.15em;
+	letter-spacing: 0.12em;
 	color: var(--accent);
 }
 
-.tile-title {
+.page-row .page-question {
 	display: block;
-	margin: 2px 0 4px;
-	font: 600 23px/1.2 var(--font-title);
+	font: italic 600 25px/1.2 var(--font-title);
 }
 
-.tile-question {
+.page-row .page-title {
 	display: block;
 	font-size: 15px;
-	font-style: italic;
-	line-height: 1.45;
 	color: var(--muted);
 }
 
 /* A page that does not exist yet: greyed out, not a link. */
-.tile.unready {
-	border: 1px dashed var(--line);
-	background: transparent;
+.page-row.unready {
 	color: var(--muted);
 }
 
-.tile.unready .tile-number {
-	color: var(--muted);
+.page-row.unready svg.thumb {
+	opacity: 0.45;
 }
 
-.soon {
-	margin-left: 10px;
-	font-family: var(--font-label);
-	font-size: 14px;
-	font-weight: 500;
-	letter-spacing: 0.1em;
-	color: var(--muted);
+/* ---------- The drawings of the pages (thumbs.js) ---------- */
+
+svg.thumb {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+
+svg.thumb * {
+	fill: none;
+	stroke-width: 1.4;
+	stroke-linecap: round;
+}
+
+svg.thumb .thin {
+	stroke-width: 0.8;
+}
+
+svg.thumb .dashed {
+	stroke-dasharray: 3 3;
+}
+
+svg.thumb .ghost {
+	stroke-dasharray: 2 2;
+	opacity: 0.7;
+}
+
+svg.thumb .ink {
+	stroke: var(--ink);
+}
+
+svg.thumb .earth {
+	stroke: var(--earth);
+}
+
+svg.thumb .sun {
+	stroke: var(--sun);
+}
+
+svg.thumb .planet {
+	stroke: var(--planet);
+}
+
+svg.thumb .deferent {
+	stroke: var(--deferent);
+}
+
+svg.thumb .epicycle {
+	stroke: var(--epicycle);
+}
+
+/* Filled marks take the colour of their line. */
+svg.thumb .fill {
+	stroke: none;
+}
+
+svg.thumb .ink.fill {
+	fill: var(--ink);
+}
+
+svg.thumb .earth.fill {
+	fill: var(--earth);
+}
+
+svg.thumb .sun.fill {
+	fill: var(--sun);
+}
+
+svg.thumb .planet.fill {
+	fill: var(--planet);
+}
+
+svg.thumb .epicycle.fill {
+	fill: var(--epicycle);
+}
+
+svg.thumb .fill-soft {
+	fill: color-mix(in srgb, var(--sun) 35%, transparent);
+}
+
+svg.thumb .fill-dark {
+	fill: var(--ink);
+}
+
+/* Letters in the text colour of their line. */
+svg.thumb .label {
+	stroke: none;
+	font: italic 600 9px var(--font-title);
+}
+
+svg.thumb .label.ink {
+	fill: var(--ink);
+}
+
+svg.thumb .label.earth {
+	fill: var(--earth-text);
+}
+
+svg.thumb .label.sun {
+	fill: var(--sun-text);
+}
+
+svg.thumb .label.epicycle {
+	fill: var(--epicycle-text);
 }
 
 /* The key of origins: the heading of each margin note and its meaning. */
@@ -1856,6 +2158,29 @@ dl.origin-key dd {
 
 	.pager .next {
 		grid-column: 1;
+	}
+
+	/* The hub: the plate's caption in one column, the timeline as a list,
+	   the page rows with a smaller drawing. */
+	.tonight .plate .side {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	svg.timeline-chart {
+		display: none;
+	}
+
+	ol.timeline-list {
+		display: block;
+	}
+
+	.page-row {
+		grid-template-columns: 80px 2.6em minmax(0, 1fr);
+		gap: 4px 12px;
+	}
+
+	.page-row .page-question {
+		font-size: 21px;
 	}
 
 	/* 82px: the longest word of a label ("geographic", in "geographic

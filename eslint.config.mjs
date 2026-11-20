@@ -50,6 +50,7 @@ const SHARED_SCRIPTS = [
 	'shared/plot2d.js',
 	'shared/errorcurve.js',
 	'shared/site-map.js',
+	'shared/thumbs.js',
 	'shared/components.js'
 ];
 
@@ -111,15 +112,16 @@ export default [
 		rules: BROWSER_RULES
 	})),
 
-	// the pages, the templates, the test page and the design mockups see
-	// every shared name
+	// the pages, the hub, the templates, the test page and the design
+	// mockups see every shared name
 	{
 		files: [
 			'act*/**/*.js',
 			'templates/**/*.js',
 			'shared/tests.js',
 			'beyond-kepler/**/*.js',
-			'design/**/*.js'
+			'design/**/*.js',
+			'hub.js'
 		],
 		languageOptions: {
 			ecmaVersion: 2022,

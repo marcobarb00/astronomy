@@ -5,9 +5,9 @@
    style of STYLE.md: the link to the hub, the sticky table of contents on
    the left, the page header, margin notes (origins, detours), exercises,
    figure numbers, the graduated frame of figures, previous / next
-   navigation, and the hub's map and key of origins.
+   navigation, and the hub's chapters, timeline and key of origins.
    Needs common.js and site-map.js (and KaTeX with its auto-render
-   extension).
+   extension). The hub passes the drawings of its pages (thumbs.js).
 
    Authoring (see templates/page.html)
 	 <body data-page="2.1">                      the page's number in SITE.pages
@@ -57,7 +57,7 @@ const Site = (function () {
 	   1. SITE MAP (site-map.js)
 	   ====================================================================== */
 
-	const { ACTS, PAGES, TOPICS, ORIGINS, ORIGIN_KEY, EXERCISE_KINDS } = SITE_MAP;
+	const { ACTS, PAGES, ASTRONOMERS, TOPICS, ORIGINS, ORIGIN_KEY, EXERCISE_KINDS } = SITE_MAP;
 
 	/* ======================================================================
 	   2. PATHS
@@ -401,53 +401,179 @@ const Site = (function () {
 
 	/* ======================================================================
 	   7. HUB
-	   The acts in order, each a small-caps label, a title and a blurb; each
-	   page is a tile, greyed until ready. Then the key of origins.
+	   The acts in order as chapters: a small-caps label and a title, then
+	   one row per page, with the drawing of the page (thumbs.js), its
+	   number, its question and its title, greyed until ready. The
+	   timeline of the astronomers, with the pages under each. Then the key
+	   of origins. The hub's plate of tonight's sky is its own (hub.js).
 	   ====================================================================== */
 
-	function pageTile(page) {
-		const number = page.number === 'beyond' ? 'Epilogue' : page.number;
-		const soon = page.ready ? '' : '<span class="soon">in preparation</span>';
-		const inner =
-			`<span class="tile-number">${number}</span>${soon}` +
-			`<span class="tile-title">${page.title}</span>` +
-			`<span class="tile-question">${page.question}</span>`;
+	/* One page of a chapter: a link when the page is ready. drawPage
+	   (number -> svg) gives its drawing: Thumbs.svg, passed by the hub, so
+	   that the pages need not load thumbs.js. */
+	function pageRow(page, drawPage) {
+		const row = makeEl(page.ready ? 'a' : 'div', page.ready ? 'page-row' : 'page-row unready');
+		const number = page.number === 'beyond' ? '' : page.number;
+		const soon = page.ready ? '' : ' · in preparation';
 
 		if (page.ready) {
-			const link = makeEl('a', 'tile', inner);
-
-			link.href = href(page.path);
-
-			return link;
+			row.href = href(page.path);
+		} else {
+			row.setAttribute('aria-disabled', 'true');
 		}
 
-		const tile = makeEl('div', 'tile unready', inner);
+		row.append(
+			drawPage(page.number),
+			makeEl('span', 'page-number', number),
+			makeEl(
+				'span',
+				'page-words',
+				`<span class="page-question">${page.question}</span>` +
+					`<span class="page-title">${page.title}${soon}</span>`
+			)
+		);
 
-		tile.setAttribute('aria-disabled', 'true');
-
-		return tile;
+		return row;
 	}
 
-	function renderHub(container) {
-		container.classList.add('acts');
+	function renderHub(container, drawPage) {
+		container.classList.add('chapters');
 
 		ACTS.forEach(act => {
-			const section = makeEl('section', 'act');
-			const tiles = makeEl('div', 'tiles');
+			const chapter = makeEl('section', 'chapter');
+			const head = makeEl('div', 'chapter-head');
+			const rows = makeEl('div', 'page-rows');
 
-			section.append(
-				makeEl('p', 'act-label', act.name),
-				makeEl('h2', 'act-title', act.title),
-				makeEl('p', 'act-blurb', act.blurb),
-				tiles
-			);
+			head.append(makeEl('p', 'act-label', act.name), makeEl('h2', 'act-title', act.title));
+			chapter.append(head, rows);
 
 			PAGES.filter(page => page.act === act.id).forEach(page => {
-				tiles.appendChild(pageTile(page));
+				rows.appendChild(pageRow(page, drawPage));
 			});
 
-			container.appendChild(section);
+			container.appendChild(chapter);
 		});
+	}
+
+	/* The timeline: a broken axis, 800 BC to AD 250 and 1500 to 1650 (the
+	   two eras share the width by what they hold, not in proportion to
+	   their years). Each astronomer has a tick, a date, a
+	   name and a work, alternately above and below the axis, and his pages
+	   as small links beyond them. Drawn in a fixed viewBox: the svg scales
+	   with the column. */
+	const TIMELINE = {
+		width: 960,
+		height: 300,
+		axisY: 150,
+		eras: [
+			{ from: -800, to: 250, x0: 20, x1: 560 },
+			{ from: 1500, to: 1650, x0: 600, x1: 940 }
+		],
+		chip: { w: 38, h: 26, gap: 6 }
+	};
+
+	const SVG_NS = 'http://www.w3.org/2000/svg';
+
+	/* An SVG element with attributes (and text), appended to parent. */
+	function svgChild(parent, tag, attrs = {}, text = '') {
+		const node = document.createElementNS(SVG_NS, tag);
+
+		Object.entries(attrs).forEach(([name, value]) => {
+			node.setAttribute(name, String(value));
+		});
+
+		if (text) {
+			node.textContent = text;
+		}
+
+		parent.appendChild(node);
+
+		return node;
+	}
+
+	/* The x of a year on the broken axis. */
+	function timelineX(year) {
+		const era = TIMELINE.eras.find(e => year >= e.from && year <= e.to);
+
+		return era.x0 + ((year - era.from) * (era.x1 - era.x0)) / (era.to - era.from);
+	}
+
+	/* The links to an astronomer's pages, in a row centered on x. */
+	function drawPageChips(svg, numbers, x, y) {
+		const { w, h, gap } = TIMELINE.chip;
+		const rowWidth = numbers.length * (w + gap) - gap;
+
+		numbers.forEach((number, i) => {
+			const page = findPage(number);
+			const left = x - rowWidth / 2 + i * (w + gap);
+			const link = svgChild(svg, 'a', { href: href(page.path), class: 'chip' });
+
+			svgChild(link, 'title', {}, `${page.number} ${page.title}`);
+			svgChild(link, 'rect', { x: left, y: y, width: w, height: h });
+			svgChild(link, 'text', { x: left + w / 2, y: y + 18, 'text-anchor': 'middle' }, number);
+		});
+	}
+
+	function renderTimeline(container) {
+		const { width, height, axisY, eras } = TIMELINE;
+		const svg = svgChild(container, 'svg', {
+			viewBox: `0 0 ${width} ${height}`,
+			class: 'timeline-chart',
+			role: 'img',
+			'aria-label': 'The astronomers of the course on a timeline, with the pages that rebuild their models'
+		});
+
+		eras.forEach(era => {
+			svgChild(svg, 'line', { x1: era.x0, y1: axisY, x2: era.x1, y2: axisY, class: 'axis' });
+		});
+
+		// the break between the eras: two slanted strokes
+		[eras[0].x1 + 12, eras[0].x1 + 24].forEach(x => {
+			svgChild(svg, 'line', { x1: x - 5, y1: axisY + 8, x2: x + 5, y2: axisY - 8, class: 'axis' });
+		});
+
+		ASTRONOMERS.forEach(person => {
+			const x = timelineX(person.year);
+			const dir = person.above ? -1 : 1;
+			const shift = person.above ? 0 : 10; // a text's baseline below the axis
+			const nameY = axisY + dir * 34 + shift;
+
+			svgChild(svg, 'line', { x1: x, y1: axisY - 5, x2: x, y2: axisY + 5, class: 'tick' });
+			svgChild(
+				svg,
+				'text',
+				{ x: x, y: axisY + dir * 16 + 5, 'text-anchor': 'middle', class: 'date' },
+				person.date
+			);
+			svgChild(svg, 'text', { x: x, y: nameY, 'text-anchor': 'middle', class: 'name' }, person.name);
+			svgChild(svg, 'text', { x: x, y: nameY + dir * 20, 'text-anchor': 'middle', class: 'work' }, person.work);
+			drawPageChips(svg, person.pages, x, person.above ? axisY - 118 : axisY + 92);
+		});
+
+		container.appendChild(timelineList());
+	}
+
+	/* The same astronomers as a list, shown instead of the chart on a
+	   phone (theme.css §16): date, name, work and the links to the pages. */
+	function timelineList() {
+		const list = makeEl('ol', 'timeline-list');
+
+		ASTRONOMERS.forEach(person => {
+			const chips = person.pages.map(number => `<a href="${href(findPage(number).path)}">${number}</a>`).join('');
+
+			list.appendChild(
+				makeEl(
+					'li',
+					'',
+					`<span class="date">${person.date}</span>` +
+						`<span class="name">${person.name}</span>` +
+						`<span class="work">${person.work}</span>` +
+						`<span class="chips">${chips}</span>`
+				)
+			);
+		});
+
+		return list;
 	}
 
 	/* The key of origins, once for the whole site (STYLE.md §4.5): each
@@ -533,6 +659,7 @@ const Site = (function () {
 		findPage,
 		initPage,
 		renderHub,
+		renderTimeline,
 		renderOriginKey
 	};
 })();

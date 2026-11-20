@@ -2,8 +2,9 @@
 from the SIMBAD and Hipparcos data in
 tools/numbers/data (fetched by fetch-plate-stars.sh), and for the sky of
 page 3.3 south of +20° from Gemini to Virgo, which SIMBAD did not answer for
-on 2026-10-30, the XHIP data of fetch-plate-stars-xhip.sh (stars already
-given by SIMBAD keep SIMBAD's values). Run from the repository root:
+on 2026-10-30, and for the rest of the band of the zodiac (the hub's plate
+of tonight's sky, 2026-11-20), the XHIP data of fetch-plate-stars-xhip.sh
+(stars already given by SIMBAD keep SIMBAD's values). Run from the repository root:
 python3 tools/make-plate-stars.py
 
 Every star brighter than V = 5.0 in the regions of the plates, plus the
@@ -30,10 +31,11 @@ for name in ('plate-stars-2026-10-19.csv', 'plate-figure-stars-2026-10-19.csv'):
         if key not in stars or not stars[key]['V']:
             stars[key] = row
 
-for row in csv.DictReader(open(DATA + 'plate-stars-xhip-2026-10-30.csv')):
-    key = clean(row['main_id'])
-    if key not in stars:
-        stars[key] = row
+for name in ('plate-stars-xhip-2026-10-30.csv', 'plate-stars-xhip-hub-2026-11-20.csv'):
+    for row in csv.DictReader(open(DATA + name)):
+        key = clean(row['main_id'])
+        if key not in stars:
+            stars[key] = row
 
 hip = {row['HIP']: row['Vmag'] for row in csv.DictReader(open(DATA + 'plate-hipparcos-V-2026-10-19.csv'))}
 for key, number in HIPPARCOS.items():

@@ -515,13 +515,17 @@ const Plate = (function () {
 	function drawBorderLabels(border, area, at, band) {
 		const { raMin, raMax, decMin, decMax } = area;
 
+		// on a chart of more than six hours (the hub's twelve), the odd
+		// hours are minor: a phone shows every other hour (theme.css §16)
+		const wide = raMax - raMin > 90;
+
 		for (let hours = Math.ceil(raMin / 15); hours * 15 <= raMax; hours++) {
 			const q = at(15 * hours, decMin);
 
 			svgText(border, `${hours}h`, q.x, q.y + band + 6, {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'hanging',
-				class: 'hour'
+				class: wide && hours % 2 === 1 ? 'hour minor' : 'hour'
 			});
 		}
 
@@ -529,10 +533,11 @@ const Plate = (function () {
 			const q = at(raMax, dec);
 			const text = dec > 0 ? `+${dec}°` : `${dec}°`.replace('-', '−');
 
+			// on a wide chart, a phone shows every other line of declination
 			svgText(border, text, q.x - band - 6, q.y, {
 				'text-anchor': 'end',
 				'dominant-baseline': 'central',
-				class: 'hour'
+				class: wide && (dec / 10) % 2 !== 0 ? 'hour minor' : 'hour'
 			});
 		}
 	}
@@ -641,7 +646,7 @@ const Plate = (function () {
 	   border. options: area { raMin, raMax, decMin, decMax } (degrees),
 	   figures, names, keep (as for polar), label, margins { left, right }
 	   (the room beside the border in units of the drawing, 108 each by
-	   default; a chart with nothing to name on its right, page 4.1, keeps
+	   default; bottom, under it, 70 by default; a chart with nothing to name on its right, page 4.1, keeps
 	   less there, so that the chart fills the plate). The equator is drawn, and
 	   named at the
 	   western (right) end, when it is in the area. Returns { svg, layer, at, project }; the page draws its
@@ -656,7 +661,8 @@ const Plate = (function () {
 		const band = 10;
 		const width = (raMax - raMin) * scale;
 		const height = (decMax - decMin) * scale;
-		const svg = newSvg(container, width + left + right, height + top + 70, options.label);
+		const bottom = options.margins?.bottom ?? 70;
+		const svg = newSvg(container, width + left + right, height + top + bottom, options.label);
 		const at = (ra, dec) => ({ x: left + (raMax - ra) * scale, y: top + (decMax - dec) * scale });
 		const project = (ra, dec) => {
 			const isInside = ra >= raMin && ra <= raMax && dec >= decMin && dec <= decMax;

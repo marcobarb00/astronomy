@@ -15,13 +15,24 @@
 # region added to fetch-plate-stars.sh) when CDS answers again.
 #
 # Usage: sh fetch-plate-stars-xhip.sh > plate-stars-xhip-YYYY-MM-DD.csv
+#
+# With the argument "hub", the rest of the band of the zodiac for the
+# plate of tonight's sky on the hub (index.html), which can show any
+# twelve hours of right ascension between declinations -30° and +34°:
+# right ascension 195° to 15° (through 0°) from declination -32° to +20°,
+# and right ascension 15° to 195° from -32° to -20°. North of +20° and
+# the rest of the band are already in the SIMBAD files. On 2026-11-20 CDS
+# did not answer from the session that built the hub either.
+# Usage: sh fetch-plate-stars-xhip.sh hub > plate-stars-xhip-hub-YYYY-MM-DD.csv
 set -e
+REGION=${1:-page-3.3}
 WORK=$(mktemp -d)
 curl -sS -m 120 -o "$WORK/d3c.tgz" https://registry.npmjs.org/d3-celestial/-/d3-celestial-0.7.35.tgz
 tar -xzf "$WORK/d3c.tgz" -C "$WORK" package/data/stars.6.json package/data/starnames.json
-python3 -I - "$WORK/package/data" <<'PY'
+python3 -I - "$WORK/package/data" "$REGION" <<'PY'
 import json, sys
 folder = sys.argv[1]
+region = sys.argv[2]
 stars = json.load(open(folder + '/stars.6.json'))['features']
 names = json.load(open(folder + '/starnames.json'))
 GREEK = dict(zip('αβγδεζηθικλμνξοπρστυφχψω',
@@ -44,7 +55,11 @@ for f in sorted(stars, key=lambda f: f['properties']['mag']):
     ra, dec = f['geometry']['coordinates']
     ra = ra % 360
     mag = f['properties']['mag']
-    if mag < 5.0 and 105 < ra <= 195 and -20 <= dec <= 20:
+    if region == 'hub':
+        inside = (-32 <= dec <= 20 and (ra > 195 or ra < 15)) or (15 <= ra <= 195 and -32 <= dec < -20)
+    else:
+        inside = 105 < ra <= 195 and -20 <= dec <= 20
+    if mag < 5.0 and inside:
         print('"* %s",%s,%s,,,%s' % (identifier(f['id']), ra, dec, mag))
 PY
 rm -rf "$WORK"

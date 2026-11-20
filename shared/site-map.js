@@ -183,6 +183,50 @@ const SITE_MAP = (function () {
 		}
 	];
 
+	/* The astronomers on the hub's timeline (components.js, renderTimeline),
+	   in order. year places the mark on the axis; date is the text beside
+	   it; work is what the course takes from them; pages are the pages that
+	   rebuild their models or use their observations (a page may sit under
+	   two). above: the label goes above the axis, so that neighbours
+	   alternate. */
+	const ASTRONOMERS = [
+		{
+			name: 'Babylonian records',
+			year: -721,
+			date: '721 BC',
+			work: 'eclipses and periods',
+			pages: ['3.1', '3.3'],
+			above: true
+		},
+		{
+			name: 'Greek geometers',
+			year: -350,
+			date: '4th century BC',
+			work: 'the sphere',
+			pages: ['1.1'],
+			above: false
+		},
+		{
+			name: 'Hipparchus',
+			year: -130,
+			date: 'c. 130 BC',
+			work: 'the eccentric, precession',
+			pages: ['2.1', '2.3', '3.1'],
+			above: true
+		},
+		{
+			name: 'Ptolemy',
+			year: 150,
+			date: 'c. AD 150',
+			work: 'the Almagest',
+			pages: ['1.2', '1.3', '2.2', '3.2', '3.3', '4.1', '4.2'],
+			above: false
+		},
+		{ name: 'Copernicus', year: 1543, date: '1543', work: 'De revolutionibus', pages: ['4.3'], above: true },
+		{ name: 'Tycho', year: 1588, date: '1588', work: 'his system', pages: ['4.4'], above: false },
+		{ name: 'Kepler', year: 1609, date: '1609', work: 'the ellipse', pages: ['4.5'], above: true }
+	];
+
 	/* Topics outside the scope (STRUCTURE.md §3, §7.4). A detour card
 	   becomes a link when its topic has a ready page. */
 	const TOPICS = {
@@ -311,6 +355,7 @@ const SITE_MAP = (function () {
 	return {
 		ACTS,
 		PAGES,
+		ASTRONOMERS,
 		TOPICS,
 		ORIGINS,
 		ORIGIN_KEY,

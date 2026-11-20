@@ -1,17 +1,18 @@
 // @ts-check
 /* ==========================================================================
-   PREDICTING THE SKY - HOME CONCEPTS: PAGE THUMBNAILS (thumbs.js)
-   A small engraved drawing for each page of the course, in the ink and
-   the figure colours of STYLE.md §2: the main construction of the page,
-   drawn once, with no labels but a letter or two. Mockup only.
+   PREDICTING THE SKY - PAGE DRAWINGS (thumbs.js)
+   A small engraved drawing for each page of the course, beside its row
+   on the hub (components.js, renderHub): the main construction of the
+   page, drawn once, with no labels but a letter or two. Ink and the
+   figure colours of STYLE.md §2, set in theme.css §14 by class (ink,
+   earth, sun, planet, deferent, epicycle): no colour is written here.
+   Needs common.js (starPath).
 
    Usage
 	 Thumbs.svg('2.1')   // an <svg> element, viewBox 0 0 120 72
 
-   Each drawing is a function of a small drawing kit (circle, line, path,
-   ellipse, star, dot, text); the colours are classes (ink, earth, sun,
-   planet, deferent, epicycle), set in concepts.css from the :root
-   variables, so no colour is written here.
+   A page without a drawing gets an empty svg: a new page adds its own
+   function to DRAW, keyed by its number in site-map.js.
    ========================================================================== */
 
 const Thumbs = (function () {

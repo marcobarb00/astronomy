@@ -261,9 +261,13 @@ async function settle(page, ms = SETTLE_MS) {
 	await page.waitForTimeout(ms);
 }
 
-/* Every local link of the page must lead to an existing file of 'root'. */
+/* Every local link of the page must lead to an existing file of 'root'.
+   Each link is resolved from its attribute: the href property of a link
+   inside an SVG (the hub's timeline) is not a string. */
 async function checkLinks(page, root, base, problems) {
-	const links = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map(a => a.href));
+	const links = await page.evaluate(() =>
+		[...document.querySelectorAll('a[href]')].map(a => new URL(a.getAttribute('href'), document.baseURI).href)
+	);
 	const local = [...new Set(links.map(href => href.split('#')[0]))].filter(href => href.startsWith(base));
 
 	for (const href of local) {

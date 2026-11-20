@@ -19,7 +19,8 @@ Open it next to this file. When the two disagree, this file wins.
    static 2D charts of the sky, at most one per page, and never for
    mathematical constructions.
 4. **Restraint.** One ornament (the four-pointed star), one frame (§6), one
-   rule style (§4.3). Nothing else decorative.
+   rule style (§4.3). Nothing else decorative. The hub alone adds a small
+   drawing beside each page (§4.9).
 
 ## 2. Palette
 
@@ -116,6 +117,8 @@ Rules:
 - Single rule: 1 px `--ink` (structure) or `--line` (light separation).
 - The four-pointed star (§5) may sit in the middle of a double rule as the
   page's only ornament, or not at all. Pick one and use it everywhere.
+  The articles have none; on the hub, double rules with the star part its
+  sections (§4.9).
 
 ### 4.4 Sections
 
@@ -177,6 +180,27 @@ small-caps label "History" (`<span class="history-label">`, Cormorant SC
 15 px, `--epicycle-text`). Its paragraphs, rows and figures follow the
 same grid as the rest of the article. Written in `templates/page.html`;
 styled by `shared/theme.css`.
+
+### 4.9 The hub
+
+`index.html`, one column, in this order (`shared/theme.css` §14):
+
+1. The header (act line, h1, italic subtitle) and the double rule.
+2. The opening with its drop cap, in the author's voice (WRITING.md §1),
+   then a link to page 1.1 filled like the Play button (§8) and a plain
+   link to the chapters.
+3. Sections parted by double rules with the four-pointed star in the
+   middle: the blue plate of tonight's sky (§7, `hub.js`); the timeline of
+   the astronomers, each with the numbers of his pages as small framed
+   links (`Site.renderTimeline`, a list on a phone); the story; the acts
+   as chapters (`Site.renderHub`).
+4. A chapter is a small-caps act label and its title over a 1 px `--ink`
+   rule, then one row per page: a small drawing of the page's main
+   construction (`shared/thumbs.js`, the figure colours of §2, a letter
+   or two at most), the number, the question in Cormorant Garamond
+   italic and the title under it. A page not yet ready is greyed and not
+   a link.
+5. The key of origins, the sources and the footer.
 
 ## 5. Stars
 
@@ -240,7 +264,9 @@ blue.
 
 **Use it only for static 2D charts of the sky**: a map of the sky around the
 pole, a planisphere, the zodiac band, the path of an eclipse. **At most one
-per page**, and only where the page is about the sky itself.
+per page**, and only where the page is about the sky itself. The hub has
+one: twelve hours of the zodiac opposite the Sun, with the Moon and the
+planets highlighted where they are when the page opens (§4.9).
 
 **Never** for mathematical constructions (spheres with axes, eccentrics,
 epicycles, equants, error curves). Those are always ink on parchment, in a
