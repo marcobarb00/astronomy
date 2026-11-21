@@ -525,6 +525,14 @@ section.
   mid-northern latitudes, the planets not at all. Off for reduced
   motion; the smoke test takes its screenshots with animations at rest.
   → hub.js, theme.css §14
+- **The hub's bodies are carried to the plate's epoch.** The plate's
+  stars are drawn at their places of 2026.0, the Moon and the planets at
+  their apparent places of the visit's date; the equinox moves about 50″
+  a year, so the bodies would slide against the stars (22′ by 2050, over
+  1° by 2100). Since 2026-11-21 `hub.place` precesses each body back to
+  `Plate.EPOCH`, so the plate stays right until the reference's limit, AD
+  3000. Found by Marco's question of how long the plate will work. →
+  hub.js
 - **Orion is drawn with his bow, raised club and the hem of his tunic**
   (Marco, 2026-11-20), on every plate that draws him (pages 1.2 and the
   hub). → shared/plate.js (FIGURES)

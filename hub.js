@@ -17,7 +17,8 @@
    ascension centered opposite the Sun: the half of the zodiac above the
    horizon tonight, seen looking south. The ecliptic is a plain line; the
    Moon and the naked-eye planets on the chart are the highlight, at
-   their apparent places when the page opens (shared/ephemeris.js). The
+   their apparent places when the page opens (shared/ephemeris.js),
+   carried to the equinox of the plate's stars (place). The
    bodies off the chart are named in the caption.
    ========================================================================== */
 
@@ -111,11 +112,18 @@ const tonightFigure = {
 		byId('tonight-off').textContent = hidden.map(body => body.name).join(', ');
 	},
 
-	/* Apparent right ascension and declination (deg) of a body. */
+	/* Right ascension and declination (deg) of a body, in the frame of
+	   the plate's stars. The body's apparent place is measured from the
+	   equator and equinox of the visit's date; the stars are drawn at
+	   their places of Plate.EPOCH (2026.0). The equinox moves about 50"
+	   a year, so the body is carried back to the plate's epoch: without
+	   it, the bodies would slide against the stars by about 22' in 2050
+	   and 1° in 2100. */
 	place(id, jdTT) {
 		const ecliptic = Ephem.position(id, jdTT);
+		const ofDate = Ephem.equatorial(ecliptic, jdTT);
 
-		return Ephem.equatorial(ecliptic, jdTT);
+		return Ephem.precessEquatorial(ofDate.ra, ofDate.dec, jdTT, Plate.EPOCH);
 	},
 
 	/* Twelve hours centered opposite the Sun (the area may cross 0h:
