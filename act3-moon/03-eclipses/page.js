@@ -1268,10 +1268,10 @@ const limitsFigure = {
 			: none;
 
 		showLines('limits-readout', [
-			`${tr('\\text{new Moon: }', '\\text{Luna nuova: }')}\\beta = ${texArcmin(st.betaNew)},\\ ` +
+			`${tr('\\text{new Moon: }', '\\text{Luna nuova: }')} \\beta = ${texArcmin(st.betaNew)},\\ ` +
 				`\\gamma = ${signed(shadowOnEarth(st).gamma, 2)}`,
 			`\\text{${tr('solar eclipse', 'eclissi di Sole')}: ${solar}}`,
-			`${tr('\\text{full Moon: }', '\\text{Luna piena: }')}\\beta = ${texArcmin(st.betaFull)}`,
+			`${tr('\\text{full Moon: }', '\\text{Luna piena: }')} \\beta = ${texArcmin(st.betaFull)}`,
 			`\\text{${tr('lunar eclipse', 'eclissi di Luna')}: ${lunar}}`,
 			`s = ${fixed(st.z.sM * 60, 1)}',\\ \\pi = ${fixed(st.z.pM * 60, 1)}',\\ u = ${fixed(st.limits.umbra * 60, 1)}'`
 		]);

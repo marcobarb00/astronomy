@@ -290,13 +290,14 @@ const wheelFigure = {
 
 		const turns = tr('\\text{turns}', '\\text{giri}');
 		const sky = tr('\\text{sky}', '\\text{cielo}');
-		const sun = tr('\\text{Sun}', '\\text{Sole}');
+		const skyColon = tr('\\text{sky: }', '\\text{cielo: }');
+		const sunColon = tr('\\text{Sun: }', '\\text{Sole: }');
 
 		showLines('wheel-readout', [
-			`${tr('\\text{elapsed: }', '\\text{trascorso: }')}${days}\\,\\text{d}\\ ${hmTex(hours)}`,
-			`${sky}\\text{: } ${skyTurns.toFixed(3)}\\ ${turns}`,
-			`${sun}\\text{: } ${sunTurns.toFixed(3)}\\ ${turns}`,
-			`${sky} - ${sun}\\text{: } ${(skyTurns - sunTurns).toFixed(3)}\\ ${turns}`
+			`${tr('\\text{elapsed: }', '\\text{trascorso: }')} ${days}\\,\\text{d}\\ ${hmTex(hours)}`,
+			`${skyColon} ${skyTurns.toFixed(3)}\\ ${turns}`,
+			`${sunColon} ${sunTurns.toFixed(3)}\\ ${turns}`,
+			`${sky} - ${sunColon} ${(skyTurns - sunTurns).toFixed(3)}\\ ${turns}`
 		]);
 	},
 
@@ -1246,11 +1247,11 @@ const dayLengthFigure = {
 		// last two instead of removing one
 		showLines('day-readout', [
 			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${fixed(sunDay.dec, 2)}^\\circ,\\quad H_0 = ${fixed(sunDay.H0, 1)}^\\circ`,
-			`${tr('\\text{day }', '\\text{giorno }')}${hmTex(sunDay.hours)}` +
+			`${tr('\\text{day }', '\\text{giorno }')} ${hmTex(sunDay.hours)}` +
 				(rises ? '' : `\\ \\text{(${POLAR_TEXT[sunDay.kind]})}`),
 			rises
-				? `${tr('\\text{sunrise }', '\\text{alba }')}${texClock(12 - sunDay.hours / 2)},\\quad ` +
-					`${tr('\\text{sunset }', '\\text{tramonto }')}${texClock(12 + sunDay.hours / 2)}`
+				? `${tr('\\text{sunrise }', '\\text{alba }')} ${texClock(12 - sunDay.hours / 2)},\\quad ` +
+					`${tr('\\text{sunset }', '\\text{tramonto }')} ${texClock(12 + sunDay.hours / 2)}`
 				: tr('\\text{no sunrise or sunset}', '\\text{né alba né tramonto}')
 		]);
 	},
@@ -1456,10 +1457,10 @@ const testFigure = {
 
 			showLines('test-readout', [
 				tr('\\text{largest over the year:}', "\\text{estremi nell'anno:}"),
-				`${TEST_WORDS.noon}${range(e.noon)}`,
-				`${TEST_WORDS.rise}${range(e.rise)}`,
-				`${TEST_WORDS.set}${range(e.set)}`,
-				`${TEST_WORDS.day}${range(e.day)}`
+				`${TEST_WORDS.noon} ${range(e.noon)}`,
+				`${TEST_WORDS.rise} ${range(e.rise)}`,
+				`${TEST_WORDS.set} ${range(e.set)}`,
+				`${TEST_WORDS.day} ${range(e.day)}`
 			]);
 			return;
 		}
@@ -1468,10 +1469,10 @@ const testFigure = {
 
 		showLines('test-readout', [
 			`\\text{${dayText(day)}}`,
-			`${TEST_WORDS.noon}${texMinutes(e.noon[day])}`,
-			`${TEST_WORDS.rise}${texMinutes(e.rise[day])}`,
-			`${TEST_WORDS.set}${texMinutes(e.set[day])}`,
-			`${TEST_WORDS.day}${texMinutes(e.day[day])}`
+			`${TEST_WORDS.noon} ${texMinutes(e.noon[day])}`,
+			`${TEST_WORDS.rise} ${texMinutes(e.rise[day])}`,
+			`${TEST_WORDS.set} ${texMinutes(e.set[day])}`,
+			`${TEST_WORDS.day} ${texMinutes(e.day[day])}`
 		]);
 	},
 

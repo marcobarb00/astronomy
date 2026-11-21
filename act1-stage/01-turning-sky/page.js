@@ -666,8 +666,8 @@ const testFigure = {
 
 		const lines = [
 			`\\text{${Stars.label(this.star.name)}},\\ \\delta = ${fixed(this.dec, 2)}^\\circ`,
-			`${tr('\\text{up, model: }', '\\text{sopra, modello: }')}${upText(model, upModel)}`,
-			`${tr('\\text{up, real: }', '\\text{sopra, reale: }')}${upText(real, upReal)}`
+			`${tr('\\text{up, model: }', '\\text{sopra, modello: }')} ${upText(model, upModel)}`,
+			`${tr('\\text{up, real: }', '\\text{sopra, reale: }')} ${upText(real, upReal)}`
 		];
 
 		if (difference) {
