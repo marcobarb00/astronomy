@@ -319,6 +319,324 @@ Regenerate with: node tools/check/smoke.js --update
     #test-readout: \text{Canopus},\ \delta = -52.71^\circ | \text{up, model: } \text{never rises} | \text{up, real: } \text{never rises} | 
   dragged 2 spheres
 
+=== act1-stage/01-turning-sky/index.it.html ===
+  as loaded
+    OUTPUT (sky-lat): 41,9°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -68{,}7^\circ | a = 39{,}0^\circ | a_\text{max} = 86{,}9^\circ,\quad a_\text{min} = -9{,}3^\circ
+    OUTPUT (out-lat): 41,9°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 51{,}0^\circ | a = 90^\circ - 51{,}0^\circ = 39{,}0^\circ
+    OUTPUT (day-dec): −16,7°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 31{,}4^\circ,\quad a_\text{min} = -64{,}8^\circ | H_0 = 74{,}4^\circ,\quad f = 0{,}413 | \text{sopra l'orizzonte } 9\,\text{h}\,53\,\text{min}\ \text{a ogni giro}
+    OUTPUT (test-lat): 41,9°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 9\,\text{h}\,53\,\text{min} | \text{sopra, reale: } 10\,\text{h}\,00\,\text{min} | \Delta t = 3{,}3\ \text{min}
+  opened 6 hints and answers
+  slider #sky-lat = -90
+    OUTPUT (sky-lat): −90,0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{non sorge mai} | \delta = 38{,}8^\circ,\quad H = -68{,}7^\circ | a = -38{,}8^\circ | a_\text{max} = -38{,}8^\circ,\quad a_\text{min} = -38{,}8^\circ
+  slider #sky-lat = 90
+    OUTPUT (sky-lat): 90,0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{non tramonta mai} | \delta = 38{,}8^\circ,\quad H = -68{,}7^\circ | a = 38{,}8^\circ | a_\text{max} = 38{,}8^\circ,\quad a_\text{min} = 38{,}8^\circ
+  slider #sky-lat = 0
+    OUTPUT (sky-lat): 0,0°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -68{,}7^\circ | a = 16{,}5^\circ | a_\text{max} = 51{,}2^\circ,\quad a_\text{min} = -51{,}2^\circ
+  slider #sky-lat + one key step
+    OUTPUT (sky-lat): 0,1°
+    OUTPUT (sky-time): 14h00m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -68{,}7^\circ | a = 16{,}5^\circ | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ
+  slider #sky-time = 0
+    OUTPUT (sky-lat): 0,1°
+    OUTPUT (sky-time): 0h00m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = 80{,}8^\circ | a = 7{,}2^\circ | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ
+  slider #sky-time = 23.93
+    OUTPUT (sky-lat): 0,1°
+    OUTPUT (sky-time): 23h56m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = 80{,}7^\circ | a = 7{,}3^\circ | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ
+  slider #sky-time = 11.97
+    OUTPUT (sky-lat): 0,1°
+    OUTPUT (sky-time): 11h58m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}2^\circ | a = -7{,}1^\circ | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ
+  slider #sky-time + one key step
+    OUTPUT (sky-lat): 0,1°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = -7{,}0^\circ | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ
+  slider #out-lat = -90
+    OUTPUT (out-lat): −90,0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 128{,}8^\circ | a = 90^\circ - 128{,}8^\circ = -38{,}8^\circ
+  slider #out-lat = 90
+    OUTPUT (out-lat): 90,0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 51{,}2^\circ | a = 90^\circ - 51{,}2^\circ = 38{,}8^\circ
+  slider #out-lat = 0
+    OUTPUT (out-lat): 0,0°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 73{,}5^\circ | a = 90^\circ - 73{,}5^\circ = 16{,}5^\circ
+  slider #out-lat + one key step
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 14h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 73{,}5^\circ | a = 90^\circ - 73{,}5^\circ = 16{,}5^\circ
+  slider #out-time = 0
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 0h00m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 82{,}8^\circ | a = 90^\circ - 82{,}8^\circ = 7{,}2^\circ
+  slider #out-time = 23.93
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 23h56m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 82{,}7^\circ | a = 90^\circ - 82{,}7^\circ = 7{,}3^\circ
+  slider #out-time = 11.97
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 11h58m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97{,}1^\circ | a = 90^\circ - 97{,}1^\circ = -7{,}1^\circ
+  slider #out-time + one key step
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97{,}0^\circ | a = 90^\circ - 97{,}0^\circ = -7{,}0^\circ
+  slider #day-dec = -90
+    OUTPUT (day-dec): −90,0°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -41{,}9^\circ,\quad a_\text{min} = -41{,}9^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  slider #day-dec = 90
+    OUTPUT (day-dec): 90,0°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{non tramonta mai} | a_\text{max} = 41{,}9^\circ,\quad a_\text{min} = 41{,}9^\circ | H_0 = 180{,}0^\circ,\quad f = 1{,}000 | \text{sopra l'orizzonte } 23\,\text{h}\,56\,\text{min}\ \text{a ogni giro}
+  slider #day-dec = 0
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 48{,}1^\circ,\quad a_\text{min} = -48{,}1^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  slider #day-dec + one key step
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 48{,}1^\circ,\quad a_\text{min} = -48{,}1^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  slider #day-lat = -90
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): −90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = 0{,}0^\circ,\quad a_\text{min} = 0{,}0^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  slider #day-lat = 90
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non tramonta mai} | a_\text{max} = 0{,}0^\circ,\quad a_\text{min} = 0{,}0^\circ | H_0 = 180{,}0^\circ,\quad f = 1{,}000 | \text{sopra l'orizzonte } 23\,\text{h}\,56\,\text{min}\ \text{a ogni giro}
+  slider #day-lat = 0
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): 0,0°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 90{,}0^\circ,\quad a_\text{min} = -90{,}0^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  slider #day-lat + one key step
+    OUTPUT (day-dec): 0,0°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 89{,}9^\circ,\quad a_\text{min} = -89{,}9^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  slider #test-lat = -90
+    OUTPUT (test-lat): −90,0°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } \text{non tramonta mai} | \text{sopra, reale: } \text{non tramonta mai} | \text{punto più basso sollevato di } 3{,}3'
+  slider #test-lat = 90
+    OUTPUT (test-lat): 90,0°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  slider #test-lat = 0
+    OUTPUT (test-lat): 0,0°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 11\,\text{h}\,58\,\text{min} | \text{sopra, reale: } 12\,\text{h}\,03\,\text{min} | \Delta t = 2{,}4\ \text{min}
+  slider #test-lat + one key step
+    OUTPUT (test-lat): 0,1°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 11\,\text{h}\,58\,\text{min} | \text{sopra, reale: } 12\,\text{h}\,03\,\text{min} | \Delta t = 2{,}4\ \text{min}
+  button "polo nord"
+    OUTPUT (sky-lat): 90,0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{non tramonta mai} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = 38{,}8^\circ | a_\text{max} = 38{,}8^\circ,\quad a_\text{min} = 38{,}8^\circ
+  button "Londra"
+    OUTPUT (sky-lat): 51,5°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{non tramonta mai} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = 24{,}5^\circ | a_\text{max} = 77{,}3^\circ,\quad a_\text{min} = 0{,}3^\circ
+  button "Roma"
+    OUTPUT (sky-lat): 41,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = 19{,}1^\circ | a_\text{max} = 86{,}9^\circ,\quad a_\text{min} = -9{,}3^\circ
+  button "Rodi"
+    OUTPUT (sky-lat): 36,0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = 15{,}6^\circ | a_\text{max} = 87{,}2^\circ,\quad a_\text{min} = -15{,}2^\circ
+  button "Alessandria"
+    OUTPUT (sky-lat): 31,2°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = 12{,}7^\circ | a_\text{max} = 82{,}4^\circ,\quad a_\text{min} = -20{,}0^\circ
+  button "equatore"
+    OUTPUT (sky-lat): 0,0°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = -7{,}0^\circ | a_\text{max} = 51{,}2^\circ,\quad a_\text{min} = -51{,}2^\circ
+  button "Sydney"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = -26{,}8^\circ | a_\text{max} = 17{,}3^\circ,\quad a_\text{min} = -85{,}1^\circ
+  button "Polaris"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Polaris}:\ \text{non sorge mai} | \delta = 89{,}3^\circ,\quad H = 142{,}2^\circ | a = -34{,}5^\circ | a_\text{max} = -33{,}2^\circ,\quad a_\text{min} = -34{,}6^\circ
+  button "Dubhe"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Dubhe}:\ \text{non sorge mai} | \delta = 61{,}8^\circ,\quad H = 14{,}3^\circ | a = -6{,}3^\circ | a_\text{max} = -5{,}7^\circ,\quad a_\text{min} = -62{,}1^\circ
+  button "Vega"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Vega}:\ \text{sorge e tramonta} | \delta = 38{,}8^\circ,\quad H = -99{,}0^\circ | a = -26{,}8^\circ | a_\text{max} = 17{,}3^\circ,\quad a_\text{min} = -85{,}1^\circ
+  button "Mintaka"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Mintaka}:\ \text{sorge e tramonta} | \delta = -0{,}3^\circ,\quad H = 97{,}2^\circ | a = -5{,}8^\circ | a_\text{max} = 56{,}4^\circ,\quad a_\text{min} = -55{,}8^\circ
+  button "Sirio"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Sirio}:\ \text{sorge e tramonta} | \delta = -16{,}7^\circ,\quad H = 78{,}9^\circ | a = 18{,}3^\circ | a_\text{max} = 72{,}8^\circ,\quad a_\text{min} = -39{,}4^\circ
+  button "Antares"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Antares}:\ \text{sorge e tramonta} | \delta = -26{,}4^\circ,\quad H = -67{,}2^\circ | a = 32{,}5^\circ | a_\text{max} = 82{,}5^\circ,\quad a_\text{min} = -29{,}7^\circ
+  button "Canopo"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Canopo}:\ \text{sorge e tramonta} | \delta = -52{,}7^\circ,\quad H = 84{,}2^\circ | a = 29{,}6^\circ | a_\text{max} = 71{,}2^\circ,\quad a_\text{min} = -3{,}4^\circ
+  button "Acrux"
+    OUTPUT (sky-lat): −33,9°
+    OUTPUT (sky-time): 11h59m
+    #sky-readout: \text{Acrux}:\ \text{non tramonta mai} | \delta = -63{,}1^\circ,\quad H = -6{,}5^\circ | a = 60{,}5^\circ | a_\text{max} = 60{,}8^\circ,\quad a_\text{min} = 7{,}0^\circ
+  button "Vega"
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Vega} | \angle(\hat{\mathbf z}, \mathbf s) = 97{,}0^\circ | a = 90^\circ - 97{,}0^\circ = -7{,}0^\circ
+  button "Sirio"
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Sirio} | \angle(\hat{\mathbf z}, \mathbf s) = 79{,}4^\circ | a = 90^\circ - 79{,}4^\circ = 10{,}6^\circ
+  button "Canopo"
+    OUTPUT (out-lat): 0,1°
+    OUTPUT (out-time): 11h59m
+    #out-readout: \text{Canopo} | \angle(\hat{\mathbf z}, \mathbf s) = 86{,}6^\circ | a = 90^\circ - 86{,}6^\circ = 3{,}4^\circ
+  button "Dubhe"
+    OUTPUT (day-dec): 61,8°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 28{,}4^\circ,\quad a_\text{min} = -28{,}1^\circ | H_0 = 90{,}2^\circ,\quad f = 0{,}501 | \text{sopra l'orizzonte } 12\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  button "Capella"
+    OUTPUT (day-dec): 46,0°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 44{,}1^\circ,\quad a_\text{min} = -43{,}9^\circ | H_0 = 90{,}1^\circ,\quad f = 0{,}501 | \text{sopra l'orizzonte } 11\,\text{h}\,59\,\text{min}\ \text{a ogni giro}
+  button "Vega"
+    OUTPUT (day-dec): 38,8°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 51{,}3^\circ,\quad a_\text{min} = -51{,}1^\circ | H_0 = 90{,}1^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,59\,\text{min}\ \text{a ogni giro}
+  button "Mintaka"
+    OUTPUT (day-dec): −0,3°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 89{,}6^\circ,\quad a_\text{min} = -89{,}8^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  button "Sirio"
+    OUTPUT (day-dec): −16,7°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 73{,}2^\circ,\quad a_\text{min} = -73{,}4^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  button "Canopo"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 37{,}2^\circ,\quad a_\text{min} = -37{,}4^\circ | H_0 = 89{,}9^\circ,\quad f = 0{,}499 | \text{sopra l'orizzonte } 11\,\text{h}\,57\,\text{min}\ \text{a ogni giro}
+  button "equatore"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 0,0°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 37{,}3^\circ,\quad a_\text{min} = -37{,}3^\circ | H_0 = 90{,}0^\circ,\quad f = 0{,}500 | \text{sopra l'orizzonte } 11\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  button "Alessandria"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 31,2°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 6{,}1^\circ,\quad a_\text{min} = -68{,}5^\circ | H_0 = 37{,}3^\circ,\quad f = 0{,}207 | \text{sopra l'orizzonte } 4\,\text{h}\,58\,\text{min}\ \text{a ogni giro}
+  button "Rodi"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 36,0°
+    #day-readout: \text{sorge e tramonta} | a_\text{max} = 1{,}3^\circ,\quad a_\text{min} = -73{,}3^\circ | H_0 = 17{,}5^\circ,\quad f = 0{,}097 | \text{sopra l'orizzonte } 2\,\text{h}\,20\,\text{min}\ \text{a ogni giro}
+  button "Roma"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -4{,}6^\circ,\quad a_\text{min} = -79{,}2^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  button "Londra"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 51,5°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -14{,}2^\circ,\quad a_\text{min} = -88{,}8^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  button "polo nord"
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  button "Alessandria"
+    OUTPUT (test-lat): 31,2°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 10\,\text{h}\,34\,\text{min} | \text{sopra, reale: } 10\,\text{h}\,40\,\text{min} | \Delta t = 2{,}8\ \text{min}
+  button "Rodi"
+    OUTPUT (test-lat): 36,0°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 10\,\text{h}\,17\,\text{min} | \text{sopra, reale: } 10\,\text{h}\,23\,\text{min} | \Delta t = 3{,}0\ \text{min}
+  button "Roma"
+    OUTPUT (test-lat): 41,9°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 9\,\text{h}\,53\,\text{min} | \text{sopra, reale: } 10\,\text{h}\,00\,\text{min} | \Delta t = 3{,}3\ \text{min}
+  button "Londra"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 9\,\text{h}\,01\,\text{min} | \text{sopra, reale: } 9\,\text{h}\,09\,\text{min} | \Delta t = 4{,}1\ \text{min}
+  button "Sirio"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Sirio},\ \delta = -16{,}75^\circ | \text{sopra, modello: } 9\,\text{h}\,01\,\text{min} | \text{sopra, reale: } 9\,\text{h}\,09\,\text{min} | \Delta t = 4{,}1\ \text{min}
+  button "Mintaka"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Mintaka},\ \delta = -0{,}28^\circ | \text{sopra, modello: } 11\,\text{h}\,55\,\text{min} | \text{sopra, reale: } 12\,\text{h}\,03\,\text{min} | \Delta t = 3{,}7\ \text{min}
+  button "Vega"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Vega},\ \delta = 38{,}81^\circ | \text{sopra, modello: } \text{non tramonta mai} | \text{sopra, reale: } \text{non tramonta mai} | \text{punto più basso sollevato di } 26{,}4'
+  button "Antares"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Antares},\ \delta = -26{,}49^\circ | \text{sopra, modello: } 6\,\text{h}\,49\,\text{min} | \text{sopra, reale: } 6\,\text{h}\,59\,\text{min} | \Delta t = 5{,}2\ \text{min}
+  button "Capella"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Capella},\ \delta = 46{,}02^\circ | \text{sopra, modello: } \text{non tramonta mai} | \text{sopra, reale: } \text{non tramonta mai} | \text{punto più basso sollevato di } 7{,}0'
+  button "Canopo"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Canopo},\ \delta = -52{,}71^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  hover #day-curve at 0.3
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-curve at 0.6
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-curve at 0.9
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-curve left
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-map at 0.3
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-map at 0.6
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-map at 0.9
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #day-map left
+    OUTPUT (day-dec): −52,7°
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{non sorge mai} | a_\text{max} = -52{,}7^\circ,\quad a_\text{min} = -52{,}7^\circ | H_0 = 0{,}0^\circ,\quad f = 0{,}000 | \text{sopra l'orizzonte } 0\,\text{h}\,00\,\text{min}\ \text{a ogni giro}
+  hover #test-plot at 0.3
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Canopo},\ \delta = -52{,}71^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  hover #test-plot at 0.6
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Canopo},\ \delta = -52{,}71^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  hover #test-plot at 0.9
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Canopo},\ \delta = -52{,}71^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  hover #test-plot left
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{Canopo},\ \delta = -52{,}71^\circ | \text{sopra, modello: } \text{non sorge mai} | \text{sopra, reale: } \text{non sorge mai} | 
+  dragged 2 spheres
+
 === act1-stage/02-frames/index.html ===
   as loaded
     OUTPUT (ecl-day): 21 May
@@ -409,6 +727,106 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (hor-lat): 41.9°
     OUTPUT (hor-theta): 38.9°
     #hor-readout: \text{K:}\ \alpha = 270^\circ,\quad \delta = 66.56^\circ | a_\text{K} = 25.3^\circ | I = 90^\circ - |a_\text{K}| = 64.7^\circ
+  hover #noon-plot at 0.3
+  hover #noon-plot at 0.6
+  hover #noon-plot at 0.9
+  hover #noon-plot left
+  hover #nutation-plot at 0.3
+  hover #nutation-plot at 0.6
+  hover #nutation-plot at 0.9
+  hover #nutation-plot left
+  dragged 3 spheres
+
+=== act1-stage/02-frames/index.it.html ===
+  as loaded
+    OUTPUT (ecl-day): 21 mag
+    #ecl-readout: \text{il Sole, 21 mag 2026} | \alpha = 57{,}80^\circ\ (3^\text{h}51^\text{m}),\quad \delta = 20{,}14^\circ | \lambda = 59{,}98^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (0{,}5002;\ 0{,}7945;\ 0{,}3444) | \mathbf s_\text{ecl} = (0{,}5002;\ 0{,}8659;\ 0{,}0000)
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 125{,}01^\circ,\quad a = 53{,}67^\circ
+  opened 6 hints and answers
+  slider #ecl-day = 0
+    OUTPUT (ecl-day): 1 gen
+    #ecl-readout: \text{il Sole, 1 gen 2026} | \alpha = 281{,}50^\circ\ (18^\text{h}46^\text{m}),\quad \delta = -23{,}01^\circ | \lambda = 280{,}57^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (0{,}1835;\ -0{,}9019;\ -0{,}3910) | \mathbf s_\text{ecl} = (0{,}1835;\ -0{,}9830;\ 0{,}0000)
+  slider #ecl-day = 364
+    OUTPUT (ecl-day): 31 dic
+    #ecl-readout: \text{il Sole, 31 dic 2026} | \alpha = 280{,}12^\circ\ (18^\text{h}40^\text{m}),\quad \delta = -23{,}11^\circ | \lambda = 279{,}30^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (0{,}1617;\ -0{,}9054;\ -0{,}3925) | \mathbf s_\text{ecl} = (0{,}1617;\ -0{,}9868;\ 0{,}0000)
+  slider #ecl-day = 182
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{il Sole, 2 lug 2026} | \alpha = 101{,}05^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23{,}05^\circ | \lambda = 100{,}16^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (-0{,}1764;\ 0{,}9031;\ 0{,}3915) | \mathbf s_\text{ecl} = (-0{,}1764;\ 0{,}9843;\ 0{,}0000)
+  slider #ecl-day + one key step
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{il Sole, 2 lug 2026} | \alpha = 101{,}06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23{,}05^\circ | \lambda = 100{,}17^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (-0{,}1766;\ 0{,}9031;\ 0{,}3915) | \mathbf s_\text{ecl} = (-0{,}1766;\ 0{,}9843;\ 0{,}0000)
+  slider #hor-lat = -90
+    OUTPUT (hor-lat): −90,0°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 30{,}41^\circ,\quad a = -16{,}56^\circ
+  slider #hor-lat = 90
+    OUTPUT (hor-lat): 90,0°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 149{,}59^\circ,\quad a = 16{,}56^\circ
+  slider #hor-lat = 0
+    OUTPUT (hor-lat): 0,0°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 59{,}57^\circ,\quad a = 55{,}75^\circ
+  slider #hor-lat + one key step
+    OUTPUT (hor-lat): 0,1°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 59{,}70^\circ,\quad a = 55{,}80^\circ
+  slider #hor-theta = 0
+    OUTPUT (hor-lat): 0,1°
+    OUTPUT (hor-theta): 0,0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -69{,}35^\circ | A = 72{,}41^\circ,\quad a = 19{,}78^\circ
+  slider #hor-theta = 360
+    OUTPUT (hor-lat): 0,1°
+    OUTPUT (hor-theta): 360,0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -69{,}35^\circ | A = 72{,}41^\circ,\quad a = 19{,}78^\circ
+  slider #hor-theta = 180
+    OUTPUT (hor-lat): 0,1°
+    OUTPUT (hor-theta): 180,0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = 110{,}65^\circ | A = 287{,}66^\circ,\quad a = -19{,}72^\circ
+  slider #hor-theta + one key step
+    OUTPUT (hor-lat): 0,1°
+    OUTPUT (hor-theta): 180,0°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = 110{,}66^\circ | A = 287{,}66^\circ,\quad a = -19{,}73^\circ
+  button "‹ giorno precedente"
+    OUTPUT (ecl-day): 1 lug
+    #ecl-readout: \text{il Sole, 1 lug 2026} | \alpha = 100{,}03^\circ\ (6^\text{h}40^\text{m}),\quad \delta = 23{,}11^\circ | \lambda = 99{,}22^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (-0{,}1602;\ 0{,}9057;\ 0{,}3926) | \mathbf s_\text{ecl} = (-0{,}1602;\ 0{,}9871;\ 0{,}0000)
+  button "giorno successivo ›"
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{il Sole, 2 lug 2026} | \alpha = 101{,}06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23{,}05^\circ | \lambda = 100{,}17^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (-0{,}1766;\ 0{,}9031;\ 0{,}3915) | \mathbf s_\text{ecl} = (-0{,}1766;\ 0{,}9843;\ 0{,}0000)
+  button "Sole"
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{il Sole, 2 lug 2026} | \alpha = 101{,}06^\circ\ (6^\text{h}44^\text{m}),\quad \delta = 23{,}05^\circ | \lambda = 100{,}17^\circ,\quad \beta = 0{,}00^\circ | \mathbf s_\text{eq} = (-0{,}1766;\ 0{,}9031;\ 0{,}3915) | \mathbf s_\text{ecl} = (-0{,}1766;\ 0{,}9843;\ 0{,}0000)
+  button "Aldebaran"
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{Aldebaran} | \alpha = 69{,}35^\circ\ (4^\text{h}37^\text{m}),\quad \delta = 16{,}56^\circ | \lambda = 70{,}15^\circ,\quad \beta = -5{,}47^\circ | \mathbf s_\text{eq} = (0{,}3380;\ 0{,}8970;\ 0{,}2850) | \mathbf s_\text{ecl} = (0{,}3380;\ 0{,}9363;\ -0{,}0952)
+  button "Capella"
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{Capella} | \alpha = 79{,}65^\circ\ (5^\text{h}19^\text{m}),\quad \delta = 46{,}02^\circ | \lambda = 82{,}22^\circ,\quad \beta = 22{,}86^\circ | \mathbf s_\text{eq} = (0{,}1247;\ 0{,}6831;\ 0{,}7196) | \mathbf s_\text{ecl} = (0{,}1247;\ 0{,}9129;\ 0{,}3886)
+  button "Polaris"
+    OUTPUT (ecl-day): 2 lug
+    #ecl-readout: \text{Polaris} | \alpha = 46{,}49^\circ\ (3^\text{h}06^\text{m}),\quad \delta = 89{,}37^\circ | \lambda = 88{,}93^\circ,\quad \beta = 66{,}10^\circ | \mathbf s_\text{eq} = (0{,}0076;\ 0{,}0080;\ 0{,}9999) | \mathbf s_\text{ecl} = (0{,}0076;\ 0{,}4050;\ 0{,}9143)
+  button "l’osservazione"
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 125{,}01^\circ,\quad a = 53{,}67^\circ
+  button "Aldebaran"
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Aldebaran:}\ \alpha = 69{,}35^\circ,\quad \delta = 16{,}56^\circ | H = \theta - \alpha = -30{,}41^\circ | A = 125{,}01^\circ,\quad a = 53{,}67^\circ
+  button "Sirio"
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Sirio:}\ \alpha = 101{,}57^\circ,\quad \delta = -16{,}75^\circ | H = \theta - \alpha = -62{,}63^\circ | A = 120{,}88^\circ,\quad a = 7{,}77^\circ
+  button "Polaris"
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{Polaris:}\ \alpha = 46{,}49^\circ,\quad \delta = 89{,}37^\circ | H = \theta - \alpha = -7{,}55^\circ | A = 0{,}11^\circ,\quad a = 42{,}52^\circ
+  button "l'eclittica"
+    OUTPUT (hor-lat): 41,9°
+    OUTPUT (hor-theta): 38,9°
+    #hor-readout: \text{K:}\ \alpha = 270^\circ,\quad \delta = 66{,}56^\circ | a_\text{K} = 25{,}3^\circ | I = 90^\circ - |a_\text{K}| = 64{,}7^\circ
   hover #noon-plot at 0.3
   hover #noon-plot at 0.6
   hover #noon-plot at 0.9
@@ -684,6 +1102,271 @@ Regenerate with: node tools/check/smoke.js --update
     #test-readout: \text{largest over the year:} | \text{noon } -14.2\,\text{min}\ \text{to}\ +16.5\,\text{min} | \text{rise } -15.1\,\text{min}\ \text{to}\ +14.7\,\text{min} | \text{set } -12.9\,\text{min}\ \text{to}\ +17.8\,\text{min} | \text{day } -0.4\,\text{min}\ \text{to}\ +4.3\,\text{min}
   dragged 0 spheres
 
+=== act1-stage/03-clocks/index.it.html ===
+  as loaded
+    OUTPUT (wheel-day): 1 gen 2025
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 0{,}501\ \text{giri} | \text{Sole: } 0{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}002\ \text{giri}
+    OUTPUT (sid-time): 19:00
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9497{,}2917 | \theta_G = 26{,}44^\circ = 1^\text{h}45^\text{m}46^\text{s} | \theta = \theta_G +12{,}50^\circ = 38{,}94^\circ | \alpha = 69{,}35^\circ,\quad H = -30{,}41^\circ
+    OUTPUT (transit-lat): 41,9°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 31{,}3^\circ
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 114{,}2^\circ | \text{giorno } 15\,\text{h}\,14\,\text{min} | \text{alba } \text{04:23},\quad \text{tramonto } \text{19:37}
+    OUTPUT (test-lat): 41,9°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -13{,}0\,\text{min}\ \text{a}\ +18{,}8\,\text{min} | \text{tramonto } -16{,}1\,\text{min}\ \text{a}\ +14{,}7\,\text{min} | \text{giorno } -5{,}3\,\text{min}\ \text{a}\ 0{,}0\,\text{min}
+  opened 8 hints and answers
+  slider #wheel-day = 0
+    OUTPUT (wheel-day): 1 gen 2025
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 0\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 0{,}501\ \text{giri} | \text{Sole: } 0{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}002\ \text{giri}
+  slider #wheel-day = 365
+    OUTPUT (wheel-day): 1 gen 2026
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 365\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 366{,}501\ \text{giri} | \text{Sole: } 365{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 1{,}001\ \text{giri}
+  slider #wheel-day = 183
+    OUTPUT (wheel-day): 3 lug 2025
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 183\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 184{,}002\ \text{giri} | \text{Sole: } 183{,}499\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}503\ \text{giri}
+  slider #wheel-day + one key step
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 185{,}005\ \text{giri} | \text{Sole: } 184{,}499\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}506\ \text{giri}
+  slider #wheel-time = 0
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 00:00
+    #wheel-readout: \text{trascorso: } 184\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{cielo: } 184{,}504\ \text{giri} | \text{Sole: } 183{,}999\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}504\ \text{giri}
+  slider #wheel-time = 24
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 00:00
+    #wheel-readout: \text{trascorso: } 185\,\text{d}\ 0\,\text{h}\,00\,\text{min} | \text{cielo: } 185{,}507\ \text{giri} | \text{Sole: } 184{,}999\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}507\ \text{giri}
+  slider #wheel-time = 12
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 12:00
+    #wheel-readout: \text{trascorso: } 184\,\text{d}\ 12\,\text{h}\,00\,\text{min} | \text{cielo: } 185{,}005\ \text{giri} | \text{Sole: } 184{,}499\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}506\ \text{giri}
+  slider #wheel-time + one key step
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{trascorso: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{cielo: } 185{,}006\ \text{giri} | \text{Sole: } 184{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}506\ \text{giri}
+  slider #sid-time = 0
+    OUTPUT (sid-time): 00:00
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9496{,}5000 | \theta_G = 100{,}66^\circ = 6^\text{h}42^\text{m}39^\text{s} | \theta = \theta_G +12{,}50^\circ = 113{,}16^\circ | \alpha = 69{,}35^\circ,\quad H = 43{,}81^\circ
+  slider #sid-time = 24
+    OUTPUT (sid-time): 00:00
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9497{,}5000 | \theta_G = 101{,}65^\circ = 6^\text{h}46^\text{m}35^\text{s} | \theta = \theta_G +12{,}50^\circ = 114{,}15^\circ | \alpha = 69{,}35^\circ,\quad H = 44{,}79^\circ
+  slider #sid-time = 12
+    OUTPUT (sid-time): 12:00
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9497{,}0000 | \theta_G = 281{,}15^\circ = 18^\text{h}44^\text{m}37^\text{s} | \theta = \theta_G +12{,}50^\circ = 293{,}65^\circ | \alpha = 69{,}35^\circ,\quad H = -135{,}70^\circ
+  slider #sid-time + one key step
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12{,}50^\circ = 293{,}81^\circ | \alpha = 69{,}35^\circ,\quad H = -135{,}55^\circ
+  slider #sid-lon = -180
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 180,00° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -180{,}00^\circ = 101{,}31^\circ | \alpha = 69{,}35^\circ,\quad H = 31{,}95^\circ
+  slider #sid-lon = 180
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 180,00° E
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +180{,}00^\circ = 101{,}31^\circ | \alpha = 69{,}35^\circ,\quad H = 31{,}95^\circ
+  slider #sid-lon = 0
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0,00°
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0{,}00^\circ = 281{,}31^\circ | \alpha = 69{,}35^\circ,\quad H = -148{,}05^\circ
+  slider #sid-lon + one key step
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0,01° E
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0{,}01^\circ = 281{,}32^\circ | \alpha = 69{,}35^\circ,\quad H = -148{,}04^\circ
+  slider #transit-lat = -60
+    OUTPUT (transit-lat): −60,0°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 46{,}8^\circ
+  slider #transit-lat = 60
+    OUTPUT (transit-lat): 60,0°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 13{,}2^\circ
+  slider #transit-lat = 0
+    OUTPUT (transit-lat): 0,0°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 73{,}2^\circ
+  slider #transit-lat + one key step
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 73{,}1^\circ
+  slider #day-lat = -90
+    OUTPUT (day-lat): −90,0°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 0{,}0^\circ | \text{giorno } 0\,\text{h}\,00\,\text{min}\ \text{(notte polare)} | \text{né alba né tramonto}
+  slider #day-lat = 90
+    OUTPUT (day-lat): 90,0°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  slider #day-lat = 0
+    OUTPUT (day-lat): 0,0°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 90{,}9^\circ | \text{giorno } 12\,\text{h}\,07\,\text{min} | \text{alba } \text{05:56},\quad \text{tramonto } \text{18:04}
+  slider #day-lat + one key step
+    OUTPUT (day-lat): 0,1°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 91{,}0^\circ | \text{giorno } 12\,\text{h}\,08\,\text{min} | \text{alba } \text{05:56},\quad \text{tramonto } \text{18:04}
+  slider #test-lat = -65
+    OUTPUT (test-lat): −65,0°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -17{,}7\,\text{min}\ \text{a}\ +9{,}0\,\text{min} | \text{tramonto } -8{,}8\,\text{min}\ \text{a}\ +21{,}5\,\text{min} | \text{giorno } -1{,}3\,\text{min}\ \text{a}\ +13{,}5\,\text{min}
+  slider #test-lat = 65
+    OUTPUT (test-lat): 65,0°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -11{,}0\,\text{min}\ \text{a}\ +22{,}9\,\text{min} | \text{tramonto } -19{,}3\,\text{min}\ \text{a}\ +11{,}4\,\text{min} | \text{giorno } -13{,}2\,\text{min}\ \text{a}\ +0{,}6\,\text{min}
+  slider #test-lat = 0
+    OUTPUT (test-lat): 0,0°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -14{,}2\,\text{min}\ \text{a}\ +16{,}4\,\text{min} | \text{tramonto } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{giorno } -0{,}3\,\text{min}\ \text{a}\ +0{,}2\,\text{min}
+  slider #test-lat + one key step
+    OUTPUT (test-lat): 0,1°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -14{,}2\,\text{min}\ \text{a}\ +16{,}4\,\text{min} | \text{tramonto } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{giorno } -0{,}3\,\text{min}\ \text{a}\ +0{,}2\,\text{min}
+  button "‹ giorno precedente"
+    OUTPUT (wheel-day): 3 lug 2025
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{trascorso: } 183\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{cielo: } 184{,}003\ \text{giri} | \text{Sole: } 183{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}503\ \text{giri}
+  button "giorno successivo ›"
+    OUTPUT (wheel-day): 4 lug 2025
+    OUTPUT (wheel-time): 12:01
+    #wheel-readout: \text{trascorso: } 184\,\text{d}\ 12\,\text{h}\,01\,\text{min} | \text{cielo: } 185{,}006\ \text{giri} | \text{Sole: } 184{,}500\ \text{giri} | \text{cielo} - \text{Sole: } 0{,}506\ \text{giri}
+  button "Greenwich"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 0,00°
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +0{,}00^\circ = 281{,}31^\circ | \alpha = 69{,}35^\circ,\quad H = -148{,}05^\circ
+  button "Roma"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 12,50° E
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +12{,}50^\circ = 293{,}81^\circ | \alpha = 69{,}35^\circ,\quad H = -135{,}55^\circ
+  button "Alessandria"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 29,92° E
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G +29{,}92^\circ = 311{,}23^\circ | \alpha = 69{,}35^\circ,\quad H = -118{,}13^\circ
+  button "New York"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74,01° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74{,}01^\circ = 207{,}30^\circ | \alpha = 69{,}35^\circ,\quad H = 137{,}94^\circ
+  button "Aldebaran"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74,01° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74{,}01^\circ = 207{,}30^\circ | \alpha = 69{,}35^\circ,\quad H = 137{,}94^\circ
+  button "Vega"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74,01° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74{,}01^\circ = 207{,}30^\circ | \alpha = 279{,}45^\circ,\quad H = -72{,}16^\circ
+  button "Sirio"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74,01° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74{,}01^\circ = 207{,}30^\circ | \alpha = 101{,}57^\circ,\quad H = 105{,}72^\circ
+  button "Arturo"
+    OUTPUT (sid-time): 12:01
+    OUTPUT (sid-lon): 74,01° O
+    #sid-readout: d = 9497{,}0004 | \theta_G = 281{,}31^\circ = 18^\text{h}45^\text{m}13^\text{s} | \theta = \theta_G -74{,}01^\circ = 207{,}30^\circ | \alpha = 214{,}21^\circ,\quad H = -6{,}92^\circ
+  button "Sirio"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Sirio, notte del 1 gen 2026} | \text{transito } \text{00:00},\quad \text{cielo: buio} |  | a = 73{,}1^\circ
+  button "Betelgeuse"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Betelgeuse, notte del 20 dic 2026} | \text{transito } \text{23:58},\quad \text{cielo: buio} |  | a = 82{,}7^\circ
+  button "Vega"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Vega, notte del 30 giu 2026} | \text{transito } \text{00:02},\quad \text{cielo: buio} |  | a = 51{,}3^\circ
+  button "Antares"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Antares, notte del 29 mag 2026} | \text{transito } \text{00:01},\quad \text{cielo: buio} |  | a = 63{,}4^\circ
+  button "Arturo"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Arturo, notte del 25 apr 2026} | \text{transito } \text{00:01},\quad \text{cielo: buio} |  | a = 71{,}1^\circ
+  button "Canopo"
+    OUTPUT (transit-lat): 0,1°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = 37{,}2^\circ
+  button "Alessandria"
+    OUTPUT (transit-lat): 31,2°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = 6{,}1^\circ
+  button "Roma"
+    OUTPUT (transit-lat): 41,9°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = -4{,}6^\circ\ \text{(sotto l'orizzonte)}
+  button "Londra"
+    OUTPUT (transit-lat): 51,5°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = -14{,}2^\circ\ \text{(sotto l'orizzonte)}
+  button "Sydney"
+    OUTPUT (transit-lat): −33,9°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = 71{,}2^\circ
+  button "equatore"
+    OUTPUT (day-lat): 0,0°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 90{,}9^\circ | \text{giorno } 12\,\text{h}\,07\,\text{min} | \text{alba } \text{05:56},\quad \text{tramonto } \text{18:04}
+  button "Alessandria"
+    OUTPUT (day-lat): 31,2°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 106{,}3^\circ | \text{giorno } 14\,\text{h}\,11\,\text{min} | \text{alba } \text{04:55},\quad \text{tramonto } \text{19:05}
+  button "Roma"
+    OUTPUT (day-lat): 41,9°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 114{,}2^\circ | \text{giorno } 15\,\text{h}\,14\,\text{min} | \text{alba } \text{04:23},\quad \text{tramonto } \text{19:37}
+  button "Londra"
+    OUTPUT (day-lat): 51,5°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 124{,}8^\circ | \text{giorno } 16\,\text{h}\,38\,\text{min} | \text{alba } \text{03:41},\quad \text{tramonto } \text{20:19}
+  button "Tromsø"
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  button "equatore"
+    OUTPUT (test-lat): 0,0°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -14{,}2\,\text{min}\ \text{a}\ +16{,}4\,\text{min} | \text{tramonto } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{giorno } -0{,}3\,\text{min}\ \text{a}\ +0{,}2\,\text{min}
+  button "Roma"
+    OUTPUT (test-lat): 41,9°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -13{,}0\,\text{min}\ \text{a}\ +18{,}8\,\text{min} | \text{tramonto } -16{,}1\,\text{min}\ \text{a}\ +14{,}7\,\text{min} | \text{giorno } -5{,}3\,\text{min}\ \text{a}\ 0{,}0\,\text{min}
+  button "Londra"
+    OUTPUT (test-lat): 51,5°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -12{,}5\,\text{min}\ \text{a}\ +19{,}9\,\text{min} | \text{tramonto } -16{,}9\,\text{min}\ \text{a}\ +13{,}9\,\text{min} | \text{giorno } -7{,}5\,\text{min}\ \text{a}\ 0{,}0\,\text{min}
+  button "65° N"
+    OUTPUT (test-lat): 65,0°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -11{,}0\,\text{min}\ \text{a}\ +22{,}9\,\text{min} | \text{tramonto } -19{,}3\,\text{min}\ \text{a}\ +11{,}4\,\text{min} | \text{giorno } -13{,}2\,\text{min}\ \text{a}\ +0{,}6\,\text{min}
+  button "Sydney"
+    OUTPUT (test-lat): −33,9°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -15{,}1\,\text{min}\ \text{a}\ +14{,}7\,\text{min} | \text{tramonto } -12{,}9\,\text{min}\ \text{a}\ +17{,}8\,\text{min} | \text{giorno } -0{,}4\,\text{min}\ \text{a}\ +4{,}3\,\text{min}
+  hover #transit-plot at 0.3
+    OUTPUT (transit-lat): −33,9°
+    #transit-readout: \text{Canopo, notte del 31 mar 2026} | \text{transito } \text{17:48},\quad \text{cielo: chiaro} |  | a = 71{,}2^\circ
+  hover #transit-plot at 0.6
+    OUTPUT (transit-lat): −33,9°
+    #transit-readout: \text{Canopo, notte del 30 lug 2026} | \text{transito } \text{09:48},\quad \text{cielo: chiaro} |  | a = 71{,}2^\circ
+  hover #transit-plot at 0.9
+    OUTPUT (transit-lat): −33,9°
+    #transit-readout: \text{Canopo, notte del 28 nov 2026} | \text{transito } \text{01:53},\quad \text{cielo: buio} |  | a = 71{,}2^\circ
+  hover #transit-plot left
+    OUTPUT (transit-lat): −33,9°
+    #transit-readout: \text{Canopo, notte del 27 dic 2026} | \text{transito } \text{23:59},\quad \text{cielo: buio} |  | a = 71{,}2^\circ
+  hover #day-curve at 0.3
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{16 mar 2026:}\ \delta_\odot = -2{,}35^\circ,\quad H_0 = 86{,}1^\circ | \text{giorno } 11\,\text{h}\,28\,\text{min} | \text{alba } \text{06:16},\quad \text{tramonto } \text{17:44}
+  hover #day-curve at 0.6
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{25 lug 2026:}\ \delta_\odot = 19{,}44^\circ,\quad H_0 = 176{,}7^\circ | \text{giorno } 23\,\text{h}\,34\,\text{min} | \text{alba } \text{00:13},\quad \text{tramonto } \text{23:47}
+  hover #day-curve at 0.9
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{3 dic 2026:}\ \delta_\odot = -22{,}27^\circ,\quad H_0 = 0{,}0^\circ | \text{giorno } 0\,\text{h}\,00\,\text{min}\ \text{(notte polare)} | \text{né alba né tramonto}
+  hover #day-curve left
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  hover #day-map at 0.3
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  hover #day-map at 0.6
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  hover #day-map at 0.9
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  hover #day-map left
+    OUTPUT (day-lat): 69,7°
+    #day-readout: \text{21 giu 2026:}\ \delta_\odot = 23{,}44^\circ,\quad H_0 = 180{,}0^\circ | \text{giorno } 24\,\text{h}\,00\,\text{min}\ \text{(giorno polare)} | \text{né alba né tramonto}
+  hover #test-plot at 0.3
+    OUTPUT (test-lat): −33,9°
+    #test-readout: \text{21 mar 2026} | \text{mezzogiorno } -7{,}2\,\text{min} | \text{alba } -9{,}0\,\text{min} | \text{tramonto } -4{,}8\,\text{min} | \text{giorno } +4{,}2\,\text{min}
+  hover #test-plot at 0.6
+    OUTPUT (test-lat): −33,9°
+    #test-readout: \text{26 lug 2026} | \text{mezzogiorno } -6{,}6\,\text{min} | \text{alba } -7{,}2\,\text{min} | \text{tramonto } -6{,}2\,\text{min} | \text{giorno } +1{,}0\,\text{min}
+  hover #test-plot at 0.9
+    OUTPUT (test-lat): −33,9°
+    #test-readout: \text{1 dic 2026} | \text{mezzogiorno } +11{,}0\,\text{min} | \text{alba } +10{,}4\,\text{min} | \text{tramonto } +11{,}2\,\text{min} | \text{giorno } +0{,}8\,\text{min}
+  hover #test-plot left
+    OUTPUT (test-lat): −33,9°
+    #test-readout: \text{estremi nell'anno:} | \text{mezzogiorno } -14{,}2\,\text{min}\ \text{a}\ +16{,}5\,\text{min} | \text{alba } -15{,}1\,\text{min}\ \text{a}\ +14{,}7\,\text{min} | \text{tramonto } -12{,}9\,\text{min}\ \text{a}\ +17{,}8\,\text{min} | \text{giorno } -0{,}4\,\text{min}\ \text{a}\ +4{,}3\,\text{min}
+  dragged 0 spheres
+
 === act2-sun/01-uneven-year/index.html ===
   as loaded
     OUTPUT (eoc-day): 5 Sep
@@ -815,6 +1498,139 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 1 Feb 2435 · eccentric: +12.6′
   hover #error-2026-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 0 spheres
+
+=== act2-sun/01-uneven-year/index.it.html ===
+  as loaded
+    OUTPUT (eoc-day): 5 set
+    #eoc-readout: \text{5 set:}\quad \bar\lambda = 164{,}11^\circ,\quad M = 60{,}38^\circ | q = -8{,}99^\circ,\quad \lambda = \bar\lambda + q = 155{,}12^\circ
+    OUTPUT (fit-spring): 94,50 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 93{,}14^\circ,\quad a_2 = 91{,}17^\circ | h = 0{,}0172,\ k = 0{,}0377,\quad e = 0{,}0414 | \lambda_A = 65{,}4^\circ,\quad |q|_\text{max} = 2{,}37^\circ | \text{autunno } 88{,}12\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #eoc-day = 0
+    OUTPUT (eoc-day): 1 gen
+    #eoc-readout: \text{1 gen:}\quad \bar\lambda = 280{,}66^\circ,\quad M = 176{,}93^\circ | q = -0{,}77^\circ,\quad \lambda = \bar\lambda + q = 279{,}89^\circ
+  slider #eoc-day = 364
+    OUTPUT (eoc-day): 31 dic
+    #eoc-readout: \text{31 dic:}\quad \bar\lambda = 279{,}43^\circ,\quad M = 175{,}70^\circ | q = -1{,}07^\circ,\quad \lambda = \bar\lambda + q = 278{,}36^\circ
+  slider #eoc-day = 182
+    OUTPUT (eoc-day): 2 lug
+    #eoc-readout: \text{2 lug:}\quad \bar\lambda = 100{,}05^\circ,\quad M = 356{,}31^\circ | q = +0{,}61^\circ,\quad \lambda = \bar\lambda + q = 100{,}66^\circ
+  slider #eoc-day + one key step
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}45^\circ,\quad \lambda = \bar\lambda + q = 101{,}48^\circ
+  slider #fit-spring = 90
+    OUTPUT (fit-spring): 90,00 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 88{,}71^\circ,\quad a_2 = 91{,}17^\circ | h = -0{,}0215,\ k = -0{,}0010,\quad e = 0{,}0215 | \lambda_A = 182{,}8^\circ,\quad |q|_\text{max} = 1{,}23^\circ | \text{autunno } 92{,}62\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+  slider #fit-spring = 96
+    OUTPUT (fit-spring): 96,00 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 94{,}62^\circ,\quad a_2 = 91{,}17^\circ | h = 0{,}0301,\ k = 0{,}0505,\quad e = 0{,}0588 | \lambda_A = 59{,}2^\circ,\quad |q|_\text{max} = 3{,}37^\circ | \text{autunno } 86{,}62\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+  slider #fit-spring = 93
+    OUTPUT (fit-spring): 93,00 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 91{,}67^\circ,\quad a_2 = 91{,}17^\circ | h = 0{,}0043,\ k = 0{,}0248,\quad e = 0{,}0251 | \lambda_A = 80{,}1^\circ,\quad |q|_\text{max} = 1{,}44^\circ | \text{autunno } 89{,}62\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+  slider #fit-spring + one key step
+    OUTPUT (fit-spring): 93,01 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 91{,}68^\circ,\quad a_2 = 91{,}17^\circ | h = 0{,}0044,\ k = 0{,}0248,\quad e = 0{,}0252 | \lambda_A = 80{,}0^\circ,\quad |q|_\text{max} = 1{,}45^\circ | \text{autunno } 89{,}61\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+  slider #fit-summer = 90
+    OUTPUT (fit-spring): 93,01 d
+    OUTPUT (fit-summer): 90,00 d
+    #fit-readout: a_1 = 91{,}68^\circ,\quad a_2 = 88{,}71^\circ | h = 0{,}0259,\ k = 0{,}0033,\quad e = 0{,}0261 | \lambda_A = 7{,}4^\circ,\quad |q|_\text{max} = 1{,}50^\circ | \text{autunno } 89{,}61\,\text{d},\quad \text{inverno } 92{,}62\,\text{d}
+  slider #fit-summer = 96
+    OUTPUT (fit-spring): 93,01 d
+    OUTPUT (fit-summer): 96,00 d
+    #fit-readout: a_1 = 91{,}68^\circ,\quad a_2 = 94{,}62^\circ | h = -0{,}0257,\ k = 0{,}0549,\quad e = 0{,}0606 | \lambda_A = 115{,}1^\circ,\quad |q|_\text{max} = 3{,}48^\circ | \text{autunno } 89{,}61\,\text{d},\quad \text{inverno } 86{,}62\,\text{d}
+  slider #fit-summer = 93
+    OUTPUT (fit-spring): 93,01 d
+    OUTPUT (fit-summer): 93,00 d
+    #fit-readout: a_1 = 91{,}68^\circ,\quad a_2 = 91{,}67^\circ | h = 0{,}0001,\ k = 0{,}0291,\quad e = 0{,}0291 | \lambda_A = 89{,}8^\circ,\quad |q|_\text{max} = 1{,}67^\circ | \text{autunno } 89{,}61\,\text{d},\quad \text{inverno } 89{,}62\,\text{d}
+  slider #fit-summer + one key step
+    OUTPUT (fit-spring): 93,01 d
+    OUTPUT (fit-summer): 93,01 d
+    #fit-readout: a_1 = 91{,}68^\circ,\quad a_2 = 91{,}68^\circ | h = 0{,}0000,\ k = 0{,}0292,\quad e = 0{,}0292 | \lambda_A = 90{,}0^\circ,\quad |q|_\text{max} = 1{,}68^\circ | \text{autunno } 89{,}61\,\text{d},\quad \text{inverno } 89{,}61\,\text{d}
+  button "‹ giorno precedente"
+    OUTPUT (eoc-day): 2 lug
+    #eoc-readout: \text{2 lug:}\quad \bar\lambda = 100{,}05^\circ,\quad M = 356{,}31^\circ | q = +0{,}61^\circ,\quad \lambda = \bar\lambda + q = 100{,}66^\circ
+  button "giorno successivo ›"
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}45^\circ,\quad \lambda = \bar\lambda + q = 101{,}48^\circ
+  button "esagerato, e = 0,2"
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}45^\circ,\quad \lambda = \bar\lambda + q = 101{,}48^\circ
+  button "il Sole, e = 0,0335"
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}09^\circ,\quad \lambda = \bar\lambda + q = 101{,}12^\circ
+  button "Ipparco"
+    OUTPUT (fit-spring): 94,50 d
+    OUTPUT (fit-summer): 92,50 d
+    #fit-readout: a_1 = 93{,}14^\circ,\quad a_2 = 91{,}17^\circ | h = 0{,}0172,\ k = 0{,}0377,\quad e = 0{,}0414 | \lambda_A = 65{,}4^\circ,\quad |q|_\text{max} = 2{,}37^\circ | \text{autunno } 88{,}12\,\text{d},\quad \text{inverno } 90{,}12\,\text{d}
+  button "141 a.C."
+    OUTPUT (fit-spring): 94,01 d
+    OUTPUT (fit-summer): 92,34 d
+    #fit-readout: a_1 = 92{,}66^\circ,\quad a_2 = 91{,}01^\circ | h = 0{,}0144,\ k = 0{,}0321,\quad e = 0{,}0351 | \lambda_A = 65{,}9^\circ,\quad |q|_\text{max} = 2{,}01^\circ | \text{autunno } 88{,}61\,\text{d},\quad \text{inverno } 90{,}28\,\text{d}
+  button "140 d.C."
+    OUTPUT (fit-spring): 93,90 d
+    OUTPUT (fit-summer): 92,56 d
+    #fit-readout: a_1 = 92{,}55^\circ,\quad a_2 = 91{,}23^\circ | h = 0{,}0115,\ k = 0{,}0330,\quad e = 0{,}0350 | \lambda_A = 70{,}8^\circ,\quad |q|_\text{max} = 2{,}00^\circ | \text{autunno } 88{,}72\,\text{d},\quad \text{inverno } 90{,}06\,\text{d}
+  button "2026"
+    OUTPUT (fit-spring): 92,74 d
+    OUTPUT (fit-summer): 93,66 d
+    #fit-readout: a_1 = 91{,}41^\circ,\quad a_2 = 92{,}32^\circ | h = -0{,}0079,\ k = 0{,}0325,\quad e = 0{,}0334 | \lambda_A = 103{,}7^\circ,\quad |q|_\text{max} = 1{,}92^\circ | \text{autunno } 89{,}88\,\text{d},\quad \text{inverno } 88{,}96\,\text{d}
+  button "uguali"
+    OUTPUT (fit-spring): 91,31 d
+    OUTPUT (fit-summer): 91,31 d
+    #fit-readout: a_1 = 90{,}00^\circ,\quad a_2 = 90{,}00^\circ | h = 0{,}0000,\ k = 0{,}0000,\quad e = 0{,}0000 | \text{nessun apogeo (C sulla Terra)},\quad |q|_\text{max} = 0{,}00^\circ | \text{autunno } 91{,}31\,\text{d},\quad \text{inverno } 91{,}31\,\text{d}
+  button "1 anno"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #motion-plot at 0.3
+  hover #motion-plot at 0.6
+  hover #motion-plot at 0.9
+  hover #motion-plot left
+  hover #eoc-plot at 0.3
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}09^\circ,\quad \lambda = \bar\lambda + q = 101{,}12^\circ
+  hover #eoc-plot at 0.6
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}09^\circ,\quad \lambda = \bar\lambda + q = 101{,}12^\circ
+  hover #eoc-plot at 0.9
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}09^\circ,\quad \lambda = \bar\lambda + q = 101{,}12^\circ
+  hover #eoc-plot left
+    OUTPUT (eoc-day): 3 lug
+    #eoc-readout: \text{3 lug:}\quad \bar\lambda = 101{,}03^\circ,\quad M = 357{,}30^\circ | q = +0{,}09^\circ,\quad \lambda = \bar\lambda + q = 101{,}12^\circ
+  hover #fit-plot at 0.3
+    OUTPUT (fit-spring): 91,31 d
+    OUTPUT (fit-summer): 91,31 d
+    #fit-readout: a_1 = 90{,}00^\circ,\quad a_2 = 90{,}00^\circ | h = 0{,}0000,\ k = 0{,}0000,\quad e = 0{,}0000 | \text{nessun apogeo (C sulla Terra)},\quad |q|_\text{max} = 0{,}00^\circ | \text{autunno } 91{,}31\,\text{d},\quad \text{inverno } 91{,}31\,\text{d}
+  hover #fit-plot at 0.6
+    OUTPUT (fit-spring): 91,31 d
+    OUTPUT (fit-summer): 91,31 d
+    #fit-readout: a_1 = 90{,}00^\circ,\quad a_2 = 90{,}00^\circ | h = 0{,}0000,\ k = 0{,}0000,\quad e = 0{,}0000 | \text{nessun apogeo (C sulla Terra)},\quad |q|_\text{max} = 0{,}00^\circ | \text{autunno } 91{,}31\,\text{d},\quad \text{inverno } 91{,}31\,\text{d}
+  hover #fit-plot at 0.9
+    OUTPUT (fit-spring): 91,31 d
+    OUTPUT (fit-summer): 91,31 d
+    #fit-readout: a_1 = 90{,}00^\circ,\quad a_2 = 90{,}00^\circ | h = 0{,}0000,\ k = 0{,}0000,\quad e = 0{,}0000 | \text{nessun apogeo (C sulla Terra)},\quad |q|_\text{max} = 0{,}00^\circ | \text{autunno } 91{,}31\,\text{d},\quad \text{inverno } 91{,}31\,\text{d}
+  hover #fit-plot left
+    OUTPUT (fit-spring): 91,31 d
+    OUTPUT (fit-summer): 91,31 d
+    #fit-readout: a_1 = 90{,}00^\circ,\quad a_2 = 90{,}00^\circ | h = 0{,}0000,\ k = 0{,}0000,\quad e = 0{,}0000 | \text{nessun apogeo (C sulla Terra)},\quad |q|_\text{max} = 0{,}00^\circ | \text{autunno } 91{,}31\,\text{d},\quad \text{inverno } 91{,}31\,\text{d}
+  hover #error-2026-plot at 0.3
+    .errorcurve-readout: 2 ago 1783 · eccentrico: +8,3′
+  hover #error-2026-plot at 0.6
+    .errorcurve-readout: 3 mag 2109 · eccentrico: −1,5′
+  hover #error-2026-plot at 0.9
+    .errorcurve-readout: 1 feb 2435 · eccentrico: +12,6′
+  hover #error-2026-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   dragged 0 spheres
 
 === act2-sun/02-equation-of-time/index.html ===
@@ -1004,6 +1820,193 @@ Regenerate with: node tools/check/smoke.js --update
     #centuries-readout: \text{minimum } {-12.15}\,\text{min at } \lambda = 324^\circ | \text{maximum } {+16.97}\,\text{min at } \lambda = 224^\circ | \text{range } 29.13\,\text{min} = 7.28\ \text{time-degrees}
   dragged 1 spheres
 
+=== act2-sun/02-equation-of-time/index.it.html ===
+  as loaded
+    OUTPUT (red-lon): 30°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 30^\circ,\quad \alpha = 22{,}21^\circ | \lambda - \alpha = {+7{,}79}^\circ = {+31{,}17}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+    #parts-readout: \text{2025:}\quad E \text{ da } {-14{,}22} \text{ a } {+16{,}52}\,\text{min} | \text{ampiezze: } -q\ \ 7{,}67,\quad \lambda - \alpha\ \ 9{,}86\,\text{min}
+    OUTPUT (ana-day): 3 nov
+    #analemma-readout: \text{3 nov:}\quad E = +16\,\text{min}\ 31\,\text{s} | H = {+4{,}13}^\circ,\quad \delta = {-15{,}2}^\circ
+    #test-readout: \text{2025: modello} - \text{reale da } {-4{,}8} \text{ a } {+6{,}4}\,\text{s} | \text{Punta un grafico per leggere una data.}
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{minimo } {-14{,}20}\,\text{min a } \lambda = 323^\circ | \text{massimo } {+16{,}46}\,\text{min a } \lambda = 221^\circ | \text{escursione } 30{,}66\,\text{min} = 7{,}66\ \text{gradi di tempo}
+  opened 7 hints and answers
+  slider #red-lon = 0
+    OUTPUT (red-lon): 0°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 0^\circ,\quad \alpha = 0{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  slider #red-lon = 360
+    OUTPUT (red-lon): 360°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 360^\circ,\quad \alpha = 0{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  slider #red-lon = 180
+    OUTPUT (red-lon): 180°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 180^\circ,\quad \alpha = 180{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  slider #red-lon + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}71^\circ | \lambda - \alpha = {+0{,}29}^\circ = {+1{,}17}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  slider #red-eps = 0
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  slider #red-eps = 45
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}71^\circ | \lambda - \alpha = {+0{,}29}^\circ = {+1{,}17}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  slider #red-eps = 22.5
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22,50°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}92^\circ | \lambda - \alpha = {+0{,}08}^\circ = {+0{,}30}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0396 | \text{massimo } 2{,}27^\circ \text{ a } \lambda = 46{,}1^\circ
+  slider #red-eps + one key step
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 22,51°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}92^\circ | \lambda - \alpha = {+0{,}08}^\circ = {+0{,}30}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0396 | \text{massimo } 2{,}27^\circ \text{ a } \lambda = 46{,}1^\circ
+  slider #ana-day = 0
+    OUTPUT (ana-day): 1 gen
+    #analemma-readout: \text{1 gen:}\quad E = -3\,\text{min}\ 37\,\text{s} | H = {-0{,}91}^\circ,\quad \delta = {-23{,}0}^\circ
+  slider #ana-day = 364
+    OUTPUT (ana-day): 31 dic
+    #analemma-readout: \text{31 dic:}\quad E = -3\,\text{min}\ 02\,\text{s} | H = {-0{,}76}^\circ,\quad \delta = {-23{,}1}^\circ
+  slider #ana-day = 182
+    OUTPUT (ana-day): 2 lug
+    #analemma-readout: \text{2 lug:}\quad E = -4\,\text{min}\ 11\,\text{s} | H = {-1{,}05}^\circ,\quad \delta = {+23{,}0}^\circ
+  slider #ana-day + one key step
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1{,}09}^\circ,\quad \delta = {+22{,}9}^\circ
+  slider #cent-year = -1000
+    OUTPUT (cent-year): 1001 a.C.
+    #centuries-readout: \text{minimo } {-18{,}29}\,\text{min a } \lambda = 315^\circ | \text{massimo } {+11{,}75}\,\text{min a } \lambda = 215^\circ | \text{escursione } 30{,}04\,\text{min} = 7{,}51\ \text{gradi di tempo}
+  slider #cent-year = 3000
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  slider #cent-year = 1000
+    OUTPUT (cent-year): 1000
+    #centuries-readout: \text{minimo } {-16{,}05}\,\text{min a } \lambda = 321^\circ | \text{massimo } {+15{,}34}\,\text{min a } \lambda = 218^\circ | \text{escursione } 31{,}39\,\text{min} = 7{,}85\ \text{gradi di tempo}
+  slider #cent-year + one key step
+    OUTPUT (cent-year): 1001
+    #centuries-readout: \text{minimo } {-16{,}06}\,\text{min a } \lambda = 320^\circ | \text{massimo } {+15{,}33}\,\text{min a } \lambda = 219^\circ | \text{escursione } 31{,}39\,\text{min} = 7{,}85\ \text{gradi di tempo}
+  button "oggi, 23,44°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 23,44°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}92^\circ | \lambda - \alpha = {+0{,}08}^\circ = {+0{,}33}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0430 | \text{massimo } 2{,}47^\circ \text{ a } \lambda = 46{,}2^\circ
+  button "esagerata, 45°"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 45,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 180{,}71^\circ | \lambda - \alpha = {+0{,}29}^\circ = {+1{,}17}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}1716 | \text{massimo } 9{,}88^\circ \text{ a } \lambda = 49{,}9^\circ
+  button "senza inclinazione"
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  button "‹ giorno precedente"
+    OUTPUT (ana-day): 2 lug
+    #analemma-readout: \text{2 lug:}\quad E = -4\,\text{min}\ 11\,\text{s} | H = {-1{,}05}^\circ,\quad \delta = {+23{,}0}^\circ
+  button "giorno successivo ›"
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1{,}09}^\circ,\quad \delta = {+22{,}9}^\circ
+  button "entrambe le cause"
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 22\,\text{s} | H = {-1{,}09}^\circ,\quad \delta = {+22{,}9}^\circ
+  button "solo eccentricità"
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -0\,\text{min}\ 15\,\text{s} | H = {-0{,}06}^\circ,\quad \delta = {+22{,}9}^\circ
+  button "solo obliquità"
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1{,}02}^\circ,\quad \delta = {+22{,}9}^\circ
+  button "141 a.C."
+    OUTPUT (cent-year): 141 a.C.
+    #centuries-readout: \text{minimo } {-17{,}57}\,\text{min a } \lambda = 317^\circ | \text{massimo } {+13{,}49}\,\text{min a } \lambda = 216^\circ | \text{escursione } 31{,}07\,\text{min} = 7{,}77\ \text{gradi di tempo}
+  button "140 d.C."
+    OUTPUT (cent-year): 140 d.C.
+    #centuries-readout: \text{minimo } {-17{,}27}\,\text{min a } \lambda = 318^\circ | \text{massimo } {+14{,}00}\,\text{min a } \lambda = 217^\circ | \text{escursione } 31{,}26\,\text{min} = 7{,}82\ \text{gradi di tempo}
+  button "1246"
+    OUTPUT (cent-year): 1246
+    #centuries-readout: \text{minimo } {-15{,}65}\,\text{min a } \lambda = 321^\circ | \text{massimo } {+15{,}65}\,\text{min a } \lambda = 219^\circ | \text{escursione } 31{,}30\,\text{min} = 7{,}82\ \text{gradi di tempo}
+  button "1515"
+    OUTPUT (cent-year): 1515
+    #centuries-readout: \text{minimo } {-15{,}17}\,\text{min a } \lambda = 322^\circ | \text{massimo } {+15{,}97}\,\text{min a } \lambda = 220^\circ | \text{escursione } 31{,}13\,\text{min} = 7{,}78\ \text{gradi di tempo}
+  button "2026"
+    OUTPUT (cent-year): 2026
+    #centuries-readout: \text{minimo } {-14{,}20}\,\text{min a } \lambda = 323^\circ | \text{massimo } {+16{,}46}\,\text{min a } \lambda = 221^\circ | \text{escursione } 30{,}66\,\text{min} = 7{,}66\ \text{gradi di tempo}
+  button "3000"
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  hover #sundial-day at 0.3
+  hover #sundial-day at 0.6
+  hover #sundial-day at 0.9
+  hover #sundial-day left
+  hover #sundial-equation at 0.3
+  hover #sundial-equation at 0.6
+  hover #sundial-equation at 0.9
+  hover #sundial-equation left
+  hover #reduction-plot at 0.3
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  hover #reduction-plot at 0.6
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  hover #reduction-plot at 0.9
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  hover #reduction-plot left
+    OUTPUT (red-lon): 181°
+    OUTPUT (red-eps): 0,00°
+    #reduction-readout: \lambda = 181^\circ,\quad \alpha = 181{,}00^\circ | \lambda - \alpha = {+0{,}00}^\circ = {+0{,}00}\,\text{min di tempo} | e_\varepsilon = \tan^2(\varepsilon/2) = 0{,}0000 | \text{massimo } 0{,}00^\circ \text{ a } \lambda = 45{,}0^\circ
+  hover #parts-plot at 0.3
+    #parts-readout: \text{5 apr:}\quad E = -2\,\text{min}\ 38\,\text{s} | -q = {-7{,}67},\quad \lambda - \alpha = {+5{,}03}\,\text{min}
+  hover #parts-plot at 0.6
+    #parts-readout: \text{2 ago:}\quad E = -6\,\text{min}\ 21\,\text{s} | -q = {+3{,}45},\quad \lambda - \alpha = {-9{,}80}\,\text{min}
+  hover #parts-plot at 0.9
+    #parts-readout: \text{29 nov:}\quad E = +11\,\text{min}\ 44\,\text{s} | -q = {+4{,}54},\quad \lambda - \alpha = {+7{,}19}\,\text{min}
+  hover #parts-plot left
+    #parts-readout: \text{2025:}\quad E \text{ da } {-14{,}22} \text{ a } {+16{,}52}\,\text{min} | \text{ampiezze: } -q\ \ 7{,}67,\quad \lambda - \alpha\ \ 9{,}86\,\text{min}
+  hover #analemma-plot at 0.3
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1{,}02}^\circ,\quad \delta = {+22{,}9}^\circ
+  hover #analemma-plot at 0.6
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1{,}02}^\circ,\quad \delta = {+22{,}9}^\circ
+  hover #analemma-plot at 0.9
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1{,}02}^\circ,\quad \delta = {+22{,}9}^\circ
+  hover #analemma-plot left
+    OUTPUT (ana-day): 3 lug
+    #analemma-readout: \text{3 lug:}\quad E = -4\,\text{min}\ 06\,\text{s} | H = {-1{,}02}^\circ,\quad \delta = {+22{,}9}^\circ
+  hover #test-both at 0.3
+    #test-readout: \text{16 mar:}\quad \text{modello } -8\,\text{min}\ 35\,\text{s},\quad \text{reale } -8\,\text{min}\ 34\,\text{s} | \text{modello} - \text{reale} = {-1{,}2}\,\text{s}
+  hover #test-both at 0.6
+    #test-readout: \text{25 lug:}\quad \text{modello } -6\,\text{min}\ 38\,\text{s},\quad \text{reale } -6\,\text{min}\ 34\,\text{s} | \text{modello} - \text{reale} = {-4{,}2}\,\text{s}
+  hover #test-both at 0.9
+    #test-readout: \text{3 dic:}\quad \text{modello } +10\,\text{min}\ 13\,\text{s},\quad \text{reale } +10\,\text{min}\ 07\,\text{s} | \text{modello} - \text{reale} = {+6{,}1}\,\text{s}
+  hover #test-both left
+    #test-readout: \text{2025: modello} - \text{reale da } {-4{,}8} \text{ a } {+6{,}4}\,\text{s} | \text{Punta un grafico per leggere una data.}
+  hover #test-error at 0.3
+    #test-readout: \text{16 mar:}\quad \text{modello } -8\,\text{min}\ 35\,\text{s},\quad \text{reale } -8\,\text{min}\ 34\,\text{s} | \text{modello} - \text{reale} = {-1{,}2}\,\text{s}
+  hover #test-error at 0.6
+    #test-readout: \text{25 lug:}\quad \text{modello } -6\,\text{min}\ 38\,\text{s},\quad \text{reale } -6\,\text{min}\ 34\,\text{s} | \text{modello} - \text{reale} = {-4{,}2}\,\text{s}
+  hover #test-error at 0.9
+    #test-readout: \text{3 dic:}\quad \text{modello } +10\,\text{min}\ 13\,\text{s},\quad \text{reale } +10\,\text{min}\ 07\,\text{s} | \text{modello} - \text{reale} = {+6{,}1}\,\text{s}
+  hover #test-error left
+    #test-readout: \text{2025: modello} - \text{reale da } {-4{,}8} \text{ a } {+6{,}4}\,\text{s} | \text{Punta un grafico per leggere una data.}
+  hover #centuries-plot at 0.3
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  hover #centuries-plot at 0.6
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  hover #centuries-plot at 0.9
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  hover #centuries-plot left
+    OUTPUT (cent-year): 3000
+    #centuries-readout: \text{minimo } {-12{,}15}\,\text{min a } \lambda = 324^\circ | \text{massimo } {+16{,}97}\,\text{min a } \lambda = 224^\circ | \text{escursione } 29{,}13\,\text{min} = 7{,}28\ \text{gradi di tempo}
+  dragged 1 spheres
+
 === act2-sun/03-precession/index.html ===
   as loaded
     OUTPUT (model-year): 2026
@@ -1086,6 +2089,94 @@ Regenerate with: node tools/check/smoke.js --update
   hover #error-sun-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #ptolemy-plot at 0.3
+  hover #ptolemy-plot at 0.6
+  hover #ptolemy-plot at 0.9
+  hover #ptolemy-plot left
+  dragged 1 spheres
+
+=== act2-sun/03-precession/index.it.html ===
+  as loaded
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: spostamento } +0{,}00^\circ | \text{Spica: } \lambda = 204{,}20^\circ,\ \delta = -11{,}30^\circ | \text{più vicina a P: Polaris, } 0{,}6^\circ
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #model-year = -11000
+    OUTPUT (model-year): 11·001 a.C.
+    #model-readout: \text{11}{\cdotp}\text{001 a.C.: spostamento } -181{,}94^\circ | \text{Spica: } \lambda = 22{,}26^\circ,\ \delta = +6{,}76^\circ | \text{più vicina a P: Vega, } 7{,}7^\circ
+  slider #model-year = 15000
+    OUTPUT (model-year): 15·000 d.C.
+    #model-readout: \text{15}{\cdotp}\text{000 d.C.: spostamento } +181{,}21^\circ | \text{Spica: } \lambda = 25{,}41^\circ,\ \delta = +7{,}91^\circ | \text{più vicina a P: Vega, } 8{,}8^\circ
+  slider #model-year = 2000
+    OUTPUT (model-year): 2000
+    #model-readout: \text{2000: spostamento } -0{,}36^\circ | \text{Spica: } \lambda = 203{,}84^\circ,\ \delta = -11{,}16^\circ | \text{più vicina a P: Polaris, } 0{,}7^\circ
+  slider #model-year + one key step
+    OUTPUT (model-year): 2001
+    #model-readout: \text{2001: spostamento } -0{,}35^\circ | \text{Spica: } \lambda = 203{,}86^\circ,\ \delta = -11{,}17^\circ | \text{più vicina a P: Polaris, } 0{,}7^\circ
+  button "2831 a.C."
+    OUTPUT (model-year): 2831 a.C.
+    #model-readout: \text{2831 a.C.: spostamento } -67{,}83^\circ | \text{Spica: } \lambda = 136{,}38^\circ,\ \delta = +13{,}96^\circ | \text{più vicina a P: Thuban, } 0{,}2^\circ
+  button "128 a.C."
+    OUTPUT (model-year): 128 a.C.
+    #model-readout: \text{128 a.C.: spostamento } -30{,}07^\circ | \text{Spica: } \lambda = 174{,}13^\circ,\ \delta = +0{,}44^\circ | \text{più vicina a P: Polaris, } 12{,}4^\circ
+  button "2026"
+    OUTPUT (model-year): 2026
+    #model-readout: \text{2026: spostamento } +0{,}00^\circ | \text{Spica: } \lambda = 204{,}20^\circ,\ \delta = -11{,}30^\circ | \text{più vicina a P: Polaris, } 0{,}6^\circ
+  button "13·790 d.C."
+    OUTPUT (model-year): 13·790 d.C.
+    #model-readout: \text{13}{\cdotp}\text{790 d.C.: spostamento } +164{,}31^\circ | \text{Spica: } \lambda = 8{,}51^\circ,\ \delta = +1{,}49^\circ | \text{più vicina a P: Vega, } 4{,}8^\circ
+  button "2000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "6000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "2000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #stars-ecliptic at 0.3
+  hover #stars-ecliptic at 0.6
+  hover #stars-ecliptic at 0.9
+  hover #stars-ecliptic left
+  hover #stars-declination at 0.3
+  hover #stars-declination at 0.6
+  hover #stars-declination at 0.9
+  hover #stars-declination left
+  hover #records-plot at 0.3
+  hover #records-plot at 0.6
+  hover #records-plot at 0.9
+  hover #records-plot left
+  hover #error-spica-plot at 0.3
+    .errorcurve-readout: 19 feb 569 · precessione uniforme: −4,7′
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-spica-plot at 0.6
+    .errorcurve-readout: 31 lug 2523 · precessione uniforme: −0,2′
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-spica-plot at 0.9
+    .errorcurve-readout: 9 gen 4478 · precessione uniforme: −9,7′
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-spica-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: 10 set 1540 · apogeo fisso: +4,4′ · apogeo in moto: +0,9′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: 7 mar 2192 · apogeo fisso: +3,3′ · apogeo in moto: +0,6′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: 3 set 2843 · apogeo fisso: −19,4′ · apogeo in moto: −1,5′
+  hover #error-sun-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   hover #ptolemy-plot at 0.3
   hover #ptolemy-plot at 0.6
   hover #ptolemy-plot at 0.9
@@ -1230,6 +2321,144 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   dragged 0 spheres
 
+=== act3-moon/01-first-anomaly/index.it.html ===
+  as loaded
+    OUTPUT (epi-day): 1 gen, 00 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{1 gen, 00 h:}\quad \bar\lambda = 67{,}97^\circ,\quad M = 191{,}72^\circ | q = +4{,}93^\circ,\quad \lambda = \bar\lambda + q = 72{,}90^\circ | \text{moto giornaliero } 18{,}47^\circ \text{ (medio } 13{,}18^\circ)
+    OUTPUT (eq-day): 1 gen 2026
+    #equivalence-readout: \text{1 gen 2026:}\quad \bar\lambda = 67{,}97^\circ,\quad M = 191{,}72^\circ | \lambda_A = \bar\lambda - M = 236{,}25^\circ | \text{epiciclo: } \lambda = 72{,}90^\circ | \text{eccentrico: } \lambda = 72{,}90^\circ
+    #eclipses-readout: a_{12} = 148{,}97^\circ,\quad a_{23} = 161{,}57^\circ | d_{12} = +8{,}88^\circ,\quad d_{23} = -9{,}38^\circ | \text{primo ordine: } r/R = 0{,}08378,\ M_2 = 270{,}8^\circ | \text{esatto: } r/R = 0{,}08440,\ M_2 = 275{,}0^\circ | \text{il cielo di riferimento, 2025 – 2026}
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #epi-day = 0
+    OUTPUT (epi-day): 1 gen, 00 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{1 gen, 00 h:}\quad \bar\lambda = 67{,}97^\circ,\quad M = 191{,}72^\circ | q = +4{,}93^\circ,\quad \lambda = \bar\lambda + q = 72{,}90^\circ | \text{moto giornaliero } 18{,}47^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-day = 60
+    OUTPUT (epi-day): 2 mar, 00 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{2 mar, 00 h:}\quad \bar\lambda = 138{,}55^\circ,\quad M = 255{,}62^\circ | q = +17{,}43^\circ,\quad \lambda = \bar\lambda + q = 155{,}99^\circ | \text{moto giornaliero } 12{,}96^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-day = 30
+    OUTPUT (epi-day): 31 gen, 00 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{31 gen, 00 h:}\quad \bar\lambda = 103{,}26^\circ,\quad M = 223{,}67^\circ | q = +14{,}82^\circ,\quad \lambda = \bar\lambda + q = 118{,}08^\circ | \text{moto giornaliero } 15{,}71^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-day + one key step
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +14{,}94^\circ,\quad \lambda = \bar\lambda + q = 118{,}86^\circ | \text{moto giornaliero } 15{,}64^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-e = 0
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-e = 0.3
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +14{,}94^\circ,\quad \lambda = \bar\lambda + q = 118{,}86^\circ | \text{moto giornaliero } 15{,}64^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-e = 0.15
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,1500
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +6{,}70^\circ,\quad \lambda = \bar\lambda + q = 110{,}62^\circ | \text{moto giornaliero } 14{,}55^\circ \text{ (medio } 13{,}18^\circ)
+  slider #epi-e + one key step
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,1505
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +6{,}72^\circ,\quad \lambda = \bar\lambda + q = 110{,}64^\circ | \text{moto giornaliero } 14{,}55^\circ \text{ (medio } 13{,}18^\circ)
+  slider #eq-day = 0
+    OUTPUT (eq-day): 1 gen 2026
+    #equivalence-readout: \text{1 gen 2026:}\quad \bar\lambda = 67{,}97^\circ,\quad M = 191{,}72^\circ | \lambda_A = \bar\lambda - M = 236{,}25^\circ | \text{epiciclo: } \lambda = 72{,}90^\circ | \text{eccentrico: } \lambda = 72{,}90^\circ
+  slider #eq-day = 3232
+    OUTPUT (eq-day): 7 nov 2034
+    #equivalence-readout: \text{7 nov 2034:}\quad \bar\lambda = 174{,}09^\circ,\quad M = 297{,}76^\circ | \lambda_A = \bar\lambda - M = 236{,}32^\circ | \text{epiciclo: } \lambda = 187{,}20^\circ | \text{eccentrico: } \lambda = 187{,}20^\circ
+  slider #eq-day = 1616
+    OUTPUT (eq-day): 5 giu 2030
+    #equivalence-readout: \text{5 giu 2030:}\quad \bar\lambda = 121{,}03^\circ,\quad M = 64{,}74^\circ | \lambda_A = \bar\lambda - M = 56{,}29^\circ | \text{epiciclo: } \lambda = 107{,}50^\circ | \text{eccentrico: } \lambda = 107{,}50^\circ
+  slider #eq-day + one key step
+    OUTPUT (eq-day): 5 giu 2030
+    #equivalence-readout: \text{5 giu 2030:}\quad \bar\lambda = 121{,}69^\circ,\quad M = 65{,}40^\circ | \lambda_A = \bar\lambda - M = 56{,}29^\circ | \text{epiciclo: } \lambda = 108{,}06^\circ | \text{eccentrico: } \lambda = 108{,}06^\circ
+  button "‹ giorno precedente"
+    OUTPUT (epi-day): 30 gen, 01 h
+    OUTPUT (epi-e): 0,1505
+    #epicycle-readout: \text{30 gen, 01 h:}\quad \bar\lambda = 90{,}74^\circ,\quad M = 211{,}26^\circ | q = +5{,}12^\circ,\quad \lambda = \bar\lambda + q = 95{,}87^\circ | \text{moto giornaliero } 14{,}99^\circ \text{ (medio } 13{,}18^\circ)
+  button "giorno successivo ›"
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,1505
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +6{,}72^\circ,\quad \lambda = \bar\lambda + q = 110{,}64^\circ | \text{moto giornaliero } 14{,}55^\circ \text{ (medio } 13{,}18^\circ)
+  button "Tolomeo, 0,0875"
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0875
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +3{,}73^\circ,\quad \lambda = \bar\lambda + q = 107{,}65^\circ | \text{moto giornaliero } 13{,}99^\circ \text{ (medio } 13{,}18^\circ)
+  button "esagerato, 0,3"
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,3000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +14{,}94^\circ,\quad \lambda = \bar\lambda + q = 118{,}86^\circ | \text{moto giornaliero } 15{,}64^\circ \text{ (medio } 13{,}18^\circ)
+  button "senza epiciclo"
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  button "‹ giorno precedente"
+    OUTPUT (eq-day): 4 giu 2030
+    #equivalence-readout: \text{4 giu 2030:}\quad \bar\lambda = 108{,}51^\circ,\quad M = 52{,}33^\circ | \lambda_A = \bar\lambda - M = 56{,}18^\circ | \text{epiciclo: } \lambda = 97{,}16^\circ | \text{eccentrico: } \lambda = 97{,}16^\circ
+  button "giorno successivo ›"
+    OUTPUT (eq-day): 5 giu 2030
+    #equivalence-readout: \text{5 giu 2030:}\quad \bar\lambda = 121{,}69^\circ,\quad M = 65{,}40^\circ | \lambda_A = \bar\lambda - M = 56{,}29^\circ | \text{epiciclo: } \lambda = 108{,}06^\circ | \text{eccentrico: } \lambda = 108{,}06^\circ
+  button "Un mese"
+    OUTPUT (eq-day): 5 giu 2030
+    #equivalence-readout: \text{5 giu 2030:}\quad \bar\lambda = 121{,}69^\circ,\quad M = 65{,}40^\circ | \lambda_A = \bar\lambda - M = 56{,}29^\circ | \text{epiciclo: } \lambda = 108{,}06^\circ | \text{eccentrico: } \lambda = 108{,}06^\circ
+  button "Il giro dell'eccentrico"
+    OUTPUT (eq-day): 5 giu 2030
+    #equivalence-readout: \text{5 giu 2030:}\quad \lambda_A = 56{,}29^\circ | \text{ruotato di } 180{,}0^\circ \text{ verso est dal }1^{\text{o}}\text{ gennaio 2026} |  | 
+  button "2025 – 2026"
+    #eclipses-readout: a_{12} = 148{,}97^\circ,\quad a_{23} = 161{,}57^\circ | d_{12} = +8{,}88^\circ,\quad d_{23} = -9{,}38^\circ | \text{primo ordine: } r/R = 0{,}08378,\ M_2 = 270{,}8^\circ | \text{esatto: } r/R = 0{,}08440,\ M_2 = 275{,}0^\circ | \text{il cielo di riferimento, 2025 – 2026}
+  button "Babilonia, 721 a.C."
+    #eclipses-readout: a_{12} = 306{,}42^\circ,\quad a_{23} = 150{,}43^\circ | d_{12} = +3{,}40^\circ,\quad d_{23} = -0{,}62^\circ | \text{primo ordine: } r/R = 0{,}08324,\ M_2 = 10{,}9^\circ | \text{esatto: } r/R = 0{,}08694,\ M_2 = 12{,}4^\circ | \text{Tolomeo: } 0{,}08694,\ M_2 = 12^\circ 24'
+  button "Alessandria, 133 d.C."
+    #eclipses-readout: a_{12} = 110{,}35^\circ,\quad a_{23} = 81{,}60^\circ | d_{12} = -7{,}70^\circ,\quad d_{23} = +1{,}35^\circ | \text{primo ordine: } r/R = 0{,}08241,\ M_2 = 61{,}8^\circ | \text{esatto: } r/R = 0{,}08707,\ M_2 = 64{,}6^\circ | \text{Tolomeo: } 0{,}08722,\ M_2 = 64^\circ 38'
+  button "Copernico, 1511"
+    #eclipses-readout: a_{12} = 250{,}60^\circ,\quad a_{23} = 306{,}72^\circ | d_{12} = -5{,}00^\circ,\quad d_{23} = +2{,}98^\circ | \text{primo ordine: } r/R = 0{,}08561,\ M_2 = 73{,}9^\circ | \text{esatto: } r/R = 0{,}08605,\ M_2 = 74{,}5^\circ | \text{Copernico: } 0{,}08604,\ M_2 = 74^\circ 27'
+  button "2 mesi"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1 anno"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #motion-plot at 0.3
+  hover #motion-plot at 0.6
+  hover #motion-plot at 0.9
+  hover #motion-plot left
+  hover #epicycle-plot at 0.3
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  hover #epicycle-plot at 0.6
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  hover #epicycle-plot at 0.9
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  hover #epicycle-plot left
+    OUTPUT (epi-day): 31 gen, 01 h
+    OUTPUT (epi-e): 0,0000
+    #epicycle-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad M = 224{,}33^\circ | q = +0{,}00^\circ,\quad \lambda = \bar\lambda + q = 103{,}92^\circ | \text{moto giornaliero } 13{,}18^\circ \text{ (medio } 13{,}18^\circ)
+  hover #eclipses-plot at 0.3
+    #eclipses-readout: a_{12} = 250{,}60^\circ,\quad a_{23} = 306{,}72^\circ | d_{12} = -5{,}00^\circ,\quad d_{23} = +2{,}98^\circ | \text{primo ordine: } r/R = 0{,}08561,\ M_2 = 73{,}9^\circ | \text{esatto: } r/R = 0{,}08605,\ M_2 = 74{,}5^\circ | \text{Copernico: } 0{,}08604,\ M_2 = 74^\circ 27'
+  hover #eclipses-plot at 0.6
+    #eclipses-readout: a_{12} = 250{,}60^\circ,\quad a_{23} = 306{,}72^\circ | d_{12} = -5{,}00^\circ,\quad d_{23} = +2{,}98^\circ | \text{primo ordine: } r/R = 0{,}08561,\ M_2 = 73{,}9^\circ | \text{esatto: } r/R = 0{,}08605,\ M_2 = 74{,}5^\circ | \text{Copernico: } 0{,}08604,\ M_2 = 74^\circ 27'
+  hover #eclipses-plot at 0.9
+    #eclipses-readout: a_{12} = 250{,}60^\circ,\quad a_{23} = 306{,}72^\circ | d_{12} = -5{,}00^\circ,\quad d_{23} = +2{,}98^\circ | \text{primo ordine: } r/R = 0{,}08561,\ M_2 = 73{,}9^\circ | \text{esatto: } r/R = 0{,}08605,\ M_2 = 74{,}5^\circ | \text{Copernico: } 0{,}08604,\ M_2 = 74^\circ 27'
+  hover #eclipses-plot left
+    #eclipses-readout: a_{12} = 250{,}60^\circ,\quad a_{23} = 306{,}72^\circ | d_{12} = -5{,}00^\circ,\quad d_{23} = +2{,}98^\circ | \text{primo ordine: } r/R = 0{,}08561,\ M_2 = 73{,}9^\circ | \text{esatto: } r/R = 0{,}08605,\ M_2 = 74{,}5^\circ | \text{Copernico: } 0{,}08604,\ M_2 = 74^\circ 27'
+  hover #error-ours-plot at 0.3
+    .errorcurve-readout: 18 mar 2002 · Luna uniforme: +362,7′ · epiciclo: +99,8′
+  hover #error-ours-plot at 0.6
+    .errorcurve-readout: 14 ott 2034 · Luna uniforme: −68,5′ · epiciclo: −11,7′
+  hover #error-ours-plot at 0.9
+    .errorcurve-readout: 11 mag 2067 · Luna uniforme: −292,2′ · epiciclo: −1,8′
+  hover #error-ours-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  dragged 0 spheres
+
 === act3-moon/02-evection/index.html ===
   as loaded
     OUTPUT (crank-day): 1 Jan, 00 h
@@ -1284,6 +2513,66 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 11 May 2067 · epicycle: −1.8′ · crank alone: +19.6′ · complete model: +18.3′
   hover #error-ours-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #diameter-plot at 0.3
+  hover #diameter-plot at 0.6
+  hover #diameter-plot at 0.9
+  hover #diameter-plot left
+  dragged 0 spheres
+
+=== act3-moon/02-evection/index.it.html ===
+  as loaded
+    OUTPUT (crank-day): 1 gen, 00 h
+    #crank-readout: \text{1 gen, 00 h:}\quad \bar\lambda = 67{,}97^\circ,\quad D = 147{,}31^\circ | \rho = \text{OK} = 0{,}881,\quad M = 191{,}72^\circ | q = +1{,}23^\circ,\quad \arcsin(e/\rho) = 5{,}50^\circ
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #crank-day = 0
+    OUTPUT (crank-day): 1 gen, 00 h
+    #crank-readout: \text{1 gen, 00 h:}\quad \bar\lambda = 67{,}97^\circ,\quad D = 147{,}31^\circ | \rho = \text{OK} = 0{,}881,\quad M = 191{,}72^\circ | q = +1{,}23^\circ,\quad \arcsin(e/\rho) = 5{,}50^\circ
+  slider #crank-day = 60
+    OUTPUT (crank-day): 2 mar, 00 h
+    #crank-readout: \text{2 mar, 00 h:}\quad \bar\lambda = 138{,}55^\circ,\quad D = 158{,}75^\circ | \rho = \text{OK} = 0{,}945,\quad M = 255{,}62^\circ | q = +5{,}06^\circ,\quad \arcsin(e/\rho) = 5{,}13^\circ
+  slider #crank-day = 30
+    OUTPUT (crank-day): 31 gen, 00 h
+    #crank-readout: \text{31 gen, 00 h:}\quad \bar\lambda = 103{,}26^\circ,\quad D = 153{,}03^\circ | \rho = \text{OK} = 0{,}915,\quad M = 223{,}67^\circ | q = +3{,}91^\circ,\quad \arcsin(e/\rho) = 5{,}29^\circ
+  slider #crank-day + one key step
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  button "‹ giorno precedente"
+    OUTPUT (crank-day): 30 gen, 01 h
+    #crank-readout: \text{30 gen, 01 h:}\quad \bar\lambda = 90{,}74^\circ,\quad D = 141{,}45^\circ | \rho = \text{OK} = 0{,}844,\quad M = 211{,}26^\circ | q = +3{,}25^\circ,\quad \arcsin(e/\rho) = 5{,}74^\circ
+  button "giorno successivo ›"
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  button "2 mesi"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1 anno"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #equation-plot at 0.3
+  hover #equation-plot at 0.6
+  hover #equation-plot at 0.9
+  hover #equation-plot left
+  hover #crank-plot at 0.3
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  hover #crank-plot at 0.6
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  hover #crank-plot at 0.9
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  hover #crank-plot left
+    OUTPUT (crank-day): 31 gen, 01 h
+    #crank-readout: \text{31 gen, 01 h:}\quad \bar\lambda = 103{,}92^\circ,\quad D = 153{,}64^\circ | \rho = \text{OK} = 0{,}918,\quad M = 224{,}33^\circ | q = +3{,}93^\circ,\quad \arcsin(e/\rho) = 5{,}27^\circ
+  hover #error-ours-plot at 0.3
+    .errorcurve-readout: 18 mar 2002 · epiciclo: +99,8′ · sola manovella: −0,1′ · modello completo: −32,2′
+  hover #error-ours-plot at 0.6
+    .errorcurve-readout: 14 ott 2034 · epiciclo: −11,7′ · sola manovella: −9,4′ · modello completo: −36,1′
+  hover #error-ours-plot at 0.9
+    .errorcurve-readout: 11 mag 2067 · epiciclo: −1,8′ · sola manovella: +19,6′ · modello completo: +18,3′
+  hover #error-ours-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   hover #diameter-plot at 0.3
   hover #diameter-plot at 0.6
   hover #diameter-plot at 0.9
@@ -1408,6 +2697,126 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 11 May 2067 · fitted: −5.3′
   hover #error-latitude-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 1 spheres
+
+=== act3-moon/03-eclipses/index.it.html ===
+  as loaded
+    OUTPUT (orbit-day): 12 ago 2026
+    #orbit-readout: \text{12 ago 2026:}\quad \Omega = 330{,}3^\circ | F = 170{,}0^\circ,\quad \beta = +0{,}87^\circ | \text{il Sole } 10{,}3^\circ \text{ prima del nodo più vicino}
+    OUTPUT (limits-node): −10,3°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = -53{,}5',\ \gamma = −0{,}94 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = +53{,}5' | \text{eclissi di Luna: parziale, magnitudine 0{,}12} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 8 hints and answers
+  slider #orbit-day = 0
+    OUTPUT (orbit-day): 1 gen 2026
+    #orbit-readout: \text{1 gen 2026:}\quad \Omega = 342{,}2^\circ | F = 86{,}9^\circ,\quad \beta = +4{,}99^\circ | \text{il Sole } 61{,}6^\circ \text{ prima del nodo più vicino}
+  slider #orbit-day = 6940
+    OUTPUT (orbit-day): 1 gen 2045
+    #orbit-readout: \text{1 gen 2045:}\quad \Omega = 334{,}7^\circ | F = 94{,}3^\circ,\quad \beta = +4{,}98^\circ | \text{il Sole } 53{,}7^\circ \text{ prima del nodo più vicino}
+  slider #orbit-day = 3470
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | F = 270{,}5^\circ,\quad \beta = -5{,}00^\circ | \text{il Sole } 57{,}5^\circ \text{ prima del nodo più vicino}
+  slider #orbit-day + one key step
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | F = 271{,}2^\circ,\quad \beta = -5{,}00^\circ | \text{il Sole } 57{,}4^\circ \text{ prima del nodo più vicino}
+  slider #limits-node = -20
+    OUTPUT (limits-node): −20,0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = -102{,}4',\ \gamma = −1{,}80 | \text{eclissi di Sole: nessuna} | \text{Luna piena: } \beta = +102{,}4' | \text{eclissi di Luna: nessuna} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+  slider #limits-node = 20
+    OUTPUT (limits-node): +20,0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = +102{,}4',\ \gamma = +1{,}80 | \text{eclissi di Sole: nessuna} | \text{Luna piena: } \beta = -102{,}4' | \text{eclissi di Luna: nessuna} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+  slider #limits-node = 0
+    OUTPUT (limits-node): +0,0°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}0',\ \gamma = +0{,}00 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = +0{,}0' | \text{eclissi di Luna: totale, magnitudine 1{,}84} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+  slider #limits-node + one key step
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}83} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+  slider #limits-distance = 356400
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: totale} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}87} | s = 16{,}8',\ \pi = 61{,}5',\ u = 46{,}3'
+  slider #limits-distance = 406700
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  slider #limits-distance = 381600
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 381·600 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}83} | s = 15{,}7',\ \pi = 57{,}5',\ u = 42{,}2'
+  slider #limits-distance + one key step
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 381·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}83} | s = 15{,}6',\ \pi = 57{,}4',\ u = 42{,}2'
+  button "‹ giorno precedente"
+    OUTPUT (orbit-day): 2 lug 2035
+    #orbit-readout: \text{2 lug 2035:}\quad \Omega = 158{,}5^\circ | F = 256{,}8^\circ,\quad \beta = -4{,}86^\circ | \text{il Sole } 58{,}4^\circ \text{ prima del nodo più vicino}
+  button "giorno successivo ›"
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | F = 271{,}2^\circ,\quad \beta = -5{,}00^\circ | \text{il Sole } 57{,}4^\circ \text{ prima del nodo più vicino}
+  button "Un mese"
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | F = 271{,}2^\circ,\quad \beta = -5{,}00^\circ | \text{il Sole } 57{,}4^\circ \text{ prima del nodo più vicino}
+  button "Un anno"
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | \text{il Sole } 57{,}4^\circ \text{ prima del nodo più vicino} | 
+  button "Il giro dei nodi"
+    OUTPUT (orbit-day): 3 lug 2035
+    #orbit-readout: \text{3 lug 2035:}\quad \Omega = 158{,}4^\circ | \text{ruotato di } 183{,}7^\circ \text{ verso ovest dal }1^{\text{o}}\text{ gennaio 2026} | 
+  button "più vicina"
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 356·400 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: totale} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}87} | s = 16{,}8',\ \pi = 61{,}5',\ u = 46{,}3'
+  button "media"
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 385·000 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}83} | s = 15{,}5',\ \pi = 57{,}0',\ u = 41{,}7'
+  button "più lontana"
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  button "2 mesi"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1 anno"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #calendar-plot at 0.3
+  hover #calendar-plot at 0.6
+  hover #calendar-plot at 0.9
+  hover #calendar-plot left
+  hover #limits-plot at 0.3
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  hover #limits-plot at 0.6
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  hover #limits-plot at 0.9
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  hover #limits-plot left
+    OUTPUT (limits-node): +0,1°
+    OUTPUT (limits-distance): 406·700 km
+    #limits-readout: \text{Luna nuova: } \beta = +0{,}5',\ \gamma = +0{,}01 | \text{eclissi di Sole: anulare} | \text{Luna piena: } \beta = -0{,}5' | \text{eclissi di Luna: totale, magnitudine 1{,}80} | s = 14{,}7',\ \pi = 53{,}9',\ u = 38{,}6'
+  hover #seasons-plot at 0.3
+  hover #seasons-plot at 0.6
+  hover #seasons-plot at 0.9
+  hover #seasons-plot left
+  hover #error-latitude-plot at 0.3
+    .errorcurve-readout: 18 mar 2002 · adattata: +5,2′
+  hover #error-latitude-plot at 0.6
+    .errorcurve-readout: 14 ott 2034 · adattata: −5,8′
+  hover #error-latitude-plot at 0.9
+    .errorcurve-readout: 11 mag 2067 · adattata: −5,3′
+  hover #error-latitude-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   dragged 1 spheres
 
 === act4-planets/01-going-backwards/index.html ===
@@ -1554,6 +2963,160 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 19 Sep 2099 · uniform planet: −29.12° · epicycle: −21.04°
   hover #error-mars-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #arcs-plot at 0.3
+  hover #arcs-plot at 0.6
+  hover #arcs-plot at 0.9
+  hover #arcs-plot left
+  hover #intervals-plot at 0.3
+  hover #intervals-plot at 0.6
+  hover #intervals-plot at 0.9
+  hover #intervals-plot left
+  dragged 0 spheres
+
+=== act4-planets/01-going-backwards/index.it.html ===
+  as loaded
+    OUTPUT (motion-loop): 16 gen 2025
+    #motion-readout: \text{torna indietro di } 19{,}2^\circ \text{ in } 79 \text{ giorni} | \text{centrato sulla longitudine eclittica } 116{,}2^\circ
+    OUTPUT (epi-day): 27 ott 2024
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{27 ott 2024:}\quad \bar\lambda = 66{,}8^\circ,\quad \mu = 149{,}1^\circ | \eta = +37{,}8^\circ,\quad \lambda = \bar\lambda + \eta = 104{,}6^\circ | \text{moto giornaliero } +0{,}325^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #motion-loop = 0
+    OUTPUT (motion-loop): 24 dic 2007
+    #motion-readout: \text{torna indietro di } 18{,}4^\circ \text{ in } 77 \text{ giorni} | \text{centrato sulla longitudine eclittica } 92{,}6^\circ
+  slider #motion-loop = 8
+    OUTPUT (motion-loop): 16 gen 2025
+    #motion-readout: \text{torna indietro di } 19{,}2^\circ \text{ in } 79 \text{ giorni} | \text{centrato sulla longitudine eclittica } 116{,}2^\circ
+  slider #motion-loop = 4
+    OUTPUT (motion-loop): 22 mag 2016
+    #motion-readout: \text{torna indietro di } 15{,}8^\circ \text{ in } 73 \text{ giorni} | \text{centrato sulla longitudine eclittica } 241{,}8^\circ
+  slider #motion-loop + one key step
+    OUTPUT (motion-loop): 27 lug 2018
+    #motion-readout: \text{torna indietro di } 10{,}6^\circ \text{ in } 62 \text{ giorni} | \text{centrato sulla longitudine eclittica } 304{,}1^\circ
+  slider #epi-day = 0
+    OUTPUT (epi-day): 1 gen 2024
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{1 gen 2024:}\quad \bar\lambda = 269{,}6^\circ,\quad \mu = 10{,}6^\circ | \eta = +4{,}2^\circ,\quad \lambda = \bar\lambda + \eta = 273{,}8^\circ | \text{moto giornaliero } +0{,}707^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+  slider #epi-day = 1600
+    OUTPUT (epi-day): 19 mag 2028
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{19 mag 2028:}\quad \bar\lambda = 28{,}1^\circ,\quad \mu = 29{,}1^\circ | \eta = +11{,}5^\circ,\quad \lambda = \bar\lambda + \eta = 39{,}6^\circ | \text{moto giornaliero } +0{,}704^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+  slider #epi-day = 800
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 328{,}8^\circ,\quad \mu = 19{,}8^\circ | \eta = +7{,}9^\circ,\quad \lambda = \bar\lambda + \eta = 336{,}7^\circ | \text{moto giornaliero } +0{,}706^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+  slider #epi-day + one key step
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +7{,}9^\circ,\quad \lambda = \bar\lambda + \eta = 336{,}9^\circ | \text{moto giornaliero } +0{,}706^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+  slider #epi-r = 0
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  slider #epi-r = 0.8
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,800
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +8{,}9^\circ,\quad \lambda = \bar\lambda + \eta = 337{,}8^\circ | \text{moto giornaliero } +0{,}728^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}0^\circ; 197{,}0^\circ;\ \text{indietro di } 51{,}1^\circ
+  slider #epi-r = 0.4
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,400
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +5{,}7^\circ,\quad \lambda = \bar\lambda + \eta = 334{,}6^\circ | \text{moto giornaliero } +0{,}653^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  slider #epi-r + one key step
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,401
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +5{,}7^\circ,\quad \lambda = \bar\lambda + \eta = 334{,}6^\circ | \text{moto giornaliero } +0{,}654^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  button "Marte"
+    OUTPUT (motion-loop): 16 gen 2025
+    #motion-readout: \text{torna indietro di } 19{,}2^\circ \text{ in } 79 \text{ giorni} | \text{centrato sulla longitudine eclittica } 116{,}2^\circ
+  button "Giove"
+    OUTPUT (motion-loop): 7 dic 2024
+    #motion-readout: \text{torna indietro di } 10{,}1^\circ \text{ in } 118 \text{ giorni} | \text{centrato sulla longitudine eclittica } 76{,}2^\circ
+  button "Saturno"
+    OUTPUT (motion-loop): 8 set 2024
+    #motion-readout: \text{torna indietro di } 6{,}7^\circ \text{ in } 139 \text{ giorni} | \text{centrato sulla longitudine eclittica } 346{,}0^\circ
+  button "Venere"
+    OUTPUT (motion-loop): 23 mar 2025
+    #motion-readout: \text{torna indietro di } 16{,}2^\circ \text{ in } 42 \text{ giorni} | \text{centrato sulla longitudine eclittica } 2{,}7^\circ
+  button "Mercurio"
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  button "‹ cappio precedente"
+    OUTPUT (motion-loop): 24 mar 2025
+    #motion-readout: \text{torna indietro di } 12{,}8^\circ \text{ in } 23 \text{ giorni} | \text{centrato sulla longitudine eclittica } 4{,}4^\circ
+  button "cappio successivo ›"
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  button "‹ giorno precedente"
+    OUTPUT (epi-day): 10 mar 2026
+    OUTPUT (epi-r): 0,401
+    #epicycle-readout: \text{10 mar 2026:}\quad \bar\lambda = 328{,}4^\circ,\quad \mu = 19{,}5^\circ | \eta = +5{,}5^\circ,\quad \lambda = \bar\lambda + \eta = 334{,}0^\circ | \text{moto giornaliero } +0{,}654^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  button "giorno successivo ›"
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,401
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +5{,}7^\circ,\quad \lambda = \bar\lambda + \eta = 334{,}6^\circ | \text{moto giornaliero } +0{,}654^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  button "Tolomeo"
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,658
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +7{,}9^\circ,\quad \lambda = \bar\lambda + \eta = 336{,}9^\circ | \text{moto giornaliero } +0{,}706^\circ \text{ (avanti)} | \text{stazioni in } \mu = 163{,}2^\circ; 196{,}8^\circ;\ \text{indietro di } 16{,}2^\circ
+  button "senza cappio"
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,531
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +6{,}9^\circ,\quad \lambda = \bar\lambda + \eta = 335{,}9^\circ | \text{moto giornaliero } +0{,}682^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  button "senza epiciclo"
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  button "4 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "16 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "200 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #motion-plot at 0.3
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  hover #motion-plot at 0.6
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  hover #motion-plot at 0.9
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  hover #motion-plot left
+    OUTPUT (motion-loop): 31 lug 2025
+    #motion-readout: \text{torna indietro di } 11{,}3^\circ \text{ in } 24 \text{ giorni} | \text{centrato sulla longitudine eclittica } 129{,}0^\circ
+  hover #epicycle-plot at 0.3
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  hover #epicycle-plot at 0.6
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  hover #epicycle-plot at 0.9
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  hover #epicycle-plot left
+    OUTPUT (epi-day): 11 mar 2026
+    OUTPUT (epi-r): 0,000
+    #epicycle-readout: \text{11 mar 2026:}\quad \bar\lambda = 329{,}0^\circ,\quad \mu = 20{,}0^\circ | \eta = +0{,}0^\circ,\quad \lambda = \bar\lambda + \eta = 329{,}0^\circ | \text{moto giornaliero } +0{,}524^\circ \text{ (avanti)} | \text{senza cappio: } r \le n/(n + n_\mu) = 0{,}532
+  hover #ratio-arc-plot at 0.3
+  hover #ratio-arc-plot at 0.6
+  hover #ratio-arc-plot at 0.9
+  hover #ratio-arc-plot left
+  hover #ratio-station-plot at 0.3
+  hover #ratio-station-plot at 0.6
+  hover #ratio-station-plot at 0.9
+  hover #ratio-station-plot left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 giu 1969 · pianeta uniforme: +13,61° · epiciclo: +32,79°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 lug 2034 · pianeta uniforme: +0,88° · epiciclo: −2,08°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 set 2099 · pianeta uniforme: −29,12° · epiciclo: −21,04°
+  hover #error-mars-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   hover #arcs-plot at 0.3
   hover #arcs-plot at 0.6
   hover #arcs-plot at 0.9
@@ -1727,6 +3290,169 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-intervals left
   dragged 0 spheres
 
+=== act4-planets/02-equant/index.it.html ===
+  as loaded
+    OUTPUT (jobs-oc): 0,100
+    #jobs-readout: \text{OC} = 0{,}100 = 0{,}50\,\text{OQ} | \text{velocità: da } 0{,}818\,n \text{ a } 1{,}222\,n | \text{OK: da } 0{,}900 \text{ a } 1{,}100
+    OUTPUT (planet-day): 28 giu 2018
+    #planet-readout: \text{28 giu 2018:}\quad \bar\lambda = 294{,}2^\circ,\quad M = 142{,}8^\circ | q = -16{,}18^\circ,\quad \rho = \text{OK} = 0{,}868 | \mu = 161{,}9^\circ,\quad \eta = +6{,}05^\circ | \lambda = \bar\lambda + q + \eta = 284{,}0^\circ
+    OUTPUT (fit-oc): 0,098
+    #fit-readout: \text{OC} = 0{,}098 = 0{,}49\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 0{,}5^\circ,\quad \text{opposizioni } 8'
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #jobs-oc = 0
+    OUTPUT (jobs-oc): 0,000
+    #jobs-readout: \text{OC} = 0{,}000 = 0{,}00\,\text{OQ} | \text{velocità: da } 0{,}800\,n \text{ a } 1{,}200\,n | \text{OK: da } 1{,}000 \text{ a } 1{,}000
+  slider #jobs-oc = 0.2
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  slider #jobs-oc = 0.1
+    OUTPUT (jobs-oc): 0,100
+    #jobs-readout: \text{OC} = 0{,}100 = 0{,}50\,\text{OQ} | \text{velocità: da } 0{,}818\,n \text{ a } 1{,}222\,n | \text{OK: da } 0{,}900 \text{ a } 1{,}100
+  slider #jobs-oc + one key step
+    OUTPUT (jobs-oc): 0,101
+    #jobs-readout: \text{OC} = 0{,}101 = 0{,}51\,\text{OQ} | \text{velocità: da } 0{,}818\,n \text{ a } 1{,}222\,n | \text{OK: da } 0{,}899 \text{ a } 1{,}101
+  slider #planet-day = 0
+    OUTPUT (planet-day): 1 gen 2010
+    #planet-readout: \text{1 gen 2010:}\quad \bar\lambda = 109{,}5^\circ,\quad M = 318{,}3^\circ | q = +13{,}13^\circ,\quad \rho = \text{OK} = 1{,}171 | \mu = 171{,}0^\circ,\quad \eta = +23{,}82^\circ | \lambda = \bar\lambda + q + \eta = 146{,}5^\circ
+  slider #planet-day = 5844
+    OUTPUT (planet-day): 1 gen 2026
+    #planet-readout: \text{1 gen 2026:}\quad \bar\lambda = 292{,}2^\circ,\quad M = 140{,}8^\circ | q = -16{,}82^\circ,\quad \rho = \text{OK} = 0{,}874 | \mu = 348{,}5^\circ,\quad \eta = +2{,}26^\circ | \lambda = \bar\lambda + q + \eta = 277{,}7^\circ
+  slider #planet-day = 2922
+    OUTPUT (planet-day): 1 gen 2018
+    #planet-readout: \text{1 gen 2018:}\quad \bar\lambda = 200{,}9^\circ,\quad M = 49{,}5^\circ | q = -15{,}23^\circ,\quad \rho = \text{OK} = 1{,}159 | \mu = 79{,}7^\circ,\quad \eta = +30{,}75^\circ | \lambda = \bar\lambda + q + \eta = 216{,}4^\circ
+  slider #planet-day + one key step
+    OUTPUT (planet-day): 1 gen 2018
+    #planet-readout: \text{1 gen 2018:}\quad \bar\lambda = 201{,}0^\circ,\quad M = 49{,}7^\circ | q = -15{,}26^\circ,\quad \rho = \text{OK} = 1{,}159 | \mu = 79{,}8^\circ,\quad \eta = +30{,}79^\circ | \lambda = \bar\lambda + q + \eta = 216{,}5^\circ
+  slider #fit-oc = 0
+    OUTPUT (fit-oc): 0,000
+    #fit-readout: \text{OC} = 0{,}000 = 0{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 8{,}2^\circ,\quad \text{opposizioni } 33'
+  slider #fit-oc = 0.2007
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  slider #fit-oc = 0.1003
+    OUTPUT (fit-oc): 0,100
+    #fit-readout: \text{OC} = 0{,}100 = 0{,}50\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 0{,}5^\circ,\quad \text{opposizioni } 8'
+  slider #fit-oc + one key step
+    OUTPUT (fit-oc): 0,100
+    #fit-readout: \text{OC} = 0{,}100 = 0{,}50\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 0{,}5^\circ,\quad \text{opposizioni } 8'
+  button "C in O"
+    OUTPUT (jobs-oc): 0,000
+    #jobs-readout: \text{OC} = 0{,}000 = 0{,}00\,\text{OQ} | \text{velocità: da } 0{,}800\,n \text{ a } 1{,}200\,n | \text{OK: da } 1{,}000 \text{ a } 1{,}000
+  button "Tolomeo"
+    OUTPUT (jobs-oc): 0,100
+    #jobs-readout: \text{OC} = 0{,}100 = 0{,}50\,\text{OQ} | \text{velocità: da } 0{,}818\,n \text{ a } 1{,}222\,n | \text{OK: da } 0{,}900 \text{ a } 1{,}100
+  button "C in Q"
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  button "e = 0,2"
+    OUTPUT (planet-day): 1 gen 2018
+    #planet-readout: \text{1 gen 2018:}\quad \bar\lambda = 201{,}0^\circ,\quad M = 49{,}7^\circ | q = -15{,}26^\circ,\quad \rho = \text{OK} = 1{,}159 | \mu = 79{,}8^\circ,\quad \eta = +30{,}79^\circ | \lambda = \bar\lambda + q + \eta = 216{,}5^\circ
+  button "Marte"
+    OUTPUT (planet-day): 1 gen 2018
+    #planet-readout: \text{1 gen 2018:}\quad \bar\lambda = 201{,}0^\circ,\quad M = 49{,}7^\circ | q = -8{,}21^\circ,\quad \rho = \text{OK} = 1{,}073 | \mu = 79{,}8^\circ,\quad \eta = +30{,}98^\circ | \lambda = \bar\lambda + q + \eta = 223{,}8^\circ
+  button "‹ giorno precedente"
+    OUTPUT (planet-day): 31 dic 2017
+    #planet-readout: \text{31 dic 2017:}\quad \bar\lambda = 200{,}5^\circ,\quad M = 49{,}1^\circ | q = -8{,}14^\circ,\quad \rho = \text{OK} = 1{,}074 | \mu = 79{,}4^\circ,\quad \eta = +30{,}82^\circ | \lambda = \bar\lambda + q + \eta = 223{,}2^\circ
+  button "giorno successivo ›"
+    OUTPUT (planet-day): 1 gen 2018
+    #planet-readout: \text{1 gen 2018:}\quad \bar\lambda = 201{,}0^\circ,\quad M = 49{,}7^\circ | q = -8{,}21^\circ,\quad \rho = \text{OK} = 1{,}073 | \mu = 79{,}8^\circ,\quad \eta = +30{,}98^\circ | \lambda = \bar\lambda + q + \eta = 223{,}8^\circ
+  button "un’opposizione"
+    OUTPUT (planet-day): 23 mag 2016
+    #planet-readout: \text{23 mag 2016:}\quad \bar\lambda = 253{,}0^\circ,\quad M = 101{,}7^\circ | q = -11{,}41^\circ,\quad \rho = \text{OK} = 0{,}994 | \mu = 168{,}5^\circ,\quad \eta = +0{,}08^\circ | \lambda = \bar\lambda + q + \eta = 241{,}6^\circ
+  button "C in O"
+    OUTPUT (fit-oc): 0,000
+    #fit-readout: \text{OC} = 0{,}000 = 0{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 8{,}2^\circ,\quad \text{opposizioni } 33'
+  button "adattato"
+    OUTPUT (fit-oc): 0,098
+    #fit-readout: \text{OC} = 0{,}098 = 0{,}49\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 0{,}5^\circ,\quad \text{opposizioni } 8'
+  button "C in Q"
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  button "4 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "16 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "200 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #observed-oppositions at 0.3
+  hover #observed-oppositions at 0.6
+  hover #observed-oppositions at 0.9
+  hover #observed-oppositions left
+  hover #observed-arcs at 0.3
+  hover #observed-arcs at 0.6
+  hover #observed-arcs at 0.9
+  hover #observed-arcs left
+  hover #jobs-speed at 0.3
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-speed at 0.6
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-speed at 0.9
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-speed left
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-distance at 0.3
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-distance at 0.6
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-distance at 0.9
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #jobs-distance left
+    OUTPUT (jobs-oc): 0,200
+    #jobs-readout: \text{OC} = 0{,}200 = 1{,}00\,\text{OQ} | \text{velocità: da } 0{,}833\,n \text{ a } 1{,}250\,n | \text{OK: da } 0{,}800 \text{ a } 1{,}200
+  hover #kepler-plot at 0.3
+  hover #kepler-plot at 0.6
+  hover #kepler-plot at 0.9
+  hover #kepler-plot left
+  hover #fit-directions at 0.3
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-directions at 0.6
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-directions at 0.9
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-directions left
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-arcs at 0.3
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-arcs at 0.6
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-arcs at 0.9
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #fit-arcs left
+    OUTPUT (fit-oc): 0,201
+    #fit-readout: \text{OC} = 0{,}201 = 1{,}00\,\text{OQ},\quad \text{OQ} = 0{,}201 | \text{scarto quadratico medio: cappi } 10{,}2^\circ,\quad \text{opposizioni } 18'
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 giu 1969 · l'epiciclo della pagina 4.1: +32,79° · equante: +0,40°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 lug 2034 · l'epiciclo della pagina 4.1: −2,08° · equante: −0,03°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 set 2099 · l'epiciclo della pagina 4.1: −21,04° · equante: −0,15°
+  hover #error-mars-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #test-arcs at 0.3
+  hover #test-arcs at 0.6
+  hover #test-arcs at 0.9
+  hover #test-arcs left
+  hover #test-intervals at 0.3
+  hover #test-intervals at 0.6
+  hover #test-intervals at 0.9
+  hover #test-intervals left
+  dragged 0 spheres
+
 === act4-planets/03-new-center/index.html ===
   as loaded
     OUTPUT (arrangement-day): 6 Dec 2014
@@ -1794,6 +3520,83 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
   hover #error-difference left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #distance-plot at 0.3
+  hover #distance-plot at 0.6
+  hover #distance-plot at 0.9
+  hover #distance-plot left
+  hover #distance-error at 0.3
+  hover #distance-error at 0.6
+  hover #distance-error at 0.9
+  hover #distance-error left
+  dragged 0 spheres
+
+=== act4-planets/03-new-center/index.it.html ===
+  as loaded
+    OUTPUT (arrangement-day): 6 dic 2014
+    #arrangement-readout: \text{6 dic 2014:}\quad \lambda - \bar\lambda_\odot = 46{,}48^\circ | \lambda = 301{,}19^\circ \text{ in (a)},\quad 301{,}19^\circ \text{ in (b)}
+    OUTPUT (epicyclet-anomaly): 60°
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #arrangement-day = 0
+    OUTPUT (arrangement-day): 1 gen 2010
+    #arrangement-readout: \text{1 gen 2010:}\quad \lambda - \bar\lambda_\odot = -141{,}77^\circ | \lambda = 138{,}77^\circ \text{ in (a)},\quad 138{,}77^\circ \text{ in (b)}
+  slider #arrangement-day = 5843
+    OUTPUT (arrangement-day): 31 dic 2025
+    #arrangement-readout: \text{31 dic 2025:}\quad \lambda - \bar\lambda_\odot = 2{,}38^\circ | \lambda = 282{,}06^\circ \text{ in (a)},\quad 282{,}06^\circ \text{ in (b)}
+  slider #arrangement-day = 2921.5
+    OUTPUT (arrangement-day): 31 dic 2017
+    #arrangement-readout: \text{31 dic 2017:}\quad \lambda - \bar\lambda_\odot = -56{,}79^\circ | \lambda = 223{,}31^\circ \text{ in (a)},\quad 223{,}31^\circ \text{ in (b)}
+  slider #arrangement-day + one key step
+    OUTPUT (arrangement-day): 31 dic 2017
+    #arrangement-readout: \text{31 dic 2017:}\quad \lambda - \bar\lambda_\odot = -56{,}89^\circ | \lambda = 223{,}47^\circ \text{ in (a)},\quad 223{,}47^\circ \text{ in (b)}
+  slider #epicyclet-anomaly = 0
+    OUTPUT (epicyclet-anomaly): 0°
+  slider #epicyclet-anomaly = 360
+    OUTPUT (epicyclet-anomaly): 360°
+  slider #epicyclet-anomaly = 180
+    OUTPUT (epicyclet-anomaly): 180°
+  slider #epicyclet-anomaly + one key step
+    OUTPUT (epicyclet-anomaly): 181°
+  button "Marte"
+    OUTPUT (arrangement-day): 31 dic 2017
+    #arrangement-readout: \text{31 dic 2017:}\quad \lambda - \bar\lambda_\odot = -56{,}89^\circ | \lambda = 223{,}47^\circ \text{ in (a)},\quad 223{,}47^\circ \text{ in (b)}
+  button "Venere"
+    OUTPUT (arrangement-day): 31 dic 2017
+    #arrangement-readout: \text{31 dic 2017:}\quad \lambda - \bar\lambda_\odot = -2{,}24^\circ | \lambda = 278{,}11^\circ \text{ in (a)},\quad 278{,}11^\circ \text{ in (b)}
+  button "‹ giorno precedente"
+    OUTPUT (arrangement-day): 30 dic 2017
+    #arrangement-readout: \text{30 dic 2017:}\quad \lambda - \bar\lambda_\odot = -2{,}50^\circ | \lambda = 276{,}87^\circ \text{ in (a)},\quad 276{,}87^\circ \text{ in (b)}
+  button "giorno successivo ›"
+    OUTPUT (arrangement-day): 31 dic 2017
+    #arrangement-readout: \text{31 dic 2017:}\quad \lambda - \bar\lambda_\odot = -2{,}24^\circ | \lambda = 278{,}11^\circ \text{ in (a)},\quad 278{,}11^\circ \text{ in (b)}
+  hover #elongation-inner at 0.3
+  hover #elongation-inner at 0.6
+  hover #elongation-inner at 0.9
+  hover #elongation-inner left
+  hover #elongation-outer at 0.3
+  hover #elongation-outer at 0.6
+  hover #elongation-outer at 0.9
+  hover #elongation-outer left
+  hover #loop-directions at 0.3
+  hover #loop-directions at 0.6
+  hover #loop-directions at 0.9
+  hover #loop-directions left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 11 gen 2017 · l'equante della pagina 4.2: +0,28° · epiciclo minore di Copernico: +0,34°
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 1 mag 2018 · l'equante della pagina 4.2: −0,06° · epiciclo minore di Copernico: −0,28°
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 20 ago 2019 · l'equante della pagina 4.2: −0,05° · epiciclo minore di Copernico: −0,05°
+  hover #error-mars-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-difference at 0.3
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-difference at 0.6
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-difference at 0.9
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-difference left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   hover #distance-plot at 0.3
   hover #distance-plot at 0.6
   hover #distance-plot at 0.9
@@ -1893,6 +3696,95 @@ Regenerate with: node tools/check/smoke.js --update
   hover #test-error left
   dragged 0 spheres
 
+=== act4-planets/04-phases-parallax/index.it.html ===
+  as loaded
+    OUTPUT (systems-day): 6 dic 2014
+    #systems-readout: \text{6 dic 2014} | \lambda_\text{P} = 301{,}186^\circ \text{ in (a)},\quad 301{,}186^\circ \text{ in (b)} | \text{OP} = 1{,}847 \text{ in (a)},\quad 1{,}847\ \text{au in (b)}
+    OUTPUT (orders-day): 22 ott 2024
+    #orders-readout: \text{22 ott 2024:}\quad \lambda - \bar\lambda_\odot = 35{,}0^\circ | \text{OP} = 1{,}26\ \text{OK}
+    OUTPUT (parallax-day): 28 mag 2026
+    #parallax-readout: \text{28 mag 2026} | \Delta\lambda\cos\beta = 0{,}290'',\quad \Delta\beta = -0{,}003''
+  opened 6 hints and answers
+  slider #systems-day = 0
+    OUTPUT (systems-day): 1 gen 2010
+    #systems-readout: \text{1 gen 2010} | \lambda_\text{P} = 138{,}769^\circ \text{ in (a)},\quad 138{,}769^\circ \text{ in (b)} | \text{OP} = 0{,}736 \text{ in (a)},\quad 0{,}736\ \text{au in (b)}
+  slider #systems-day = 5843
+    OUTPUT (systems-day): 31 dic 2025
+    #systems-readout: \text{31 dic 2025} | \lambda_\text{P} = 282{,}055^\circ \text{ in (a)},\quad 282{,}055^\circ \text{ in (b)} | \text{OP} = 2{,}411 \text{ in (a)},\quad 2{,}411\ \text{au in (b)}
+  slider #systems-day = 2921.5
+    OUTPUT (systems-day): 31 dic 2017
+    #systems-readout: \text{31 dic 2017} | \lambda_\text{P} = 223{,}314^\circ \text{ in (a)},\quad 223{,}314^\circ \text{ in (b)} | \text{OP} = 1{,}948 \text{ in (a)},\quad 1{,}948\ \text{au in (b)}
+  slider #systems-day + one key step
+    OUTPUT (systems-day): 31 dic 2017
+    #systems-readout: \text{31 dic 2017} | \lambda_\text{P} = 223{,}468^\circ \text{ in (a)},\quad 223{,}468^\circ \text{ in (b)} | \text{OP} = 1{,}946 \text{ in (a)},\quad 1{,}946\ \text{au in (b)}
+  slider #orders-day = 0
+    OUTPUT (orders-day): 4 giu 2024
+    #orders-readout: \text{4 giu 2024:}\quad \lambda - \bar\lambda_\odot = 0{,}5^\circ | \text{OP} = 1{,}72\ \text{OK}
+  slider #orders-day = 584
+    OUTPUT (orders-day): 9 gen 2026
+    #orders-readout: \text{9 gen 2026:}\quad \lambda - \bar\lambda_\odot = 0{,}5^\circ | \text{OP} = 1{,}72\ \text{OK}
+  slider #orders-day = 292
+    OUTPUT (orders-day): 23 mar 2025
+    #orders-readout: \text{23 mar 2025:}\quad \lambda - \bar\lambda_\odot = -3{,}1^\circ | \text{OP} = 0{,}28\ \text{OK}
+  slider #orders-day + one key step
+    OUTPUT (orders-day): 23 mar 2025
+    #orders-readout: \text{23 mar 2025:}\quad \lambda - \bar\lambda_\odot = -3{,}5^\circ | \text{OP} = 0{,}28\ \text{OK}
+  slider #parallax-day = 0
+    OUTPUT (parallax-day): 1 gen 2026
+    #parallax-readout: \text{1 gen 2026} | \Delta\lambda\cos\beta = -0{,}235'',\quad \Delta\beta = -0{,}121''
+  slider #parallax-day = 365
+    OUTPUT (parallax-day): 1 gen 2027
+    #parallax-readout: \text{1 gen 2027} | \Delta\lambda\cos\beta = -0{,}236'',\quad \Delta\beta = -0{,}120''
+  slider #parallax-day = 182.5
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}243'',\quad \Delta\beta = 0{,}125''
+  slider #parallax-day + one key step
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  button "‹ giorno precedente"
+    OUTPUT (systems-day): 30 dic 2017
+    #systems-readout: \text{30 dic 2017} | \lambda_\text{P} = 222{,}851^\circ \text{ in (a)},\quad 222{,}851^\circ \text{ in (b)} | \text{OP} = 1{,}954 \text{ in (a)},\quad 1{,}954\ \text{au in (b)}
+  button "giorno successivo ›"
+    OUTPUT (systems-day): 31 dic 2017
+    #systems-readout: \text{31 dic 2017} | \lambda_\text{P} = 223{,}468^\circ \text{ in (a)},\quad 223{,}468^\circ \text{ in (b)} | \text{OP} = 1{,}946 \text{ in (a)},\quad 1{,}946\ \text{au in (b)}
+  button "‹ giorno precedente"
+    OUTPUT (orders-day): 22 mar 2025
+    #orders-readout: \text{22 mar 2025:}\quad \lambda - \bar\lambda_\odot = -1{,}9^\circ | \text{OP} = 0{,}28\ \text{OK}
+  button "giorno successivo ›"
+    OUTPUT (orders-day): 23 mar 2025
+    #orders-readout: \text{23 mar 2025:}\quad \lambda - \bar\lambda_\odot = -3{,}5^\circ | \text{OP} = 0{,}28\ \text{OK}
+  button "‹ giorno precedente"
+    OUTPUT (parallax-day): 1 lug 2026
+    #parallax-readout: \text{1 lug 2026} | \Delta\lambda\cos\beta = 0{,}245'',\quad \Delta\beta = 0{,}123''
+  button "giorno successivo ›"
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  hover #parallax-sky at 0.3
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  hover #parallax-sky at 0.6
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  hover #parallax-sky at 0.9
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  hover #parallax-sky left
+    OUTPUT (parallax-day): 2 lug 2026
+    #parallax-readout: \text{2 lug 2026} | \Delta\lambda\cos\beta = 0{,}242'',\quad \Delta\beta = 0{,}126''
+  hover #phase-plot at 0.3
+  hover #phase-plot at 0.6
+  hover #phase-plot at 0.9
+  hover #phase-plot left
+  hover #test-phase at 0.3
+  hover #test-phase at 0.6
+  hover #test-phase at 0.9
+  hover #test-phase left
+  hover #test-error at 0.3
+  hover #test-error at 0.6
+  hover #test-error at 0.9
+  hover #test-error left
+  dragged 0 spheres
+
 === act4-planets/05-kepler/index.html ===
   as loaded
     OUTPUT (ellipse-day): 57 days
@@ -1960,6 +3852,83 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 1 Feb 2435 · page 2.1's eccentric: −0.8′ · ellipse: −0.7′
   hover #error-sun-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #summary-sun at 0.3
+  hover #summary-sun at 0.6
+  hover #summary-sun at 0.9
+  hover #summary-sun left
+  hover #summary-mars at 0.3
+  hover #summary-mars at 0.6
+  hover #summary-mars at 0.9
+  hover #summary-mars left
+  dragged 0 spheres
+
+=== act4-planets/05-kepler/index.it.html ===
+  as loaded
+    OUTPUT (ellipse-day): 57 giorni
+    #ellipse-readout: M = 29{,}9^\circ | E = 18{,}8^\circ | \angle\text{AQP} = 36{,}6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 9{,}5^\circ | r = 1{,}568\,a
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  opened 6 hints and answers
+  slider #ellipse-day = 0
+    OUTPUT (ellipse-day): 0 giorni
+    #ellipse-readout: M = 0{,}0^\circ | E = 0{,}0^\circ | \angle\text{AQP} = 0{,}0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0{,}0^\circ | r = 1{,}600\,a
+  slider #ellipse-day = 687
+    OUTPUT (ellipse-day): 687 giorni
+    #ellipse-readout: M = 360{,}0^\circ | E = 360{,}0^\circ | \angle\text{AQP} = 0{,}0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 0{,}0^\circ | r = 1{,}600\,a
+  slider #ellipse-day = 343.5
+    OUTPUT (ellipse-day): 344 giorni
+    #ellipse-readout: M = 180{,}0^\circ | E = 180{,}0^\circ | \angle\text{AQP} = 180{,}0^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180{,}0^\circ | r = 0{,}400\,a
+  slider #ellipse-day + one key step
+    OUTPUT (ellipse-day): 344 giorni
+    #ellipse-readout: M = 180{,}1^\circ | E = 180{,}3^\circ | \angle\text{AQP} = 180{,}2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180{,}7^\circ | r = 0{,}400\,a
+  button "e = 0,6"
+    OUTPUT (ellipse-day): 344 giorni
+    #ellipse-readout: M = 180{,}1^\circ | E = 180{,}3^\circ | \angle\text{AQP} = 180{,}2^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180{,}7^\circ | r = 0{,}400\,a
+  button "Marte"
+    OUTPUT (ellipse-day): 344 giorni
+    #ellipse-readout: M = 180{,}1^\circ | E = 180{,}2^\circ | \angle\text{AQP} = 180{,}1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180{,}2^\circ | r = 0{,}907\,a
+  button "‹ giorno precedente"
+    OUTPUT (ellipse-day): 343 giorni
+    #ellipse-readout: M = 179{,}6^\circ | E = 179{,}6^\circ | \angle\text{AQP} = 179{,}6^\circ | \angle\text{A}{\odot}\text{P} = M + q = 179{,}5^\circ | r = 0{,}907\,a
+  button "giorno successivo ›"
+    OUTPUT (ellipse-day): 344 giorni
+    #ellipse-readout: M = 180{,}1^\circ | E = 180{,}2^\circ | \angle\text{AQP} = 180{,}1^\circ | \angle\text{A}{\odot}\text{P} = M + q = 180{,}2^\circ | r = 0{,}907\,a
+  button "4 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "16 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "200 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1 anno"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "100 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  button "1000 anni"
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #sun-plot at 0.3
+  hover #sun-plot at 0.6
+  hover #sun-plot at 0.9
+  hover #sun-plot left
+  hover #triangle-plot at 0.3
+  hover #triangle-plot at 0.6
+  hover #triangle-plot at 0.9
+  hover #triangle-plot left
+  hover #error-mars-plot at 0.3
+    .errorcurve-readout: 3 giu 1969 · l'equante della pagina 4.2: +21,7′ · ellissi: +1,5′
+  hover #error-mars-plot at 0.6
+    .errorcurve-readout: 27 lug 2034 · l'equante della pagina 4.2: −2,4′ · ellissi: −0,2′
+  hover #error-mars-plot at 0.9
+    .errorcurve-readout: 19 set 2099 · l'equante della pagina 4.2: −12,3′ · ellissi: +0,1′
+  hover #error-mars-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
+  hover #error-sun-plot at 0.3
+    .errorcurve-readout: 2 ago 1783 · l'eccentrico della pagina 2.1: +0,9′ · ellisse: +0,1′
+  hover #error-sun-plot at 0.6
+    .errorcurve-readout: 3 mag 2109 · l'eccentrico della pagina 2.1: +0,5′ · ellisse: +0,4′
+  hover #error-sun-plot at 0.9
+    .errorcurve-readout: 1 feb 2435 · l'eccentrico della pagina 2.1: −0,8′ · ellisse: −0,7′
+  hover #error-sun-plot left
+    .errorcurve-readout: Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata).
   hover #summary-sun at 0.3
   hover #summary-sun at 0.6
   hover #summary-sun at 0.9
@@ -3322,6 +5291,15 @@ Regenerate with: node tools/check/smoke.js --update
   hover #drift-canvas left
   dragged 0 spheres
 
+=== beyond-kepler/index.it.html ===
+  as loaded
+  opened 0 hints and answers
+  hover #drift-canvas at 0.3
+  hover #drift-canvas at 0.6
+  hover #drift-canvas at 0.9
+  hover #drift-canvas left
+  dragged 0 spheres
+
 === design/references/index.html ===
   as loaded
     .readout: 
@@ -3353,6 +5331,11 @@ Regenerate with: node tools/check/smoke.js --update
   dragged 0 spheres
 
 === index.html ===
+  as loaded
+  opened 0 hints and answers
+  dragged 0 spheres
+
+=== index.it.html ===
   as loaded
   opened 0 hints and answers
   dragged 0 spheres
@@ -3736,6 +5719,194 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (calc-lat): −33.9°
     OUTPUT (calc-lon): +151.2°
     #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #ladder-sun at 0.3
+  hover #ladder-sun at 0.6
+  hover #ladder-sun at 0.9
+  hover #ladder-sun left
+  hover #ladder-moon at 0.3
+  hover #ladder-moon at 0.6
+  hover #ladder-moon at 0.9
+  hover #ladder-moon left
+  hover #ladder-mars at 0.3
+  hover #ladder-mars at 0.6
+  hover #ladder-mars at 0.9
+  hover #ladder-mars left
+  hover #ladder-planets at 0.3
+  hover #ladder-planets at 0.6
+  hover #ladder-planets at 0.9
+  hover #ladder-planets left
+  dragged 0 spheres
+
+=== toolbox/index.it.html ===
+  as loaded
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  opened 0 hints and answers
+  slider #calc-day = 0
+    OUTPUT (calc-day): 1 gen 1900
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2415021{,}3750, \quad \Delta T = -3\ \text{s} | \theta = \text{03h 44m}
+  slider #calc-day = 73413
+    OUTPUT (calc-day): 31 dic 2100
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2488434{,}3750, \quad \Delta T = 205\ \text{s} | \theta = \text{03h 42m}
+  slider #calc-day = 36707
+    OUTPUT (calc-day): 2 lug 2000
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451728{,}3750, \quad \Delta T = 64\ \text{s} | \theta = \text{15h 45m}
+  slider #calc-day + one key step
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}3750, \quad \Delta T = 64\ \text{s} | \theta = \text{15h 49m}
+  slider #calc-hour = 0
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 00:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451728{,}5000, \quad \Delta T = 64\ \text{s} | \theta = \text{18h 45m}
+  slider #calc-hour = 23.75
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 23:45
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}4896, \quad \Delta T = 64\ \text{s} | \theta = \text{18h 34m}
+  slider #calc-hour = 12
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0000, \quad \Delta T = 64\ \text{s} | \theta = \text{06h 47m}
+  slider #calc-hour + one key step
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = -66
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): −66,0°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = 66
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +66,0°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = 0
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,0°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat + one key step
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lon = -180
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): −180,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{19h 02m}
+  slider #calc-lon = 180
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +180,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{19h 02m}
+  slider #calc-lon = 0
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lon + one key step
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,1°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 03m}
+  button "‹ giorno precedente"
+    OUTPUT (calc-day): 2 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,1°
+    #calc-readout: \text{JD(UT)} = 2451728{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{06h 59m}
+  button "giorno successivo ›"
+    OUTPUT (calc-day): 3 lug 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,1°
+    #calc-readout: \text{JD(UT)} = 2451729{,}0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 03m}
+  button "adesso"
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +0,1°
+    OUTPUT (calc-lon): +0,1°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  button "Greenwich"
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51,5°
+    OUTPUT (calc-lon): +0,0°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  button "Roma"
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +41,9°
+    OUTPUT (calc-lon): +12,5°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 50m}
+  button "Alessandria"
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +31,2°
+    OUTPUT (calc-lon): +29,9°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{02h 59m}
+  button "Sydney"
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33,9°
+    OUTPUT (calc-lon): +151,2°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.3
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33,9°
+    OUTPUT (calc-lon): +151,2°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.6
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33,9°
+    OUTPUT (calc-lon): +151,2°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.9
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33,9°
+    OUTPUT (calc-lon): +151,2°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip left
+    OUTPUT (calc-day): 20 nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33,9°
+    OUTPUT (calc-lon): +151,2°
+    #calc-readout: \text{JD(UT)} = 2461365{,}3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
   hover #ladder-sun at 0.3
   hover #ladder-sun at 0.6
   hover #ladder-sun at 0.9
