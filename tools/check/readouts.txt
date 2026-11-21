@@ -3313,6 +3313,15 @@ Regenerate with: node tools/check/smoke.js --update
     OUTPUT (lam3): 270°
   dragged 0 spheres
 
+=== beyond-kepler/index.html ===
+  as loaded
+  opened 0 hints and answers
+  hover #drift-canvas at 0.3
+  hover #drift-canvas at 0.6
+  hover #drift-canvas at 0.9
+  hover #drift-canvas left
+  dragged 0 spheres
+
 === design/references/index.html ===
   as loaded
     .readout: 
@@ -3555,4 +3564,192 @@ Regenerate with: node tools/check/smoke.js --update
     .errorcurve-readout: 11 May 2067 · mean Sun λ̄: −92.3′
   hover #fig-error-plot left
     .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  dragged 0 spheres
+
+=== toolbox/index.html ===
+  as loaded
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  opened 0 hints and answers
+  slider #calc-day = 0
+    OUTPUT (calc-day): 1 Jan 1900
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2415021.3750, \quad \Delta T = -3\ \text{s} | \theta = \text{03h 44m}
+  slider #calc-day = 73413
+    OUTPUT (calc-day): 31 Dec 2100
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2488434.3750, \quad \Delta T = 205\ \text{s} | \theta = \text{03h 42m}
+  slider #calc-day = 36707
+    OUTPUT (calc-day): 2 Jul 2000
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451728.3750, \quad \Delta T = 64\ \text{s} | \theta = \text{15h 45m}
+  slider #calc-day + one key step
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.3750, \quad \Delta T = 64\ \text{s} | \theta = \text{15h 49m}
+  slider #calc-hour = 0
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 00:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451728.5000, \quad \Delta T = 64\ \text{s} | \theta = \text{18h 45m}
+  slider #calc-hour = 23.75
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 23:45
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.4896, \quad \Delta T = 64\ \text{s} | \theta = \text{18h 34m}
+  slider #calc-hour = 12
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0000, \quad \Delta T = 64\ \text{s} | \theta = \text{06h 47m}
+  slider #calc-hour + one key step
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = -66
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): −66.0°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = 66
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +66.0°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat = 0
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.0°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lat + one key step
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lon = -180
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): −180.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{19h 02m}
+  slider #calc-lon = 180
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +180.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{19h 02m}
+  slider #calc-lon = 0
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 02m}
+  slider #calc-lon + one key step
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.1°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 03m}
+  button "‹ previous day"
+    OUTPUT (calc-day): 2 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.1°
+    #calc-readout: \text{JD(UT)} = 2451728.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{06h 59m}
+  button "next day ›"
+    OUTPUT (calc-day): 3 Jul 2000
+    OUTPUT (calc-hour): 12:15
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.1°
+    #calc-readout: \text{JD(UT)} = 2451729.0104, \quad \Delta T = 64\ \text{s} | \theta = \text{07h 03m}
+  button "now"
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +0.1°
+    OUTPUT (calc-lon): +0.1°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  button "Greenwich"
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +51.5°
+    OUTPUT (calc-lon): +0.0°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 00m}
+  button "Rome"
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +41.9°
+    OUTPUT (calc-lon): +12.5°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{01h 50m}
+  button "Alexandria"
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): +31.2°
+    OUTPUT (calc-lon): +29.9°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{02h 59m}
+  button "Sydney"
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33.9°
+    OUTPUT (calc-lon): +151.2°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.3
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33.9°
+    OUTPUT (calc-lon): +151.2°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.6
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33.9°
+    OUTPUT (calc-lon): +151.2°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip at 0.9
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33.9°
+    OUTPUT (calc-lon): +151.2°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #calc-strip left
+    OUTPUT (calc-day): 20 Nov 2026
+    OUTPUT (calc-hour): 21:00
+    OUTPUT (calc-lat): −33.9°
+    OUTPUT (calc-lon): +151.2°
+    #calc-readout: \text{JD(UT)} = 2461365.3750, \quad \Delta T = 69\ \text{s} | \theta = \text{11h 04m}
+  hover #ladder-sun at 0.3
+  hover #ladder-sun at 0.6
+  hover #ladder-sun at 0.9
+  hover #ladder-sun left
+  hover #ladder-moon at 0.3
+  hover #ladder-moon at 0.6
+  hover #ladder-moon at 0.9
+  hover #ladder-moon left
+  hover #ladder-mars at 0.3
+  hover #ladder-mars at 0.6
+  hover #ladder-mars at 0.9
+  hover #ladder-mars left
+  hover #ladder-planets at 0.3
+  hover #ladder-planets at 0.6
+  hover #ladder-planets at 0.9
+  hover #ladder-planets left
   dragged 0 spheres

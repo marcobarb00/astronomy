@@ -18,6 +18,7 @@
 archive/
 shared/plate-stars.js
 shared/vsop87-data.js
+shared/vsop87-planets.js
 node_modules/
 tools/check/out/
 .claude/

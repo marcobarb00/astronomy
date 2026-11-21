@@ -25,7 +25,7 @@
    vsop87.js, models/mean-sun.js, models/precession.js,
    models/solar-eccentric.js, models/planet-epicycle.js,
    models/planet-equant.js, models/planet-arrangement.js, models/kepler.js,
-   plot2d.js, errorcurve.js, components.js. Every number quoted in the
+   plot2d.js, ladder.js, errorcurve.js, components.js. Every number quoted in the
    prose comes from tools/numbers/4.5-kepler.js.
 
    TABLE OF CONTENTS
@@ -644,30 +644,13 @@ const sunErrorFigure = {
 /* ==========================================================================
    5. FIGURE 6: EVERY MODEL OF THE SUN AND OF MARS
    Static. The largest error of each model against the reference: the Sun
-   every day of 2026, Mars every day of 2010 - 2025. One row per model,
-   named on the left with its page, in the order of the course, its dot on
-   a horizontal scale of the logarithm of the error in arcminutes, and the
-   dots of a body joined from row to row. The two panels, one above the
-   other, share the scale. The errors run from 0.24' (the Sun's ellipse)
-   to 53.7° (the uniform Mars) (tools/numbers/4.5-kepler.js): the axis
-   runs from 0.1' to 100°.
+   every day of 2026, Mars every day of 2010 - 2025, drawn by the shared
+   error ladder (ladder.js): one row per model, named on the left with its
+   page, in the order of the course, on a scale of powers of ten. The two
+   panels, one above the other, share the scale. The errors run from 0.24'
+   (the Sun's ellipse) to 53.7° (the uniform Mars)
+   (tools/numbers/4.5-kepler.js).
    ========================================================================== */
-
-/* The marks of the scale: their value in arcminutes and their label. */
-const SUMMARY_MARKS = [
-	{ arcmin: 0.1, label: '0.1′' },
-	{ arcmin: 1, label: '1′' },
-	{ arcmin: 10, label: '10′' },
-	{ arcmin: 60, label: '1°' },
-	{ arcmin: 600, label: '10°' },
-	{ arcmin: 6000, label: '100°' }
-];
-const SUMMARY_RANGE = [Math.log10(0.1), Math.log10(6000)];
-
-/* The height of a row, and the room for the row names on the left (px):
-   "4.3 epicyclet" is the longest. */
-const SUMMARY_ROW = 34;
-const SUMMARY_NAMES = 100;
 
 /* The models of each panel, in the order of the course: the page it comes
    from, its name and the model (jd -> longitude). */
@@ -688,71 +671,21 @@ const SUMMARY_MODELS = {
 
 const summaryFigure = {
 	init() {
+		const year = y => Time.julianDay(y, 1, 1);
+
 		this.panels = [
-			this.panel('sun', 'summary-sun', realSun, 2026, 2027, 1),
-			this.panel('mars', 'summary-mars', realMars, 2010, 2026, 1)
+			ErrorLadder.panel(
+				byId('summary-sun'),
+				SUMMARY_MODELS.sun,
+				jd => realSun(jd).lon,
+				year(2026),
+				year(2027),
+				1
+			),
+			ErrorLadder.panel(byId('summary-mars'), SUMMARY_MODELS.mars, realMars, year(2010), year(2026), 1)
 		];
-	},
-
-	/* One panel: the largest errors of its models, and their plot. */
-	panel(body, canvasId, reference, fromYear, toYear, step) {
-		const models = SUMMARY_MODELS[body];
-		const worst = models.map(() => 0);
-		const start = Time.julianDay(fromYear, 1, 1);
-		const end = Time.julianDay(toYear, 1, 1);
-
-		for (let jd = start; jd < end; jd += step) {
-			const ref = body === 'sun' ? reference(jd).lon : reference(jd);
-
-			models.forEach((model, i) => {
-				worst[i] = Math.max(worst[i], Math.abs(norm180(model.fn(jd) - ref)));
-			});
-		}
-
-		const panel = {
-			models,
-			values: worst.map(degrees => Math.log10(degrees * 60)),
-			rows: models.map((model, i) => summaryRow(i, models.length)),
-			plot: null
-		};
-
-		// a fixed height: the rows, and the margins of Plot2D for the
-		// scale's ticks and title below
-		const height = models.length * SUMMARY_ROW + 52;
-
-		panel.plot = new Plot2D(byId(canvasId), {
-			x: SUMMARY_RANGE,
-			y: [0.5, models.length + 0.5],
-			xTicks: () => SUMMARY_MARKS.map(mark => ({ value: Math.log10(mark.arcmin), label: mark.label })),
-			yTicks: () => models.map((model, i) => ({ value: panel.rows[i], label: `${model.page} ${model.name}` })),
-			xLabel: 'largest error',
-			margin: { left: SUMMARY_NAMES },
-			minHeight: height,
-			maxHeight: height,
-			onDraw: () => this.draw(panel)
-		});
-
-		return panel;
-	},
-
-	draw(panel) {
-		const p = panel.plot;
-
-		if (!panel.values) {
-			return;
-		}
-
-		p.frame();
-		p.curve(panel.values, panel.rows, { color: withAlpha(COL.planet, 0.5), width: 1.2 });
-		panel.values.forEach((value, i) => p.marker(value, panel.rows[i], { color: COL.planet, radius: 5.5 }));
 	}
 };
-
-/* The y value of row i of n, the first row at the top: from n down to 1,
-   so that no row falls on y = 0, where Plot2D draws a stronger line. */
-function summaryRow(i, n) {
-	return n - i;
-}
 
 /* ==========================================================================
    6. PAGE START

@@ -32,6 +32,8 @@ const PAGES = [
 	'act4-planets/03-new-center/index.html',
 	'act4-planets/04-phases-parallax/index.html',
 	'act4-planets/05-kepler/index.html',
+	'toolbox/index.html',
+	'beyond-kepler/index.html',
 	'templates/page.html',
 	'templates/demo.html',
 	'shared/tests.html',

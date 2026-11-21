@@ -3,7 +3,8 @@
    tools/numbers/data/vsop87: do not edit by hand.
    VSOP87_DATA[body][variable][power] = [[A, B, C], ...], the variables
    L, B (rad) and R (au), each term A cos(B + C t) t^power, t in Julian
-   millennia from J2000 (TDB). Terms with A < 1e-7 are left out. */
+   millennia from J2000 (TDB). Terms with A < 1e-7 are left out.
+   The Earth and Mars (page 4.5); vsop87-planets.js adds the others. */
 
 const VSOP87_DATA = {
 	earth: [

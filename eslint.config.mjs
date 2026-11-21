@@ -27,6 +27,7 @@ const SHARED_SCRIPTS = [
 	'shared/time.js',
 	'shared/ephemeris.js',
 	'shared/vsop87-data.js',
+	'shared/vsop87-planets.js',
 	'shared/vsop87.js',
 	'shared/stars.js',
 	'shared/plate-stars.js',
@@ -48,6 +49,7 @@ const SHARED_SCRIPTS = [
 	'shared/models/kepler.js',
 	'shared/sphere3d.js',
 	'shared/plot2d.js',
+	'shared/ladder.js',
 	'shared/errorcurve.js',
 	'shared/site-map.js',
 	'shared/thumbs.js',
@@ -120,6 +122,7 @@ export default [
 			'templates/**/*.js',
 			'shared/tests.js',
 			'beyond-kepler/**/*.js',
+			'toolbox/**/*.js',
 			'design/**/*.js',
 			'hub.js'
 		],

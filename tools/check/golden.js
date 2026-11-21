@@ -54,6 +54,7 @@ const SHARED_FILES = [
 	'shared/time.js',
 	'shared/ephemeris.js',
 	'shared/vsop87-data.js',
+	'shared/vsop87-planets.js',
 	'shared/vsop87.js',
 	'shared/stars.js',
 	'shared/plate-stars.js',
@@ -73,6 +74,7 @@ const SHARED_FILES = [
 	'shared/models/planet-arrangement.js',
 	'shared/models/kepler.js',
 	'shared/plot2d.js',
+	'shared/ladder.js',
 	'shared/errorcurve.js'
 ];
 
@@ -92,7 +94,9 @@ const PAGE_FILES = [
 	'act4-planets/02-equant/index.html',
 	'act4-planets/03-new-center/index.html',
 	'act4-planets/04-phases-parallax/index.html',
-	'act4-planets/05-kepler/index.html'
+	'act4-planets/05-kepler/index.html',
+	'toolbox/index.html',
+	'beyond-kepler/index.html'
 ];
 
 /* ==========================================================================
@@ -1462,7 +1466,78 @@ function page45(c) {
 		num(inContext(c, 'ELLIPSE_ROOM')),
 		num(inContext(c, 'ELLIPSE_PERIOD')),
 		JSON.stringify(inContext(c, 'ELLIPSE_VIEWS')),
-		JSON.stringify(inContext(c, 'SUMMARY_RANGE'))
+		JSON.stringify(inContext(c, 'ErrorLadder').RANGE)
+	);
+}
+
+function toolbox(c) {
+	const { Time, Ephem, Kepler } = c;
+	const vsop = { theory: 'vsop87' };
+
+	title('8o. THE TOOLBOX (toolbox/page.js; Kepler.PLANETS_FIT; vsop87-planets.js)');
+	['mercury', 'venus', 'jupiter', 'saturn'].forEach(name => {
+		row(`PLANETS_FIT.${name}`, JSON.stringify(Kepler.PLANETS_FIT[name]));
+	});
+	[
+		[1950, 1, 1],
+		[2026, 11, 20],
+		[2100, 6, 1]
+	].forEach(([year, month, day]) => {
+		const jd = Time.julianDay(year, month, day);
+
+		row(
+			`${year}-${month}-${day}`,
+			['mercury', 'venus', 'jupiter', 'saturn']
+				.map(name => {
+					const model = Kepler.geocentric(Kepler.PLANETS_FIT[name], Kepler.SUN_2026, jd).lon;
+
+					return `${num(model, 6)}/${num(Ephem.planet(name, jd, vsop).lon, 6)}`;
+				})
+				.join(' ')
+		);
+	});
+	row('clockText', [0, 9.25, 23.999, NaN].map(h => quote(c.clockText(h))).join(' '));
+	row('raText', [0, 15.5, 359.99].map(ra => quote(c.raText(ra))).join(' '));
+	row('isoOf, jdOfIso', quote(c.isoOf(2461364.5)), num(c.jdOfIso('2026-11-20')));
+	row(
+		'crossing',
+		num(
+			c.crossing(t => (t - 2461364.8) * 100, 2461364.5, 1),
+			6
+		),
+		num(
+			c.crossing(t => (2461364.9 - t) * 100, 2461364.5, -1),
+			6
+		)
+	);
+	row(
+		'fixed ranges',
+		num(inContext(c, 'DAY_FIRST')),
+		num(inContext(c, 'DAY_LAST')),
+		num(inContext(c, 'SUN_BAND')),
+		num(inContext(c, 'SEARCH_STEP'))
+	);
+}
+
+function beyondKepler(c) {
+	const { Time } = c;
+
+	title('8p. EPILOGUE, BEYOND KEPLER (beyond-kepler/page.js)');
+	row(
+		'ellipseDrift',
+		['jupiter', 'saturn']
+			.map(name => [-999, 1, 2000].map(y => num(c.ellipseDrift(name, Time.julianDay(y, 1, 1)), 6)).join('/'))
+			.join(' ')
+	);
+	row(
+		'averagedDrift at 1000 BC',
+		['jupiter', 'saturn'].map(name => num(c.averagedDrift(name).values[0], 6)).join(' ')
+	);
+	row(
+		'fixed ranges',
+		JSON.stringify(inContext(c, 'DRIFT_YEARS')),
+		JSON.stringify(inContext(c, 'DRIFT_RANGE')),
+		JSON.stringify(inContext(c, 'FIT_YEARS'))
 	);
 }
 
@@ -1552,6 +1627,8 @@ function buildTable() {
 	page43(pages[11]);
 	page44(pages[12]);
 	page45(pages[13]);
+	toolbox(pages[14]);
+	beyondKepler(pages[15]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

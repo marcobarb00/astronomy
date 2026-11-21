@@ -2951,6 +2951,25 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   screenDirection                45.000000000
   fixed ranges                   [-4,4]  1.800000000  [-0.008,0.002]  1.170000000  686.980760172  {"e = 0.6":0.6,"Mars":0.093409}  [-1,3.778151250383644]
 
+=== 8o. THE TOOLBOX (toolbox/page.js; Kepler.PLANETS_FIT; vsop87-planets.js) ===
+  PLANETS_FIT.mercury            {"L0":252.229179,"n":4.092376198,"epoch":2451545,"apogee":257.4639,"apogeeRate":0.00003824093086926763,"e":0.205545,"a":0.387099}
+  PLANETS_FIT.venus              {"L0":181.970704,"n":1.602168733,"epoch":2451545,"apogee":311.4224,"apogeeRate":0.00003824093086926763,"e":0.006806,"a":0.723332}
+  PLANETS_FIT.jupiter            {"L0":34.399589,"n":0.083124539,"epoch":2451545,"apogee":194.7717,"apogeeRate":0.00003824093086926763,"e":0.048504,"a":5.201359}
+  PLANETS_FIT.saturn             {"L0":49.978673,"n":0.033510382,"epoch":2451545,"apogee":272.466,"apogeeRate":0.00003824093086926763,"e":0.05409,"a":9.535588}
+  1950-1-1                       299.478817/299.446927 316.966446/316.979400 306.524829/306.505338 169.467179/169.437499
+  2026-11-20                     218.086565/218.233060 203.578220/203.558738 146.227041/146.177181 8.419091/8.324406
+  2100-6-1                       83.553422/83.516032 43.729879/43.751202 193.412122/193.419115 200.236672/200.287738
+  clockText                      "00:00" "09:15" "00:00" "—"
+  raText                         "00h 00m" "01h 02m" "00h 00m"
+  isoOf, jdOfIso                 "2026-11-20"  2461364.500000000
+  crossing                       2461364.800000  2461364.900000
+  fixed ranges                   2415020.500000000  2488433.500000000  15.000000000  0.010416667
+
+=== 8p. EPILOGUE, BEYOND KEPLER (beyond-kepler/page.js) ===
+  ellipseDrift                   5.690006/3.352694/0.084377 -16.734148/-10.946704/-0.144893
+  averagedDrift at 1000 BC       5.051628 -13.111470
+  fixed ranges                   [-999,3000]  [-15,7]  [1926,2026]
+
 === 9. tools/numbers/1.1-turning-sky.js ===
 
 === Fit: the rate, from meridian crossings a century apart ===
@@ -5061,3 +5080,90 @@ Figure 2: the points within 1.665 au of the Sun; against the circle -0.0064 to 0
 Figure 3: the ellipse and its circle reach 1 a from C; the labels A, Π and P need about 0.15 a beyond: the drawing reaches 1.17 a
 Figure 4: over 1916 - 2120 the ellipses within 17.7', page 4.2's equant within 56.0': the axis is ±60' for every span
 Figure 6: from the ellipse of the Sun (0.24') to the uniform Mars (53.7°): the axis runs from 0.1' to 100°
+
+=== 9. tools/numbers/beyond-kepler.js ===
+
+=== After Kepler: page 4.5's ellipses against VSOP87 ===
+Mars within 5.7' over 2010 - 2025; the Sun within 0.24' over 2026
+
+=== The Moon's perigee ===
+the perigee advances 3.044° a revolution, a turn in 8.85 years
+first order (3/4) m^2 = 1.511° (m = 0.07480), 0.496 of it; Newton's 1°31'28" = 1.524°, 0.501 of it
+
+=== Jupiter and Saturn: the ellipses fitted to 1926 - 2025, 1000 BC - AD 3000 ===
+jupiter (averaged over 13 years): 1000 BC 5.05°, AD 1 3.36°, 1000 1.65°, 2000 0.03°, 3000 -1.65°; unaveraged up to 5.77°
+  within 1926 - 2025 (each 1 January): 6.9'
+saturn (averaged over 29 years): 1000 BC -13.11°, AD 1 -8.60°, 1000 -4.17°, 2000 -0.08°, 3000 4.28°; unaveraged up to 16.95°
+  within 1926 - 2025 (each 1 January): 8.7'
+the averaged drift runs from -13.19° to 5.21°: the figure's scale runs from -15° to +7°
+sidereal periods: Jupiter 11.863 years, Saturn 29.446 years; ratio 2.4823 (5 : 2 = 2.5)
+five turns of Jupiter 59.3 years, two of Saturn 58.9 years
+
+=== The Earth as a clock: Delta T (shared/time.js), as page 1.3 quotes it ===
+AD 2026: Delta T = 0.02 h = 69 s
+AD 140: Delta T = 2.56 h = 9213 s
+721 BC: Delta T = 5.73 h = 20625 s
+
+=== Mercury's perihelion ===
+general relativity: 42.98" a century (a = 0.387099 au, e = 0.205545, P = 87.969 d)
+G. M. Clemence, Rev. Mod. Phys. 19, 361 (1947), the budget in a century:
+  observed 5599.74", the general precession 5025.64", the planets 531.54" (with the Sun's
+  oblateness), the sum 5557.18", left over 42.56" +- 0.94"; relativity 43.03"
+  (page 2.3's precession: 5028.3" a century; Le Verrier 1859: 38"; Newcomb 1882: 43")
+
+=== 9. tools/numbers/toolbox.js ===
+
+=== The four ellipses, fitted to the oppositions and inferior conjunctions of 1926 - 2025 ===
+mercury: 315 events (31 Mar 1926 - 20 Nov 2025); L0 252.229179°, n 4.092376198°/day, aphelion (J2000) 257.4639°, e 0.205545; within 16.30' of the events; P 87.969 d, a 0.387099 au
+  check Kepler.PLANETS_FIT.mercury: L0 252.229179, n 4.092376198, apogee 257.4639, e 0.205545, a 0.387099 (L0 off by -0.00")
+venus: 63 events (7 Feb 1926 - 23 Mar 2025); L0 181.970704°, n 1.602168733°/day, aphelion (J2000) 311.4224°, e 0.006806; within 3.53' of the events; P 224.701 d, a 0.723332 au
+  check Kepler.PLANETS_FIT.venus: L0 181.970704, n 1.602168733, apogee 311.4224, e 0.006806, a 0.723332 (L0 off by -0.00")
+jupiter: 91 events (15 Aug 1926 - 7 Dec 2024); L0 34.399589°, n 0.083124539°/day, aphelion (J2000) 194.7717°, e 0.048504; within 6.78' of the events; P 4332.844 d, a 5.201359 au
+  check Kepler.PLANETS_FIT.jupiter: L0 34.399589, n 0.083124539, apogee 194.7717, e 0.048504, a 5.201359 (L0 off by -0.00")
+saturn: 97 events (14 May 1926 - 21 Sep 2025); L0 49.978673°, n 0.033510382°/day, aphelion (J2000) 272.4660°, e 0.054090; within 8.65' of the events; P 10755.213 d, a 9.535588 au
+  check Kepler.PLANETS_FIT.saturn: L0 49.978673, n 0.033510382, apogee 272.466, e 0.05409, a 9.535588 (L0 off by 0.00")
+
+=== The calculator's models: largest error in ecliptic longitude ===
+Sun      2026: 0.2' (2 Nov 2026); 1926 - 2125: 1.2' (18 Oct 1984)
+Moon     2026: 1.80° (17 Sep 2026); 1926 - 2125: 2.05° (19 Oct 1943)
+mercury  2026: 11.6' (19 Oct 2026); 1926 - 2125: 17.2' (12 Jun 1936)
+venus    2026: 12.0' (9 Oct 2026); 1926 - 2125: 13.2' (23 Oct 1986)
+mars     2026: 2.6' (31 Dec 2026); 1926 - 2125: 17.8' (14 Mar 2123)
+jupiter  2026: 3.2' (23 Dec 2026); 1926 - 2125: 11.3' (28 Nov 2107)
+saturn   2026: 5.8' (1 Jan 2026); 1926 - 2125: 17.0' (20 Dec 2119)
+
+=== Why Mercury and Venus err most: the tilt of their orbits, which the ellipses leave out ===
+mercury: inclination 7.01°, the reduction to the ecliptic up to 12.9'; the ellipse's heliocentric error in 2026 15.5'
+venus: inclination 3.39°, the reduction to the ecliptic up to 3.0'; the ellipse's heliocentric error in 2026 3.9'
+jupiter: inclination 1.31°, the reduction to the ecliptic up to 0.4'; the ellipse's heliocentric error in 2026 2.8'
+saturn: inclination 2.49°, the reduction to the ecliptic up to 1.6'; the ellipse's heliocentric error in 2026 5.7'
+
+=== What the calculator leaves out: the planets' ecliptic latitudes, 2026 ===
+mercury: the reference's geocentric ecliptic latitude reaches 4.9°
+venus: the reference's geocentric ecliptic latitude reaches 7.6°
+mars: the reference's geocentric ecliptic latitude reaches 3.3°
+jupiter: the reference's geocentric ecliptic latitude reaches 0.9°
+saturn: the reference's geocentric ecliptic latitude reaches 2.7°
+
+=== The error ladder: the largest error of every model ===
+the Sun, 2026
+  1.3 uniform        114.72' = 1.912°
+  2.1 eccentric      1.72' = 0.029°
+  4.5 ellipse        0.24' = 0.004°
+the Moon, 2026
+  3.1 uniform        469.24' = 7.821°
+  3.1 epicycle       194.05' = 3.234°
+  3.2 crank alone    163.20' = 2.720°
+  3.2 crank          108.27' = 1.804°
+Mars, 2010 - 2025
+  4.1 uniform        3220.78' = 53.680°
+  4.1 epicycle       2065.01' = 34.417°
+  4.2 equant         48.85' = 0.814°
+  4.3 epicyclet      55.28' = 0.921°
+  4.5 ellipses       5.73' = 0.096°
+the other planets, 2026
+  mercury ellipses   11.56' = 0.193°
+  venus ellipses     12.04' = 0.201°
+  jupiter ellipses   3.18' = 0.053°
+  saturn ellipses    5.82' = 0.097°
+from 0.24' to 3221' (53.7°): the scale runs from 0.1' to 100°, as page 4.5's

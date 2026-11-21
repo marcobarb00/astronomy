@@ -1,0 +1,37 @@
+/* ==========================================================================
+   EPILOGUE · BEYOND KEPLER - LAYOUT (page.css)
+   Layout only: every colour comes from shared/theme.css.
+
+   TABLE OF CONTENTS
+	 1. The table of Mercury's perihelion
+	 2. Further reading
+   ========================================================================== */
+
+/* ==========================================================================
+   1. THE TABLE OF MERCURY'S PERIHELION
+   The items on the left, the numbers on the right, as wide as the text.
+   ========================================================================== */
+
+table.budget-table {
+	max-width: var(--text-width);
+	margin: 14px 0;
+}
+
+table.budget-table th:first-child,
+table.budget-table td:first-child {
+	text-align: left;
+}
+
+table.budget-table th:last-child,
+table.budget-table td:last-child {
+	text-align: right;
+}
+
+/* ==========================================================================
+   2. FURTHER READING
+   The list of sources, with a little more room between the books.
+   ========================================================================== */
+
+ul.reading li + li {
+	margin-top: 6px;
+}

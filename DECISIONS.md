@@ -214,6 +214,21 @@ section.
   scale of powers of ten. The Sun section stays on trial; the Moon after
   Kepler is an h3 of the Residual. Approved by Marco on 2026-11-19. →
   STRUCTURE.md §4 (page 4.5)
+- **The epilogue becomes two pages: a story and a toolbox.** Marco
+  asked on 2026-11-20 for one page that tells where the story went after
+  Kepler and one that gathers the course's tools. Neither follows the
+  rhythm of STRUCTURE.md §5 and neither has exercises. The story follows
+  the chain of residuals after Kepler (the Moon's perigee, Jupiter and
+  Saturn, Neptune) and stops at Mercury's perihelion and Einstein; Newton
+  is named as the answer to "why", without his mathematics (Marco's
+  question was whether to leave him out: removing the name would leave
+  every residual without its cause and contradict pages 4.4 and 4.5,
+  which name him). Then the topic cards, a plain list that promises no
+  pages: on 2026-11-21 Marco said the topics are not planned for now, so
+  they are neither greyed nor marked "in preparation".
+  The toolbox is reached only from the hub; its calculator covers the
+  Sun, the Moon and all five planets. Replaces "one short page" of
+  entries. → STRUCTURE.md §4 (Epilogue), §5
 - **Act 0 is called "Intro", not "The hook".** Its role is unchanged (a
   first page, "Where is Mars tonight?", built last); the name is the one
   the reader sees on the hub. Its folder is `act0-intro/`. Decided by
@@ -513,10 +528,32 @@ section.
 - **Orion is drawn with his bow, raised club and the hem of his tunic**
   (Marco, 2026-11-20), on every plate that draws him (pages 1.2 and the
   hub). → shared/plate.js (FIGURES)
+- **The toolbox's button sits beside the hub's filled link**, above the
+  plate of tonight's sky, as tall and outlined in `--accent`; it is the
+  only way to the toolbox (Marco, 2026-11-20). → STYLE.md §4.9, index.html
 - **The hub's filled link leads to the first ready page**: the intro
   (0.1) once it is published, page 1.1 until then. Marco asked for the
   intro on 2026-11-20; it is not built yet (it needs the Act IV models,
   see Course). → hub.js
+
+- **The toolbox fits Mercury, Venus, Jupiter and Saturn by page 4.5's
+  method, against VSOP87.** The course fits ellipses for the Sun and Mars
+  only; the calculator needs all five planets (Marco, 2026-11-20). Each
+  ellipse is fitted to the heliocentric ecliptic longitudes at the
+  planet's oppositions (outer) or conjunctions (inner) of 1926–2025, with
+  the aphelion fixed among the stars and $a$ from the third law; it is
+  judged against VSOP87, extended from the Earth and Mars to the five
+  planets, since Standish's planets are ellipses themselves. →
+  STRUCTURE.md §4 (Epilogue), shared/models/kepler.js, shared/vsop87.js
+
+- **The smoke test fixes the browser's clock** at 2026-11-20 21:00 UT
+  (`FIXED_NOW`): the toolbox's calculator and the hub's plate start from
+  the date of the visit, and the read-outs must be the same on every run.
+  Added with the toolbox on 2026-11-20. → tools/check/smoke.js
+- **The error ladder is shared** (`shared/ladder.js`): page 4.5's Figure
+  6 and the toolbox's Figure 2 draw it; a panel whose rows are different
+  bodies leaves its dots unjoined. Moved out of page 4.5 on 2026-11-20,
+  with no change to that figure. → shared/ladder.js
 
 ## Workflow
 
