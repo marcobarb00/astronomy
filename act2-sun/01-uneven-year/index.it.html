@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 2.1 · THE UNEVEN YEAR
+     Act II, the Sun. The four seasons are unequal; the eccentric circle
+     of Hipparchus explains them, with the equation of center
+     lambda = lambdaBar + q; its eccentricity and apogee are fitted from two
+     season lengths; the first error curve of the site.
+     Numbers: tools/numbers/2.1-uneven-year.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>2.1 · L&#8217;anno disuguale · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Nella pagina 1.3 abbiamo fatto muovere il Sole lungo l&#8217;eclittica a
+			velocità costante. Quel Sole segna bene il tempo in media, ma il suo
+			mezzogiorno risultava sbagliato fino a un quarto d&#8217;ora, e la durata
+			del suo giorno di vari minuti, perché il Sole reale gli corre avanti
+			fino a 2° in primavera e resta indietro altrettanto in autunno.
+		</p>
+
+		<p>
+			Ipparco misurò questa disuniformità e la spiegò con un solo cerchio il
+			cui centro non è la Terra. Con il suo cerchio possiamo prevedere la
+			longitudine eclittica del Sole entro due primi d&#8217;arco, e da qui in
+			poi giudichiamo ogni modello con la sua curva dell&#8217;errore, la
+			differenza fra il modello e il cielo reale, tracciata in funzione del
+			tempo.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Quattro stagioni disuguali</h2>
+
+		<p>
+			Gli equinozi e i solstizi dividono l&#8217;anno negli istanti in cui la
+			longitudine eclittica del Sole raggiunge 0°, 90°, 180° e 270°. Un Sole
+			in moto uniforme impiegherebbe un quarto d&#8217;anno, 91,31 giorni, per
+			ciascuno di questi quarti. Il Sole reale impiega fra 89 e quasi 94
+			giorni. La tabella dà le sue stagioni dall&#8217;equinozio di settembre del
+			2025 a quello del 2026, l&#8217;ultimo anno intero prima di oggi, dal cielo
+			di riferimento, con gli orari in UT e i nomi dell&#8217;emisfero nord, che
+			usano le fonti. Il Sole di riferimento è entro 0,7′ da quello reale, un
+			quarto d&#8217;ora del suo moto, quindi gli istanti sono entro 15 minuti da
+			quelli pubblicati (lo US Naval Observatory dà le 14:46 per
+			l&#8217;equinozio di primavera), e l&#8217;adattamento della sezione 3 sulle
+			stagioni pubblicate dà lo stesso apogeo entro 0,02°.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Stagione</th>
+					<th>Inizio</th>
+					<th>Longitudine eclittica $\lambda$</th>
+					<th>Durata</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>autunno</td>
+					<td>22 settembre 2025, 18:25</td>
+					<td>da $180^\circ$ a $270^\circ$</td>
+					<td>89,86 giorni</td>
+				</tr>
+				<tr>
+					<td>inverno</td>
+					<td>21 dicembre 2025, 15:00</td>
+					<td>da $270^\circ$ a $360^\circ$</td>
+					<td>88,98 giorni</td>
+				</tr>
+				<tr>
+					<td>primavera</td>
+					<td>20 marzo 2026, 14:31</td>
+					<td>da $0^\circ$ a $90^\circ$</td>
+					<td>92,74 giorni</td>
+				</tr>
+				<tr>
+					<td>estate</td>
+					<td>21 giugno 2026, 08:15</td>
+					<td>da $90^\circ$ a $180^\circ$</td>
+					<td>93,66 giorni</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			La metà dell&#8217;anno dall&#8217;equinozio di marzo all&#8217;equinozio di
+			settembre è più lunga di 7,6 giorni dei sei mesi precedenti. Poiché il
+			Sole percorre 180° di longitudine eclittica in ciascuna metà, deve
+			muoversi più lentamente nell&#8217;estate boreale che in inverno, e la
+			Figura 1 mostra che lo fa.
+		</p>
+
+		<!-- Figure 1: the Sun's daily motion, September 2025 to September 2026 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="motion-plot"></canvas>
+			</div>
+			<figcaption>
+				Segui la curva nel corso dell&#8217;anno: il Sole è più lento all&#8217;inizio
+				di luglio e più veloce intorno a Capodanno, e le stagioni in cui si
+				muove più in fretta della media, l&#8217;autunno e l&#8217;inverno, sono quelle
+				brevi.
+			</figcaption>
+		</figure>
+
+		<p>
+			Il moto giornaliero oscilla di circa il 3,4% da una parte e
+			dall&#8217;altra della media. In un quarto d&#8217;anno queste piccole
+			differenze si sommano fino ai due o più giorni di cui la stagione più
+			lunga e la più corta differiscono da un quarto d&#8217;anno.
+		</p>
+
+		<div class="row">
+			<p>
+				Ipparco misurò la stessa disuguaglianza nel II secolo a.C. Tolomeo
+				riferisce che egli prese 94½ giorni dall&#8217;equinozio di primavera al
+				solstizio d&#8217;estate e 92½ giorni da lì all&#8217;equinozio d&#8217;autunno,
+				«e poi, con queste osservazioni come suoi soli dati», trovò la
+				grandezza e la direzione del cerchio eccentrico del Sole
+				(<em>Almagest</em> III 4).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il cielo di riferimento mostra che le stagioni del suo tempo non erano
+			quelle di oggi: dà 94,01 giorni per la primavera del 141 a.C. e 92,34
+			giorni per la sua estate, vicini ai suoi valori, quindi allora la
+			primavera era la stagione più lunga, mentre nel 2026 lo è l&#8217;estate.
+			Ciò che fissa le durate delle stagioni si è spostato da Ipparco in poi,
+			e l&#8217;eccentrico adattato a un solo anno non può seguirlo.
+		</p>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Il cerchio eccentrico</h2>
+
+		<h3>Moto uniforme su un cerchio</h3>
+
+		<div class="row">
+			<p>
+				Gli astronomi greci richiedevano che ogni moto celeste fosse uniforme
+				e circolare. Tolomeo enuncia la regola con precisione: se immaginiamo
+				ogni corpo trasportato da una retta, «la retta in questione descrive
+				angoli uguali attorno al centro della sua rivoluzione in tempi uguali»
+				(<em>Almagest</em> III 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<p>
+			Visto dalla Terra, il moto del Sole è disuniforme, quindi la regola
+			ammette due spiegazioni. O il centro del cerchio del Sole non è la
+			Terra, o il Sole si muove uniformemente su un secondo cerchio, più
+			piccolo, il cui centro è trasportato lungo il primo. Sono
+			l&#8217;<strong>eccentrico</strong> e l&#8217;<strong>epiciclo</strong>.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo mostra che entrambi possono produrre la disuguaglianza del
+				Sole, e sceglie l&#8217;eccentrico «poiché è più semplice e si compie con
+				un solo moto invece che con due» (III 4). La pagina 3.1 dimostra che i
+				due sono equivalenti, e usa l&#8217;epiciclo per la Luna.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Entrambe le costruzioni assumono la Terra in quiete, come fecero
+				Ipparco e Tolomeo: sono <strong>geostatiche</strong>. Le osservazioni fatte
+				dalla Terra non possono verificare quella scelta, perché si osserva
+				solo il moto relativo, come dice Copernico: «ogni cambiamento di
+				posizione osservato è causato da un moto o dell&#8217;oggetto osservato o
+				dell&#8217;osservatore o, naturalmente, da uno spostamento disuguale di
+				ciascuno» (<em>De Revolutionibus</em> I 5).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;eccentrico si può quindi trasformare in una descrizione
+			<strong>eliostatica</strong>. Un cerchio uguale, con il centro spostato
+			dalla parte opposta, porta la Terra attorno a un Sole in quiete (Figura
+			2), e la linea dalla Terra al Sole è in ogni istante la stessa, in
+			lunghezza e direzione, che nell&#8217;eccentrico di Ipparco. Il Sole si vede
+			esattamente dove lo mette l&#8217;eccentrico, quindi la scelta del corpo in
+			quiete non cambia una sola previsione. Copernico, che scelse il Sole,
+			spiega in questo modo la disuguaglianza del Sole, con la Terra su un
+			eccentrico (III 15).
+		</p>
+
+		<!-- Figure 2: the same line from the Earth to the Sun, with either body at rest (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) la Terra in quiete</p>
+						<canvas id="rest-earth"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il Sole in quiete</p>
+						<canvas id="rest-sun"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta le due frecce dalla Terra al Sole: hanno la stessa lunghezza
+				e la stessa direzione. Le linee punteggiate, da ciascun corpo in quiete
+				al centro del suo cerchio, sono uguali e opposte.
+			</figcaption>
+		</figure>
+
+		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/peurbach-solar-orbs.jpg" width="800" height="772" loading="lazy"
+				alt="Una xilografia di anelli concentrici: un ampio anello scuro con sopra un Sole sorridente, dentro una cornice di anelli sottili, attraversato da due aste parallele con le scritte Axis deferentis e Axis Zodiaci.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				Il cerchio del Sole nelle <em>Theoricae novae planetarum</em> di
+				Peurbach, un manuale dei modelli di Tolomeo stampato la prima volta
+				verso il 1473 e ancora ristampato un secolo dopo. Il Sole è portato
+				dall&#8217;ampio anello scuro, il deferente, posto dentro gli anelli
+				sottili dello zodiaco, con i poli dello zodiaco in alto a sinistra e in
+				basso a destra. Nota le due aste parallele vicino al centro, con le
+				scritte <em>axis deferentis</em> e <em>axis Zodiaci</em>: l&#8217;anello
+				del Sole ruota attorno a un asse che non passa per il centro dello
+				zodiaco, dove sta la Terra, e la distanza fra le due aste è
+				l&#8217;eccentricità, disegnata molto più grande di quanto sia.
+				<span class="credit">Georg Peurbach, <em>Theoricae novae planetarum</em>, Basilea, 1573
+					(Observatoire de Paris, tramite Gallica, BnF),
+					<a href="https://commons.wikimedia.org/wiki/File:Illustrations_de_Theoricae_novae_planetarum..._-_(Non_identifi%C3%A9)_;_Georg_Peurbach,_aut._de_texte_-_btv1b2600295g_(1_of_3).jpg">Wikimedia Commons</a>,
+					pubblico dominio.</span>
+			</figcaption>
+		</figure>
+
+		<h3>L&#8217;equazione del centro</h3>
+
+		<p>
+			Facciamo muovere il Sole uniformemente, con la velocità $n$ della pagina
+			1.3, su un cerchio di raggio 1 il cui centro C sta a distanza $e$ dalla
+			Terra O. Il punto del cerchio più lontano dalla Terra, nella direzione
+			da O attraverso C, è l&#8217;<strong>apogeo</strong>, alla longitudine
+			eclittica $\lambda_A$, e il più vicino, opposto a esso, è il
+			<strong>perigeo</strong>.
+		</p>
+
+		<p>
+			Vista da C, la longitudine eclittica del Sole è la longitudine
+			eclittica media $\bar\lambda = L_0 + n\,d$ della pagina 1.3, e ne
+			contiamo l&#8217;angolo dall&#8217;apogeo, l&#8217;<strong>anomalia media</strong>
+			$M = \bar\lambda - \lambda_A$. Vista da O, è la longitudine eclittica
+			vera $\lambda$, e la differenza $q = \lambda - \bar\lambda$ si chiama
+			<strong>equazione del centro</strong> (Figura 3).
+		</p>
+
+		<!-- Figure 3: the eccentric with M and q, and q through the year -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) l&#8217;eccentrico</p>
+						<canvas id="eoc-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;equazione del centro nel corso del 2026</p>
+						<canvas id="eoc-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="eoc-day">data</label>
+							<input id="eoc-day" type="range" min="0" max="364" step="1" value="247">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="eoc-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="eoc-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="eoc-play">Avvia un anno</button>
+						</div>
+					</div>
+					<div>
+						<div class="presets" id="eoc-views"></div>
+					</div>
+				</div>
+				<div class="readout" id="eoc-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Scorri l&#8217;anno, o avvialo, e guarda il Sole S correre avanti rispetto
+				alla sua longitudine eclittica media mentre va dal perigeo
+				all&#8217;apogeo, da gennaio all&#8217;inizio di luglio, e restare indietro
+				per il resto dell&#8217;anno. Poi scegli l&#8217;eccentricità propria del Sole:
+				$q$ resta sotto i 2°, e le due curve di (b) si confondono.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">tratteggio</dt>
+						<dd>la direzione della longitudine eclittica media $\bar\lambda$, da C a S e parallela a essa da O</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-muted">tratteggio</dt>
+						<dd>l&#8217;approssimazione al primo ordine, $-e \sin M$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Per trovare $q$ scriviamo la posizione del Sole come un vettore dalla
+				Terra, $\vec{OS} = \vec{OC} + \vec{CS}$, in un sistema ruotato nella
+				direzione di $\vec{CS}$: il suo primo asse punta a $\bar\lambda$ e il
+				secondo 90° più a est. Lì $\vec{CS} = (1, 0)$, e $\vec{OC}$, di
+				lunghezza $e$ verso $\lambda_A = \bar\lambda - M$, è $e\,(\cos M, -\sin
+				M)$, quindi
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$\vec{OS} = \begin{pmatrix} 1 + e\cos M \\ -e\sin M \end{pmatrix}.$$
+
+		<p>
+			La direzione di questo vettore, misurata dal primo asse, è l&#8217;angolo
+			da $\bar\lambda$ a $\lambda$, cioè $q$:
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}(e \sin M,\ 1 + e \cos M), \qquad \lambda = \bar\lambda + q.$$
+		</div>
+
+		<p>
+			Dall&#8217;apogeo al perigeo, $0^\circ < M < 180^\circ$, $q$ è negativa e
+			il Sole resta indietro rispetto alla sua longitudine eclittica media,
+			mentre sull&#8217;altra metà del cerchio corre avanti. Tolomeo usa lo stesso
+			segno, sottraendo l&#8217;equazione nella prima metà (<em>Almagest</em>
+			III 8). Fitzpatrick conta $M$ dal perigeo, quindi il suo $q$ ha il segno
+			opposto per lo stesso $M$.
+		</p>
+
+		<p>
+			L&#8217;eccentricità del Sole risulta di circa $1/30$, abbastanza piccola da
+			poter sviluppare la formula. Al primo ordine in $e$,
+		</p>
+
+		$$q \approx -e \sin M \quad \text{(in radianti)},$$
+
+		<p>
+			quindi il Sole non è mai a più di circa $e$ radianti, quasi 2°, dal suo
+			posto medio. I termini trascurati sono dell&#8217;ordine di $e^2/2$, sotto i
+			2′ per il Sole, e l&#8217;Esercizio 2 mostra che il valore massimo di $|q|$
+			è esattamente $\arcsin e$.
+		</p>
+
+		<div class="row">
+			<p>
+				L&#8217;ellisse di Keplero, che la teoria moderna mantiene come prima
+				approssimazione del percorso del Sole rispetto alla Terra, dà al primo
+				ordine $q \approx -2e_\text{K} \sin M$, dove $e_\text{K}$ è la sua
+				eccentricità. L&#8217;eccentrico dà le stesse direzioni se il suo centro è
+				spostato di $e = 2e_\text{K}$, come conferma l&#8217;adattamento della
+				sezione 3. La pagina 4.2 confronta i due al secondo ordine.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<h3>Perché le stagioni sono disuguali</h3>
+
+		<p>
+			Le linee dalla Terra verso gli equinozi e i solstizi tagliano
+			l&#8217;eccentrico in quattro archi. Poiché la Terra non è al centro
+			dell&#8217;eccentrico, gli archi sono disuguali, e il Sole, percorrendoli
+			tutti alla stessa velocità uniforme, impiega di più sul più lungo.
+		</p>
+
+		<p>
+			L&#8217;arco più lungo è quello che contiene l&#8217;apogeo, dove il cerchio è
+			più lontano dalla Terra. Nel 2026 l&#8217;apogeo è a circa 104°, in estate,
+			ed è per questo che l&#8217;estate è la stagione più lunga e l&#8217;inverno,
+			che contiene il perigeo, la più corta.
+		</p>
+
+		<p>
+			L&#8217;eccentricità del Sole è così piccola che, disegnato in scala, il
+			cerchio sembra centrato sulla Terra. Nella Figura 4 è quindi disegnato
+			accanto a un cerchio con $e = 0{,}2$, sei volte quella del Sole, sul
+			quale lo stesso
+			geometria dà stagioni molto più diverse.
+		</p>
+
+		<!-- Figure 4: the four seasons, at e = 0.2 and to scale (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) esagerato, $e = 0{,}2$</p>
+						<canvas id="seasons-wide"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il Sole, in scala</p>
+						<canvas id="seasons-sun"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i due cerchi: in ciascuno, l&#8217;arco che contiene l&#8217;apogeo
+				è il più lungo e l&#8217;arco che contiene il perigeo il più corto. In (b)
+				lo spostamento si vede appena, eppure l&#8217;estate del Sole è più lunga
+				del suo inverno di quasi cinque giorni.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>Eccentricità e apogeo da due stagioni</h2>
+
+		<p>
+			È il centro spostato dell&#8217;eccentrico a rendere disuguali le stagioni,
+			quindi le loro durate lo rivelano: due di esse fissano il centro, la sua
+			distanza $e$ dalla Terra e la direzione dell&#8217;apogeo $\lambda_A$. Il
+			moto medio $n$ è già noto dalla durata dell&#8217;anno (pagina 1.3), e $L_0$
+			richiede un istante in cui la longitudine eclittica del Sole sia nota
+			esattamente, un equinozio.
+		</p>
+
+		<h3>Il centro da due stagioni</h3>
+
+		<div class="row">
+			<p>
+				Mettiamo la Terra nell&#8217;origine, con l&#8217;asse $x$ verso γ e l&#8217;asse $y$
+				verso il solstizio d&#8217;estate, così che i due assi siano le quattro
+				linee dalla Terra verso gli equinozi e i solstizi. Scriviamo il centro
+				dell&#8217;eccentrico come $C = (h, k) = e\,(\cos\lambda_A,
+				\sin\lambda_A)$, in unità del suo raggio, e teniamo $x$ e $y$ per gli
+				assi.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Sull&#8217;eccentrico il Sole si muove uniformemente visto da C, quindi il
+			tempo che impiega in una stagione è proporzionale all&#8217;angolo, in C,
+			fra i due punti in cui il cerchio incontra gli assi all&#8217;inizio e alla
+			fine di quella stagione. La Figura 5 (a) disegna questi angoli con C sei
+			volte più lontano dalla Terra di quanto lo ponga l&#8217;adattamento, perché
+			si possano vedere, e la Figura 5 (b) mostra C alla distanza adattata.
+		</p>
+
+		<!-- Figure 5: Hipparchus' construction -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) la costruzione, C sei volte più lontano</p>
+						<canvas id="fit-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il centro alla distanza adattata, ingrandito</p>
+						<canvas id="fit-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="fit-spring">primavera $T_1$</label>
+							<input id="fit-spring" type="range" min="90" max="96" step="0.01" value="94.5">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="fit-summer">estate $T_2$</label>
+							<input id="fit-summer" type="range" min="90" max="96" step="0.01" value="92.5">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="presets" id="fit-presets">
+							<button type="button" data-spring="94.5" data-summer="92.5">Ipparco</button>
+							<button type="button" data-spring="94.01" data-summer="92.34">141 a.C.</button>
+							<button type="button" data-spring="93.90" data-summer="92.56">140 d.C.</button>
+							<button type="button" data-spring="92.74" data-summer="93.66">2026</button>
+							<button type="button" data-spring="91.31" data-summer="91.31">uguali</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="fit-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Scegli un preset, o imposta tu le due stagioni, e guarda C: quanto più
+				lunghe sono insieme primavera ed estate, tanto più lontano sta dalla
+				Terra, e quanto più differiscono, tanto più l&#8217;apogeo si allontana dal
+				solstizio d&#8217;estate. Con stagioni «uguali», ciascuna un quarto
+				d&#8217;anno, C sta sulla Terra e non c&#8217;è apogeo.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">tratteggio</dt>
+						<dd>le parallele agli assi per C</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$|q|_\text{max}$</dt>
+						<dd>la massima equazione del centro, $\arcsin e$ (Esercizio 2)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			L&#8217;asse $x$ passa alla distanza $k$ sotto C. Il raggio da C al punto in
+			cui esso incontra il cerchio verso γ ha lunghezza 1 e scende di $k$,
+			quindi forma l&#8217;angolo $\arcsin k$ con la parallela all&#8217;asse $x$ per
+			C, e C vede quel punto a $-\arcsin k$. Dall&#8217;altra parte, verso 180°,
+			lo stesso asse incontra il cerchio a $180^\circ + \arcsin k$ visto da C.
+		</p>
+
+		<p>
+			Allo stesso modo l&#8217;asse $y$ passa alla distanza $h$ a sinistra di C,
+			il che mette il suo punto verso il solstizio d&#8217;estate a $90^\circ +
+			\arcsin h$ e il suo punto verso il solstizio d&#8217;inverno a $270^\circ -
+			\arcsin h$. Le formule valgono per entrambi i segni. Quando l&#8217;apogeo
+			è oltre 90°, come oggi, $h$ è negativo: C sta a sinistra dell&#8217;asse
+			$y$, il raggio verso il solstizio d&#8217;estate si inclina verso γ, e
+			l&#8217;angolo $90^\circ + \arcsin h$ è minore di 90°, come nella Figura 4
+			e nel preset «2026» della Figura 5.
+		</p>
+
+		<p>
+			Visto da C il Sole si sposta di $360^\circ/Y$ al giorno, quindi le durate
+			$T_1$ e $T_2$ della primavera e dell&#8217;estate danno gli archi fra questi
+			punti, gli archi spessi della Figura 5 (a):
+		</p>
+
+		$$a_1 = \frac{360^\circ\, T_1}{Y} = 90^\circ + \arcsin h + \arcsin k, \qquad a_2 = \frac{360^\circ\, T_2}{Y} = 90^\circ - \arcsin h + \arcsin k.$$
+
+		<p>
+			Sommando e sottraendo le due equazioni si separano le incognite, e il
+			centro dà poi l&#8217;eccentricità e la direzione dell&#8217;apogeo:
+		</p>
+
+		<div class="box">
+			$$\arcsin k = \frac{a_1 + a_2 - 180^\circ}{2}, \qquad \arcsin h = \frac{a_1 - a_2}{2}, \qquad e = \sqrt{h^2 + k^2}, \qquad \lambda_A = \operatorname{atan2}(k, h).$$
+		</div>
+
+		<p>
+			Le altre due stagioni seguono dallo stesso centro, con gli archi $a_3 =
+			90^\circ - \arcsin h - \arcsin k$ per l&#8217;autunno e $a_4 = 90^\circ +
+			\arcsin h - \arcsin k$ per l&#8217;inverno. Due stagioni prevedono quindi
+			le altre due, il che rende il modello verificabile ancora prima di
+			confrontarlo con il cielo.
+		</p>
+
+		<h3>Il Sole del 2026</h3>
+
+		<p>
+			Applicato alla primavera e all&#8217;estate del 2026 della tabella della
+			sezione 1, con l&#8217;anno della pagina 1.3, il metodo dà $e = 0{,}03347$ e
+			$\lambda_A = 103{,}73^\circ$. Prevede poi l&#8217;autunno e l&#8217;inverno
+			della tabella entro circa mezz&#8217;ora.
+		</p>
+
+		<p>
+			L&#8217;apogeo è il più delicato dei due. La sua direzione dipende da $h$,
+			la componente piccola di C, che è fissata dalla piccola differenza fra
+			primavera ed estate, quindi spostare un&#8217;ora dall&#8217;estate alla
+			primavera sposta l&#8217;apogeo di 1,2° e cambia appena $e$.
+		</p>
+
+		<h3>La longitudine eclittica media all&#8217;epoca</h3>
+
+		<p>
+			All&#8217;equinozio di primavera, che abbiamo cronometrato nella pagina 1.2
+			per trovare γ, la longitudine eclittica del Sole è esattamente 0°. Il
+			Sole è allora in γ, all&#8217;angolo $-\arcsin k$ visto da C, che è quindi
+			la sua longitudine eclittica media. Nel 2026 l&#8217;equinozio è caduto il 20
+			marzo alle 14:32 TT (14:31 UT nella tabella della sezione 1), e il
+			centro adattato al 2026 dà $-\arcsin k = 358{,}137^\circ$. Tornando
+			indietro all&#8217;epoca J2000.0 con la velocità $n$,
+		</p>
+
+		$$L_0 = 358{,}137^\circ - n \times 9575{,}106\ \text{d} = 280{,}459^\circ \pmod{360^\circ},$$
+
+		<p>
+			a 8″ dal valore che la pagina 1.3 ha trovato facendo la media di
+			diciannove anni di longitudine eclittica del Sole.
+		</p>
+
+		<!-- History block: Hipparchus' and Ptolemy's parameters -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>I parametri di Ipparco e di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo riferisce che Ipparco trovò il centro da queste due sole
+					stagioni (sezione 1), e dà il proprio calcolo di esso (III 4). Ipparco
+					cita equinozi osservati su un anello di bronzo ad Alessandria, fissato
+					nel piano dell&#8217;equatore, che segna l&#8217;equinozio nel giorno in cui
+					il lato illuminato della sua superficie interna passa da una parte
+					all&#8217;altra (III 1).
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+
+			<p>
+				Tolomeo trovava questi anelli poco affidabili: uno nella sua città a
+				volte cambiava lato due volte nello stesso giorno. Un solstizio è ancora
+				più difficile da cronometrare, perché vicino a esso la declinazione del
+				Sole cambia appena, e Ipparco ammette errori fino a un quarto di giorno
+				nei suoi.
+			</p>
+
+			<p>
+				Con le sue stagioni il metodo mette l&#8217;apogeo entro mezzo grado da
+				quello che danno le stagioni reali del suo tempo, ma rende
+				l&#8217;eccentricità troppo grande di un quinto: la sua primavera e la sua
+				estate insieme sono troppo lunghe di più di mezza giornata. I preset
+				«Ipparco» e «141 a.C.» della Figura 5 e l&#8217;Esercizio 1 seguono la
+				differenza.
+			</p>
+
+			<div class="row">
+				<p>
+					Tolomeo fissò la sua epoca come abbiamo fatto noi, da un equinozio
+					osservato da lui stesso, ma la riportò all&#8217;inizio dell&#8217;era di
+					Nabonassar, perché le osservazioni antiche si sono conservate a
+					partire da quell&#8217;era (III 7).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;eccentrico contro il Sole reale</h2>
+
+		<p>
+			Verifichiamo l&#8217;eccentrico tracciando il suo errore nel corso del 2026
+			nella Figura 6. Come nella pagina 1.1, l&#8217;errore è il modello meno il
+			cielo, $\Delta\lambda = \lambda_\text{modello} - \lambda_\text{rif}$, in
+			primi d&#8217;arco.
+		</p>
+
+		<!-- Figure 6: the first error curve -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-2026"></div>
+			</div>
+			<figcaption>
+				Segui l&#8217;errore nel corso del 2026, con le sue piccole increspature
+				mensili, poi passa a 100 e 1000 anni e guardalo crescere da una parte e
+				dall&#8217;altra del 2026.
+			</figcaption>
+		</figure>
+
+		<p>
+			Il cerchio uniforme sbaglia fino a 115′ e l&#8217;eccentrico al massimo di
+			1,7′, circa settanta volte meno e un ventesimo del diametro apparente del
+			Sole. Lontano dal 2026 l&#8217;errore dell&#8217;eccentrico cresce, fino a circa
+			3′ cinquant&#8217;anni prima e quasi 20′ a cinque secoli di distanza, quindi
+			un eccentrico adattato a un anno serve per qualche decennio.
+		</p>
+
+		<p>
+			La durata del giorno dipende dalla declinazione del Sole, e quindi dalla
+			sua longitudine eclittica. Con la longitudine eclittica
+			dell&#8217;eccentrico, l&#8217;errore massimo nella durata del giorno nel 2026,
+			alle tre latitudini geografiche della pagina 1.3, scende da 13 minuti a
+			meno di mezzo minuto.
+		</p>
+
+		<!-- History block: Ptolemy's Sun against his observations -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Il Sole di Tolomeo contro le sue osservazioni</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo verificò il suo Sole con equinozi e un solstizio osservati da
+					lui stesso, ritrovò le stagioni di Ipparco, e concluse che
+					l&#8217;eccentrico «mantiene sempre la stessa posizione rispetto ai punti
+					solstiziali ed equinoziali» (III 4). Con misure di tempo precise a un
+					quarto di giorno, che possono spostare l&#8217;apogeo di vari gradi, non
+					poteva vederlo muoversi, come nota Toomer (nota a III 4).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Confrontate con il cielo di riferimento, con $\Delta T$ che converte
+					il suo tempo uniforme nei giorni di Tolomeo, che seguivano la rotazione
+					rallentata della Terra (pagina 1.3), le sue osservazioni cadono circa
+					un giorno dopo gli eventi reali (Esercizio 3). All&#8217;equinozio da cui
+					fissò la sua epoca, il suo modello mette il Sole all&#8217;equinozio, come
+					deve, ma il Sole reale lo aveva raggiunto più di un giorno prima.
+					Toomer chiama il ritardo «l&#8217;argomento più forte di quei critici
+					moderni che hanno sostenuto che Tolomeo abbia &#8220;falsificato&#8221; le
+					osservazioni» (nota a III 1).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<p>
+				Nel suo tempo il suo Sole è quindi circa un grado indietro rispetto a
+				quello reale, per lo più a causa dell&#8217;equinozio tardivo da cui fissò la
+				sua epoca. Il suo anno è troppo lungo, quindi il suo Sole resta sempre
+				più indietro di secolo in secolo.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che l&#8217;eccentrico trascura</h2>
+
+		<div class="row">
+			<p>
+				Circa metà del piccolo errore dell&#8217;eccentrico nel 2026 viene dalla
+				forma del cerchio, che differisce dall&#8217;ellisse della teoria moderna
+				nei termini del secondo ordine in $e$ (pagina 4.2), e quasi tutto il
+				resto dall&#8217;apogeo adattato, circa un terzo di grado a est di quello
+				del Sole di riferimento.
+			</p>
+			<aside>
+				<div class="note today">
+					L&#8217;ellisse di Keplero è la prima approssimazione usata oggi per il
+					percorso del Sole rispetto alla Terra. Al secondo ordine dà $q \approx
+					-2e_\text{K}\sin M + \tfrac54 e_\text{K}^2 \sin 2M$; il secondo termine
+					dell&#8217;eccentrico, $\tfrac12 e^2 \sin 2M$, è più grande al massimo di
+					0,72′.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			Le piccole increspature mensili della Figura 6 vengono dalla Luna. La
+			Terra e la Luna ruotano entrambe attorno al loro comune centro di massa,
+			quindi la Terra oscilla un poco avanti e indietro ogni mese, e il Sole,
+			visto dalla Terra, si sposta in senso opposto di qualche secondo
+			d&#8217;arco.
+		</p>
+
+		<div class="row">
+			<p>
+				Lontano dal 2026 l&#8217;errore cresce perché l&#8217;apogeo non è fisso.
+				Adattando con lo stesso metodo le stagioni reali di altri anni lo si
+				vede spostarsi verso est di circa 1,75° per secolo rispetto a γ. Intorno
+				al 1250 passò per il solstizio d&#8217;estate, quando primavera ed estate
+				erano lunghe uguali. Al-Battani e Copernico, che trovarono stagioni
+				diverse da quelle di Tolomeo, lo videro muoversi (<em>De
+				Revolutionibus</em> III 16).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				La maggior parte di questo moto è quella di γ stesso. L&#8217;origine delle
+				longitudini eclittiche scivola verso ovest lungo l&#8217;eclittica, così che
+				ogni longitudine eclittica contata da essa cresce di circa 1,4° per
+				secolo, come spiega la pagina 2.3. Solo i restanti 0,3° per secolo sono
+				una rotazione del percorso del Sole: nell&#8217;ellisse che la teoria moderna
+				mantiene come prima approssimazione, la linea degli apsidi, per
+				l&#8217;apogeo e il perigeo, ruota per l&#8217;attrazione dei pianeti.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="perturbations"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;eccentrico dà anche la distanza del Sole, da $1 - e$ a $1 + e$ volte
+			il raggio del suo cerchio, quindi la distanza oscilla quanto il moto
+			giornaliero della sezione 1, circa il 3,4% da una parte e dall&#8217;altra.
+			La distanza reale, e con essa il diametro apparente del Sole, oscilla
+			solo della metà, $e_\text{K} = e/2$. L&#8217;eccentrico dà giuste le
+			direzioni ma raddoppia la variazione della distanza, un difetto che
+			ritorna, molto più grande, con la Luna nella pagina 3.2.
+		</p>
+
+		<p>
+			Su una meridiana il moto disuniforme del Sole si vede ogni giorno. Una
+			meridiana legge l&#8217;angolo orario del Sole, che dipende dalla sua
+			ascensione retta, e l&#8217;ascensione retta dipende sia dalla longitudine
+			eclittica disuniforme di questa pagina sia dall&#8217;inclinazione
+			dell&#8217;eclittica. Così una meridiana e un orologio non vanno d&#8217;accordo
+			nel corso dell&#8217;anno, di una quantità che calcola la pagina 2.2.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				La primavera di Ipparco dura 94½ giorni e la sua estate 92½ giorni, con
+				l&#8217;anno di Tolomeo di 365,24667 giorni. Trova il centro $C = (h, k)$ del
+				suo eccentrico, poi $e$, $\lambda_A$, le durate dell&#8217;autunno e
+				dell&#8217;inverno e la massima equazione del centro, e confrontali con i
+				valori di Tolomeo. Verifica con il preset «Ipparco» della Figura 5, poi
+				con «141 a.C.», le stagioni reali del suo tempo.
+			</p>
+			<details class="hint">
+				<p>
+					Converti le due stagioni in archi dell&#8217;eccentrico, $a_i =
+					360^\circ\, T_i / Y$, e usa le formule nel riquadro della sezione 3.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Gli archi sono $a_1 = 93{,}1425^\circ$ ($93^\circ 08' 33''$) e $a_2 =
+					91{,}1713^\circ$ ($91^\circ 10' 17''$), i $93^\circ 9'$ e $91^\circ
+					11'$ di Tolomeo ($93{,}15^\circ$ e $91{,}18^\circ$). Quindi $\arcsin k
+					= (a_1 + a_2 - 180^\circ)/2 = 2{,}1569^\circ$ e $\arcsin h = (a_1 -
+					a_2)/2 = 0{,}9856^\circ$, che danno $k = 0{,}03764$ e $h = 0{,}01720$:
+					al tempo di Ipparco l&#8217;apogeo era prima del solstizio d&#8217;estate,
+					quindi $h$ era positivo.
+				</p>
+				<p>
+					Allora $e = \sqrt{h^2 + k^2} = 0{,}04138$, ovvero 2,483 parti su un
+					raggio di 60, che Tolomeo arrotonda a 2,5 parti, cioè $1/24$.
+					L&#8217;apogeo è a $\lambda_A = \operatorname{atan2}(k, h) =
+					65{,}44^\circ$, 24,56° prima del solstizio d&#8217;estate, dove Tolomeo
+					ha $24^\circ 30'$ e quindi $65^\circ 30'$ ($65{,}5^\circ$).
+				</p>
+				<p>
+					L&#8217;autunno richiede $a_3 = 90^\circ - \arcsin h - \arcsin k =
+					86{,}857^\circ$, ovvero 88,12 giorni, e l&#8217;inverno $a_4 = 90^\circ +
+					\arcsin h - \arcsin k = 88{,}829^\circ$, ovvero 90,12 giorni: gli 88⅛
+					e 90⅛ giorni di Tolomeo. La massima equazione è $\arcsin e = 2^\circ
+					22' 18''$, e con l&#8217;$1/24$ arrotondato di Tolomeo è $2^\circ 23'
+					17''$, i suoi $2^\circ 23'$ ($2{,}383^\circ$).
+				</p>
+				<p>
+					Le stagioni reali del 141 a.C., 94,01 e 92,34 giorni, danno $e =
+					0{,}0352$ e $\lambda_A = 65{,}86^\circ$. L&#8217;apogeo di Ipparco è entro
+					mezzo grado, ma la sua eccentricità è troppo grande del 18%, perché la
+					sua primavera e la sua estate insieme sono troppo lunghe di 0,64
+					giorni.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Partendo da $q = -\operatorname{atan2}(e\sin M, 1 + e\cos M)$, mostra
+				che $q \approx -e\sin M + \tfrac12 e^2 \sin 2M$ al secondo ordine in
+				$e$ (in radianti). Poi mostra che $|q|$ è massimo quando $\cos M = -e$,
+				e che il suo valore massimo è esattamente $\arcsin e$. Dov&#8217;è allora
+				il Sole, visto dalla Terra? Trova la massima equazione di Tolomeo per
+				$e = 1/24$, e quella dell&#8217;adattamento del 2026, $e = 0{,}03347$.
+			</p>
+			<details class="hint">
+				<p>
+					Per $e$ piccolo, $\tan q$ è piccola e $q \approx \tan q$ al secondo
+					ordine. Per il massimo, deriva $\tan|q| = e\sin M / (1 + e \cos M)$
+					rispetto a $M$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Per $0 < M < 180^\circ$, $\tan|q| = e\sin M / (1 + e\cos M)$.
+					Sviluppando il denominatore, $e\sin M\,(1 - e\cos M + \dots) = e\sin M
+					- \tfrac12 e^2 \sin 2M + O(e^3)$, e poiché $\arctan u = u - u^3/3 +
+					\dots$ differisce da $u$ solo al terzo ordine,
+				</p>
+				$$q \approx -e \sin M + \tfrac12 e^2 \sin 2M.$$
+				<p>
+					La derivata di $e\sin M / (1 + e\cos M)$ è
+				</p>
+				$$\frac{e\cos M\,(1 + e\cos M) + e^2 \sin^2 M}{(1 + e\cos M)^2} = \frac{e\,(\cos M + e)}{(1 + e\cos M)^2},$$
+				<p>
+					che si annulla in $\cos M = -e$. Lì $\sin M = \sqrt{1 - e^2}$ e $1 +
+					e\cos M = 1 - e^2$, quindi $\tan|q| = e / \sqrt{1 - e^2}$, cioè $\sin|q|
+					= e$. Poiché $M = 90^\circ + \arcsin e$ e $q = -\arcsin e$, la
+					longitudine eclittica vera è $\lambda = \lambda_A + 90^\circ$: visto
+					dalla Terra, il Sole è ad angolo retto dall&#8217;apogeo. È la costruzione
+					di Tolomeo in III 4, un angolo retto nella Terra.
+				</p>
+				<p>
+					Per $e = 1/24$ la massima equazione è $2^\circ 23' 17''$, in $M =
+					92^\circ 23' 17''$: i $2^\circ 23'$ di Tolomeo in $92^\circ 23'$
+					($2{,}383^\circ$ in $92{,}383^\circ$). Per $e = 0{,}03347$ è $1^\circ
+					55' 05''$, in $M = 91{,}92^\circ$. La formula al primo ordine $-e\sin
+					M$ differisce da quella esatta al massimo di 1,96′ per l&#8217;adattamento
+					del 2026.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Tolomeo riferisce di aver ritrovato i 94½ e 92½ giorni di Ipparco nel
+				139–140 d.C., da un equinozio d&#8217;autunno il 26 settembre 139 circa
+				un&#8217;ora dopo l&#8217;alba, un equinozio di primavera il 22 marzo 140 circa
+				un&#8217;ora dopo mezzogiorno, e un solstizio d&#8217;estate il 25 giugno 140
+				circa due ore dopo mezzanotte, e conclude che l&#8217;apogeo non si muove
+				mai (III 1, III 4). Il cielo di riferimento pone questi istanti, in
+				tempo medio di Alessandria, il 24 settembre 139 alle 21:17, il 21 marzo
+				140 alle 16:16 e il 23 giugno 140 alle 13:49. Che cosa è andato storto,
+				e quali erano le stagioni e l&#8217;apogeo reali del suo tempo?
+			</p>
+			<details class="hint">
+				<p>
+					Confronta i ritardi delle tre osservazioni, poi calcola le durate reali
+					della primavera e dell&#8217;estate e verificale con il preset «140 d.C.»
+					della Figura 5.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Tutte e tre le osservazioni sono in ritardo: l&#8217;equinozio
+					d&#8217;autunno di circa 34 ore, l&#8217;equinozio di primavera di 21 ore e il
+					solstizio di 36 ore. La primavera reale del 140 d.C. durò 93,90 giorni
+					e la sua estate 92,56 giorni, non 94½ e 92½.
+				</p>
+				<p>
+					Adattate con il metodo di Ipparco, queste stagioni reali mettono
+					l&#8217;apogeo a 70,7°, 5° più a est che nel 141 a.C., con $e = 0{,}0349$.
+					I ritardi di Tolomeo riproducono per caso gli intervalli del tempo di
+					Ipparco, quindi i suoi dati non mostravano alcun moto; poiché un&#8217;ora
+					spostata fra le stagioni del suo tempo sposta l&#8217;apogeo di circa
+					1,1°, errori di un giorno nascondono completamente uno spostamento di
+					qualche grado.
+				</p>
+				<p>
+					L&#8217;apogeo ha continuato a muoversi di circa 1,75° per secolo rispetto
+					a γ: nel 2026 è a 103,7°. La pagina 2.3 spiega che la maggior parte di
+					questo è il moto di γ stesso.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): III 1 (gli
+				equinozi e i solstizi di Ipparco e di Tolomeo, gli anelli di bronzo, con
+				le note di Toomer sulle osservazioni tardive); III 2 (il moto medio); III
+				3 (il moto circolare uniforme, l&#8217;eccentrico e l&#8217;epiciclo); III 4
+				(l&#8217;eccentricità e l&#8217;apogeo da 94½ e 92½ giorni, la massima equazione
+				2° 23′ a 92° 23′, l&#8217;apogeo fisso, con le note di Toomer sull&#8217;effetto
+				di un&#8217;ora e sul perché il moto dell&#8217;apogeo passò inosservato); III
+				5–6 (la tavola dell&#8217;anomalia); III 7 (l&#8217;epoca, riportata a
+				Nabonassar); III 8 (il calcolo di una posizione, il segno
+				dell&#8217;equazione).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), I 5
+				[f. 3r] (si osserva solo il moto relativo); III 15 [f. 85r]
+				(l&#8217;eccentrico della Terra attorno al Sole); III 16 [ff. 87r–88v] (le
+				stagioni di Ipparco; l&#8217;apogeo di al-Battani e di Copernico, trovato
+				spostato).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.3 (il modello di
+				un&#8217;orbita di Ipparco: gli stessi angoli al primo ordine, il doppio
+				della variazione di distanza), §§ 5.1 e 5.3 (l&#8217;equazione del centro,
+				con $M$ dal perigeo; le durate delle stagioni).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 25 (la
+				longitudine eclittica media del Sole) e cap. 55 (il suo semidiametro,
+				959,63″ a 1 au).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
+				the Major Planets</em> (JPL): l&#8217;eccentricità e il perielio della
+				Terra, usati dal cielo di riferimento.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/2.1-uneven-year.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

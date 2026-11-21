@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.3 · CLOCKS
+     Act I, the stage. The sidereal day and the solar day; sidereal time and
+     the hour angle; mean solar time and Universal Time; the Julian Date;
+     transit times of stars and the length of the day.
+     Numbers: tools/numbers/1.3-clocks.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.3 · Orologi · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/clock.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Nella pagina 1.2 abbiamo collocato una stella nel cielo
+			dell&#8217;osservatore con $H = \theta - \alpha$, dove $\theta$ è l&#8217;angolo
+			di cui il cielo ha ruotato da quando il punto vernale γ ha attraversato
+			il meridiano. Abbiamo dovuto impostare $\theta$ a mano. Per prevedere
+			qualunque cosa, dobbiamo invece leggerlo da un orologio e da un
+			calendario.
+		</p>
+
+		<p>
+			Una volta noto $\theta$ in ogni istante, possiamo prevedere quando una
+			stella attraversa il meridiano in qualunque luogo, e per quanto tempo il
+			Sole resta sopra l&#8217;orizzonte in qualunque data e a qualunque
+			latitudine geografica.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Il giorno delle stelle e il giorno del Sole</h2>
+
+		<p>
+			Se cronometri una stella che attraversa il meridiano in due notti, con
+			un orologio che segna l&#8217;ora ordinaria, troverai che torna dopo 23 h
+			56 min 4 s. Quindi ogni notte la attraversa circa quattro minuti prima
+			della notte precedente, quasi due ore prima nel giro di un mese.
+		</p>
+
+		<p>
+			Per questo le stelle che vediamo a una data ora cambiano con le
+			stagioni. Da Roma, Betelgeuse in Orione attraversa il meridiano a
+			mezzanotte intorno al 20 dicembre, alle 22:00 intorno al 19 gennaio, e
+			alle 20:00 intorno al 18 febbraio, sempre in tempo medio locale, il
+			tempo dell&#8217;orologio del meridiano di Roma stessa.
+		</p>
+
+		<p>
+			L&#8217;intervallo fra un mezzogiorno e il successivo, il <strong>giorno
+			solare vero</strong>, è meno regolare del giorno delle stelle. Nel 2025
+			è variato da 21 s meno di 24 ore a settembre a 30 s in più a dicembre,
+			eppure la sua media sull&#8217;anno è stata di 24 ore entro un decimo di
+			secondo, perché i nostri orologi sono definiti così.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo mette entrambi i fatti in un&#8217;unica definizione. La
+				rotazione del cielo, «il ritorno di un dato punto dell&#8217;equatore» al
+				meridiano, richiede 360 <strong>gradi di tempo</strong>, mentre un
+				giorno solare medio richiede «360 gradi di tempo di una rivoluzione
+				dell&#8217;equatore più circa $0^\circ 59'$ gradi di tempo, che è
+				l&#8217;ammontare del moto medio del sole in quel periodo»
+				(<em>Almagest</em> III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Un grado di tempo è il tempo che l&#8217;equatore impiega a ruotare di
+			$1^\circ$ attraverso il meridiano, $\tfrac{1}{15}$ di ora, cioè 4 minuti
+			(introduzione di Toomer). Gli $0^\circ 59'$ ($0{,}983^\circ$) di Tolomeo
+			sono quindi 3,93 minuti, la differenza che abbiamo trovato fra il giorno
+			delle stelle e il giorno del Sole.
+		</p>
+
+		<div class="row">
+			<p>
+				In un anno quei quattro minuti al giorno si sommano fino a un intero
+				giro del cielo, e Copernico conta la differenza in questo modo: «nel
+				corso di un anno intero avvengono 365 rotazioni. Queste sono
+				aumentate di circa un&#8217;intera rotazione supplementare in seguito a
+				un prolungamento quotidiano dovuto all&#8217;avanzare apparente del
+				sole» (<em>De Revolutionibus</em> III 26 [f. 96v]). La Figura 1
+				mostra il giro in più che si accumula nel corso del 2025.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 1: the sky from above the north pole through the year -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="wheel-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="wheel-day">data</label>
+							<input id="wheel-day" type="range" min="0" max="365" step="1" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="wheel-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="wheel-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="ctl">
+							<label for="wheel-time">ora (UT)</label>
+							<input id="wheel-time" type="range" min="0" max="24" step="0.01" value="12">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="wheel-play-day">Avvia un giorno</button>
+							<button type="button" class="play" id="wheel-play-year">Avvia un anno</button>
+						</div>
+						<div class="readout" id="wheel-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Premi «Avvia un giorno» e guarda tutto compiere un giro in senso orario
+				attorno a P, sotto il meridiano fisso di Greenwich. Poi avvia un anno,
+				o scorri i giorni con l&#8217;ora fissa: il Sole resta vicino al
+				meridiano, mentre le stelle e γ si spostano di circa $1^\circ$ in più
+				ogni giorno. L&#8217;arco continuo è l&#8217;angolo di cui il Sole è rimasto
+				indietro rispetto a loro, l&#8217;ultima riga della lettura, e si chiude in
+				un giro intero entro il 1º gennaio 2026.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>vista</dt>
+						<dd>dall&#8217;esterno della sfera, sopra P, fino alla declinazione $-60^\circ$ sul bordo</dd>
+						<dt class="c-earth">blu</dt>
+						<dd>l&#8217;equatore celeste</dd>
+						<dt class="c-sun">oro</dt>
+						<dd>l&#8217;eclittica, continua dal posto del Sole il 1º gennaio 2025 alle 0 h UT (l&#8217;anello) fino al Sole</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>trascorso, giri</dt>
+						<dd>contati dal 1º gennaio 2025, 0 h UT; i giri del Sole sono i suoi passaggi al meridiano</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Tempo siderale e tempo solare medio</h2>
+
+		<h3>Il giorno sidereo e il giorno solare</h3>
+
+		<div class="row">
+			<p>
+				Manteniamo il cielo che ruota della pagina 1.1, in cui le stelle
+				ruotano attorno a P a velocità costante, e chiamiamo
+				<strong>giorno sidereo</strong> la durata di un giro. Il Sole partecipa a
+				quel giro, ma si sposta anche verso est lungo l&#8217;eclittica, di circa
+				$1^\circ$ al giorno rispetto alle stelle, quindi torna al meridiano un
+				po&#8217; più tardi di loro.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per vedere quanto più tardi, facciamo crescere uniformemente
+			l&#8217;ascensione retta del Sole, di $n$ gradi al giorno. Il suo angolo
+			orario è $H_\odot = \theta - \alpha_\odot$, come quello di qualunque
+			altro punto, quindi se il cielo ruota con velocità $\omega$, i due
+			angoli crescono con le velocità
+		</p>
+
+		$$\frac{d\theta}{dt} = \omega, \qquad \frac{dH_\odot}{dt} = \omega - n.$$
+
+		<p>
+			Un giorno solare, da un passaggio del Sole al meridiano al successivo,
+			è il tempo in cui $H_\odot$ cresce di $360^\circ$, e un giorno sidereo è
+			il tempo in cui cresce $\theta$ della stessa quantità. In un anno di $Y$
+			giorni solari il Sole fa un giro del cielo ($nY = 360^\circ$). In quel
+			tempo $H_\odot$ cresce di $360^\circ\,Y$, e $\theta$, che ogni giorno
+			guadagna $n$ su di esso, cresce di un giro in più, $360^\circ\,(Y + 1)$:
+		</p>
+
+		<div class="box">
+			$$Y \text{ giorni solari} = Y + 1 \text{ giorni siderei}, \qquad P_\text{sid} = \frac{Y}{Y + 1} \times 24\ \text{h}.$$
+		</div>
+
+		<p>
+			Con l&#8217;anno tropico di 365,24219 giorni, un anno contiene 366,24219
+			giorni siderei, e un giorno sidereo dura 23 h 56 min 4 s, il giro che
+			abbiamo cronometrato nella sezione 1.
+		</p>
+
+		<h3>Il tempo siderale e l&#8217;angolo orario</h3>
+
+		<div class="row">
+			<p>
+				Un orologio che va di pari passo con le stelle legge direttamente
+				l&#8217;angolo $\theta$, e la sua lettura si chiama <strong>tempo
+				siderale locale</strong>. Di solito si dà in ore, $15^\circ$
+				all&#8217;ora, quindi segna $0^\text{h}$ quando γ attraversa il
+				meridiano e percorre $24^\text{h}$ in un giorno sidereo.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Una stella attraversa il meridiano quando il suo angolo orario $H =
+			\theta - \alpha$ è zero, cioè quando il tempo siderale è uguale alla sua
+			ascensione retta. Quindi in ogni istante le stelle sul meridiano sono
+			quelle la cui ascensione retta è il tempo siderale del momento, ed è per
+			questo che l&#8217;ascensione retta si conta in ore, come il tempo
+			siderale.
+		</p>
+
+		<p>
+			Ogni luogo ha il suo meridiano, e quindi il suo tempo siderale. Per un
+			osservatore alla longitudine geografica $\ell$ a est di Greenwich, il
+			meridiano sta $\ell$ più a est fra le stelle rispetto al meridiano di
+			Greenwich. Poiché l&#8217;ascensione retta su un meridiano è il suo tempo
+			siderale, $\theta$ supera di $\ell$ il tempo siderale di Greenwich,
+			$\theta_G$:
+		</p>
+
+		$$\theta = \theta_G + \ell, \qquad H = \theta_G + \ell - \alpha.$$
+
+		<p>
+			Le longitudini geografiche in questo sito sono positive verso est.
+			Meeus le conta positive verso ovest, e Fitzpatrick scrive $\varphi$ per
+			la longitudine geografica (e $L$ per la latitudine geografica). Le loro
+			formule hanno $-\ell$ dove le nostre hanno $+\ell$.
+		</p>
+
+		<h3>Tempo solare medio e Tempo Universale</h3>
+
+		<div class="row">
+			<p>
+				Gli orologi con cui viviamo seguono il Sole, ma il Sole reale è un
+				cattivo segnatempo, perché i suoi giorni sono disuguali, come abbiamo
+				visto nella sezione 1, quindi gli astronomi hanno definito un
+				<strong>Sole medio</strong> fittizio che si muove lungo l&#8217;equatore a
+				velocità costante. La sua ascensione retta è la longitudine eclittica
+				media del Sole $\bar\lambda$, che cresce di $n$ ogni giorno:
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$\alpha_m = \bar\lambda = L_0 + n\,d.$$
+
+		<p>
+			Qui $d$ è il tempo in giorni di UT dall&#8217;epoca J2000.0, il 1º gennaio
+			2000 alle 12:00 UT, e $L_0$ è l&#8217;ascensione retta del Sole medio a
+			quell&#8217;epoca. La sezione 3 li misura entrambi dal Sole. Il Tempo
+			Universale stesso è definito da valori di queste due quantità fissati
+			per convenzione dal 1984 (Meeus, cap. 12), $L_0 = 280{,}46061837^\circ$ e
+			$n = 0{,}98564736629^\circ$ al giorno, e usiamo questi per seguire un
+			istante attraverso i passi qui sotto.
+		</p>
+
+		<p>
+			Il <strong>tempo solare medio</strong> in un luogo è l&#8217;angolo orario del
+			Sole medio più 12 ore, così che il giorno cominci a mezzanotte.
+		</p>
+
+		<p>
+			A Greenwich il tempo solare medio si chiama <strong>Tempo
+			Universale</strong>, UT, e in qualunque altro luogo il <strong>tempo medio
+			locale</strong> è $\text{UT} + \ell / 15^\circ$ ore. A Roma ($\ell =
+			12{,}50^\circ$) è UT + 50 min.
+		</p>
+
+		<p>
+			Gli orologi civili segnano invece il tempo medio di un meridiano di
+			riferimento. Il Tempo dell&#8217;Europa Centrale, per esempio, è UT + 1 h,
+			quindi a Roma il mezzogiorno medio locale cade verso le 12:10 CET.
+		</p>
+
+		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/shepherd-gate-clock.jpg" width="800" height="853" loading="lazy"
+				alt="Un grande quadrante d&#8217;orologio rotondo incassato in un muro di mattoni, numerato in cifre romane per 24 ore, con lo 0 in alto e il XII in basso.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				L&#8217;orologio della Shepherd Gate al Royal Observatory di Greenwich
+				segna il Greenwich Mean Time, il tempo solare medio del meridiano di
+				Greenwich, tutto l&#8217;anno, senza ora legale. Il suo quadrante ha 24
+				ore, con lo 0 (mezzanotte) in alto, quindi la lancetta delle ore fa un
+				giro al giorno e punta dritta in basso, sul XII, quando il Sole medio
+				attraversa il meridiano. Installato nel 1852, fu uno dei primi orologi
+				pubblici mossi elettricamente, da cui la scritta «galvano-magnetic»
+				sul quadrante.
+				<span class="credit">Daderot, 2024,
+					<a href="https://commons.wikimedia.org/wiki/File:Shepherd_Gate_clock_-_Greenwich_Observatory_-_London,_England_-_DSC00991.jpg">Wikimedia Commons</a>,
+					CC0 (pubblico dominio).</span>
+			</figcaption>
+		</figure>
+
+		<h3>Il tempo siderale dall&#8217;orologio</h3>
+
+		<p>
+			Un orologio dà l&#8217;angolo orario del Sole medio, e ciò che vogliamo è
+			l&#8217;angolo orario di γ, il tempo siderale. Passare dall&#8217;uno
+			all&#8217;altro richiede pochi brevi passi. Per essere sicuri che ognuno sia
+			giusto, seguiremo un solo istante attraverso tutti: il 20 aprile 2026,
+			alle 20:00 UT, a Greenwich.
+		</p>
+
+		<p>
+			<strong>Passo 1: il tempo siderale è l&#8217;angolo orario del Sole medio più
+			la sua ascensione retta.</strong> La relazione $H = \theta - \alpha$ vale
+			per ogni punto del cielo, Sole medio compreso, quindi a Greenwich $H_m =
+			\theta_G - \alpha_m$, ovvero
+		</p>
+
+		$$\theta_G = H_m + \alpha_m.$$
+
+		<p>
+			La Figura 2 disegna i tre angoli sull&#8217;equatore. Andando verso ovest dal
+			meridiano, raggiungiamo il Sole medio dopo $H_m$, e γ dopo un ulteriore
+			$\alpha_m$, perché l&#8217;ascensione retta si conta verso est da γ al Sole
+			medio.
+		</p>
+
+		<!-- Figure 2: the three angles on the equator (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="angles-canvas"></canvas>
+			</div>
+			<figcaption>
+				Segui l&#8217;arco esterno $\theta_G$ dal meridiano a γ il 20 aprile 2026
+				alle 20:00 UT: è l&#8217;arco $H_m$ fino al Sole medio più l&#8217;arco
+				$\alpha_m$ da lì a γ, $120^\circ + 28{,}92^\circ = 148{,}92^\circ$.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt><span class="c-sun">$H_m$</span>, <span class="c-epicycle">$\theta_G$</span></dt>
+						<dd>contati verso ovest dal meridiano (in senso orario in questa vista)</dd>
+						<dt class="c-earth">$\alpha_m$</dt>
+						<dd>contato verso est da γ</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			<strong>Passo 2: l&#8217;orologio dà $H_m$.</strong> Il tempo solare medio è
+			definito in modo che il Sole medio attraversi il meridiano di Greenwich
+			alle 12:00 UT, e il suo angolo orario cresce poi di $15^\circ$ per ogni
+			ora di UT:
+		</p>
+
+		$$H_m = 15^\circ\,(\text{UT} - 12\,\text{h}).$$
+
+		<p>
+			Alle 20:00 UT, $H_m = 15^\circ \times 8 = 120^\circ$.
+		</p>
+
+		<p>
+			<strong>Passo 3: la data dà $\alpha_m$.</strong> Il 20 aprile 2026 alle
+			20:00 UT, $d = 9606{,}3333$ giorni, e con $L_0$ e $n$ dell&#8217;UT,
+			$\alpha_m = L_0 + n\,d = 28{,}92^\circ$ (modulo $360^\circ$). Sommando i
+			due angoli si ha $\theta_G = 120^\circ + 28{,}92^\circ =
+			148{,}92^\circ$.
+		</p>
+
+		<p>
+			<strong>Passo 4: $H_m$ in funzione di $d$.</strong> I passi 2 e 3 usano
+			due variabili, l&#8217;ora del giorno e la data, e vorremmo un&#8217;unica
+			formula in $d$. Poiché $d$ si conta da un mezzogiorno, la sua parte
+			intera $N$ è il numero di mezzogiorni dall&#8217;epoca, e la sua parte
+			frazionaria è il tempo dall&#8217;ultimo mezzogiorno:
+		</p>
+
+		$$d = N + \frac{\text{UT} - 12\,\text{h}}{24\,\text{h}}, \qquad 360^\circ\,d = 360^\circ N + 15^\circ\,(\text{UT} - 12\,\text{h}) = 360^\circ N + H_m.$$
+
+		<p>
+			I giri interi non cambiano una direzione, quindi possiamo sostituire
+			$H_m$ con $360^\circ\,d$. Il 20 aprile, $360^\circ \times 9606{,}3333$
+			fa 9606 giri interi più $120^\circ$, che è proprio $H_m$. Mettendo
+			insieme i quattro passi,
+		</p>
+
+		$$\theta_G = 360^\circ\,d + L_0 + n\,d = L_0 + (360^\circ + n)\,d.$$
+
+		<p>
+			La velocità $360^\circ + n$ è l&#8217;$\omega$ che abbiamo incontrato
+			all&#8217;inizio di questa sezione. In un giorno di UT il cielo ruota di
+			$360^\circ$ rispetto al Sole medio, perché questo è un giorno solare, e
+			nello stesso giorno il Sole medio si sposta di $n$ più a est di γ.
+			Rispetto a γ, dunque, il cielo ruota di $360^\circ + n$.
+		</p>
+
+		<p>
+			Questo è l&#8217;orologio di questa pagina. Con i valori propri
+			dell&#8217;UT per $L_0$ e $n$ diventa la formula che definisce il tempo
+			siderale,
+		</p>
+
+		<div class="box">
+			$$\theta_G = 280{,}46061837^\circ + 360{,}98564736629^\circ\, d, \qquad d = \text{JD(UT)} - 2451545{,}0,$$
+		</div>
+
+		<p>
+			a cui Meeus aggiunge altri due termini, in $T^2$ e $T^3$, che valgono
+			solo 6 ms nel 2026. La velocità contiene la durata dell&#8217;anno, perché
+			$360^\circ / n = 365{,}24219$ giorni, l&#8217;anno tropico. Il nostro
+			orologio usa i valori di $L_0$ e $n$ che la sezione 3 misura dal Sole, e
+			la sezione 4 lo verifica contro il cielo.
+		</p>
+
+		<p>
+			Possiamo ora controllare l&#8217;angolo che abbiamo impostato a mano nella
+			pagina 1.2, dove Aldebaran stava nel cielo di Roma il 1º gennaio 2026
+			alle 19:00 UT con $\theta = 38{,}94^\circ$. In quell&#8217;istante la
+			formula dà
+			$\theta_G = 26{,}44^\circ$, e aggiungendo l&#8217;$\ell = 12{,}50^\circ$ di
+			Roma si ottiene lo stesso $\theta = 38{,}94^\circ$
+			($2^\text{h}35^\text{m}45^\text{s}$). La Figura 3 parte da
+			quell&#8217;istante.
+		</p>
+
+		<!-- Figure 3: sidereal time and the hour angle, from above the pole -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="sid-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="sid-time">ora (UT)</label>
+							<input id="sid-time" type="range" min="0" max="24" step="0.01" value="19">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="sid-play">Avvia</button>
+						</div>
+						<div class="ctl">
+							<label for="sid-lon">longitudine geografica ℓ</label>
+							<input id="sid-lon" type="range" min="-180" max="180" step="0.01" value="12.4964">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="sid-lon" data-value="0">Greenwich</button>
+							<button type="button" data-target="sid-lon" data-value="12.4964">Roma</button>
+							<button type="button" data-target="sid-lon" data-value="29.92">Alessandria</button>
+							<button type="button" data-target="sid-lon" data-value="-74.006">New York</button>
+						</div>
+						<div class="presets star-choice" id="sid-stars"></div>
+						<div class="readout" id="sid-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Premi Avvia e guarda γ e la stella ruotare insieme il 1º gennaio 2026:
+				$\theta_G$ e $H$ crescono alla stessa velocità, mentre $\alpha$ e
+				$\ell$ restano fissi. Poi muovi la longitudine geografica con l&#8217;ora
+				fissa: si muove solo il meridiano dell&#8217;osservatore, e $\ell$ e $H$
+				cambiano dello stesso angolo. Fermati dove vuoi e verifica nella
+				lettura che $H = \theta_G + \ell - \alpha$.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">verde</dt>
+						<dd>il meridiano di Greenwich e, $\ell$ a est di esso, il meridiano dell&#8217;osservatore</dd>
+						<dt><span class="c-epicycle">$\theta_G$</span>, <span class="c-planet">$H$</span></dt>
+						<dd>contati verso ovest (in senso orario in questa vista), $H$ dal meridiano dell&#8217;osservatore</dd>
+						<dt><span class="c-earth">$\alpha$</span>, <span class="c-deferent">$\ell$</span></dt>
+						<dd>contati verso est</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La data giuliana</h3>
+
+		<div class="row">
+			<p>
+				Per usare la formula ci serve $d$, il numero di giorni fra due date, e
+				i calendari lo rendono scomodo. I mesi hanno durate disuguali, alcuni
+				anni hanno un giorno bisestile, e con la riforma gregoriana al 4
+				ottobre 1582 seguì direttamente il 15 ottobre. Gli astronomi contano
+				quindi i giorni in modo continuo.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			La <strong>data giuliana</strong> JD conta i giorni dal mezzogiorno UT del
+			1º gennaio 4713 a.C. del calendario giuliano, con l&#8217;ora del giorno come
+			frazione. J2000.0 è JD 2451545,0, e il 1º gennaio 2026 alle 0 h UT è JD
+			2461041,5. In questo conteggio i due giorni della riforma gregoriana, il
+			4 e il 15 ottobre 1582, si susseguono come JD 2299159,5 e 2299160,5.
+		</p>
+
+		<div class="row">
+			<p>
+				Una data giuliana comincia a mezzogiorno, come il giorno astronomico
+				di Tolomeo. Egli contava il giorno dal passaggio del Sole al meridiano
+				perché il sorgere del Sole avviene in momenti diversi a latitudini
+				geografiche diverse, mentre il meridiano si comporta «allo stesso modo
+				in ogni luogo della terra» (<em>Almagest</em> III 9), e pose tutte le
+				sue epoche a mezzogiorno (III 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il mezzogiorno non era una scelta ovvia. Nella vita ordinaria il giorno
+			cominciava all&#8217;alba per i Babilonesi, al tramonto per gli Ateniesi e a
+			mezzanotte per i Romani, come ricorda Copernico (<em>De
+			Revolutionibus</em> III 26).
+		</p>
+
+		<p>
+			Per convertire una data del calendario (anno $Y$, mese $M$, giorno $D$
+			con la sua frazione) in data giuliana, Meeus (cap. 7) dà
+		</p>
+
+		$$\text{JD} = \lfloor 365{,}25\,(Y + 4716) \rfloor + \lfloor 30{,}6001\,(M + 1) \rfloor + D + B - 1524{,}5,$$
+
+		<p>
+			con gennaio e febbraio contati come mesi 13 e 14 dell&#8217;anno precedente,
+			e $B = 2 - \lfloor Y/100 \rfloor + \lfloor Y/400 \rfloor$ (calendario
+			gregoriano) oppure $B = 0$ (calendario giuliano).
+		</p>
+
+		<details class="fold">
+			<summary>Da dove vengono i termini</summary>
+			<p>
+				Far cominciare l&#8217;anno a marzo mette il giorno bisestile alla fine
+				dell&#8217;anno, così il numero di giorni prima di un dato mese non
+				dipende dal fatto che l&#8217;anno sia bisestile. Da marzo in poi i mesi
+				hanno 31, 30, 31, 30, 31 giorni, uno schema che si ripete con una media
+				di 30,6 giorni, e $\lfloor 30{,}6001\,(M + 1) \rfloor$ li conta. Lo
+				0,0001 in più protegge dagli errori di arrotondamento.
+			</p>
+			<p>
+				Il termine $\lfloor 365{,}25\,(Y + 4716) \rfloor$ conta i giorni degli
+				anni passati con un giorno bisestile ogni quattro anni, come nel
+				calendario giuliano, e lo spostamento di 4716 anni mantiene positivo il
+				suo argomento per ogni data dopo il 4713 a.C. $B$ toglie i tre giorni
+				bisestili che il calendario gregoriano salta ogni quattro secoli, e
+				$-1524{,}5$ fissa l&#8217;origine.
+			</p>
+		</details>
+
+		<div class="row">
+			<p>
+				Anche Tolomeo aveva bisogno di un conteggio continuo, per confrontare
+				osservazioni fatte a secoli di distanza. Datava gli eventi in anni
+				egizi di esattamente 365 giorni, contati dal primo anno del re
+				Nabonassar, il cui regno apriva i registri babilonesi che usava
+				(<em>Almagest</em> III 7; introduzione di Toomer).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Possiamo verificare il suo conteggio con il nostro. Da Nabonassar 1,
+			Thoth 1, mezzogiorno, a un equinozio d&#8217;autunno che osservò nel 17º
+			anno di Adriano, Athyr 7, due ore dopo mezzogiorno, conta «879 anni egizi
+			66 giorni e 2 ore equinoziali» (III 7). Nel nostro calendario questi
+			istanti sono il 26 febbraio 747 a.C. e il 25 settembre 132 d.C., JD
+			1448638,0 e 1769539,0833. Distano 320901,0833 giorni, esattamente $879
+			\times 365 + 66 + \tfrac{2}{24}$.
+		</p>
+
+		<h3>Quando una stella attraversa il meridiano</h3>
+
+		<p>
+			Ora che conosciamo il tempo siderale in ogni istante, possiamo prevedere
+			quando una stella attraversa il meridiano, cioè quando $\theta =
+			\alpha$. Alle 0 h UT della data il tempo siderale di Greenwich è
+			$\theta_{G,0}$, quindi il cielo deve ancora ruotare di $(\alpha - \ell -
+			\theta_{G,0})$, ridotto a $[0^\circ, 360^\circ)$, e ruota di $360^\circ
+			+ n$ al giorno:
+		</p>
+
+		$$\text{UT del transito} = \frac{(\alpha - \ell - \theta_{G,0}) \bmod 360^\circ}{360^\circ + n} \times 24\ \text{h}.$$
+
+		<p>
+			Il transito successivo avviene un giorno sidereo dopo, di solito nella
+			data seguente. Poiché però il giorno sidereo è più corto di 24 ore, una
+			volta all&#8217;anno il transito successivo cade ancora nella stessa data, e
+			in quella data la stella attraversa il meridiano due volte.
+		</p>
+
+		<p>
+			La Figura 4 traccia i transiti di un anno intero come un calendario
+			stellare, insieme alle ore di notte. Ogni notte il transito avviene circa
+			quattro minuti prima, e dopo un anno la stella è di nuovo alla stessa ora.
+		</p>
+
+		<!-- Figure 4: the star calendar -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="transit-plot"></canvas>
+				<div class="panel-controls">
+					<div>
+						<div class="presets star-choice" id="transit-stars"></div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="transit-lat">latitudine geografica φ</label>
+							<input id="transit-lat" type="range" min="-60" max="60" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="transit-lat" data-value="31.2">Alessandria</button>
+							<button type="button" data-target="transit-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="transit-lat" data-value="51.5">Londra</button>
+							<button type="button" data-target="transit-lat" data-value="-33.9">Sydney</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="transit-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Scegli una stella, poi punta il grafico per leggere una notte. Una
+				stella si vede meglio nei mesi in cui la sua linea di transito
+				attraversa il centro della fascia della notte, quando il Sole è
+				opposto a essa nel cielo.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">fascia grigia</dt>
+						<dd>la notte, con il centro del Sole del modello più di 50′ sotto l&#8217;orizzonte</dd>
+						<dt class="c-planet">fascia rossa</dt>
+						<dd>le ore in cui la stella è sopra l&#8217;orizzonte</dd>
+						<dt class="c-planet">linea</dt>
+						<dd>il transito della stella</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La durata del giorno</h3>
+
+		<p>
+			Ora che sappiamo leggere l&#8217;angolo del cielo da un orologio, possiamo
+			prevedere quando il Sole sorge e tramonta. Per questo ci serve la sua
+			declinazione, e cominceremo dal Sole più semplice che ci sia: uno che si
+			muove lungo l&#8217;eclittica a velocità costante, così che la sua
+			longitudine eclittica sia sempre la longitudine eclittica media,
+			$\lambda = \bar\lambda$. La sua declinazione segue allora dalla formula
+			di conversione della pagina 1.2:
+		</p>
+
+		$$\sin\delta_\odot = \sin\varepsilon \sin\bar\lambda.$$
+
+		<p>
+			Questo Sole attraversa il meridiano a mezzogiorno medio, alle 12:00 di
+			tempo medio locale, e il suo angolo orario cresce di $15^\circ$
+			all&#8217;ora. Tramonta all&#8217;angolo orario $H_0$ che abbiamo trovato nella
+			pagina 1.1, generalizzato a un orizzonte ad altezza $h_0$:
+		</p>
+
+		$$\cos H_0 = \frac{\sin h_0 - \sin\varphi \sin\delta_\odot}{\cos\varphi \cos\delta_\odot}, \qquad \text{giorno} = \frac{2H_0}{15^\circ}\ \text{h}, \qquad \text{sorgere, tramonto} = 12\,\text{h} \mp \frac{H_0}{15^\circ}.$$
+
+		<p>
+			Il sorgere e il tramonto si cronometrano quando il bordo superiore del
+			Sole tocca l&#8217;orizzonte. In quell&#8217;istante il suo centro è 50′ sotto
+			l&#8217;orizzonte vero, 34′ per la rifrazione e 16′ per il raggio del Sole,
+			come abbiamo trovato nel terzo esercizio della pagina 1.1, quindi $h_0 =
+			-50'$.
+		</p>
+
+		<p>
+			All&#8217;equatore quei 50′ aggiungono 7 minuti al giorno, che dura 12 h 07
+			min tutto l&#8217;anno, e il giorno più lungo di Tolomeo a Rodi,
+			$14\tfrac12$ ore con l&#8217;orizzonte geometrico della pagina 1.1, diventa
+			14 h 39 min. La tabella dà il giorno a tre altre latitudini geografiche.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Luogo</th>
+					<th>Equinozio di marzo</th>
+					<th>Solstizio di giugno</th>
+					<th>Solstizio di dicembre</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Alessandria ($31{,}2^\circ$)</td>
+					<td>12 h 04 min</td>
+					<td>14 h 11 min</td>
+					<td>10 h 07 min</td>
+				</tr>
+				<tr>
+					<td>Roma ($41{,}9^\circ$)</td>
+					<td>12 h 03 min</td>
+					<td>15 h 14 min</td>
+					<td>9 h 07 min</td>
+				</tr>
+				<tr>
+					<td>Londra ($51{,}5^\circ$)</td>
+					<td>12 h 03 min</td>
+					<td>16 h 38 min</td>
+					<td>7 h 50 min</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Vicino ai poli il Sole smette di tramontare. Il suo punto più basso resta
+			sopra $h_0$ quando $\varphi > 90^\circ - \delta_\odot + h_0$, e poiché
+			$\delta_\odot$ arriva a $\varepsilon$, in qualche momento dell&#8217;anno c&#8217;è
+			un sole di mezzanotte a nord di $65{,}7^\circ$ e una notte polare a nord
+			di $67{,}4^\circ$. A Tromsø, a nord di entrambi i limiti, questo Sole
+			resta sopra l&#8217;orizzonte per 66 giorni nel 2026 e sotto per 50.
+		</p>
+
+		<!-- Figure 5: the length of the day -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) nel corso del 2026, a una latitudine geografica</p>
+						<canvas id="day-curve"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) a ogni latitudine geografica, in tre date</p>
+						<canvas id="day-map"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="day-lat">latitudine geografica φ</label>
+							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="presets">
+							<button type="button" data-target="day-lat" data-value="0">equatore</button>
+							<button type="button" data-target="day-lat" data-value="31.2">Alessandria</button>
+							<button type="button" data-target="day-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="day-lat" data-value="51.5">Londra</button>
+							<button type="button" data-target="day-lat" data-value="69.65">Tromsø</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="day-readout" data-lines="3"></div>
+			</div>
+			<figcaption>
+				Muovi la latitudine geografica e guarda la curva in (a) appiattirsi
+				verso l&#8217;equatore, e raggiungere 0 h e 24 h oltre i circoli polari.
+				In (b), scegli Alessandria, Roma o Londra e confronta i tre punti con
+				quella riga della tabella. Nota che la curva di dicembre è la curva di
+				giugno con nord e sud scambiati.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;anno, l&#8217;epoca e la longitudine geografica</h2>
+
+		<p>
+			Prima che la formula della sezione 2 possa leggere l&#8217;angolo del cielo
+			da un orologio, tre numeri vanno fissati con l&#8217;osservazione: la sua
+			velocità $360^\circ + n$, la sua costante $L_0$, e la longitudine
+			geografica dell&#8217;osservatore $\ell$. Ognuno viene da
+			un&#8217;osservazione diversa.
+		</p>
+
+		<h3>La velocità, dalla durata dell&#8217;anno</h3>
+
+		<p>
+			Poiché $n = 360^\circ / Y$, la velocità segue dalla durata
+			dell&#8217;anno. Un anno si fissa meglio cronometrando lo stesso punto del
+			percorso del Sole a molti anni di distanza, perché l&#8217;errore di ogni
+			misura di tempo viene allora diviso per il numero di anni fra le due.
+			Prendiamo gli istanti in cui il Sole ha raggiunto ciascun equinozio e
+			ciascun solstizio dal 1926 al 2025, e adattiamo una retta ai cento
+			istanti di ciascuno.
+		</p>
+
+		<p>
+			Le quattro rette danno quattro anni leggermente diversi, da 365,24163
+			giorni fra solstizi di giugno a 365,24275 giorni fra solstizi di
+			dicembre. La velocità del Sole in ciascuno di questi punti cambia
+			lentamente, perché il punto in cui si muove più in fretta si sposta
+			lungo l&#8217;eclittica (pagina 2.3), il che allunga alcuni di questi anni e
+			ne accorcia altri. L&#8217;anno del Sole medio è la loro media, $Y$ =
+			365,24219 giorni, quindi $n$ = 0,98564735° al giorno.
+		</p>
+
+		<p>
+			L&#8217;anno va conosciuto con precisione, perché un errore nella velocità si
+			accumula: dopo $d$ giorni l&#8217;orologio sbaglia di $d \, \Delta n$, lo
+			stesso angolo di cui sbaglia il Sole medio, perché l&#8217;orologio legge il
+			cielo attraverso il Sole medio. Un errore di un minuto nell&#8217;anno sposta
+			l&#8217;orologio di circa 16 s di tempo per secolo.
+		</p>
+
+		<h3>La costante, dal Sole</h3>
+
+		<p>
+			La costante $L_0$ è l&#8217;ascensione retta del Sole medio
+			all&#8217;epoca, che è anche la sua longitudine eclittica media. Su anni
+			interi il Sole reale è avanti rispetto al Sole medio quanto indietro,
+			quindi la media di $\lambda_\odot - n\,d$ su anni interi è $L_0$.
+			Facciamo la media sui 19 anni dal 2007 al 2025, che coprono anche un
+			giro della nutazione, l&#8217;oscillazione dell&#8217;equinozio incontrata
+			nella pagina 1.2, che si ripete ogni 18,6 anni: i soli dieci anni dal
+			2016 lascerebbero $L_0$ sbagliato di 10″. Il risultato è $L_0$ =
+			280,4614°.
+		</p>
+
+		<div class="row">
+			<p>
+				Questo è il Sole medio del Sole come lo vediamo, che resta indietro
+				rispetto al suo posto geometrico dei 20″ che percorre mentre la sua
+				luce ci raggiunge, l&#8217;aberrazione della luce. I suoi giorni sono
+				quelli del Tempo Terrestre, in cui il cielo di riferimento dà il Sole
+				(TT, sezione 5), mentre l&#8217;orologio conta giorni di UT, che a J2000.0
+				era indietro di 64 s. In 64 s il Sole medio si sposta di 2,6″, quindi
+				la costante dell&#8217;orologio è $L_0$ + 2,6″ = 280,4621°.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="aberration"></div>
+			</aside>
+		</div>
+
+		<p>
+			Con essa, il Sole reale del 2007–2025 attraversa il meridiano di
+			Greenwich in media 0,08 s dopo il mezzogiorno dell&#8217;orologio, come deve
+			per un orologio di tempo solare medio. La costante propria dell&#8217;UT,
+			280,46061837°, è una convenzione legata alla rotazione terrestre e sta
+			5,3″ più in basso: con essa il Sole reale passa in media 0,40 s dopo le
+			12:00. Il nostro $n$ allontana l&#8217;orologio dall&#8217;UT di altri 0,16 s di
+			tempo per secolo.
+		</p>
+
+		<h3>La longitudine geografica, da un transito cronometrato</h3>
+
+		<p>
+			Una volta noti $n$ e $L_0$, un solo transito cronometrato dà la
+			longitudine geografica dell&#8217;osservatore, perché al transito $\theta =
+			\alpha$, quindi $\ell = \alpha - \theta_G$. Vega, per esempio, ad
+			ascensione retta $279{,}4601^\circ$ nel 2026, ha attraversato il
+			meridiano di Roma il 15 agosto 2026 alle 20:10:52 UT, cronometrata al
+			secondo.
+		</p>
+
+		<p>
+			In quell&#8217;istante l&#8217;orologio dà $\theta_G = 266{,}9639^\circ$, quindi
+			$\ell = 12{,}4962^\circ$, contro il valore vero 12,4964°. Quanto ci
+			avviciniamo dipende solo dalla misura del tempo, perché un secondo di
+			tempo vale 15″ di longitudine geografica, 345 m sul parallelo di Roma.
+		</p>
+
+		<!-- History block: Hipparchus' and Ptolemy's year -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>L&#8217;anno di Ipparco e di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					Ipparco e Tolomeo misurarono l&#8217;anno confrontando solstizi ed
+					equinozi più antichi con i propri, a distanza di uno o più secoli
+					(<em>Almagest</em> III 1), perché l&#8217;errore di una misura di tempo
+					viene allora diviso per il numero di anni fra le due. Il loro anno
+					risultò comunque troppo lungo di 6,4 minuti.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Con quell&#8217;anno, il Sole medio di Tolomeo resta indietro rispetto a
+				quello reale di quasi mezzo grado per secolo, e un orologio costruito
+				su di esso resta indietro rispetto alle stelle dello stesso angolo.
+			</p>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;orologio contro il cielo</h2>
+
+		<p>
+			L&#8217;orologio deve dire quando le stelle e il Sole attraversano il
+			meridiano, sorgono e tramontano, quindi lo verifichiamo su entrambi.
+		</p>
+
+		<h3>Le stelle</h3>
+
+		<div class="row">
+			<p>
+				Il cielo di riferimento calcola il tempo siderale con la formula
+				completa di Meeus e aggiunge la nutazione, il piccolo spostamento
+				avanti e indietro dell&#8217;equinozio incontrato nella pagina 1.2. Per
+				tutto il 2026 l&#8217;orologio differisce da esso di meno di 0,4 s, quindi i
+				transiti che prevediamo per le stelle sono giusti entro un secondo.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
+
+		<h3>Il Sole</h3>
+
+		<p>
+			Per vedere quanto è buono il Sole uniforme, la Figura 6 confronta il
+			suo mezzogiorno e la durata del suo giorno con quelli del Sole di
+			riferimento nel corso del 2026, e la sua lettura aggiunge il sorgere e il
+			tramonto. Il mezzogiorno del Sole di riferimento è il suo passaggio reale
+			al meridiano, e il suo sorgere e tramonto usano lo stesso $h_0 = -50'$
+			del Sole uniforme, quindi la figura misura solo l&#8217;errore nel moto del
+			Sole.
+		</p>
+
+		<!-- Figure 6: the model Sun against the real Sun -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="test-plot"></canvas>
+						<div id="test-legend"></div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="test-lat">latitudine geografica φ</label>
+							<input id="test-lat" type="range" min="-65" max="65" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="test-lat" data-value="0">equatore</button>
+							<button type="button" data-target="test-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="test-lat" data-value="51.5">Londra</button>
+							<button type="button" data-target="test-lat" data-value="65">65° N</button>
+							<button type="button" data-target="test-lat" data-value="-33.9">Sydney</button>
+						</div>
+						<div class="readout" id="test-readout" data-lines="5"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Muovi la latitudine geografica e nota che cambia solo la curva della
+				durata del giorno: il suo errore cresce allontanandosi
+				dall&#8217;equatore, e cambia segno nell&#8217;emisfero sud, mentre
+				l&#8217;errore del mezzogiorno resta lo stesso. Punta il grafico per
+				leggere gli errori in una data.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>modello − reale</dt>
+						<dd>positivo quando il mezzogiorno del modello è in ritardo, o il suo giorno è troppo lungo</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>alba, tramonto</dt>
+						<dd>ora dell&#8217;alba e del tramonto, modello meno reale</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			A ogni latitudine geografica il mezzogiorno del Sole uniforme sbaglia
+			fino a 16,5 minuti. Nell&#8217;emisfero nord il suo giorno risulta troppo
+			corto quasi tutto l&#8217;anno, con un errore che cresce con la latitudine
+			geografica, fino a 13 minuti a 65°; nell&#8217;emisfero sud i segni sono
+			invertiti.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che l&#8217;orologio trascura</h2>
+
+		<p>
+			Prima di confrontare un tempo registrato da Tolomeo con il cielo di
+			riferimento dobbiamo correggerlo, perché il Tempo Universale stesso non è
+			uniforme. Segue la rotazione della Terra, e la Terra non ruota a velocità
+			costante. Il tempo uniforme delle effemeridi, il <strong>Tempo
+			Terrestre</strong> (TT), è mantenuto da orologi atomici, e i due
+			differiscono di $\Delta T = \text{TT} - \text{UT}$, circa 69 s oggi,
+			perché il giorno si allunga lentamente, soprattutto per l&#8217;attrito delle
+			maree.
+		</p>
+
+		<div class="row">
+			<p>
+				Ogni giorno è più corto di un giorno uniforme di tanto più quanto più
+				è lontano nel passato, e i giorni si sommano, quindi $\Delta T$ cresce
+				all&#8217;incirca come il quadrato del tempo trascorso da circa il 1820:
+				arriva a circa due ore e mezza al tempo di Tolomeo, in cui il cielo
+				ruota di quasi $39^\circ$. Ogni misura di tempo antica dalla pagina 2.1
+				in poi viene corretta con esso.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="deltaT"></div>
+			</aside>
+		</div>
+
+		<details class="fold">
+			<summary>Perché ΔT arriva a ore nell&#8217;antichità</summary>
+			<p>
+				Il secondo atomico fu scelto in modo da corrispondere alla durata del
+				giorno intorno al 1820, quindi $\Delta T$ è la somma, giorno dopo giorno
+				da allora, della differenza di ciascun giorno da 86·400 s. Il giorno si
+				allunga di circa 1,75 ms per secolo, soprattutto per l&#8217;attrito delle
+				maree sollevate dalla Luna.
+			</p>
+			<p>
+				Nel 132 d.C., dunque, un giorno era più corto di 86·400 s solo di circa
+				30 ms, quindi la Terra ruotava quasi esattamente alla velocità di oggi.
+				Fra il 132 e il 1820, però, un ammanco medio di circa 15 ms al giorno,
+				accumulato su più di 600·000 giorni, arriva a circa 2 h 32 min, vicino
+				alle 2 h 35 min che la formula di Espenak e Meeus, adattata ai registri
+				antichi di eclissi, dà per il tempo di Tolomeo.
+			</p>
+		</details>
+
+		<p>
+			Anche le ascensioni rette delle stelle cambiano, quindi gli istanti di
+			transito calcolati da un catalogo vecchio si spostano di qualche secondo
+			all&#8217;anno per la maggior parte delle stelle, e di più di un minuto
+			all&#8217;anno per Polaris. Questa lenta rotazione del sistema stesso è
+			misurata nella pagina 2.3.
+		</p>
+
+		<p>
+			L&#8217;errore del mezzogiorno ha due cause di grandezza simile. La prima
+			resterebbe anche per un Sole che si muovesse uniformemente lungo
+			l&#8217;eclittica: l&#8217;eclittica è inclinata sull&#8217;equatore, quindi un tale
+			Sole non si muoverebbe comunque uniformemente in ascensione retta,
+			perché $\tan\alpha = \cos\varepsilon\tan\lambda$ (pagina 1.2). La pagina
+			2.2 combina questo effetto con la disuniformità propria del Sole
+			nell&#8217;equazione del tempo.
+		</p>
+
+		<p>
+			La seconda causa, e l&#8217;unica dell&#8217;errore nella durata del giorno, è
+			il Sole uniforme stesso, la cui longitudine eclittica cresce dello stesso
+			angolo ogni giorno. Il Sole reale gli corre avanti da gennaio a luglio,
+			mentre sale verso nord, e resta indietro da luglio a gennaio, mentre
+			scende, quindi la sua declinazione è quasi sempre la più alta delle due,
+			e il giorno dell&#8217;emisfero nord più lungo. La pagina 2.1 misura questa
+			disuguaglianza e ne costruisce il primo modello.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra che un anno di $Y$ giorni solari contiene $Y + 1$ giorni
+				siderei, e trova il giorno sidereo per $Y = 365{,}24219$ giorni. Ripeti
+				con il moto giornaliero del Sole di Tolomeo, $0^\circ 59' 08{,}29''$
+				(0,985635°). Poi applica lo stesso ragionamento alla Luna, che fa il
+				giro del cielo rispetto al Sole in un mese sinodico di 29,530586 giorni:
+				di quanto più tardi attraversa il meridiano ogni giorno?
+			</p>
+			<details class="hint">
+				<p>
+					Scrivi l&#8217;angolo orario del corpo come $\theta - \alpha$ e confronta
+					le velocità. Per la Luna, confronta il suo giorno con quello del Sole:
+					rispetto al Sole fa un giro in un mese sinodico.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con $H_\odot = \theta - \alpha_\odot$, l&#8217;angolo orario del Sole
+					cresce con velocità $\omega - n$. In un anno il Sole fa un giro del
+					cielo, quindi $H_\odot$ cresce di $360^\circ$ meno di $\theta$: $Y$
+					giorni solari sono $Y + 1$ giri del cielo, 366,24219 giorni siderei.
+					Un giorno sidereo è $24\ \text{h} \times Y/(Y+1)$ = 23 h 56 min
+					04,091 s.
+				</p>
+				<p>
+					Nei termini di Tolomeo un giorno solare medio è $360^\circ +
+					0{,}985635^\circ$ della rotazione del cielo, quindi un giro richiede
+					$360 / 360{,}985635$ di giorno: 23 h 56 min 04,093 s.
+				</p>
+				<p>
+					La Luna si sposta verso est rispetto al Sole di un giro in 29,530586
+					giorni, quindi il suo angolo orario resta indietro rispetto a quello
+					del Sole di $360^\circ / 29{,}530586$ al giorno. Il suo giorno dura
+					$1/(1 - 1/29{,}530586) = 1{,}035050$ giorni, 24 h 50 min 28 s:
+					attraversa il meridiano circa 50,5 minuti più tardi ogni giorno.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				A che ora Sirio attraversa il meridiano di Roma ($\ell =
+				12{,}4964^\circ$, $\varphi = 41{,}9^\circ$) la notte di San Silvestro,
+				il 31 dicembre 2026? La sua posizione della data è $\alpha =
+				101{,}5845^\circ$, $\delta = -16{,}755^\circ$. Dai la risposta in UT e
+				in Tempo dell&#8217;Europa Centrale (UT + 1 h), e l&#8217;altezza della
+				stella. Verifica nella Figura 4, poi ripeti per la tua longitudine
+				geografica.
+			</p>
+			<details class="hint">
+				<p>
+					Trova prima $\theta_{G,0}$ alle 0 h UT da $d$ = JD − 2451545,0, poi
+					usa la formula del transito della sezione 2.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Il 31 dicembre 2026 alle 0 h UT, JD = 2461405,5 e $d = 9860{,}5$,
+					quindi $\theta_{G,0} = 99{,}4378^\circ$
+					($6^\text{h}37^\text{m}45{,}06^\text{s}$).
+				</p>
+				<p>
+					Il cielo deve ancora ruotare di $(101{,}5845^\circ - 12{,}4964^\circ -
+					99{,}4378^\circ) \bmod 360^\circ = 349{,}6503^\circ$. A
+					$360{,}9856^\circ$ al giorno ci vogliono 23,24637 h: il transito è
+					alle 23:14:47 UT, cioè alle 00:14:47 CET del 1º gennaio, un quarto
+					d&#8217;ora dopo l&#8217;inizio del nuovo anno, e alle 00:04:46 di tempo medio
+					locale.
+				</p>
+				<p>
+					L&#8217;altezza è $90^\circ - |41{,}9^\circ + 16{,}755^\circ| =
+					31{,}3^\circ$. Sirio passa quindi intorno alla mezzanotte media locale
+					della notte del 1º gennaio. Il 20 dicembre attraversa il meridiano di
+					Roma due volte nella stessa data UT, il doppio transito che secondo la
+					sezione 2 avviene una volta all&#8217;anno.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Il modello mette il tramonto più precoce e l&#8217;alba più tardiva
+				dell&#8217;inverno nel giorno più corto, il solstizio: a Roma, alle 07:36:18
+				e alle 16:43:44 CET del 21 dicembre 2025. Nel cielo reale il tramonto
+				più precoce è stato l&#8217;8 dicembre (16:38:44 CET) e l&#8217;alba più
+				tardiva il 3 gennaio 2026 (07:37:53 CET). Spiega la differenza con la
+				Figura 6.
+			</p>
+			<details class="hint">
+				<p>
+					Vicino al solstizio la durata del giorno cambia appena. Confrontala
+					con il moto del mezzogiorno nella Figura 6.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					L&#8217;alba e il tramonto stanno simmetrici rispetto al mezzogiorno.
+					Vicino al solstizio la durata del giorno cambia solo di pochi secondi
+					al giorno (9 h 13 min 40 s l&#8217;8 dicembre, 9 h 07 min 37 s il 21
+					dicembre, 9 h 13 min 24 s il 3 gennaio), ma il mezzogiorno reale si
+					sposta più tardi di 30,0 s al giorno.
+				</p>
+				<p>
+					Il mezzogiorno reale a Roma è stato alle 12:01:59 CET l&#8217;8 dicembre,
+					alle 12:08:11 il 21 dicembre e alle 12:14:30 il 3 gennaio. Il tramonto
+					è il mezzogiorno più metà del giorno. Dall&#8217;8 dicembre il mezzogiorno
+					più tardo prevale sull&#8217;accorciarsi del giorno, quindi il tramonto si
+					sposta più tardi due settimane prima del giorno più corto. L&#8217;alba è
+					il mezzogiorno meno metà del giorno, e per la stessa ragione continua a
+					spostarsi più tardi fino a due settimane dopo.
+				</p>
+				<p>
+					Il modello tiene il mezzogiorno fisso alle 12:00 di tempo medio locale
+					(12:10:01 CET), quindi la sua alba e il suo tramonto raggiungono
+					entrambi gli estremi al solstizio. Il mezzogiorno reale che si muove è
+					l&#8217;equazione del tempo, l&#8217;argomento della pagina 2.2.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): III 1
+				(la durata dell&#8217;anno, 365,24667 giorni, e il moto medio
+				giornaliero); III 7 (l&#8217;era di Nabonassar, le epoche a mezzogiorno,
+				gli 879 anni fino all&#8217;equinozio del 132 d.C.); III 9 (la
+				disuguaglianza dei giorni solari, il giorno contato dal meridiano).
+				Introduzione di Toomer, § 5 (cronologia e calendario egizio; gradi di
+				tempo e ore equinoziali).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), III 26
+				[ff. 96r–97r] (il nictemero, il giorno naturale variabile).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, cap. 3 (numeri del
+				giorno giuliano), § 2.10 (transiti al meridiano), § 2.14 (la durata del
+				giorno e ciò che trascura), § 5.4 (il sole medio, l&#8217;UT e il tempo
+				locale). Scrive $\varphi$ per la longitudine geografica, qui
+				$\ell$.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 7
+				(giorno giuliano), 10 (ΔT), 12 (tempo siderale), 15 (sorgere, transito
+				e tramonto, $h_0 = -0{,}8333^\circ$), 25 (la longitudine eclittica media
+				del Sole).</li>
+			<li>ΔT: F. Espenak e J. Meeus, <em>Five Millennium Canon of Solar
+				Eclipses</em> (NASA, 2006), polinomi; dal 2005 i valori misurati dello
+				US Naval Observatory (maia.usno.navy.mil, consultato il 9 novembre
+				2026); il valore di oggi dai secondi intercalari dell&#8217;IERS (TT − UTC =
+				69,184 s dal 2017).</li>
+			<li>Posizioni delle stelle: SIMBAD (CDS, Strasburgo), ICRS J2000,
+				consultato il 17 ottobre 2026. Precessione: J. Vondrák, N. Capitaine,
+				P. Wallace (2011).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/1.3-clocks.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

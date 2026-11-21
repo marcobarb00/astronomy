@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- The Italian hub: the translation of index.html (TRANSLATION.md).
+     Keep the two in step: the same structure, ids and scripts. -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="shared/favicon.svg">
+	<meta name="description" content="Dalla sfera celeste a Keplero: un corso interattivo di astronomia di posizione classica.">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme (the hub's layout is theme.css §14) -->
+	<link rel="stylesheet" href="shared/theme.css">
+
+	<!-- Shared code in dependency order (the site map is shared/site-map.js),
+		 then the hub's own script -->
+	<script defer src="shared/common.js"></script>
+	<script defer src="shared/time.js"></script>
+	<script defer src="shared/ephemeris.js"></script>
+	<script defer src="shared/stars.js"></script>
+	<script defer src="shared/plate-stars.js"></script>
+	<script defer src="shared/plate.js"></script>
+	<script defer src="shared/models/diurnal.js"></script>
+	<script defer src="shared/models/frames.js"></script>
+	<script defer src="shared/site-map.js"></script>
+	<script defer src="shared/thumbs.js"></script>
+	<script defer src="shared/components.js"></script>
+	<script defer src="hub.js"></script>
+</head>
+
+<body>
+<main class="page hub">
+	<!-- Header: title and subtitle, then the double rule (theme.css) -->
+	<header class="page-head hub-head">
+		<div class="titles">
+			<p class="act-line">Un corso interattivo di astronomia di posizione classica</p>
+			<h1>Prevedere il cielo</h1>
+			<p class="hub-sub">Dalla sfera celeste all&#8217;ellisse di Keplero</p>
+		</div>
+	</header>
+
+	<!-- The opening, in the author's voice (DECISIONS.md, Writing) -->
+	<p class="lead">
+		Quando studiavo astronomia, i vecchi modelli del cielo tornavano
+		continuamente: il Sole di Ipparco su un cerchio eccentrico, gli epicicli
+		e l&#8217;equante di Tolomeo, i cerchi di Copernico attorno al Sole,
+		l&#8217;ellisse di Keplero. I libri e i corsi su cui studiavo dedicavano a
+		ciascuno un paragrafo e un disegno, e poi passavano alla teoria moderna.
+	</p>
+	<p>
+		Così questi modelli sono sempre rimasti per me un po&#8217; misteriosi. Mi
+		chiedevo come qualcuno li avesse ideati, a occhio nudo e con pochi
+		strumenti semplici, e soprattutto da dove venissero i loro numeri: la
+		grandezza di un epiciclo, la direzione di un apogeo, la velocità di un
+		moto medio. Un disegno mostra la forma di un modello, ma non come il suo
+		autore lo trovò o ne scelse i parametri.
+	</p>
+	<p>
+		Questo corso è il mio tentativo di rispondere a quelle domande. Ogni
+		pagina ricostruisce un modello come lo concepì il suo autore: le
+		osservazioni da cui parte, la sua geometria, e come i suoi parametri si
+		adattano al cielo. Poi lo verifichiamo contro un cielo di riferimento
+		moderno, per vedere quanto si avvicina e dove sbaglia, e la pagina
+		successiva riparte da ciò che ancora non torna.
+	</p>
+	<p>
+		Alla fine saprai calcolare dove si trovano il Sole, la Luna e un pianeta
+		in qualunque data, con modelli che avrai ricavato da te, e saprai quanto
+		sbaglia ciascuno e perché.
+	</p>
+
+	<!-- The way in: the first ready page (hub.js), the toolbox (reached only
+		 from here), or the chapters below -->
+	<div class="start">
+		<a class="begin" id="begin" href="act1-stage/01-turning-sky/index.it.html"><span id="begin-text">Comincia da 1.1, Il cielo che ruota</span> <span aria-hidden="true">›</span></a>
+		<a class="toolbox-link" href="toolbox/index.it.html">La cassetta degli attrezzi</a>
+		<a class="to-chapters" href="#map">oppure scegli una pagina qui sotto</a>
+	</div>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- Tonight's sky: the hub's one blue plate (STYLE.md §7), drawn by hub.js -->
+	<figure class="plate-figure tonight">
+		<div class="plate">
+			<div class="chart" id="plate-tonight"></div>
+			<div class="side">
+				<div class="plate-head">
+					<div class="plate-label">Stanotte</div>
+					<div class="plate-title">Il cielo della notte del <span id="tonight-date"></span></div>
+				</div>
+				<p>
+					La metà dello zodiaco opposta al Sole, quella sopra
+					l&#8217;orizzonte stanotte, guardando a sud: il nord in alto,
+					l&#8217;est a sinistra. Fuori dalla carta: <span id="tonight-off"></span>.
+				</p>
+				<p>
+					<span class="hl">In oro:</span> la Luna e i pianeti nel momento in
+					cui si apre questa pagina; alla pagina 4.5 calcolerai da te queste
+					posizioni. Le stelle basse sulla carta scintillano di più: viste
+					dalle medie latitudini geografiche boreali restano basse a sud, e
+					la loro luce attraversa più aria. I pianeti mostrano piccoli dischi
+					e scintillano appena.
+				</p>
+			</div>
+		</div>
+	</figure>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- The astronomers in time, with the pages that rebuild their models -->
+	<p class="act-label">Gli astronomi</p>
+	<div class="timeline" id="timeline"></div>
+
+	<!-- The story (STRUCTURE.md §4, Hub) -->
+	<p>
+		La storia va da Ipparco e Tolomeo a Copernico, Tycho e Keplero. Alcuni
+		passi perfezionano il modello di un astronomo, come fece Tolomeo per la
+		Luna; altri ne cambiano la forma, come fece Keplero.
+	</p>
+	<p>
+		I cerchi vanno vicini al vero: il cerchio del Sole adattato al 2026
+		resta entro due primi d&#8217;arco dal Sole reale per tutto l&#8217;anno, e
+		la Luna di Tolomeo adattata allo stesso anno entro due gradi. Molto di
+		ciò che incontriamo lungo la strada, dalle coordinate del cielo
+		all&#8217;equazione del tempo, alla precessione e ai limiti delle eclissi,
+		si usa ancora oggi così com&#8217;è.
+	</p>
+	<p>
+		I pianeti mostrano più chiaramente di tutto i limiti dei cerchi.
+		Keplero trovò la sua ellisse nel moto di Marte, e la stessa legge vale
+		poi per l&#8217;orbita della Terra, e quindi per il Sole. La Luna richiede
+		più di un&#8217;ellisse, perché l&#8217;attrazione del Sole ne cambia
+		continuamente l&#8217;orbita; l&#8217;epilogo segue la storia da lì in poi.
+	</p>
+
+	<div class="star-rule" aria-hidden="true"><svg viewBox="-9 -9 18 18"><path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5 Z"/></svg></div>
+
+	<!-- The acts as chapters, one row per page with its drawing, built
+		 from the site map -->
+	<div id="map"></div>
+
+	<!-- The sources of the whole course; each page lists its own. Titles
+		 and quotations stay in their original language. -->
+	<footer class="hub-foot">
+		<p class="act-label">Fonti</p>
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen).</li>
+			<li>L. Foucault, "Démonstration physique du mouvement de rotation de
+				la Terre au moyen du pendule", <em>Comptes rendus de l'Académie
+				des sciences</em> 32 (1851).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions
+				of the Major Planets</em> (JPL): il Sole e i pianeti di riferimento.</li>
+			<li>J. Vondrák, N. Capitaine, P. Wallace, "New precession expressions,
+				valid for long time intervals", <em>A&amp;A</em> 534, A22 (2011):
+				la precessione del cielo di riferimento.</li>
+			<li>F. Espenak e J. Meeus, <em>Five Millennium Canon of Solar
+				Eclipses</em> (NASA, 2006): i polinomi per ΔT, prima del 2005 e dopo
+				il 2027.</li>
+			<li>US Naval Observatory, il ΔT misurato dal 2005
+				(maia.usno.navy.mil, consultato il 9 novembre 2026), e IERS
+				(International Earth Rotation and Reference Systems Service),
+				Bulletin A: il ΔT di oggi, dai secondi intercalari, e la sua
+				previsione per il 2027.</li>
+			<li>SIMBAD (CDS, Strasburgo): le posizioni, i moti propri e le
+				magnitudini delle stelle; due magnitudini delle tavole blu vengono
+				dal catalogo Hipparcos (ESA).</li>
+			<li>E. Anderson e C. Francis, "XHIP: An Extended Hipparcos
+				Compilation", <em>Astronomy Letters</em> 38 (2012): le stelle delle
+				tavole blu a sud della declinazione +20° fuori dal Toro e da Orione.</li>
+		</ul>
+	</footer>
+</main>
+</body>
+</html>

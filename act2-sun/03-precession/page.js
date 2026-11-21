@@ -58,10 +58,10 @@ function yearText(year) {
 	const rounded = Math.round(year);
 
 	if (rounded <= 0) {
-		return `${withThousands(1 - rounded)} BC`;
+		return bcText(withThousands(1 - rounded));
 	}
 
-	return rounded < 1000 || rounded > 9999 ? `AD ${withThousands(rounded)}` : String(rounded);
+	return rounded < 1000 || rounded > 9999 ? adText(withThousands(rounded)) : String(rounded);
 }
 
 /* 13790 -> "13·790": the thousands set off by a raised dot, never a
@@ -85,7 +85,7 @@ function yearTicks(min, max, every) {
 			continue; // no year 0: "1 BC" and "AD 1" are one year apart
 		}
 
-		ticks.push({ value: year, label: t < 0 ? `${-t} BC` : String(t) });
+		ticks.push({ value: year, label: t < 0 ? bcText(-t) : String(t) });
 	}
 
 	return ticks;
@@ -137,7 +137,7 @@ const sixStarsFigure = {
 
 		const common = {
 			x: [SIX_STARS_FROM, SIX_STARS_TO],
-			xLabel: 'year',
+			xLabel: tr('year', 'anno'),
 			xTicks: yearTicksEvery(1000),
 			aspect: 0.8,
 			maxHeight: 380
@@ -147,7 +147,7 @@ const sixStarsFigure = {
 			byId('stars-ecliptic'),
 			Object.assign({}, common, {
 				y: CHANGE_RANGE,
-				yLabel: 'change since 2026 (°)',
+				yLabel: tr('change since 2026 (°)', 'variazione dal 2026 (°)'),
 				onDraw: p => this.drawChange(p)
 			})
 		);
@@ -156,7 +156,7 @@ const sixStarsFigure = {
 			byId('stars-declination'),
 			Object.assign({}, common, {
 				y: DECLINATION_RANGE,
-				yLabel: 'declination δ (°)',
+				yLabel: tr('declination δ (°)', 'declinazione δ (°)'),
 				onDraw: p => this.drawDeclination(p)
 			})
 		);
@@ -179,8 +179,8 @@ const sixStarsFigure = {
 
 		// the longitude line runs from lower left to upper right: its name
 		// goes below it, to the right
-		p.text('λ, all six stars', -1200, -45, { color: COL.ink, kind: 'name', dy: 26 });
-		p.text('β, all six stars', -2400, 0, { color: COL.ink, kind: 'name', dy: -8 });
+		p.text(tr('λ, all six stars', 'λ, tutte e sei le stelle'), -1200, -45, { color: COL.ink, kind: 'name', dy: 26 });
+		p.text(tr('β, all six stars', 'β, tutte e sei le stelle'), -2400, 0, { color: COL.ink, kind: 'name', dy: -8 });
 	},
 
 	/* Panel (b): the declinations, each named at its right end. */
@@ -194,7 +194,7 @@ const sixStarsFigure = {
 			const last = s.dec.length - 1;
 
 			p.curve(this.years, s.dec, { color: color, width: isSpica ? 2.4 : 1.4 });
-			p.text(s.name, this.years[last], s.dec[last], {
+			p.text(Stars.label(s.name), this.years[last], s.dec[last], {
 				color: color,
 				kind: 'name',
 				align: 'right',
@@ -260,7 +260,7 @@ const modelFigure = {
 
 		wireSlider(byId('model-year'), () => this.update(), yearText);
 		wirePresets(figure);
-		wirePlayButton(byId('model-play'), byId('model-year'), PLAY_YEARS_PER_SECOND, { playLabel: 'Play a turn' });
+		wirePlayButton(byId('model-play'), byId('model-year'), PLAY_YEARS_PER_SECOND, { playLabel: tr('Play a turn', 'Avvia un giro') });
 
 		this.update();
 	},
@@ -301,9 +301,9 @@ const modelFigure = {
 		const { year, shift, lambda, dec, nearest } = this.state;
 
 		showLines('model-readout', [
-			`${texText(`${yearText(year)}: shift `)} ${signed(shift, 2).replace('−', '-')}^\\circ`,
+			`${texText(`${yearText(year)}: ${tr('shift', 'spostamento')} `)} ${signed(shift, 2).replace('−', '-')}^\\circ`,
 			`\\text{Spica: } \\lambda = ${fixed(lambda, 2)}^\\circ,\\ \\delta = ${signed(dec, 2).replace('−', '-')}^\\circ`,
-			`\\text{nearest P: ${nearest.name}, } ${fixed(nearest.distance, 1)}^\\circ`
+			`\\text{${tr('nearest P', 'più vicina a P')}: ${Stars.label(nearest.name)}, } ${fixed(nearest.distance, 1)}^\\circ`
 		]);
 	},
 
@@ -322,7 +322,7 @@ const modelFigure = {
 		// the fixed ecliptic and its pole K; the circle P follows
 		s.circle([1, 0, 0], [0, 1, 0], { color: COL.sun, width: 2 });
 		s.label(
-			'ecliptic',
+			tr('ecliptic', 'eclittica'),
 			s.frontPoint(angle => fromLonLat(angle, 0)),
 			{
 				color: COL.sun,
@@ -337,7 +337,7 @@ const modelFigure = {
 		// the equator of date, its pole P and its node gamma
 		s.greatCircle(pole, { color: COL.earth, width: 2 });
 		s.label(
-			'equator',
+			tr('equator', 'equatore'),
 			s.frontPoint(angle => crossDirection(pole, angle), 120),
 			{
 				color: COL.earth,
@@ -372,7 +372,7 @@ const modelFigure = {
 				alpha: isChosen ? 1 : 0.8,
 				ring: true
 			});
-			s.label(star.name, star.vector, { color: isChosen ? COL.planet : COL.ink, kind: 'name' });
+			s.label(Stars.label(star.name), star.vector, { color: isChosen ? COL.planet : COL.ink, kind: 'name' });
 		});
 	}
 };
@@ -399,7 +399,7 @@ function crossDirection(pole, angle) {
 const POLE_PATH_FROM = -10861;
 const POLE_PATH_TO = 14913;
 const POLE_PATH_STEP = 50; // years
-const POLE_PATH_LABELS = { '-2999': '3000 BC', 2000: 'AD 2000', 8000: 'AD 8000', 14000: 'AD 14·000' };
+const POLE_PATH_LABELS = { '-2999': bcText(3000), 2000: adText(2000), 8000: adText(8000), 14000: adText('14·000') };
 
 const polePathFigure = {
 	init() {
@@ -412,7 +412,7 @@ const polePathFigure = {
 				['alf Dra', 'Thuban', 9, 4],
 				['alf Lyr', 'Vega', 10, 4]
 			],
-			label: 'Chart of the northern sky around the celestial pole, with the path of the pole over one turn of precession, a circle around the ecliptic pole.'
+			label: tr('Chart of the northern sky around the celestial pole, with the path of the pole over one turn of precession, a circle around the ecliptic pole.', "Carta del cielo settentrionale attorno al polo celeste, con il percorso del polo in un giro di precessione, un cerchio attorno al polo dell'eclittica.")
 		});
 
 		const poleAt = year => Ephem.precessEquatorial(0, 90, jdOfYear(year), Plate.EPOCH);
@@ -483,8 +483,8 @@ const recordsFigure = {
 		this.plot = new Plot2D(byId('records-plot'), {
 			x: [RECORDS_FROM, RECORDS_TO],
 			y: RECORDS_RANGE,
-			xLabel: 'year',
-			yLabel: 'ecliptic longitude of Spica λ (°)',
+			xLabel: tr('year', 'anno'),
+			yLabel: tr('ecliptic longitude of Spica λ (°)', 'longitudine eclittica di Spica λ (°)'),
 			xTicks: yearTicksEvery(200),
 			aspect: 0.5,
 			maxHeight: 400,
@@ -503,9 +503,14 @@ const recordsFigure = {
 		// lines, the fitted line and Ptolemy's rule below their own
 		const fitted = year => this.line.a + this.line.b * year;
 
-		p.text('real Spica', 800, fitted(800), { color: COL.planet, kind: 'name', align: 'right', dy: -14 });
-		p.text('fitted to the records', 1150, fitted(1150), { color: COL.ink, kind: 'name', dx: 8, dy: 24 });
-		p.text("Ptolemy's rule", 600, this.ptolemy(600), { color: COL.epicycle, kind: 'name', dy: 24 });
+		p.text(tr('real Spica', 'Spica reale'), 800, fitted(800), { color: COL.planet, kind: 'name', align: 'right', dy: -14 });
+		p.text(tr('fitted to the records', 'adattata ai registri'), 1150, fitted(1150), {
+			color: COL.ink,
+			kind: 'name',
+			dx: 8,
+			dy: 24
+		});
+		p.text(tr("Ptolemy's rule", 'regola di Tolomeo'), 600, this.ptolemy(600), { color: COL.epicycle, kind: 'name', dy: 24 });
 
 		// the records, one name per observer
 		const named = new Set();
@@ -515,7 +520,7 @@ const recordsFigure = {
 
 			if (!named.has(r.who)) {
 				named.add(r.who);
-				p.text(r.who, r.year, r.lon, Object.assign({ color: COL.ink, kind: 'name' }, RECORD_LABELS[r.who]));
+				p.text(personName(r.who), r.year, r.lon, Object.assign({ color: COL.ink, kind: 'name' }, RECORD_LABELS[r.who]));
 			}
 		});
 	}
@@ -570,8 +575,8 @@ const testFigure = {
 			start: CENTRE_2026 - half(2000),
 			end: CENTRE_2026 + half(2000),
 			spans: [
-				{ label: '2000 years', years: 2000 },
-				{ label: '6000 years', years: 6000 }
+				{ label: tr('2000 years', '2000 anni'), years: 2000 },
+				{ label: tr('6000 years', '6000 anni'), years: 6000 }
 			],
 			resolution: 36525,
 			validRange: null,
@@ -579,8 +584,8 @@ const testFigure = {
 		});
 
 		stars.addModel({
-			label: "uniform precession, $p = 50.28''$ a year",
-			short: 'uniform precession',
+			label: tr("uniform precession, $p = 50.28''$ a year", "precessione uniforme, $p = 50{,}28''$ all'anno"),
+			short: tr('uniform precession', 'precessione uniforme'),
 			color: COL.earth,
 			fn: Precession.make(MODEL, spicaNow.lon)
 		});
@@ -590,22 +595,22 @@ const testFigure = {
 			start: CENTRE_2026 - half(2000),
 			end: CENTRE_2026 + half(2000),
 			spans: [
-				{ label: '100 years', years: 100 },
-				{ label: '1000 years', years: 1000 },
-				{ label: '2000 years', years: 2000 }
+				{ label: tr('100 years', '100 anni'), years: 100 },
+				{ label: tr('1000 years', '1000 anni'), years: 1000 },
+				{ label: tr('2000 years', '2000 anni'), years: 2000 }
 			],
 			ghostButtons: false
 		});
 
 		sun.addGhost({
-			label: 'fixed apogee (page 2.1)',
-			short: 'fixed apogee',
+			label: tr('fixed apogee (page 2.1)', 'apogeo fisso (pagina 2.1)'),
+			short: tr('fixed apogee', 'apogeo fisso'),
 			color: COL.deferent,
 			fn: SolarEccentric.make(SolarEccentric.FIT_2026)
 		});
 		sun.addModel({
-			label: 'moving apogee, 1.751° a century',
-			short: 'moving apogee',
+			label: tr('moving apogee, 1.751° a century', 'apogeo in moto, 1,751° per secolo'),
+			short: tr('moving apogee', 'apogeo in moto'),
 			color: COL.deferent,
 			fn: SolarEccentric.make(SolarEccentric.MOVING_2026)
 		});
@@ -676,8 +681,8 @@ const ptolemyFigure = {
 		this.plot = new Plot2D(byId('ptolemy-plot'), {
 			x: [PTOLEMY_FROM, PTOLEMY_TO],
 			y: PTOLEMY_RANGE,
-			xLabel: 'year',
-			yLabel: 'record − real (°)',
+			xLabel: tr('year', 'anno'),
+			yLabel: tr('record − real (°)', 'registro − reale (°)'),
 			xTicks: yearTicksEvery(200),
 			aspect: 0.5,
 			maxHeight: 400,
@@ -699,7 +704,7 @@ const ptolemyFigure = {
 
 			if (!named.has(r.who)) {
 				named.add(r.who);
-				p.text(r.who, r.year, r.error, Object.assign({ color: color, kind: 'name' }, ERROR_LABELS[r.who]));
+				p.text(personName(r.who), r.year, r.error, Object.assign({ color: color, kind: 'name' }, ERROR_LABELS[r.who]));
 			}
 		});
 	}

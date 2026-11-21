@@ -851,7 +851,7 @@ const Plate = (function () {
 
 		if (decMin < 0 && decMax > 0) {
 			const y = at(0, 0).y;
-			const element = svgText(layer, 'equator', left + width - 8, y - 6, {
+			const element = svgText(layer, tr('equator', 'equatore'), left + width - 8, y - 6, {
 				class: 'circle-name',
 				'text-anchor': 'end'
 			});

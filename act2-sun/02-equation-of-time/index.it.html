@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 2.2 · THE EQUATION OF TIME
+     Act II, the Sun. The sundial and the clock disagree by up to a quarter
+     of an hour; the difference, the equation of time E, is the sum of the
+     eccentricity part (page 2.1) and the obliquity part (the reduction to
+     the equator, page 1.2); the analemma; the parameters of pages 1.2 and
+     2.1 recovered from E alone; the model within 6 s of the real E; how E
+     changes over the centuries.
+     Numbers: tools/numbers/2.2-equation-of-time.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>2.2 · L&#8217;equazione del tempo · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/equation-of-time.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			L&#8217;orologio della pagina 1.3 mette il mezzogiorno alle 12:00 ogni
+			giorno, ma il Sole reale attraversava il meridiano fino a 14 minuti più
+			tardi a febbraio e 16 minuti e mezzo prima a novembre. La pagina 2.1 ha
+			trovato una delle cause, il moto disuniforme del Sole lungo
+			l&#8217;eclittica, e ha nominato l&#8217;altra, l&#8217;inclinazione
+			dell&#8217;eclittica sull&#8217;equatore.
+		</p>
+
+		<p>
+			Mettendole insieme si ottiene l&#8217;equazione del tempo, la correzione
+			che mette d&#8217;accordo una meridiana con un orologio. Con
+			l&#8217;eccentrico della pagina 2.1 e l&#8217;obliquità della pagina 1.2, e
+			nient&#8217;altro, risulta giusta entro pochi secondi.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>La meridiana e l&#8217;orologio</h2>
+
+		<p>
+			Una meridiana mostra il <strong>tempo solare vero</strong>, l&#8217;angolo
+			orario del Sole reale, e segna le 12:00 quando il Sole attraversa il
+			meridiano. Un orologio mostra il tempo solare medio, l&#8217;angolo orario
+			del Sole medio della pagina 1.3. Chiamiamo la differenza, meridiana meno
+			orologio, <strong>equazione del tempo</strong> $E$. È positiva quando la
+			meridiana è avanti.
+		</p>
+
+		<p>
+			A Greenwich, dove l&#8217;orologio segna il Tempo Universale, la meridiana è
+			più indietro rispetto all&#8217;orologio a metà febbraio e più avanti
+			all&#8217;inizio di novembre, con due oscillazioni minori in mezzo, a maggio
+			e a luglio, e i due vanno d&#8217;accordo solo in quattro giorni
+			dell&#8217;anno.
+		</p>
+
+		<p>
+			Un singolo giorno mostra appena la differenza, perché il giorno solare
+			vero, da un mezzogiorno reale al successivo, non è mai più lungo o più
+			corto di 24 ore di più di mezzo minuto. Ma i giorni corti arrivano in
+			lunghe serie, 100 di fila nel 2025, e su una serie i loro ammanchi si
+			sommano, come mostra la Figura 1.
+		</p>
+
+		<!-- Figure 1: the true solar day and its running sum (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il giorno solare vero</p>
+						<canvas id="sundial-day"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la meridiana meno l&#8217;orologio</p>
+						<canvas id="sundial-equation"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i due pannelli data per data: dove i giorni in (a) sono più
+				corti di 24 ore, la meridiana in (b) guadagna sull&#8217;orologio, e dove
+				sono più lunghi, perde. La curva in (b) cambia direzione nei quattro
+				giorni che durano esattamente 24 ore.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">punteggiato</dt>
+						<dd>i quattro giorni di esattamente 24 ore</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Da metà febbraio all&#8217;inizio di novembre i giorni restano sotto le 24
+			ore di circa mezz&#8217;ora in tutto, che è esattamente ciò che la meridiana
+			guadagna sull&#8217;orologio in quei mesi. L&#8217;equazione del tempo è la
+			somma progressiva delle differenze dei giorni da 24 ore. Su un anno
+			intero le differenze si annullano, perché l&#8217;orologio è definito come
+			la media del Sole.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo fa la stessa osservazione: la differenza fra un giorno solare
+				vero e uno medio non produce «una differenza percettibile» per un
+				singolo giorno, «ma la differenza accumulata su un certo numero di
+				giorni solari è ben evidente» (<em>Almagest</em> III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Anche una macchina fotografica può registrare l&#8217;equazione del tempo.
+			Fotografato alla stessa ora dell&#8217;orologio in giorni distribuiti su un
+			anno, il Sole traccia una figura a otto chiamata
+			<strong>analemma</strong>. La sua altezza è la declinazione del Sole, e la
+			sua larghezza da un lato all&#8217;altro è l&#8217;equazione del tempo.
+		</p>
+
+		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/analemma-donatiello-2016.jpg" width="800" height="600" loading="lazy"
+				alt="Un cielo azzurro sopra alberi spogli e una strada, attraversato in diagonale da un lungo otto di punti bianchi, un piccolo anello in alto a sinistra e uno più grande in basso a destra.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				Un analemma fotografato nell&#8217;Italia meridionale: ogni punto bianco è
+				il Sole in un giorno, con i giorni distribuiti su un anno e riuniti in
+				un&#8217;unica immagine. Nota che i due anelli sono disuguali. Quello in
+				alto, il Sole d&#8217;estate, è il più piccolo, e quello in basso, il Sole
+				d&#8217;inverno, il più grande, un&#8217;asimmetria che la Figura 4 spiega. La
+				figura è inclinata, il che mostra che le foto sono state scattate
+				lontano da mezzogiorno: a mezzogiorno l&#8217;analemma sta dritto, come
+				nella Figura 4.
+				<span class="credit">Giuseppe Donatiello, 2016,
+					<a href="https://commons.wikimedia.org/wiki/File:Analemma_A14_2016_(25907420783).jpg">Wikimedia Commons</a>,
+					CC0 (pubblico dominio).</span>
+			</figcaption>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Due cause del giorno solare disuguale</h2>
+
+		<h3>L&#8217;equazione del tempo</h3>
+
+		<p>
+			Il Sole medio della pagina 1.3 è un punto immaginario che si muove lungo
+			l&#8217;equatore celeste a velocità costante, con l&#8217;ascensione retta
+			sempre uguale alla longitudine eclittica media del Sole, $\alpha_m =
+			\bar\lambda$. Poiché si muove uniformemente lungo l&#8217;equatore, il suo
+			angolo orario cresce esattamente di 15° all&#8217;ora, che è ciò di cui ha
+			bisogno un orologio.
+		</p>
+
+		<p>
+			Entrambi i tempi sono angoli orari, $H = \theta - \alpha$, quindi in
+			ogni istante la loro differenza è la differenza delle due ascensioni
+			rette. In gradi,
+		</p>
+
+		$$E = H - H_m = \alpha_m - \alpha = \bar\lambda - \alpha,$$
+
+		<p>
+			e in tempo 1° vale 4 minuti, perché il cielo ruota di 360° in 24 ore.
+			Vogliamo dividere questa differenza nell&#8217;effetto della velocità
+			disuniforme del Sole, che la pagina 2.1 ha modellato, e
+			nell&#8217;effetto dell&#8217;inclinazione. Aggiungere e togliere la longitudine
+			eclittica vera $\lambda$ lo fa:
+		</p>
+
+		<div class="box">
+			$$E = (\bar\lambda - \lambda) + (\lambda - \alpha) = -q + (\lambda - \alpha).$$
+		</div>
+
+		<div class="row">
+			<p>
+				Tolomeo nomina le stesse due cause: il tratto supplementare di
+				equatore che attraversa il meridiano ogni giorno «non può essere
+				costante, per due ragioni: primo, a causa dell&#8217;anomalia apparente
+				del sole; e secondo, perché sezioni uguali dell&#8217;eclittica non
+				attraversano né l&#8217;orizzonte né il meridiano in tempi uguali»
+				(<em>Almagest</em> III 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>La parte dell&#8217;eccentricità</h3>
+
+		<p>
+			La prima parte è l&#8217;equazione del centro della pagina 2.1 con il segno
+			cambiato. Mentre il Sole corre avanti rispetto al suo posto medio, $q >
+			0$, la sua ascensione retta cresce più di quella del Sole medio, esso
+			raggiunge il meridiano più tardi, e la meridiana resta indietro. Al
+			primo ordine $-q \approx e\sin M$ in radianti, quindi questa parte
+			oscilla di circa 1,9° da una parte e dall&#8217;altra, ovvero 7,7 minuti di
+			tempo.
+		</p>
+
+		<h3>La parte dell&#8217;obliquità</h3>
+
+		<p>
+			La seconda parte resterebbe anche per un Sole che si muovesse
+			uniformemente lungo l&#8217;eclittica. La sua ascensione retta segue dalla
+			formula di conversione $\tan\alpha = \cos\varepsilon\tan\lambda$ della
+			pagina 1.2, la cui tabella mostrava $\alpha$ restare indietro rispetto a
+			$\lambda$ nel primo quadrante. Per vedere come il ritardo dipende da
+			$\lambda$, scriviamo la tangente della differenza:
+		</p>
+
+		$$\tan(\lambda - \alpha) = \frac{\tan\lambda - \tan\alpha}{1 + \tan\lambda\tan\alpha} = \frac{(1 - \cos\varepsilon)\sin\lambda\cos\lambda}{\cos^2\lambda + \cos\varepsilon\sin^2\lambda}.$$
+
+		<p>
+			Con $\sin\lambda\cos\lambda = \tfrac12\sin 2\lambda$, $\cos^2\lambda =
+			\tfrac12(1 + \cos 2\lambda)$ e $\sin^2\lambda = \tfrac12(1 - \cos
+			2\lambda)$, e dividendo numeratore e denominatore per $\tfrac12(1 +
+			\cos\varepsilon)$,
+		</p>
+
+		<div class="box">
+			$$\tan(\lambda - \alpha) = \frac{e_\varepsilon \sin 2\lambda}{1 + e_\varepsilon \cos 2\lambda}, \qquad e_\varepsilon = \frac{1 - \cos\varepsilon}{1 + \cos\varepsilon} = \tan^2\frac{\varepsilon}{2}.$$
+		</div>
+
+		<p>
+			Il secondo membro ha la stessa forma dell&#8217;equazione del centro della
+			pagina 2.1, $\tan q = -e\sin M / (1 + e\cos M)$, con $e_\varepsilon$ al
+			posto di $e$ e $2\lambda$ al posto di $M$, quindi i risultati della
+			pagina 2.1 valgono per il ritardo senza nuovo lavoro. Per
+			l&#8217;obliquità di oggi $e_\varepsilon = 0{,}0430$.
+		</p>
+
+		<div class="row">
+			<p>
+				Al primo ordine $\lambda - \alpha \approx e_\varepsilon \sin 2\lambda$
+				in radianti. Il suo valore massimo è esattamente $\arcsin
+				e_\varepsilon$, circa 2,47° ovvero 9,9 minuti di tempo, raggiunto a
+				$\lambda \approx 46^\circ$ e alla stessa distanza da ogni altro
+				equinozio e solstizio.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il ritardo viene da una differenza di velocità fra $\alpha$ e
+			$\lambda$. Derivando $\tan\alpha = \cos\varepsilon\tan\lambda$ si ha
+		</p>
+
+		$$\frac{d\alpha}{\cos^2\alpha} = \cos\varepsilon\,\frac{d\lambda}{\cos^2\lambda}, \qquad \frac{d\alpha}{d\lambda} = \cos\varepsilon\,\frac{\cos^2\alpha}{\cos^2\lambda}.$$
+
+		<p>
+			Per un punto dell&#8217;eclittica le formule di conversione della pagina 1.2
+			danno $\cos\delta\cos\alpha = \cos\lambda$, quindi il rapporto dei due
+			coseni al quadrato è $1/\cos^2\delta$, e
+		</p>
+
+		<div class="box">
+			$$\frac{d\alpha}{d\lambda} = \frac{\cos\varepsilon}{\cos^2\delta}.$$
+		</div>
+
+		<p>
+			Agli equinozi $\delta = 0$ e il rapporto è $\cos\varepsilon$:
+			l&#8217;eclittica attraversa l&#8217;equatore obliquamente, solo una parte del
+			moto del Sole è verso est, e $\alpha$ cresce circa l&#8217;8% più lentamente
+			di $\lambda$. Ai solstizi $\delta = \varepsilon$ e il rapporto è
+			$1/\cos\varepsilon$: l&#8217;eclittica corre parallela all&#8217;equatore, tutto il
+			moto è verso est, e avviene a una declinazione di 23,4°, dove i cerchi
+			orari sono più vicini fra loro, quindi $\alpha$ cresce circa il 9% più
+			in fretta.
+		</p>
+
+		<p>
+			Così $\alpha$ resta indietro rispetto a $\lambda$ dopo ogni equinozio e
+			recupera prima di ogni solstizio. Il ritardo è massimo dove le due
+			velocità sono uguali, $d\alpha/d\lambda = 1$ (Esercizio 3). La Figura 2
+			parte con $\varepsilon = 45^\circ$, quasi il doppio dell&#8217;inclinazione
+			reale, perché l&#8217;arco si possa vedere sulla sfera.
+		</p>
+
+		<!-- Figure 2: the reduction to the equator -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il Sole uniforme e il Sole medio</p>
+						<canvas id="reduction-sphere"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il ritardo nel corso dell&#8217;anno</p>
+						<canvas id="reduction-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="red-lon">longitudine eclittica λ</label>
+							<input id="red-lon" type="range" min="0" max="360" step="1" value="30">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="red-play">Avvia un anno</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="red-eps">obliquità ε</label>
+							<input id="red-eps" type="range" min="0" max="45" step="0.01" value="45">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="red-eps" data-value="23.4358">oggi, 23,44°</button>
+							<button type="button" data-target="red-eps" data-value="45">esagerata, 45°</button>
+							<button type="button" data-target="red-eps" data-value="0">senza inclinazione</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="reduction-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Avvia un anno e guarda i due Soli, che partono insieme da γ: il piede
+				del cerchio orario del Sole resta indietro rispetto al Sole medio fino a
+				circa metà strada verso il solstizio, lo raggiunge al solstizio, e gli
+				corre avanti nel quadrante successivo. Poi premi «oggi, 23,44°»: l&#8217;arco
+				si riduce a meno di 2,5°, e in (b) la curva tratteggiata al primo ordine
+				quasi si confonde con quella esatta. Trascina la sfera per ruotare la
+				vista.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-earth">cerchio blu</dt>
+						<dd>l&#8217;equatore celeste</dd>
+						<dt class="c-sun">cerchio oro</dt>
+						<dd>l&#8217;eclittica, lungo la quale il Sole (punto oro) si muove uniformemente</dd>
+						<dt>tratteggio</dt>
+						<dd>il cerchio orario del Sole, che incontra l&#8217;equatore all&#8217;ascensione retta α del Sole</dd>
+						<dt class="c-earth">punto blu</dt>
+						<dd>il Sole medio, ad ascensione retta λ, lontano da γ lungo l&#8217;equatore quanto il Sole lungo l&#8217;eclittica</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-muted">tratteggio</dt>
+						<dd>l&#8217;approssimazione al primo ordine, $e_\varepsilon \sin 2\lambda$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La somma</h3>
+
+		<p>
+			Sommando le due parti, al primo ordine in $e$ e in $e_\varepsilon$ e in
+			radianti, si ottiene:
+		</p>
+
+		$$E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda,$$
+
+		<p>
+			un&#8217;onda annua di 7,7 minuti più un&#8217;onda semestrale di 9,9 minuti. Nel
+			2025 questa approssimazione è entro un minuto dalla somma esatta. La
+			Figura 3 mostra le due parti e come si sommano.
+		</p>
+
+		<!-- Figure 3: the two parts and their sum -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="parts-plot"></canvas>
+				<div class="readout" id="parts-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Punta il grafico per leggere una data. Nota dove le due onde si
+				incontrano: a febbraio e a novembre si sommano, ed $E$ raggiunge i suoi
+				due grandi estremi; a maggio e a luglio quasi si annullano, ed $E$ fa
+				solo estremi piccoli.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">verde</dt>
+						<dd>la parte dell&#8217;eccentricità, $-q$, dall&#8217;eccentrico della pagina 2.1</dd>
+						<dt class="c-earth">blu</dt>
+						<dd>la parte dell&#8217;obliquità, $\lambda - \alpha$</dd>
+						<dt class="c-planet">rosso</dt>
+						<dd>la loro somma, l&#8217;equazione del tempo $E$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			L&#8217;onda semestrale è la più grande, quindi $E$ ha due massimi e due
+			minimi. L&#8217;onda annua li rende disuguali: approfondisce il minimo di
+			febbraio e il massimo di novembre, dove ha lo stesso segno dell&#8217;onda
+			semestrale, e riduce gli altri due. I quattro zeri di $E$ cadono dove le
+			due onde si annullano.
+		</p>
+
+		<h3>L&#8217;analemma</h3>
+
+		<p>
+			A mezzogiorno medio il Sole medio è sul meridiano, $H_m = 0$, quindi
+			l&#8217;angolo orario del Sole reale è $H = E$, che in gradi è $E$ diviso
+			per 4 minuti. Tracciato in funzione della declinazione del Sole nel corso
+			di un anno, questo angolo orario disegna l&#8217;analemma della fotografia,
+			come apparirebbe a mezzogiorno, dritto.
+		</p>
+
+		<!-- Figure 4: the analemma -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="analemma-plot"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="ana-day">data</label>
+							<input id="ana-day" type="range" min="0" max="364" step="1" value="306">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="ana-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="ana-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="ana-play">Avvia un anno</button>
+						</div>
+						<div class="presets" id="analemma-modes"></div>
+						<div class="readout" id="analemma-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un anno e segui il Sole lungo l&#8217;otto. Poi scegli «solo
+				obliquità»: la figura diventa simmetrica, con anelli uguali, perché
+				l&#8217;onda semestrale assume gli stessi valori d&#8217;estate e d&#8217;inverno.
+				Scegli «solo eccentricità»: un unico ovale inclinato, a est del meridiano
+				in primavera e a ovest in autunno. La loro somma dà gli anelli disuguali
+				della fotografia.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-sun">tratteggio tenue</dt>
+						<dd>entrambe le cause, per confronto con una causa sola</dd>
+						<dt class="c-muted">punteggiato</dt>
+						<dd>il meridiano, dove una meridiana segna mezzogiorno</dd>
+						<dt>scale</dt>
+						<dd>l&#8217;angolo orario è disegnato circa quattro volte più grande della declinazione</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			L&#8217;analemma si incrocia a una declinazione di circa 9°, dove il Sole si
+			trova a metà aprile e di nuovo a fine agosto con la stessa equazione del
+			tempo.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>Eccentricità, apogeo e obliquità dall&#8217;equazione del tempo</h2>
+
+		<p>
+			Il modello non ha parametri propri, perché $e$ e $\lambda_A$ vengono
+			dalle stagioni (pagina 2.1) ed $\varepsilon$ dal Sole di mezzogiorno ai
+			solstizi (pagina 1.2). Ma possiamo condurre il ragionamento al contrario.
+			Un orologio e una meridiana, confrontati nel corso di un anno, misurano
+			$E$, e se le due cause sono tutto ciò che c&#8217;è in $E$, essa dovrebbe
+			restituire gli stessi tre parametri.
+		</p>
+
+		<div class="row">
+			<p>
+				L&#8217;apogeo sta dentro il seno dell&#8217;onda annua, quindi prima lo
+				portiamo fuori: nella formula al primo ordine, sviluppare $e\sin M$ con
+				$M = \bar\lambda - \lambda_A$ divide l&#8217;onda annua in un seno e un
+				coseno della longitudine eclittica media:
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$E \approx (e\cos\lambda_A)\sin\bar\lambda - (e\sin\lambda_A)\cos\bar\lambda + e_\varepsilon\sin 2\bar\lambda.$$
+
+		<p>
+			Su un anno intero le funzioni $\sin\bar\lambda$, $\cos\bar\lambda$, $\sin
+			2\bar\lambda$ e $\cos 2\bar\lambda$ sono ortogonali, quindi ogni
+			coefficiente è una media, per esempio $e\cos\lambda_A = 2\,\langle E
+			\sin\bar\lambda\rangle$. I due coefficienti annui danno $e$ e
+			$\lambda_A$, e quello semestrale dà $e_\varepsilon$, quindi $\varepsilon
+			= 2\arctan\sqrt{e_\varepsilon}$.
+		</p>
+
+		<p>
+			Applicate alla $E$ reale del 2025, le medie danno la prima colonna della
+			tabella. Sono vicine, ma non esatte, perché la formula al primo ordine
+			trascura due termini. L&#8217;onda semestrale dipende dalla longitudine
+			eclittica vera, $e_\varepsilon \sin 2(\bar\lambda + q)$, e il prodotto
+			delle due onde contiene una parte annua di ampiezza $e\,e_\varepsilon$,
+			che vale circa 20 s, che l&#8217;adattamento prende per parte
+			dell&#8217;eccentricità e dell&#8217;apogeo. Il termine del secondo ordine del Sole
+			stesso cade in parte sull&#8217;onda semestrale e alza $\varepsilon$ di
+			qualche primo d&#8217;arco.
+		</p>
+
+		<details class="fold">
+			<summary>L&#8217;adattamento esatto</summary>
+			<p>
+				La seconda colonna adatta il modello esatto, $E = -q + (\lambda -
+				\alpha)$ più una costante, ai 365 valori giornalieri con i minimi
+				quadrati. Il modello non è lineare in $e$, $\lambda_A$ ed $\varepsilon$,
+				quindi l&#8217;adattamento parte dai valori al primo ordine e li migliora
+				con l&#8217;iterazione di Gauss–Newton: a ogni passo il modello si
+				linearizza attorno ai valori correnti, si risolve il problema lineare ai
+				minimi quadrati per le correzioni, e le correzioni si applicano. Converge
+				in pochi passi e lascia residui di circa un secondo.
+			</p>
+		</details>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Parametro</th>
+					<th>da $E$, primo ordine</th>
+					<th>da $E$, esatto</th>
+					<th>pagine precedenti</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$e$</td>
+					<td>0,0322</td>
+					<td>0,0334</td>
+					<td>0,0335 (2.1)</td>
+				</tr>
+				<tr>
+					<td>$\lambda_A$</td>
+					<td>$104{,}5^\circ$</td>
+					<td>$103{,}4^\circ$</td>
+					<td>$103{,}7^\circ$ (2.1)</td>
+				</tr>
+				<tr>
+					<td>$\varepsilon$</td>
+					<td>$23{,}51^\circ$</td>
+					<td>$23{,}39^\circ$</td>
+					<td>$23{,}44^\circ$ (1.2)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			L&#8217;adattamento esatto ritrova l&#8217;eccentricità della pagina 2.1, e un
+			apogeo un terzo di grado a ovest di quello della pagina 2.1, vicino a
+			quello del Sole di riferimento: l&#8217;adattamento alle stagioni mette
+			l&#8217;errore di forma dell&#8217;eccentrico nell&#8217;apogeo, l&#8217;adattamento a $E$
+			nel termine semestrale. La sua obliquità è quindi troppo piccola di 3′,
+			perché l&#8217;eccentrico differisce dall&#8217;ellisse della teoria moderna al
+			secondo ordine (pagina 2.1). Questo gli dà un termine semestrale
+			leggermente sbagliato, e l&#8217;adattamento lo compensa abbassando
+			$e_\varepsilon$.
+		</p>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;equazione del tempo contro il Sole reale</h2>
+
+		<p>
+			L&#8217;orologio della pagina 1.3 non aveva alcuna equazione del tempo,
+			quindi il suo mezzogiorno sbagliava dell&#8217;intera $E$, a volte più di un
+			quarto d&#8217;ora. Qui prevediamo $E$ dalle sole stagioni del 2026 e
+			dall&#8217;obliquità media, la verifica dell&#8217;adattamento condotta al
+			contrario, e la Figura 5 confronta la previsione con l&#8217;equazione del
+			tempo reale del 2025 nel cielo di riferimento.
+		</p>
+
+		<!-- Figure 5: the model against the real equation of time -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il modello e l&#8217;equazione del tempo reale</p>
+						<canvas id="test-both"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) modello meno reale</p>
+						<canvas id="test-error"></canvas>
+					</div>
+				</div>
+				<div class="readout" id="test-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Punta uno dei due grafici per leggere una data in entrambi. In (a) la
+				curva del modello resta dentro l&#8217;ampia fascia di quella reale per
+				tutto l&#8217;anno; (b) ingrandisce la differenza circa cento volte.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nel corso del 2025 la previsione non è mai a più di 6,4 s
+			dall&#8217;equazione del tempo reale, dove l&#8217;orologio della pagina 1.3
+			sbagliava di minuti. Quasi tutto questo viene dall&#8217;errore
+			dell&#8217;eccentrico in longitudine eclittica, sotto i 2′ (pagina 2.1),
+			perché 1′ di longitudine eclittica vale circa 4 s di tempo.
+		</p>
+
+		<p>
+			Le piccole increspature mensili in (b) sono quelle della Luna, spiegate
+			nella pagina 2.1.
+		</p>
+
+		<!-- History block: Ptolemy's equation of time -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>L&#8217;equazione del tempo di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					A Tolomeo l&#8217;equazione del tempo serviva per la Luna. Le sue tavole
+					lunari contano giorni solari medi, mentre le sue eclissi erano
+					cronometrate con il cielo, e fra due osservazioni la differenza può
+					superare un&#8217;ora, in cui la Luna si sposta più della propria
+					larghezza (III 9). Calcolò le due parti con il proprio Sole, in gradi
+					di tempo, ciascuno i 4 minuti che il cielo impiega a ruotare di 1°.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Sui tratti dell&#8217;anno in cui le due parti agiscono nello stesso
+				senso, trovò una variazione di 33 minuti, contro i 31 del suo tempo,
+				perché la sua eccentricità è troppo grande di un quinto (pagina 2.1). Il
+				preset «140 d.C.» della Figura 6 mostra la curva reale del suo tempo.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>L&#8217;equazione del tempo nel corso dei secoli</h2>
+
+		<p>
+			Il modello di questa pagina tiene il suo apogeo fisso al posto del 2026,
+			mentre la pagina 2.1 ha trovato dalle stagioni che l&#8217;apogeo si muove.
+			Il suo errore cresce quindi allontanandosi dal 2026, fino a più di un
+			minuto su mille anni.
+		</p>
+
+		<p>
+			La curva reale cambia forma nel corso dei secoli. La sua onda semestrale
+			è legata agli equinozi e ai solstizi, ma la sua onda annua all&#8217;apogeo,
+			quindi mentre l&#8217;apogeo si muove l&#8217;onda annua scorre lungo l&#8217;anno
+			rispetto a quella semestrale, come mostra la Figura 6.
+		</p>
+
+		<!-- Figure 6: the equation of time over the centuries -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="centuries-plot"></canvas>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="cent-year">anno</label>
+							<input id="cent-year" type="range" min="-1000" max="3000" step="1" value="2026">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="presets">
+							<button type="button" data-target="cent-year" data-value="-140">141 a.C.</button>
+							<button type="button" data-target="cent-year" data-value="140">140 d.C.</button>
+							<button type="button" data-target="cent-year" data-value="1246">1246</button>
+							<button type="button" data-target="cent-year" data-value="1515">1515</button>
+							<button type="button" data-target="cent-year" data-value="2026">2026</button>
+							<button type="button" data-target="cent-year" data-value="3000">3000</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="centuries-readout" data-lines="3"></div>
+			</div>
+			<figcaption>
+				Muovi l&#8217;anno e confronta il minimo di febbraio con il massimo di
+				novembre: prima del 1246, quando l&#8217;apogeo passò per il solstizio
+				d&#8217;estate, il minimo era il più profondo, e da allora il massimo è il
+				più alto. I preset segnano i tempi di Ipparco, Tolomeo e Copernico, la
+				svolta, oggi e il 3000 d.C.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">tratteggio</dt>
+						<dd>il modello di questa pagina, con l&#8217;apogeo del 2026</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			La maggior parte del moto dell&#8217;apogeo, come ha trovato la pagina 2.1,
+			è quella di γ stesso, l&#8217;origine di ogni longitudine eclittica, quindi
+			il lento cambiamento dell&#8217;equazione del tempo è per lo più precessione:
+			l&#8217;intero sistema di riferimento che usiamo dalla pagina 1.2 sta
+			ruotando. Quanto in fretta ruoti è l&#8217;argomento della pagina 2.3.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Calcola l&#8217;equazione del tempo alle 12:00 UT del 3 novembre 2025
+				dall&#8217;eccentrico della pagina 2.1 ($L_0 = 280{,}45909^\circ$, $n =
+				0{,}98564735^\circ$ al giorno, $e = 0{,}033473$, $\lambda_A =
+				103{,}732^\circ$) e dall&#8217;obliquità media $\varepsilon =
+				23{,}4359^\circ$, e dividila nelle sue due parti. Verifica con le Figure
+				3 e 4.
+			</p>
+			<details class="hint">
+				<p>
+					Trova $d$ (in TT, 69 s dopo l&#8217;UT), poi $\bar\lambda$, $M$, $q$ e
+					$\lambda$ come nella pagina 2.1, poi $\alpha$ da $\tan\alpha =
+					\cos\varepsilon\tan\lambda$ nel quadrante di $\lambda$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Alle 12:00 UT, $d = 9438{,}0008$ giorni, quindi $\bar\lambda = L_0 +
+					n\,d = 222{,}9996^\circ$ e $M = \bar\lambda - \lambda_A =
+					119{,}2676^\circ$. L&#8217;equazione del centro è $q = -1{,}7004^\circ$,
+					quindi $\lambda = 221{,}2992^\circ$, e $\alpha = 218{,}8697^\circ$,
+					quindi $\lambda - \alpha = 2{,}4295^\circ$.
+				</p>
+				<p>
+					Allora $E = -q + (\lambda - \alpha) = 1{,}7004^\circ + 2{,}4295^\circ
+					= 4{,}1299^\circ$, che fa $6{,}80 + 9{,}72 = 16{,}52$ minuti, ovvero
+					+16 min 31 s. Entrambe le parti sono positive all&#8217;inizio di novembre,
+					ed è per questo che $E$ è massima allora. La formula al primo ordine
+					dà $6{,}69 + 9{,}84 = 16{,}53$ minuti.
+				</p>
+				<p>
+					L&#8217;equazione del tempo reale è +16 min 27 s, quindi il modello è
+					troppo grande di 4 s. Il Sole reale attraversa il meridiano di
+					Greenwich 16 min 27 s prima delle 12:00 UT.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				Prima di guardare la Figura 4, prevedi in quali date $E$ si
+				annullerebbe se il Sole si muovesse uniformemente ($e = 0$), e in quali
+				date se l&#8217;eclittica non fosse inclinata ($\varepsilon = 0$). Poi trova
+				le date reali, e spiega perché sono quattro.
+			</p>
+			<details class="hint">
+				<p>
+					Ogni parte si annulla dove si annulla il suo seno: $\sin 2\lambda =
+					0$ per una, $\sin M = 0$ per l&#8217;altra. Nella Figura 4, $E = 0$ dove la
+					curva attraversa il meridiano.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con $e = 0$ resta solo l&#8217;onda semestrale, $E = \lambda - \alpha$,
+					che si annulla quattro volte, quando il Sole uniforme è a un equinozio
+					o a un solstizio: il 22 marzo, il 21 giugno, il 20 settembre e il 21
+					dicembre 2025 («solo obliquità» nella Figura 4).
+				</p>
+				<p>
+					Con $\varepsilon = 0$ resta solo l&#8217;onda annua, $E = -q$, che si
+					annulla due volte, al perigeo e all&#8217;apogeo: il 3 gennaio e il 5
+					luglio («solo eccentricità»).
+				</p>
+				<p>
+					Con entrambe, il modello e il Sole reale concordano sulle date: il 15
+					aprile, il 12 giugno, il 1º settembre e il 25 dicembre. Sono quattro
+					perché l&#8217;onda semestrale è la più grande, circa 10 contro 8 minuti,
+					quindi decide quante volte la somma cambia segno; l&#8217;onda annua si
+					limita a spostare gli zeri.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Usando $d\alpha/d\lambda = \cos\varepsilon / \cos^2\delta$ e
+				$\sin\delta = \sin\varepsilon\sin\lambda$, mostra che $|\lambda -
+				\alpha|$ è massimo dove $\sin^2\lambda = 1/(1 + \cos\varepsilon)$, e che
+				il suo valore massimo è $\arcsin\tan^2(\varepsilon/2)$. Trova entrambi
+				per l&#8217;obliquità di oggi, $\varepsilon = 23{,}4358^\circ$, e
+				verificali nella Figura 2.
+			</p>
+			<details class="hint">
+				<p>
+					Il ritardo è estremo dove la sua derivata, $1 - d\alpha/d\lambda$, si
+					annulla. Per il valore massimo, usa l&#8217;Esercizio 2 della pagina 2.1
+					con $e_\varepsilon$ al posto di $e$ e $2\lambda$ al posto di $M$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con $\cos^2\delta = 1 - \sin^2\varepsilon\sin^2\lambda$, la condizione
+					$d\alpha/d\lambda = 1$ diventa $\sin^2\varepsilon\sin^2\lambda = 1 -
+					\cos\varepsilon$, e poiché $\sin^2\varepsilon = (1 -
+					\cos\varepsilon)(1 + \cos\varepsilon)$,
+				</p>
+				$$\sin^2\lambda = \frac{1}{1 + \cos\varepsilon}, \qquad \cos 2\lambda = 1 - 2\sin^2\lambda = -\frac{1 - \cos\varepsilon}{1 + \cos\varepsilon} = -e_\varepsilon.$$
+				<p>
+					È la condizione dell&#8217;Esercizio 2 della pagina 2.1, $\cos M = -e$,
+					con $2\lambda$ al posto di $M$, quindi il valore massimo è $\arcsin
+					e_\varepsilon$.
+				</p>
+				<p>
+					Per $\varepsilon = 23{,}4358^\circ$, $e_\varepsilon = 0{,}04302$, il
+					ritardo è massimo a $\lambda = 46{,}23^\circ$, e il suo valore massimo
+					è $2{,}466^\circ$, ovvero 9,86 minuti di tempo. Nella Figura 2, con
+					«oggi, 23,44°», la lettura dà lo stesso.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984), III 9 (le
+				due cause della disuguaglianza dei giorni solari, in gradi di tempo, 8⅓
+				in tutto fra la metà dell&#8217;Acquario e la fine della Bilancia; la regola
+				per convertire i giorni solari veri in medi, e perché conta per la
+				Luna), con la nota di Toomer sul moto della Luna in un&#8217;ora, 0° 32′ 56″
+				(0,549°, IV 3).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 5.4 e Tabella 5.5 (il
+				sole medio e l&#8217;equazione del tempo; la sua formula al primo ordine 5.17
+				è scritta con l&#8217;eccentricità di Keplero e con $M$ contato dal
+				perigeo).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 28
+				(l&#8217;equazione del tempo del cielo di riferimento, e il suo segno).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
+				the Major Planets</em> (JPL): il Sole di riferimento.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/2.2-equation-of-time.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

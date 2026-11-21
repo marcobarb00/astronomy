@@ -67,13 +67,13 @@ const TWINKLE = { depthHigh: 0.06, depthLow: 0.6, periodMin: 1.6, periodMax: 4.2
 /* The bodies, in the order of the caption's list, and their disks on the
    plate (chart units). */
 const TONIGHT_BODIES = [
-	{ id: 'sun', name: 'Sun', radius: 0 },
-	{ id: 'moon', name: 'Moon', radius: 9 },
-	{ id: 'mercury', name: 'Mercury', radius: 6 },
-	{ id: 'venus', name: 'Venus', radius: 6 },
-	{ id: 'mars', name: 'Mars', radius: 6 },
-	{ id: 'jupiter', name: 'Jupiter', radius: 6 },
-	{ id: 'saturn', name: 'Saturn', radius: 6 }
+	{ id: 'sun', name: tr('Sun', 'Sole'), radius: 0 },
+	{ id: 'moon', name: tr('Moon', 'Luna'), radius: 9 },
+	{ id: 'mercury', name: tr('Mercury', 'Mercurio'), radius: 6 },
+	{ id: 'venus', name: tr('Venus', 'Venere'), radius: 6 },
+	{ id: 'mars', name: tr('Mars', 'Marte'), radius: 6 },
+	{ id: 'jupiter', name: tr('Jupiter', 'Giove'), radius: 6 },
+	{ id: 'saturn', name: tr('Saturn', 'Saturno'), radius: 6 }
 ];
 
 const tonightFigure = {
@@ -88,7 +88,10 @@ const tonightFigure = {
 			keep: [],
 			names: [['alf Tau', 'Aldebaran', 8, 22]],
 			margins: this.fitMargins(container.clientWidth),
-			label: "Tonight's half of the zodiac, with the Moon and the planets on it."
+			label: tr(
+				"Tonight's half of the zodiac, with the Moon and the planets on it.",
+				'La metà dello zodiaco visibile stanotte, con la Luna e i pianeti.'
+			)
 		});
 
 		this.drawEcliptic(chart, area);
@@ -163,7 +166,7 @@ const tonightFigure = {
 		const nameRa = area.raMin + ECLIPTIC_NAME_INSET * (area.raMax - area.raMin);
 		const nameAt = Frames.eclipticPoint(this.longitudeAt(nameRa, eps), eps);
 
-		Plate.line(chart, points, 'ecliptic', [chart.unwrap(nameAt.ra), nameAt.dec, 8, 18]);
+		Plate.line(chart, points, tr('ecliptic', 'eclittica'), [chart.unwrap(nameAt.ra), nameAt.dec, 8, 18]);
 	},
 
 	/* The ecliptic longitude (deg) at a right ascension: the inverse of
@@ -203,9 +206,9 @@ const tonightFigure = {
 		});
 	},
 
-	/* "20 November 2026", the date of the page's opening. */
+	/* "20 November 2026" ("20 novembre 2026"), the date of the page's opening. */
 	dateText(date) {
-		return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+		return date.toLocaleDateString(tr('en-GB', 'it-IT'), { day: 'numeric', month: 'long', year: 'numeric' });
 	}
 };
 
@@ -222,7 +225,10 @@ function pointStartLink() {
 	const link = byId('begin');
 
 	link.href = first.path;
-	byId('begin-text').textContent = `Begin with ${first.number}, ${first.title}`;
+	byId('begin-text').textContent = tr(
+		`Begin with ${first.number}, ${first.title}`,
+		`Comincia da ${first.number}, ${first.title}`
+	);
 }
 
 /* ==========================================================================

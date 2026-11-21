@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.1 · THE TURNING SKY (Italian translation of index.html,
+     TRANSLATION.md: keep the two in step)
+     Act I, the stage. The sky as a rigid sphere of directions turning about
+     the polar axis; the observer's geographic latitude; stars that never set, rise and
+     set, or never rise. Numbers: tools/numbers/1.1-turning-sky.js.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.1 · Il cielo che ruota · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Ogni previsione di questo sito parte da un&#8217;unica immagine, il cielo
+			come una sfera che ruota attorno a un asse. Con questa sola immagine
+			possiamo già dire, per qualunque stella e qualunque luogo della Terra,
+			se la stella sorge, quanto in alto sale e per quanto tempo resta sopra
+			l&#8217;orizzonte.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Cerchi attorno a un punto</h2>
+
+		<div class="row">
+			<p>
+				Se osservi il cielo per una notte, vedrai ogni stella sorgere a est,
+				salire fino al punto più alto esattamente a sud (per un osservatore
+				dell&#8217;emisfero nord) e tramontare a ovest. I percorsi sono cerchi,
+				tutti paralleli fra loro, e le stelle mantengono le loro distanze
+				reciproche mentre ruotano.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<!-- A photo: public domain / CC0 only, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/star-trails-polaris.jpg" width="1920" height="1442" loading="lazy"
+				alt="Foto a lunga esposizione del cielo settentrionale: le scie delle stelle disegnano archi concentrici attorno a Polaris, con alberi in controluce.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				Il cielo settentrionale sul Bengala del Nord, in Bangladesh, in 108
+				esposizioni sovrapposte. Nota che ogni stella traccia un arco e che
+				tutti gli archi hanno un solo centro, il polo celeste, vicino al quale
+				Polaris, il punto luminoso, si muove appena. Gli archi lontani dal polo
+				sono lunghi e quelli vicini corti, eppure sottendono tutti lo stesso
+				angolo. Le deboli strisce diritte sono satelliti.
+				<span class="credit">Youniverse Multiverse, 2022,
+					<a href="https://commons.wikimedia.org/wiki/File:Star_stack_Star_trail.jpg">Wikimedia Commons</a>,
+					CC0 (pubblico dominio).</span>
+			</figcaption>
+		</figure>
+
+		<p>
+			Tolomeo descrive la stessa osservazione: «la rivoluzione delle stelle
+			sempre visibili, che si osservava essere circolare e svolgersi sempre
+			attorno a un solo centro, lo stesso [per tutte]» (<em>Almagest</em> I 3).
+			Quel centro è il <strong>polo celeste</strong>. Oggi Polaris si trova a 0,63°
+			da esso, abbastanza vicino da segnare il polo a occhio nudo, ed è per
+			questo che la chiamiamo stella polare.
+		</p>
+
+		<p>
+			Una stella torna nello stesso punto dopo 23 h 56 min 4 s di tempo
+			dell&#8217;orologio, circa 4 minuti meno di un giorno, una differenza che
+			spiega la pagina 1.3.
+		</p>
+
+		<p>
+			Il polo sta sopra il punto nord dell&#8217;orizzonte, a un&#8217;altezza pari
+			alla latitudine geografica $\varphi$ dell&#8217;osservatore, per esempio
+			41,9° a Roma e 51,5° a Londra.
+		</p>
+
+		<p>
+			Poiché l&#8217;altezza del polo dipende dalla latitudine geografica, ne
+			dipende anche la parte di cielo che possiamo vedere. Come dice Tolomeo,
+			più si viaggia verso nord, «più stelle meridionali scompaiono e più
+			stelle settentrionali appaiono» (<em>Almagest</em> I 4). Canopo, la
+			seconda stella più luminosa, si vede da Rodi ma mai da Roma.
+		</p>
+
+		<!-- Figure 1: the sky around the pole, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-pole"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">Il cielo attorno al polo</div>
+					<p>
+						Il cielo settentrionale del 2026 attorno al polo celeste, visto da
+						terra guardando in alto. In un giorno sidereo ogni stella compie un
+						giro attorno al centro, in senso antiorario in questa vista.
+					</p>
+					<p>
+						<span class="hl">Cerchio tratteggiato:</span> declinazione 48,1°,
+						cioè $90^\circ - \varphi$ per Roma. Le stelle al suo interno non
+						tramontano mai a Roma; Capella, appena fuori, scende sotto
+						l&#8217;orizzonte.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>anello</dt>
+						<dd>ascensione retta in ore, crescente in senso orario vista da terra</dd>
+						<dt>griglia</dt>
+						<dd>declinazione ogni 10° da +30° a +80°, ascensione retta ogni 2 ore</dd>
+						<dt>stelle</dt>
+						<dd>tutte le stelle più luminose della magnitudine 4,6; più grandi se più luminose</dd>
+						<dt>puntinato</dt>
+						<dd>la Via Lattea, disegnata come una fascia attorno all&#8217;equatore galattico</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- Figure 2: the observer's sky -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="sky-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="sky-lat">latitudine geografica φ</label>
+							<input id="sky-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="sky-lat" data-value="90">polo nord</button>
+							<button type="button" data-target="sky-lat" data-value="51.5">Londra</button>
+							<button type="button" data-target="sky-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="sky-lat" data-value="36">Rodi</button>
+							<button type="button" data-target="sky-lat" data-value="31.2">Alessandria</button>
+							<button type="button" data-target="sky-lat" data-value="0">equatore</button>
+							<button type="button" data-target="sky-lat" data-value="-33.9">Sydney</button>
+						</div>
+						<div class="ctl">
+							<label for="sky-time">tempo t</label>
+							<input id="sky-time" type="range" min="0" max="23.93" step="0.01" value="14">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="sky-play">Avvia</button>
+						</div>
+						<div class="presets star-choice" id="sky-stars"></div>
+						<div class="readout" id="sky-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Premi Avvia e guarda il cielo ruotare attorno a P mentre il terreno
+				resta fermo. Poi muovi la latitudine geografica e guarda P salire fino
+				a un&#8217;altezza pari a φ, e il cerchio di Tolomeo delle stelle che non
+				tramontano mai crescere con essa. Trascina la sfera per ruotare la
+				vista.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">punteggiato</dt>
+						<dd>il meridiano, per N, lo zenit Z e S</dd>
+						<dt class="c-earth">blu</dt>
+						<dd>l&#8217;equatore celeste</dd>
+						<dt class="c-planet">rosso</dt>
+						<dd>il cerchio diurno della stella scelta, tratteggiato sotto l&#8217;orizzonte</dd>
+						<dt class="c-epicycle">viola</dt>
+						<dd>i cerchi di Tolomeo delle stelle che non tramontano mai e che non sorgono mai</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\delta, H, a$</dt>
+						<dd>declinazione, angolo orario e altezza della stella (sezione 2)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Una sfera celeste che ruota</h2>
+
+		<h3>Direzioni, non distanze</h3>
+
+		<div class="row">
+			<p>
+				Viste da qualunque punto della Terra, le stelle mantengono le stesse
+				grandezze e le stesse distanze reciproche, quindi rispetto al cielo la
+				Terra è un punto. Tolomeo trae la stessa conclusione
+				dall&#8217;orizzonte: «i piani tracciati attraverso le linee di vista
+				dell&#8217;osservatore […] che chiamiamo &#8220;orizzonti&#8221;, dividono
+				sempre in due parti uguali l&#8217;intera sfera celeste»
+				(<em>Almagest</em> I 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<p>
+			Una stella è quindi solo una direzione, un versore $\mathbf s$, e la
+			<strong>sfera celeste</strong> è l&#8217;insieme di tutte queste direzioni, senza
+			distanze. Nel modello greco l&#8217;intero insieme ruota rigidamente, a
+			velocità costante, attorno a un asse.
+		</p>
+
+		<h3>Il cielo che ruota</h3>
+
+		<div class="row">
+			<p>
+				Per descrivere la rotazione scegliamo un sistema di riferimento
+				solidale con il cielo, con $z$ verso il polo P, $x$ verso il punto in
+				cui l&#8217;equatore incrocia il meridiano sopra l&#8217;orizzonte, e $y$
+				verso est. Una rotazione di un angolo $\theta$ attorno all&#8217;asse $z$ è
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$R_z(\theta) = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}.$$
+
+		<p>
+			Con $\theta > 0$, $R_z(\theta)$ porta l&#8217;asse $x$ verso l&#8217;asse $y$,
+			dal meridiano verso est, il che, visto dall&#8217;esterno della sfera, sopra
+			P, è una rotazione in senso antiorario.
+		</p>
+
+		<p>
+			Il cielo ruota nell&#8217;altro senso, perché una stella attraversa il
+			meridiano e poi si sposta verso ovest. Visto da sopra P il cielo ruota
+			in senso orario, anche se da terra, guardando verso il polo, lo stesso
+			moto appare antiorario. Una rotazione di un angolo $H$ verso ovest è
+			quindi una rotazione di $-H$ nel senso di $R_z$.
+		</p>
+
+		<p>
+			Una stella a distanza angolare $\delta$ dall&#8217;equatore attraversa il
+			meridiano in $(\cos\delta, 0, \sin\delta)$. Sia $H$ l&#8217;angolo di cui il
+			cielo ha ruotato da allora, l&#8217;<strong>angolo orario</strong>, che cresce
+			di circa 15° all&#8217;ora. Allora la stella si trova in
+		</p>
+
+		$$\mathbf s(H) = R_z(-H) \begin{pmatrix} \cos\delta \\ 0 \\ \sin\delta \end{pmatrix} = \begin{pmatrix} \cos\delta\cos H \\ -\cos\delta\sin H \\ \sin\delta \end{pmatrix}.$$
+
+		<p>
+			La componente $z$ non cambia mai, quindi ogni stella si muove su un
+			cerchio parallelo all&#8217;equatore, come si osserva. L&#8217;angolo $\delta$ è
+			la <strong>declinazione</strong> della stella, e la pagina 1.2 aggiunge la
+			seconda coordinata, che fissa in quale punto del cerchio si trova la
+			stella.
+		</p>
+
+		<h3>L&#8217;osservatore</h3>
+
+		<p>
+			L&#8217;osservatore ha un sistema di riferimento proprio, il
+			<strong>sistema orizzontale</strong>, con $x$ verso il punto sud, $y$ verso
+			est e $z$ verso lo zenit.
+		</p>
+
+		<p>
+			Puntiamo $x$ a sud perché, per un osservatore dell&#8217;emisfero nord,
+			l&#8217;equatore incrocia il meridiano a sud dello zenit, quindi anche
+			l&#8217;asse $x$ del sistema del cielo punta a sud. Con i due assi $x$ dalla
+			stessa parte e l&#8217;asse est in comune, i due sistemi differiscono per
+			una sola inclinazione. Un asse $x$ rivolto a nord costringerebbe $y$ a
+			puntare a ovest, perché il sistema resti destrorso, e i segni meno
+			comparirebbero ovunque. Anche Meeus (cap. 13) conta l&#8217;azimut da sud.
+		</p>
+
+		<p>
+			Il sistema del cielo è allora il sistema orizzontale inclinato attorno
+			all&#8217;asse est–ovest, $y$, da una rotazione
+		</p>
+
+		$$R_y(\theta) = \begin{pmatrix} \cos\theta & 0 & \sin\theta \\ 0 & 1 & 0 \\ -\sin\theta & 0 & \cos\theta \end{pmatrix}, \qquad R_y(\theta) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} \sin\theta \\ 0 \\ \cos\theta \end{pmatrix}.$$
+
+		<p>
+			Per trovare l&#8217;angolo dell&#8217;inclinazione, osserviamo che essa deve
+			portare la direzione dello zenit sul polo P. P sta sul meridiano ad
+			altezza $\varphi$ a nord, quindi dista $90^\circ - \varphi$ dallo zenit,
+			dalla parte nord ($-x$). Con $\theta > 0$, $R_y(\theta)$ inclina $z$
+			verso $+x$, il sud, ma a noi serve un&#8217;inclinazione di $90^\circ -
+			\varphi$ verso nord, quindi $\theta = -(90^\circ - \varphi) = \varphi -
+			90^\circ$:
+		</p>
+
+		$$\mathbf s_\text{or} = R_y(\varphi - 90^\circ)\, \mathbf s.$$
+
+		<p>
+			Tre controlli confermano i segni:
+		</p>
+
+		<ul>
+			<li>Il polo: $R_y(\varphi - 90^\circ)(0, 0, 1)^T = (-\cos\varphi, 0,
+				\sin\varphi)^T$, a nord ad altezza $\varphi$.</li>
+			<li>Il punto dell&#8217;equatore sul meridiano: $R_y(\varphi - 90^\circ)(1, 0, 0)^T =
+				(\sin\varphi, 0, \cos\varphi)^T$, a sud ad altezza $90^\circ -
+				\varphi$.</li>
+			<li>Al polo nord, $\varphi = 90^\circ$: nessuna inclinazione, e P è allo
+				zenit.</li>
+		</ul>
+
+		<h3>L&#8217;altezza come prodotto scalare</h3>
+
+		<p>
+			L&#8217;<strong>altezza</strong> $a$ di una stella è il suo angolo sopra il piano
+			dell&#8217;orizzonte. Lo zenit è perpendicolare a quel piano, quindi
+			l&#8217;angolo fra la stella e lo zenit, la <strong>distanza zenitale</strong>,
+			è $90^\circ - a$.
+		</p>
+
+		<p>
+			Per due versori il prodotto scalare è il coseno dell&#8217;angolo fra
+			essi, quindi $\hat{\mathbf z} \cdot \mathbf s = \cos(90^\circ - a) =
+			\sin a$. Nel sistema orizzontale $\hat{\mathbf z} = (0, 0, 1)$, e il
+			prodotto scalare estrae semplicemente la componente $z$ di
+			$\mathbf s_\text{or}$.
+		</p>
+
+		<p>
+			La stella è più semplice nel sistema del cielo, quindi spostiamo lì lo
+			zenit. Una rotazione conserva i prodotti scalari, $(0,0,1)^T \cdot
+			(R\,\mathbf s) = (R^T (0,0,1)^T) \cdot \mathbf s$, e il vettore $R^T(0,
+			0, 1)^T$ è la terza riga di $R_y(\varphi - 90^\circ)$, cioè lo zenit
+			visto dal sistema del cielo, $\hat{\mathbf z} = (\cos\varphi, 0,
+			\sin\varphi)$. Quindi
+		</p>
+
+		<div class="box">
+			$$\sin a = \hat{\mathbf z} \cdot \mathbf s(H) = \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H.$$
+		</div>
+
+		<p>
+			Ogni risultato di questa pagina, e la lettura dell&#8217;altezza nella
+			Figura 2, discende da questa formula.
+		</p>
+
+		<h3>Una Terra che ruota dà le stesse altezze</h3>
+
+		<p>
+			Supponiamo invece che le stelle stiano ferme e che la Terra ruoti
+			verso est attorno allo stesso asse. Allora la stella $\mathbf s_0$ è
+			fissa e lo zenit si muove, $\hat{\mathbf z}(H) = R_z(H)\, \hat{\mathbf
+			z}_0$. Poiché una rotazione conserva i prodotti scalari e $R_z(H)^T =
+			R_z(-H)$,
+		</p>
+
+		$$\hat{\mathbf z}(H) \cdot \mathbf s_0 = \big(R_z(H)\, \hat{\mathbf z}_0\big) \cdot \mathbf s_0 = \hat{\mathbf z}_0 \cdot \big(R_z(-H)\, \mathbf s_0\big).$$
+
+		<div class="row">
+			<p>
+				L&#8217;altezza è la stessa in ogni istante, quindi nessuna osservazione
+				del solo cielo può distinguere le due descrizioni. Tolomeo lo
+				ammette, «forse non c&#8217;è nulla nei fenomeni celesti che contrasti
+				con quell&#8217;ipotesi», e respinge la Terra che ruota per ragioni
+				fisiche: una Terra che compie un giro al giorno supererebbe le nuvole
+				e tutto ciò che viene lanciato in aria, che resterebbe indietro verso
+				ovest (<em>Almagest</em> I 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernico, che attribuisce la Terra che ruota a Eraclide, Ecfanto e
+				Iceta, enuncia la stessa equivalenza e assume che sia la Terra a
+				ruotare: «se si attribuisce un qualche moto alla terra, in tutte le
+				cose al di fuori di essa apparirà lo stesso moto, ma in direzione
+				opposta» (<em>De Revolutionibus</em> I 5). Contro le nuvole di
+				Tolomeo sostiene che l&#8217;aria vicina alla Terra ruota con essa
+				(I 8), una risposta che Tolomeo aveva già considerato e respinto
+				(I 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Le leggi del moto di Newton assumono la forma più semplice nei sistemi
+				inerziali, che non ruotano con la Terra. Nel 1851 il pendolo di
+				Foucault diede una dimostrazione diretta, sulla Terra stessa, della
+				rotazione terrestre rispetto a tali sistemi, rispondendo al tipo di
+				obiezione contro una Terra in rotazione che Tolomeo aveva sollevato.
+				La meccanica newtoniana fa così della Terra che ruota e del cielo
+				quasi fermo la descrizione più semplice. La rotazione diurna
+				apparente del cielo resta una descrizione corretta delle
+				osservazioni, a patto di tener conto degli effetti dovuti all&#8217;uso di
+				un sistema di riferimento rotante.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Descriviamo comunque il cielo dalla Terra, perché è lì che si misura
+				ogni altezza e ogni tempo di questo sito, e in un sistema solidale con
+				il terreno è il cielo a ruotare. Copernico mantenne le stesse parole:
+				«uso la terminologia consueta, che può essere accettata da tutti»
+				(<em>De Revolutionibus</em>, prefazione al Libro II).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 3: the same sky seen from outside -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="outside-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="out-lat">latitudine geografica φ</label>
+							<input id="out-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="out-time">tempo t</label>
+							<input id="out-time" type="range" min="0" max="23.93" step="0.01" value="14">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="out-play">Avvia</button>
+						</div>
+						<div class="presets star-choice" id="out-stars"></div>
+						<div class="readout" id="out-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Qui le stelle sono tenute ferme ed è la Terra a ruotare. Dai alla
+				figura il tempo e la latitudine geografica della Figura 2 e nota che
+				l&#8217;altezza risulta la stessa.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-earth">blu</dt>
+						<dd>l&#8217;equatore celeste</dd>
+						<dt class="c-deferent">verde</dt>
+						<dd>l&#8217;orizzonte dell&#8217;osservatore, che ruota con lo zenit Z</dd>
+						<dt class="c-deferent">tratteggio</dt>
+						<dd>il cerchio lungo il quale la rotazione della Terra porta Z verso est</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Culminazioni, sorgere e tramonto</h3>
+
+		<p>
+			Una stella è più alta in $H = 0$, dove $\sin a = \cos(\varphi - \delta)$,
+			e più bassa in $H = 180^\circ$, dove $\sin a = -\cos(\varphi + \delta)$:
+		</p>
+
+		$$a_\text{max} = 90^\circ - |\varphi - \delta|, \qquad a_\text{min} = |\varphi + \delta| - 90^\circ.$$
+
+		<p>
+			Queste due altezze dividono le stelle in tre classi. Per un osservatore
+			dell&#8217;emisfero nord ($\varphi > 0$) una stella non tramonta mai quando
+			$a_\text{min} > 0$, e non sorge mai quando $a_\text{max} < 0$:
+		</p>
+
+		$$\text{non tramonta mai:}\ \ \delta > 90^\circ - \varphi, \qquad \text{non sorge mai:}\ \ \delta < \varphi - 90^\circ.$$
+
+		<div class="row">
+			<p>
+				È la regola di Tolomeo, enunciata con un cerchio: il cerchio «che ha
+				come polo il polo nord dell&#8217;equatore, e come raggio
+				l&#8217;elevazione del polo, è sempre visibile, e tutte le stelle
+				all&#8217;interno di quel cerchio sono sempre visibili»
+				(<em>Almagest</em> II 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il suo cerchio è il cerchio minore centrato sul polo nord celeste con
+			raggio angolare pari all&#8217;altezza del polo $\varphi$, quindi tocca
+			appena l&#8217;orizzonte nel punto nord. Una stella al suo interno dista
+			dal polo meno di $\varphi$, $90^\circ - \delta < \varphi$, che è di
+			nuovo $\delta > 90^\circ - \varphi$.
+		</p>
+
+		<p>
+			Mentre il cielo ruota, una tale stella resta alla stessa distanza da P,
+			quindi non raggiunge mai l&#8217;orizzonte. L&#8217;immagine speculare del
+			cerchio, attorno al polo sud, contiene le stelle che non sorgono mai, e
+			nella Figura 2 sono disegnati entrambi i cerchi, tratteggiati e viola.
+		</p>
+
+		<p>
+			Ogni altra stella sorge e tramonta. Tramonta quando $a = 0$,
+			all&#8217;angolo orario $H_0$ con
+		</p>
+
+		$$\cos H_0 = -\tan\varphi \tan\delta,$$
+
+		<p>
+			e resta sopra l&#8217;orizzonte per $|H| < H_0$, una frazione $f = H_0 /
+			180^\circ$ di ogni giro. Poiché $\arccos(-x) = 180^\circ - \arccos x$,
+			una stella e la sua immagine speculare rispetto all&#8217;equatore si
+			dividono il giro, $f(\delta) + f(-\delta) = 1$.
+		</p>
+
+		<p>
+			Sull&#8217;equatore stesso $\delta = 0$, quindi $H_0 = 90^\circ$ e $f =
+			\tfrac12$ a ogni latitudine geografica. Per questo Tolomeo chiama
+			l&#8217;equatore «il solo [di tali cerchi paralleli] che sia sempre diviso
+			in due parti uguali dall&#8217;orizzonte» (<em>Almagest</em> I 8), e per
+			questo il Sole, quando vi si trova, dà giorno e notte uguali.
+		</p>
+
+		<!-- Figure 4: the day of a star -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) altezza durante un giro</p>
+						<canvas id="day-curve"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) le tre classi di stelle</p>
+						<canvas id="day-map"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="day-dec">declinazione δ</label>
+							<input id="day-dec" type="range" min="-90" max="90" step="0.01" value="-16.7">
+							<output></output>
+						</div>
+						<div class="presets" id="day-star-presets"></div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="day-lat">latitudine geografica φ</label>
+							<input id="day-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="day-lat" data-value="0">equatore</button>
+							<button type="button" data-target="day-lat" data-value="31.2">Alessandria</button>
+							<button type="button" data-target="day-lat" data-value="36">Rodi</button>
+							<button type="button" data-target="day-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="day-lat" data-value="51.5">Londra</button>
+							<button type="button" data-target="day-lat" data-value="90">polo nord</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="day-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Scegli una declinazione e una latitudine geografica, e nota come la
+				parte ombreggiata del giro in (a), il tempo che la stella passa sopra
+				l&#8217;orizzonte, riempie l&#8217;intero giro quando il punto in (b) entra
+				nella regione delle stelle che non tramontano mai.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-earth">linee</dt>
+						<dd>stelle sopra l&#8217;orizzonte per il 25%, il 50% e il 75% del giro</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>Misurare l&#8217;asse e le stelle</h2>
+
+		<p>
+			Per usare la sfera che ruota in un dato luogo dobbiamo misurarla lì, e
+			ogni misura di cui ha bisogno si fa sul meridiano. Una stella attraversa
+			quella linea fissa in un istante preciso, che un orologio può
+			cronometrare, e in quel momento è alla sua altezza massima o minima,
+			dove l&#8217;altezza smette per un attimo di cambiare e si può leggere. I
+			passaggi danno la velocità della rotazione, la latitudine geografica
+			$\varphi$, che è l&#8217;altezza del polo, e la declinazione $\delta$ di ogni
+			stella.
+		</p>
+
+		<div class="row">
+			<p>
+				<strong>La velocità.</strong> Cronometriamo la stessa stella mentre
+				attraversa il meridiano in due notti, distanti il più possibile,
+				perché l&#8217;errore di ogni misura di tempo viene allora diviso per il
+				numero di giri fra le due. Vega attraversò il meridiano di Greenwich
+				alle 1:58:14 UT del 1º giugno 1925 e alle 1:58:33 UT del 1º giugno
+				2025, 36·625 giri dopo. Un giro dura quindi 23 h 56 min 4,10 s di
+				tempo dell&#8217;orologio, e il cielo ruota di 15,041° all&#8217;ora. Altre
+				stelle luminose danno un giro più lungo al massimo di 0,005 s, una
+				differenza dovuta alla precessione (pagina 2.3).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				<strong>Latitudine geografica e declinazione insieme.</strong>
+				Per queste prendiamo una stella che non tramonta mai e misuriamo le
+				sue altezze $h_\uparrow$ e $h_\downarrow$ ai passaggi superiore e
+				inferiore al meridiano. Entrambe sono contate dal punto nord, così che
+				una sola formula valga per tutte e due, e quella superiore può
+				superare 90°. Le formule di $a_\text{max}$ e $a_\text{min}$ danno allora
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		$$h_\uparrow = 90^\circ + \varphi - \delta, \quad h_\downarrow = \varphi + \delta - 90^\circ \quad\Longrightarrow\quad \varphi = \frac{h_\uparrow + h_\downarrow}{2}, \quad 90^\circ - \delta = \frac{h_\uparrow - h_\downarrow}{2}.$$
+
+		<p>
+			Proviamo con Kochab vista da Alessandria, dove il cielo reale la mostra
+			a 47,166° e 15,309° sopra il punto nord. L&#8217;adattamento dà $\varphi =
+			31{,}238^\circ$ e $\delta = 74{,}071^\circ$, 2,3′ e 1,3′ troppo grandi.
+			L&#8217;atmosfera solleva entrambi i passaggi, il che rende troppo grande la
+			loro media, e quindi $\varphi$; solleva di più quello basso, il che
+			riduce la loro differenza e rende $\delta$ troppo grande. Questo effetto
+			è la rifrazione, l&#8217;argomento della Verifica.
+		</p>
+
+		<!-- History block: how Ptolemy measured altitudes -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Come Tolomeo misurava le altezze</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo misurava la distanza del Sole di mezzogiorno dallo zenit su
+					un anello di bronzo, diviso in gradi e posto verticale nel piano del
+					meridiano, con un anello interno che si girava finché l&#8217;ombra di
+					una delle sue piastrine cadeva sull&#8217;altra. Usava anche una lastra
+					di pietra o di legno con un quadrante disegnato sopra, sulla quale un
+					piolo proietta la sua ombra di mezzogiorno (<em>Almagest</em> I 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+					<div class="note detour" data-topic="instruments"></div>
+				</aside>
+			</div>
+
+			<p>
+				L&#8217;equatore sta a metà fra le posizioni del Sole di mezzogiorno ai
+				due solstizi. Per Alessandria, dove osservava, Tolomeo dà la sua
+				distanza dallo zenit, che è la latitudine geografica, come 30°58′
+				(<em>Almagest</em> V 12), circa un quarto di grado sotto il valore
+				moderno.
+			</p>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Il modello contro il cielo</h2>
+
+		<p>
+			Confrontiamo il modello con il cielo di riferimento per una notte del
+			2026, in cui la posizione di catalogo di ogni stella è portata a quella
+			data e ruotata dalla rotazione terrestre. Alla stella del modello diamo
+			la stessa declinazione, quindi ciò che resta è l&#8217;effetto
+			dell&#8217;atmosfera, che il modello trascura.
+		</p>
+
+		<div class="row">
+			<p>
+				La luce delle stelle si piega entrando nell&#8217;atmosfera, tanto più
+				quanto più arriva bassa, quindi una stella appare più alta di quanto
+				sia. Per l&#8217;aria standard questa <strong>rifrazione</strong> è
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$R = \frac{1{,}02'}{\tan\!\left(a + \dfrac{10{,}3^\circ}{a + 5{,}11^\circ}\right)} \qquad (a \text{ in gradi}),$$
+
+		<p>
+			È la formula di Sæmundsson (Meeus 16.4). La rifrazione cala in fretta
+			con l&#8217;altezza: una stella vista esattamente sull&#8217;orizzonte è in
+			realtà 34′ sotto di esso, ma a 45° lo spostamento è solo di 1′. Altri
+			effetti, come l&#8217;aberrazione e la nutazione, spostano una stella di
+			meno di 1′ e della stessa quantità per tutta la notte, quindi
+			l&#8217;adattamento li assorbe.
+		</p>
+
+		<p>
+			La stella del modello è alla sua altezza vera $a$, mentre il cielo la
+			mostra ad $a + R$. L&#8217;errore del modello è quindi $\Delta a =
+			a_\text{modello} - a_\text{reale} = -R$, così la Figura 5 mostra la
+			rifrazione stessa, seguita durante un giro del cielo. La tracciamo come
+			un errore, modello meno cielo, come faremo per ogni errore di questo
+			sito.
+		</p>
+
+		<!-- Figure 5: the model against the sky -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="test-plot"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="test-lat">latitudine geografica φ</label>
+							<input id="test-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="test-lat" data-value="31.2">Alessandria</button>
+							<button type="button" data-target="test-lat" data-value="36">Rodi</button>
+							<button type="button" data-target="test-lat" data-value="41.9">Roma</button>
+							<button type="button" data-target="test-lat" data-value="51.5">Londra</button>
+						</div>
+						<div class="presets star-choice" id="test-stars"></div>
+						<div class="readout" id="test-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Scegli una stella e una latitudine geografica, e nota che la curva
+				resta entro pochi primi d&#8217;arco da zero finché la stella è alta, e
+				precipita solo negli ultimi gradi sopra l&#8217;orizzonte.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>punti</dt>
+						<dd>il sorgere e il tramonto del modello</dd>
+						<dt class="c-planet">punti</dt>
+						<dd>il sorgere e il tramonto reali</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\Delta t$</dt>
+						<dd>di quanto prima sorge la stella reale, e di quanto dopo tramonta</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Per una stella alta nel cielo l&#8217;errore è sotto i 3′, ma
+			sull&#8217;orizzonte arriva a 34′, quindi le stelle reali sorgono prima e
+			tramontano dopo quelle del modello. Vista da Roma, Sirio resta sopra
+			l&#8217;orizzonte 7 minuti di più.
+		</p>
+
+		<p>
+			Una stella che attraversa l&#8217;orizzonte con un angolo piccolo impiega
+			più tempo a salire di quei 34′. Canopo, vista da Rodi, sale solo di
+			1,3°, e sorge 14 minuti prima e tramonta 14 minuti dopo quanto
+			prevede il modello.
+		</p>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che la sfera trascura</h2>
+
+		<p>
+			La rifrazione è un effetto dell&#8217;atmosfera, e vicino all&#8217;orizzonte
+			cambia con il tempo meteorologico di vari primi d&#8217;arco. I modelli di
+			questo sito prevedono quindi le posizioni come se non ci fosse aria, e
+			le pagine che calcolano il sorgere e il tramonto aggiungono di nuovo
+			$R$.
+		</p>
+
+		<p>
+			Le declinazioni che ricaviamo non restano valide, perché le stelle
+			«fisse» si spostano. Polaris, oggi a meno di un grado dal polo, ne
+			distava più di 12° al tempo di Ipparco. La pagina 2.3 ne trova la
+			causa.
+		</p>
+
+		<p>
+			Anche il Sole, la Luna e i pianeti si muovono fra le stelle. Ruotano con
+			la sfera ma non mantengono il loro posto su di essa, un secondo moto che
+			Tolomeo descrive come «verso est e opposto [al moto di] quelle stelle
+			che conservano le loro distanze reciproche» (<em>Almagest</em> I 8).
+		</p>
+
+		<p>
+			Per seguire un tale corpo ci servono due coordinate solidali con la
+			sfera: la declinazione, e una seconda al posto dell&#8217;angolo orario, che
+			cambia mentre il cielo ruota. Ci servono anche formule per passare da
+			un sistema di coordinate all&#8217;altro. La pagina 1.2 si chiede come
+			sceglierle.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra che, per $\varphi > 0$, una stella non tramonta mai esattamente
+				quando $\delta > 90^\circ - \varphi$, e non sorge mai esattamente
+				quando $\delta < \varphi - 90^\circ$. Poi, con la Figura 2, classifica
+				Dubhe, Capella, Deneb, Vega e Canopo a Rodi ($36^\circ$), Roma
+				($41{,}9^\circ$) e Londra ($51{,}5^\circ$).
+			</p>
+			<details class="hint">
+				<p>
+					Una stella non tramonta mai quando anche il suo punto più basso è
+					sopra l&#8217;orizzonte: usa $a_\text{min} = |\varphi + \delta| -
+					90^\circ$, e spiega perché $\varphi + \delta > 0$ per una tale stella.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Se la stella non tramonta mai, il suo punto più basso è sopra
+					l&#8217;orizzonte, quindi $a_\text{min} > 0$, cioè $|\varphi + \delta| >
+					90^\circ$. Con $\varphi > 0$ e $|\delta| \le 90^\circ$, il caso
+					$\varphi + \delta < -90^\circ$ è impossibile, quindi $\varphi + \delta
+					> 90^\circ$, cioè $\delta > 90^\circ - \varphi$.
+				</p>
+				<p>
+					Allo stesso modo non sorge mai quando $a_\text{max} < 0$: $|\varphi -
+					\delta| > 90^\circ$. È possibile solo $\varphi - \delta > 90^\circ$,
+					quindi $\delta < \varphi - 90^\circ$.
+				</p>
+				<p>
+					Con le declinazioni J2000 (Dubhe $61{,}75^\circ$, Capella
+					$46{,}00^\circ$, Deneb $45{,}28^\circ$, Vega $38{,}78^\circ$, Canopo
+					$-52{,}70^\circ$):
+				</p>
+				<ul>
+					<li>Rodi: solo Dubhe non tramonta mai (punto più basso $7{,}75^\circ$);
+						Canopo sorge, ma sale solo di $1{,}30^\circ$.</li>
+					<li>Roma: solo Dubhe non tramonta mai ($13{,}65^\circ$); Capella scende
+						appena sotto ($-2{,}10^\circ$); Canopo non sorge mai ($a_\text{max}
+						= -4{,}60^\circ$).</li>
+					<li>Londra: Dubhe, Capella, Deneb e Vega non tramontano mai, Vega per
+						poco (il suo punto più basso è a $0{,}28^\circ$); Canopo non sorge
+						mai.</li>
+				</ul>
+				<p>
+					Capella non tramonta mai a nord di $44{,}00^\circ$, Vega a nord di
+					$51{,}22^\circ$. Canopo si vede solo a sud di $37{,}30^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				(a) Per quale frazione del giorno Sirio ($\delta = -16{,}72^\circ$) è
+				sopra l&#8217;orizzonte ad Alessandria ($31{,}2^\circ$), a Roma e a
+				Londra? (b) Tolomeo prende Rodi a $\varphi = 36^\circ$ con
+				l&#8217;obliquità $\varepsilon = 23^\circ 51' 20''$ ($23{,}856^\circ$), la
+				declinazione del Sole al solstizio d&#8217;estate. Trova il giorno più
+				lungo (<em>Almagest</em> II 2–3). Verifica entrambi nella Figura 4.
+			</p>
+			<details class="hint">
+				<p>
+					$f = H_0 / 180^\circ$ con $\cos H_0 = -\tan\varphi\tan\delta$. Per il
+					Sole, l&#8217;angolo orario cresce di $15^\circ$ per ogni ora
+					dell&#8217;orologio.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					(a) $-\tan\varphi\tan\delta$ vale $0{,}1819$ ad Alessandria,
+					$0{,}2695$ a Roma e $0{,}3776$ a Londra. Quindi $H_0 = 79{,}52^\circ$,
+					$74{,}37^\circ$ e $67{,}82^\circ$, e $f = 0{,}442$, $0{,}413$ e
+					$0{,}377$. Su un orologio (un giro dura 23 h 56 min) sono 10 h 34
+					min, 9 h 53 min e 9 h 01 min.
+				</p>
+				<p>
+					(b) $-\tan 36^\circ \tan 23^\circ 51' 20'' = -0{,}3213$, quindi $H_0 =
+					108{,}741^\circ$. Il Sole resta sopra l&#8217;orizzonte per $2H_0 /
+					15^\circ = 14{,}4988$ ore: le $14\tfrac12$ ore di Tolomeo. Il giorno
+					più corto, a $\delta = -\varepsilon$, dura $24 - 14{,}4988 = 9{,}5012$
+					ore, come richiede $f(\delta) + f(-\delta) = 1$.
+				</p>
+				<p>
+					Tolomeo fa anche il calcolo inverso (II 3): un giorno più lungo di
+					$14\tfrac12$ ore dà $\varphi = 36{,}01^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				A un equinozio il Sole è sull&#8217;equatore, quindi il modello dà 12 ore
+				di luce ovunque. Eppure il 20 marzo 2026 a Greenwich ($\varphi =
+				51{,}48^\circ$) il Sole reale sorge alle 06:02:53 e tramonta alle
+				18:13:03 (UT): 12 h 10 min. Da dove vengono i 10 minuti in più?
+			</p>
+			<details class="hint">
+				<p>
+					Il sorgere del Sole è l&#8217;istante in cui ne appare il bordo
+					superiore; il raggio del Sole è 16′. Quanto in fretta sale il Sole al
+					sorgere? Deriva la formula dell&#8217;altezza rispetto ad $H$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Il sorgere e il tramonto si contano quando il bordo superiore del Sole
+					tocca l&#8217;orizzonte visibile. Il centro è allora $34' + 16' = 50'$
+					sotto l&#8217;orizzonte vero: rifrazione più raggio.
+				</p>
+				<p>
+					Quanto in fretta sale lì il Sole? Deriviamo $\sin a = \sin\varphi
+					\sin\delta + \cos\varphi\cos\delta\cos H$:
+				</p>
+				$$\cos a \, \frac{da}{dH} = -\cos\varphi \cos\delta \sin H.$$
+				<p>
+					Al sorgere, all&#8217;equinozio, $a \approx 0$, $\delta = 0$ e $H =
+					-90^\circ$ (un quarto di giro prima di mezzogiorno), quindi $da/dH =
+					\cos\varphi$. L&#8217;angolo orario del Sole cresce di $15^\circ$
+					all&#8217;ora, quindi sale di $15^\circ \cos\varphi = 9{,}34^\circ$
+					all&#8217;ora a Greenwich.
+				</p>
+				<p>
+					Geometricamente: il Sole corre lungo l&#8217;equatore a $15^\circ$
+					all&#8217;ora, e l&#8217;equatore taglia l&#8217;orizzonte nel punto est con un
+					angolo di $90^\circ - \varphi$. Solo la parte $\sin(90^\circ - \varphi)
+					= \cos\varphi$ di quel moto è verso l&#8217;alto.
+				</p>
+				<p>
+					Salire di 50′ ($0{,}833^\circ$) a $9{,}34^\circ$ all&#8217;ora richiede
+					circa 5,4 min, a ciascun capo del giorno: circa 10,7 min in tutto.
+				</p>
+				<p>
+					Lo script divide esattamente le 12 h 10 min 10 s del Sole di
+					riferimento:
+				</p>
+				<ul>
+					<li>rifrazione: +7,3 min;</li>
+					<li>il raggio del Sole: +3,4 min;</li>
+					<li>il moto proprio del Sole quel giorno: −0,5 min. A mezzogiorno è
+						appena a sud dell&#8217;equatore, e il suo giorno non è un giro delle
+						stelle.</li>
+				</ul>
+				<p>
+					I minuti in più non vengono dal cielo che ruota, che il modello
+					descrive correttamente: il modello non ha atmosfera e tratta il Sole
+					come un punto.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): I 3, I 4,
+				I 6, I 7, I 8 (la sfera, la Terra come un punto, i due moti); I 12
+				(gli strumenti meridiani); II 1–3 e II 6 (la latitudine geografica, il
+				giorno più lungo a Rodi, il cerchio sempre visibile); V 12
+				(Alessandria).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), I 5
+				[ff. 3r–3v] (il moto dell&#8217;osservatore e la Terra che ruota); I 8
+				[f. 6r] (l&#8217;aria ruota con la Terra); la prefazione al Libro II
+				[f. 27v] (la terminologia consueta).</li>
+			<li>L. Foucault, "Démonstration physique du mouvement de rotation de
+				la Terre au moyen du pendule", <em>Comptes rendus de l'Académie
+				des sciences</em> 32 (1851).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.1–2.2 e 2.8–2.10.
+				Scrive $L$ per la latitudine geografica, qui $\varphi$.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 12
+				(tempo siderale), 13 (altezza), 15 (sorgere e tramonto), 16
+				(rifrazione).</li>
+			<li>Posizioni delle stelle: SIMBAD (CDS, Strasburgo), ICRS J2000,
+				consultato il 17 ottobre 2026. Precessione: J. Vondrák, N. Capitaine,
+				P. Wallace (2011).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/1.1-turning-sky.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

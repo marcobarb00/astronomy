@@ -50,9 +50,9 @@ const sunLongitude = jd => Ephem.longitude('sun', jd);
    name that marks it in Figure 2 (b) ("Q" for a quarter, so that the
    letter N stays Ptolemy's point of section 2). */
 const PHASES = [
-	{ elongation: 0, kind: 'syzygy', name: 'new' },
+	{ elongation: 0, kind: 'syzygy', name: tr('new', 'nuova') },
 	{ elongation: 90, kind: 'quarter', name: 'Q' },
-	{ elongation: 180, kind: 'syzygy', name: 'full' },
+	{ elongation: 180, kind: 'syzygy', name: tr('full', 'piena') },
 	{ elongation: 270, kind: 'quarter', name: 'Q' }
 ];
 
@@ -135,8 +135,8 @@ const equationFigure = {
 		this.plot = new Plot2D(byId('equation-plot'), {
 			x: [0, 360],
 			y: EQUATION_RANGE,
-			xLabel: 'anomaly M from the apogee (°)',
-			yLabel: "the Moon's equation (°)",
+			xLabel: tr('anomaly M from the apogee (°)', "anomalia M dall'apogeo (°)"),
+			yLabel: tr("the Moon's equation (°)", "equazione della Luna (°)"),
 			xTicks: anomalyTicks,
 			aspect: 0.5,
 			onDraw: () => this.draw()
@@ -197,7 +197,7 @@ const crankFigure = {
 		this.plot = new Plot2D(byId('crank-plot'), {
 			x: [0, CRANK_DAYS],
 			y: Q_RANGE,
-			xLabel: `days from 1 January ${YEAR}`,
+			xLabel: tr(`days from 1 January ${YEAR}`, `giorni dal 1º gennaio ${YEAR}`),
 			yLabel: 'q (°)',
 			aspect: 0.95,
 			maxHeight: 440,
@@ -212,7 +212,7 @@ const crankFigure = {
 		);
 		wirePresets(byId('crank-canvas').closest('figure'));
 		wirePlayButton(byId('crank-play'), byId('crank-day'), CRANK_DAYS_PER_SECOND, {
-			playLabel: 'Play two months'
+			playLabel: tr('Play two months', 'Avvia due mesi')
 		});
 
 		this.update();
@@ -546,8 +546,8 @@ const directionZoomFigure = {
 
 		// the two apogees named at the ends of their lines, each on the side
 		// away from the other line
-		sideLabel(ctx, 'true apogee', fromK(g.trueApogee, ZOOM_LINE_END * radius), 'right', COL.earth);
-		sideLabel(ctx, 'mean apogee', fromK(g.meanApogee, ZOOM_LINE_END * radius), 'left', COL.ink);
+		sideLabel(ctx, tr('true apogee', 'apogeo vero'), fromK(g.trueApogee, ZOOM_LINE_END * radius), 'right', COL.earth);
+		sideLabel(ctx, tr('mean apogee', 'apogeo medio'), fromK(g.meanApogee, ZOOM_LINE_END * radius), 'left', COL.ink);
 		labelOutside(ctx, 'σ', K, SIGMA_ARC * radius, g.meanApogee - 9, COL.ink, this.labels);
 		// M's name in the gap between the mean apogee's line and L′'s radius
 		labelOutside(
@@ -562,8 +562,8 @@ const directionZoomFigure = {
 		labelOutside(ctx, 'K', K, 4, 200, COL.ink, this.labels);
 		labelOutside(ctx, 'L', moon, 8, g.meanApogee - DIRECTION_M - 15, COL.planet, this.labels);
 		labelOutside(ctx, 'L′', ghost, 6, g.trueApogee - DIRECTION_M + 15, COL.muted, this.labels);
-		centeredLabel(ctx, 'from O', { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
-		centeredLabel(ctx, 'from N', { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
+		centeredLabel(ctx, tr('from O', 'da O'), { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
+		centeredLabel(ctx, tr('from N', 'da N'), { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
 	}
 };
 
@@ -587,9 +587,9 @@ const ourErrorFigure = {
 			start: start,
 			end: end,
 			spans: [
-				{ label: '2 months', years: CRANK_DAYS / 365.25 },
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 }
+				{ label: tr('2 months', '2 mesi'), years: CRANK_DAYS / 365.25 },
+				{ label: tr('1 year', '1 anno'), years: 1 },
+				{ label: tr('100 years', '100 anni'), years: 100 }
 			],
 			ghostButtons: false
 		});
@@ -597,25 +597,25 @@ const ourErrorFigure = {
 		const quarters = phaseMoments(middle - 190, middle + 190).filter(phase => phase.kind === 'quarter');
 
 		curve.addGhost({
-			label: 'the epicycle of page 3.1',
-			short: 'epicycle',
+			label: tr('the epicycle of page 3.1', "l'epiciclo della pagina 3.1"),
+			short: tr('epicycle', 'epiciclo'),
 			color: COL.epicycle,
 			fn: LunarEpicycle.make(LunarEpicycle.FIT_2026)
 		});
 		curve.addGhost({
-			label: 'the crank alone',
-			short: 'crank alone',
+			label: tr('the crank alone', 'la sola manovella'),
+			short: tr('crank alone', 'sola manovella'),
 			color: COL.deferent,
 			fn: LunarCrank.make(CRANK)
 		});
 		curve.addModel({
-			label: "Ptolemy's complete model, fitted to 2025–2026",
-			short: 'complete model',
+			label: tr("Ptolemy's complete model, fitted to 2025–2026", 'il modello completo di Tolomeo, adattato al 2025–2026'),
+			short: tr('complete model', 'modello completo'),
 			color: COL.planet,
 			fn: crank
 		});
 		curve.addMarks({
-			label: 'the complete model at the quarters (spans of a year or less)',
+			label: tr('the complete model at the quarters (spans of a year or less)', 'il modello completo ai quarti (intervalli di un anno o meno)'),
 			color: COL.planet,
 			fn: crank,
 			dates: quarters.map(phase => phase.jd),
@@ -661,8 +661,8 @@ const diameterFigure = {
 		this.plot = new Plot2D(byId('diameter-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: DIAMETER_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'apparent diameter (′)',
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
+			yLabel: tr('apparent diameter (′)', 'diametro apparente (′)'),
 			xTicks: monthTicks,
 			aspect: 0.45,
 			onDraw: () => this.draw()

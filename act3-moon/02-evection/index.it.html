@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 3.2 · EVECTION AND THE DISTANCE PROBLEM
+     Act III, the Moon. At the quarters the Moon's equation reaches 7⅔°, not
+     5° (Almagest V 2-3); Ptolemy carries the epicycle on an eccentric whose
+     center turns about the Earth (V 2, V 4), and directs its apogee from a
+     point N opposite that center (V 5); to first order the model is the
+     ellipse's term plus the evection. It halves the error in longitude and
+     makes the Moon's distance vary by a factor of 1.9, which its apparent
+     size does not show (Copernicus, De Revolutionibus IV 2).
+     Numbers: tools/numbers/3.2-evection.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>3.2 · L&#8217;evezione e il problema della distanza · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/lunar-epicycle.js"></script>
+	<script defer src="../../shared/models/lunar-crank.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="3.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 3.1 si è chiusa con un epiciclo che colloca la Luna entro 40′ a
+			ogni Luna nuova e piena e sbaglia fino a 3° nel frattempo. I grandi errori
+			cadono vicino ai quarti, quando la Luna è a 90° dal Sole, le posizioni che
+			le eclissi non campionano mai.
+		</p>
+
+		<p>
+			Tolomeo trovò la legge di questa seconda disuguaglianza e costruì per essa
+			un modello, in cui l&#8217;epiciclo si avvicina alla Terra ai quarti. Esso
+			porta l&#8217;errore massimo in longitudine eclittica da 3,2° a 1,8°. Fa però
+			cambiare la distanza della Luna di quasi un fattore due, e la grandezza
+			apparente della Luna mostra che non è così.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>L&#8217;equazione della Luna ai quarti</h2>
+
+		<p>
+			Per vedere la discrepanza, prendiamo l&#8217;equazione completa della Luna
+			reale, la sua longitudine eclittica vera meno la sua longitudine eclittica
+			media, in due tipi di istanti: le Lune nuove e piene, che le eclissi
+			campionano, e i quarti. La Figura 1 la traccia per ciascuno di essi dal
+			2016 al 2025, circa 250 per tipo, in funzione dell&#8217;anomalia $M$ dei moti
+			medi della Luna di riferimento, contata dall&#8217;apogeo come nella pagina
+			3.1.
+		</p>
+
+		<!-- Figure 1: the equation against the anomaly, at the syzygies and at the quarters (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="equation-plot"></canvas>
+			</div>
+			<figcaption>
+				Confronta i due insiemi di punti. Entrambi seguono $-\sin M$ e si
+				annullano all&#8217;apogeo e al perigeo, $M = 0^\circ$ e $180^\circ$, ma i
+				quarti oscillano fino a quasi 8° da una parte e dall&#8217;altra, le Lune
+				nuove e piene solo fino a 5°.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-earth">punti blu</dt>
+						<dd>Lune nuove e piene</dd>
+						<dt class="c-planet">punti rossi</dt>
+						<dd>primi e ultimi quarti</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Una curva $-a\sin M$ adattata a ciascun insieme dà $a = 4{,}96^\circ$ alla
+			Luna nuova e piena e $a = 7{,}68^\circ$ ai quarti. L&#8217;epiciclo della
+			pagina 3.1 è stato adattato alle eclissi, quindi ha l&#8217;ampiezza minore a
+			ogni fase. Ai quarti del 2025 il suo errore è di circa $2{,}8^\circ \sin
+			M$, che ha la forma dell&#8217;equazione stessa. Lì il modello ha il segno
+			giusto, e una grandezza troppo piccola.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo descrive lo stesso schema (<em>Almagest</em> V 2). Alla Luna
+				nuova e piena trova la discrepanza «o impercettibile o piccola». Ai quarti
+				è «piccolissima o nulla quando la luna è all&#8217;apogeo o al perigeo
+				dell&#8217;epiciclo», e massima quando è massima l&#8217;equazione della prima
+				anomalia.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Egli misurò la grandezza dell&#8217;effetto ai quarti (V 3). Il 9 febbraio
+				139 trovò la Luna 7⅔° prima della sua posizione media, dove la prima
+				anomalia consente 5°. L&#8217;avvistamento di Ipparco del 5 agosto 128 a.C.,
+				che cita anche la pagina 3.1, la pone 7⅔° oltre. Da questi e da altri
+				avvistamenti Tolomeo prende 7⅔° (7,67°) come massima equazione ai quarti.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>La manovella di Tolomeo</h2>
+
+		<h3>L&#8217;epiciclo su un eccentrico che ruota</h3>
+
+		<div class="row">
+			<p>
+				Un epiciclo più vicino appare più grande, e aumenta l&#8217;equazione del
+				centro. Così Tolomeo concluse che «dobbiamo supporre che l&#8217;epiciclo
+				della luna sia portato su un cerchio eccentrico, essendo più lontano
+				dalla terra alla congiunzione e all&#8217;opposizione, e più vicino alla
+				terra a entrambe le quadrature» (V 2). Poiché i quarti cadono due volte
+				al mese, l&#8217;eccentrico deve ruotare, così che il suo perigeo incontri
+				l&#8217;epiciclo due volte in ogni mese sinodico.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Sia $D = \bar\lambda - \bar\lambda_\odot$ l&#8217;<strong>elongazione
+			media</strong>, la longitudine eclittica media della Luna meno quella del
+			Sole medio. Il centro K dell&#8217;epiciclo si muove ancora alla longitudine
+			eclittica media $\bar\lambda$ vista dalla Terra O. Il centro C
+			dell&#8217;eccentrico ruota verso ovest attorno a O, e il suo apogeo A sta
+			alla longitudine eclittica $\bar\lambda - 2D$, così che A e K stanno
+			sempre simmetrici rispetto alla linea del Sole medio, in
+			$\bar\lambda_\odot \pm D$. La costruzione si chiama di solito meccanismo
+			a <strong>manovella</strong> di Tolomeo, perché C ruota attorno a O come
+			una manovella ruota attorno al suo perno.
+		</p>
+
+		<p>
+			Misuriamo le lunghezze in unità di OA, la distanza massima di K, che
+			Tolomeo fa uguale a 60. Con $\text{OC} = c$, il raggio dell&#8217;eccentrico
+			CA è $1 - c$, e l&#8217;angolo in O fra OC e OK è $2D$, che Tolomeo chiama
+			<strong>doppia elongazione</strong> (V 5). Vale 0° alla Luna nuova e piena
+			($D = 0^\circ$ o $180^\circ$) e 180° ai quarti ($D = 90^\circ$ o
+			$270^\circ$), quindi la manovella compie il suo intero ciclo due volte in
+			un mese sinodico. Il teorema del coseno nel triangolo OCK dà la distanza
+			$\rho = \text{OK}$:
+		</p>
+
+		$$(1 - c)^2 = \rho^2 + c^2 - 2\rho c \cos 2D \quad\Longrightarrow\quad \rho = c\cos 2D + \sqrt{(1 - c)^2 - c^2 \sin^2 2D}.$$
+
+		<p>
+			Alla Luna nuova e piena media, $2D = 0^\circ$, K è all&#8217;apogeo A e $\rho
+			= 1$. Ai quarti medi, $2D = 180^\circ$, K è al perigeo dell&#8217;eccentrico e
+			$\rho = 1 - 2c$.
+		</p>
+
+		<h3>L&#8217;equazione dell&#8217;anomalia</h3>
+
+		<p>
+			L&#8217;epiciclo mantiene il suo raggio $r = e$ in queste unità, e la Luna la
+			sua anomalia $M$, contata verso ovest dall&#8217;apogeo dell&#8217;epiciclo. Vista
+			da O, la costruzione è l&#8217;epiciclo della pagina 3.1 con $\rho$ al posto
+			del raggio del deferente, quindi l&#8217;equazione dell&#8217;anomalia è
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}(e\sin M,\ \rho + e\cos M), \qquad \lambda = \bar\lambda + q.$$
+		</div>
+
+		<p>
+			Il suo valore massimo è $\arcsin(e/\rho)$, che cresce da $\arcsin e$ alla
+			Luna nuova e piena ad $\arcsin\big(e/(1 - 2c)\big)$ ai quarti. Alla Luna
+			nuova e piena il modello è l&#8217;epiciclo della pagina 3.1, quindi il
+			rapporto $e$ trovato dalle eclissi conserva il suo significato. Con i
+			numeri di Tolomeo le due massime equazioni sono 5,02° e 7,66°.
+		</p>
+
+		<!-- Figure 2: the crank, and q over two months -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) l&#8217;epiciclo sull&#8217;eccentrico che ruota</p>
+						<canvas id="crank-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;equazione dell&#8217;anomalia in due mesi</p>
+						<canvas id="crank-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="crank-day">data</label>
+							<input id="crank-day" type="range" min="0" max="60" step="0.05" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="crank-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="crank-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="crank-play">Avvia due mesi</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="crank-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia i due mesi e guarda C ruotare verso ovest attorno a O mentre K si
+				muove verso est: K arriva più vicino a O a ogni quarto, e lì la curva
+				continua in (b) oscilla più di quella tratteggiata. A ogni Luna nuova e
+				piena K è di nuovo in A, e le due curve si incontrano.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-sun">oro, tratteggio</dt>
+						<dd>la direzione del Sole medio</dd>
+						<dt class="c-muted">punteggiato</dt>
+						<dd>la linea degli apsidi dell&#8217;eccentrico</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-epicycle">tratteggio</dt>
+						<dd>l&#8217;epiciclo della pagina 3.1, su un deferente attorno a O</dd>
+						<dt class="c-muted">Q</dt>
+						<dd>un quarto</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La direzione dell&#8217;epiciclo</h3>
+
+		<div class="row">
+			<p>
+				Fra le Lune nuove e piene e i quarti, agli <strong>ottanti</strong>, gli
+				avvistamenti di Ipparco con la Luna vicina all&#8217;apogeo o al perigeo del
+				suo epiciclo non concordavano ancora con la manovella. Tolomeo concluse
+				che l&#8217;anomalia si conta da un diverso diametro dell&#8217;epiciclo (V 5). Il
+				suo <strong>apogeo medio</strong>, il punto da cui si conta $M$, sta sulla
+				linea tracciata per K da un punto N, dalla parte opposta di O rispetto a
+				C, con $\text{ON} = \text{OC}$. Toomer traduce la parola di Tolomeo per
+				questo come la «direzione» dell&#8217;epiciclo.
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per trovare l&#8217;apogeo medio, prendiamo un sistema con l&#8217;origine nella
+			Terra O, il primo asse verso K, alla longitudine eclittica $\bar\lambda$,
+			e il secondo 90° più a est. Lì K è in $(\rho, 0)$ e N, opposto a C, in
+			$(-c\cos 2D,\ c\sin 2D)$. La retta da N per K lascia K con l&#8217;angolo
+		</p>
+
+		$$\sigma = -\operatorname{atan2}(c\sin 2D,\ \rho + c\cos 2D)$$
+
+		<p>
+			dalla retta OK, contato verso est. Si annulla quando N, O e K sono
+			allineati, alla Luna nuova e piena ($2D = 0^\circ$) e ai quarti ($2D =
+			180^\circ$), e arriva a 13,1° in mezzo con i numeri di Tolomeo.
+		</p>
+
+		<p>
+			L&#8217;anomalia stessa non cambia: $M$ cresce ancora uniformemente, $M = M_0
+			+ n_M\,t$, come nella pagina 3.1. Ciò che cambia è il punto da cui si
+			conta. Nella sola manovella si conta dall&#8217;<strong>apogeo vero</strong>, il
+			punto dell&#8217;epiciclo più lontano da O, sulla retta OK, e l&#8217;equazione
+			della sezione 2 lo usa così com&#8217;è. Nel modello completo di Tolomeo si
+			conta dall&#8217;apogeo medio, che sta $\sigma$ a est dell&#8217;apogeo vero, quindi
+			la Luna, $M$ a ovest dell&#8217;apogeo medio, è $M - \sigma$ a ovest
+			dell&#8217;apogeo vero.
+		</p>
+
+		<p>
+			L&#8217;equazione dell&#8217;anomalia si trova nel triangolo OKL, che richiede
+			l&#8217;angolo della Luna dalla retta OK. Il modello completo usa quindi
+			l&#8217;equazione della sezione 2 con $M - \sigma$ al posto di $M$:
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}\big(e\sin(M - \sigma),\ \rho + e\cos(M - \sigma)\big).$$
+		</div>
+
+		<!-- Figure 3: the direction of the epicycle, Ptolemy's example of V 6 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) l&#8217;eccentrico, con i numeri di Tolomeo</p>
+						<canvas id="direction-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;epiciclo, ingrandito</p>
+						<canvas id="direction-zoom"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta L con L′. Entrambe sono a $M = 40^\circ$ da un apogeo, L
+				dall&#8217;apogeo medio e L′ da quello vero, quindi la direzione
+				dell&#8217;epiciclo sposta la Luna lungo il suo epiciclo di $\sigma$, qui 12°
+				alla doppia elongazione dell&#8217;esempio di Tolomeo, 90½°.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nell&#8217;esempio di Tolomeo stesso la Luna è a 333,2° dall&#8217;apogeo medio. È
+			quindi a 345,2° dall&#8217;apogeo vero, e la sua equazione è $+1^\circ 26'$
+			(1,43°), come calcola Tolomeo, mentre la sola manovella dà $+2^\circ 33'$
+			(2,55°).
+		</p>
+
+		<h3>Il modello al primo ordine</h3>
+
+		<p>
+			Per confrontare il modello di Tolomeo con la teoria moderna della Luna,
+			sviluppiamo $q$ al primo ordine: teniamo i termini del primo ordine in $e$
+			e in $c$ e il loro prodotto, e trascuriamo i quadrati. Per un numero
+			piccolo $x$, quattro approssimazioni fanno tutto il lavoro:
+		</p>
+
+		$$\arctan x \approx x, \qquad \frac{1}{1 + x} \approx 1 - x, \qquad \sqrt{1 - x^2}\, \approx 1, \qquad \sin(M + x) \approx \sin M + x\cos M.$$
+
+		<p>
+			L&#8217;ultima segue dalla formula di addizione, con $\cos x \approx 1$ e $\sin
+			x \approx x$. Scriviamo $\kappa = c/(1 - c)$. La radice quadrata in $\rho$
+			è $(1 - c)\sqrt{1 - \kappa^2\sin^2 2D} \approx 1 - c$, quindi
+		</p>
+
+		$$\rho \approx (1 - c) + c\cos 2D = (1 - c)(1 + \kappa\cos 2D).$$
+
+		<p>
+			Nell&#8217;equazione dell&#8217;anomalia il denominatore $\rho + e\cos M$ è
+			positivo, quindi $q = -\arctan\big(e\sin M/(\rho + e\cos M)\big)$. Le
+			prime due approssimazioni danno $q \approx -(e/\rho)\sin M$, come nella
+			pagina 3.1, e poi $e/\rho \approx e_0(1 - \kappa\cos 2D)$, con $e_0 = e/(1
+			- c)$, il rapporto dell&#8217;epiciclo quando K è alla distanza media
+			dell&#8217;eccentrico. La sola manovella dà quindi
+		</p>
+
+		$$q \approx -e_0\,(1 - \kappa\cos 2D)\sin M = -e_0 \sin M + \tfrac12 e_0 \kappa\,\big[\sin(M - 2D) + \sin(M + 2D)\big].$$
+
+		<p>
+			La manovella aggiunge due termini di uguale grandezza, uno in $M - 2D$ e
+			uno in $M + 2D$. La direzione dell&#8217;epiciclo cambia $M$ in $M - \sigma$,
+			con $\sigma \approx -\kappa\sin 2D$, e al primo ordine toglie il termine in
+			$M + 2D$ e raddoppia l&#8217;altro (Esercizio 2):
+		</p>
+
+		<div class="box">
+			$$q \approx -e_0 \sin M + e_0 \kappa \sin(M - 2D).$$
+		</div>
+
+		<div class="row">
+			<p>
+				La serie della Luna di riferimento comincia con gli stessi due termini,
+				$-6{,}29^\circ \sin M + 1{,}27^\circ \sin(M - 2D)$. Il primo appartiene
+				all&#8217;ellisse e il secondo è l&#8217;evezione della pagina 3.1. Con i numeri
+				di Tolomeo $e_0 = 0{,}1057$ radianti, ovvero 6,05°, ed $e_0 \kappa =
+				1{,}26^\circ$. La teoria moderna riconduce l&#8217;evezione all&#8217;attrazione
+				del Sole sull&#8217;orbita della Luna.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="perturbations"></div>
+			</aside>
+		</div>
+
+		<p>
+			La tabella dà i coefficienti esatti del modello di Tolomeo, calcolati
+			numericamente. Nella sola manovella, il termine in $M + 2D$ è grande quanto
+			il termine in $M - 2D$. La direzione dell&#8217;epiciclo lo riduce a 0,06°,
+			vicino al piccolo termine della Luna di riferimento, e raddoppia l&#8217;altro,
+			che arriva entro 0,06° dall&#8217;evezione.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Coefficiente di</th>
+					<th>$\sin M$</th>
+					<th>$\sin(M - 2D)$</th>
+					<th>$\sin(M + 2D)$</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>la sola manovella di Tolomeo</td>
+					<td>$-6{,}26^\circ$</td>
+					<td>$0{,}66^\circ$</td>
+					<td>$0{,}66^\circ$</td>
+				</tr>
+				<tr>
+					<td>il modello completo di Tolomeo</td>
+					<td>$-6{,}18^\circ$</td>
+					<td>$1{,}33^\circ$</td>
+					<td>$-0{,}06^\circ$</td>
+				</tr>
+				<tr>
+					<td>Luna di riferimento (Meeus)</td>
+					<td>$-6{,}29^\circ$</td>
+					<td>$1{,}27^\circ$</td>
+					<td>$-0{,}05^\circ$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;eccentrico dai quarti</h2>
+
+		<p>
+			La manovella aggiunge due parametri all&#8217;epiciclo della pagina 3.1, la
+			grandezza dell&#8217;eccentrico, $c$, e la direzione dell&#8217;epiciclo.
+		</p>
+
+		<p>
+			Ai quarti medi il centro K dell&#8217;epiciclo è al perigeo G
+			dell&#8217;eccentrico, il più vicino alla Terra, quindi la grandezza
+			dell&#8217;eccentrico ha lì il suo effetto massimo. La massima equazione
+			$q_\text{max}$ si vede dove la retta da O è tangente all&#8217;epiciclo,
+			quindi, come nella sezione 2,
+		</p>
+
+		$$\sin q_\text{max} = \frac{r}{\text{OG}}.$$
+
+		<p>
+			La massima equazione ai quarti dà quindi OG, poi il raggio
+			dell&#8217;eccentrico, metà di OA + OG, e infine il suo spostamento OC, che
+			è $c$ dove OA = 1.
+		</p>
+
+		<p>
+			La direzione dell&#8217;epiciclo ruota l&#8217;anomalia di un angolo che si
+			annulla alla Luna nuova e piena e ai quarti (sezione 2), ed è massimo fra
+			essi, vicino agli ottanti. Si vede di più lì quando la Luna è vicina
+			all&#8217;apogeo o al perigeo del suo epiciclo, dove l&#8217;equazione cambia più
+			in fretta con l&#8217;anomalia. Per essa manteniamo la scelta di Tolomeo, ON
+			= OC, invece di adattarla, così che gli ottanti restino una verifica
+			onesta.
+		</p>
+
+		<p>
+			Manteniamo tutto ciò che la pagina 3.1 ha adattato, compreso il suo
+			epiciclo, e prendiamo il Sole medio della pagina 1.3 per $D$, quindi
+			l&#8217;unico parametro che resta è $c$. Adattato ai minimi quadrati ai
+			quarti del 2025, risulta 0,1769, il che rende la massima equazione ai
+			quarti 7,51°, contro i 7,68° che lì mostra la Luna di riferimento
+			(sezione 1). La differenza viene dall&#8217;epiciclo della pagina 3.1, la cui
+			equazione alla Luna nuova e piena è un poco piccola, e l&#8217;adattamento
+			mantiene il rapporto fra le due fasi.
+		</p>
+
+		<p>
+			Adattato invece ai quarti del 2016–2025, $c$ cambia di circa lo 0,6%,
+			perché i quarti di anni diversi campionano in modo diverso gli altri
+			errori del modello.
+		</p>
+
+		<!-- History block: Ptolemy's eccentric and the point N -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>L&#8217;eccentrico di Tolomeo e il punto N</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo ricavò l&#8217;eccentrico dalla massima equazione che aveva
+					misurato vicino ai quarti con il suo astrolabio, lo strumento armillare
+					che descrive in V 1 (V 3). Con la stessa geometria ottenne $c =
+					0{,}1719$, vicino all&#8217;adattamento al 2025 (V 4); l&#8217;Esercizio 1 rifà
+					il suo calcolo.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Per la direzione dell&#8217;epiciclo scelse due avvistamenti di Ipparco
+					vicino agli ottanti, con la Luna vicina al perigeo e all&#8217;apogeo del
+					suo epiciclo, dove la sola anomalia non dà quasi alcuna equazione,
+					quindi ciò che resta mostra la direzione. Da ciascuno calcolò ON, lo
+					trovò quasi esattamente uguale a OC, e prese i due uguali (V 5), come fa
+					il modello di questa pagina.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>La manovella contro la Luna reale</h2>
+
+		<h3>Longitudine eclittica</h3>
+
+		<p>
+			I quarti del 2025 sono stati usati per l&#8217;adattamento, quindi la verifica
+			è se il modello completo vale anche in altri anni e fra i quarti, vicino
+			agli ottanti, dove nulla è stato adattato. La Figura 4 dà il suo errore
+			nel corso del 2026, con l&#8217;epiciclo della pagina 3.1 e la sola manovella
+			come fantasmi.
+		</p>
+
+		<!-- Figure 4: the crank fitted to 2025–2026 against the reference Moon -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-ours"></div>
+			</div>
+			<figcaption>
+				Punta il grafico per leggere gli errori. I punti, ai quarti, restano entro
+				circa un grado dallo zero. Passa a due mesi e nota che gli errori più
+				grandi rimasti cadono vicino agli ottanti.
+			</figcaption>
+		</figure>
+
+		<p>
+			La sola manovella corregge i quarti ma lascia gli ottanti sbagliati quasi
+			quanto l&#8217;epiciclo, vicino a 2,6°. La direzione dell&#8217;epiciclo, che non
+			è stata adattata, li porta a 1,5°, e l&#8217;errore massimo dell&#8217;anno a
+			1,8°.
+		</p>
+
+		<p>
+			Il modello non aggiunge moti propri a quelli della pagina 3.1 e del Sole
+			medio, quindi il suo errore non cresce con il tempo: nel secolo dal 1976
+			al 2076 resta entro circa 2°.
+		</p>
+
+		<h3>Distanza</h3>
+
+		<div class="row">
+			<p>
+				Il modello completo è stato costruito per riprodurre le longitudini
+				eclittiche, ma fissa anche la distanza della Luna OL. Questa è massima,
+				$1 + e$, alla Luna nuova e piena con la Luna all&#8217;apogeo del suo
+				epiciclo, e minima, $1 - 2c - e$, a un quarto con la Luna al perigeo. Per
+				il modello adattato al 2025–2026 il rapporto fra le due è quasi due,
+				mentre la distanza della Luna reale varia nel corso dell&#8217;anno di un
+				rapporto di solo 1,14.
+			</p>
+			<aside>
+				<div class="note today">
+					L&#8217;evezione si spiega come un effetto dell&#8217;attrazione del Sole, che
+					nel corso di ogni mese rende l&#8217;ellisse della Luna più e meno
+					eccentrica e ne fa oscillare l&#8217;asse avanti e indietro. La Terra
+					resta nel fuoco, quindi l&#8217;1,27° in longitudine eclittica viene con una
+					piccola variazione di distanza, mentre la manovella avvicina l&#8217;intero
+					epiciclo.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			Il diametro apparente della Luna è inversamente proporzionale alla sua
+			distanza, quindi mostra direttamente la differenza. La Figura 5 confronta
+			il diametro della Luna reale nel corso del 2026 con quello che prevedono i
+			due modelli. Un modello dà solo rapporti di distanze, quindi ciascuno è
+			scalato in modo da avere il diametro minimo della Luna reale, 29,4′, alla
+			sua distanza massima.
+		</p>
+
+		<!-- Figure 5: the apparent diameter over 2026 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="diameter-plot"></canvas>
+			</div>
+			<figcaption>
+				Confronta le tre curve. Il diametro della Luna reale cambia quasi
+				altrettanto poco di quello dell&#8217;epiciclo, mentre quello del modello
+				completo quasi raddoppia ai quarti quando la Luna è vicina al perigeo del
+				suo epiciclo.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>spessa</dt>
+						<dd>la Luna reale</dd>
+						<dt class="c-planet">rosso</dt>
+						<dd>il modello completo, adattato al 2025–2026</dd>
+						<dt class="c-epicycle">tratteggio</dt>
+						<dd>l&#8217;epiciclo della pagina 3.1</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- History block: Ptolemy's complete Moon and its size -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>La Luna completa di Tolomeo e la sua grandezza</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo verificò il modello completo con altri avvistamenti, suoi e di
+					Ipparco, che a suo dire danno circa gli stessi valori (V 3, V 5).
+					Attorno al suo avvistamento del 9 febbraio 139, il suo errore è circa un
+					terzo di quello del suo epiciclo della pagina 3.1. Entrambi sono in
+					media circa un grado indietro rispetto alla Luna reale, per lo più a
+					causa del suo Sole, come ha trovato la pagina 3.1.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Con la diottra di Ipparco trovò il diametro della Luna uguale a quello
+				del Sole solo quando la Luna è alla sua distanza massima alla Luna piena.
+				Ricavò la sua grandezza dalle eclissi di Luna, con la Luna a quella
+				distanza e, per i limiti delle eclissi, alla sua distanza minima in
+				sizigia (V 14, VI 5). Non ne riferisce nessuna a un quarto, dove il suo
+				modello renderebbe la Luna larga quasi un grado.
+			</p>
+
+			<div class="row">
+				<p>
+					Copernico rivolse questo contro il modello: chiunque misuri il diametro
+					della Luna «troverà che varia solo quanto richiede l&#8217;epiciclo senza
+					quell&#8217;eccentrico» (<em>De Revolutionibus</em> IV 2). L&#8217;eccentrico
+					della pagina 2.1 sbaglia allo stesso modo per il Sole, ma solo di circa
+					un primo d&#8217;arco. Ciò era al di sotto di quanto Tolomeo potesse
+					misurare, ed egli non trovò alcuna variazione apprezzabile del diametro
+					del Sole (V 14).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>La variazione, e la distanza della Luna</h2>
+
+		<div class="row">
+			<p>
+				La parte singola più grande di ciò che resta è un termine della Luna di
+				riferimento che nessun modello antico contiene, la
+				<strong>variazione</strong>, $0{,}66^\circ \sin 2D$, massima agli ottanti.
+				Nel 2026 spiega più di due quinti dello scarto quadratico medio
+				dell&#8217;errore.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<p>
+			Viene poi l&#8217;adattamento stesso. Ricavata da sole tre eclissi,
+			l&#8217;anomalia dell&#8217;epiciclo è leggermente sfasata rispetto a quella
+			della Luna reale, e la sua grandezza un poco piccola, il che lascia un
+			errore di circa 37′ che si ripete ogni mese anomalistico.
+		</p>
+
+		<p>
+			Alla Luna nuova e piena la manovella non cambia quasi nulla, come mostra
+			Tolomeo (V 10): lì il modello completo è vicino quanto l&#8217;epiciclo della
+			pagina 3.1, quindi le longitudini eclittiche che decidono le eclissi non
+			sono né migliori né peggiori.
+		</p>
+
+		<div class="row">
+			<p>
+				Per mantenere quasi costante la distanza della Luna, Copernico sostituì
+				la manovella con un secondo piccolo epiciclo portato sul primo, sul quale
+				la Luna gira due volte al mese, più vicina al centro del primo epiciclo
+				alla Luna nuova e piena e più lontana ai quarti (IV 3). Il suo deferente
+				resta centrato sulla Terra invece di ruotare come l&#8217;eccentrico della
+				manovella, e la distanza della sua Luna ai quarti varia di un rapporto di
+				1,31 (IV 17), molto più vicino all&#8217;1,14 della Luna reale nel corso
+				dell&#8217;anno.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+				<div class="note detour" data-topic="islamic"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il modello completo dà ora la longitudine eclittica della Luna a ogni
+			fase, ma un&#8217;eclissi richiede anche la Luna vicina all&#8217;eclittica, e
+			quindi la sua latitudine eclittica, che aggiunge la pagina 3.3.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Dall&#8217;epiciclo di 5,25 dove OA = 60 e dalla massima equazione di 7⅔° ai
+				quarti, trova l&#8217;eccentrico di Tolomeo: OG, il raggio e OC. Poi, con i
+				suoi valori OG = 39,37 e OC = 10,32, trova la distanza massima e minima
+				della Luna e il loro rapporto. Tolomeo pone OA = 59 raggi terrestri (V
+				13): converti le due distanze. Se la Luna misura 31⅓′ alla sua distanza
+				massima (V 14), quanto dovrebbe misurare alla minima? Confronta con la
+				Luna reale nella Figura 5.
+			</p>
+			<details class="hint">
+				<p>
+					La distanza massima è OA più il raggio dell&#8217;epiciclo; la minima è OG
+					meno esso.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Ai quarti $\sin 7^\circ 40' = 5{,}25/\text{OG}$, quindi OG = 39,352. Il
+					diametro dell&#8217;eccentrico è OA + OG, quindi il suo raggio è 49,676, e
+					OC = 60 − 49,676 = 10,324. Tolomeo, con le sue corde, scrive 39,367,
+					49,683 e 10,317.
+				</p>
+				<p>
+					La distanza massima è $60 + 5{,}25 = 65{,}25$ e la minima $39{,}367 -
+					5{,}25 = 34{,}117$, un rapporto di 1,913. In raggi terrestri,
+					moltiplicando per 59/60, sono 64,16 e 33,55: i 64⅙ e 33,55 che Copernico
+					cita contro il modello (<em>De Revolutionibus</em> IV 2).
+				</p>
+				<p>
+					Il diametro apparente va come l&#8217;inverso della distanza, quindi 31,33′
+					alla distanza massima diventano $31{,}33' \times 1{,}913 = 59{,}9'$ alla
+					minima, quasi un grado. La distanza della Luna reale variò di un
+					rapporto di 1,140 nel 2026, e il suo diametro solo da 29,4′ a 33,5′.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra che al primo ordine la direzione dell&#8217;epiciclo ruota l&#8217;anomalia
+				di $\sigma \approx -\kappa\sin 2D$, con $\kappa = c/(1 - c)$. Poi usala per
+				completare lo sviluppo della sezione 2: mostra che il modello completo dà
+				$q \approx -e_0 \sin M + e_0 \kappa \sin(M - 2D)$, senza alcun termine in
+				$M + 2D$. Verifica $\sigma$ con l&#8217;esempio di Tolomeo della Figura 3.
+			</p>
+			<details class="hint">
+				<p>
+					Usa le quattro approssimazioni della sezione 2. Per $\sigma$, dividi
+					prima entrambi gli argomenti dell&#8217;arcotangente per $1 - c$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Poiché $\rho + c\cos 2D$ è positivo, $\sigma = -\arctan\big(c\sin 2D /
+					(\rho + c\cos 2D)\big)$. Dividendo numeratore e denominatore per $1 -
+					c$, con $\rho/(1 - c) \approx 1 + \kappa\cos 2D$, la frazione diventa
+					$\kappa\sin 2D/(1 + 2\kappa\cos 2D)$. Con le prime due approssimazioni,
+				</p>
+				$$\sigma \approx -\kappa\sin 2D\,(1 - 2\kappa\cos 2D) \approx -\kappa\sin 2D,$$
+				<p>
+					trascurando il termine in $\kappa^2$; $\sigma$ è in radianti.
+				</p>
+				<p>
+					Il modello completo usa $M - \sigma \approx M + \kappa\sin 2D$ al posto
+					di $M$. Il termine $\kappa\sin 2D$ è un numero piccolo, quindi vale la
+					quarta approssimazione, con $x = \kappa\sin 2D$:
+				</p>
+				$$q \approx -e_0\,(1 - \kappa\cos 2D)\sin(M + \kappa\sin 2D) \approx -e_0\,(1 - \kappa\cos 2D)\,(\sin M + \kappa\sin 2D\cos M).$$
+				<p>
+					Svolgendo il prodotto, il prodotto dei due termini in $\kappa$ è del
+					secondo ordine e si trascura:
+				</p>
+				$$q \approx -e_0\sin M + e_0\kappa\,(\cos 2D\sin M - \sin 2D\cos M) = -e_0 \sin M + e_0\kappa\sin(M - 2D).$$
+				<p>
+					Nella forma a somma di seni della sezione 2, il termine della direzione
+					$-e_0\kappa \sin 2D\cos M$ è $-\tfrac12 e_0 \kappa[\sin(M + 2D) - \sin(M -
+					2D)]$, che annulla il termine della manovella in $M + 2D$ e raddoppia il
+					suo termine in $M - 2D$.
+				</p>
+				<p>
+					Con $\kappa = 0{,}2076$ e $2D = 90{,}5^\circ$, $-\kappa\sin 2D =
+					-11{,}90^\circ$, contro il valore esatto $-12{,}03^\circ$ della Figura 3 e
+					i 12°1′ (12,02°) di Tolomeo.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Il 1º ottobre 135, vicino al primo quarto, Tolomeo misurò ad Alessandria
+				la distanza zenitale della Luna come 50°55′ (50,92°), dove il suo modello,
+				con la latitudine eclittica della Luna, poneva la sua posizione vista dal
+				centro della Terra a 49°48′ (49,80°) (V 13). Prese la differenza, 67′,
+				come la parallasse della Luna, $\sin p = \sin z'/d$ con $z'$ la distanza
+				zenitale misurata e $d$ la distanza in raggi terrestri. Trova $d$. Il suo
+				modello poneva la Luna a 40,42 dove OA = 60: quanto diventa OA in raggi
+				terrestri? La Luna di riferimento era allora a 385·409 km dal centro della
+				Terra, 60,4 raggi terrestri. Quale parallasse avrebbe dovuto misurare, e
+				che cosa dice la sua misura del suo modello?
+			</p>
+			<details class="hint">
+				<p>
+					Risolvi $\sin p = \sin z'/d$ per $d$, poi usala al contrario con la
+					distanza reale.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Da 67′, $d = \sin 50^\circ 55' / \sin 67' = 39{,}83$ raggi terrestri;
+					Tolomeo, attraverso una catena di arrotondamenti, scrive 39,75, e Toomer
+					nota che 39,83 è più preciso. Scalando il modello con il valore di
+					Tolomeo, OA = $39{,}75 \times 60/40{,}42 = 59{,}01$ raggi terrestri, che
+					egli arrotonda a 59.
+				</p>
+				<p>
+					Alla distanza reale la parallasse sarebbe stata $\arcsin(\sin 50^\circ
+					55' / 60{,}4) = 44'$, non 67′. La sua misura metteva la Luna a due terzi
+					della sua distanza reale, come richiedeva il suo modello vicino al
+					quarto.
+				</p>
+				<p>
+					Questa sola osservazione fissa la scala del modello, OA in raggi
+					terrestri, quindi non può verificare il rapporto di distanze del
+					modello: per questo servono parallassi sia alla Luna nuova o piena sia
+					ai quarti. Toomer trova che gli errori nell&#8217;osservazione, nella
+					latitudine eclittica e nel modello si compensano, e scrive «Non è un
+					caso; Tolomeo sapeva (approssimativamente) quale doveva essere la
+					parallasse alle eclissi, e scelse un&#8217;osservazione che produceva quel
+					valore». Copernico fece il confronto e trovò che le parallassi ai
+					quarti «differiscono pochissimo o per nulla» da quelle alle eclissi (IV
+					2).
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IV 9–10
+				(l&#8217;epiciclo di 5,25); V 2 (la seconda anomalia e il modello); V 3
+				(l&#8217;avvistamento di Tolomeo del 139 e quello di Ipparco del 128 a.C.,
+				circa 7⅔° ai quarti); V 4 (l&#8217;eccentrico, 49,68 e 10,32); V 5 (la
+				direzione dell&#8217;epiciclo, dagli avvistamenti di Ipparco del 127 a.C.); V
+				6–7 (il calcolo di una posizione, l&#8217;esempio di 90½°, la massima
+				equazione a 120°); V 10 (nessun effetto alla Luna nuova e piena); V 13 (la
+				parallasse del 135 e le distanze in raggi terrestri, con le note di
+				Toomer); V 14 (i diametri apparenti del Sole e della Luna, la diottra); VI
+				5 (il diametro della Luna alla distanza minima, dalle eclissi). Le date di
+				Toomer in anni negativi sono astronomiche: −127 è il 128 a.C.</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), IV 2 (i
+				difetti del modello di Tolomeo, le distanze di 64⅙ e 33,55 raggi
+				terrestri, il diametro e la parallasse della Luna), IV 3 e IV 8 (il
+				secondo epiciclo), IV 17 e IV 22 (le distanze e i diametri del suo
+				modello).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.1 (l&#8217;evezione, la
+				variazione e l&#8217;equazione annua, dalla perturbazione del Sole).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 47 (la
+				Luna di riferimento: la serie della sua longitudine eclittica, con
+				l&#8217;evezione e la variazione, e la sua distanza).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/3.2-evection.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

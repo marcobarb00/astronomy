@@ -62,7 +62,7 @@ const HORIZON_POINTS = [
 	['S', [1, 0, 0]],
 	['E', [0, 1, 0]],
 	['N', [-1, 0, 0]],
-	['W', [0, -1, 0]]
+	[tr('W', 'O'), [0, -1, 0]] // ovest, in Italian
 ];
 
 /* ==========================================================================
@@ -195,7 +195,13 @@ class Sphere3D {
 		this.canvas.tabIndex = 0;
 
 		if (!this.canvas.hasAttribute('aria-label')) {
-			this.canvas.setAttribute('aria-label', 'A sphere you can turn: drag it, or use the arrow keys.');
+			this.canvas.setAttribute(
+				'aria-label',
+				tr(
+					'A sphere you can turn: drag it, or use the arrow keys.',
+					'Una sfera che puoi ruotare: trascinala, o usa i tasti freccia.'
+				)
+			);
 		}
 
 		this.canvas.addEventListener('keydown', event => {
@@ -454,7 +460,7 @@ class Sphere3D {
 		const designed = { x: q.x + (style.dx ?? 6), y: q.y + (style.dy ?? -6) };
 		const place = this.labels.place(ctx, text, designed);
 
-		ctx.fillText(text, place.x, place.y);
+		canvasText(ctx, text, place.x, place.y);
 		ctx.globalAlpha = 1;
 	}
 

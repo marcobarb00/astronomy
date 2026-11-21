@@ -324,6 +324,51 @@ article {
 	}
 }
 
+/* The flag of the other language (components.js, section 9), at the top
+   right: on an article it shares the sticky row of the link to the hub,
+   so it stays in reach down the page; on the hub it sits above the
+   title. The flags keep their own colours, the one exception to the
+   palette (STYLE.md §2). */
+.lang-switch {
+	display: flex;
+	align-items: center;
+	height: var(--site-link-height);
+	padding: 0 2px;
+	opacity: 0.85;
+}
+
+.lang-switch:hover,
+.lang-switch:focus-visible {
+	opacity: 1;
+}
+
+.lang-switch .flag {
+	display: block;
+	height: 16px;
+	width: auto;
+	box-shadow: 0 0 0 1px var(--line);
+}
+
+.page > .lang-switch {
+	position: sticky;
+	top: 0;
+	z-index: 11;
+	grid-row: 1 / -1;
+	grid-column: 1 / -1;
+	align-self: start;
+	justify-self: end;
+}
+
+.page.hub {
+	position: relative;
+}
+
+.page.hub > .lang-switch {
+	position: absolute;
+	top: 12px;
+	right: 24px;
+}
+
 /* The header: the titles, then a double rule (two 1 px ink lines 3 px
    apart, drawn as two background lines). */
 .page-head {

@@ -41,9 +41,16 @@ const Time = (function () {
 	const SIDEREAL_RATE = 360.98564736629;
 	const MS_PER_DAY = 86400000;
 
-	const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	/* Short month names and weekdays in the page's language (common.js, tr). */
+	const MONTH_NAMES = tr(
+		['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic']
+	);
 
-	const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	const WEEKDAY_NAMES = tr(
+		['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+		['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato']
+	);
 
 	/* ======================================================================
 	   2. CALENDAR DATE <-> JULIAN DATE
@@ -329,10 +336,11 @@ const Time = (function () {
 	   6. FORMATTING
 	   ====================================================================== */
 
-	/* Year as text: "1992", "585 BC" (era 'bcad') or "-584" ('astronomical'). */
+	/* Year as text: "1992", "585 BC" (era 'bcad'; "585 a.C." in Italian) or
+	   "-584" ('astronomical'). */
 	function formatYear(year, era = 'bcad') {
 		if (era === 'bcad' && year <= 0) {
-			return `${1 - year} BC`;
+			return `${1 - year} ${tr('BC', 'a.C.')}`;
 		}
 
 		return String(year);

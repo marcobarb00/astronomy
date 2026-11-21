@@ -215,8 +215,8 @@ const calendarFigure = {
 		this.plot = new Plot2D(byId('calendar-plot'), {
 			x: CALENDAR_DAYS,
 			y: [0.4, CALENDAR_LAST - CALENDAR_FIRST + 1.6],
-			xLabel: 'date in the year',
-			yLabel: 'year',
+			xLabel: tr('date in the year', "data nell'anno"),
+			yLabel: tr('year', 'anno'),
 			xTicks: (min, max, count) => monthStarts(2026).filter((t, i) => count >= 8 || i % 2 === 0),
 			yTicks: () =>
 				Array.from({ length: CALENDAR_LAST - CALENDAR_FIRST + 1 }, (v, i) => ({
@@ -273,7 +273,7 @@ const plateFigure = {
 				['alf CMi', 'Procyon', 9, 4],
 				['bet Leo', 'Denebola', 9, 4]
 			],
-			label: "Chart of the sky from Gemini to Virgo, with the ecliptic and, highlighted, the Moon's path of 11 to 15 August 2026."
+			label: tr("Chart of the sky from Gemini to Virgo, with the ecliptic and, highlighted, the Moon's path of 11 to 15 August 2026.", "Carta del cielo dai Gemelli alla Vergine, con l'eclittica e, evidenziato, il percorso della Luna dall'11 al 15 agosto 2026.")
 		});
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const equatorial = (lon, lat) => Ephem.eclipticToEquatorial(lon, lat, eps);
@@ -285,7 +285,7 @@ const plateFigure = {
 
 		const eclipticName = equatorial(176, 0);
 
-		Plate.line(chart, ecliptic, 'ecliptic', [eclipticName.ra, eclipticName.dec, -8, 18]);
+		Plate.line(chart, ecliptic, tr('ecliptic', 'eclittica'), [eclipticName.ra, eclipticName.dec, -8, 18]);
 
 		// the Moon's path (apparent position of date, as seen from the
 		// Earth's center), every two hours
@@ -307,7 +307,7 @@ const plateFigure = {
 
 		const nameAt = path[Math.round(path.length * 0.62)];
 
-		Plate.highlightCurve(chart, path, "the Moon's path", [nameAt.ra, nameAt.dec, 10, 26], ticks, -1);
+		Plate.highlightCurve(chart, path, tr("the Moon's path", 'il percorso della Luna'), [nameAt.ra, nameAt.dec, 10, 26], ticks, -1);
 
 		// the Sun at the new Moon, and the node
 		const newMoon = Eclipses.reference(Eclipses.indexNear(Time.julianDay(2026, 8, 12), true));
@@ -350,9 +350,9 @@ const plateFigure = {
 	   the Moon would go round more than once a second, so it is left out;
 	 - the nodes' turn, with the Moon's circle and its nodes alone, played
 	   over the whole 18.6 years in about 9 seconds. */
-const MONTH_VIEW = 'A month';
-const YEAR_VIEW = 'A year';
-const TURN_VIEW = "The nodes' turn";
+const MONTH_VIEW = tr('A month', 'Un mese');
+const YEAR_VIEW = tr('A year', 'Un anno');
+const TURN_VIEW = tr("The nodes' turn", 'Il giro dei nodi');
 const VIEW_DAYS_PER_SECOND = { [MONTH_VIEW]: 1.5, [YEAR_VIEW]: 36, [TURN_VIEW]: 750 };
 
 /* The arrow of the ecliptic pole reaches this far. */
@@ -452,7 +452,7 @@ const orbitFigure = {
 	showReadout() {
 		const { jd, moon, sunFromNode } = this.state;
 		const dateAndNode = `\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`;
-		const sunAndNode = `\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`;
+		const sunAndNode = tr(`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`, `\\text{il Sole } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'prima del' : 'dopo il'} nodo più vicino}`);
 
 		if (this.view === TURN_VIEW) {
 			// only the slow motion: the node, and how far it has turned
@@ -460,7 +460,7 @@ const orbitFigure = {
 
 			showLines('orbit-readout', [
 				dateAndNode,
-				`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`
+				tr(`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`, `\\text{ruotato di } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ verso ovest dal 1º gennaio ${YEAR}}`)
 			]);
 			return;
 		}
@@ -758,9 +758,9 @@ const shadowFigure = {
 		const bracketX = beside + sunDifferenceWidth(ctx) + 8;
 
 		putLabel(ctx, 'O', { x: O.x - 13, y: O.y - 12 }, COL.earth);
-		putLabel(ctx, 'Earth', { x: O.x, y: axisY + 0.56 * radius }, COL.earth);
-		putLabel(ctx, 'Sun', { x: 8, y: axisY - rayHeight(40) - 15 }, COL.sun, 'left');
-		putLabel(ctx, "Moon's distance", { x: moonX, y: this.height - 12 }, COL.muted);
+		putLabel(ctx, tr('Earth', 'Terra'), { x: O.x, y: axisY + 0.56 * radius }, COL.earth);
+		putLabel(ctx, tr('Sun', 'Sole'), { x: 8, y: axisY - rayHeight(40) - 15 }, COL.sun, 'left');
+		putLabel(ctx, tr("Moon's distance", 'distanza della Luna'), { x: moonX, y: this.height - 12 }, COL.muted);
 
 		putLabel(ctx, 'u', { x: beside, y: (axisY + U.y) / 2 }, COL.ink, 'left');
 		sunDifferenceLabel(ctx, { x: beside, y: (U.y + E.y) / 2 });
@@ -888,10 +888,10 @@ const moonShadowFigure = {
 		const ctx = this.ctx;
 		const { axisY, radius, O, G, M, moonRadius } = at;
 
-		putLabel(ctx, 'Moon', { x: M.x, y: M.y - moonRadius - 12 }, COL.planet);
-		putLabel(ctx, 'to the Sun', { x: 8, y: axisY + 14 }, COL.muted, 'left');
+		putLabel(ctx, tr('Moon', 'Luna'), { x: M.x, y: M.y - moonRadius - 12 }, COL.planet);
+		putLabel(ctx, tr('to the Sun', 'verso il Sole'), { x: 8, y: axisY + 14 }, COL.muted, 'left');
 		putLabel(ctx, 'O', { x: O.x - 13, y: O.y + 13 }, COL.earth);
-		putLabel(ctx, 'Earth', { x: O.x + 10, y: axisY + 0.42 * radius }, COL.earth, 'left');
+		putLabel(ctx, tr('Earth', 'Terra'), { x: O.x + 10, y: axisY + 0.42 * radius }, COL.earth, 'left');
 		putLabel(ctx, 'γ', { x: O.x + 10, y: (O.y + G.y) / 2 }, COL.earth, 'left');
 		// beta inside its angle, beside the arc, just above the line to the Sun
 		putLabel(ctx, 'β', { x: O.x - arcRadius + 13, y: axisY - 12 }, COL.planet);
@@ -1150,6 +1150,13 @@ const AXIS_MARK_RADIUS = 5;
    its axis; seen from the Sun, east is on the right, so the path is
    mirrored from panel (b). A solar eclipse is seen somewhere when the
    penumbra reaches the Earth, and a central one when the axis does. */
+/* The kinds of eclipse (shared/models/eclipses.js) in the page's language. */
+const ECLIPSE_KINDS = {
+	total: tr('total', 'totale'),
+	annular: tr('annular', 'anulare'),
+	partial: tr('partial', 'parziale')
+};
+
 const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, st, labels, halfWidth) => {
 	const earth = at(0, 0);
 	const shadow = shadowOnEarth(st);
@@ -1157,7 +1164,7 @@ const solarPanel = limitsPanel('limits-solar', shadowWindow, (ctx, at, scalePx, 
 	const penumbra = scalePx * shadow.penumbra;
 
 	disc(ctx, earth, scalePx, withAlpha(COL.earth, 0.14), COL.earth);
-	labelOutside(ctx, 'Earth', earth, scalePx, 160, COL.earth, labels);
+	labelOutside(ctx, tr('Earth', 'Terra'), earth, scalePx, 160, COL.earth, labels);
 	disc(ctx, axis, penumbra, withAlpha(COL.ink, 0.18), COL.ink);
 	drawMoonPath(ctx, (east, north) => at(-east, north), shadow.gamma, st.x, halfWidth);
 
@@ -1177,7 +1184,7 @@ const lunarPanel = limitsPanel('limits-lunar', LIMITS_WINDOW, (ctx, at, scalePx,
 
 	drawMoonPath(ctx, at, st.betaFull, st.x + 180, halfWidth);
 	disc(ctx, shadow, umbra, withAlpha(COL.ink, 0.22), COL.ink);
-	labelOutside(ctx, 'umbra', shadow, umbra, 35, COL.ink, labels);
+	labelOutside(ctx, tr('umbra', 'ombra'), shadow, umbra, 35, COL.ink, labels);
 	disc(ctx, moon, moonRadius, COL.card, COL.planet);
 
 	// the part of the Moon inside the umbra, darkened
@@ -1206,8 +1213,8 @@ const limitsFigure = {
 		this.plot = new Plot2D(byId('limits-plot'), {
 			x: LIMITS_RANGE,
 			y: [-LIMITS_WINDOW, LIMITS_WINDOW],
-			xLabel: 'the Sun from ☊ at the new or full Moon (°)',
-			yLabel: 'β at the new Moon (°)',
+			xLabel: tr('the Sun from ☊ at the new or full Moon (°)', 'il Sole da ☊ alla Luna nuova o piena (°)'),
+			yLabel: tr('β at the new Moon (°)', 'β alla Luna nuova (°)'),
 			aspect: 0.28,
 			minHeight: 200,
 			onDraw: () => this.drawPlot()
@@ -1238,14 +1245,18 @@ const limitsFigure = {
 
 	showReadout() {
 		const st = this.state;
-		const solar = st.solar.kind ?? 'none';
-		const lunar = st.lunar.kind ? `${st.lunar.kind}, magnitude ${fixed(st.lunar.magnitude, 2)}` : 'none';
+		const none = tr('none', 'nessuna');
+		const solar = st.solar.kind ? ECLIPSE_KINDS[st.solar.kind] : none;
+		const lunar = st.lunar.kind
+			? `${ECLIPSE_KINDS[st.lunar.kind]}, ${tr('magnitude', 'magnitudine')} ${fixed(st.lunar.magnitude, 2)}`
+			: none;
 
 		showLines('limits-readout', [
-			`\\text{new Moon: } \\beta = ${texArcmin(st.betaNew)},\\ \\gamma = ${signed(shadowOnEarth(st).gamma, 2)}`,
-			`\\text{solar eclipse: ${solar}}`,
-			`\\text{full Moon: } \\beta = ${texArcmin(st.betaFull)}`,
-			`\\text{lunar eclipse: ${lunar}}`,
+			`${tr('\\text{new Moon: }', '\\text{Luna nuova: }')}\\beta = ${texArcmin(st.betaNew)},\\ ` +
+				`\\gamma = ${signed(shadowOnEarth(st).gamma, 2)}`,
+			`\\text{${tr('solar eclipse', 'eclissi di Sole')}: ${solar}}`,
+			`${tr('\\text{full Moon: }', '\\text{Luna piena: }')}\\beta = ${texArcmin(st.betaFull)}`,
+			`\\text{${tr('lunar eclipse', 'eclissi di Luna')}: ${lunar}}`,
 			`s = ${fixed(st.z.sM * 60, 1)}',\\ \\pi = ${fixed(st.z.pM * 60, 1)}',\\ u = ${fixed(st.limits.umbra * 60, 1)}'`
 		]);
 	},
@@ -1348,8 +1359,8 @@ const seasonsFigure = {
 		this.plot = new Plot2D(byId('seasons-plot'), {
 			x: [0, SEASONS_DAYS],
 			y: [-SEASONS_REACH, SEASONS_REACH],
-			xLabel: 'date',
-			yLabel: 'the Sun from the nearest node',
+			xLabel: tr('date', 'data'),
+			yLabel: tr('the Sun from the nearest node', 'il Sole dal nodo più vicino'),
 			// a tick every three months, or every six where there is room for
 			// fewer than eight labels (a phone): the plot never drops one itself
 			xTicks: (min, max, count) => ticks.filter(tick => count >= ticks.length || tick.half),
@@ -1443,9 +1454,9 @@ const latitudeErrorFigure = {
 			start: start,
 			end: end,
 			spans: [
-				{ label: '2 months', years: 60 / 365.25 },
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 }
+				{ label: tr('2 months', '2 mesi'), years: 60 / 365.25 },
+				{ label: tr('1 year', '1 anno'), years: 1 },
+				{ label: tr('100 years', '100 anni'), years: 100 }
 			],
 			yMax: LATITUDE_ERROR_MAX,
 			ghostButtons: false
@@ -1455,20 +1466,20 @@ const latitudeErrorFigure = {
 		const syzygies = syzygyIndices(middle - 190, middle + 190).map(k => Eclipses.reference(k).syzygy);
 
 		curve.addModel({
-			label: 'fitted to the new and full Moons of 2025–2026',
-			short: 'fitted',
+			label: tr('fitted to the new and full Moons of 2025–2026', 'adattata alle Lune nuove e piene del 2025–2026'),
+			short: tr('fitted', 'adattata'),
 			color: COL.planet,
 			fn: fit
 		});
 		curve.addMarks({
-			label: 'the fitted latitude at the new and full Moons',
+			label: tr('the fitted latitude at the new and full Moons', 'la latitudine adattata alle Lune nuove e piene'),
 			color: COL.planet,
 			fn: fit,
 			dates: syzygies,
 			maxYears: 1.01
 		});
 		curve.addMarks({
-			label: 'the mean inclination, 5.145°, at the same new and full Moons (dots: spans of a year or less)',
+			label: tr('the mean inclination, 5.145°, at the same new and full Moons (dots: spans of a year or less)', "l'inclinazione media, 5,145°, alle stesse Lune nuove e piene (punti: intervalli di un anno o meno)"),
 			color: COL.epicycle,
 			fn: meanInclination,
 			dates: syzygies,

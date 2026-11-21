@@ -14,6 +14,7 @@
 	 6. Drawing helpers       (four-pointed stars, canvas fonts)
 	 7. DOM and KaTeX helpers
 	 8. UI wiring helpers     (sliders, presets, choice buttons, play button)
+	 9. Language              (English or Italian, decimal commas)
    ========================================================================== */
 
 /* ==========================================================================
@@ -638,7 +639,7 @@ function centeredLabel(ctx, text, point, color, labels = null, kind = null) {
 
 	const place = labels ? labels.place(ctx, text, point) : point;
 
-	ctx.fillText(text, place.x, place.y);
+	canvasText(ctx, text, place.x, place.y);
 }
 
 /* ---------- Segments, arcs and subscripts on a canvas ---------- */
@@ -683,9 +684,9 @@ function subscriptLabel(ctx, base, sub, point, color) {
 	ctx.textAlign = 'left';
 	ctx.textBaseline = 'middle';
 	ctx.font = FONT_SYMBOL;
-	ctx.fillText(base, left, point.y);
+	canvasText(ctx, base, left, point.y);
 	ctx.font = subFont;
-	ctx.fillText(sub, left + baseWidth, point.y + 5);
+	canvasText(ctx, sub, left + baseWidth, point.y + 5);
 }
 
 /* ---------- Points, circles and labels of plane constructions ----------
@@ -944,11 +945,11 @@ function makeEl(tag, className = '', html = '') {
 function renderTex(element, source, displayMode = true) {
 	// KaTeX did not load (a CDN failure): the TeX source, as plain text
 	if (typeof katex === 'undefined') {
-		element.textContent = source;
+		element.textContent = localNumbers(source);
 		return;
 	}
 
-	katex.render(source, element, { throwOnError: false, displayMode: displayMode });
+	katex.render(localTexNumbers(source), element, { throwOnError: false, displayMode: displayMode });
 }
 
 /** Typeset every element that carries a data-tex attribute.
@@ -1300,12 +1301,12 @@ function formatSliderValue(input, formatter) {
 	const value = Number(input.value);
 
 	if (formatter) {
-		return formatter(value);
+		return localNumbers(formatter(value));
 	}
 
 	const text = Number.isInteger(value) ? value : fixed(value, 1);
 
-	return text + (input.dataset.unit ?? '°');
+	return localNumbers(text + (input.dataset.unit ?? '°'));
 }
 
 /* A slider keeps its <output> in sync and calls onChange when it moves. */
@@ -1427,10 +1428,12 @@ function startFigures(figures) {
 }
 
 /* A row of buttons, one per name (e.g. a star); the chosen one is marked
-   active. onChoose(name) runs when another one is picked. */
-function buildChoice(container, names, chosen, onChoose) {
+   active. onChoose(name) runs when another one is picked. label(name) is
+   the text of a button, when it is not the name itself (a star's name in
+   the page's language, Stars.label). */
+function buildChoice(container, names, chosen, onChoose, label = name => name) {
 	const buttons = names.map(name => {
-		const button = makeEl('button', '', name);
+		const button = makeEl('button', '', label(name));
 
 		button.type = 'button';
 		button.addEventListener('click', () => {
@@ -1492,8 +1495,8 @@ function wrapIntoRange(value, min, max) {
 }
 
 function wirePlayButton(button, slider, unitsPerSecond, options = {}) {
-	const playLabel = options.playLabel ?? 'Play';
-	const pauseLabel = options.pauseLabel ?? 'Pause';
+	const playLabel = options.playLabel ?? tr('Play', 'Avvia');
+	const pauseLabel = options.pauseLabel ?? tr('Pause', 'Pausa');
 	let playing = false;
 	let looping = false; // a frame loop is running (at most one at a time)
 	let visible = true; // the figure is on the screen
@@ -1596,4 +1599,77 @@ function onPixelRatioChange(callback) {
 function showPlayState(button, playing, label) {
 	button.innerHTML = `${playing ? PAUSE_ICON : PLAY_ICON}<span>${label}</span>`;
 	button.setAttribute('aria-pressed', playing ? 'true' : 'false');
+}
+
+/* ==========================================================================
+   9. LANGUAGE (ENGLISH OR ITALIAN)
+   Every page exists in English (index.html) and in Italian (index.it.html,
+   beside it, with the same page.js). The language is the lang attribute of
+   the <html> element; in Node (the checks) there is no document, and the
+   language is English. TRANSLATION.md has the conventions and the glossary.
+
+   The prose of an Italian page is written in its HTML. The scripts choose
+   their words with tr(english, italian), and their numbers get a decimal
+   comma where they reach the screen: the read-outs (renderTex), the slider
+   values (formatSliderValue) and the text drawn on a canvas (canvasText).
+   The numbers themselves are computed in the same way in both languages.
+   ========================================================================== */
+
+/** The page's language: 'it' or 'en'. */
+const LANG =
+	typeof document !== 'undefined' && document.documentElement && document.documentElement.lang === 'it' ? 'it' : 'en';
+
+const ITALIAN = LANG === 'it';
+
+/* The text of the page's language: tr('rises and sets', 'sorge e tramonta'). */
+function tr(english, italian) {
+	return ITALIAN ? italian : english;
+}
+
+/* A digit, a point and a digit: the decimal point of a number. */
+const DECIMAL_POINT = /(\d)\.(\d)/g;
+
+/* Plain text with the decimal comma of the page's language: "0.5°" ->
+   "0,5°" in Italian. The raised dot between thousands (126·007) is the
+   same in both languages (WRITING.md §4). */
+function localNumbers(text) {
+	return ITALIAN ? String(text).replace(DECIMAL_POINT, '$1,$2') : text;
+}
+
+/* The same for TeX: the comma goes in braces, "0{,}5", or KaTeX would set
+   it as punctuation, with a space after it. */
+function localTexNumbers(tex) {
+	return ITALIAN ? tex.replace(DECIMAL_POINT, '$1{,}$2') : tex;
+}
+
+/* Text for a canvas (labels, tick labels, axis titles): fillText through
+   this, so that its numbers follow the page's language. */
+function canvasText(ctx, text, x, y) {
+	ctx.fillText(localNumbers(text), x, y);
+}
+
+
+/* A year before or after Christ as text: "585 BC" / "585 a.C." and
+   "AD 150" / "150 d.C." (the number already formatted, e.g. "13·790"). */
+const bcText = number => tr(`${number} BC`, `${number} a.C.`);
+const adText = number => tr(`AD ${number}`, `${number} d.C.`);
+
+/* The names of people that differ in Italian, as Italian books write
+   them; any other name is the same in both languages. */
+const ITALIAN_PERSON_NAMES = {
+	Timocharis: 'Timocari',
+	Hipparchus: 'Ipparco',
+	Menelaus: 'Menelao',
+	Ptolemy: 'Tolomeo',
+	Copernicus: 'Copernico',
+	Kepler: 'Keplero',
+	Tycho: 'Tycho',
+	Galileo: 'Galileo',
+	Aristarchus: 'Aristarco',
+	Apollonius: 'Apollonio'
+};
+
+/* A person's name in the page's language: "Ptolemy", "Tolomeo". */
+function personName(name) {
+	return ITALIAN ? (ITALIAN_PERSON_NAMES[name] ?? name) : name;
 }

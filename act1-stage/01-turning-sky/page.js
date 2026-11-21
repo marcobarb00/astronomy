@@ -38,9 +38,9 @@ const BACKGROUND_STAR = star => ({ color: COL.ink, alpha: 0.55, size: starSize(s
 
 /* Text of a class from Diurnal.classify, for KaTeX. */
 const CLASS_TEXT = {
-	circumpolar: '\\text{never sets}',
-	rises: '\\text{rises and sets}',
-	never: '\\text{never rises}'
+	circumpolar: tr('\\text{never sets}', '\\text{non tramonta mai}'),
+	rises: tr('\\text{rises and sets}', '\\text{sorge e tramonta}'),
+	never: tr('\\text{never rises}', '\\text{non sorge mai}')
 };
 
 /* Split a curve of horizon-frame points into runs above and below the
@@ -95,7 +95,10 @@ const poleFigure = {
 				['alf Lyr', 'Vega', 10, 4],
 				['alf Cyg', 'Deneb', 9, 16]
 			],
-			label: 'Chart of the northern sky around the celestial pole, with a dashed circle around the stars that never set at Rome.'
+			label: tr(
+				'Chart of the northern sky around the celestial pole, with a dashed circle around the stars that never set at Rome.',
+				'Carta del cielo settentrionale attorno al polo celeste, con un cerchio tratteggiato attorno alle stelle che a Roma non tramontano mai.'
+			)
 		});
 
 		Plate.highlightCircle(chart, 90 - ROME_LATITUDE);
@@ -134,7 +137,8 @@ const skyFigure = {
 			name => {
 				this.star = Stars.find(name);
 				this.update();
-			}
+			},
+			Stars.label
 		);
 
 		this.update();
@@ -163,7 +167,7 @@ const skyFigure = {
 		const a = Diurnal.altitude(dec, H, phi);
 
 		showLines('sky-readout', [
-			`\\text{${this.star.name}}:\\ ${CLASS_TEXT[Diurnal.classify(dec, phi)]}`,
+			`\\text{${Stars.label(this.star.name)}}:\\ ${CLASS_TEXT[Diurnal.classify(dec, phi)]}`,
 			`\\delta = ${fixed(dec, 1)}^\\circ,\\quad H = ${fixed(H, 1)}^\\circ`,
 			`a = ${fixed(a, 1)}^\\circ`,
 			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
@@ -231,7 +235,7 @@ const skyFigure = {
 		});
 
 		s.star(point, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
-		s.labelAway(this.star.name, point, { x: s.cx, y: s.cy }, COL.planet);
+		s.labelAway(Stars.label(this.star.name), point, { x: s.cx, y: s.cy }, COL.planet);
 	}
 };
 
@@ -257,10 +261,16 @@ const outsideFigure = {
 		wireSlider(byId('out-time'), () => this.update(), hm);
 		wirePlayButton(byId('out-play'), byId('out-time'), PLAY_HOURS_PER_SECOND);
 
-		buildChoice(byId('out-stars'), ['Vega', 'Sirius', 'Canopus'], this.star.name, name => {
-			this.star = Stars.find(name);
-			this.update();
-		});
+		buildChoice(
+			byId('out-stars'),
+			['Vega', 'Sirius', 'Canopus'],
+			this.star.name,
+			name => {
+				this.star = Stars.find(name);
+				this.update();
+			},
+			Stars.label
+		);
 
 		this.update();
 	},
@@ -287,7 +297,7 @@ const outsideFigure = {
 		const { angle } = this.state;
 
 		showLines('out-readout', [
-			`\\text{${this.star.name}}`,
+			`\\text{${Stars.label(this.star.name)}}`,
 			`\\angle(\\hat{\\mathbf z}, \\mathbf s) = ${fixed(angle, 1)}^\\circ`,
 			`a = 90^\\circ - ${fixed(angle, 1)}^\\circ = ${fixed(90 - angle, 1)}^\\circ`
 		]);
@@ -345,7 +355,7 @@ const outsideFigure = {
 		s.star(starPoint, { color: COL.planet, size: STAR_SIZE_CHOSEN, ring: true });
 
 		// the star's label beyond the star, Z's label beyond the zenith
-		s.labelAway(this.star.name, starPoint, zenith, COL.planet);
+		s.labelAway(Stars.label(this.star.name), starPoint, zenith, COL.planet);
 		s.labelAway('Z', zenith, starPoint, COL.deferent);
 
 		// the arc's label off its middle, always on the left of the arc
@@ -382,8 +392,8 @@ const dayFigure = {
 		this.curve = new Plot2D(byId('day-curve'), {
 			x: [-180, 180],
 			y: [-90, 90],
-			xLabel: 'hour angle H (°)',
-			yLabel: 'altitude a (°)',
+			xLabel: tr('hour angle H (°)', 'angolo orario H (°)'),
+			yLabel: tr('altitude a (°)', 'altezza a (°)'),
 			aspect: 0.85,
 			xTicks: () => [-180, -90, 0, 90, 180].map(value => ({ value, label: String(value) })),
 			onDraw: () => this.drawCurve()
@@ -392,8 +402,8 @@ const dayFigure = {
 		this.map = new Plot2D(byId('day-map'), {
 			x: [-90, 90],
 			y: [-90, 90],
-			xLabel: 'geographic latitude φ (°)',
-			yLabel: 'declination δ (°)',
+			xLabel: tr('geographic latitude φ (°)', 'latitudine geografica φ (°)'),
+			yLabel: tr('declination δ (°)', 'declinazione δ (°)'),
 			aspect: 0.85,
 			xTicks: () => [-90, -45, 0, 45, 90].map(value => ({ value, label: String(value) })),
 			onDraw: () => this.drawMap()
@@ -411,7 +421,7 @@ const dayFigure = {
 		const box = byId('day-star-presets');
 
 		DAY_STARS.forEach(name => {
-			const button = makeEl('button', '', name);
+			const button = makeEl('button', '', Stars.label(name));
 
 			button.type = 'button';
 			button.dataset.target = 'day-dec';
@@ -437,7 +447,10 @@ const dayFigure = {
 			`a_\\text{max} = ${fixed(Diurnal.upperCulmination(dec, phi), 1)}^\\circ,\\quad ` +
 				`a_\\text{min} = ${fixed(Diurnal.lowerCulmination(dec, phi), 1)}^\\circ`,
 			`H_0 = ${fixed(H0, 1)}^\\circ,\\quad f = ${fixed(f, 3)}`,
-			`\\text{up } ${hmTex(f * Diurnal.TURN_HOURS)}\\ \\text{of each turn}`
+			tr(
+				`\\text{up } ${hmTex(f * Diurnal.TURN_HOURS)}\\ \\text{of each turn}`,
+				`\\text{sopra l'orizzonte } ${hmTex(f * Diurnal.TURN_HOURS)}\\ \\text{a ogni giro}`
+			)
 		];
 
 		showLines('day-readout', lines);
@@ -523,10 +536,13 @@ const dayFigure = {
 			mutedBand
 		);
 
-		p.text('never sets', 30, 72, { color: COL.ink });
-		p.text('never rises', 30, -86, { color: COL.ink });
-		p.text('never sets', -84, -86, { color: COL.ink });
-		p.text('never rises', -84, 72, { color: COL.ink });
+		const neverSets = tr('never sets', 'non tramonta mai');
+		const neverRises = tr('never rises', 'non sorge mai');
+
+		p.text(neverSets, 30, 72, { color: COL.ink });
+		p.text(neverRises, 30, -86, { color: COL.ink });
+		p.text(neverSets, -84, -86, { color: COL.ink });
+		p.text(neverRises, -84, 72, { color: COL.ink });
 	},
 
 	/* Lines where the star is up for a fraction c of the turn:
@@ -588,8 +604,8 @@ const testFigure = {
 		this.plot = new Plot2D(byId('test-plot'), {
 			x: [-12, 12],
 			y: TEST_Y_RANGE,
-			xLabel: "clock time from the star's highest point (h)",
-			yLabel: 'Δa (arcmin)',
+			xLabel: tr("clock time from the star's highest point (h)", 'tempo dal punto più alto della stella (h)'),
+			yLabel: tr('Δa (arcmin)', "Δa (primi d'arco)"),
 			aspect: 0.62,
 			xTicks: () => [-12, -9, -6, -3, 0, 3, 6, 9, 12].map(value => ({ value, label: String(value) })),
 			onDraw: () => this.draw()
@@ -605,7 +621,8 @@ const testFigure = {
 			name => {
 				this.star = Stars.find(name);
 				this.update();
-			}
+			},
+			Stars.label
 		);
 
 		this.update();
@@ -631,23 +648,26 @@ const testFigure = {
 		// and the difference, so the figure keeps its size
 		const upText = (kind, hours) => {
 			if (kind === 'circumpolar') {
-				return '\\text{never sets}';
+				return CLASS_TEXT.circumpolar;
 			}
 
-			return kind === 'never' ? '\\text{never rises}' : hmTex(hours);
+			return kind === 'never' ? CLASS_TEXT.never : hmTex(hours);
 		};
 		let difference = '';
 
 		if (model === 'rises' && real === 'rises') {
 			difference = `\\Delta t = ${fixed(((upReal - upModel) / 2) * 60, 1)}\\ \\text{min}`;
 		} else if (model === 'circumpolar') {
-			difference = `\\text{lowest point lifted by } ${fixed(Ephem.refraction(lowest) * 60, 1)}'`;
+			difference = tr(
+				`\\text{lowest point lifted by } ${fixed(Ephem.refraction(lowest) * 60, 1)}'`,
+				`\\text{punto più basso sollevato di } ${fixed(Ephem.refraction(lowest) * 60, 1)}'`
+			);
 		}
 
 		const lines = [
-			`\\text{${this.star.name}},\\ \\delta = ${fixed(this.dec, 2)}^\\circ`,
-			`\\text{up, model: } ${upText(model, upModel)}`,
-			`\\text{up, real: } ${upText(real, upReal)}`
+			`\\text{${Stars.label(this.star.name)}},\\ \\delta = ${fixed(this.dec, 2)}^\\circ`,
+			`${tr('\\text{up, model: }', '\\text{sopra, modello: }')}${upText(model, upModel)}`,
+			`${tr('\\text{up, real: }', '\\text{sopra, reale: }')}${upText(real, upReal)}`
 		];
 
 		if (difference) {

@@ -48,7 +48,8 @@
 	 6. Previous / next navigation
 	 7. Hub
 	 8. Footer: copyright and licences
-	 9. Entry point
+	 9. Language switch: the flag of the other language
+	10. Entry point
 	 GraduatedFrame (after Site): the border of every figure
    ========================================================================== */
 
@@ -113,6 +114,8 @@ const Site = (function () {
 	   west (to the left, the way back) with a short trail while the
 	   pointer is on the link (theme.css §3). Hidden from screen readers,
 	   which announce the link by its words. */
+	const SITE_TITLE = tr('Predicting the Sky', 'Prevedere il cielo');
+
 	const BACK_MARK =
 		'<span class="back-mark" aria-hidden="true"><span class="back-trail"></span>' +
 		`<svg class="back-star" viewBox="-9 -9 18 18"><path d="${starPath(0, 0, 9)}"/></svg></span>`;
@@ -122,10 +125,10 @@ const Site = (function () {
 			return;
 		}
 
-		const link = makeEl('a', 'site-link', `${BACK_MARK}Predicting the Sky`);
+		const link = makeEl('a', 'site-link', `${BACK_MARK}${SITE_TITLE}`);
 		const container = document.querySelector('.page') ?? document.body;
 
-		link.href = href('index.html');
+		link.href = href(tr('index.html', 'index.it.html'));
 		container.prepend(link);
 	}
 
@@ -154,7 +157,7 @@ const Site = (function () {
 				makeEl('p', 'subtitle', page.question)
 			);
 
-			document.title = `${numberPrefix(page)}${page.title} · Predicting the Sky`;
+			document.title = `${numberPrefix(page)}${page.title} · ${SITE_TITLE}`;
 		}
 
 		return head;
@@ -213,7 +216,7 @@ const Site = (function () {
 
 		if (!toc) {
 			toc = makeEl('nav', 'toc');
-			toc.setAttribute('aria-label', 'Contents');
+			toc.setAttribute('aria-label', tr('Contents', 'Indice'));
 		}
 
 		head.before(toc);
@@ -297,7 +300,7 @@ const Site = (function () {
 			}
 
 			note.classList.add('origin');
-			note.prepend(makeEl('div', 'note-head', `Origin · ${label}`));
+			note.prepend(makeEl('div', 'note-head', `${tr('Origin', 'Origine')} · ${label}`));
 		});
 	}
 
@@ -320,9 +323,12 @@ const Site = (function () {
 
 			if (topic.ready && topic.path) {
 				note.innerHTML =
-					`<div class="note-head">Detour</div>` + `<a href="${href(topic.path)}">${title}</a>: ${text}.`;
+					`<div class="note-head">${tr('Detour', 'Digressione')}</div>` +
+					`<a href="${href(topic.path)}">${title}</a>: ${text}.`;
 			} else {
-				note.innerHTML = `<div class="note-head">Detour · coming later</div>${title}: ${text}.`;
+				note.innerHTML =
+					`<div class="note-head">${tr('Detour · coming later', 'Digressione · prossimamente')}</div>` +
+					`${title}: ${text}.`;
 			}
 		});
 	}
@@ -332,7 +338,7 @@ const Site = (function () {
 	   modern first approximation. */
 	function buildTodayNotes(root) {
 		root.querySelectorAll('.note.today').forEach(note => {
-			note.prepend(makeEl('div', 'note-head', 'Today'));
+			note.prepend(makeEl('div', 'note-head', tr('Today', 'Oggi')));
 		});
 	}
 
@@ -342,15 +348,18 @@ const Site = (function () {
 			const kind = EXERCISE_KINDS[exercise.dataset.kind] ?? '';
 			const head = makeEl('div', 'exercise-head');
 
-			head.append(makeEl('span', 'exercise-number', `Exercise ${i + 1}`), makeEl('span', 'exercise-kind', kind));
+			head.append(
+				makeEl('span', 'exercise-number', `${tr('Exercise', 'Esercizio')} ${i + 1}`),
+				makeEl('span', 'exercise-kind', kind)
+			);
 			exercise.prepend(head);
 
 			if (!exercise.id) {
 				exercise.id = `exercise-${i + 1}`;
 			}
 
-			labelDetails(exercise, 'details.hint', 'Hint');
-			labelDetails(exercise, 'details.answer', 'Answer');
+			labelDetails(exercise, 'details.hint', tr('Hint', 'Suggerimento'));
+			labelDetails(exercise, 'details.answer', tr('Answer', 'Soluzione'));
 		});
 	}
 
@@ -362,6 +371,8 @@ const Site = (function () {
 			}
 		});
 	}
+
+	const FIGURE_WORD = tr('Figure', 'Figura');
 
 	/* Figures and blue plates, numbered together in page order: "Figure n."
 	   in front of a figure's caption, "Figure n" in a plate's label. */
@@ -375,9 +386,9 @@ const Site = (function () {
 			}
 
 			if (plateLabel) {
-				plateLabel.textContent = `Figure ${i + 1}`;
+				plateLabel.textContent = `${FIGURE_WORD} ${i + 1}`;
 			} else if (caption) {
-				caption.prepend(makeEl('span', 'fig-label', `Figure ${i + 1}.`));
+				caption.prepend(makeEl('span', 'fig-label', `${FIGURE_WORD} ${i + 1}.`));
 			}
 		});
 	}
@@ -386,9 +397,11 @@ const Site = (function () {
 	   6. PREVIOUS / NEXT NAVIGATION
 	   ====================================================================== */
 
+	const IN_PREPARATION = tr('in preparation', 'in preparazione');
+
 	/* One side of the pager: a link if the page is ready, a grey label if not. */
 	function pagerLink(page, direction) {
-		const word = direction === 'prev' ? '← Previous' : 'Next →';
+		const word = direction === 'prev' ? tr('← Previous', '← Precedente') : tr('Next →', 'Successiva →');
 		const label = `${numberPrefix(page)}${page.title}`;
 
 		if (page.ready) {
@@ -399,7 +412,7 @@ const Site = (function () {
 			return link;
 		}
 
-		return makeEl('span', direction, `<small>${word} · in preparation</small>${label}`);
+		return makeEl('span', direction, `<small>${word} · ${IN_PREPARATION}</small>${label}`);
 	}
 
 	function buildPager(page) {
@@ -437,7 +450,7 @@ const Site = (function () {
 	function pageRow(page, drawPage) {
 		const row = makeEl(page.ready ? 'a' : 'div', page.ready ? 'page-row' : 'page-row unready');
 		const number = /^\d/.test(page.number) ? page.number : '';
-		const soon = page.ready ? '' : '<span class="soon">in preparation</span>';
+		const soon = page.ready ? '' : `<span class="soon">${IN_PREPARATION}</span>`;
 
 		if (page.ready) {
 			row.href = href(page.path);
@@ -573,7 +586,10 @@ const Site = (function () {
 			viewBox: `0 0 ${width} ${height}`,
 			class: 'timeline-chart',
 			role: 'img',
-			'aria-label': 'The astronomers of the course on a timeline, with the pages that rebuild their models'
+			'aria-label': tr(
+				'The astronomers of the course on a timeline, with the pages that rebuild their models',
+				'Gli astronomi del corso su una linea del tempo, con le pagine che ricostruiscono i loro modelli'
+			)
 		});
 
 		eras.forEach(era => {
@@ -641,8 +657,12 @@ const Site = (function () {
 
 	const FOOTER_TEXT =
 		'© 2026 Marco Barbieri. ' +
-		`Text and figures under <a href="${REPOSITORY}LICENSE-CONTENT.md">CC BY-NC-SA 4.0</a>, ` +
-		`code under <a href="${REPOSITORY}LICENSE">MIT</a>.`;
+		tr(
+			`Text and figures under <a href="${REPOSITORY}LICENSE-CONTENT.md">CC BY-NC-SA 4.0</a>, ` +
+				`code under <a href="${REPOSITORY}LICENSE">MIT</a>.`,
+			`Testi e figure con licenza <a href="${REPOSITORY}LICENSE-CONTENT.md">CC BY-NC-SA 4.0</a>, ` +
+				`codice con licenza <a href="${REPOSITORY}LICENSE">MIT</a>.`
+		);
 
 	/* Add the footer once, at the end of the page container. */
 	function buildFooter() {
@@ -660,7 +680,72 @@ const Site = (function () {
 	document.addEventListener('DOMContentLoaded', buildFooter);
 
 	/* ======================================================================
-	   9. ENTRY POINT
+	   9. LANGUAGE SWITCH: THE FLAG OF THE OTHER LANGUAGE
+	   A page that has a translation names it in its <head>, as search
+	   engines expect: <link rel="alternate" hreflang="it" href="index.it.html">
+	   (and the Italian page hreflang="en" for its English original). The
+	   page then gets a small flag of the other language at the top right,
+	   linked to the translation; a page without one (the intro, for now)
+	   gets no flag. The link keeps the section the reader is in: the ids of
+	   the headings, figures and exercises are the same in both languages.
+	   The flags keep their own colours, the one exception to the palette
+	   (STYLE.md §2, DECISIONS.md).
+	   ====================================================================== */
+
+	/* The two flags, drawn at 16 px of height (theme.css §3). */
+	const FLAGS = {
+		it:
+			'<svg class="flag" viewBox="0 0 3 2" aria-hidden="true">' +
+			'<rect width="1" height="2" x="0" fill="#009246"/>' +
+			'<rect width="1" height="2" x="1" fill="#ffffff"/>' +
+			'<rect width="1" height="2" x="2" fill="#ce2b37"/></svg>',
+		en:
+			'<svg class="flag" viewBox="0 0 60 30" aria-hidden="true">' +
+			'<clipPath id="flag-clip"><path d="M30 15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath>' +
+			'<path d="M0 0v30h60V0z" fill="#012169"/>' +
+			'<path d="M0 0l60 30m0-30L0 30" stroke="#ffffff" stroke-width="6"/>' +
+			'<path d="M0 0l60 30m0-30L0 30" clip-path="url(#flag-clip)" stroke="#c8102e" stroke-width="4"/>' +
+			'<path d="M30 0v30M0 15h60" stroke="#ffffff" stroke-width="10"/>' +
+			'<path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6"/></svg>'
+	};
+
+	/* What the flag says, in the language it leads to. */
+	const SWITCH_LABELS = {
+		it: 'Leggi in italiano',
+		en: 'Read in English'
+	};
+
+	/* Add the flag once, at the start of the page container. */
+	function buildLanguageSwitch() {
+		const other = document.querySelector('link[rel="alternate"][hreflang]');
+
+		if (!other || document.querySelector('.lang-switch')) {
+			return;
+		}
+
+		const lang = other.getAttribute('hreflang');
+		const link = makeEl('a', 'lang-switch', FLAGS[lang] ?? lang);
+		const container = document.querySelector('.page') ?? document.body;
+
+		link.href = other.getAttribute('href');
+		link.hreflang = lang;
+		link.lang = lang;
+		link.title = SWITCH_LABELS[lang] ?? lang;
+		link.setAttribute('aria-label', link.title);
+
+		// the same section on the other side
+		link.addEventListener('click', () => {
+			link.hash = window.location.hash;
+		});
+
+		container.prepend(link);
+	}
+
+	/* Every page that loads this file gets the flag, as it gets the footer. */
+	document.addEventListener('DOMContentLoaded', buildLanguageSwitch);
+
+	/* ======================================================================
+	   10. ENTRY POINT
 	   ====================================================================== */
 
 	/* Build every shared component of an article page, then typeset. The

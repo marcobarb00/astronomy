@@ -52,7 +52,7 @@ const YEAR_LENGTH = MeanSun.yearLength();
 const PLAY_DAYS_PER_SECOND = 30;
 
 /* The names of the seasons, in order from the spring equinox. */
-const SEASON_NAMES = ['spring', 'summer', 'autumn', 'winter'];
+const SEASON_NAMES = tr(['spring', 'summer', 'autumn', 'winter'], ['primavera', 'estate', 'autunno', 'inverno']);
 
 /* The directions from the Earth to the equinoxes and the solstices, with
    their labels on the figures. */
@@ -153,8 +153,8 @@ const motionFigure = {
 		this.plot = new Plot2D(byId('motion-plot'), {
 			x: [this.seasons[0], this.seasons[4]],
 			y: MOTION_RANGE,
-			xLabel: `date (${YEAR - 1}–${YEAR})`,
-			yLabel: 'daily motion (′)',
+			xLabel: tr(`date (${YEAR - 1}–${YEAR})`, `data (${YEAR - 1}–${YEAR})`),
+			yLabel: tr('daily motion (′)', 'moto giornaliero (′)'),
 			xTicks: monthTicks,
 			aspect: 0.42,
 			margin: { top: SEASON_HEADER.room },
@@ -208,7 +208,7 @@ const motionFigure = {
 
 		// the mean, named above its line in the middle of summer (the last
 		// season), where the curve runs well below it
-		p.text(`mean, ${fixed(mean, 2)}′`, (this.seasons[3] + this.seasons[4]) / 2, mean, {
+		p.text(`${tr('mean', 'media')}, ${fixed(mean, 2)}′`, (this.seasons[3] + this.seasons[4]) / 2, mean, {
 			align: 'center',
 			baseline: 'bottom',
 			dx: 0,
@@ -236,7 +236,7 @@ const motionFigure = {
 			ctx.font = right - left >= SEASON_NAME_ROOM ? FONT_NAME : FONT_NAME_SMALL;
 			ctx.fillText(SEASON_NAMES[(i + MOTION_FIRST_SEASON) % 4], x, p.box.top - SEASON_HEADER.name);
 			ctx.font = FONT_TICK;
-			ctx.fillText(`${fixed(this.seasons[i + 1] - this.seasons[i], 2)} d`, x, p.box.top - SEASON_HEADER.length);
+			canvasText(ctx, `${fixed(this.seasons[i + 1] - this.seasons[i], 2)} d`, x, p.box.top - SEASON_HEADER.length);
 		}
 	}
 };
@@ -280,8 +280,8 @@ function drawApsides(view, center, apogee, labels) {
 	segment(ctx, far, near, { color: COL.muted, width: 1.2, dash: [2, 4] });
 	drawDot(ctx, far.x, far.y, 3.5, COL.deferent);
 	drawDot(ctx, near.x, near.y, 3.5, COL.deferent);
-	labelOutside(ctx, 'apogee', C, view.scale, apogee, COL.deferent, labels);
-	labelOutside(ctx, 'perigee', C, view.scale, apogee + 180, COL.deferent, labels);
+	labelOutside(ctx, tr('apogee', 'apogeo'), C, view.scale, apogee, COL.deferent, labels);
+	labelOutside(ctx, tr('perigee', 'perigeo'), C, view.scale, apogee + 180, COL.deferent, labels);
 }
 
 /* The lines from the Earth to the equinoxes and solstices, up to the
@@ -378,8 +378,8 @@ const restFigure = {
 		// the circle
 		const arrowLon = Math.atan2(sun.y, sun.x) * R2D;
 
-		labelOutside(ctx, 'Earth', earth, 6, arrowLon + 180, COL.earth);
-		labelOutside(ctx, 'Sun', center, view.scale, REST_MEAN_LONGITUDE, COL.sun);
+		labelOutside(ctx, tr('Earth', 'Terra'), earth, 6, arrowLon + 180, COL.earth);
+		labelOutside(ctx, tr('Sun', 'Sole'), center, view.scale, REST_MEAN_LONGITUDE, COL.sun);
 	},
 
 	/* (b) The Sun at rest at the origin, the Earth on the equal circle
@@ -405,8 +405,8 @@ const restFigure = {
 		// circle
 		const arrowLon = Math.atan2(sun.y, sun.x) * R2D;
 
-		labelOutside(ctx, 'Sun', S, 8, arrowLon, COL.sun);
-		labelOutside(ctx, 'Earth', center, view.scale, REST_MEAN_LONGITUDE + 180, COL.earth);
+		labelOutside(ctx, tr('Sun', 'Sole'), S, 8, arrowLon, COL.sun);
+		labelOutside(ctx, tr('Earth', 'Terra'), center, view.scale, REST_MEAN_LONGITUDE + 180, COL.earth);
 	}
 };
 
@@ -425,8 +425,12 @@ const ECCENTRIC_Q_RANGE = [-12, 12];
 const SUN_Q_RANGE = [-2.5, 2.5];
 
 const EOC_VIEWS = [
-	{ name: 'exaggerated, e = 0.2', e: 0.2, qRange: ECCENTRIC_Q_RANGE },
-	{ name: `the Sun, e = ${fixed(SolarEccentric.FIT_2026.e, 4)}`, e: SolarEccentric.FIT_2026.e, qRange: SUN_Q_RANGE }
+	{ name: tr('exaggerated, e = 0.2', 'esagerato, e = 0,2'), e: 0.2, qRange: ECCENTRIC_Q_RANGE },
+	{
+		name: localNumbers(`${tr('the Sun', 'il Sole')}, e = ${fixed(SolarEccentric.FIT_2026.e, 4)}`),
+		e: SolarEccentric.FIT_2026.e,
+		qRange: SUN_Q_RANGE
+	}
 ];
 
 /* The drawing is centered on C: the circle, and the labels just outside
@@ -466,7 +470,7 @@ const centreFigure = {
 		this.plot = new Plot2D(byId('eoc-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: this.view.qRange,
-			xLabel: `date (${YEAR})`,
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
 			yLabel: 'q (°)',
 			xTicks: monthTicks,
 			aspect: 0.95,
@@ -476,7 +480,7 @@ const centreFigure = {
 
 		wireSlider(byId('eoc-day'), () => this.update(), dayText);
 		wirePresets(byId('eoc-day').closest('figure'));
-		wirePlayButton(byId('eoc-play'), byId('eoc-day'), PLAY_DAYS_PER_SECOND, { playLabel: 'Play a year' });
+		wirePlayButton(byId('eoc-play'), byId('eoc-day'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
 
 		buildChoice(
 			byId('eoc-views'),
@@ -720,7 +724,7 @@ const seasonsFigure = {
 
 			centeredLabel(ctx, name, { x: at.x, y: at.y - 10 }, COL.ink);
 			ctx.font = FONT_TICK;
-			ctx.fillText(`${fixed(lengths[i], 2)} d`, at.x, at.y + 11);
+			canvasText(ctx, `${fixed(lengths[i], 2)} d`, at.x, at.y + 11);
 		});
 	}
 };
@@ -824,8 +828,8 @@ const fitFigure = {
 		this.plot = new Plot2D(byId('fit-plot'), {
 			x: CENTRE_RANGE,
 			y: CENTRE_RANGE,
-			xLabel: 'x, towards γ',
-			yLabel: 'y, towards 90°',
+			xLabel: tr('x, towards γ', 'x, verso γ'),
+			yLabel: tr('y, towards 90°', 'y, verso 90°'),
 			aspect: 1,
 			maxHeight: 520,
 			margin: { left: 56, right: 14, top: 30, bottom: 40 },
@@ -873,13 +877,15 @@ const fitFigure = {
 
 		// with no eccentricity there is no apogee: the line says so instead
 		const apogeeText =
-			e > NO_ECCENTRICITY ? `\\lambda_A = ${fixedAngle(apogee, 1)}^\\circ` : '\\text{no apogee (C at the Earth)}';
+			e > NO_ECCENTRICITY
+				? `\\lambda_A = ${fixedAngle(apogee, 1)}^\\circ`
+				: tr('\\text{no apogee (C at the Earth)}', '\\text{nessun apogeo (C sulla Terra)}');
 
 		showLines('fit-readout', [
 			`a_1 = ${fixed(arcs[0], 2)}^\\circ,\\quad a_2 = ${fixed(arcs[1], 2)}^\\circ`,
 			`h = ${fixed(h, 4)},\\ k = ${fixed(k, 4)},\\quad e = ${fixed(e, 4)}`,
 			`${apogeeText},\\quad ${greatest}`,
-			`\\text{autumn } ${texDays(lengths[2])},\\quad \\text{winter } ${texDays(lengths[3])}`
+			`\\text{${SEASON_NAMES[2]} } ${texDays(lengths[2])},\\quad \\text{${SEASON_NAMES[3]} } ${texDays(lengths[3])}`
 		]);
 	},
 
@@ -1120,16 +1126,16 @@ const errorFigure = {
 			start: YEAR_START,
 			end: YEAR_START + 365.25,
 			spans: [
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 },
-				{ label: '1000 years', years: 1000 }
+				{ label: tr('1 year', '1 anno'), years: 1 },
+				{ label: tr('100 years', '100 anni'), years: 100 },
+				{ label: tr('1000 years', '1000 anni'), years: 1000 }
 			],
 			ghostButtons: false
 		});
 
 		curve.addModel({
-			label: 'eccentric, fitted to 2026',
-			short: 'eccentric',
+			label: tr('eccentric, fitted to 2026', 'eccentrico, adattato al 2026'),
+			short: tr('eccentric', 'eccentrico'),
 			color: COL.deferent,
 			fn: SolarEccentric.make(SolarEccentric.FIT_2026)
 		});

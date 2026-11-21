@@ -47,12 +47,12 @@ const AXIS_LENGTH = 1.25;
 /* x ticks at the first of every other month (day of the year; 2025 and
    2026 are both common years). */
 const MONTH_TICKS = [
-	[0, 'Jan'],
-	[59, 'Mar'],
-	[120, 'May'],
-	[181, 'Jul'],
-	[243, 'Sep'],
-	[304, 'Nov'],
+	[0, Time.MONTH_NAMES[0]],
+	[59, Time.MONTH_NAMES[2]],
+	[120, Time.MONTH_NAMES[4]],
+	[181, Time.MONTH_NAMES[6]],
+	[243, Time.MONTH_NAMES[8]],
+	[304, Time.MONTH_NAMES[10]],
 	[365, '']
 ];
 
@@ -83,7 +83,9 @@ function texDms(value) {
 
 /* A unit vector in TeX, with four decimals. */
 function texVector(name, v) {
-	return `${name} = (${v.map(x => fixed(x, 4)).join(',\\ ')})`;
+	// components apart by commas, or by semicolons in Italian, where the
+	// comma is the decimal sign
+	return `${name} = (${v.map(x => fixed(x, 4)).join(tr(',\\ ', ';\\ '))})`;
 }
 
 /* The name of a chosen star is written on its right, this far from it
@@ -191,9 +193,12 @@ const zodiacFigure = {
 				['alf Ori', 'Betelgeuse', 9, 4],
 				['bet Ori', 'Rigel', 9, 4],
 				['alf Ari', 'Hamal', -9, 4, 'end'],
-				['eta Tau', 'Pleiades', -14, -12]
+				['eta Tau', tr('Pleiades', 'Pleiadi'), -14, -12]
 			],
-			label: 'Chart of the band of the zodiac around Taurus, with the ecliptic highlighted.'
+			label: tr(
+				'Chart of the band of the zodiac around Taurus, with the ecliptic highlighted.',
+				"Carta della fascia dello zodiaco attorno al Toro, con l'eclittica evidenziata."
+			)
 		});
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const ecliptic = [];
@@ -204,7 +209,7 @@ const zodiacFigure = {
 
 		const nameAt = Frames.eclipticPoint(ZODIAC_ECLIPTIC_NAME_AT, eps);
 
-		Plate.highlightCurve(chart, ecliptic, 'ecliptic', [nameAt.ra, nameAt.dec, 8, 18]);
+		Plate.highlightCurve(chart, ecliptic, tr('ecliptic', 'eclittica'), [nameAt.ra, nameAt.dec, 8, 18]);
 	}
 };
 
@@ -323,10 +328,16 @@ const eclipticFigure = {
 		wirePresets(figure);
 		wirePlayButton(byId('ecl-play'), byId('ecl-day'), PLAY_DAYS_PER_SECOND);
 
-		buildChoice(byId('ecl-objects'), ECLIPTIC_CHOICES, this.chosen, name => {
-			this.chosen = name;
-			this.update();
-		});
+		buildChoice(
+			byId('ecl-objects'),
+			ECLIPTIC_CHOICES,
+			this.chosen,
+			name => {
+				this.chosen = name;
+				this.update();
+			},
+			name => (name === 'Sun' ? tr('Sun', 'Sole') : Stars.label(name))
+		);
 
 		this.update();
 	},
@@ -371,7 +382,9 @@ const eclipticFigure = {
 	showReadout() {
 		const { day, eq, ecl, sEq, sEcl } = this.state;
 		const title =
-			this.chosen === 'Sun' ? `\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}` : `\\text{${this.chosen}}`;
+			this.chosen === 'Sun'
+				? tr(`\\text{the Sun, ${formatDay(day)} ${SUN_YEAR}}`, `\\text{il Sole, ${formatDay(day)} ${SUN_YEAR}}`)
+				: `\\text{${Stars.label(this.chosen)}}`;
 
 		showLines('ecl-readout', [
 			title,
@@ -437,7 +450,7 @@ const eclipticFigure = {
 			if (ECLIPTIC_STARS.includes(star.name)) {
 				const color = star.name === this.chosen ? COL.planet : COL.ink;
 
-				drawNamedStar(s, star.name, star.vector, color, RAISED_NAMES.includes(star.name));
+				drawNamedStar(s, Stars.label(star.name), star.vector, color, RAISED_NAMES.includes(star.name));
 			}
 		});
 	},
@@ -504,6 +517,9 @@ const PLAY_DEGREES_PER_SECOND = 15;
 /* What the sky can carry: a star (the star of section 1, a southern star
    or one next to the pole), or the ecliptic. */
 const ECLIPTIC_SUBJECT = 'the ecliptic';
+
+/* The text of a subject's button: a star's name, or the ecliptic. */
+const subjectLabel = name => (name === ECLIPTIC_SUBJECT ? tr('the ecliptic', "l'eclittica") : Stars.label(name));
 const HORIZON_SUBJECTS = ['Aldebaran', 'Sirius', 'Polaris', ECLIPTIC_SUBJECT];
 
 /* theta, alpha and H are three arcs of the equator, which would cover one
@@ -547,10 +563,16 @@ const horizonFigure = {
 		wirePresets(figure);
 		this.player = wirePlayButton(byId('hor-play'), byId('hor-theta'), PLAY_DEGREES_PER_SECOND);
 
-		buildChoice(byId('hor-subjects'), HORIZON_SUBJECTS, this.subject, name => {
-			this.subject = name;
-			this.update();
-		});
+		buildChoice(
+			byId('hor-subjects'),
+			HORIZON_SUBJECTS,
+			this.subject,
+			name => {
+				this.subject = name;
+				this.update();
+			},
+			subjectLabel
+		);
 
 		byId('hor-observation').addEventListener('click', () => this.showObservation());
 		this.update();
@@ -564,7 +586,7 @@ const horizonFigure = {
 
 		markChosen(
 			buttons,
-			buttons.find(button => button.textContent === OBSERVATION.star)
+			buttons.find(button => button.textContent === subjectLabel(OBSERVATION.star))
 		);
 		byId('hor-lat').value = OBSERVATION.phi;
 		byId('hor-theta').value = OBSERVATION.theta;
@@ -614,7 +636,7 @@ const horizonFigure = {
 		}
 
 		showLines('hor-readout', [
-			`\\text{${this.subject}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
+			`\\text{${subjectLabel(this.subject)}:}\\ \\alpha = ${texAngle360(eq.ra)},\\quad \\delta = ${texDegrees(eq.dec)}`,
 			`H = \\theta - \\alpha = ${texDegrees(hor.H)}`,
 			`A = ${texAngle360(hor.A)},\\quad a = ${texDegrees(hor.a)}`
 		]);
@@ -732,7 +754,7 @@ const horizonFigure = {
 			COL.deferent
 		);
 
-		drawNamedStar(s, this.subject, star, COL.planet);
+		drawNamedStar(s, subjectLabel(this.subject), star, COL.planet);
 	},
 
 	/* The ecliptic, its pole K, and the angle I between the ecliptic and
@@ -933,8 +955,8 @@ const noonFigure = {
 		this.plot = new Plot2D(byId('noon-plot'), {
 			x: [0, 365],
 			y: NOON_Y_RANGE,
-			xLabel: `date (${NOON_YEAR})`,
-			yLabel: 'altitude of the Sun at noon (°)',
+			xLabel: `${tr('date', 'data')} (${NOON_YEAR})`,
+			yLabel: tr('altitude of the Sun at noon (°)', 'altezza del Sole a mezzogiorno (°)'),
 			aspect: 0.5,
 			xTicks: () => MONTH_TICKS.map(([value, label]) => ({ value, label })),
 			onDraw: () => this.draw()
@@ -1048,8 +1070,8 @@ const nutationFigure = {
 		this.plot = new Plot2D(byId('nutation-plot'), {
 			x: [0, 365],
 			y: NUTATION_Y_RANGE,
-			xLabel: `date (${NUTATION_YEAR})`,
-			yLabel: 'model − real (arcsec)',
+			xLabel: `${tr('date', 'data')} (${NUTATION_YEAR})`,
+			yLabel: tr('model − real (arcsec)', "modello − reale (secondi d'arco)"),
 			aspect: 0.45,
 			xTicks: () => MONTH_TICKS.map(([value, label]) => ({ value, label })),
 			onDraw: () => this.draw()

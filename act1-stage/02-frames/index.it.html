@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 1.2 · FRAMES
+     Act I, the stage. Three ways to name a direction (equatorial, ecliptic,
+     horizontal), each a great circle, its pole and an origin; changing names
+     is a rotation, and multiplying out the matrices gives the spherical
+     trigonometry. Numbers: tools/numbers/1.2-frames.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>1.2 · Sistemi di riferimento · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/diurnal.js"></script>
+	<script defer src="../../shared/models/frames.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="1.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Nella pagina 1.1 abbiamo descritto una stella con la sua declinazione
+			$\delta$ e il suo angolo orario $H$, che cresce mentre il cielo ruota.
+			Questo basta per le stelle fisse, ma il Sole, la Luna e i pianeti si
+			muovono fra esse, e per seguirli ci servono due coordinate per ogni
+			punto della sfera celeste, e un modo di passare da uno all&#8217;altro dei
+			sistemi di coordinate che usano gli astronomi.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>I tre sistemi di coordinate</h2>
+
+		<p>
+			Prendiamo Aldebaran, l&#8217;occhio rosso del Toro, vista da Roma il 1º
+			gennaio 2026 alle 20:00 ora locale (19:00 UT). A seconda di ciò rispetto
+			a cui la misuriamo, possiamo dare la sua posizione in tre sistemi di
+			coordinate:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Misurata rispetto a</th>
+					<th>Coordinate</th>
+					<th>Aldebaran</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>l&#8217;orizzonte locale (bussola e quadrante)</td>
+					<td>azimut $A$, altezza $a$</td>
+					<td>$125{,}01^\circ$, $53{,}67^\circ$</td>
+				</tr>
+				<tr>
+					<td>l&#8217;equatore celeste: un catalogo moderno (2026)</td>
+					<td>ascensione retta $\alpha$, declinazione $\delta$</td>
+					<td>$69{,}354^\circ$ ($4^\text{h}37^\text{m}$), $16{,}559^\circ$</td>
+				</tr>
+				<tr>
+					<td>l&#8217;eclittica, il percorso annuo del Sole (2026)</td>
+					<td>longitudine eclittica $\lambda$, latitudine eclittica $\beta$</td>
+					<td>$70{,}153^\circ$, $-5{,}465^\circ$</td>
+				</tr>
+				<tr>
+					<td>l&#8217;eclittica: il catalogo di Tolomeo (137 d.C.)</td>
+					<td>longitudine eclittica $\lambda$, latitudine eclittica $\beta$</td>
+					<td>$42^\circ 40'$ ($42{,}667^\circ$), $-5^\circ 10'$ ($-5{,}167^\circ$)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- Figure 1: the zodiac around Taurus, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-zodiac"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">Lo zodiaco attorno al Toro</div>
+					<p>
+						Il cielo del 2026 attorno ad Aldebaran, guardando a sud, con il
+						nord in alto e l&#8217;est a sinistra, sulla griglia equatoriale.
+					</p>
+					<p>
+						<span class="hl">Eclittica:</span> il percorso annuo del Sole.
+						Aldebaran è 16,6° a nord dell&#8217;equatore ma 5,5° a sud
+						dell&#8217;eclittica, la $\delta$ e la $\beta$ della tabella.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>stelle</dt>
+						<dd>tutte le stelle più luminose della magnitudine 4,6; più grandi se più luminose</dd>
+						<dt>puntinato</dt>
+						<dd>la Via Lattea, disegnata come una fascia attorno all&#8217;equatore galattico</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Le coordinate orizzontali cambiano di continuo: un&#8217;ora dopo la stella
+			è più alta e più a sud. Quelle equatoriali restano le stesse per tutta
+			la notte e per anni, e cambiano solo nel corso dei secoli, insieme a
+			quelle eclittiche.
+		</p>
+
+		<div class="row">
+			<p>
+				Dai tempi di Tolomeo la longitudine eclittica di Aldebaran è cresciuta
+				di circa 26° e la sua declinazione è cambiata di quasi 6°, ma la sua
+				latitudine eclittica si è spostata solo di 8′. Tolomeo aveva notato
+				che le stelle si spostano parallelamente all&#8217;eclittica, così che «le
+				loro posizioni in latitudine rispetto all&#8217;eclittica devono
+				necessariamente restare le stesse» (<em>Almagest</em> VII 4), ed è per
+				questo che diede il suo catalogo in coordinate eclittiche.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Sistemi di coordinate e rotazioni</h2>
+
+		<h3>Che cos&#8217;è un sistema di riferimento</h3>
+
+		<div class="row">
+			<p>
+				Per stabilire delle coordinate sulla sfera celeste, un <strong>sistema di
+				riferimento</strong>, facciamo tre scelte: un cerchio massimo (il
+				<strong>cerchio fondamentale</strong>), uno dei suoi due poli, e
+				un&#8217;origine sul cerchio. La longitudine del sistema si conta allora
+				lungo il cerchio a partire dall&#8217;origine, e la sua latitudine dal
+				cerchio verso il polo. Nel sistema eclittico sono la longitudine e la
+				latitudine eclittiche.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				In termini di vettori, mettiamo $x$ verso l&#8217;origine, $z$ verso il
+				polo e $y$ alla longitudine del sistema $90^\circ$, così che il sistema
+				sia destrorso. Una direzione con longitudine del sistema $l$ e
+				latitudine $b$ è allora
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		$$\mathbf s = \begin{pmatrix} \cos b \cos l \\ \cos b \sin l \\ \sin b \end{pmatrix},$$
+
+		<p>
+			esattamente come per il sistema del cielo della pagina 1.1. I tre
+			sistemi di coordinate della sezione 1 sono sistemi di questo tipo, che
+			differiscono solo per queste scelte:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Sistema</th>
+					<th>Cerchio fondamentale</th>
+					<th>Polo</th>
+					<th>Origine</th>
+					<th>Coordinate</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>equatoriale</td>
+					<td>l&#8217;equatore celeste</td>
+					<td>P, polo nord celeste</td>
+					<td>γ, il punto vernale</td>
+					<td>$\alpha$, $\delta$</td>
+				</tr>
+				<tr>
+					<td>eclittico</td>
+					<td>l&#8217;eclittica, il percorso annuo del Sole</td>
+					<td>K, polo nord dell&#8217;eclittica</td>
+					<td>γ, il punto vernale</td>
+					<td>$\lambda$, $\beta$</td>
+				</tr>
+				<tr>
+					<td>orizzontale</td>
+					<td>l&#8217;orizzonte</td>
+					<td>Z, lo zenit</td>
+					<td>il punto nord</td>
+					<td>$A$, $a$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			L&#8217;equatore e l&#8217;eclittica si incrociano in due punti opposti. Uno di
+			essi, il <strong>punto vernale</strong> γ (scritto anche ♈&#xFE0E;, il segno
+			dell&#8217;Ariete), è dove il Sole attraversa l&#8217;equatore andando verso nord
+			all&#8217;equinozio di marzo, ed entrambi i sistemi lo prendono come
+			origine.
+		</p>
+
+		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/burgi-armillary-sphere.jpg" width="1000" height="1018" loading="lazy"
+				alt="Una sfera armillare in ottone dorato: una gabbia di anelli e una fascia di figure dello zodiaco traforate dentro un ampio anello piatto, attraversato da un anello verticale.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				Un orologio a sfera armillare di Jost Bürgi e Antonius Eisenhoit
+				(Kassel, 1585), i cui anelli sono i cerchi fondamentali di questa
+				pagina. L&#8217;ampio anello piatto fissato al supporto è l&#8217;orizzonte,
+				con OCCIDENS («ovest») inciso sulla destra. I segni dello zodiaco e i
+				nomi dei mesi accanto sono un calendario, che dà il posto del Sole
+				sull&#8217;eclittica per ogni data, come sull&#8217;anello dell&#8217;orizzonte di
+				un globo. L&#8217;anello verticale ad angolo retto con esso è il
+				meridiano. All&#8217;interno, la fascia di figure dello zodiaco ritagliate
+				in lamina d&#8217;ottone è l&#8217;eclittica, che ruota con gli altri anelli
+				interni come fa il cielo.
+				<span class="credit">Chris Bainbridge, 2009,
+					<a href="https://commons.wikimedia.org/wiki/File:Armillary_sphere_with_astronomical_clock.jpg">Wikimedia Commons</a>,
+					pubblico dominio (oggetto: Nordiska museet, Stoccolma).</span>
+			</figcaption>
+		</figure>
+
+		<p>
+			L&#8217;ascensione retta si dà spesso in ore, con $24^\text{h} =
+			360^\circ$ e quindi $1^\text{h} = 15^\circ$, il che rende i
+			$69{,}354^\circ$ di Aldebaran pari a $4^\text{h}37^\text{m}$. Si usano
+			le ore perché il cielo ruota di circa $15^\circ$ all&#8217;ora, quindi
+			l&#8217;ascensione retta in ore è all&#8217;incirca il tempo fra il passaggio
+			al meridiano di γ e quello della stella.
+		</p>
+
+		<h3>L&#8217;azimut</h3>
+
+		<p>
+			L&#8217;<strong>azimut</strong> $A$ è una direzione di bussola, $0^\circ$ a
+			nord, $90^\circ$ a est e $180^\circ$ a sud. Visto dallo zenit cresce in
+			senso orario, al contrario di $\alpha$ e $\lambda$, che crescono in
+			senso antiorario visti dai loro poli.
+		</p>
+
+		<p>
+			Quindi l&#8217;azimut non è semplicemente la longitudine nel sistema
+			orizzontale della pagina 1.1 ($x$ a sud, $y$ a est, $z$ allo zenit). Lì
+			il nord è $-x$ e l&#8217;est è $+y$, quindi
+		</p>
+
+		$$\mathbf s_\text{or} = \begin{pmatrix} -\cos a \cos A \\ \cos a \sin A \\ \sin a \end{pmatrix}.$$
+
+		<p>
+			Come controllo, $A = 0$ dà $(-\cos a, 0, \sin a)$, verso nord, e $A =
+			90^\circ$ dà $(0, \cos a, \sin a)$, verso est. Meeus (cap. 13) conta
+			invece l&#8217;azimut da sud, quindi il suo valore è $A - 180^\circ$.
+		</p>
+
+		<h3>Cambiare sistema è una rotazione</h3>
+
+		<p>
+			Per convertire una direzione da un sistema $F$ a un sistema $G$, ci
+			servono le sue componenti lungo gli assi di $G$. Sono i suoi prodotti
+			scalari con gli assi, $s_G^i = \mathbf g_i \cdot \mathbf s$, quindi se
+			scriviamo gli assi di $G$ nelle componenti di $F$ come righe di una
+			matrice $M$,
+		</p>
+
+		$$\mathbf s_G = M \, \mathbf s_F, \qquad M = \begin{pmatrix} \mathbf g_1^T \\ \mathbf g_2^T \\ \mathbf g_3^T \end{pmatrix}.$$
+
+		<div class="row">
+			<p>
+				Le righe di $M$ sono ortonormali, quindi $M^T M = I$ e la
+				trasformazione inversa è la trasposta, $\mathbf s_F = M^T \mathbf
+				s_G$. Poiché entrambi i sistemi sono destrorsi, $\det M = 1$, e $M$ è
+				una rotazione.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Una rotazione conserva i prodotti scalari, e quindi gli angoli, perciò la
+			distanza angolare fra due stelle è la stessa in ogni sistema.
+		</p>
+
+		<h3>Eclittica ed equatore</h3>
+
+		<div class="row">
+			<p>
+				L&#8217;<strong>eclittica</strong> è il percorso del Sole fra le stelle
+				nel corso di un anno. Giorno dopo giorno il Sole si sposta verso est
+				lungo di essa, in media di $360^\circ / 365{,}2422 = 0{,}9856^\circ$ al
+				giorno, e torna in γ dopo un anno. Questo moto annuo è distinto dalla
+				rotazione diurna della pagina 1.1, che trascina insieme il Sole e le
+				stelle e non cambia nessuna delle loro coordinate $\alpha, \delta,
+				\lambda, \beta$. La Figura 2 mostra il solo moto annuo.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<p>
+			Poiché i due cerchi si incrociano in γ, i due sistemi hanno in comune
+			l&#8217;asse $x$. L&#8217;asse $y$ dell&#8217;eclittica punta a $\lambda =
+			90^\circ$, il solstizio d&#8217;estate, che sta un angolo $\varepsilon$ a
+			nord dell&#8217;equatore in $\alpha = 90^\circ$. Questo angolo è
+			l&#8217;<strong>obliquità</strong> dell&#8217;eclittica. In componenti
+			equatoriali i tre assi sono
+		</p>
+
+		$$\mathbf x = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad \mathbf y_\text{ecl} = \begin{pmatrix} 0 \\ \cos\varepsilon \\ \sin\varepsilon \end{pmatrix}, \quad \mathbf K = \mathbf x \times \mathbf y_\text{ecl} = \begin{pmatrix} 0 \\ -\sin\varepsilon \\ \cos\varepsilon \end{pmatrix}.$$
+
+		<p>
+			Il polo K è quindi in $\alpha = 270^\circ$, $\delta = 90^\circ -
+			\varepsilon$. La matrice che ha come colonne questi tre assi porta le
+			componenti eclittiche in quelle equatoriali, ed è una rotazione di
+			$\varepsilon$ attorno all&#8217;asse $x$:
+		</p>
+
+		$$\mathbf s_\text{eq} = R_x(\varepsilon)\, \mathbf s_\text{ecl}, \qquad R_x(\varepsilon) = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos\varepsilon & -\sin\varepsilon \\ 0 & \sin\varepsilon & \cos\varepsilon \end{pmatrix}.$$
+
+		<p>
+			Svolgendo il prodotto, con $\mathbf s_\text{eq}$ scritto in funzione di
+			$(\alpha, \delta)$ e $\mathbf s_\text{ecl}$ in funzione di $(\lambda,
+			\beta)$, otteniamo
+		</p>
+
+		<div class="box">
+			$$\begin{aligned}
+				\cos\delta \cos\alpha &= \cos\beta \cos\lambda, \\
+				\cos\delta \sin\alpha &= \cos\varepsilon \cos\beta \sin\lambda - \sin\varepsilon \sin\beta, \\
+				\sin\delta &= \sin\varepsilon \cos\beta \sin\lambda + \cos\varepsilon \sin\beta.
+			\end{aligned}$$
+		</div>
+
+		<p>
+			L&#8217;ultima riga dà direttamente $\delta$. Le prime due danno $\cos\delta$
+			per il coseno e per il seno di $\alpha$, quindi $\alpha =
+			\operatorname{atan2}(\cos\delta\sin\alpha,\ \cos\delta\cos\alpha)$, dove
+			$\operatorname{atan2}(y, x)$ è l&#8217;angolo, misurato dall&#8217;asse $x$, del
+			raggio da $(0, 0)$ a $(x, y)$.
+		</p>
+
+		<p>
+			Dividere le due righe per ottenere $\tan\alpha$ e prenderne
+			l&#8217;arcotangente farebbe perdere il quadrante, perché $(x, y)$ e $(-x,
+			-y)$ hanno lo stesso rapporto $y/x$. La funzione $\operatorname{atan2}$
+			usa i segni di entrambi, e mette $\alpha$ nel quadrante giusto.
+		</p>
+
+		<p>
+			Per il Sole, la cui latitudine eclittica è $\beta = 0$, si riducono a
+		</p>
+
+		$$\sin\delta = \sin\varepsilon \sin\lambda, \qquad \tan\alpha = \cos\varepsilon \tan\lambda.$$
+
+		<!-- Figure 2: ecliptic and equator -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="ecl-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="ecl-day">data (2026)</label>
+							<input id="ecl-day" type="range" min="0" max="364" step="0.01" value="140">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="ecl-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="ecl-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="ecl-play">Avvia</button>
+						</div>
+						<div class="presets star-choice" id="ecl-objects"></div>
+						<div class="readout" id="ecl-readout" data-lines="5"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Premi Avvia, o scorri i giorni, e guarda il Sole fare un giro
+				dell&#8217;eclittica mentre le stelle restano dove sono. Nota che
+				$\lambda$ cresce regolarmente, mentre l&#8217;arco $\delta$ cresce fino a
+				$\varepsilon$ al solstizio di giugno e non oltre, poi si riduce e
+				arriva a $-\varepsilon$ a dicembre. Scegli una stella per vederne le
+				$(\alpha, \delta)$ e le $(\lambda, \beta)$, che la data non cambia, e
+				trascina la sfera per ruotare la vista.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-earth">blu</dt>
+						<dd>l&#8217;equatore celeste e gli assi del sistema equatoriale</dd>
+						<dt class="c-sun">oro</dt>
+						<dd>l&#8217;eclittica e gli assi del sistema eclittico; i due sistemi hanno in comune l&#8217;asse $x$, verso γ</dd>
+						<dt>punto e freccia</dt>
+						<dd>il Sole e il suo moto annuo verso est</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Equatore e orizzonte</h3>
+
+		<p>
+			Per collocare una stella nel cielo dell&#8217;osservatore, colleghiamo il
+			sistema equatoriale al sistema del cielo della pagina 1.1. I due hanno
+			in comune l&#8217;equatore e il polo, e differiscono solo per la direzione
+			di $x$: nel sistema del cielo verso il meridiano, nel sistema
+			equatoriale verso γ, un punto dell&#8217;equatore che ruota con il cielo.
+		</p>
+
+		<p>
+			Sia $\theta$ l&#8217;angolo di cui il cielo ha ruotato da quando γ ha
+			attraversato il meridiano. Il meridiano è allora in $\alpha = \theta$, e
+			una stella di ascensione retta $\alpha$ lo ha attraversato un angolo
+			$\theta - \alpha$ fa, quindi
+		</p>
+
+		$$H = \theta - \alpha, \qquad \mathbf s_\text{cielo} = R_z(-\theta)\, \mathbf s_\text{eq}.$$
+
+		<p>
+			Come controllo, la longitudine della stella nel sistema del cielo è
+			$\alpha - \theta = -H$, come nella pagina 1.1. In questa pagina $\theta$
+			è un parametro libero, e la pagina 1.3 lo legge da un orologio e lo
+			chiama tempo siderale locale.
+		</p>
+
+		<p>
+			Nella pagina 1.1 abbiamo poi inclinato il sistema del cielo sul sistema
+			orizzontale con $R_y(\varphi - 90^\circ)$, e le due rotazioni insieme
+			danno
+		</p>
+
+		$$\mathbf s_\text{or} = R_y(\varphi - 90^\circ)\, R_z(-\theta)\, \mathbf s_\text{eq}.$$
+
+		<p>
+			Con $R_y(\varphi - 90^\circ)$ scritta per esteso (i suoi elementi sono
+			$\pm\sin\varphi$, $\pm\cos\varphi$) e $\mathbf s_\text{cielo} =
+			(\cos\delta\cos H, -\cos\delta\sin H, \sin\delta)$, le tre righe danno
+		</p>
+
+		<div class="box">
+			$$\begin{aligned}
+				\sin a &= \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H, \\
+				\cos a \sin A &= -\cos\delta \sin H, \\
+				\cos a \cos A &= \cos\varphi \sin\delta - \sin\varphi \cos\delta \cos H.
+			\end{aligned}$$
+		</div>
+
+		<p>
+			La prima riga è la formula dell&#8217;altezza della pagina 1.1. La seconda
+			conferma i segni, perché una stella a est del meridiano ($H &lt; 0$) ha
+			$\sin A &gt; 0$, un azimut orientale. La trasformazione inversa,
+			dall&#8217;orizzontale all&#8217;equatoriale, è la trasposta.
+		</p>
+
+		<!-- Figure 3: equator and horizon -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="hor-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="hor-lat">latitudine geografica φ</label>
+							<input id="hor-lat" type="range" min="-90" max="90" step="0.1" value="41.9">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="hor-theta">angolo θ</label>
+							<input id="hor-theta" type="range" min="0" max="360" step="0.01" value="38.94">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="hor-play">Avvia</button>
+							<button type="button" id="hor-observation">l&#8217;osservazione</button>
+						</div>
+						<div class="presets star-choice" id="hor-subjects"></div>
+						<div class="readout" id="hor-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Premi «l&#8217;osservazione» e la lettura dà l&#8217;azimut e l&#8217;altezza di
+				Aldebaran della tabella della sezione 1. Poi premi Avvia e guarda il
+				cielo ruotare attorno a P sopra un orizzonte fisso. Poiché γ e la
+				stella ruotano insieme, l&#8217;arco $\alpha$ mantiene la sua lunghezza
+				mentre $\theta$ e $H$ crescono della stessa quantità.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-earth">blu</dt>
+						<dd>l&#8217;equatore celeste</dd>
+						<dt class="c-muted">punteggiato</dt>
+						<dd>il meridiano, per N, Z e S</dd>
+						<dt><span class="c-epicycle">θ</span>, <span class="c-earth">α</span></dt>
+						<dd>archi dell&#8217;equatore, disegnati accanto a esso</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$I$</dt>
+						<dd>l&#8217;angolo fra l&#8217;eclittica e l&#8217;orizzonte, quando si sceglie «l&#8217;eclittica» (esercizio 3)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La trigonometria sferica dalle matrici</h3>
+
+		<div class="row">
+			<p>
+				Le stesse formule si possono leggere come trigonometria sferica. Il
+				polo P, lo zenit Z e la stella S formano un triangolo sferico
+				(Figura 4), con lati $90^\circ - \varphi$ (da P a Z), $90^\circ -
+				\delta$ e $90^\circ - a$, e con l&#8217;angolo orario $H$ come angolo in
+				P.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 4: the triangle pole, zenith, star (static, no controls) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="sphere-box">
+					<canvas id="triangle-canvas"></canvas>
+				</div>
+			</div>
+			<figcaption>
+				Trova il triangolo che ha come vertici il polo P, lo zenit Z e la
+				stella S, qui Aldebaran nell&#8217;osservazione della sezione 1 (la S
+				verde sull&#8217;orizzonte è il punto sud). Nota l&#8217;angolo in P, fra il
+				lato verso Z, che sta sul meridiano, e il lato verso la stella: è
+				l&#8217;angolo orario $H$, qui a est del meridiano.
+			</figcaption>
+		</figure>
+
+		<p>
+			Le tre righe qui sopra sono le tre regole classiche per quel triangolo:
+			la regola del coseno per il lato ZS, la regola dei seni e la regola
+			«delle cinque parti». Ogni formula di trigonometria sferica usata in
+			questo sito viene, allo stesso modo, dallo svolgere il prodotto con una
+			rotazione.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo non aveva né vettori né seni. Otteneva gli stessi numeri dal
+				teorema di Menelao sugli archi di cerchio massimo e da una tavola delle
+				corde (<em>Almagest</em> I 13–14), e pubblicava i risultati come tavole
+				(I 15–16), che verifichiamo nella sezione 4.
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<h3>Dove le coordinate si rompono</h3>
+
+		<p>
+			In un polo di un sistema la longitudine del sistema non è definita,
+			perché P non ha ascensione retta, Z non ha azimut, e
+			$\operatorname{atan2}(0, 0)$ non ha valore. Vicino a un polo, un piccolo
+			cambiamento nella posizione della stella produce un grande cambiamento
+			della sua longitudine in quel sistema. Il versore non ha questa
+			singolarità, ed è per questo che il codice di questo sito lavora con i
+			vettori e li converte in angoli solo alla fine.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;obliquità e l&#8217;origine</h2>
+
+		<p>
+			Il sistema orizzontale richiede la latitudine geografica $\varphi$, che
+			abbiamo misurato nella pagina 1.1, e l&#8217;angolo $\theta$, che la pagina
+			1.3 legge da un orologio. I sistemi equatoriale ed eclittico richiedono
+			due quantità dal cielo, l&#8217;angolo $\varepsilon$ fra loro e la loro
+			origine comune γ.
+		</p>
+
+		<h3>L&#8217;obliquità dal Sole di mezzogiorno ai solstizi</h3>
+
+		<p>
+			A mezzogiorno il Sole è sul meridiano, ad altezza $90^\circ - \varphi +
+			\delta$. Nel corso dell&#8217;anno $\delta$ oscilla fra $+\varepsilon$ e
+			$-\varepsilon$, quindi le altezze di mezzogiorno ai due solstizi danno
+			sia $\varepsilon$ sia $\varphi$, proprio come i due passaggi al
+			meridiano di Kochab nella pagina 1.1:
+		</p>
+
+		$$\varepsilon = \frac{h_\text{estate} - h_\text{inverno}}{2}, \qquad \varphi = 90^\circ - \frac{h_\text{estate} + h_\text{inverno}}{2}.$$
+
+		<p>
+			Ad Alessandria, dove osservava Tolomeo, il Sole reale di mezzogiorno del
+			2025 (Figura 5) sta a 82,240° di altezza al solstizio di giugno e a
+			35,386° al solstizio di dicembre, che danno $\varepsilon =
+			23{,}427^\circ$ e la latitudine geografica della città entro 1′.
+		</p>
+
+		<p>
+			Questa obliquità è 0,55′ sotto l&#8217;obliquità media del 2025, e la
+			rifrazione spiega la differenza: solleva il basso Sole d&#8217;inverno molto
+			più dell&#8217;alto Sole d&#8217;estate, il che riduce l&#8217;arco fra i due.
+		</p>
+
+		<!-- Figure 5: the noon Sun through the year (static, no controls) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="noon-plot"></canvas>
+			</div>
+			<figcaption>
+				Leggi l&#8217;obliquità sulla curva del Sole di mezzogiorno ad
+				Alessandria: i suoi punti più alto e più basso stanno $\varepsilon$
+				sopra e sotto la linea tratteggiata, l&#8217;altezza $90^\circ - \varphi$
+				dell&#8217;equatore. La curva è piatta ai solstizi, quindi una lettura lì
+				si ripete per giorni, e più ripida dove attraversa la linea, quindi le
+				altezze di mezzogiorno fissano il giorno di un equinozio. Il punto
+				segna l&#8217;attraversamento di marzo, quando il Sole è in γ.
+			</figcaption>
+		</figure>
+
+		<h3>L&#8217;origine dall&#8217;equinozio di marzo</h3>
+
+		<div class="row">
+			<p>
+				Nessuna stella segna γ, che è definito dal Sole come il punto in cui
+				esso attraversa l&#8217;equatore andando verso nord. Cronometriamo quindi
+				l&#8217;equinozio di marzo, l&#8217;istante in cui la declinazione del Sole
+				cambia segno, che le altezze di mezzogiorno nei giorni vicini mostrano.
+				In quell&#8217;istante il Sole è in γ e la sua longitudine eclittica è 0°;
+				nel 2025 questo è avvenuto il 20 marzo alle 08:48 UT nel cielo di
+				riferimento. Il suo Sole è entro 0,7′ da quello reale, che il Sole
+				percorre in un quarto d&#8217;ora, e lo US Naval Observatory dà le 09:01
+				UT.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="instruments"></div>
+			</aside>
+		</div>
+
+		<!-- History block: how Ptolemy measured the obliquity -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Come Tolomeo misurò l&#8217;obliquità</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo leggeva la distanza dallo zenit del Sole di mezzogiorno su
+					un anello di bronzo posto nel meridiano, e su una lastra di pietra o
+					di legno con un quadrante disegnato sopra, gli strumenti della pagina
+					1.1. Letture fatte vicino ai solstizi nel corso di vari anni davano,
+					a ciascun solstizio, la stessa distanza (<em>Almagest</em> I 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Trovò l&#8217;arco fra i solstizi «sempre maggiore di 47⅔° e minore di
+					47¾°», e adottò $\varepsilon = 23^\circ 51' 20''$. Dice che questo
+					concorda con Eratostene e Ipparco, ma se il valore fosse il loro, o
+					suo e solo vicino ai 24° che essi usavano, è incerto (nota di Toomer
+					a I 12). L&#8217;obliquità reale del suo tempo era al di sotto perfino
+					del suo limite inferiore.
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Gli equinozi si cronometravano con un anello di bronzo posto nel
+					piano dell&#8217;equatore: l&#8217;equinozio è il giorno in cui
+					l&#8217;interno dell&#8217;anello passa dall&#8217;essere illuminato da un lato
+					all&#8217;essere illuminato dall&#8217;altro (<em>Almagest</em> III 1).
+					Ipparco osservò i suoi a Rodi, e ne cita altri letti su un anello del
+					genere ad Alessandria.
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Il modello contro il cielo</h2>
+
+		<p>
+			Le formule di conversione non contengono approssimazioni, quindi ciò
+			che possiamo verificare è l&#8217;obliquità che vi inseriamo. Usiamo i
+			sistemi della sezione 2 con l&#8217;<strong>obliquità media</strong> della
+			data, la parte regolare dell&#8217;obliquità, e li confrontiamo con il Sole
+			di riferimento del 2026.
+		</p>
+
+		<h3>L&#8217;obliquità media e la nutazione</h3>
+
+		<div class="row">
+			<p>
+				L&#8217;unico effetto che questi sistemi trascurano è la
+				<strong>nutazione</strong>, una piccola oscillazione dell&#8217;asse
+				terrestre causata soprattutto dalla Luna. Il suo periodo principale è
+				di 18,6 anni, e cambia l&#8217;obliquità di qualche secondo d&#8217;arco:
+				$\varepsilon_\text{vera} = \varepsilon_\text{media} +
+				\Delta\varepsilon$.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per isolarla, la Figura 6 prende le coordinate eclittiche del Sole di
+			riferimento per ogni giorno del 2026 e le converte con l&#8217;obliquità
+			media della data, come fanno i sistemi della sezione 2. Poi confronta il
+			risultato con le $(\alpha, \delta)$ del Sole di riferimento stesso,
+			calcolate con l&#8217;obliquità vera. Poiché entrambi partono dalle stesse
+			$\lambda$ e $\beta$, la differenza è dovuta alla sola nutazione.
+		</p>
+
+		<!-- Figure 6: the nutation error (static, no controls) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="nutation-plot"></canvas>
+			</div>
+			<figcaption>
+				Segui $\Delta\delta$ nel corso dell&#8217;anno: passa per lo zero agli
+				equinozi e tocca $-\Delta\varepsilon$ al solstizio di giugno e
+				$+\Delta\varepsilon$ al solstizio di dicembre.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>increspatura</dt>
+						<dd>un termine della nutazione con un periodo di due settimane, metà del mese della Luna</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			La forma della curva segue da $\sin\delta = \sin\varepsilon
+			\sin\lambda$, che sull&#8217;eclittica dà la declinazione. Una variazione
+			$\Delta\varepsilon$ la cambia di $(\cos\varepsilon\sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$. Noi trascuriamo $\Delta\varepsilon$,
+			quindi $\Delta\delta = -(\cos\varepsilon \sin\lambda /
+			\cos\delta)\,\Delta\varepsilon$, e al solstizio di giugno, dove il
+			fattore vale 1, $\Delta\delta$ e $-\Delta\varepsilon$ valgono entrambi
+			$-7{,}7''$.
+		</p>
+
+		<div class="row">
+			<p>
+				Nel 2026 la declinazione sbaglia al massimo di 7,9″ e
+				l&#8217;ascensione retta al massimo di 1,9″. I modelli delle pagine
+				seguenti sbagliano di primi d&#8217;arco o più, quindi d&#8217;ora in poi
+				trascuriamo la nutazione e usiamo l&#8217;obliquità media.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
+
+		<!-- History block: Ptolemy's tables of declination and right ascension -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le tavole di declinazione e di ascensione retta di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					A Tolomeo serviva la declinazione del Sole per ogni punto
+					dell&#8217;eclittica, per l&#8217;altezza del Sole a mezzogiorno, la durata
+					del giorno e l&#8217;ombra di uno gnomone (<em>Almagest</em> II), quindi
+					la pubblicò per ogni grado di longitudine eclittica (I 15), con
+					l&#8217;ascensione retta ogni 10° (I 16).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Le formule di conversione della sezione 2, calcolate con la sua
+				obliquità, riproducono le sue declinazioni entro pochi secondi
+				d&#8217;arco e le sue ascensioni rette entro il suo arrotondamento al
+				primo, quindi le sue tavole non aggiungono errori propri. La sua
+				obliquità rende le sue declinazioni troppo grandi, con un errore che
+				cresce verso i solstizi, dove arriva a 10,7′; le ascensioni rette
+				dipendono solo debolmente da $\varepsilon$ e sono molto più vicine.
+			</p>
+
+			<div class="row">
+				<p>
+					Copernico, confrontando le proprie misure con quelle di Tolomeo,
+					trovò un&#8217;obliquità minore e concluse «che anche l&#8217;obliquità
+					dell&#8217;eclittica è variabile» (<em>De Revolutionibus</em> II 2 [f.
+					29r]). Parte della differenza era l&#8217;errore di Tolomeo, e il resto
+					un cambiamento reale, di cui si occupa la sezione 5.
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che i sistemi fissi trascurano</h2>
+
+		<p>
+			I sistemi della sezione 2 sono fissi, ma l&#8217;angolo fra loro cambia.
+			L&#8217;obliquità è diminuita di 14,5′ dai tempi di Tolomeo, quindi un
+			sistema costruito con l&#8217;obliquità vera del suo tempo sbaglierebbe
+			oggi di altrettanto la declinazione del Sole ai solstizi.
+		</p>
+
+		<p>
+			Anche l&#8217;origine si muove. Poiché γ è definito dal Sole, può muoversi
+			rispetto alle stelle, e lo fa: come ha mostrato la sezione 1 per
+			Aldebaran, le longitudini eclittiche delle stelle crescono nel corso dei
+			secoli mentre le loro latitudini eclittiche cambiano appena, perché γ
+			arretra lungo l&#8217;eclittica. Per questo un catalogo dà le posizioni
+			per la propria data. La pagina 2.3 misura il moto di γ.
+		</p>
+
+		<p>
+			L&#8217;angolo $\theta$ si imposta ancora con un cursore nella Figura 3.
+			Nel cielo dipende dal tempo, perché è l&#8217;angolo di cui il cielo ha
+			ruotato dall&#8217;ultimo passaggio di γ al meridiano, quindi collocare una
+			stella nel cielo dell&#8217;osservatore in un dato istante richiede
+			$\theta$ in quell&#8217;istante. La pagina 1.3 si chiede come possa darlo un
+			orologio.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra che la trasformazione dal sistema equatoriale a quello eclittico
+				è $R_x(-\varepsilon)$, e scrivi $\lambda$ e $\beta$ in funzione di
+				$\alpha$ e $\delta$. Poi trova $\lambda$ e $\beta$ di Aldebaran da
+				$\alpha = 69{,}3539^\circ$, $\delta = 16{,}5594^\circ$ (2026,0), con
+				$\varepsilon = 23{,}4359^\circ$. Verifica nella Figura 2.
+			</p>
+			<details class="hint">
+				<p>
+					L&#8217;inversa di una rotazione è la sua trasposta. Qual è la trasposta
+					di $R_x(\varepsilon)$?
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$R_x(\varepsilon)^T = R_x(-\varepsilon)$: trasporre scambia i due
+					elementi $\sin\varepsilon$, il che equivale a cambiare il segno di
+					$\varepsilon$. Quindi $\mathbf s_\text{ecl} =
+					R_x(-\varepsilon)\,\mathbf s_\text{eq}$, e svolgendo il prodotto:
+				</p>
+				$$\begin{aligned}
+					\cos\beta \cos\lambda &= \cos\delta \cos\alpha, \\
+					\cos\beta \sin\lambda &= \cos\varepsilon \cos\delta \sin\alpha + \sin\varepsilon \sin\delta, \\
+					\sin\beta &= \cos\varepsilon \sin\delta - \sin\varepsilon \cos\delta \sin\alpha.
+				\end{aligned}$$
+				<p>
+					Sono le formule della sezione 2 con $\varepsilon \to -\varepsilon$ e
+					i ruoli dei due sistemi scambiati.
+				</p>
+				<p>
+					Per Aldebaran, $\mathbf s_\text{eq} = (0{,}3380;\ 0{,}8970;\ 0{,}2850)$
+					e $\mathbf s_\text{ecl} = (0{,}3380;\ 0{,}9363;\ -0{,}0952)$. Quindi
+					$\sin\beta = -0{,}09525$, $\beta = -5{,}465^\circ$, e $\lambda =
+					\operatorname{atan2}(0{,}93632;\ 0{,}33797) = 70{,}153^\circ$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Il 21 maggio 2026 il Sole raggiunge $\lambda = 60^\circ$ ($\beta = 0$).
+				Trova la sua declinazione e la sua ascensione retta con $\varepsilon =
+				23{,}4359^\circ$. Verificale nella Figura 2 il 21 maggio. Poi ripeti con
+				i $23^\circ 51' 20''$ di Tolomeo e confronta il risultato con i suoi
+				valori, $20^\circ 30' 09''$ nella tavola I 15 e $57^\circ 44'$ nella
+				tavola I 16.
+			</p>
+			<details class="hint">
+				<p>
+					Con $\beta = 0$: $\sin\delta = \sin\varepsilon\sin\lambda$ e
+					$\tan\alpha = \cos\varepsilon\tan\lambda$, con $\alpha$ nello stesso
+					quadrante di $\lambda$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$\sin\delta = \sin 23{,}4359^\circ \sin 60^\circ = 0{,}34444$, quindi
+					$\delta = 20{,}147^\circ$. E $\tan\alpha = \cos 23{,}4359^\circ \tan
+					60^\circ = 1{,}58917$, quindi $\alpha = 57{,}819^\circ$, ovvero
+					$3^\text{h} 51^\text{m}$. L&#8217;ascensione retta resta indietro
+					rispetto alla longitudine eclittica di 2,181°.
+				</p>
+				<p>
+					Il Sole di riferimento di quel giorno differisce di 5,0″ in $\delta$ e
+					di 1,2″ in $\alpha$: la sua latitudine eclittica è $-1{,}7''$, e la
+					nutazione lo sposta leggermente.
+				</p>
+				<p>
+					Con l&#8217;obliquità di Tolomeo, $\delta = 20^\circ 30' 09''$
+					(20,503°), esattamente la sua tavola I 15. E $\alpha = 57^\circ 44'
+					11''$ (57,736°), contro i suoi $57^\circ 44'$ in I 16.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				Mentre il cielo ruota, l&#8217;eclittica incontra l&#8217;orizzonte con un
+				angolo $I$ che cambia. A Roma ($\varphi = 41{,}9^\circ$), prevedi
+				l&#8217;$I$ minimo e il massimo, e quale punto dell&#8217;eclittica sta
+				sorgendo in ciascun caso. Verifica con la Figura 3: scegli
+				«l&#8217;eclittica» e leggi $I$. Poi spiega perché una sottile falce di
+				Luna dopo il tramonto si vede più facilmente a marzo che a settembre.
+			</p>
+			<details class="hint">
+				<p>
+					L&#8217;angolo fra due piani è l&#8217;angolo fra i loro poli, quindi $I =
+					90^\circ - a_\text{K}$, dove $a_\text{K}$ è l&#8217;altezza del polo
+					dell&#8217;eclittica. K è una stella di declinazione $90^\circ -
+					\varepsilon$: usa le altezze massima e minima della pagina 1.1.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					K ha $\delta = 90^\circ - \varepsilon$ e $\alpha = 270^\circ$. La sua
+					altezza oscilla fra $a_\text{max} = 90^\circ - |\varphi - \delta|$ e
+					$a_\text{min} = |\varphi + \delta| - 90^\circ$, quindi $I$ oscilla fra
+				</p>
+				$$I_\text{min} = 90^\circ - \varphi - \varepsilon = 24{,}66^\circ, \qquad I_\text{max} = 90^\circ - \varphi + \varepsilon = 71{,}54^\circ.$$
+				<p>
+					Il minimo si ha quando K è sul meridiano superiore, $\theta =
+					270^\circ$. Il punto in cui sorge l&#8217;equatore è allora in $\alpha =
+					\theta + 90^\circ = 0^\circ$: sta sorgendo γ. Il massimo si ha in
+					$\theta = 90^\circ$, quando sorge il punto autunnale.
+				</p>
+				<p>
+					Al tramonto all&#8217;equinozio di marzo (17:22 UT a Roma) il Sole
+					tramonta in γ, quindi sorge il punto opposto: $\theta = 91{,}3^\circ$ e
+					$I = 71{,}5^\circ$. All&#8217;equinozio di settembre (tramonto alle 17:06
+					UT) è il contrario: $\theta = 271{,}5^\circ$, $I = 24{,}7^\circ$.
+				</p>
+				<p>
+					La Luna giovane non è mai lontana dall&#8217;eclittica, qualche decina di
+					gradi a est del Sole. In una sera di marzo l&#8217;eclittica si alza ripida
+					sull&#8217;orizzonte occidentale, quindi la falce è alta in un cielo
+					buio. A settembre l&#8217;eclittica è bassa, e la falce tramonta nel
+					crepuscolo.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): I 12
+				(l&#8217;arco fra i solstizi, il rapporto 11 : 83, con la nota di Toomer);
+				I 13–14 (il teorema di Menelao, le declinazioni); I 15 (tavola
+				dell&#8217;inclinazione); I 16 (ascensioni rette); II 10–13 (angoli fra
+				l&#8217;eclittica e l&#8217;orizzonte); III 1 (osservazioni di equinozi); VII
+				4 e il catalogo (coordinate eclittiche, Aldebaran).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), II 2
+				[ff. 28v–29r] (l&#8217;obliquità, misurata e variabile); II 3–4
+				(declinazione e ascensione retta).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, §§ 2.3–2.5, 2.7, 2.9 e
+				2.16. Scrive Q per il polo dell&#8217;eclittica (qui K) e L per la
+				latitudine geografica (qui $\varphi$).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 13
+				(trasformazione di coordinate; azimut da sud) e 22 (obliquità).</li>
+			<li>Posizioni delle stelle: SIMBAD (CDS, Strasburgo), ICRS J2000,
+				consultato il 17 ottobre 2026. Precessione: J. Vondrák, N. Capitaine,
+				P. Wallace (2011).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/1.2-frames.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

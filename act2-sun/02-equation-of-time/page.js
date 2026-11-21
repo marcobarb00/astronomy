@@ -91,7 +91,7 @@ function texMinSec(minutes) {
 
 /* A year as the text says it: "141 BC", "AD 140", "2026". */
 function yearText(year) {
-	return year > 0 && year < 1000 ? `AD ${year}` : Time.formatYear(year);
+	return year > 0 && year < 1000 ? adText(year) : Time.formatYear(year);
 }
 
 /* A signed number in TeX, braced so that its sign is never spaced as an
@@ -169,8 +169,8 @@ const sundialFigure = {
 		this.dayPlot = new Plot2D(byId('sundial-day'), {
 			x: [0, DAYS_IN_YEAR],
 			y: DAY_EXCESS_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'true solar day − 24 h (s)',
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
+			yLabel: tr('true solar day − 24 h (s)', 'giorno solare vero − 24 h (s)'),
 			xTicks: monthTicks,
 			aspect: 0.75,
 			maxHeight: 360,
@@ -180,8 +180,8 @@ const sundialFigure = {
 		this.equationPlot = new Plot2D(byId('sundial-equation'), {
 			x: [0, DAYS_IN_YEAR],
 			y: EQUATION_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'sundial − clock, E (min)',
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
+			yLabel: tr('sundial − clock, E (min)', 'meridiana − orologio, E (min)'),
 			xTicks: monthTicks,
 			aspect: 0.75,
 			maxHeight: 360,
@@ -251,7 +251,7 @@ const reductionFigure = {
 		this.plot = new Plot2D(byId('reduction-plot'), {
 			x: [0, 360],
 			y: REDUCTION_RANGE,
-			xLabel: 'ecliptic longitude λ',
+			xLabel: tr('ecliptic longitude λ', 'longitudine eclittica λ'),
 			yLabel: 'λ − α (°)',
 			xTicks: longitudeTicks,
 			aspect: 0.95,
@@ -270,7 +270,7 @@ const reductionFigure = {
 			value => `${fixed(value, 2)}°`
 		);
 		wirePresets(figure);
-		wirePlayButton(byId('red-play'), byId('red-lon'), PLAY_DAYS_PER_SECOND, { playLabel: 'Play a year' });
+		wirePlayButton(byId('red-play'), byId('red-lon'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
 
 		this.update();
 	},
@@ -299,9 +299,9 @@ const reductionFigure = {
 
 		showLines('reduction-readout', [
 			`\\lambda = ${fixed(lon, 0)}^\\circ,\\quad \\alpha = ${fixedAngle(alpha, 2)}^\\circ`,
-			`\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min of time}`,
+			tr(`\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min of time}`, `\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min di tempo}`),
 			`e_\\varepsilon = \\tan^2(\\varepsilon/2) = ${fixed(EquationOfTime.reductionEccentricity(eps), 4)}`,
-			`\\text{greatest } ${fixed(greatest.value, 2)}^\\circ \\text{ at } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`
+			tr(`\\text{greatest } ${fixed(greatest.value, 2)}^\\circ \\text{ at } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`, `\\text{massimo } ${fixed(greatest.value, 2)}^\\circ \\text{ a } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`)
 		]);
 	},
 
@@ -409,8 +409,8 @@ const partsFigure = {
 		this.plot = new Plot2D(byId('parts-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: EQUATION_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'minutes of time',
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
+			yLabel: tr('minutes of time', 'minuti di tempo'),
 			xTicks: monthTicks,
 			aspect: 0.45,
 			maxHeight: 380,
@@ -432,11 +432,11 @@ const partsFigure = {
 	/* The values on a day, or, off the plot, their range over the year. */
 	showReadout(day) {
 		if (day === null) {
-			const range = list => `${texSigned(Math.min(...list))} \\text{ to } ${texSigned(Math.max(...list))}`;
+			const range = list => tr(`${texSigned(Math.min(...list))} \\text{ to } ${texSigned(Math.max(...list))}`, `${texSigned(Math.min(...list))} \\text{ a } ${texSigned(Math.max(...list))}`);
 
 			showLines('parts-readout', [
-				`\\text{${YEAR}:}\\quad E \\text{ from } ${range(this.total)}\\,\\text{min}`,
-				`\\text{amplitudes: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`
+				tr(`\\text{${YEAR}:}\\quad E \\text{ from } ${range(this.total)}\\,\\text{min}`, `\\text{${YEAR}:}\\quad E \\text{ da } ${range(this.total)}\\,\\text{min}`),
+				tr(`\\text{amplitudes: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`, `\\text{ampiezze: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`)
 			]);
 			return;
 		}
@@ -467,6 +467,13 @@ const ANALEMMA_BOTH = 'both causes';
 const ANALEMMA_ECCENTRICITY = 'eccentricity only';
 const ANALEMMA_OBLIQUITY = 'obliquity only';
 
+/* The buttons' words in the page's language. */
+const ANALEMMA_LABELS = {
+	[ANALEMMA_BOTH]: tr('both causes', 'entrambe le cause'),
+	[ANALEMMA_ECCENTRICITY]: tr('eccentricity only', 'solo eccentricità'),
+	[ANALEMMA_OBLIQUITY]: tr('obliquity only', 'solo obliquità')
+};
+
 const analemmaFigure = {
 	plot: null,
 	mode: ANALEMMA_BOTH,
@@ -480,8 +487,8 @@ const analemmaFigure = {
 		this.plot = new Plot2D(byId('analemma-plot'), {
 			x: ANALEMMA_H_RANGE,
 			y: ANALEMMA_DEC_RANGE,
-			xLabel: 'hour angle H at mean noon (°), west →',
-			yLabel: 'declination δ (°)',
+			xLabel: tr('hour angle H at mean noon (°), west →', 'angolo orario H a mezzogiorno medio (°), ovest →'),
+			yLabel: tr('declination δ (°)', 'declinazione δ (°)'),
 			aspect: 1.05,
 			minHeight: 320,
 			maxHeight: 560,
@@ -495,12 +502,13 @@ const analemmaFigure = {
 			name => {
 				this.mode = name;
 				this.update();
-			}
+			},
+			name => ANALEMMA_LABELS[name]
 		);
 
 		wireSlider(byId('ana-day'), () => this.update(), dayText);
 		wirePresets(figure);
-		wirePlayButton(byId('ana-play'), byId('ana-day'), PLAY_DAYS_PER_SECOND, { playLabel: 'Play a year' });
+		wirePlayButton(byId('ana-play'), byId('ana-day'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
 
 		this.update();
 	},
@@ -613,7 +621,7 @@ const testFigure = {
 		this.bothPlot = new Plot2D(byId('test-both'), {
 			x: [0, DAYS_IN_YEAR],
 			y: EQUATION_RANGE,
-			xLabel: `date (${YEAR})`,
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
 			yLabel: 'E (min)',
 			xTicks: monthTicks,
 			aspect: 0.75,
@@ -625,8 +633,8 @@ const testFigure = {
 		this.errorPlot = new Plot2D(byId('test-error'), {
 			x: [0, DAYS_IN_YEAR],
 			y: TEST_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'model − real (s)',
+			xLabel: tr(`date (${YEAR})`, `data (${YEAR})`),
+			yLabel: tr('model − real (s)', 'modello − reale (s)'),
 			xTicks: monthTicks,
 			aspect: 0.75,
 			maxHeight: 360,
@@ -660,15 +668,15 @@ const testFigure = {
 	showReadout(day) {
 		if (day === null) {
 			showLines('test-readout', [
-				`\\text{${YEAR}: model} - \\text{real from } ${texSigned(Math.min(...this.error), 1)} \\text{ to } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`,
-				'\\text{Point at either plot to read a date.}'
+				tr(`\\text{${YEAR}: model} - \\text{real from } ${texSigned(Math.min(...this.error), 1)} \\text{ to } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`, `\\text{${YEAR}: modello} - \\text{reale da } ${texSigned(Math.min(...this.error), 1)} \\text{ a } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`),
+				tr('\\text{Point at either plot to read a date.}', '\\text{Punta un grafico per leggere una data.}')
 			]);
 			return;
 		}
 
 		showLines('test-readout', [
-			`\\text{${dayText(day)}:}\\quad \\text{model } ${texMinSec(this.model[day])},\\quad \\text{real } ${texMinSec(this.real[day])}`,
-			`\\text{model} - \\text{real} = ${texSigned(this.error[day], 1)}\\,\\text{s}`
+			tr(`\\text{${dayText(day)}:}\\quad \\text{model } ${texMinSec(this.model[day])},\\quad \\text{real } ${texMinSec(this.real[day])}`, `\\text{${dayText(day)}:}\\quad \\text{modello } ${texMinSec(this.model[day])},\\quad \\text{reale } ${texMinSec(this.real[day])}`),
+			tr(`\\text{model} - \\text{real} = ${texSigned(this.error[day], 1)}\\,\\text{s}`, `\\text{modello} - \\text{reale} = ${texSigned(this.error[day], 1)}\\,\\text{s}`)
 		]);
 	}
 };
@@ -699,7 +707,7 @@ const centuriesFigure = {
 		this.plot = new Plot2D(byId('centuries-plot'), {
 			x: [0, 360],
 			y: CENTURIES_RANGE,
-			xLabel: 'the Sun’s ecliptic longitude λ',
+			xLabel: tr('the Sun’s ecliptic longitude λ', 'longitudine eclittica del Sole λ'),
 			yLabel: 'E (min)',
 			xTicks: longitudeTicks,
 			aspect: 0.5,
@@ -750,9 +758,9 @@ const centuriesFigure = {
 		// one value to a line, so that every line fits a phone (the year
 		// is shown beside its slider)
 		showLines('centuries-readout', [
-			`\\text{minimum } ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ`,
-			`\\text{maximum } ${texSigned(greatest.E)}\\,\\text{min at } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`,
-			`\\text{range } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{time-degrees}`
+			tr(`\\text{minimum } ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ`, `\\text{minimo } ${texSigned(least.E)}\\,\\text{min a } \\lambda = ${fixed(least.lon, 0)}^\\circ`),
+			tr(`\\text{maximum } ${texSigned(greatest.E)}\\,\\text{min at } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`, `\\text{massimo } ${texSigned(greatest.E)}\\,\\text{min a } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`),
+			tr(`\\text{range } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{time-degrees}`, `\\text{escursione } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{gradi di tempo}`)
 		]);
 	},
 

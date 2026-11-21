@@ -75,8 +75,8 @@ const ERROR_PERIOD = {
 
 /* The same windows in words, for the note that explains the bands. */
 const ERROR_PERIOD_TEXT = {
-	sun: 'one year',
-	moon: 'about one month'
+	sun: tr('one year', 'un anno'),
+	moon: tr('about one month', 'circa un mese')
 };
 
 /* The fewest columns a plot has (a phone): a span draws bands when one
@@ -86,7 +86,13 @@ const ERROR_NARROWEST_COLUMNS = 200;
 
 /* Shown in the read-out line while the pointer is away from the plot, so
    the dashed pointer line never goes unexplained (CLAUDE.md). */
-const ERROR_READOUT_HINT = "Point at the plot to read each curve's error on a date (dashed line).";
+const ERROR_READOUT_HINT = tr(
+	"Point at the plot to read each curve's error on a date (dashed line).",
+	"Punta il grafico per leggere l'errore di ogni curva in una data (linea tratteggiata)."
+);
+
+/* "Eccentric (kept)": the name of a ghost the reader kept. */
+const keptName = name => `${name} ${tr('(kept)', '(conservato)')}`;
 
 /* ==========================================================================
    2. CONSTRUCTION AND DOM
@@ -172,7 +178,7 @@ class ErrorCurve {
 		this.plot = new Plot2D(canvas, {
 			x: [this.startYear(), this.endYear()],
 			y: [-1, 1],
-			xLabel: options.xLabel ?? 'date',
+			xLabel: options.xLabel ?? tr('date', 'data'),
 			yLabel: '',
 			aspect: 0.42,
 			minHeight: 240,
@@ -213,8 +219,8 @@ class ErrorCurve {
 	buildGhostButtons() {
 		const box = makeEl('div', 'presets');
 
-		this.pinButton = makeEl('button', '', 'Keep as ghost');
-		this.clearButton = makeEl('button', '', 'Clear ghosts');
+		this.pinButton = makeEl('button', '', tr('Keep as ghost', 'Conserva come fantasma'));
+		this.clearButton = makeEl('button', '', tr('Clear ghosts', 'Cancella i fantasmi'));
 		this.pinButton.type = 'button';
 		this.clearButton.type = 'button';
 		this.pinButton.addEventListener('click', () => this.pinGhost());
@@ -273,8 +279,8 @@ class ErrorCurve {
 			this.ghosts.push({
 				id: `${model.id}-kept`,
 				keptFrom: model.id,
-				label: model.ghostLabel ? model.ghostLabel() : `${model.label} (kept)`,
-				short: model.ghostLabel ? model.ghostLabel() : `${model.short ?? stripTex(model.label)} (kept)`,
+				label: model.ghostLabel ? model.ghostLabel() : keptName(model.label),
+				short: model.ghostLabel ? model.ghostLabel() : keptName(model.short ?? stripTex(model.label)),
 				color: model.color,
 				fn: model.freeze ? model.freeze() : model.fn,
 				pinned: true
@@ -431,7 +437,7 @@ class ErrorCurve {
 		this.half = fixedHalf ?? niceCeiling(largest * this.unitFactor * 1.08);
 
 		this.plot.setRange([this.startYear(), this.endYear()], [-this.half, this.half]);
-		this.plot.yLabel = `Δ${this.quantity} (${this.inDegrees ? 'degrees' : 'arcminutes'})`;
+		this.plot.yLabel = `Δ${this.quantity} (${this.inDegrees ? tr('degrees', 'gradi') : tr('arcminutes', "primi d'arco")})`;
 	}
 
 	/* Warn (once) when a curve leaves the scale: the page must give the
@@ -542,7 +548,7 @@ class ErrorCurve {
 		this.models.forEach(model => {
 			if (this.ghostButtons && !this.ghosts.some(ghost => ghost.keptFrom === model.id)) {
 				items.push({
-					label: model.ghostLabel ? model.ghostLabel() : `${model.label} (kept)`,
+					label: model.ghostLabel ? model.ghostLabel() : keptName(model.label),
 					color: model.color,
 					ghost: true,
 					hidden: true
@@ -552,7 +558,7 @@ class ErrorCurve {
 
 		if (this.canLeaveRange()) {
 			items.push({
-				label: 'outside the valid range of the reference sky',
+				label: tr('outside the valid range of the reference sky', 'fuori dall\'intervallo di validità del cielo di riferimento'),
 				color: COL.muted,
 				mark: 'band'
 			});
@@ -593,11 +599,16 @@ class ErrorCurve {
 	/* The note that explains the bands. It is always shown, whether or not
 	   the current span draws bands, so the widget keeps its size. */
 	updateBandNote() {
-		const window = ERROR_PERIOD_TEXT[this.body] ?? `${Math.round(this.period)} days`;
+		const window = ERROR_PERIOD_TEXT[this.body] ?? `${Math.round(this.period)} ${tr('days', 'giorni')}`;
 
-		this.bandNote.textContent =
-			'Over long spans, where one pixel covers more than ' +
-			`${this.resolution} days, each curve is drawn as a band, from its smallest to its largest error within ${window}.`;
+		this.bandNote.textContent = localNumbers(
+			tr(
+				'Over long spans, where one pixel covers more than ' +
+					`${this.resolution} days, each curve is drawn as a band, from its smallest to its largest error within ${window}.`,
+				'Sugli intervalli lunghi, dove un pixel copre più di ' +
+					`${this.resolution} giorni, ogni curva è disegnata come una banda, dal suo errore minimo al massimo entro ${window}.`
+			)
+		);
 	}
 
 	/* ======================================================================
@@ -620,7 +631,7 @@ class ErrorCurve {
 			return `${entry.short ?? stripTex(entry.label)}: ${value}`;
 		});
 
-		this.readout.textContent = `${Time.formatDate(jd)} · ${parts.join(' · ')}`;
+		this.readout.textContent = localNumbers(`${Time.formatDate(jd)} · ${parts.join(' · ')}`);
 	}
 }
 

@@ -69,6 +69,9 @@ function phases(target, from, to) {
 	return found;
 }
 
+/* The words of the phases above the plot of Figure 2. */
+const PHASE_NAMES = { new: tr('new', 'nuova'), full: tr('full', 'piena') };
+
 /* The new and full Moons in [from, to], in time order:
    [{ jd, kind: 'new' | 'full' }]. */
 function syzygies(from, to) {
@@ -125,8 +128,8 @@ const motionFigure = {
 		this.plot = new Plot2D(byId('motion-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: MOTION_RANGE,
-			xLabel: `date (${OBS_YEAR})`,
-			yLabel: 'daily motion (°)',
+			xLabel: tr(`date (${OBS_YEAR})`, `data (${OBS_YEAR})`),
+			yLabel: tr('daily motion (°)', 'moto giornaliero (°)'),
 			xTicks: monthTicks,
 			aspect: 0.42,
 			onDraw: () => this.draw()
@@ -232,7 +235,7 @@ const epicycleFigure = {
 		this.plot = new Plot2D(byId('epicycle-plot'), {
 			x: [0, EPICYCLE_DAYS],
 			y: Q_RANGE,
-			xLabel: `days from 1 January ${YEAR}`,
+			xLabel: tr(`days from 1 January ${YEAR}`, `giorni dal 1º gennaio ${YEAR}`),
 			yLabel: 'q (°)',
 			aspect: 0.95,
 			maxHeight: 440,
@@ -252,7 +255,7 @@ const epicycleFigure = {
 		);
 		wirePresets(figure);
 		wirePlayButton(byId('epi-play'), byId('epi-day'), EPICYCLE_DAYS_PER_SECOND, {
-			playLabel: 'Play two months'
+			playLabel: tr('Play two months', 'Avvia due mesi')
 		});
 
 		this.update();
@@ -304,7 +307,7 @@ const epicycleFigure = {
 		showLines('epicycle-readout', [
 			`\\text{${dateHourText(YEAR_START + day)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 2)}^\\circ,\\quad M = ${fixedAngle(now.M, 2)}^\\circ`,
 			`q = ${texSigned(now.q)},\\quad \\lambda = \\bar\\lambda + q = ${fixedAngle(now.lambda, 2)}^\\circ`,
-			`\\text{daily motion } ${fixed(motion, 2)}^\\circ \\text{ (mean } ${fixed(parameters.n, 2)}^\\circ)`
+			tr(`\\text{daily motion } ${fixed(motion, 2)}^\\circ \\text{ (mean } ${fixed(parameters.n, 2)}^\\circ)`, `\\text{moto giornaliero } ${fixed(motion, 2)}^\\circ \\text{ (medio } ${fixed(parameters.n, 2)}^\\circ)`)
 		]);
 	},
 
@@ -399,7 +402,7 @@ const epicycleFigure = {
 		ctx.font = FONT_TICK;
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
-		ctx.fillText(kind, this.plot.px(x), this.plot.box.top - 4);
+		ctx.fillText(PHASE_NAMES[kind], this.plot.px(x), this.plot.box.top - 4);
 	},
 
 	/* Panel (b). */
@@ -446,8 +449,8 @@ const EQUIVALENCE_REACH = 1 + EQUIVALENCE_E + 0.14;
    eccentric, its center C and its apogee A), played over the whole turn
    in 9 seconds. Played over years, the Moon and K go round so fast that
    they flicker, so that view leaves them out. */
-const MONTH_VIEW = 'A month';
-const TURN_VIEW = "The eccentric's turn";
+const MONTH_VIEW = tr('A month', 'Un mese');
+const TURN_VIEW = tr("The eccentric's turn", "Il giro dell'eccentrico");
 const VIEW_DAYS_PER_SECOND = { [MONTH_VIEW]: 3, [TURN_VIEW]: 360 };
 
 const equivalenceFigure = {
@@ -502,7 +505,7 @@ const equivalenceFigure = {
 
 			showLines('equivalence-readout', [
 				`\\text{${dateYearText(jd)}:}\\quad \\lambda_A = ${fixedAngle(now.apogee, 2)}^\\circ`,
-				`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`
+				tr(`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`, `\\text{ruotato di } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ verso est dal 1º gennaio ${YEAR}}`)
 			]);
 			return;
 		}
@@ -510,8 +513,8 @@ const equivalenceFigure = {
 		showLines('equivalence-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 2)}^\\circ,\\quad M = ${fixedAngle(now.M, 2)}^\\circ`,
 			`\\lambda_A = \\bar\\lambda - M = ${fixedAngle(now.apogee, 2)}^\\circ`,
-			`\\text{epicycle: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`,
-			`\\text{eccentric: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`
+			tr(`\\text{epicycle: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`, `\\text{epiciclo: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`),
+			tr(`\\text{eccentric: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`, `\\text{eccentrico: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`)
 		]);
 	},
 
@@ -624,10 +627,10 @@ const CONTOUR_CELLS = 120;
 /* What each set of data is, and the source's own result, for the
    read-out. */
 const TRIPLE_SOURCES = {
-	babylon: "\\text{Ptolemy: } 0.08694,\\ M_2 = 12^\\circ 24'",
-	alexandria: "\\text{Ptolemy: } 0.08722,\\ M_2 = 64^\\circ 38'",
-	copernicus: "\\text{Copernicus: } 0.08604,\\ M_2 = 74^\\circ 27'",
-	ours: '\\text{the reference sky, 2025 – 2026}'
+	babylon: tr("\\text{Ptolemy: } 0.08694,\\ M_2 = 12^\\circ 24'", "\\text{Tolomeo: } 0.08694,\\ M_2 = 12^\\circ 24'"),
+	alexandria: tr("\\text{Ptolemy: } 0.08722,\\ M_2 = 64^\\circ 38'", "\\text{Tolomeo: } 0.08722,\\ M_2 = 64^\\circ 38'"),
+	copernicus: tr("\\text{Copernicus: } 0.08604,\\ M_2 = 74^\\circ 27'", "\\text{Copernico: } 0.08604,\\ M_2 = 74^\\circ 27'"),
+	ours: tr('\\text{the reference sky, 2025 – 2026}', '\\text{il cielo di riferimento, 2025 – 2026}')
 };
 
 const eclipsesFigure = {
@@ -693,8 +696,8 @@ const eclipsesFigure = {
 		showLines('eclipses-readout', [
 			`a_{12} = ${fixed(a12, 2)}^\\circ,\\quad a_{23} = ${fixed(a23, 2)}^\\circ`,
 			`d_{12} = ${texSigned(d12)},\\quad d_{23} = ${texSigned(d23)}`,
-			`\\text{first order: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`,
-			`\\text{exact: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`,
+			tr(`\\text{first order: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`, `\\text{primo ordine: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`),
+			tr(`\\text{exact: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`, `\\text{esatto: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`),
 			TRIPLE_SOURCES[this.name]
 		]);
 	},
@@ -741,8 +744,8 @@ const eclipsesFigure = {
 		});
 
 		drawDot(ctx, center.x, center.y, 3.5, COL.ink);
-		centeredLabel(ctx, 'apogee', onCircle(0, radius * 1.12 + 14), COL.epicycle, this.labels);
-		centeredLabel(ctx, 'to the Earth', { x: center.x, y: center.y + radius * 1.25 + 14 }, COL.earth, this.labels);
+		centeredLabel(ctx, tr('apogee', 'apogeo'), onCircle(0, radius * 1.12 + 14), COL.epicycle, this.labels);
+		centeredLabel(ctx, tr('to the Earth', 'verso la Terra'), { x: center.x, y: center.y + radius * 1.25 + 14 }, COL.earth, this.labels);
 	},
 
 	/* An arc of the circle 'radius' about 'center', clockwise on the
@@ -896,27 +899,27 @@ const ourErrorFigure = {
 			start: start,
 			end: end,
 			spans: [
-				{ label: '2 months', years: EPICYCLE_DAYS / 365.25 },
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 }
+				{ label: tr('2 months', '2 mesi'), years: EPICYCLE_DAYS / 365.25 },
+				{ label: tr('1 year', '1 anno'), years: 1 },
+				{ label: tr('100 years', '100 anni'), years: 100 }
 			],
 			ghostButtons: false
 		});
 
 		curve.addGhost({
-			label: 'the uniform Moon',
-			short: 'uniform Moon',
+			label: tr('the uniform Moon', 'la Luna uniforme'),
+			short: tr('uniform Moon', 'Luna uniforme'),
 			color: COL.muted,
 			fn: LunarEpicycle.makeUniform(LunarEpicycle.FIT_2026)
 		});
 		curve.addModel({
-			label: 'the epicycle, fitted to three eclipses',
-			short: 'epicycle',
+			label: tr('the epicycle, fitted to three eclipses', "l'epiciclo, adattato a tre eclissi"),
+			short: tr('epicycle', 'epiciclo'),
 			color: COL.epicycle,
 			fn: LunarEpicycle.make(LunarEpicycle.FIT_2026)
 		});
 		curve.addMarks({
-			label: 'the epicycle at new and full Moon (spans of a year or less)',
+			label: tr('the epicycle at new and full Moon (spans of a year or less)', "l'epiciclo alla Luna nuova e piena (intervalli di un anno o meno)"),
 			color: COL.epicycle,
 			fn: LunarEpicycle.make(LunarEpicycle.FIT_2026),
 			dates: syzygies(middle - 190, middle + 190).map(s => s.jd),

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 2.3 · PRECESSION
+     Act II, the Sun. The longitudes of the stars grow while their
+     latitudes stay; the sphere of the stars turns about the poles of the
+     ecliptic, or the equator turns over a fixed ecliptic; the pole's
+     circle and the two years; the rate from the records of Timocharis,
+     Hipparchus, Ptolemy, al-Battani and Copernicus and from the reference
+     sky; the Sun's apogee moves; Ptolemy's slow rate comes from his Sun.
+     Numbers: tools/numbers/2.3-precession.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>2.3 · La precessione · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="2.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 2.2 si è chiusa su γ, l&#8217;origine di ogni longitudine
+			eclittica, che scivola lentamente lungo l&#8217;eclittica. Ipparco trovò
+			questo moto quando confrontò le posizioni di alcune stelle con quelle
+			registrate un secolo e mezzo prima di lui, ed è la ragione per cui
+			l&#8217;eccentrico della pagina 2.1 si allontana dal Sole reale nel corso dei
+			secoli.
+		</p>
+
+		<p>
+			Una volta noto quanto in fretta si muove γ, possiamo far muovere con
+			esso l&#8217;apogeo del Sole. L&#8217;eccentrico resta allora entro pochi primi
+			d&#8217;arco dal Sole reale per duemila anni, mentre con l&#8217;apogeo fisso
+			si allontana di più di mezzo grado.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Le longitudini eclittiche delle stelle crescono</h2>
+
+		<div class="row">
+			<p>
+				Ipparco misurò le longitudini eclittiche di alcune stelle luminose
+				vicine all&#8217;eclittica a partire dalla Luna, durante le eclissi di Luna,
+				e le confrontò con quelle di Timocari, che aveva osservato ad
+				Alessandria circa 150 anni prima. Spica, la stella più luminosa della
+				Vergine, non era più dove l&#8217;aveva messa Timocari. Secondo Tolomeo,
+				Ipparco «calcola che la distanza di cui Spica precede il punto
+				[equinoziale] d&#8217;autunno è di circa 6° al suo tempo, ma era di circa 8°
+				al tempo di Timocari» (<em>Almagest</em> VII 2).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			«Precede» significa verso ovest, quindi la longitudine eclittica di Spica
+			era cresciuta da 172° a 174° in circa 150 anni, e il cielo di riferimento
+			concorda con entrambi i valori entro una frazione di grado.
+		</p>
+
+		<p>
+			Osservatori successivi trovarono Spica ancora più a est. La tabella dà
+			tutte le longitudini eclittiche di Spica che Tolomeo e Copernico
+			registrano, da Timocari alle osservazioni di Copernico stesso a
+			Frombork, accanto alla longitudine eclittica reale nella stessa data.
+			Tolomeo conta verso est dal solstizio o dall&#8217;equinozio che apre il
+			quarto di eclittica della stella (VII 4), e la tabella converte i suoi
+			valori in longitudini eclittiche.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Osservatore</th>
+					<th>Anno</th>
+					<th>$\lambda$ registrata</th>
+					<th>$\lambda$ reale</th>
+					<th>Fonte</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Timocari</td>
+					<td>294 a.C.</td>
+					<td>$172^\circ 20'$ ($172{,}33^\circ$)</td>
+					<td>$172{,}00^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Timocari</td>
+					<td>283 a.C.</td>
+					<td>$172^\circ 30'$ ($172{,}50^\circ$)</td>
+					<td>$172{,}16^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Menelao</td>
+					<td>98 d.C.</td>
+					<td>$176^\circ 15'$ ($176{,}25^\circ$)</td>
+					<td>$177{,}41^\circ$</td>
+					<td><em>Almagest</em> VII 3</td>
+				</tr>
+				<tr>
+					<td>Tolomeo</td>
+					<td>137 d.C.</td>
+					<td>$176^\circ 40'$ ($176{,}67^\circ$)</td>
+					<td>$177{,}95^\circ$</td>
+					<td><em>Almagest</em> VIII 1</td>
+				</tr>
+				<tr>
+					<td>Copernico</td>
+					<td>1515</td>
+					<td>$197^\circ 14'$ ($197{,}23^\circ$)</td>
+					<td>$197{,}09^\circ$</td>
+					<td><em>De Rev.</em> III 2</td>
+				</tr>
+				<tr>
+					<td>Copernico</td>
+					<td>1525</td>
+					<td>$197^\circ 21'$ ($197{,}35^\circ$)</td>
+					<td>$197{,}23^\circ$</td>
+					<td><em>De Rev.</em> III 2</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Nei diciotto secoli della tabella la longitudine eclittica registrata
+			cresce di 25°. Dal tempo di Ipparco al nostro la Spica reale si è
+			spostata di quasi 30°, un intero segno, ed è per questo che i segni dello
+			zodiaco non coincidono più con le costellazioni da cui prendono il nome.
+		</p>
+
+		<div class="row">
+			<p>
+				Ipparco aveva dapprima supposto che si muovessero solo le stelle vicine
+				all&#8217;eclittica. Tolomeo controllò gli allineamenti che Ipparco aveva
+				registrato, di stelle dentro lo zodiaco e molto fuori, e li trovò tutti
+				invariati al suo tempo (VII 1), quindi le stelle lontane
+				dall&#8217;eclittica devono muoversi con Spica e mantenere il loro posto fra
+				le altre.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			La latitudine eclittica di Spica non cambiò, restando 2° a sud
+			dell&#8217;eclittica da Timocari a Tolomeo. Ma la sua declinazione sì: al
+			tempo di Ipparco Spica era a nord dell&#8217;equatore, e Tolomeo la trovò
+			mezzo grado a sud (VII 3). La Spica reale attraversò l&#8217;equatore nel
+			frattempo, e oggi è 11,3° a sud di esso.
+		</p>
+
+		<p>
+			Per vedere se questo vale per ogni stella, e su un tempo più lungo, la
+			Figura 1 segue sei stelle del cielo di riferimento, da stelle vicine
+			all&#8217;eclittica a Polaris vicino al polo, per seimila anni.
+		</p>
+
+		<!-- Figure 1: six stars over 6000 years (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) longitudine e latitudine eclittiche, variazione dal 2026</p>
+						<canvas id="stars-ecliptic"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) declinazione</p>
+						<canvas id="stars-declination"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i due pannelli. In (a) le sei longitudini eclittiche salgono
+				lungo una sola retta e le sei latitudini eclittiche restano sullo zero;
+				in (b) ogni declinazione segue una curva propria, crescente per alcune
+				stelle e decrescente per altre.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">punteggiato</dt>
+						<dd>l&#8217;anno 2026</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>L&#8217;equatore ruota sull&#8217;eclittica</h2>
+
+		<h3>Una rotazione attorno ai poli dell&#8217;eclittica</h3>
+
+		<div class="row">
+			<p>
+				Poiché la latitudine eclittica di Spica non era cambiata fra Timocari e
+				lui, Ipparco concluse che la sfera delle stelle ruota attorno ai poli
+				dell&#8217;eclittica, non attorno ai poli dell&#8217;equatore, e Tolomeo lo
+				confermò per quasi tutte le stelle sull&#8217;intervallo più lungo fino al
+				suo tempo (VII 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Prendiamo il sistema eclittico della pagina 1.2, con l&#8217;asse $x$ verso γ
+			e l&#8217;asse $z$ verso il polo dell&#8217;eclittica K, e facciamo ruotare le
+			stelle verso est attorno a K dell&#8217;angolo $p\,(t - t_0)$, dove $p$ è la
+			<strong>velocità di precessione</strong>, circa 50″ all&#8217;anno (sezione 3).
+			Una rotazione attorno all&#8217;asse $z$ conserva l&#8217;angolo da K e aumenta
+			l&#8217;angolo attorno a esso, quindi ogni stella mantiene la sua latitudine
+			eclittica mentre la sua longitudine eclittica cresce uniformemente:
+		</p>
+
+		<div class="box">
+			$$\lambda = \lambda_0 + p\,(t - t_0), \qquad \beta = \beta_0.$$
+		</div>
+
+		<div class="row">
+			<p>
+				Si può osservare solo il moto delle stelle rispetto a γ, quindi lo
+				stesso modello si può leggere al contrario, come fece Copernico: le
+				stelle stanno ferme ed è l&#8217;equatore a ruotare. «La ragione non è che
+				la sfera delle stelle fisse si muova verso est, ma piuttosto che
+				l&#8217;equatore si muove verso ovest» (<em>De Revolutionibus</em> III 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Nel sistema delle stelle l&#8217;eclittica resta allora dov&#8217;è, e il polo
+				P dell&#8217;equatore, all&#8217;angolo ε da K e alla longitudine eclittica 90°
+				(pagina 1.2), ruota verso ovest attorno a K, così che al tempo $t$ si
+				trova alla longitudine eclittica $90^\circ - p\,(t - t_0)$.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;equinozio γ sta su entrambi i cerchi, quindi è perpendicolare a
+			entrambi i poli, nella direzione di $\vec{P} \times \vec{K}$, alla
+			longitudine eclittica $-p\,(t - t_0)$. L&#8217;ordine del prodotto sceglie γ
+			e non l&#8217;equinozio d&#8217;autunno: in $t_0$, $\vec{P} = (0, \sin\varepsilon,
+			\cos\varepsilon)$ e $\vec{P} \times \vec{K} = (\sin\varepsilon, 0, 0)$.
+			Contata da questo γ, la longitudine eclittica di ogni stella è cresciuta
+			di $p\,(t - t_0)$, come nella prima descrizione.
+		</p>
+
+		<p>
+			In questa seconda descrizione il moto è più facile da immaginare, perché
+			le stelle e l&#8217;eclittica stanno ferme e si muove solo l&#8217;equatore. La
+			Figura 2 lo disegna.
+		</p>
+
+		<!-- Figure 2: the equator turning over the fixed ecliptic (3D) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="model-sphere"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="model-year">anno</label>
+							<input id="model-year" type="range" min="-11000" max="15000" step="1" value="2026">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="model-play">Avvia un giro</button>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="model-year" data-value="-2830">2831 a.C.</button>
+							<button type="button" data-target="model-year" data-value="-127">128 a.C.</button>
+							<button type="button" data-target="model-year" data-value="2026">2026</button>
+							<button type="button" data-target="model-year" data-value="13790">13·790 d.C.</button>
+						</div>
+						<div class="readout" id="model-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un giro, o scegli un anno, e guarda P girare attorno a K mentre γ
+				scivola verso ovest lungo l&#8217;eclittica e l&#8217;arco λ di Spica cresce. I
+				preset mostrano la stella più vicina a P: Thuban nel 2831 a.C., nessuna
+				al tempo di Ipparco, Polaris oggi e Vega nel 13·790 d.C., gli anni in
+				cui questo modello uniforme porta P più vicino a ciascuna. Trascina la
+				sfera per ruotare la vista.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-earth">tratteggio</dt>
+						<dd>il cerchio che P percorre in un giro, all&#8217;angolo ε da K</dd>
+						<dt class="c-muted">γ tenue</dt>
+						<dd>l&#8217;equinozio del 2026</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>spostamento</dt>
+						<dd>di quanto si è spostato γ dal 2026, $p\,(t - 2026)$, verso ovest se positivo</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>La latitudine eclittica resta, la declinazione cambia</h3>
+
+		<p>
+			Le declinazioni cambiano perché l&#8217;equatore si muove sotto le stelle.
+			Per una stella in $(\lambda, \beta)$, la formula di conversione della
+			pagina 1.2 dà
+		</p>
+
+		$$\sin\delta = \sin\beta\cos\varepsilon + \cos\beta\sin\varepsilon\sin\lambda.$$
+
+		<p>
+			Con $\beta$ ed ε fissi e $\lambda$ che cresce con velocità $p$, la
+			derivata di entrambi i membri rispetto al tempo è
+		</p>
+
+		$$\cos\delta\,\frac{d\delta}{dt} = p\,\sin\varepsilon\,\cos\beta\,\cos\lambda, \qquad \frac{d\delta}{dt} = \frac{p\,\sin\varepsilon\,\cos\beta\,\cos\lambda}{\cos\delta}.$$
+
+		<p>
+			Una stella vicina all&#8217;equinozio di primavera, dove $\cos\lambda = 1$,
+			si sposta verso nord più in fretta, di $p\sin\varepsilon$ ovvero 20,0″
+			all&#8217;anno per una stella sull&#8217;eclittica. Una stella vicina
+			all&#8217;equinozio d&#8217;autunno si sposta verso sud altrettanto in fretta, e
+			una stella vicina a un solstizio si muove appena.
+		</p>
+
+		<div class="row">
+			<p>
+				È lo schema che trovò Tolomeo quando confrontò le declinazioni di
+				Timocari, di Ipparco e del suo tempo. Le stelle fra il solstizio
+				d&#8217;inverno e quello d&#8217;estate, passando per l&#8217;equinozio di
+				primavera, si erano spostate verso nord, le altre verso sud, e «le
+				differenze sono maggiori per le stelle vicine ai punti equinoziali, e
+				minori per le stelle vicine ai solstizi» (VII 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Spica, vicina all&#8217;equinozio d&#8217;autunno, si spostò di 1,5° verso sud
+			fra Ipparco e Tolomeo, come prevede la formula. Tolomeo trovò 1⅒° (1,1°),
+			circa ciò che implica la sua velocità di precessione, più lenta.
+		</p>
+
+		<h3>Il cerchio del polo</h3>
+
+		<p>
+			Un giro di P attorno a K richiede $360^\circ/p$, circa 25·770 anni, e
+			mentre P si muove la stella polare cambia. Polaris è oggi a 0,63° dal
+			polo e sarà più vicina nel 2102.
+		</p>
+
+		<p>
+			Cinquemila anni fa, intorno al 2800 a.C., il polo stava entro un decimo
+			di grado da Thuban, una debole stella del Dragone. Fra circa 11·600 anni
+			passerà vicino a Vega, mai però più vicino di 5,7°. La Figura 3 disegna
+			il percorso del polo fra le stelle del cielo di oggi.
+		</p>
+
+		<!-- Figure 3: the path of the pole, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-pole-path"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">Il percorso del polo</div>
+					<p>
+						Il cielo settentrionale del 2026 attorno al polo celeste, visto da
+						terra guardando in alto. Il polo P è al centro solo oggi: in circa
+						25·770 anni compie un giro attorno al polo dell&#8217;eclittica K.
+					</p>
+					<p>
+						<span class="hl">Curva oro:</span> il polo dell&#8217;equatore in un giro
+						completo, dal 10·900 a.C. circa al 14·900 d.C., segnato ogni mille
+						anni. Trova Thuban vicino al 3000 a.C. e Vega vicino al 14·000 d.C.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>anello</dt>
+						<dd>ascensione retta in ore, crescente in senso orario vista da terra</dd>
+						<dt>stelle</dt>
+						<dd>tutte le stelle più luminose della magnitudine 4,6, e le stelle più deboli delle figure; più grandi se più luminose</dd>
+						<dt>puntinato</dt>
+						<dd>la Via Lattea, disegnata come una fascia attorno all&#8217;equatore galattico</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Due tipi di anno</h3>
+
+		<div class="row">
+			<p>
+				La precessione divide anche l&#8217;anno in due. L&#8217;anno della pagina 1.3,
+				l&#8217;<strong>anno tropico</strong> $Y$, è il tempo che il Sole impiega a
+				tornare in γ; l&#8217;<strong>anno sidereo</strong> $Y_\text{s}$ è il tempo
+				che impiega a tornare alla stessa stella. Ipparco fu il primo ad
+				accorgersi che il secondo è più lungo, come ricorda Copernico (<em>De
+				Revolutionibus</em> III 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per confrontare i due, facciamo partire il conteggio in un istante in cui
+			il Sole è in γ e allineato con una certa stella. Dopo un anno tropico il
+			Sole è di nuovo in γ, ma γ si è spostato verso ovest di $pY$, la
+			precessione di quell&#8217;anno, quindi il Sole è ancora $pY$ prima della
+			sua stella. Percorre quell&#8217;ultimo arco con la sua velocità fra le
+			stelle, $360^\circ$ in un anno sidereo, il che richiede $pY \cdot
+			Y_\text{s}/360^\circ$, quindi esattamente
+		</p>
+
+		$$Y_\text{s} - Y = \frac{pY}{360^\circ}\,Y_\text{s}, \qquad \frac{Y_\text{s}}{Y} = \frac{360^\circ}{360^\circ - pY}.$$
+
+		<p>
+			La precessione di un anno è minuscola, $pY = 0{,}013967^\circ$, quindi
+			$Y_\text{s}$ e $Y$ differiscono solo di una parte su 25·774. Mettere $Y$
+			al posto di $Y_\text{s}$ a destra nella prima formula cambia quindi il
+			risultato di quella stessa piccola frazione, e dà una formula più
+			semplice, corretta al primo ordine in $pY/360^\circ$:
+		</p>
+
+		$$Y_\text{s} - Y \approx \frac{pY}{360^\circ}\,Y = \frac{pY}{n},$$
+
+		<p>
+			dove $n = 360^\circ/Y$ è il moto giornaliero del Sole della pagina 1.3:
+			il tempo in più è il tempo che il Sole impiega a percorrere la
+			precessione di un anno. Fa 20,4 minuti, e l&#8217;approssimazione lo cambia
+			solo di un ventesimo di secondo.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo scelse l&#8217;anno tropico, «in cui il sole, partendo da un
+				solstizio o da un equinozio o da un qualunque punto dell&#8217;eclittica,
+				ritorna di nuovo allo stesso punto», come la definizione più naturale
+				(III 1). Copernico, seguendo Thabit ibn Qurra (<em>De
+				Revolutionibus</em> III 13), preferì l&#8217;anno sidereo, la cui «precisa
+				uniformità ... è chiaramente legata alla sfera delle stelle fisse», e
+				trovò 365 giorni 6 h 9 min 40 s (<em>De Revolutionibus</em> III 14), 30
+				secondi più di quello reale.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>La velocità di precessione</h2>
+
+		<h3>Da molti registri</h3>
+
+		<p>
+			Una velocità è buona quanto i registri da cui viene, e più lungo è il
+			tempo fra essi, meno conta ogni errore. Un errore di 1° in uno di due
+			registri distanti 265 anni, come i due che confrontò Tolomeo, cambia la
+			velocità di 14″ all&#8217;anno. Distribuito sui diciotto secoli dei registri
+			di Spica della sezione 1, lo stesso errore la cambia solo di 2″.
+		</p>
+
+		<p>
+			Adattiamo quindi una retta a tutti e sei i registri di Spica della
+			tabella, e la sua pendenza, nella Figura 4, è di 50,6″ all&#8217;anno.
+		</p>
+
+		<!-- Figure 4: Spica's records and the fitted rate (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="records-plot"></canvas>
+			</div>
+			<figcaption>
+				Confronta le tre rette con i sei registri. La retta adattata a tutti i
+				registri segue la Spica reale da Timocari a Copernico, mentre la regola
+				di Tolomeo, tracciata dal suo valore del 137 d.C., resta sempre più
+				sotto di essa a ogni secolo; il riquadro storico qui sotto lo spiega.
+			</figcaption>
+		</figure>
+
+		<h3>Dal cielo di riferimento</h3>
+
+		<div class="row">
+			<p>
+				I registri danno la velocità solo entro circa 2″ all&#8217;anno, quindi per
+				il modello la misuriamo nel cielo di riferimento sull&#8217;ultimo secolo,
+				dal 1926,0 al 2026,0: γ si è spostato lungo l&#8217;eclittica di $p =
+				50{,}28''$ all&#8217;anno. L&#8217;obliquità resta al suo valore medio del 2026
+				della pagina 1.2, così che il modello mostri la sola precessione.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<h3>L&#8217;apogeo in moto</h3>
+
+		<p>
+			L&#8217;apogeo del Sole si conta da γ, quindi mentre γ si muove, si muove
+			anche l&#8217;apogeo della pagina 2.1. Per dare al modello questo moto,
+			troviamo l&#8217;apogeo con il metodo di Ipparco in ogni anno dal 1826 al
+			2025 del cielo di riferimento, e adattiamo una retta a questi duecento
+			apogei: l&#8217;apogeo si sposta verso est rispetto a γ di 1,751° per
+			secolo. Gli apogei annui stanno entro 0,04° dalla retta. Due secoli non
+			possono mostrare se la velocità stessa cambi lentamente, quindi la
+			Verifica segue il modello per duemila anni.
+		</p>
+
+		<div class="row">
+			<p>
+				La maggior parte di questo, 1,397° per secolo, è il moto di γ stesso,
+				che si sposta verso ovest sotto l&#8217;apogeo come sotto ogni stella. Il
+				terzo di grado per secolo che resta è il moto proprio dell&#8217;apogeo fra
+				le stelle: nell&#8217;ellisse che la teoria moderna mantiene come prima
+				approssimazione del percorso del Sole, la linea degli apsidi ruota
+				lentamente per l&#8217;attrazione dei pianeti (pagina 2.1).
+			</p>
+			<aside>
+				<div class="note detour" data-topic="perturbations"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;eccentrico della pagina 2.1 riceve quindi un parametro in più. Il suo
+			apogeo si muove uniformemente con la velocità $\dot\lambda_A$ a partire
+			dal suo valore in $t_0$, l&#8217;equinozio di primavera del 2026, dove la
+			pagina 2.1 lo ha adattato, con $t - t_0$ in secoli:
+		</p>
+
+		<div class="box">
+			$$\lambda_A(t) = \lambda_A(t_0) + \dot\lambda_A\,(t - t_0), \qquad \lambda_A(t_0) = 103{,}732^\circ, \qquad \dot\lambda_A = 1{,}751^\circ \text{ per secolo}.$$
+		</div>
+
+		<!-- History block: Ptolemy's and Copernicus' rates -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le velocità di Tolomeo e di Copernico</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo trovò la velocità dalle stelle luminose, per esempio Regolo
+					nel Leone, confrontando le proprie longitudini eclittiche con quelle di
+					Ipparco, più antiche di 265 anni, e concluse: «Da questo troviamo che
+					un moto all&#8217;indietro di 1° avviene in circa 100 anni» (VII 2). Ipparco
+					aveva dato quel valore solo come limite inferiore; Tolomeo lo prese
+					come la velocità, e il suo catalogo stellare dice al lettore di
+					aggiungere 1° per ogni secolo dopo la sua epoca (VII 4), la regola
+					tracciata nella Figura 4. L&#8217;Esercizio 1 ripete il suo calcolo.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Egli stesso enuncia il principio dell&#8217;intervallo lungo, per l&#8217;anno
+				e per ogni moto periodico: «più lungo è il tempo fra le osservazioni
+				confrontate, maggiore è la precisione nella determinazione del periodo
+				di rivoluzione» (III 1). Confermò anche la sua velocità su quasi
+				quattro secoli, da Timocari a Menelao (VII 3). Ma i suoi registri
+				portano un errore che cresce con il tempo, dovuto alla deriva del suo
+				Sole, e un intervallo più lungo non riduce un errore di quel tipo.
+			</p>
+
+			<div class="row">
+				<p>
+					Copernico confrontò i registri da Timocari al proprio tempo,
+					attraverso quelli di Tolomeo e di al-Battani, circa diciotto secoli in
+					tutto, e la sua velocità media si avvicina entro una frazione di
+					secondo d&#8217;arco all&#8217;anno alla velocità media reale su
+					quell&#8217;intervallo (<em>De Revolutionibus</em> III 6).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>La precessione uniforme contro il cielo reale</h2>
+
+		<p>
+			Per vedere per quanto tempo una velocità costante tiene le stelle al
+			loro posto, e se l&#8217;apogeo in moto ferma la deriva dell&#8217;eccentrico, la
+			Figura 5 traccia l&#8217;errore di ciascun modello su secoli e millenni.
+		</p>
+
+		<!-- Figure 5: the error curves of the two models -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) Spica, precessione uniforme</p>
+				<div id="error-spica"></div>
+				<p class="panel-title panel-gap">(b) il Sole, l&#8217;eccentrico con l&#8217;apogeo in moto</p>
+				<div id="error-sun"></div>
+			</div>
+			<figcaption>
+				Cambia gli intervalli e punta i grafici. In (a) l&#8217;errore resta piccolo
+				per duemila anni e cresce lentamente oltre. In (b) l&#8217;apogeo in moto
+				tiene l&#8217;eccentrico vicino al Sole reale, mentre l&#8217;apogeo fisso si
+				allontana da una parte e dall&#8217;altra del 2026.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nei duemila anni attorno al 2026, la precessione uniforme colloca Spica
+			entro 2,4′ dalla sua longitudine eclittica reale, ed entro 18′ su
+			seimila anni, restando indietro da entrambe le parti.
+		</p>
+
+		<p>
+			Con l&#8217;apogeo in moto, l&#8217;eccentrico resta ora entro 6,4′ dal Sole
+			reale negli stessi duemila anni, mentre con l&#8217;apogeo fisso si allontana
+			di più di mezzo grado. La velocità dell&#8217;apogeo è stata adattata ai due
+			secoli prima di oggi, quindi sul resto di questi duemila anni il modello
+			fa previsioni.
+		</p>
+
+		<p>
+			L&#8217;equazione del tempo della pagina 2.2 dipende dall&#8217;apogeo attraverso
+			il suo termine annuo, quindi l&#8217;apogeo in moto la tiene giusta più a
+			lungo: nei mille anni attorno al 2026 il suo errore massimo scende da 81
+			s a 12 s.
+		</p>
+
+		<!-- History block: Ptolemy's rate against the sky -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>La velocità di Tolomeo contro il cielo</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo verificò la sua velocità con altre stelle e con i registri più
+					antichi di Timocari e Menelao, e la trovò confermata (VII 3). Ma la sua
+					velocità, 36″ all&#8217;anno, è molto al di sotto dei 50″ reali, molto
+					probabilmente per il modo in cui misurava le stelle: dalla Luna, il cui
+					posto calcolava dalle proprie tavole del Sole e della Luna. Una stella
+					misurata in quel modo eredita l&#8217;errore delle tavole (Toomer, nota a
+					VII 2), e lo stesso vale per i registri più antichi, che egli ridusse
+					con le stesse tavole (Figura 6).
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+				</aside>
+			</div>
+
+			<!-- Figure 6: the records minus the real sky, with Ptolemy's Sun (static) -->
+			<figure class="fig">
+				<div class="frame">
+					<canvas id="ptolemy-plot"></canvas>
+				</div>
+				<figcaption>
+					Confronta i registri ridotti con le tavole di Tolomeo, quelli di
+					Timocari, Menelao e Tolomeo, con la fascia: ciascuno sta vicino
+					all&#8217;errore del Sole di Tolomeo nella sua data. I registri di Ipparco,
+					al-Battani e Copernico restano entro circa mezzo grado dal cielo reale.
+				</figcaption>
+				<div class="keys">
+					<div>
+						<p class="key-title">Nella figura</p>
+						<dl class="key">
+							<dt class="c-epicycle">punti</dt>
+							<dd>registri ridotti con le tavole di Tolomeo</dd>
+							<dt class="c-epicycle">fascia</dt>
+							<dd>il Sole di Tolomeo meno il Sole reale, dal suo valore minimo al massimo in ogni decennio</dd>
+						</dl>
+					</div>
+				</div>
+			</figure>
+
+			<div class="row">
+				<p>
+					Poiché il suo anno è troppo lungo (pagina 2.1), il suo Sole resta un
+					poco più indietro rispetto a quello reale ogni anno, e le stelle
+					misurate da esso restano indietro con lui. Questo spiega quasi tutta la
+					differenza fra la sua velocità e quella reale. Se sia tutta la storia è
+					dibattuto: Toomer trova anche errori grossolani nelle riduzioni di
+					Tolomeo delle osservazioni più antiche (note a VII 3).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che la precessione uniforme trascura</h2>
+
+		<p>
+			La velocità reale di precessione cresce lentamente: era di 49,8″
+			all&#8217;anno al tempo di Ipparco ed è di 50,3″ oggi. Un modello uniforme
+			adattato nel 2026 resta quindi indietro rispetto al cielo reale da una
+			parte e dall&#8217;altra, il che è la curva lenta della Figura 5 (a).
+		</p>
+
+		<p>
+			Ciò che resta dell&#8217;errore del Sole, circa 6′ agli estremi dei duemila
+			anni, viene da ciò che il modello tiene fisso: l&#8217;eccentricità diminuisce
+			lentamente, e il moto medio stesso cambia. Circa 2′ ci sono già attorno
+			al 2026, l&#8217;errore del cerchio trovato nella pagina 2.1.
+		</p>
+
+		<p>
+			Il modello tiene fissa anche l&#8217;obliquità, mentre quella reale
+			diminuisce, oggi di 47″ per secolo, perché l&#8217;eclittica stessa ruota
+			lentamente per l&#8217;attrazione dei pianeti. La stessa rotazione cambia un
+			poco le latitudini eclittiche: quella di Spica è cambiata di 9′ da
+			Timocari, per lo più a causa di quella rotazione e il resto per il suo
+			moto proprio.
+		</p>
+
+		<div class="row">
+			<p>
+				Copernico prese le variazioni irregolari suggerite dalla precessione
+				lenta di Tolomeo e dalla sua obliquità, già troppo grande per il suo
+				tempo, per variazioni reali del cielo, e le spiegò con due lente
+				oscillazioni dell&#8217;asse terrestre (<em>De Revolutionibus</em> III 3,
+				III 6). La Figura 6 mostra dove sbagliarono i valori di Tolomeo, e
+				l&#8217;Esercizio 3 da dove venne la velocità irregolare di Copernico.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Nessuno di questi modelli dice perché l&#8217;equatore ruoti. La Terra è
+				rigonfia all&#8217;equatore, e il Sole e la Luna tirano il rigonfiamento
+				come per portare l&#8217;equatore nell&#8217;eclittica. La Terra in rotazione
+				risponde facendo ruotare lentamente il suo asse attorno al polo
+				dell&#8217;eclittica, come l&#8217;asse di una trottola ruota attorno alla
+				verticale. Newton diede la prima spiegazione di questo tipo.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="newton"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				L&#8217;attrazione della Luna fa anche oscillare il polo attorno al suo
+				posto medio, di 17″ in longitudine eclittica nel suo termine
+				principale, con il periodo di 18,6 anni dei nodi della Luna, troppo poco
+				per vedersi alla scala della Figura 5. Questa nutazione è, con
+				l&#8217;aberrazione della luce, la piccola differenza fra le posizioni
+				apparenti e quelle medie del cielo di riferimento.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="nutation"></div>
+			</aside>
+		</div>
+
+		<p>
+			La prossima è la Luna, ed è molto più difficile: la sua velocità lungo
+			l&#8217;eclittica cambia molto più di quella del Sole, e in modo più
+			complicato.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Ipparco mise Regolo 29°50′ (29,83°) a est del solstizio d&#8217;estate nel
+				128 a.C., e al-Battani 44°5′ (44,08°) a est di esso intorno all&#8217;880
+				d.C. (<em>De Revolutionibus</em> III 2). Trova la velocità di
+				precessione da questi due registri, in secondi d&#8217;arco all&#8217;anno e in
+				anni per grado. Poi trova la velocità di Tolomeo dal registro di Ipparco
+				e dal suo, 32½° nel 139 d.C., con il suo intervallo di 265 anni, e
+				confronta entrambe con il cielo reale. Verifica con la Figura 6.
+			</p>
+			<details class="hint">
+				<p>
+					Sono entrambe distanze dal solstizio d&#8217;estate, quindi la loro
+					differenza è il moto. Dal 128 a.C. all&#8217;880 d.C. ci sono 1007 anni,
+					perché non esiste l&#8217;anno 0.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Regolo si è spostato di $44^\circ 5' - 29^\circ 50' = 14^\circ 15'$
+					($14{,}25^\circ$) in 1007 anni, cioè 50,9″ all&#8217;anno, ovvero 1° in 70,7
+					anni. Il Regolo reale si è spostato di 13,90° nello stesso intervallo,
+					49,7″ all&#8217;anno: i due registri insieme sono troppo distanti di
+					0,35°.
+				</p>
+				<p>
+					Da Ipparco a Tolomeo si è spostato di $2^\circ 40'$ ($2{,}67^\circ$)
+					in 265 anni, 36,2″ all&#8217;anno, mentre il Regolo reale si è spostato di
+					3,67° in 266,1 anni, 49,6″ all&#8217;anno. Il registro di Tolomeo è 1,56°
+					sotto la longitudine eclittica reale e quello di Ipparco 0,56°, quindi
+					il moto fra i due risulta più corto di un grado. Nella Figura 6, il
+					Regolo di Tolomeo sta vicino alla fascia del suo Sole, quello di
+					Ipparco vicino allo zero.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Dall&#8217;anno tropico della pagina 1.3, 365,24219 giorni, e da $p =
+				50{,}28''$ all&#8217;anno, trova l&#8217;anno sidereo. Poi trova l&#8217;anno sidereo
+				implicato dall&#8217;anno tropico di Tolomeo, 365,24667 giorni
+				(<em>Almagest</em> III 1), e dalla sua velocità di 1° per secolo.
+				Confronta entrambi gli anni di Tolomeo con quelli reali, e spiega perché
+				uno è molto migliore dell&#8217;altro.
+			</p>
+			<details class="hint">
+				<p>
+					Usa $Y_\text{s} = Y \cdot 360^\circ/(360^\circ - pY)$, con $pY$ la
+					precessione di un anno tropico in gradi. Per la spiegazione, pensa a
+					ciò che Tolomeo confrontava davvero: le stelle con il suo Sole.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					In un anno tropico γ si sposta di $pY = 0{,}013967^\circ$, quindi
+					$Y_\text{s} = 365{,}24219 \times 360/(360 - 0{,}013967) =
+					365{,}25636$ giorni, ovvero 365 g 6 h 9 min 10 s. È uguale al periodo
+					del moto medio della Terra nel sistema fisso del cielo di riferimento,
+					365,25636 giorni.
+				</p>
+				<p>
+					Per Tolomeo, $pY = 0{,}01^\circ$ e $Y_\text{s} = 365{,}24667 \times
+					360 / 359{,}99 = 365{,}25681$ giorni, ovvero 365 g 6 h 9 min 49 s. Il
+					suo anno tropico è troppo lungo di 6,45 minuti, ma il suo anno sidereo
+					solo di 39 secondi.
+				</p>
+				<p>
+					Il Sole si sposta fra le stelle del suo moto tropico meno la
+					precessione, $n - p$, all&#8217;anno. Il moto medio di Tolomeo è più lento
+					di quello di oggi di 15,9″ all&#8217;anno, e la sua velocità di
+					precessione di 14,3″, perché misurava le stelle dal suo Sole. La loro
+					differenza, il moto del Sole fra le stelle, sbaglia solo di 1,6″
+					all&#8217;anno, che sono i 39 secondi del suo anno sidereo: i suoi due
+					errori in essa quasi si annullano.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Copernico trovò 1° di precessione in 100 anni da Timocari a Tolomeo, 1°
+				in 65 anni da Tolomeo ad al-Battani, e 1° in 71 anni da al-Battani al
+				proprio tempo, e concluse che la velocità cambia (<em>De
+				Revolutionibus</em> III 2). Nel cielo di riferimento l&#8217;equinozio si è
+				spostato di 5,98° dal 294 a.C. al 139 d.C., di 10,28° dal 139 all&#8217;880 e
+				di 8,98° dall&#8217;880 al 1525. Trova la velocità reale in ciascun
+				intervallo, poi usa la Figura 6 per spiegare le velocità che trovò
+				Copernico.
+			</p>
+			<details class="hint">
+				<p>
+					Dividi ogni intervallo per il moto dell&#8217;equinozio. Nella Figura 6,
+					guarda i registri agli estremi di ciascun intervallo.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Le velocità reali sono 1° in 432 / 5,98 = 72,2 anni, 741 / 10,28 =
+					72,1 anni e 645 / 8,98 = 71,8 anni. La velocità reale cresce
+					lentamente, ma solo di circa mezzo punto percentuale in questi diciotto
+					secoli.
+				</p>
+				<p>
+					I registri danno altre velocità. Spica si è spostata di $4^\circ 20'$
+					($4{,}33^\circ$) da Timocari al catalogo di Tolomeo, 430 anni, 1° in
+					99,3 anni; Regolo di $11^\circ 35'$ ($11{,}58^\circ$) da Tolomeo ad
+					al-Battani, 741 anni, 1° in 64,0 anni; β Scorpii di $11^\circ 55'$
+					($11{,}92^\circ$) da Menelao ad al-Battani, 782 anni, 1° in 65,6 anni.
+				</p>
+				<p>
+					Ogni registro che Tolomeo ridusse porta l&#8217;errore del suo Sole, da 0,3°
+					a 0,7° in eccesso al tempo di Timocari e da 0,8° a 1,6° in difetto al
+					suo tempo e a quello di Menelao. Questo accorcia il moto fino a Tolomeo
+					e lo allunga dopo di lui. I registri di al-Battani e di Copernico sono
+					entro un quarto di grado, quindi l&#8217;ultimo intervallo è giusto, e
+					l&#8217;irregolarità che trovò Copernico viene dai registri dei primi
+					due.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): I 12
+				(l&#8217;obliquità); III 1 (l&#8217;anno tropico come quello naturale; gli
+				intervalli lunghi danno periodi precisi; la Spica di Ipparco dalle
+				eclissi di Luna); VII 1 (le stelle mantengono le loro configurazioni; la
+				prima ipotesi di Ipparco); VII 2 (Spica 8° e 6° prima dell&#8217;equinozio
+				d&#8217;autunno; Regolo, 2°40′ in 265 anni, 1° in 100 anni; Ipparco sulla
+				durata dell&#8217;anno; la nota di Toomer sull&#8217;errore del catalogo); VII 3
+				(il moto attorno ai poli dell&#8217;eclittica; le declinazioni; le
+				occultazioni di Timocari, Agrippa e Menelao); VII 4 (l&#8217;epoca del
+				catalogo e la sua regola di 1° in 100 anni); VIII 1 (Spica nel
+				catalogo).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen): III 1
+				(Ipparco e i due anni; l&#8217;equatore si muove verso ovest); III 2 (i
+				registri da Timocari ad al-Battani; Spica nel 1515 e nel 1525; le
+				obliquità); III 3–6 (la precessione irregolare; la sua velocità media,
+				23°57′ in 1717 anni egizi); III 13–14 (l&#8217;anno sidereo, di Thabit ibn
+				Qurra e il suo).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, glossario (la precessione
+				degli equinozi, 50,3″ all&#8217;anno).</li>
+			<li>J. Vondrák, N. Capitaine, P. Wallace, <em>New precession expressions,
+				valid for long time intervals</em>, A&amp;A 534, A22 (2011): la
+				precessione del cielo di riferimento.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 22
+				(obliquità e nutazione) e cap. 25 (la longitudine eclittica media del
+				Sole).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of
+				the Major Planets</em> (JPL): il moto medio della Terra in un sistema
+				fisso.</li>
+			<li>SIMBAD (CDS, Strasburgo): le posizioni e i moti propri di Regolo, β
+				Scorpii e Thuban.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/2.3-precession.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

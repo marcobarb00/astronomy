@@ -74,7 +74,7 @@ function formatLongitude(lon) {
 		return '0.00°';
 	}
 
-	return `${Math.abs(lon).toFixed(2)}° ${lon > 0 ? 'E' : 'W'}`;
+	return `${Math.abs(lon).toFixed(2)}° ${lon > 0 ? 'E' : tr('W', 'O')}`;
 }
 
 /* Hours of a clock -> "19:05" (wrapped to [0, 24)). */
@@ -189,6 +189,9 @@ function angleName(owner, name, point, color) {
 /* Declination at the rim of the wheel. */
 const WHEEL_RIM_DEC = -60;
 
+/* The name of the mean Sun in Figure 2. */
+const MEAN_SUN = tr('mean Sun', 'Sole medio');
+
 /* Stars named on the wheel. */
 const WHEEL_NAMES = ['Betelgeuse', 'Vega', 'Arcturus'];
 
@@ -224,11 +227,11 @@ const wheelFigure = {
 		const players = {};
 
 		players.day = wirePlayButton(byId('wheel-play-day'), byId('wheel-time'), PLAY_HOURS_PER_SECOND, {
-			playLabel: 'Play a day',
+			playLabel: tr('Play a day', 'Avvia un giorno'),
 			onPlay: () => players.year.pause()
 		});
 		players.year = wirePlayButton(byId('wheel-play-year'), byId('wheel-day'), PLAY_DAYS_PER_SECOND, {
-			playLabel: 'Play a year',
+			playLabel: tr('Play a year', 'Avvia un anno'),
 			onPlay: () => players.day.pause()
 		});
 
@@ -285,11 +288,15 @@ const wheelFigure = {
 		const days = Math.floor(elapsed + 1e-9);
 		const hours = (elapsed - days) * 24;
 
+		const turns = tr('\\text{turns}', '\\text{giri}');
+		const sky = tr('\\text{sky}', '\\text{cielo}');
+		const sun = tr('\\text{Sun}', '\\text{Sole}');
+
 		showLines('wheel-readout', [
-			`\\text{elapsed: } ${days}\\,\\text{d}\\ ${hmTex(hours)}`,
-			`\\text{sky: } ${skyTurns.toFixed(3)}\\ \\text{turns}`,
-			`\\text{Sun: } ${sunTurns.toFixed(3)}\\ \\text{turns}`,
-			`\\text{sky} - \\text{Sun: } ${(skyTurns - sunTurns).toFixed(3)}\\ \\text{turns}`
+			`${tr('\\text{elapsed: }', '\\text{trascorso: }')}${days}\\,\\text{d}\\ ${hmTex(hours)}`,
+			`${sky}\\text{: } ${skyTurns.toFixed(3)}\\ ${turns}`,
+			`${sun}\\text{: } ${sunTurns.toFixed(3)}\\ ${turns}`,
+			`${sky} - ${sun}\\text{: } ${(skyTurns - sunTurns).toFixed(3)}\\ ${turns}`
 		]);
 	},
 
@@ -394,10 +401,12 @@ const wheelFigure = {
 		ctx.stroke();
 
 		ctx.fillStyle = textColor(COL.deferent);
-		ctx.font = labelFont('meridian');
+		const meridian = tr('meridian', 'meridiano');
+
+		ctx.font = labelFont(meridian);
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'bottom';
-		ctx.fillText('meridian', this.cx, this.cy - this.R - 12);
+		ctx.fillText(meridian, this.cx, this.cy - this.R - 12);
 	},
 
 	/* The bright stars, as four-pointed stars sized by brightness (STYLE.md
@@ -419,11 +428,11 @@ const wheelFigure = {
 			ctx.globalAlpha = 1;
 
 			if (WHEEL_NAMES.includes(name)) {
-				ctx.font = labelFont(name);
+				ctx.font = labelFont(Stars.label(name));
 				ctx.textAlign = 'left';
 				ctx.textBaseline = 'middle';
 				ctx.fillStyle = COL.muted;
-				this.drawLabel(name, q, size + 4);
+				this.drawLabel(Stars.label(name), q, size + 4);
 			}
 		});
 	},
@@ -436,7 +445,7 @@ const wheelFigure = {
 		const outward = atan2d(this.cy - q.y, q.x - this.cx);
 
 		drawDot(this.ctx, q.x, q.y, 8, COL.sun);
-		labelOutside(this.ctx, 'Sun', q, 8, outward + WHEEL_SUN_NAME_TURN, COL.ink, this.labels);
+		labelOutside(this.ctx, tr('Sun', 'Sole'), q, 8, outward + WHEEL_SUN_NAME_TURN, COL.ink, this.labels);
 	},
 
 	/* A dot (a point that is not a star: γ, P) with an optional label
@@ -541,7 +550,7 @@ const anglesFigure = {
 		this.dot(sunPoint, COL.sun, 7);
 		this.dot(gammaPoint, COL.ink, 4.5);
 		this.dot({ x: this.cx, y: this.cy }, COL.ink, 3.5);
-		centeredLabel(ctx, 'mean Sun', this.meanSunLabelPlace(), COL.sun, this.labels);
+		centeredLabel(ctx, MEAN_SUN, this.meanSunLabelPlace(), COL.sun, this.labels);
 		centeredLabel(ctx, 'P', { x: this.cx + 12, y: this.cy + 2 }, COL.ink, this.labels);
 		centeredLabel(
 			ctx,
@@ -558,9 +567,9 @@ const anglesFigure = {
 	meanSunLabelPlace() {
 		const ctx = this.ctx;
 
-		ctx.font = labelFont('mean Sun');
+		ctx.font = labelFont(MEAN_SUN);
 
-		const width = ctx.measureText('mean Sun').width;
+		const width = ctx.measureText(MEAN_SUN).width;
 		const right = ANGLES_RING.equator * this.R - ANGLES_NAME_GAP.circle;
 		const slope = -cos(this.H) / sin(this.H); // of the dashed line, downwards to the right
 		const bottom = slope * (right - width) - ANGLES_NAME_GAP.line;
@@ -594,7 +603,7 @@ const anglesFigure = {
 		ctx.moveTo(this.cx, this.cy);
 		ctx.lineTo(top.x, top.y);
 		ctx.stroke();
-		centeredLabel(ctx, 'meridian', { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
+		centeredLabel(ctx, tr('meridian', 'meridiano'), { x: top.x, y: top.y - 10 }, COL.deferent, this.labels);
 	},
 
 	/* An arc { from, sweep, ring, color, name }: from the angle 'from'
@@ -664,10 +673,16 @@ const siderealFigure = {
 		wirePresets(figure);
 		wirePlayButton(byId('sid-play'), byId('sid-time'), PLAY_HOURS_PER_SECOND);
 
-		buildChoice(byId('sid-stars'), ['Aldebaran', 'Vega', 'Sirius', 'Arcturus'], this.starName, name => {
-			this.starName = name;
-			this.update();
-		});
+		buildChoice(
+			byId('sid-stars'),
+			['Aldebaran', 'Vega', 'Sirius', 'Arcturus'],
+			this.starName,
+			name => {
+				this.starName = name;
+				this.update();
+			},
+			Stars.label
+		);
 
 		this.update();
 	},
@@ -844,8 +859,8 @@ const calendarFigure = {
 		this.plot = new Plot2D(byId('transit-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: [12, 36],
-			xLabel: `night starting on the date (${YEAR})`,
-			yLabel: 'local mean time',
+			xLabel: tr(`night starting on the date (${YEAR})`, `notte che inizia nella data (${YEAR})`),
+			yLabel: tr('local mean time', 'tempo medio locale'),
 			yTicks: (min, max, count) => nightTicks(count),
 			margin: { left: 70 },
 			xTicks: monthTicks,
@@ -854,10 +869,16 @@ const calendarFigure = {
 			onHover: day => this.hover(day)
 		});
 
-		buildChoice(byId('transit-stars'), CALENDAR_STARS, this.starName, name => {
-			this.starName = name;
-			this.update();
-		});
+		buildChoice(
+			byId('transit-stars'),
+			CALENDAR_STARS,
+			this.starName,
+			name => {
+				this.starName = name;
+				this.update();
+			},
+			Stars.label
+		);
 
 		wireSlider(byId('transit-lat'), () => this.update(), formatAngle);
 		wirePresets(figure);
@@ -1002,14 +1023,19 @@ const calendarFigure = {
 
 			const dark = hours > night.dusk && hours < night.dawn;
 
-			return `\\text{transit } ${texClock(hours)},\\quad \\text{sky: ${dark ? 'dark' : 'daylight'}}`;
+			return tr(
+				`\\text{transit } ${texClock(hours)},\\quad \\text{sky: ${dark ? 'dark' : 'daylight'}}`,
+				`\\text{transito } ${texClock(hours)},\\quad \\text{cielo: ${dark ? 'buio' : 'chiaro'}}`
+			);
 		};
 
 		showLines('transit-readout', [
-			`\\text{${this.starName}, night of ${dayText(night.day)}}`,
+			`\\text{${Stars.label(this.starName)}, ${tr('night of', 'notte del')} ${dayText(night.day)}}`,
 			transitLine(night.inside[0]),
 			transitLine(night.inside[1]),
-			a > 0 ? `a = ${fixed(a, 1)}^\\circ` : `a = ${fixed(a, 1)}^\\circ\\ \\text{(below the horizon)}`
+			a > 0
+				? `a = ${fixed(a, 1)}^\\circ`
+				: `a = ${fixed(a, 1)}^\\circ\\ ${tr('\\text{(below the horizon)}', "\\text{(sotto l'orizzonte)}")}`
 		]);
 	},
 
@@ -1102,9 +1128,9 @@ const calendarFigure = {
    where the name starts, and the length of the day (h) it stands on, or
    hangs below ('below'), on the side its curve leaves free. */
 const DAY_DATES = [
-	{ name: '21 Dec', month: 12, day: 21, label: { phi: -56, hours: 19.3, below: false } },
-	{ name: '20 Mar', month: 3, day: 20, label: { phi: -78, hours: 12, below: true } },
-	{ name: '21 Jun', month: 6, day: 21, label: { phi: -56, hours: 4.7, below: true } }
+	{ name: `21 ${Time.MONTH_NAMES[11]}`, month: 12, day: 21, label: { phi: -56, hours: 19.3, below: false } },
+	{ name: `20 ${Time.MONTH_NAMES[2]}`, month: 3, day: 20, label: { phi: -78, hours: 12, below: true } },
+	{ name: `21 ${Time.MONTH_NAMES[5]}`, month: 6, day: 21, label: { phi: -56, hours: 4.7, below: true } }
 ];
 
 /* Panel (b) samples the latitude every quarter of a degree: the curves
@@ -1113,6 +1139,12 @@ const DAY_LATITUDE_STEP = 0.25;
 
 /* The default date of the read-out: the June solstice. */
 const JUNE_SOLSTICE_DAY = Time.julianDay(YEAR, 6, 21) - YEAR_START;
+
+/* The words of Clock.sunDay's kinds without sunrise or sunset. */
+const POLAR_TEXT = {
+	'polar day': tr('polar day', 'giorno polare'),
+	'polar night': tr('polar night', 'notte polare')
+};
 
 const dayLengthFigure = {
 	curve: null,
@@ -1127,8 +1159,8 @@ const dayLengthFigure = {
 		this.curve = new Plot2D(byId('day-curve'), {
 			x: [0, DAYS_IN_YEAR],
 			y: [0, 24],
-			xLabel: `date (${YEAR})`,
-			yLabel: 'length of the day (h)',
+			xLabel: `${tr('date', 'data')} (${YEAR})`,
+			yLabel: tr('length of the day (h)', 'durata del giorno (h)'),
 			xTicks: (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8 || i % 2 === 0),
 			yTicks: () => this.hourTicks(),
 			aspect: 0.85,
@@ -1139,8 +1171,8 @@ const dayLengthFigure = {
 		this.map = new Plot2D(byId('day-map'), {
 			x: [-90, 90],
 			y: [0, 24],
-			xLabel: 'geographic latitude φ (°)',
-			yLabel: 'length of the day (h)',
+			xLabel: tr('geographic latitude φ (°)', 'latitudine geografica φ (°)'),
+			yLabel: tr('length of the day (h)', 'durata del giorno (h)'),
 			xTicks: () => this.latitudeTicks(),
 			yTicks: () => this.hourTicks(),
 			aspect: 0.85,
@@ -1214,10 +1246,12 @@ const dayLengthFigure = {
 		// last two instead of removing one
 		showLines('day-readout', [
 			`\\text{${dayText(day)}:}\\ \\delta_\\odot = ${fixed(sunDay.dec, 2)}^\\circ,\\quad H_0 = ${fixed(sunDay.H0, 1)}^\\circ`,
-			`\\text{day } ${hmTex(sunDay.hours)}` + (rises ? '' : `\\ \\text{(${sunDay.kind})}`),
+			`${tr('\\text{day }', '\\text{giorno }')}${hmTex(sunDay.hours)}` +
+				(rises ? '' : `\\ \\text{(${POLAR_TEXT[sunDay.kind]})}`),
 			rises
-				? `\\text{sunrise } ${texClock(12 - sunDay.hours / 2)},\\quad \\text{sunset } ${texClock(12 + sunDay.hours / 2)}`
-				: '\\text{no sunrise or sunset}'
+				? `${tr('\\text{sunrise }', '\\text{alba }')}${texClock(12 - sunDay.hours / 2)},\\quad ` +
+					`${tr('\\text{sunset }', '\\text{tramonto }')}${texClock(12 + sunDay.hours / 2)}`
+				: tr('\\text{no sunrise or sunset}', '\\text{né alba né tramonto}')
 		]);
 	},
 
@@ -1282,6 +1316,14 @@ const RISE_SET_SEARCH = 0.5;
 const BISECTION_STEPS = 40;
 const SUN_TABLE_STEP = 0.25; // days
 
+/* The names of the read-out's lines, as TeX. */
+const TEST_WORDS = {
+	noon: tr('\\text{noon }', '\\text{mezzogiorno }'),
+	rise: tr('\\text{rise }', '\\text{alba }'),
+	set: tr('\\text{set }', '\\text{tramonto }'),
+	day: tr('\\text{day }', '\\text{giorno }')
+};
+
 const testFigure = {
 	plot: null,
 	hoverDay: null,
@@ -1301,8 +1343,8 @@ const testFigure = {
 		this.plot = new Plot2D(byId('test-plot'), {
 			x: [0, DAYS_IN_YEAR],
 			y: TEST_RANGE,
-			xLabel: `date (${YEAR})`,
-			yLabel: 'model − real (min)',
+			xLabel: `${tr('date', 'data')} (${YEAR})`,
+			yLabel: tr('model − real (min)', 'modello − reale (min)'),
 			xTicks: (min, max, count) => MONTH_STARTS.filter((t, i) => count >= 8 || i % 2 === 0),
 			aspect: 0.7,
 			onDraw: () => this.draw(),
@@ -1310,8 +1352,8 @@ const testFigure = {
 		});
 
 		Plot2D.legend(byId('test-legend'), [
-			{ label: 'noon', color: COL.sun },
-			{ label: 'length of the day', color: COL.earth }
+			{ label: tr('noon', 'mezzogiorno'), color: COL.sun },
+			{ label: tr('length of the day', 'durata del giorno'), color: COL.earth }
 		]);
 
 		wireSlider(byId('test-lat'), () => this.update(), formatAngle);
@@ -1406,18 +1448,18 @@ const testFigure = {
 				const finite = values.filter(Number.isFinite);
 
 				if (finite.length === 0) {
-					return '\\text{none}';
+					return tr('\\text{none}', '\\text{nessuno}');
 				}
 
-				return `${texMinutes(Math.min(...finite))}\\ \\text{to}\\ ${texMinutes(Math.max(...finite))}`;
+				return `${texMinutes(Math.min(...finite))}\\ ${tr('\\text{to}', '\\text{a}')}\\ ${texMinutes(Math.max(...finite))}`;
 			};
 
 			showLines('test-readout', [
-				'\\text{largest over the year:}',
-				`\\text{noon } ${range(e.noon)}`,
-				`\\text{rise } ${range(e.rise)}`,
-				`\\text{set } ${range(e.set)}`,
-				`\\text{day } ${range(e.day)}`
+				tr('\\text{largest over the year:}', "\\text{estremi nell'anno:}"),
+				`${TEST_WORDS.noon}${range(e.noon)}`,
+				`${TEST_WORDS.rise}${range(e.rise)}`,
+				`${TEST_WORDS.set}${range(e.set)}`,
+				`${TEST_WORDS.day}${range(e.day)}`
 			]);
 			return;
 		}
@@ -1426,10 +1468,10 @@ const testFigure = {
 
 		showLines('test-readout', [
 			`\\text{${dayText(day)}}`,
-			`\\text{noon } ${texMinutes(e.noon[day])}`,
-			`\\text{rise } ${texMinutes(e.rise[day])}`,
-			`\\text{set } ${texMinutes(e.set[day])}`,
-			`\\text{day } ${texMinutes(e.day[day])}`
+			`${TEST_WORDS.noon}${texMinutes(e.noon[day])}`,
+			`${TEST_WORDS.rise}${texMinutes(e.rise[day])}`,
+			`${TEST_WORDS.set}${texMinutes(e.set[day])}`,
+			`${TEST_WORDS.day}${texMinutes(e.day[day])}`
 		]);
 	},
 

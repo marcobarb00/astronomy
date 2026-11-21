@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 3.3 · ECLIPSES
+     Act III, the Moon. Eclipses come in seasons, about 173 days apart; the
+     Moon's circle is inclined about 5° to the ecliptic (Almagest V 12) and
+     crosses it at two nodes that move westward; an eclipse needs the Sun
+     near a node at a new or full Moon, within limits set by the sizes of
+     the Sun, the Moon and the Earth's shadow and by the Moon's parallax
+     (VI 5); the seasons and the saros (IV 2) follow from the months. With
+     the Sun of Act II and the epicycle of page 3.1, the model finds every
+     eclipse of 2021 - 2030, and Ptolemy's version still finds most of them.
+     Numbers: tools/numbers/3.3-eclipses.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>3.3 · Le eclissi · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/lunar-epicycle.js"></script>
+	<script defer src="../../shared/models/lunar-latitude.js"></script>
+	<script defer src="../../shared/models/eclipses.js"></script>
+	<script defer src="../../shared/sphere3d.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="3.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 3.2 si è chiusa con la longitudine eclittica della Luna nota entro
+			circa 40′ a ogni Luna nuova e piena. Una Luna nuova alla longitudine
+			eclittica del Sole non è però ancora un&#8217;eclissi: la Luna deve anche
+			passare abbastanza vicino all&#8217;eclittica da coprire il Sole, e una Luna
+			piena deve passarle abbastanza vicino da entrare nell&#8217;ombra della Terra.
+		</p>
+
+		<p>
+			Con la latitudine eclittica della Luna e le grandezze del Sole, della Luna
+			e dell&#8217;ombra della Terra, il Sole dell&#8217;Atto II e la Luna della pagina
+			3.1 dicono quali Lune nuove e piene sono eclissi. Costruito così, il
+			modello di questa pagina trova ogni eclissi dei dieci anni dal 2021 al
+			2030, e ne dà l&#8217;istante entro circa un&#8217;ora e mezza. Il modello di
+			Tolomeo, portato avanti di diciannove secoli, le trova ancora tutte tranne
+			una.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Le eclissi e la latitudine eclittica della Luna</h2>
+
+		<p>
+			Per vedere quali Lune nuove e piene diventano eclissi, e con quale
+			frequenza, le prendiamo tutte negli ultimi dieci anni del cielo di
+			riferimento, dal 2016 al 2025. Delle 247, 35 sono eclissi, 22 di Sole e
+			13 di Luna. Contiamo un&#8217;eclissi di Luna solo quando una parte della
+			Luna entra nell&#8217;<strong>ombra</strong> vera e propria della Terra, dove il
+			Sole è del tutto nascosto; la Luna passa anche, più spesso, nella
+			penombra che la circonda, dove si oscura appena.
+		</p>
+
+		<!-- Figure 1: the new and full Moons of 2016 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="calendar-plot"></canvas>
+			</div>
+			<figcaption>
+				Segui le eclissi lungo gli anni. Arrivano a gruppi, e ogni gruppo cade
+				un po&#8217; prima nell&#8217;anno rispetto a quello di un anno prima, così i
+				gruppi corrono in diagonali dall&#8217;alto a destra al basso a sinistra.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-sun">oro</dt>
+						<dd>un&#8217;eclissi di Sole</dd>
+						<dt class="c-planet">rosso</dt>
+						<dd>un&#8217;eclissi di Luna</dd>
+						<dt class="c-muted">pieno</dt>
+						<dd>un&#8217;eclissi totale o anulare</dd>
+						<dt class="c-muted">vuoto</dt>
+						<dd>un&#8217;eclissi parziale</dd>
+						<dt class="c-muted">punti grigi</dt>
+						<dd>le Lune nuove e piene senza eclissi</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Le eclissi sono quelle del cielo di riferimento, trovate con i criteri
+				della sezione 2 a ciascuna delle sue Lune nuove e piene. Concordano con
+				l&#8217;elenco della NASA degli stessi dieci anni: le stesse 35 eclissi,
+				ciascuna dello stesso tipo (l&#8217;eclissi ibrida del 20 aprile 2023, totale
+				lungo la maggior parte del suo percorso, contata come totale), con la sua
+				metà entro due minuti da quella della NASA.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Ogni anno ha almeno due eclissi di Sole, e il 2018 ne ha tre, tutte
+			parziali. Le eclissi di Luna sono meno numerose, e il 2016 e il 2020 non
+			ne hanno. Le eclissi arrivano a gruppi, le <strong>stagioni delle
+			eclissi</strong>, di una a tre eclissi ciascuna, distanti in media circa 174
+			giorni. Due stagioni richiedono 348 giorni, 18 giorni meno di un anno,
+			quindi ogni stagione cade circa 18 giorni prima nell&#8217;anno rispetto alla
+			stagione di un anno prima.
+		</p>
+
+		<!-- A photo: public domain, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/total-solar-eclipse-2017-08-21.jpg" width="800" height="533" loading="lazy"
+				alt="Un disco nero su un cielo nero, circondato da un tenue alone bianco, con due piccoli punti rosa sul bordo.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				L&#8217;eclissi totale di Sole del 21 agosto 2017, fotografata da un aereo.
+				Nota quanto esattamente il disco della Luna si adatta a quello del Sole:
+				visti dalla Terra i due sono quasi esattamente della stessa grandezza,
+				quindi un piccolo cambiamento della distanza della Luna decide se
+				un&#8217;eclissi centrale è totale, come qui, o anulare. Attorno alla Luna si
+				vede la tenue atmosfera esterna del Sole, la corona, e sul suo bordo
+				alcune protuberanze rosa, nubi di gas sopra la superficie del Sole.
+				<span class="credit">Carla Thomas, NASA, 2017,
+					<a href="https://images.nasa.gov/details/AFRC2017-0233-008">NASA Image and Video Library</a>,
+					pubblico dominio.</span>
+			</figcaption>
+		</figure>
+
+		<p>
+			Ciò che decide quali Lune nuove e piene sono eclissi è la latitudine
+			eclittica della Luna. La Luna non si muove lungo l&#8217;eclittica, come il
+			Sole, ma su un percorso inclinato rispetto a essa, che la porta circa 5° a
+			nord dell&#8217;eclittica e 5° a sud ogni mese: da 4,98° a 5,30° al massimo,
+			nel 2016–2025. Due volte al mese attraversa l&#8217;eclittica, ai
+			<strong>nodi</strong>. Questi non sono fissi: si spostano verso ovest lungo
+			l&#8217;eclittica, e fanno un giro in 18,61 anni.
+		</p>
+
+		<!-- Figure 2: the Moon's path near Regulus in August 2026, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-moon"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">La Luna attraversa l&#8217;eclittica</div>
+					<p>
+						Il cielo dell&#8217;agosto 2026 dai Gemelli alla Vergine, guardando a
+						sud, con il nord in alto e l&#8217;est a sinistra, sulla griglia
+						equatoriale.
+					</p>
+					<p>
+						<span class="hl">Il percorso della Luna</span> dall&#8217;11 al 15
+						agosto, con una tacca all&#8217;inizio di ogni giorno. Attraversa
+						l&#8217;eclittica vicino a Regolo, 16 ore dopo essere passata davanti al
+						Sole alla Luna nuova del 12 agosto. Così vicina al nodo, la Luna nuova
+						coprì il Sole: l&#8217;eclissi totale di quel giorno.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>☉</dt>
+						<dd>il Sole alla Luna nuova del 12 agosto</dd>
+						<dt>☋</dt>
+						<dd>il nodo, dove la Luna attraversa l&#8217;eclittica andando verso sud</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Tolomeo riferisce che «gli [astronomi] ancora più antichi», confrontando
+				eclissi di Luna, trovarono che esse si ripetono dopo 6585⅓ giorni, in cui
+				ci sono «circa 223 lunazioni, 239 ritorni in anomalia, 242 ritorni in
+				latitudine» (<em>Almagest</em> IV 2). Una lunazione è un mese sinodico.
+				Questo periodo era ben noto nell&#8217;astronomia babilonese, e oggi si
+				chiama <strong>saros</strong>. L&#8217;Esercizio 2 lo trova dai tre mesi.
+			</p>
+			<aside>
+				<div class="note" data-origin="babylonian"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Il cerchio inclinato della Luna</h2>
+
+		<h3>La latitudine eclittica</h3>
+
+		<div class="row">
+			<p>
+				Tolomeo porta la Luna, con il suo epiciclo, su un cerchio inclinato
+				sull&#8217;eclittica di 5° (V 12), i cui nodi si spostano verso ovest. Per la
+				sola longitudine eclittica trascura l&#8217;inclinazione, perché «una così
+				piccola inclinazione non ha alcun effetto apprezzabile sulla posizione in
+				longitudine» (IV 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per trovare le coordinate eclittiche della Luna usiamo gli stessi metodi
+			dell&#8217;Atto I. Sia $\Omega$ la longitudine eclittica del <strong>nodo
+			ascendente</strong> (☊ nelle figure), dove la Luna attraversa l&#8217;eclittica
+			andando verso nord, opposto al nodo discendente ☋, e $F$
+			l&#8217;<strong>argomento della latitudine</strong>, l&#8217;angolo della Luna lungo il
+			suo cerchio da quel nodo. Per trovare la direzione della Luna partiamo dal
+			sistema del suo cerchio, dove sta in $(\cos F, \sin F, 0)$, incliniamo il
+			cerchio dell&#8217;inclinazione $i$ attorno alla linea dei nodi, e ruotiamo la
+			linea dei nodi fino a $\Omega$, come nella pagina 1.2:
+		</p>
+
+		$$\mathbf{m} = R_z(\Omega)\, R_x(i) \begin{pmatrix} \cos F \\ \sin F \\ 0 \end{pmatrix} = \begin{pmatrix} \cos\Omega\cos F - \sin\Omega\cos i\sin F \\ \sin\Omega\cos F + \cos\Omega\cos i\sin F \\ \sin i\sin F \end{pmatrix}.$$
+
+		<p>
+			La terza componente è il seno della latitudine eclittica. Per la
+			longitudine eclittica è più semplice contare dal nodo: ruotato indietro di
+			$\Omega$, il vettore è $R_z(-\Omega)\,\mathbf{m} = (\cos F,\ \cos i\sin F,\
+			\sin i\sin F)$, le cui prime due componenti danno $\lambda - \Omega$, nello
+			stesso quadrante di $F$:
+		</p>
+
+		<div class="box">
+			$$\sin\beta = \sin i\,\sin F, \qquad \tan(\lambda - \Omega) = \cos i\,\tan F.$$
+		</div>
+
+		<p>
+			Per un&#8217;inclinazione piccola $\beta \approx i \sin F$, entro 9″ per $i =
+			5^\circ$.
+		</p>
+
+		<p>
+			La seconda formula dice che la longitudine eclittica della Luna contata
+			dal nodo, $\lambda - \Omega$, non è esattamente il suo angolo $F$ lungo il
+			proprio cerchio: un arco del cerchio inclinato, proiettato
+			sull&#8217;eclittica, risulta un po&#8217; più corto o più lungo. Scritta come
+			differenza, diventa
+		</p>
+
+		$$\lambda - \Omega = F - \operatorname{atan2}(e\sin 2F,\ 1 + e\cos 2F) \approx F - e\sin 2F, \qquad e = \tan^2\frac{i}{2}.$$
+
+		<details class="fold">
+			<summary>La derivazione della differenza</summary>
+			<p>
+				Prendiamo la tangente di $\lambda - \Omega - F$, con $\tan(\lambda -
+				\Omega) = \cos i\tan F$, e moltiplichiamo numeratore e denominatore per
+				$\cos^2 F$:
+			</p>
+			$$\tan(\lambda - \Omega - F) = \frac{\cos i\tan F - \tan F}{1 + \cos i\tan^2 F} = \frac{(\cos i - 1)\sin F\cos F}{\cos^2 F + \cos i\sin^2 F}.$$
+			<p>
+				Con $\sin F\cos F = \tfrac12\sin 2F$, $\cos^2 F = \tfrac12(1 + \cos 2F)$
+				e $\sin^2 F = \tfrac12(1 - \cos 2F)$, e dividendo numeratore e
+				denominatore per $\tfrac12(1 + \cos i)$, si ottiene
+			</p>
+			$$\tan(\lambda - \Omega - F) = -\frac{e\sin 2F}{1 + e\cos 2F}, \qquad e = \frac{1 - \cos i}{1 + \cos i} = \tan^2\frac{i}{2}.$$
+			<p>
+				Il denominatore è positivo, quindi l&#8217;angolo è quello della formula qui
+				sopra, e al primo ordine in $e$ vale $-e\sin 2F$.
+			</p>
+		</details>
+
+		<p>
+			La differenza ha la forma dell&#8217;equazione del centro della pagina 2.1,
+			con $\tan^2(i/2)$ al posto dell&#8217;eccentricità e $2F$ al posto
+			dell&#8217;anomalia. Il valore massimo di $(\lambda - \Omega) - F$ è
+			$\arcsin\tan^2(i/2)$ = 6,55′, raggiunto in $F = 45^\circ$.
+		</p>
+
+		<div class="row">
+			<p>
+				Lungo il suo cerchio la Luna si muove come in longitudine eclittica
+				nella pagina 3.1: un moto medio uniforme, corretto dall&#8217;equazione
+				dell&#8217;anomalia. Il suo argomento della latitudine medio è $\bar F =
+				\bar\lambda - \Omega$, e il suo argomento della latitudine vero è $F =
+				\bar F + q$, con lo stesso $q$ della longitudine eclittica. Tolomeo lo
+				calcola allo stesso modo (IV 9).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;argomento della latitudine medio cresce di $n_F$ al giorno: il moto
+			medio della Luna $n$, più il moto del nodo, che si sposta verso ovest,
+			verso la Luna, di 0,053° al giorno. La Luna torna quindi allo stesso nodo
+			un po&#8217; prima che alla stessa longitudine eclittica: dopo 27,21 giorni,
+			il mese draconitico della pagina 3.1, invece di 27,32.
+		</p>
+
+		<p>
+			Il modello di questa pagina calcola la longitudine eclittica della Luna
+			come nella pagina 3.1, $\lambda = \bar\lambda + q$, come se la Luna si
+			muovesse lungo l&#8217;eclittica stessa. Togliendo $\Omega$ si ha $\lambda -
+			\Omega = \bar F + q = F$: il modello prende la distanza angolare della
+			Luna dal nodo misurata lungo l&#8217;eclittica uguale alla sua distanza
+			angolare misurata lungo il proprio cerchio. È la differenza ricavata qui
+			sopra, che il modello trascura, come fa Tolomeo.
+		</p>
+
+		<p>
+			La longitudine eclittica del modello sbaglia quindi fino a 6,55′, poco
+			accanto all&#8217;errore proprio dell&#8217;epiciclo di 40′ alla Luna nuova e
+			piena. La differenza si annulla ai nodi, quindi è ancora più piccola dove
+			avvengono le eclissi: entro circa 18° da un nodo, resta sotto i 4′.
+		</p>
+
+		<!-- Figure 3: the Moon's inclined circle (3D, date; a month, a year, the nodes' turn) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="orbit-sphere"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="orbit-day">data</label>
+							<input id="orbit-day" type="range" min="0" max="6940" step="0.05" value="223.75">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="orbit-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="orbit-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets" id="orbit-views"></div>
+						<div class="presets">
+							<button type="button" class="play" id="orbit-play">Avvia</button>
+						</div>
+						<div class="readout" id="orbit-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un mese e segui il triangolo con i vertici in ☊, nella Luna L e
+				sull&#8217;eclittica sotto L: $\beta$ cresce con $F$, e raggiunge $i$ quando L
+				è a 90° da ☊. Poi avvia un anno: il Sole e i nodi si muovono l&#8217;uno
+				verso l&#8217;altro, quindi il Sole torna in ☊ prima di aver fatto un giro.
+				Nel giro dei nodi la linea dei nodi fa un giro verso ovest in 18,6 anni.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-epicycle">viola</dt>
+						<dd>il cerchio della Luna, con l&#8217;inclinazione disegnata tre volte più grande</dd>
+						<dt class="c-sun">oro</dt>
+						<dd>l&#8217;eclittica</dd>
+						<dt class="c-sun">arco oro spesso</dt>
+						<dd>$\lambda - \Omega$, la longitudine eclittica della Luna contata da ☊</dd>
+						<dt>disco scuro</dt>
+						<dd>l&#8217;ombra della Terra, opposta al Sole, disegnata più grande di quanto sia</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			A una Luna nuova la Luna ha la longitudine eclittica del Sole, quindi il
+			modello dà il suo argomento della latitudine come $F = \lambda_\odot -
+			\Omega$, la distanza angolare del Sole dal nodo ascendente. A una Luna
+			piena la Luna è opposta al Sole, alla longitudine eclittica $\lambda_\odot
+			+ 180^\circ$. Lì c&#8217;è anche il centro dell&#8217;ombra della Terra, che punta
+			dalla parte opposta al Sole, quindi $F = \lambda_\odot + 180^\circ -
+			\Omega$, la distanza angolare del centro dell&#8217;ombra dal nodo ascendente.
+		</p>
+
+		<p>
+			Che una Luna nuova o piena sia un&#8217;eclissi dipende quindi soprattutto da
+			dove si trova il Sole rispetto alla linea dei nodi, come alla Luna nuova
+			del 12 agosto 2026 da cui parte la Figura 3, un&#8217;eclissi totale con il
+			Sole e la Luna insieme vicino a ☋. Le grandezze della sezione successiva
+			fanno il resto.
+		</p>
+
+		<p>
+			Il Sole si allontana da un nodo di $n_\odot + (n_F - n) = 1{,}0386^\circ$ al
+			giorno, il suo moto proprio più il moto del nodo verso di lui. Torna allo
+			stesso nodo dopo l&#8217;<strong>anno delle eclissi</strong>,
+		</p>
+
+		$$Y_\text{e} = \frac{360^\circ}{n_\odot + n_F - n} = 346{,}620 \text{ giorni}.$$
+
+		<p>
+			L&#8217;anno delle eclissi segue anche da due dei mesi della Luna. In un mese
+			draconitico $P_d$ la Luna fa un giro contato dal nodo, quindi si allontana
+			dal nodo di $n_F = 360^\circ / P_d$ al giorno. In un mese sinodico $P_s$ fa
+			un giro contato dal Sole, quindi si allontana dal Sole di $n - n_\odot =
+			360^\circ / P_s$ al giorno.
+		</p>
+
+		<p>
+			L&#8217;angolo dal nodo al Sole è l&#8217;angolo dal nodo alla Luna meno l&#8217;angolo
+			dal Sole alla Luna, quindi cresce con la differenza delle due velocità,
+			$n_F - (n - n_\odot)$, che è il moto del Sole dal nodo qui sopra.
+			Dividendo per 360°,
+		</p>
+
+		$$\frac{1}{Y_\text{e}} = \frac{1}{P_d} - \frac{1}{P_s},$$
+
+		<p>
+			e con $P_d = 27{,}21222$ e $P_s = 29{,}53059$ giorni questo dà gli stessi
+			346,62 giorni. Mezzo anno delle eclissi, 173,31 giorni, è l&#8217;intervallo
+			fra le stagioni delle eclissi della sezione 1.
+		</p>
+
+		<h3>L&#8217;ombra e la parallasse</h3>
+
+		<p>
+			Quanto vicino a un nodo debba essere il Sole dipende dalle grandezze in
+			gioco, viste dal centro della Terra: i raggi apparenti $s$ della Luna e
+			$s_\odot$ del Sole, e le parallassi orizzontali $\pi$ della Luna e
+			$\pi_\odot$ del Sole, gli angoli sotto cui si vede il raggio della Terra da
+			ciascuno. Alla sua distanza media la Luna ha $s = 15{,}5'$ e $\pi =
+			57{,}0'$; il Sole ha $s_\odot = 16{,}0'$ e $\pi_\odot = 8{,}8''$.
+		</p>
+
+		<!-- Figure 4: the two shadows (static, not to scale) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) l&#8217;ombra della Terra alla distanza della Luna</p>
+						<canvas id="shadow-canvas" role="img"
+							aria-label="Il Sole, la Terra con centro O e il cono della sua ombra; alla distanza della Luna il raggio della Terra, segnato pi, è diviso nel raggio dell&#8217;ombra u e nel resto."></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;ombra della Luna sulla Terra</p>
+						<canvas id="moon-shadow-canvas" role="img"
+							aria-label="La Luna, a nord della linea dal centro della Terra O al Sole, e la sua ombra, che si allarga verso la Terra; il suo asse incontra il piano per O a nord di O."></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				In (a), segui il raggio che sfiora il Sole e la Terra dallo stesso lato
+				fino alla punta dell&#8217;ombra: alla distanza della Luna divide la
+				parentesi $\pi$, il raggio della Terra posto lì e visto da O, nel raggio
+				dell&#8217;ombra $u$ e nella parte $s_\odot - \pi_\odot$. In (b), segui
+				l&#8217;asse dell&#8217;ombra dalla Luna al piano per O, che incontra $\gamma$
+				raggi terrestri a nord di O. Nessuno dei due disegni è in scala.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>grigio scuro</dt>
+						<dd>l&#8217;ombra</dd>
+						<dt>grigio chiaro</dt>
+						<dd>(b) la penombra</dd>
+						<dt class="c-muted">tratteggio</dt>
+						<dd>(b) il piano per O, perpendicolare alla direzione del Sole</dd>
+						<dt class="c-planet">$\beta$</dt>
+						<dd>(b) alla Luna nuova, l&#8217;angolo della Luna dal Sole visto da O</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Visto dal centro della Terra O, il raggio della Terra posto alla distanza
+			della Luna sottende l&#8217;angolo $\pi$, e il cono si restringe di
+			$s_\odot - \pi_\odot$ su quella distanza, quindi il raggio dell&#8217;ombra è
+			$u = \pi - (s_\odot - \pi_\odot)$, al primo ordine in questi piccoli
+			angoli.
+		</p>
+
+		<details class="fold">
+			<summary>La derivazione del raggio dell&#8217;ombra</summary>
+			<p>
+				Siano $R$ e $R_\odot$ i raggi della Terra e del Sole, e $d$ e $d_\odot$
+				le distanze della Luna e del Sole da O. La parallasse orizzontale della
+				Luna $\pi$ è l&#8217;angolo nella Luna M sotto cui si vede il raggio della
+				Terra. La retta da M che sfiora la Terra la tocca in T, dove è
+				perpendicolare al raggio OT, quindi l&#8217;angolo retto del triangolo OTM è
+				in T, sulla superficie della Terra:
+			</p>
+
+			<div class="frame">
+				<canvas id="parallax-canvas" role="img"
+					aria-label="La Terra con centro O, la Luna M su una retta da O, e la retta da M che tocca la Terra in T, perpendicolare al raggio OT; l&#8217;angolo in M è la parallasse."></canvas>
+			</div>
+
+			$$\sin\pi = \frac{\text{OT}}{\text{OM}} = \frac{R}{d}.$$
+
+			<p>
+				Lo stesso triangolo con il Sole al posto della Luna dà $\sin\pi_\odot = R
+				/ d_\odot$, e il triangolo con l&#8217;angolo retto sulla superficie del Sole,
+				visto da O, dà $\sin s_\odot = R_\odot / d_\odot$. Trattando ciascuno di
+				questi piccoli angoli come uguale al suo seno, $s_\odot = R_\odot /
+				d_\odot$, $\pi_\odot = R / d_\odot$ e $\pi = R / d$.
+			</p>
+			<p>
+				Il raggio della Figura 4a parte dal bordo del Sole, a $R_\odot$
+				dall&#8217;asse, e sfiora il bordo della Terra dallo stesso lato, a $R$
+				dall&#8217;asse, a una distanza $d_\odot$ più avanti. Si avvicina quindi
+				all&#8217;asse di $R_\odot - R$ su $d_\odot$, e forma con l&#8217;asse l&#8217;angolo
+			</p>
+
+			$$\frac{R_\odot - R}{d_\odot} = s_\odot - \pi_\odot,$$
+
+			<p>
+				l&#8217;angolo alla punta dell&#8217;ombra. Dietro la Terra il raggio mantiene
+				questo angolo, quindi alla distanza della Luna è a $R - (s_\odot -
+				\pi_\odot)\,d$ dall&#8217;asse. Quello è lì il raggio dell&#8217;ombra, e visto
+				da O sottende
+			</p>
+
+			$$u = \frac{R - (s_\odot - \pi_\odot)\,d}{d} = \frac{R}{d} - (s_\odot - \pi_\odot) = \pi - (s_\odot - \pi_\odot).$$
+		</details>
+
+		<p>
+			L&#8217;atmosfera della Terra rende l&#8217;ombra un poco più grande. Le tavole
+			delle eclissi della NASA usano la regola di Danjon, aggiungendo l&#8217;1% a
+			$\pi$, e così facciamo noi:
+		</p>
+
+		<div class="box">
+			$$u = 1{,}01\,\pi + \pi_\odot - s_\odot.$$
+		</div>
+
+		<p>
+			Alle distanze medie $u = 41{,}7'$, 2,69 volte il raggio della Luna. A una
+			Luna piena il centro della Luna è a $|\beta|$ dal centro dell&#8217;ombra,
+			quindi c&#8217;è un&#8217;eclissi di Luna quando i due dischi si sovrappongono,
+			$|\beta| < u + s$, e un&#8217;eclissi totale quando la Luna è tutta dentro,
+			$|\beta| < u - s$. La frazione del diametro della Luna dentro l&#8217;ombra è
+			la <strong>magnitudine</strong> dell&#8217;eclissi.
+		</p>
+
+		<p>
+			Un&#8217;eclissi di Sole si vede solo dove l&#8217;ombra della Luna cade sulla
+			Terra. Vista dal Sole, la Terra è un disco, e l&#8217;ombra della Luna lo
+			attraversa come due cerchi attorno a un asse: la <strong>penombra</strong>,
+			dove la Luna nasconde una parte del Sole, e al suo interno l&#8217;ombra,
+			molto più piccola, dove lo nasconde tutto (vista di lato nella Figura 4b,
+			e sul disco della Terra, visto dal Sole, nella Figura 5a).
+		</p>
+
+		<p>
+			La parallasse ne dà il posto e la grandezza. Prendiamo un osservatore
+			$\gamma$ raggi terrestri a nord del centro della Terra, misurati
+			perpendicolarmente alla linea di vista ($\gamma$ è negativo a sud). Visto
+			da lì, la Luna è spostata a sud di $\gamma\pi$ e il Sole di
+			$\gamma\pi_\odot$, quindi la Luna si avvicina al Sole di $\gamma(\pi -
+			\pi_\odot)$, e la distanza angolare fra i loro centri è
+		</p>
+
+		$$\left|\beta - \gamma(\pi - \pi_\odot)\right|.$$
+
+		<p>
+			È zero, e l&#8217;osservatore vede il centro della Luna sul centro del Sole,
+			stando sull&#8217;asse dell&#8217;ombra, in
+		</p>
+
+		$$\gamma = \frac{\beta}{\pi - \pi_\odot}.$$
+
+		<p>
+			Ogni raggio terrestre di distanza dall&#8217;asse aggiunge $\pi - \pi_\odot$
+			alla distanza fra i centri. I due dischi si sovrappongono, e
+			l&#8217;osservatore vede un&#8217;eclissi parziale, finché quella distanza è minore
+			della somma dei loro raggi, $s + s_\odot$: fino a $(s + s_\odot)/(\pi -
+			\pi_\odot)$ raggi terrestri dall&#8217;asse. Quello è il raggio della
+			penombra, lo stesso in ogni direzione trasversale alla linea di vista,
+			quindi la penombra è un cerchio attorno all&#8217;asse.
+		</p>
+
+		<p>
+			Il disco della Terra va da $\gamma = -1$ a $\gamma = 1$. Se l&#8217;asse cade
+			al suo interno, $|\beta| < \pi - \pi_\odot$, l&#8217;eclissi è
+			<strong>centrale</strong>. Altrimenti l&#8217;osservatore più vicino all&#8217;asse è
+			sul bordo della Terra, $\gamma = \pm 1$, dove il Sole e la Luna sono
+			sull&#8217;orizzonte e la distanza fra i loro centri è $|\beta| - (\pi -
+			\pi_\odot)$. Quindi la Luna copre una parte del Sole da qualche luogo
+			della Terra quando quella distanza è minore di $s + s_\odot$:
+		</p>
+
+		<div class="box">
+			$$|\beta| < \pi - \pi_\odot + s + s_\odot.$$
+		</div>
+
+		<p>
+			Un&#8217;eclissi centrale è totale se la Luna, vista da dove l&#8217;asse incontra
+			la Terra, è più grande del Sole, e anulare se un anello di Sole resta
+			visibile attorno a essa.
+		</p>
+
+		<h3>I limiti delle eclissi</h3>
+
+		<p>
+			Un limite su $|\beta|$ diventa un limite sulla distanza angolare del Sole
+			da un nodo attraverso $\sin\beta = \sin i \sin F$. Le grandezze cambiano
+			con la distanza della Luna, da 356·400 a 406·700 km, e così i limiti:
+			un&#8217;eclissi di Luna richiede il Sole entro 10,3°–12,2° da un nodo, e una
+			di Sole entro 16,4°–18,3°. La distanza propria del Sole cambia i limiti di
+			mezzo primo d&#8217;arco.
+		</p>
+
+		<!-- Figure 5: the Sun, the Moon and the shadow near a node -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) Luna nuova: l&#8217;ombra della Luna sulla Terra</p>
+						<canvas id="limits-solar"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Luna piena: la Luna nell&#8217;ombra della Terra</p>
+						<canvas id="limits-lunar"></canvas>
+					</div>
+				</div>
+				<!-- the sliders just under the two drawings: on a phone both stay
+				     on the screen while a slider moves -->
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="limits-node">Sole da ☊</label>
+							<input id="limits-node" type="range" min="-20" max="20" step="0.1" value="-10.3">
+							<output></output>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="limits-distance">Luna a</label>
+							<input id="limits-distance" type="range" min="356400" max="406700" step="100" value="385000">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="limits-distance" data-value="356400">più vicina</button>
+							<button type="button" data-target="limits-distance" data-value="385000">media</button>
+							<button type="button" data-target="limits-distance" data-value="406700">più lontana</button>
+						</div>
+					</div>
+				</div>
+				<p class="panel-title">(c) la latitudine eclittica della Luna vicino al nodo, e i limiti delle eclissi</p>
+				<canvas id="limits-plot"></canvas>
+				<div class="readout" id="limits-readout" data-lines="5"></div>
+			</div>
+			<figcaption>
+				Allontana il Sole dal nodo: l&#8217;ombra della Luna scivola fuori dalla
+				Terra in (a) e la Luna scivola fuori dall&#8217;ombra della Terra in (b),
+				ciascuna dove il percorso della Luna esce dal suo riquadro in (c). Poi
+				scegli la Luna più vicina e la più lontana: i riquadri si allargano e si
+				restringono, e il punto dell&#8217;ombra in (a) diventa un anello,
+				un&#8217;eclissi totale diventa anulare.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>disco grigio, punto</dt>
+						<dd>(a) la penombra e l&#8217;ombra; l&#8217;ombra è disegnata più grande di quanto sia, come un anello dove l&#8217;eclissi è anulare</dd>
+						<dt class="c-epicycle">viola, tratteggio</dt>
+						<dd>il percorso della Luna; in (a), visto dal Sole, il percorso della sua ombra</dd>
+						<dt class="c-sun">linea oro</dt>
+						<dd>l&#8217;eclittica</dd>
+						<dt>riquadro oro, rosso</dt>
+						<dd>(c) i limiti delle eclissi di Sole e di Luna</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Tolomeo calcola gli stessi limiti (VI 5). Per la Luna alla sua distanza
+				minima il suo limite lunare è 12°12′ (12,20°), dove la Luna più vicina
+				di questa pagina dà 12,2°. I suoi limiti solari sono asimmetrici, 17°41′
+				con la Luna a nord dell&#8217;eclittica e solo 8°22′ con essa a sud, perché
+				prende la parallasse degli osservatori della sua parte del mondo.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>Le stagioni delle eclissi</h3>
+
+		<p>
+			A 1,0386° al giorno il Sole impiega fra 31,5 e 35,3 giorni ad attraversare
+			i limiti solari attorno a un nodo, più di un mese sinodico, 29,53 giorni.
+			Almeno una Luna nuova cade durante l&#8217;attraversamento, quindi ogni
+			passaggio del Sole per un nodo porta un&#8217;eclissi di Sole, e ogni anno
+			almeno due. Quando una Luna nuova cade vicino all&#8217;inizio del passaggio,
+			la successiva può cadere vicino alla fine, e la stagione ha due eclissi di
+			Sole, entrambe parziali, come a giugno e luglio 2029.
+		</p>
+
+		<p>
+			I limiti lunari richiedono solo da 19,7 a 23,4 giorni per essere
+			attraversati, meno di un mese, quindi una Luna piena può mancarli. Per
+			esempio entrambe le stagioni del 2027 non hanno eclissi di Luna.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo ragiona allo stesso modo sugli intervalli fra le eclissi (VI 6).
+				In sei mesi l&#8217;argomento della latitudine della Luna cresce di 184°, un
+				po&#8217; più di mezzo giro, quindi un&#8217;eclissi a un nodo può essere seguita
+				da un&#8217;eclissi all&#8217;altro sei mesi dopo.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 6: the eclipse seasons of 2026 - 2027 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="seasons-plot"></canvas>
+			</div>
+			<figcaption>
+				Segui la distanza angolare del Sole dal nodo più vicino mentre sale
+				attraverso le fasce. Ogni volta che attraversa la fascia oro almeno una
+				Luna nuova cade al suo interno, mentre due dei quattro attraversamenti
+				della fascia rossa, entrambi nel 2027, non portano eclissi di Luna.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-sun">oro</dt>
+						<dd>Lune nuove, e la fascia dei limiti solari</dd>
+						<dt class="c-planet">rosso</dt>
+						<dd>Lune piene, e la fascia dei limiti lunari</dd>
+						<dt class="c-muted">grandi</dt>
+						<dd>un&#8217;eclissi: pieno, totale o anulare; vuoto, parziale</dd>
+						<dt class="c-muted">più chiaro</dt>
+						<dd>di quanto si allargano i limiti quando la Luna è più vicina</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>I parametri del cerchio inclinato</h2>
+
+		<p>
+			Le eclissi avvengono solo alla Luna nuova e piena, dove la manovella della
+			pagina 3.2 sposta la Luna al massimo di qualche primo d&#8217;arco, quindi
+			possiamo mantenere le longitudini eclittiche già adattate alla Luna nella
+			pagina 3.1 e al Sole nella pagina 2.3. Il cerchio inclinato aggiunge tre
+			parametri: il moto in latitudine $n_F$, l&#8217;inclinazione $i$, e
+			l&#8217;argomento della latitudine in un istante, che colloca i nodi.
+		</p>
+
+		<h3>Il moto in latitudine</h3>
+
+		<p>
+			Una velocità si fissa meglio con due osservazioni distanti, perché
+			l&#8217;errore di ciascuna viene diviso per il tempo fra esse, una volta che
+			una velocità approssimata ha dato il numero di giri interi in mezzo. Le
+			eclissi sono osservazioni di questo tipo: ciascuna dà, attraverso la sua
+			magnitudine, la distanza della Luna da un nodo in un istante registrato.
+			Un anno è decisamente troppo corto per questo, quindi prendiamo $n_F$ dalla
+			Luna di riferimento (Meeus 47), come la pagina 3.1 ha preso i suoi moti
+			medi.
+		</p>
+
+		<h3>L&#8217;inclinazione e il nodo</h3>
+
+		<p>
+			L&#8217;inclinazione e la posizione dei nodi vengono dalle latitudini
+			eclittiche stesse: le latitudini vicino ai nodi, $F = 0^\circ$ o
+			$180^\circ$, fissano i nodi, e quelle massime, in $F = \pm 90^\circ$,
+			fissano l&#8217;inclinazione. Le Lune nuove e piene di un anno cadono a ogni
+			distanza dai nodi, quindi fissano entrambi, e sono gli istanti in cui
+			avvengono le eclissi.
+		</p>
+
+		<p>
+			Adattiamo quindi $i$ e l&#8217;argomento della latitudine a J2000.0 ai minimi
+			quadrati alla latitudine eclittica della Luna di riferimento nelle ultime
+			25 Lune nuove e piene documentate, dal 5 novembre 2025 al 26 ottobre
+			2026. Il moto in latitudine $n_F$ viene dallo stesso tipo di adattamento
+			sulle 2473 Lune nuove e piene dal 1926 al 2025, che lo fissa entro 0,02°
+			per secolo. L&#8217;adattamento dà $i = 5{,}00^\circ$, e pone il nodo
+			ascendente alla longitudine eclittica 125,05° a J2000.0, dove il nodo
+			medio di Meeus è a 125,04°.
+		</p>
+
+		<p>
+			Le latitudini eclittiche massime della Luna, che variano da un mese
+			all&#8217;altro (sezione 1), suggerirebbero un&#8217;inclinazione maggiore. Con
+			5,145°, la loro media, le latitudini eclittiche a queste Lune nuove e piene
+			sbaglierebbero fino a 10′, quindi ciò di cui hanno bisogno le eclissi è
+			l&#8217;inclinazione che vale alla Luna nuova e piena.
+		</p>
+
+		<h3>Le grandezze</h3>
+
+		<p>
+			Per verificare il modello da solo, i suoi limiti delle eclissi dovrebbero
+			venire dal suo Sole e dalla sua Luna. Prendiamo quindi i raggi moderni
+			della Terra, della Luna e del Sole, e le distanze proprie del modello,
+			anche se variano più di quelle reali (pagina 3.2). La distanza della Luna è
+			quella dell&#8217;epiciclo, su un deferente alla distanza media della Luna di
+			riferimento di 385·000 km. Quella del Sole è quella dell&#8217;eccentrico, il
+			cui raggio è 1 au.
+		</p>
+
+		<!-- History block: Ptolemy's parameters -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>I parametri di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo misurò l&#8217;inclinazione direttamente (V 12), da quanto vicino
+					allo zenit di Alessandria passava la Luna quando era più a nord
+					dell&#8217;eclittica, vicino al solstizio d&#8217;estate. La rifrazione e la
+					parallasse, che spostano la Luna soprattutto vicino all&#8217;orizzonte,
+					quasi si annullano allo zenit, quindi l&#8217;osservazione non richiede quasi
+					correzioni. Trovò 5°, l&#8217;inclinazione che dà il nostro adattamento.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Per il moto in latitudine si affidò a un periodo di origine babilonese
+					usato da Ipparco, un numero intero di mesi sinodici che contiene anche
+					un numero intero di ritorni della Luna allo stesso nodo (IV 2, ed
+					Esercizio 2). Il periodo copre secoli, e su un intervallo così lungo la
+					velocità risulta molto vicina a quella della Luna di riferimento.
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Il modello contro le eclissi del 2021–2030</h2>
+
+		<h3>La latitudine eclittica</h3>
+
+		<p>
+			Per vedere la latitudine eclittica fra le Lune nuove e piene oltre che in
+			esse, la giudichiamo come abbiamo giudicato la longitudine eclittica, con
+			una curva dell&#8217;errore, ora di $\Delta\beta = \beta_\text{modello} -
+			\beta_\text{rif}$.
+		</p>
+
+		<!-- Figure 7: the latitude fitted to 2025 - 2026 against the reference Moon -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-latitude"></div>
+			</div>
+			<figcaption>
+				L&#8217;errore della latitudine eclittica adattata resta entro 2′ alle Lune
+				nuove e piene (punti rossi), mentre la curva oscilla fino a 26′ fra esse;
+				con l&#8217;inclinazione media i punti viola sbagliano fino a 10′. Passa a
+				100 anni e nota che l&#8217;errore non cresce.
+			</figcaption>
+		</figure>
+
+		<p>
+			Alle 25 Lune nuove e piene a cui è stata adattata, la latitudine eclittica
+			è entro 1,7′ da quella della Luna di riferimento, e alle altre Lune nuove e
+			piene del 2021–2030, che l&#8217;adattamento non ha usato, entro 2,6′. Fra
+			esse l&#8217;errore arriva a 26′, ma lì non avviene alcuna eclissi.
+		</p>
+
+		<h3>Le eclissi</h3>
+
+		<p>
+			Lasciamo che il modello trovi le proprie Lune nuove e piene, dal suo Sole
+			e dalla sua Luna, e decida a ciascuna se c&#8217;è un&#8217;eclissi e di che tipo.
+			Escono tutte le 38 eclissi del 2021–2030, e nessun&#8217;altra. Tutte tranne
+			una sono del tipo giusto: la profonda eclissi parziale di Sole del 29 marzo
+			2025 risulta totale.
+		</p>
+
+		<p>
+			Le Lune nuove e piene del modello cadono tipicamente a tre quarti d&#8217;ora
+			dalla metà dell&#8217;eclissi reale, e nel caso peggiore a circa un&#8217;ora e
+			mezza. Quasi tutto questo è l&#8217;errore dell&#8217;epiciclo in longitudine
+			eclittica, fino a 43′ a queste eclissi, che la Luna impiega ben più di
+			un&#8217;ora a percorrere rispetto al Sole, e di più vicino al suo apogeo,
+			dove si muove più lentamente. L&#8217;errore del Sole aggiunge solo pochi
+			minuti, e la metà di un&#8217;eclissi non deve cadere esattamente alla Luna
+			nuova o piena.
+		</p>
+
+		<p>
+			La tabella segue una per una le quattro eclissi del 2026. Le magnitudini
+			delle due eclissi di Luna verificano insieme la latitudine eclittica e la
+			grandezza dell&#8217;ombra. I loro istanti verificano poco, perché la pagina
+			3.1 ha adattato il suo epiciclo a tre eclissi, fra cui queste due.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Eclissi del 2026</th>
+					<th>metà (TT)</th>
+					<th>il modello</th>
+					<th>magnitudine</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>17 febbraio, anulare di Sole</td>
+					<td>12:14</td>
+					<td>anulare, 35 min prima</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>3 marzo, totale di Luna</td>
+					<td>11:36</td>
+					<td>totale, 4 min dopo</td>
+					<td>1,15 (modello 1,15)</td>
+				</tr>
+				<tr>
+					<td>12 agosto, totale di Sole</td>
+					<td>17:47</td>
+					<td>totale, 19 min prima</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>28 agosto, parziale di Luna</td>
+					<td>04:14</td>
+					<td>parziale, 7 min dopo</td>
+					<td>0,93 (modello 0,91)</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Ptolemy's model against his eclipses -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Il modello di Tolomeo contro le sue eclissi</h3>
+
+			<p>
+				Le eclissi che Tolomeo osservò lui stesso sono le tre di Alessandria a
+				cui adattò il suo epiciclo (IV 6), quindi i suoi tempi lì verificano più
+				la sua aritmetica che il suo modello. Le sue latitudini eclittiche,
+				fissate da altre osservazioni, sono una verifica, e concordano con quelle
+				della Luna di riferimento entro pochi primi d&#8217;arco.
+			</p>
+
+			<p>
+				I suoi tempi sono entro mezz&#8217;ora da quelli reali, anche se il suo Sole e
+				la sua Luna restano entrambi molto indietro rispetto al Sole e alla Luna
+				reali. Collocava la sua Luna, a ogni eclissi, opposta al proprio Sole,
+				quindi essa condivide l&#8217;errore di quel Sole, e i due errori si annullano
+				nell&#8217;istante dell&#8217;eclissi.
+			</p>
+
+			<p>
+				Portato avanti di diciannove secoli, il suo modello trova ancora tutte
+				tranne una delle 38 eclissi del 2021–2030, parecchie di tipo diverso, e ne
+				aggiunge alcune che non avvennero: il suo moto in latitudine, dal periodo
+				babilonese, era quasi esatto. I suoi tempi, però, sbagliano di ore,
+				perché il suo Sole e la sua Luna si allontanano fra loro.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Gli istanti, i quarti e il luogo</h2>
+
+		<p>
+			Un&#8217;eclissi la cui metà è prevista sbagliata di un&#8217;ora e mezza è
+			sempre la stessa eclissi, ma un&#8217;eclissi di Luna può allora essere
+			prevista per un momento in cui la Luna è sotto l&#8217;orizzonte
+			dell&#8217;osservatore. Questi errori vengono dalla longitudine eclittica della
+			Luna alla Luna nuova e piena, che la pagina 3.2 ha ricondotto per lo più
+			all&#8217;anomalia dell&#8217;epiciclo, adattata a sole tre eclissi e leggermente
+			sfasata.
+		</p>
+
+		<div class="row">
+			<p>
+				Le oscillazioni della Figura 7 fra le Lune nuove e piene hanno due cause.
+				L&#8217;argomento della latitudine del modello porta l&#8217;errore
+				dell&#8217;epiciclo in longitudine eclittica lontano dalle Lune nuove e piene,
+				l&#8217;evezione che corregge la manovella della pagina 3.2, e si vede di più
+				vicino ai nodi, dove la latitudine cambia più in fretta con $F$. Anche
+				l&#8217;inclinazione cambia con la fase della Luna. Alla Luna nuova e piena la
+				Luna segue un cerchio inclinato di 5,0°, ai quarti uno inclinato di circa
+				5,3°, come richiede il termine della Luna di riferimento $0{,}17^\circ
+				\sin(2D - F)$. Come l&#8217;evezione, è un effetto dell&#8217;attrazione del Sole,
+				ed è per questo che l&#8217;adattamento alle Lune nuove e piene dà meno della
+				media delle latitudini eclittiche massime.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Il modello dice anche solo che un&#8217;eclissi di Sole si vede da qualche
+				parte sulla Terra. Se si veda da una data città, e quanta parte del Sole
+				vi sia coperta, dipende dalla parallasse in quel luogo, che sposta la
+				Luna nuova apparente da quella vera. Tolomeo (VI 10) e Copernico (<em>De
+				Revolutionibus</em> IV 30) calcolano l&#8217;eclissi per un osservatore, la
+				parte più difficile del problema.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il Sole e la Luna si muovono ciascuno secondo le proprie leggi. I pianeti
+			sono legati al Sole più strettamente: ciascuno torna indietro, con un moto
+			retrogrado, una volta a ogni ritorno nella stessa posizione rispetto al
+			Sole, l&#8217;argomento della pagina 4.1.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Alla Luna nuova del modello del 12 agosto 2026, alle 17:28 TT,
+				l&#8217;argomento della latitudine della Luna è $F = 169{,}7^\circ$; il
+				modello pone la Luna a 367·195 km e il Sole a 1,027 au. Con $i =
+				5{,}00^\circ$, trova la latitudine eclittica della Luna. Si vede
+				un&#8217;eclissi di Sole da qualche parte sulla Terra? È centrale, e se sì
+				totale o anulare? Fai lo stesso per la Luna nuova successiva, l&#8217;11
+				settembre, dove $F = 199{,}7^\circ$ e il limite solare è 89,0′. Verifica
+				la prima nella Figura 5, con il Sole a +10,3°: la stessa distanza
+				angolare da un nodo, con la Luna a nord dell&#8217;eclittica come il 12 agosto.
+			</p>
+			<details class="hint">
+				<p>
+					$s = \arcsin(1737{,}4/d)$ e $\pi = \arcsin(6378{,}14/d)$ per la Luna a
+					$d$ km; per il Sole $s_\odot$ è 959,63″ e $\pi_\odot$ 8,794″ a 1 au,
+					inversamente proporzionali alla sua distanza. L&#8217;asse dell&#8217;ombra
+					passa a $\gamma = |\beta|/(\pi - \pi_\odot)$ raggi terrestri dal centro
+					della Terra.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$\beta \approx 5{,}00^\circ \times \sin 169{,}7^\circ = 0{,}894^\circ =
+					53{,}6'$, a nord dell&#8217;eclittica, 10,3° prima del nodo discendente.
+				</p>
+				<p>
+					A 367·195 km la Luna ha $s = 16{,}3'$ e $\pi = 59{,}7'$; a 1,027 au il
+					Sole ha $s_\odot = 15{,}6'$ e $\pi_\odot = 8{,}6''$. Il limite solare è
+					$\pi - \pi_\odot + s + s_\odot = 91{,}4'$, più di 53,6′, quindi
+					l&#8217;eclissi si vede da qualche parte; anche il limite centrale $\pi -
+					\pi_\odot = 59{,}6'$ è più di 53,6′, quindi è centrale, con $\gamma =
+					0{,}899$. L&#8217;asse incontra la Terra a $367195 - 6378\sqrt{1 -
+					0{,}899^2} \approx 364400$ km dalla Luna, che vista da lì ha un raggio di
+					16,4′, più dei 15,6′ del Sole: l&#8217;eclissi è totale. L&#8217;eccentrico mette
+					il Sole troppo lontano ad agosto (il Sole reale era a 1,013 au, pagina
+					3.2); con la distanza reale il raggio del Sole è 15,8′, e l&#8217;eclissi è
+					ancora totale.
+				</p>
+				<p>
+					Lo fu: la NASA pone la sua fase massima alle 17:47 TT, 19 minuti dopo la
+					Luna nuova del modello. L&#8217;11 settembre, 19,7° dopo il nodo, $\beta =
+					-101{,}0'$, oltre il limite di 89,0′, e non c&#8217;è eclissi.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Un&#8217;eclissi si ripete quando un numero intero di mesi sinodici, che
+				riporta la fase, è anche un numero intero di mesi draconitici, che riporta
+				il posto della Luna rispetto al nodo. Da $P_s = 29{,}530586$ giorni e $P_d
+				= 27{,}212221$ giorni, trova i periodi più brevi di questo tipo con la
+				frazione continua di $P_s/P_d$. Mostra che 223 mesi sinodici sono anche
+				quasi esattamente un numero intero di mesi anomalistici ($P_a =
+				27{,}554562$ giorni) e di anni delle eclissi, e di&#8217; che cosa fa ciascun
+				accordo all&#8217;eclissi ripetuta. Perché gli astronomi antichi triplicarono
+				il periodo? Quanto dura una serie di eclissi ripetute? La relazione di
+				Ipparco di 5458 mesi sinodici per 5923 ritorni in latitudine (IV 2) non è
+				fra le ridotte: come è costruita a partire da esse?
+			</p>
+			<details class="hint">
+				<p>
+					$P_s/P_d = 1{,}0851958$. Per la serie, trova di quanto cambia $F$ in un
+					periodo, e confronta con il limite solare alle distanze medie, 17,2°.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$P_s/P_d = 1{,}0851958 = [1; 11, 1, 2, 1, 4, 3, \dots]$, le cui ridotte
+					sono 12/11, 13/12, 38/35, 51/47, 242/223, 777/716. La frazione $p/q$
+					significa $q$ mesi sinodici contro $p$ mesi draconitici: 47 mesi
+					sinodici, 1387,94 giorni, mancano 51 mesi draconitici di 2,7 ore, mentre
+					223 mesi sinodici, 6585,321 giorni, mancano 242 mesi draconitici solo di
+					0,88 ore.
+				</p>
+				<p>
+					Gli stessi 6585,321 giorni contengono 238,992 mesi anomalistici, 5,3 ore
+					meno di 239, quindi la Luna torna alla stessa distanza e l&#8217;eclissi ha
+					quasi la stessa grandezza e lo stesso tipo. Contengono 18,999 anni delle
+					eclissi, quindi il Sole torna vicino allo stesso nodo, e l&#8217;eclissi cade
+					nella stessa stagione, 18 anni e circa 11 giorni dopo. Lo 0,321 di giorno
+					significa che la Terra ha ruotato di 115° in più, quindi l&#8217;eclissi si
+					vede un terzo del giro della Terra più a ovest. Tre periodi, 19755,96
+					giorni, sono quasi un numero intero di giorni. Gli astronomi antichi
+					triplicarono il Periodico «per ottenere un periodo con un numero intero
+					di giorni», l&#8217;<em>Exeligmos</em> di 19756 giorni (IV 2), dopo il quale
+					un&#8217;eclissi torna anche quasi alla stessa longitudine geografica.
+				</p>
+				<p>
+					In un periodo $F$ cambia di $-0{,}485^\circ$, quindi il posto del Sole
+					all&#8217;eclissi attraversa lentamente i limiti. Una serie dura circa $2
+					\times 17{,}2 / 0{,}485 = 71$ periodi, circa 1300 anni: le eclissi totali
+					del 1º agosto 2008, del 12 agosto 2026 e del 23 agosto 2044 appartengono
+					a una stessa serie, e la sua eclissi del 3 settembre 2062 è solo
+					parziale.
+				</p>
+				<p>
+					I 5458 mesi di Ipparco sono $7 \times 716 + 2 \times 223$, e i suoi 5923
+					ritorni $7 \times 777 + 2 \times 242$: una combinazione delle ultime due
+					ridotte, che manca di circa un&#8217;ora, come il Periodico. Quale dei due
+					sia più vicino dipende da frazioni di secondo nei mesi, più fini di
+					quanto un secolo di Lune nuove possa misurare.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Nel cielo di riferimento la fase massima dell&#8217;eclissi del 20/21 ottobre
+				134 cadde alle 23:17 TT del 20 ottobre. Trova il suo tempo vero locale ad
+				Alessandria, 29,92° a est di Greenwich, per una Terra che ruota
+				uniformemente, con UT = TT. L&#8217;equazione del tempo era +13,4 min. Tolomeo
+				calcolò la metà dell&#8217;eclissi un&#8217;ora prima di mezzanotte (IV 6): quale
+				valore di $\Delta T = \text{TT} - \text{UT}$ dà il suo tempo? Confrontalo
+				con i 9263 s del cielo di riferimento.
+			</p>
+			<details class="hint">
+				<p>
+					Il tempo medio locale è l&#8217;UT più la longitudine geografica a 4 minuti
+					per grado; il tempo vero è il tempo medio più l&#8217;equazione del tempo.
+					Percorri gli stessi passi a ritroso dalle 23:00 di Tolomeo.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con UT = TT, le 23:17 più 119,7 minuti di longitudine geografica fanno
+					l&#8217;01:17 di tempo medio locale, e con l&#8217;equazione del tempo l&#8217;01:30 di
+					tempo vero, un&#8217;ora e mezza dopo mezzanotte: due ore e mezza più tardi
+					di quando la vide Tolomeo.
+				</p>
+				<p>
+					A ritroso dalle 23:00 di tempo vero di Tolomeo, il tempo medio locale è
+					22:47 e l&#8217;UT 20:47, quindi $\Delta T = 23\text{:}17 - 20\text{:}47 =
+					2{,}50$ ore. Il $\Delta T$ del cielo di riferimento per quell&#8217;anno è
+					9263 s, 2,57 ore, 4 minuti in più: entro l&#8217;incertezza di una misura di
+					tempo antica. Dal 134 d.C. la rotazione della Terra è rimasta indietro di
+					due ore e mezza rispetto a un orologio uniforme, e registri come questo
+					sono il modo in cui lo si misura.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IV 2 (il
+				Periodico di 223 mesi e l&#8217;Exeligmos, i 5458 mesi e i 5923 ritorni in
+				latitudine di Ipparco, con le note di Toomer sul nome saros e
+				sull&#8217;origine babilonese); IV 6 (l&#8217;inclinazione trascurata nella
+				longitudine eclittica; le eclissi del 133–136); IV 9 (l&#8217;argomento della
+				latitudine e il moto in latitudine); V 12 (l&#8217;inclinazione di 5°); VI 5
+				(i limiti delle eclissi); VI 6 (gli intervalli fra le eclissi); VI 10 (le
+				eclissi di Sole per un osservatore).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), IV 30
+				(quali Lune nuove e piene sono eclissi, e la Luna nuova apparente per un
+				osservatore).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.3 (la latitudine
+				eclittica, $\sin\beta = \sin i \sin F$) e § 7.4–7.6 (i criteri per le
+				eclissi e la loro frequenza).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 47 (la
+				Luna di riferimento: la serie della sua latitudine eclittica, $F$ e il
+				nodo medio) e cap. 49 (le Lune nuove e piene medie).</li>
+			<li>F. Espenak, NASA Goddard Space Flight Center, le tavole decennali delle
+				eclissi di Sole e di Luna, 2021–2030 (eclipse.gsfc.nasa.gov, consultate il
+				30 ottobre 2026), e F. Espenak e J. Meeus, <em>Five Millennium Canon of
+				Lunar Eclipses</em> (NASA, 2009), per la regola di Danjon; il $\Delta T$
+				del cielo di riferimento è quello di Espenak e Meeus (NASA, 2006), e dal
+				2005 quello misurato dello US Naval Observatory.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/3.3-eclipses.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

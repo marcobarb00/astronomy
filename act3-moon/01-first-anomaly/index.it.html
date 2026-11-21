@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 3.1 · THE FIRST ANOMALY
+     Act III, the Moon. The Moon's speed varies with its own period, the
+     anomalistic month; Hipparchus' and Ptolemy's epicycle explains it, with
+     the equation of anomaly lambda = lambdaBar + q; the epicycle is
+     equivalent to an eccentric whose apogee turns (Almagest IV 5); its
+     size is fitted from three lunar eclipses (IV 6); good at new and full
+     Moon, wrong by up to 3° at the quarters.
+     Numbers: tools/numbers/3.1-first-anomaly.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>3.1 · La prima anomalia · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/lunar-epicycle.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="3.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 2.3 si è chiusa con il Sole previsto entro pochi primi d&#8217;arco
+			per duemila anni, e con la Luna ancora da affrontare, la cui velocità
+			lungo l&#8217;eclittica cambia molto più di quella del Sole. La parte più
+			grande di questa variazione si ripete ogni 27 giorni e mezzo.
+		</p>
+
+		<p>
+			Ipparco e Tolomeo la spiegarono con un piccolo cerchio portato attorno
+			alla Terra, l&#8217;epiciclo, la cui grandezza trovarono da tre eclissi di
+			Luna. Con esso possiamo collocare la Luna entro 40′ a ogni Luna nuova e
+			piena, gli istanti che decidono le eclissi, anche se non ancora nel
+			frattempo.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>La velocità della Luna e il suo periodo</h2>
+
+		<p>
+			La Luna percorre in media 13,18° di eclittica al giorno, un giro intero in
+			circa 27 giorni e un terzo. Nel corso del 2025 il suo moto giornaliero si
+			scosta da quella media fino al 16%, quasi cinque volte quanto quello del
+			Sole (pagina 2.1).
+		</p>
+
+		<!-- Figure 1: the Moon's daily motion through 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="motion-plot"></canvas>
+			</div>
+			<figcaption>
+				Segui i punti, uno a ogni Luna piena. Le Lune piene di aprile e di
+				maggio cadono vicino ai minimi della curva, quelle di novembre e di
+				dicembre vicino ai massimi: i massimi scorrono attraverso il ciclo delle
+				fasi.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-muted">tratteggio</dt>
+						<dd>il moto giornaliero medio, 13,18°</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Ogni istante di massima velocità arriva circa due giorni prima nel ciclo
+			delle fasi rispetto al precedente. A gennaio la Luna è più veloce cinque
+			giorni prima della Luna piena, alla fine di aprile circa a metà fra due
+			Lune piene, e a novembre e dicembre alla Luna piena. La velocità ha
+			quindi un periodo proprio, un po&#8217; più corto del mese delle fasi.
+		</p>
+
+		<p>
+			Quel periodo è il <strong>mese anomalistico</strong>, 27,55 giorni, e il moto
+			disuguale che si ripete con esso è ciò che Tolomeo chiama la
+			<strong>prima anomalia</strong> della Luna. L&#8217;istante di massima velocità
+			scorre attraverso l&#8217;intero ciclo delle fasi e torna alla Luna piena
+			dopo 412 giorni in media (Esercizio 2). La Luna piena più veloce deve
+			cadere su una Luna piena, quindi l&#8217;intervallo effettivo è di 13, 14 o 15
+			mesi. Dal 1º agosto 2023 al 17 ottobre 2024 fu di 15, e da allora al 4
+			dicembre 2025 di 14.
+		</p>
+
+		<h3>Cinque mesi</h3>
+
+		<p>
+			Ciascuno dei moti della Luna ha il suo mese, il tempo che impiega a
+			tornare nello stesso posto. Il modello di questa pagina ne usa due, il
+			mese tropico per il moto medio in longitudine eclittica e il mese
+			anomalistico per il moto in anomalia. La tabella li dà tutti e cinque,
+			perché differiscono di ore e si confondono facilmente. Vengono tutti dal
+			cielo di riferimento dal 1926 al 2025. Il mese sinodico e quello
+			anomalistico sono misurati con una retta per gli istanti delle Lune nuove
+			e degli istanti di massima velocità della Luna; il mese tropico segue da
+			quello sinodico e dal Sole medio (sezione 3), il sidereo gli aggiunge la
+			precessione della pagina 2.3, e il draconitico viene dalla latitudine
+			eclittica della Luna alle Lune nuove e piene (pagina 3.3).
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>Mese</th>
+					<th>La Luna torna</th>
+					<th>Durata</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>tropico</td>
+					<td>alla stessa longitudine eclittica</td>
+					<td>27,32158 g</td>
+				</tr>
+				<tr>
+					<td>sidereo</td>
+					<td>alla stessa stella</td>
+					<td>27,32166 g</td>
+				</tr>
+				<tr>
+					<td>sinodico</td>
+					<td>alla stessa fase</td>
+					<td>29,53059 g</td>
+				</tr>
+				<tr>
+					<td>anomalistico</td>
+					<td>alla stessa velocità</td>
+					<td>27,55454 g</td>
+				</tr>
+				<tr>
+					<td>draconitico</td>
+					<td>allo stesso nodo, dove attraversa l&#8217;eclittica</td>
+					<td>27,21222 g</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Solo 7 secondi, la precessione di un mese, separano il mese tropico da
+			quello sidereo. Il mese sinodico è più lungo di entrambi di due giorni,
+			perché il Sole va avanti mentre la Luna fa il giro, così come il giorno
+			solare è più lungo del giorno sidereo. E la Luna torna all&#8217;eclittica 2,6
+			ore prima di tornare alla stessa stella, quindi il mese draconitico è il
+			più corto di tutti.
+		</p>
+
+		<p>
+			Il mese anomalistico, invece, è più lungo di quello sidereo di 5,6 ore.
+			Quindi il punto dell&#8217;eclittica in cui la Luna è più veloce non è fisso
+			fra le stelle: si sposta verso est, e fa un giro in 8,85 anni. Qualunque
+			modello della velocità deve riprodurre questo moto.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo descrive come furono trovati i periodi: confrontando eclissi di
+				Luna a secoli di distanza, e cercando un intervallo, lungo un numero
+				intero di mesi, dopo il quale il moto della Luna si ripete
+				(<em>Almagest</em> IV 2). Il più antico, il «Periodico», pone 223 mesi
+				sinodici uguali a 239 mesi anomalistici. La relazione di Ipparco, 251
+				mesi sinodici per 269 mesi anomalistici, è migliore: con i mesi della
+				tabella i due membri del Periodico differiscono di cinque ore, quelli di
+				Ipparco di meno della precisione di un secolo di misure. Toomer afferma,
+				dopo Kugler e Aaboe, che Ipparco prese queste relazioni
+				dall&#8217;astronomia babilonese, e si limitò a confermarle confrontando
+				eclissi del suo tempo con eclissi babilonesi di 345 anni prima (nota a
+				IV 2).
+			</p>
+			<aside>
+				<div class="note" data-origin="babylonian"></div>
+				<div class="note" data-origin="debated"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>L&#8217;epiciclo</h2>
+
+		<h3>Deferente ed epiciclo</h3>
+
+		<div class="row">
+			<p>
+				Tolomeo descrive il modello in IV 6. Un cerchio centrato sulla Terra,
+				nel piano dell&#8217;eclittica, porta uniformemente verso est il centro di
+				un piccolo cerchio, l&#8217;epiciclo, e la Luna si muove sull&#8217;epiciclo «in
+				modo tale che sull&#8217;arco vicino all&#8217;apogeo il suo moto sia in avanti
+				rispetto al cielo», cioè verso ovest, con la velocità del suo ritorno in
+				anomalia. Trascura la piccola inclinazione dell&#8217;orbita della Luna, che
+				cambia appena la sua longitudine eclittica.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Sia $R$ il raggio del cerchio portante, il <strong>deferente</strong>, e $r$
+			il raggio dell&#8217;epiciclo. Il centro K dell&#8217;epiciclo si muove alla
+			longitudine eclittica media $\bar\lambda = L_0 + n\,d$, come il Sole medio
+			della pagina 1.3. L&#8217;angolo della Luna sull&#8217;epiciclo, contato verso
+			ovest dall&#8217;apogeo dell&#8217;epiciclo, il punto più lontano dalla Terra, è
+			l&#8217;<strong>anomalia</strong> $M = M_0 + n_M\,d$, l&#8217;angolo da cui prende
+			nome la prima anomalia. I due moti giornalieri $n$ e $n_M$ appartengono al
+			mese tropico e al mese anomalistico, 13,18° e 13,06°.
+		</p>
+
+		<p>
+			È il moto verso ovest all&#8217;apogeo che rende la Luna lenta lì. Sul lato
+			lontano dell&#8217;epiciclo il moto proprio della Luna va contro il moto di K
+			verso est, mentre sul lato vicino, al perigeo, i due si sommano.
+		</p>
+
+		<h3>L&#8217;equazione dell&#8217;anomalia</h3>
+
+		<p>
+			Come nella pagina 2.1, scriviamo la posizione L della Luna, vista dalla
+			Terra O, come somma di vettori, $\vec{OL} = \vec{OK} + \vec{KL}$, in un
+			sistema ruotato nella direzione di K: il suo primo asse punta a
+			$\bar\lambda$ e il secondo 90° più a est. Lì $\vec{OK} = (R, 0)$, e la
+			Luna, all&#8217;angolo $M$ verso ovest dall&#8217;apogeo, sta in $r\,(\cos M,
+			-\sin M)$ da K, quindi
+		</p>
+
+		$$\vec{OL} = \begin{pmatrix} R + r\cos M \\ -r\sin M \end{pmatrix}.$$
+
+		<p>
+			La direzione di questo vettore dal primo asse è l&#8217;angolo da
+			$\bar\lambda$ alla longitudine eclittica vera della Luna $\lambda$,
+			l&#8217;<strong>equazione dell&#8217;anomalia</strong> $q$. Con $e = r/R$,
+		</p>
+
+		<div class="box">
+			$$q = -\operatorname{atan2}(e\sin M,\ 1 + e\cos M), \qquad \lambda = \bar\lambda + q.$$
+		</div>
+
+		<p>
+			È l&#8217;equazione del centro della pagina 2.1, con il rapporto dei raggi al
+			posto dell&#8217;eccentricità, quindi tutto ciò che si è trovato lì vale
+			anche qui. Al primo ordine $q \approx -e\sin M$, e la massima equazione è
+			$\arcsin e$. Per l&#8217;epiciclo si raggiunge dove la linea di vista dalla
+			Terra è tangente all&#8217;epiciclo, in $\cos M = -e$.
+		</p>
+
+		<div class="row">
+			<p>
+				L&#8217;epiciclo di Tolomeo ha raggio 5,25 dove quello del deferente è 60
+				($e = 0{,}0875$), e la sua massima equazione è 5°01′, come nella sua
+				tavola della prima anomalia (IV 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>La velocità</h3>
+
+		<p>
+			Per vedere come varia la velocità del modello, deriviamo $\lambda =
+			\bar\lambda + q$ rispetto al tempo, con $d\bar\lambda/dt = n$ e $dM/dt =
+			n_M$. La derivata dell&#8217;arcotangente dà
+		</p>
+
+		$$\frac{d\lambda}{dt} = n + n_M\,\frac{dq}{dM}, \qquad \frac{dq}{dM} = -\frac{e\,(e + \cos M)}{1 + 2e\cos M + e^2}.$$
+
+		<p>
+			La Luna è più lenta all&#8217;apogeo dell&#8217;epiciclo, dove $M = 0$ e la
+			velocità è $n - n_M\,e/(1 + e)$, e più veloce al perigeo, $n + n_M\,e/(1
+			- e)$. Con il rapporto di Tolomeo sono 12,13° e 14,43° al giorno. La
+			velocità si ripete con $M$, ogni mese anomalistico, come richiede la
+			sezione 1. L&#8217;intervallo della Luna reale nella Figura 1 è ancora più
+			ampio.
+		</p>
+
+		<p>
+			Il rapporto reale è abbastanza piccolo che, disegnato in scala,
+			l&#8217;epiciclo si vede a fatica, quindi la Figura 2 parte con $r/R =
+			0{,}3$, tre volte e mezzo quello di Tolomeo.
+		</p>
+
+		<!-- Figure 2: the epicycle, and q over two months -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il deferente e l&#8217;epiciclo</p>
+						<canvas id="epicycle-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;equazione dell&#8217;anomalia in due mesi</p>
+						<canvas id="epicycle-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="epi-day">data</label>
+							<input id="epi-day" type="range" min="0" max="60" step="0.05" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="epi-play">Avvia due mesi</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="epi-e">rapporto $r/R$</label>
+							<input id="epi-e" type="range" min="0" max="0.3" step="0.0005" value="0.3">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" data-target="epi-e" data-value="0.0875">Tolomeo, 0,0875</button>
+							<button type="button" data-target="epi-e" data-value="0.3">esagerato, 0,3</button>
+							<button type="button" data-target="epi-e" data-value="0">senza epiciclo</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="epicycle-readout" data-lines="3"></div>
+			</div>
+			<figcaption>
+				Avvia i due mesi e guarda la Luna girare sull&#8217;epiciclo mentre K gira
+				sul deferente; $q$ è zero all&#8217;apogeo e al perigeo dell&#8217;epiciclo. In
+				(b) le Lune nuove e piene cadono ogni mese in un punto diverso
+				dell&#8217;onda. Poi premi «Tolomeo, 0,0875» e guarda la curva tratteggiata
+				al primo ordine, $-(r/R)\sin M$, confondersi con quella esatta.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">tratteggio</dt>
+						<dd>la longitudine eclittica media $\bar\lambda$, per K fino all&#8217;apogeo dell&#8217;epiciclo</dd>
+						<dt class="c-epicycle">$M$</dt>
+						<dd>contato verso ovest (in senso orario) dall&#8217;apogeo</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>L&#8217;epiciclo e l&#8217;eccentrico</h3>
+
+		<p>
+			La pagina 2.1 ha notato che la disuguaglianza del Sole si può produrre
+			sia con un eccentrico sia con un epiciclo. I due modelli sono
+			equivalenti, e una volta scritta la posizione della Luna come somma di
+			vettori la dimostrazione è breve. Con $\hat u(\lambda)$ il versore alla
+			longitudine eclittica $\lambda$, l&#8217;epiciclo mette la Luna in
+		</p>
+
+		$$\vec{OL} = R\,\hat u(\bar\lambda) + r\,\hat u(\bar\lambda - M).$$
+
+		<p>
+			La somma di vettori è commutativa, quindi lo stesso punto è $r\,\hat
+			u(\bar\lambda - M) + R\,\hat u(\bar\lambda)$. Letto così, la Luna si
+			muove alla longitudine eclittica media su un cerchio di raggio $R$ il cui
+			centro C sta alla distanza $r$ dalla Terra, verso $\bar\lambda - M$.
+			Quel cerchio è un eccentrico con eccentricità $e = r/R$ e il suo apogeo
+			in $\lambda_A = \bar\lambda - M$:
+		</p>
+
+		<div class="box">
+			$$R\,\hat u(\bar\lambda) + r\,\hat u(\bar\lambda - M) = r\,\hat u(\lambda_A) + R\,\hat u(\bar\lambda), \qquad \lambda_A = \bar\lambda - M, \qquad \frac{d\lambda_A}{dt} = n - n_M.$$
+		</div>
+
+		<p>
+			Le due costruzioni danno lo stesso punto in ogni istante, e quindi la
+			stessa longitudine eclittica e la stessa distanza, purché l&#8217;apogeo
+			dell&#8217;eccentrico si muova con la differenza dei due moti medi. La Terra
+			O, il centro K, la Luna L e il centro C sono i vertici di un
+			parallelogramma.
+		</p>
+
+		<div class="row">
+			<p>
+				Quel parallelogramma è la dimostrazione di Tolomeo (IV 5). Egli conclude
+				che «gli stessi fenomeni risulteranno in tutti i casi da entrambe le
+				ipotesi», che i periodi dell&#8217;anomalia e della longitudine eclittica
+				siano uguali, come per il Sole, o disuguali, come per la Luna, purché i
+				rapporti siano gli stessi. Un eccentrico di altra grandezza, con lo
+				stesso rapporto fra eccentricità e raggio, dà ancora le stesse
+				direzioni; cambiano solo le distanze (Esercizio 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per il Sole i due periodi sono uguali, $n = n_M$, e l&#8217;eccentrico della
+			pagina 2.1 non ruota, a parte il moto lento della pagina 2.3. Per la Luna
+			$n - n_M = 0{,}1114^\circ$ al giorno: l&#8217;apogeo dell&#8217;eccentrico si
+			sposta verso est di 3,07° ogni mese anomalistico e fa un giro in 8,85
+			anni, il moto del punto di massima velocità trovato nella sezione 1.
+		</p>
+
+		<p>
+			Tolomeo scelse l&#8217;epiciclo per la prima anomalia perché voleva
+			l&#8217;eccentrico per la seconda (IV 5).
+		</p>
+
+		<!-- Figure 3: the epicycle and its eccentric -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<canvas id="equivalence-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="eq-day">data</label>
+							<input id="eq-day" type="range" min="0" max="3232" step="0.05" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="eq-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="eq-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets" id="eq-views"></div>
+						<div class="presets">
+							<button type="button" class="play" id="eq-play">Avvia</button>
+						</div>
+						<div class="readout" id="equivalence-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un mese e segui il parallelogramma: la Luna sta dove si incontrano
+				l&#8217;epiciclo e l&#8217;eccentrico, e la lettura dà la stessa longitudine
+				eclittica per entrambi. Poi scegli il giro dell&#8217;eccentrico e avvialo:
+				l&#8217;eccentrico fa un giro attorno alla Terra in 8,85 anni. Il disegno usa
+				$r/R = 0{,}3$.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">attorno a O</dt>
+						<dd>il deferente</dd>
+						<dt class="c-earth">attorno a C</dt>
+						<dd>l&#8217;eccentrico</dd>
+						<dt class="c-muted">punteggiato</dt>
+						<dd>la linea degli apsidi dell&#8217;eccentrico, fino al suo apogeo A</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;epiciclo da tre eclissi</h2>
+
+		<p>
+			Le osservazioni devono dare la grandezza dell&#8217;epiciclo, $e = r/R$, e
+			dove si trovava la Luna in un istante, la sua longitudine eclittica media e
+			la sua anomalia, che fissano $L_0$ e $M_0$. Per usare osservazioni fatte a
+			mesi di distanza, il metodo richiede anche i due moti medi, che portano la
+			Luna da un&#8217;osservazione alla successiva.
+		</p>
+
+		<h3>I moti medi</h3>
+
+		<p>
+			Il moto medio in longitudine eclittica viene dal ritorno della Luna al
+			Sole. In un mese sinodico $P_s$ la Luna guadagna un giro intero sul Sole
+			medio, quindi si sposta di 360° più del Sole medio nello stesso tempo, e
+			il suo moto giornaliero è
+		</p>
+
+		$$n = n_\odot + \frac{360^\circ}{P_s},$$
+
+		<p>
+			dove $n_\odot$ è il moto giornaliero del Sole medio della pagina 1.3.
+		</p>
+
+		<p>
+			Il moto in anomalia segue dalla relazione della sezione 1, 251 mesi
+			sinodici per 269 mesi anomalistici:
+		</p>
+
+		$$n_M = \frac{269 \times 360^\circ}{251\,P_s}.$$
+
+		<p>
+			Entrambe le velocità si fissano meglio con osservazioni distanti, perché
+			l&#8217;errore di ciascuna viene allora diviso per l&#8217;intero intervallo.
+			Prendiamo $P_s$ dalle 1237 Lune nuove dal 1926 al 2025, con una retta per
+			i loro istanti: 29,530586 giorni, entro 2 secondi. Con il Sole medio della
+			pagina 1.3 questo dà $n = 13{,}176397^\circ$ e $n_M = 13{,}064987^\circ$
+			al giorno. Il mese anomalistico di $n_M$ è più lungo di 1,5 s di quello
+			misurato dagli istanti di massima velocità nella sezione 1, ben entro i 9
+			s che quegli istanti sparsi consentono.
+		</p>
+
+		<h3>Le eclissi di Luna come osservazioni</h3>
+
+		<p>
+			Per la grandezza dell&#8217;epiciclo e il posto della Luna, le eclissi di Luna
+			sono le osservazioni da usare. A metà di un&#8217;eclissi di Luna la Luna è
+			opposta al Sole, la cui longitudine eclittica è data dall&#8217;eccentrico
+			della pagina 2.1, quindi la longitudine eclittica della Luna è nota senza
+			misurarla rispetto alle stelle. La Luna è abbastanza vicina perché il luogo
+			dell&#8217;osservatore sulla Terra la sposti rispetto alle stelle, ma quella
+			parallasse non cambia l&#8217;istante di un&#8217;eclissi.
+		</p>
+
+		<p>
+			Le eclissi hanno un altro vantaggio. Il moto della Luna ha una seconda
+			grande disuguaglianza, massima ai quarti, che alla Luna nuova e piena
+			cambia solo la grandezza della prima, quindi un&#8217;eclissi misura una sola
+			equazione, quella che modella l&#8217;epiciclo.
+		</p>
+
+		<!-- A photo: CC0, credited in its caption (CLAUDE.md) -->
+		<figure class="photo">
+			<img src="images/lunar-eclipse-2025-09-07.jpg" width="800" height="800" loading="lazy"
+				alt="La Luna piena su un cielo nero, tutta rosso scuro, più luminosa e più arancione lungo il bordo inferiore.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				L&#8217;eclissi totale di Luna del 7 settembre 2025, la prima delle tre
+				eclissi che adattiamo qui sotto. La Luna è dentro l&#8217;ombra della Terra e
+				illuminata solo dalla luce del Sole piegata attraverso l&#8217;atmosfera
+				terrestre, ed è per questo che è rossa. Il suo bordo inferiore, più vicino
+				al margine dell&#8217;ombra, è il più luminoso.
+				<span class="credit">Giuseppe Donatiello, 2025,
+					<a href="https://commons.wikimedia.org/wiki/File:Lunar_eclipse_on_September_7,_2025_-_Totality_phase_(54774860817).jpg">Wikimedia Commons</a>,
+					CC0.</span>
+			</figcaption>
+		</figure>
+
+		<h3>Il metodo delle tre eclissi</h3>
+
+		<p>
+			Tre eclissi danno tre istanti, $t_1$, $t_2$ e $t_3$, le metà delle eclissi.
+			Le incognite sono $e$ e la longitudine eclittica media e l&#8217;anomalia
+			$M_2$ alla seconda eclissi. Fra le prime due eclissi la Luna media avanza
+			di $n\,(t_2 - t_1)$, e la Luna percorre sul suo epiciclo l&#8217;arco di
+			anomalia $a_{12}$; fra la seconda e la terza, $a_{23}$:
+		</p>
+
+		$$a_{12} = n_M\,(t_2 - t_1), \qquad a_{23} = n_M\,(t_3 - t_2),$$
+
+		<p>
+			entrambi contati oltre i giri interi.
+		</p>
+
+		<p>
+			Il moto vero della Luna su ciascun intervallo viene dal Sole. A metà di
+			ogni eclissi la Luna è opposta al Sole, quindi da un&#8217;eclissi alla
+			successiva si sposta, oltre i giri interi, esattamente quanto il Sole. Il
+			moto vero della Luna è quindi quello del Sole, e la Luna stessa non va mai
+			misurata rispetto alle stelle.
+		</p>
+
+		<p>
+			Togliendo il moto medio sullo stesso intervallo resta il moto vero meno il
+			moto medio, di nuovo oltre i giri interi:
+		</p>
+
+		$$d_{12} = \big[\lambda_\odot(t_2) - \lambda_\odot(t_1)\big] - n\,(t_2 - t_1), \qquad d_{23} = \big[\lambda_\odot(t_3) - \lambda_\odot(t_2)\big] - n\,(t_3 - t_2).$$
+
+		<p>
+			Alle eclissi si misurano solo i tempi, e il Sole e i due moti medi danno
+			tutto il resto. La tabella segue le tre eclissi di Luna attorno al 2026, il
+			7 settembre 2025, il 3 marzo 2026 e il 28 agosto 2026, attraverso questi
+			passi, con il Sole di riferimento e gli istanti di opposizione del cielo di
+			riferimento, entro pochi minuti dalla metà dell&#8217;eclissi.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table eclipse-data">
+			<thead>
+				<tr>
+					<th>Eclissi del 2025–2026</th>
+					<th>dalla prima alla seconda</th>
+					<th>dalla seconda alla terza</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>intervallo</td>
+					<td>176 g 17,5 h</td>
+					<td>177 g 16,7 h</td>
+				</tr>
+				<tr>
+					<td>il moto vero del Sole</td>
+					<td>$177{,}54^\circ$</td>
+					<td>$171{,}99^\circ$</td>
+				</tr>
+				<tr>
+					<td>il moto medio, $n\,\Delta t$</td>
+					<td>$168{,}66^\circ$</td>
+					<td>$181{,}37^\circ$</td>
+				</tr>
+				<tr>
+					<td>l&#8217;arco di anomalia, $n_M\,\Delta t$</td>
+					<td>$148{,}97^\circ$</td>
+					<td>$161{,}57^\circ$</td>
+				</tr>
+				<tr>
+					<td>vero meno medio, $d$</td>
+					<td>$+8{,}88^\circ$</td>
+					<td>$-9{,}38^\circ$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Poiché la longitudine eclittica media cresce esattamente di $n\,(t_2 -
+			t_1)$, ciò che resta in $d_{12}$ è la variazione dell&#8217;equazione
+			dell&#8217;anomalia fra le due eclissi, e lo stesso vale per $d_{23}$:
+		</p>
+
+		$$d_{12} = q(M_2) - q(M_2 - a_{12}), \qquad d_{23} = q(M_2 + a_{23}) - q(M_2).$$
+
+		<p>
+			Al primo ordine, $q(M) = -e\sin M$. Definendo $X = e\cos M_2$ e $Y = e\sin
+			M_2$, poiché $e\sin(M_2 + a) = X\sin a + Y\cos a$, le due equazioni
+			diventano lineari in X e Y (con $d$ in radianti):
+		</p>
+
+		$$\begin{aligned} d_{12} &= -X\sin a_{12} - Y\,(1 - \cos a_{12}), \\ d_{23} &= -X\sin a_{23} + Y\,(1 - \cos a_{23}). \end{aligned}$$
+
+		<p>
+			La loro soluzione dà $e = \sqrt{X^2 + Y^2}$ e $M_2 = \operatorname{atan2}(Y,
+			X)$ al primo ordine.
+		</p>
+
+		<!-- Figure 4: three eclipses -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) la Luna sull&#8217;epiciclo alle tre eclissi</p>
+						<canvas id="eclipses-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) le due equazioni</p>
+						<canvas id="eclipses-plot"></canvas>
+					</div>
+				</div>
+				<div class="presets" id="eclipses-presets">
+					<button type="button" data-triple="ours">2025 – 2026</button>
+					<button type="button" data-triple="babylon">Babilonia, 721 a.C.</button>
+					<button type="button" data-triple="alexandria">Alessandria, 133 d.C.</button>
+					<button type="button" data-triple="copernicus">Copernico, 1511</button>
+				</div>
+				<div class="readout" id="eclipses-readout" data-lines="5"></div>
+			</div>
+			<figcaption>
+				Scorri i quattro gruppi di eclissi. Le due curve continue in (b) si
+				incrociano nel punto che le eclissi implicano, la cui distanza
+				dall&#8217;origine è $r/R$; nota quanto poco cambia da un gruppo
+				all&#8217;altro.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-planet">rosso</dt>
+						<dd>l&#8217;equazione di $d_{12}$, continua dove vale esattamente, tratteggiata al primo ordine</dd>
+						<dt class="c-epicycle">viola</dt>
+						<dd>l&#8217;equazione di $d_{23}$, allo stesso modo</dd>
+						<dt class="c-muted">punto grigio</dt>
+						<dd>la soluzione al primo ordine</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>L&#8217;epiciclo dalle eclissi del 2025–2026</h3>
+
+		<p>
+			Risolte esattamente, come fanno le curve continue della Figura 4, le
+			equazioni delle eclissi del 2025–2026 danno $e = 0{,}0844$, una massima
+			equazione di 4,84°, e l&#8217;anomalia della Luna alla seconda eclissi.
+			Tornando indietro dalla seconda eclissi a J2000.0 con le due velocità medie
+			si ottengono $L_0$ e $M_0$, e la longitudine eclittica media che troviamo
+			lì differisce da quella di Meeus di un terzo di primo d&#8217;arco.
+		</p>
+
+		<p>
+			Altre terne di eclissi consecutive dal 2014 al 2026 danno rapporti fra
+			0,075 e 0,093. Le disuguaglianze minori che il modello trascura spostano un
+			poco ogni eclissi, e tre eclissi sono troppo poche per mediarle via.
+		</p>
+
+		<!-- History block: Hipparchus' and Ptolemy's epicycle -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>L&#8217;epiciclo di Ipparco e di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo insiste che la teoria della Luna sia costruita sulle eclissi di
+					Luna, «le sole osservazioni che permettono di determinare con
+					precisione la posizione della Luna» (IV 1). Per il mese sinodico
+					attribuisce a Ipparco proprio il lungo intervallo di cui le velocità
+					hanno bisogno, eclissi dei Caldei confrontate con quelle del suo tempo
+					(IV 2), anche se Toomer nota che Ipparco prese il mese
+					dall&#8217;astronomia babilonese e si limitò a confermarlo. Tolomeo
+					costruì il moto medio della Luna da questo mese e dal proprio Sole (IV
+					3).
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="hipparchus"></div>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Tolomeo risolse esattamente il problema delle tre eclissi, con le
+					corde, seguendo il metodo di Ipparco. I registri davano l&#8217;ora di ogni
+					eclissi in ore della notte, ed egli convertì gli intervalli fra esse in
+					giorni solari medi con l&#8217;equazione del tempo della pagina 2.2 (IV 6).
+					Lo risolse con tre eclissi babilonesi e di nuovo con tre osservate da
+					lui ad Alessandria, e i due epicicli risultarono «quasi esattamente gli
+					stessi». Usò 5,25 dove il deferente è 60, vicino a ciò che dà un
+					adattamento ai minimi quadrati alle Lune nuove e piene del 2025.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Copernico ripeté il metodo quattordici secoli dopo con tre eclissi
+					osservate da lui stesso, e trovò quasi lo stesso epiciclo (<em>De
+					Revolutionibus</em> IV 5). Tutti questi gruppi di eclissi, da quelle
+					babilonesi a quelle del 2025–2026, concordano entro la dispersione che
+					oggi mostra un singolo gruppo di tre, come mostrano i preset della
+					Figura 4. L&#8217;Esercizio 3 rifà il calcolo babilonese di Tolomeo.
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;epiciclo contro la Luna reale</h2>
+
+		<p>
+			Per vedere se un epiciclo adattato a tre Lune piene vale anche alle altre
+			fasi e in altri anni, la Figura 5 dà la sua curva dell&#8217;errore,
+			$\Delta\lambda = \lambda_\text{modello} - \lambda_\text{rif}$, accanto a
+			quella della Luna uniforme, che ha lo stesso moto medio e nessun epiciclo.
+		</p>
+
+		<!-- Figure 5: the epicycle fitted to 2025–2026 against the reference Moon -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-ours"></div>
+			</div>
+			<figcaption>
+				Punta il grafico per leggere gli errori. Passa a due mesi e nota che
+				l&#8217;errore è massimo vicino ai quarti e vicino allo zero nei punti, le
+				Lune nuove e piene. Su un secolo la fascia mantiene la sua larghezza.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nel 2026 l&#8217;epiciclo sbaglia fino a circa 3°, contro quasi 8° della Luna
+			uniforme, e ancora molto peggio di quanto facesse l&#8217;eccentrico per il
+			Sole.
+		</p>
+
+		<p>
+			Alle 25 Lune nuove e piene dell&#8217;anno, però, l&#8217;epiciclo non è mai a più
+			di 40′ dalla Luna reale.
+		</p>
+
+		<!-- History block: Ptolemy's epicycle against his eclipses -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>L&#8217;epiciclo di Tolomeo contro le sue eclissi</h3>
+
+			<div class="row">
+				<p>
+					La verifica di Tolomeo del suo epiciclo fu l&#8217;accordo fra i due che
+					trovò da eclissi distanti circa otto secoli e mezzo (IV 6). Le tre
+					eclissi che osservò lui stesso sono fra quelle a cui lo adattò, quindi
+					la verifica onesta è altrove: alle altre Lune nuove e piene del suo
+					tempo, la sua Luna è circa un grado indietro rispetto a quella reale.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Il suo Sole è indietro di circa altrettanto. Collocava la Luna opposta al
+				proprio Sole a ogni eclissi, quindi la Luna eredita l&#8217;errore del Sole,
+				e così la sua epoca, che fissò da una delle eclissi babilonesi con lo
+				stesso Sole (IV 8).
+			</p>
+
+			<p>
+				Nel corso dei secoli la sua Luna deriva con il suo Sole, e un poco più in
+				fretta: il moto medio della sua Luna in longitudine eclittica è lento di
+				poco più di quello del suo Sole.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Giusto alla Luna nuova e piena, sbagliato ai quarti</h2>
+
+		<p>
+			Gli errori più grandi della Figura 5 cadono vicino ai
+			<strong>quarti</strong>, quando la Luna è a 90° dal Sole, dove le eclissi non
+			la vedono mai. Un epiciclo adattato alle eclissi non ha modo di sapere come
+			si muove lì la Luna.
+		</p>
+
+		<div class="row">
+			<p>
+				L&#8217;avvistamento di Ipparco stesso mostra la discrepanza. Egli misurò la
+				distanza della Luna dal Sole vicino a un quarto, e Tolomeo calcola che la
+				sola prima anomalia la pone 2,7° più lontana dal Sole. Da «numerose altre
+				osservazioni simili» Tolomeo conclude che vicino ai quarti la massima
+				equazione è di circa 7⅔° (V 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="hipparchus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Nella serie della Luna di riferimento, l&#8217;ellisse da sola dà una
+				massima equazione di circa 6,3°, e l&#8217;attrazione del Sole aggiunge
+				l&#8217;<strong>evezione</strong>, un termine che dipende
+				dall&#8217;elongazione della Luna dal Sole. Alla Luna nuova e piena si
+				sottrae, lasciando circa i 5° che misurano le eclissi, e ai quarti
+				aggiunge la stessa quantità, dando circa 7,6°, vicino ai 7⅔° di Tolomeo.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note today">
+					La longitudine eclittica della Luna si calcola da una serie di termini
+					ricavati dalla gravitazione di Newton (Meeus 47 per il cielo di
+					riferimento). Il primo è quello dell&#8217;ellisse; gli altri vengono
+					dall&#8217;attrazione del Sole, che fa anche ruotare l&#8217;ellisse, con il
+					suo perigeo che fa un giro in 8,85 anni come l&#8217;apogeo
+					dell&#8217;eccentrico di questa pagina.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			Ciò che resta alle Lune nuove e piene, fino a 40′, ha due parti di
+			grandezza simile. Una è l&#8217;adattamento a sole tre eclissi: un epiciclo
+			adattato ai minimi quadrati a tutte le 24 Lune nuove e piene del 2025
+			resta entro 24′ da esse. Quasi tutta l&#8217;altra è l&#8217;equazione annua, un
+			termine di 11′ che segue l&#8217;anomalia del Sole, con qualche primo
+			d&#8217;arco dovuto all&#8217;inclinazione dell&#8217;orbita della Luna.
+		</p>
+
+		<p>
+			Ciò che manca all&#8217;epiciclo è un termine che cresca con l&#8217;elongazione
+			della Luna dal Sole, costruito nella geometria stessa. La pagina 3.2 dà
+			quello di Tolomeo, e mostra che cosa fa alla distanza della Luna.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Dimostra il teorema della sezione 2 nella forma generale di Tolomeo: un
+				eccentrico di raggio $R'$, il cui centro sta alla distanza $r'$ dalla
+				Terra con $r'/R' = r/R$, il cui apogeo si muove con $n - n_M$, e sul
+				quale la Luna è vista dal centro alla longitudine eclittica media
+				$\bar\lambda$, mette la Luna nella stessa direzione dell&#8217;epiciclo in
+				ogni istante, ma non alla stessa distanza. Poi applicalo a Ipparco:
+				Tolomeo riferisce che egli trovò 6,25 dove il raggio è 60 con un
+				eccentrico, e 4,77 con un epiciclo (IV 11). Possono entrambi descrivere
+				la stessa Luna? Trova la massima equazione di ciascuno.
+			</p>
+			<details class="hint">
+				<p>
+					Scrivi la Luna dell&#8217;eccentrico come somma di due vettori, come fa la
+					sezione 2 per l&#8217;epiciclo.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					L&#8217;eccentrico mette la Luna in $r'\,\hat u(\bar\lambda - M) +
+					R'\,\hat u(\bar\lambda)$. Poiché $r' = (R'/R)\,r$, questo è
+				</p>
+				$$\frac{R'}{R}\left[\,r\,\hat u(\bar\lambda - M) + R\,\hat u(\bar\lambda)\,\right] = \frac{R'}{R}\,\vec{OL},$$
+				<p>
+					il vettore dell&#8217;epiciclo moltiplicato per il numero positivo $R'/R$:
+					la stessa direzione in ogni istante, a una distanza pari a $R'/R$ volte
+					quella dell&#8217;epiciclo.
+				</p>
+				<p>
+					Conta solo il rapporto, quindi due modelli con rapporti diversi
+					descrivono due Lune diverse. La massima equazione di 6,25 su 60 è
+					$\arcsin 0{,}10417 = 5^\circ 58' 45''$, e quella di 4,77 su 60 è
+					$\arcsin 0{,}07944 = 4^\circ 33' 24''$, contro $5^\circ 01' 11''$ per i
+					5,25 di Tolomeo. Tolomeo scrive 5°49′ e 4°34′, dove Toomer nota che i
+					valori corretti sono 5°59′ e 4°33′. Tolomeo attribuisce la discrepanza
+					non alle due ipotesi ma al calcolo di Ipparco degli intervalli fra le
+					sue eclissi (IV 11).
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Le Lune piene più veloci si ripetono circa ogni quattordici mesi. Nel
+				cielo di riferimento la prima del secolo fu l&#8217;8 febbraio 2001, e 17
+				intervalli dopo un&#8217;altra cadde l&#8217;8 aprile 2020, 6998,8 giorni dopo. Da
+				questo e dal mese sinodico, 29,530586 giorni, trova il mese anomalistico.
+				Quanti mesi sinodici e anomalistici contiene un intervallo?
+			</p>
+			<details class="hint">
+				<p>
+					In un intervallo, quanti giri in più ha fatto l&#8217;anomalia rispetto
+					alle fasi?
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Un intervallo dura $B = 6998{,}8 / 17 = 411{,}69$ giorni. In esso
+					l&#8217;anomalia fa un giro in più delle fasi, $B/P_a = B/P_s + 1$, quindi
+				</p>
+				$$\frac{1}{P_a} = \frac{1}{P_s} + \frac{1}{B}, \qquad P_a = \frac{1}{1/29{,}530586 + 1/411{,}69} = 27{,}5541 \text{ giorni},$$
+				<p>
+					35 secondi meno dei 27,5545 giorni misurati. Un intervallo contiene
+					13,94 mesi sinodici e 14,94 mesi anomalistici. La Luna piena più veloce
+					può cadere solo su una Luna piena, quindi un singolo intervallo dura
+					384, 413 o 443 giorni; solo la media su molti intervalli dà il
+					battimento. Il Periodico della sezione 1 dà $223 \times 29{,}530586 /
+					239 = 27{,}5536$ giorni.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Parti dagli intervalli fra le eclissi babilonesi di Tolomeo come
+				registrati, 354 giorni 2½ ore e 176 giorni 20½ ore, e dai suoi moti
+				giornalieri, $n = 13{,}1763822^\circ$ e $n_M = 13{,}0649829^\circ$. Trova
+				il moto medio e l&#8217;arco di anomalia su ciascun intervallo, e confrontali
+				con i suoi valori, 345°51′ e 170°07′ in longitudine eclittica, 306°25′ e
+				150°26′ in anomalia (IV 6). Poi, con i suoi valori, i moti veri del Sole,
+				349°15′ e 169°30′, danno $d_{12}$ e $d_{23}$ (IV 6). Risolvi le equazioni
+				al primo ordine della sezione 3 per $X$ e $Y$, poi trova $e$ e $M_2$, e
+				confronta con la soluzione esatta della Figura 4 («Babilonia, 721 a.C.»)
+				e con i 5,22 e i 12°24′ di Tolomeo. La longitudine eclittica vera della
+				Luna alla seconda eclissi era Vergine 13°45′ (163,75°): dov&#8217;era la
+				Luna media?
+			</p>
+			<details class="hint">
+				<p>
+					Moltiplica ogni intervallo, in giorni, per il moto giornaliero e togli i
+					giri interi. Per le equazioni usa i valori di Tolomeo, $a_{12} =
+					306{,}4167^\circ$, $a_{23} = 150{,}4333^\circ$, con $d_{12}$ e $d_{23}$
+					in radianti.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Dagli intervalli registrati i moti medi sono 345°48,7′ e 170°17,9′, e
+					gli archi di anomalia 306°21,9′ e 150°35,8′, entro 11′ dai 345°51′,
+					170°07′, 306°25′ e 150°26′ di Tolomeo: egli conta gli intervalli in
+					giorni solari medi, e i suoi moti medi corrispondono a intervalli più
+					lunghi di 4 minuti e più corti di 20 minuti. Con i suoi valori, $d_{12} =
+					349^\circ 15' - 345^\circ 51' = +3^\circ 24'$ e $d_{23} = 169^\circ 30'
+					- 170^\circ 07' = -0^\circ 37'$.
+				</p>
+				<p>
+					In radianti $d_{12} = 0{,}05934$ e $d_{23} = -0{,}01076$, e le due
+					equazioni sono
+				</p>
+				$$\begin{aligned} 0{,}8047\,X - 0{,}4063\,Y &= 0{,}05934, \\ -0{,}4934\,X + 1{,}8698\,Y &= -0{,}01076, \end{aligned}$$
+				<p>
+					la cui soluzione è $X = 0{,}08173$, $Y = 0{,}01581$, quindi al primo
+					ordine $e = 0{,}0832$ e $M_2 = 10{,}9^\circ$. Le equazioni esatte danno
+					$e = 0{,}08694$, 5,216 parti dove il raggio è 60, e $M_2 = 12^\circ 24'
+					11''$: i 5,217 e i 12°24′ di Tolomeo. Il primo ordine è più corto del 4%
+					in $e$: i termini di ordine $e^2$ che trascura non sono piccoli accanto
+					a $d_{23}$, che è solo 0,62°.
+				</p>
+				<p>
+					L&#8217;equazione alla seconda eclissi è $q(M_2) = -0^\circ 59' 10''$, i
+					$-0^\circ 59'$ di Tolomeo, quindi la Luna media era a $163{,}75^\circ +
+					0{,}986^\circ = 164{,}736^\circ$, Vergine 14°44′, come egli trova.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IV 1 (la
+				teoria lunare dalle eclissi di Luna); IV 2 (i periodi della Luna, il
+				Periodico, i 251 mesi e i 269 ritorni in anomalia di Ipparco, con la
+				nota di Toomer sulla loro origine babilonese); IV 3 (i moti medi); IV 5
+				(l&#8217;equivalenza dell&#8217;eccentrico e dell&#8217;epiciclo); IV 6 (il modello
+				dell&#8217;epiciclo, le eclissi babilonesi e alessandrine, 5,22 e 5,23); IV
+				7–8 (la correzione dell&#8217;anomalia, l&#8217;epoca); IV 9–10 (l&#8217;epiciclo di
+				5,25 e la tavola della prima anomalia); IV 11 (i due rapporti di Ipparco,
+				con le correzioni di Toomer); V 2–3 (la seconda anomalia, l&#8217;avvistamento
+				di Ipparco del 128 a.C., circa 7⅔° ai quarti, la nota di Toomer sulla
+				tavola di 248 giorni).</li>
+			<li>Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen), IV 4 (i
+				periodi da Ipparco) e IV 5 [ff. 105v–109r] (il metodo delle tre eclissi,
+				le sue eclissi del 1511, del 1522 e del 1523, 8604 parti su
+				100·000).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 6.1 (le anomalie lunari:
+				l&#8217;ellisse, l&#8217;evezione, la variazione, l&#8217;equazione annua; il moto del
+				perigeo in 8,85 anni).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 47 (la
+				Luna di riferimento, la sua longitudine eclittica media, l&#8217;anomalia
+				media e l&#8217;argomento della latitudine, i termini dell&#8217;evezione).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/3.1-first-anomaly.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>
