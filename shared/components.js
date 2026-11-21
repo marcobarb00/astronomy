@@ -522,8 +522,9 @@ const Site = (function () {
 	}
 
 	/* The epilogue's topic cards (STRUCTURE.md §4, Epilogue): one list per
-	   group of TOPIC_GROUPS, each topic with its sentence, a link when its
-	   page is ready, greyed and marked "in preparation" until then. */
+	   group of TOPIC_GROUPS, each topic with its sentence. The list promises
+	   no pages: a topic is plain text, and a link only if a page for it
+	   exists one day. */
 	function renderTopics(container) {
 		container.classList.add('topics');
 
@@ -537,10 +538,10 @@ const Site = (function () {
 				const topic = TOPICS[id];
 				const ready = topic.ready && topic.path;
 				const title = capitalise(topic.title);
-				const item = makeEl('li', ready ? 'topic' : 'topic unready');
+				const item = makeEl('li', 'topic');
 				const head = ready
 					? `<a class="topic-title" href="${href(topic.path)}">${title}</a>`
-					: `<span class="topic-title">${title}<span class="soon">in preparation</span></span>`;
+					: `<span class="topic-title">${title}</span>`;
 
 				item.innerHTML = `${head}<span class="topic-sentence">${capitalise(topic.sentence)}.</span>`;
 				list.appendChild(item);

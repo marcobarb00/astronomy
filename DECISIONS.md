@@ -223,7 +223,9 @@ section.
   is named as the answer to "why", without his mathematics (Marco's
   question was whether to leave him out: removing the name would leave
   every residual without its cause and contradict pages 4.4 and 4.5,
-  which name him). Then the topic cards, greyed until their pages exist.
+  which name him). Then the topic cards, a plain list that promises no
+  pages: on 2026-11-21 Marco said the topics are not planned for now, so
+  they are neither greyed nor marked "in preparation".
   The toolbox is reached only from the hub; its calculator covers the
   Sun, the Moon and all five planets. Replaces "one short page" of
   entries. → STRUCTURE.md §4 (Epilogue), §5

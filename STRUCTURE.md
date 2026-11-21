@@ -1158,8 +1158,10 @@ them on the site's own reference before they are written.
      parallax, planetary latitudes, ΔT), where the story went (Newton and
      gravitation, perturbations, the Moon after Kepler), around the story
      (Tycho's observations, the Islamic critiques of the equant,
-     instruments, calendars). One sentence each; greyed and marked "in
-     preparation" until a page exists, then a link (`Site.renderTopics`).
+     instruments, calendars). One sentence each, as a plain list that
+     promises no pages (Marco, 2026-11-21: these topics are not planned
+     for now); a topic becomes a link only if a page is ever written
+     (`Site.renderTopics`).
   8. **Further reading:** a short annotated list (which book for which
      question), then the Sources.
 - **Figure (static):** the error of Kepler's ellipses for Jupiter and
