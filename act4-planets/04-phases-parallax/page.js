@@ -208,7 +208,7 @@ const telescopeFigure = {
 			ctx.font = FONT_TICK;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'top';
-			ctx.fillText(dateYearText(disk.jd), x, top + 6 + 0.9 * slot);
+			canvasText(ctx, dateYearText(disk.jd), x, top + 6 + 0.9 * slot);
 			ctx.fillStyle = COL.muted;
 			ctx.fillText(`${Math.round(Math.abs(disk.elongation))}°`, x, top + 6 + 0.9 * slot + 17);
 		});
@@ -421,9 +421,9 @@ const ORDERS_START = Time.julianDay(2024, 6, 4);
 /* The three disks of (b), from left to right: their name and their order
    (O sun / OK). */
 const ORDER_DISKS = [
-	{ name: 'below', ratio: PlanetArrangement.ORDERS.below },
-	{ name: 'around', ratio: PlanetArrangement.ORDERS.around },
-	{ name: 'above', ratio: PlanetArrangement.ORDERS.above }
+	{ name: tr('below', 'sotto'), ratio: PlanetArrangement.ORDERS.below },
+	{ name: tr('around', 'attorno'), ratio: PlanetArrangement.ORDERS.around },
+	{ name: tr('above', 'sopra'), ratio: PlanetArrangement.ORDERS.above }
 ];
 
 /* The drawing reaches 1.797 (OK = 1): the scale reaches 1.92. */
@@ -571,7 +571,7 @@ const ordersFigure = {
 			ctx.font = FONT_NAME;
 			ctx.fillText(ORDER_DISKS[i].name, x, textY);
 			ctx.font = FONT_TICK;
-			ctx.fillText(`k = ${fixed(phase.k, 2)}`, x, textY + 22);
+			canvasText(ctx, `k = ${fixed(phase.k, 2)}`, x, textY + 22);
 		});
 	}
 };
@@ -632,8 +632,8 @@ const parallaxFigure = {
 			y: [-PARALLAX_RANGE, PARALLAX_RANGE],
 			xTicks: tenthTicksX,
 			yTicks: tenthTicksY,
-			xLabel: 'along the ecliptic, east to the left (″)',
-			yLabel: 'ecliptic latitude (″)',
+			xLabel: tr('along the ecliptic, east to the left (″)', 'lungo l’eclittica, est a sinistra (″)'),
+			yLabel: tr('ecliptic latitude (″)', 'latitudine eclittica (″)'),
 			aspect: 0.96,
 			maxHeight: 440,
 			minHeight: 240,
@@ -817,8 +817,8 @@ const phaseFigure = {
 		this.plot = new Plot2D(byId('phase-plot'), {
 			x: FIT_RANGE_X,
 			y: PHASE_RANGE_K,
-			xLabel: 'the order O☉ : OK',
-			yLabel: 'k at greatest elongation',
+			xLabel: tr('the order O☉ : OK', 'l’ordine O☉ : OK'),
+			yLabel: tr('k at greatest elongation', 'k alla massima elongazione'),
 			aspect: 0.55,
 			maxHeight: 380,
 			minHeight: 240,
@@ -826,9 +826,9 @@ const phaseFigure = {
 		});
 
 		Plot2D.legend(byId('phase-legend'), [
-			{ label: 'Venus above the Sun', color: COL.earth, mark: 'band' },
-			{ label: 'Venus below the Sun', color: COL.epicycle, mark: 'band' },
-			{ label: 'the real Venus, 1986–2025', color: COL.planet, mark: 'dot' }
+			{ label: tr('Venus above the Sun', 'Venere sopra il Sole'), color: COL.earth, mark: 'band' },
+			{ label: tr('Venus below the Sun', 'Venere sotto il Sole'), color: COL.epicycle, mark: 'band' },
+			{ label: tr('the real Venus, 1986–2025', 'la Venere reale, 1986–2025'), color: COL.planet, mark: 'dot' }
 		]);
 	},
 
@@ -851,7 +851,12 @@ const phaseFigure = {
 		// the model, and Ptolemy's order on it
 		p.fn(phaseAtGreatest, { color: COL.ink, width: 2 });
 		p.marker(ptolemy, phaseAtGreatest(ptolemy), { color: COL.epicycle, radius: 5 });
-		p.text('Ptolemy', ptolemy, phaseAtGreatest(ptolemy), { color: COL.epicycle, align: 'center', dx: 0, dy: -12 });
+		p.text(tr('Ptolemy', 'Tolomeo'), ptolemy, phaseAtGreatest(ptolemy), {
+			color: COL.epicycle,
+			align: 'center',
+			dx: 0,
+			dy: -12
+		});
 
 		// the real Venus, each greatest elongation at the order it gives
 		this.real.forEach(point => p.marker(point.ratio, point.k, { color: COL.planet, radius: 3 }));
@@ -896,7 +901,7 @@ const testFigure = {
 
 		const options = {
 			x: [yearOf(TEST_START), yearOf(TEST_END)],
-			xLabel: 'year',
+			xLabel: tr('year', 'anno'),
 			aspect: 0.36,
 			maxHeight: 280,
 			minHeight: 200
@@ -914,7 +919,7 @@ const testFigure = {
 			byId('test-error'),
 			Object.assign({}, options, {
 				y: TEST_ERROR_RANGE,
-				yLabel: 'model − real',
+				yLabel: tr('model − real', 'modello − reale'),
 				aspect: 0.28,
 				onDraw: () => this.drawError()
 			})

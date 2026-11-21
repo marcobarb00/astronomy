@@ -42,14 +42,14 @@ const FIT_YEARS = [1926, 2026];
    coordinates: the start of each curve, the baseline above Jupiter's,
    the top below Saturn's). */
 const DRIFT_PLANETS = [
-	{ name: 'jupiter', label: 'Jupiter', color: COL.earth, at: [-900, 5.7], baseline: 'bottom' },
-	{ name: 'saturn', label: 'Saturn', color: COL.planet, at: [-900, -13.6], baseline: 'top' }
+	{ name: 'jupiter', label: bodyName('Jupiter'), color: COL.earth, at: [-900, 5.7], baseline: 'bottom' },
+	{ name: 'saturn', label: bodyName('Saturn'), color: COL.planet, at: [-900, -13.6], baseline: 'top' }
 ];
 
 /* x ticks: the year, written as on the rest of the site. */
 const DRIFT_TICKS = [
-	{ value: -999, label: '1000 BC' },
-	{ value: 1, label: 'AD 1' },
+	{ value: -999, label: bcText('1000') },
+	{ value: 1, label: adText('1') },
 	{ value: 1000, label: '1000' },
 	{ value: 2000, label: '2000' },
 	{ value: 3000, label: '3000' }
@@ -103,8 +103,8 @@ const driftFigure = {
 			x: DRIFT_YEARS,
 			y: DRIFT_RANGE,
 			xTicks: () => DRIFT_TICKS,
-			xLabel: 'year',
-			yLabel: 'error (°)',
+			xLabel: tr('year', 'anno'),
+			yLabel: tr('error (°)', 'errore (°)'),
 			aspect: 0.5,
 			onDraw: () => this.draw()
 		});

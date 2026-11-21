@@ -61,6 +61,15 @@ never used for text).
 | `--plate-soft` | `#c9d5ea` | secondary labels |
 | `--plate-accent` | `#f2c96b` | the one highlighted element (e.g. a circumpolar limit) |
 
+### Language flags
+
+The flag that links a page to its translation (top right, §4.2) is the
+only element drawn outside the palette: the Italian tricolour and the
+Union Jack in their own colours, 16 px high, with a hairline of `--line`
+round them (`shared/components.js` §9, `.lang-switch` in
+`shared/theme.css`). A flag in the palette's colours would not read as a
+flag.
+
 ## 3. Type
 
 From Google Fonts, loaded once in `shared/theme.css` (or each page's head):

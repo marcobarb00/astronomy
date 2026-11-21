@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.3 · SAME GEOMETRY, NEW CENTER
+     Act IV, the planets. In Ptolemy's models of pages 4.1 and 4.2 the mean
+     Sun enters every planet's motion, five times over, and each planet
+     has an epicycle of its own size. Adding the two vectors of each model
+     in the other order gives every planet the same point, the mean Sun;
+     scaling each model by its own factor makes the five share it, so the
+     ratios become distances and the planets fall into an order
+     (Copernicus, De Revolutionibus I 10, V 1 - 4). Copernicus fixed the
+     Sun. The directions seen from the Earth do not change; the distances
+     are a new prediction, tested on Mars. Numbers:
+     tools/numbers/4.3-new-center.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.3 · Stessa geometria, nuovo centro · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.3">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Nei modelli di Tolomeo gli epicicli di Marte, Giove e Saturno vanno tutti
+			di pari passo con il Sole medio, e i centri degli epicicli di Venere e
+			Mercurio si muovono con esso, cosa che la pagina 4.2 ha lasciato senza una
+			ragione. Copernico collegò i moti dei cinque pianeti a un solo punto, il
+			posto del Sole medio, su un&#8217;unica scala per tutti, e fissò quel punto.
+		</p>
+
+		<p>
+			La geometria di ciascun modello resta quella di Tolomeo, quindi le
+			direzioni che prevede non cambiano, e la curva dell&#8217;errore della pagina
+			4.2 risulta la stessa. I cinque modelli separati diventano invece un solo
+			sistema: i pianeti si dispongono in un ordine, e le loro distanze
+			diventano una previsione che il cielo reale può verificare.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Il Sole nel moto di ogni pianeta</h2>
+
+		<p>
+			Ogni pianeta ripete la sua anomalia legata al Sole una volta nel suo
+			periodo sinodico, e ogni sua fase cade nella stessa posizione rispetto al
+			Sole. La Figura 1 segue i cinque pianeti nel 2022–2025 con la loro
+			<strong>elongazione</strong>, la longitudine eclittica del pianeta meno
+			quella del Sole.
+		</p>
+
+		<!-- Figure 1: the elongations of the five planets, 2022 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) Venere e Mercurio</p>
+						<canvas id="elongation-inner"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Marte, Giove e Saturno</p>
+						<canvas id="elongation-outer"></canvas>
+						<div id="elongation-legend"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui i tratti spessi, dove un pianeta torna indietro fra le stelle. In
+				(a) ognuno sta sulla linea di elongazione zero, in (b) sulla linea di
+				180°: ogni pianeta torna indietro solo in una posizione rispetto al Sole,
+				qualunque sia la data.
+			</figcaption>
+		</figure>
+
+		<p>
+			Venere e Mercurio oscillano da una parte all&#8217;altra del Sole, e in questi
+			anni non se ne sono mai allontanati più di 47,2° e 27,4°. Marte, Giove e
+			Saturno restano indietro rispetto al Sole attraverso ogni elongazione. La
+			tabella dà il periodo sinodico di ciascun pianeta, il tempo medio fra due
+			suoi cappi nel secolo 1926–2025.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>pianeta</th>
+					<th>periodo sinodico $S$</th>
+					<th>epiciclo di Tolomeo, dove il deferente è 60</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercurio</td><td>115,88 giorni</td><td>22,5</td></tr>
+				<tr><td>Venere</td><td>583,92 giorni</td><td>43,17</td></tr>
+				<tr><td>Marte</td><td>779,93 giorni</td><td>39,5</td></tr>
+				<tr><td>Giove</td><td>398,88 giorni</td><td>11,5</td></tr>
+				<tr><td>Saturno</td><td>378,10 giorni</td><td>6,5</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="row">
+			<p>
+				Tolomeo inserisce il Sole in ciascuno dei suoi cinque modelli
+				separatamente. Per Marte, Giove e Saturno il raggio KP dell&#8217;epiciclo
+				resta parallelo alla linea dalla Terra al Sole medio (X 6). Per Venere e
+				Mercurio il centro K dell&#8217;epiciclo si muove con il moto del Sole medio
+				(IX 3), così che sta nella direzione del Sole medio, vista dall&#8217;equante
+				invece che dalla Terra (X 1–3 per Venere).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Ogni modello ha anche un rapporto proprio, la grandezza del suo epiciclo
+			nell&#8217;ultima colonna della tabella, adattato a quel solo pianeta, quindi
+			i modelli non dicono quale pianeta sia più vicino.
+		</p>
+
+		<div class="row">
+			<p>
+				Al tempo di Tolomeo l&#8217;ordine di Saturno, Giove e Marte era condiviso,
+				ma Venere e Mercurio erano posti sotto il Sole dagli astronomi più
+				antichi e sopra di esso da alcuni dei loro successori, e la questione
+				non si poteva risolvere, «poiché nessuna delle stelle ha una parallasse
+				apprezzabile». Egli mantenne l&#8217;ordine più antico, con il Sole nel mezzo
+				(IX 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>La disposizione di Copernico</h2>
+
+		<h3>Scambiare il deferente e l&#8217;epiciclo</h3>
+
+		<p>
+			Prendiamo Marte nel modello della pagina 4.2 e scriviamo il suo posto come
+			somma di due vettori, dalla Terra O al centro K dell&#8217;epiciclo, e da K al
+			pianeta P. Il secondo ha sempre lunghezza $r$ e punta al Sole medio, alla
+			longitudine eclittica $\bar\lambda_\odot$:
+		</p>
+
+		$$\vec{\text{OP}} = \vec{\text{OK}} + \vec{\text{KP}}, \qquad \vec{\text{KP}} = r\,\hat u(\bar\lambda_\odot).$$
+
+		<p>
+			Due vettori si possono sommare in entrambi gli ordini. Tracciamo
+			$\vec{\text{KP}}$ da O invece che da K, e chiamiamo ☉ la sua estremità.
+			Allora O, K, P e ☉ sono i vertici di un parallelogramma, e
+		</p>
+
+		$$\vec{\text{OP}} = \vec{\text{O}\odot} + \vec{\odot\text{P}}, \qquad \vec{\text{O}\odot} = \vec{\text{KP}}, \qquad \vec{\odot\text{P}} = \vec{\text{OK}}.$$
+
+		<p>
+			P è lo stesso punto, quindi si vede nella stessa direzione in ogni
+			istante. È lo scambio fra un epiciclo e un eccentrico della pagina 3.1,
+			applicato a un pianeta. L&#8217;epiciclo è diventato un cerchio di raggio $r$
+			attorno alla Terra, sul quale ☉ fa un giro all&#8217;anno nella direzione del
+			Sole medio, e il deferente, con il suo centro C e il suo equante Q, si è
+			spostato in blocco da O a ☉.
+		</p>
+
+		<p>
+			Per Venere e Mercurio usiamo il modello semplice della pagina 4.1, in cui
+			il deferente, di raggio 1 attorno alla Terra, porta K alla longitudine
+			eclittica del Sole medio. K è allora il punto ☉ stesso, e il pianeta gli
+			gira attorno sull&#8217;epiciclo, quindi i due cerchi si scambiano i ruoli.
+			(Nel modello completo di Tolomeo K è in quella direzione vista
+			dall&#8217;equante, e ☉ si muove su un eccentrico.) La Figura 2 disegna Marte,
+			nel modello della pagina 4.2, e Venere, in quello semplice, in entrambe le
+			descrizioni.
+		</p>
+
+		<!-- Figure 2: one planet in Ptolemy's description and in Copernicus'; date, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="arrangement-views"></div>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) Tolomeo: la Terra O fissa</p>
+						<canvas id="geostatic-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Copernico: ☉ fisso</p>
+						<canvas id="heliostatic-canvas"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="arrangement-day">data</label>
+							<input id="arrangement-day" type="range" min="0" max="5843" step="0.25" value="1800">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="arrangement-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="arrangement-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="arrangement-play">Avvia</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="arrangement-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia, e confronta il triangolo O ☉ P nei due pannelli: il suo lato
+				viola O☉ è la copia di KP, il suo lato verde ☉P la copia di OK, e (b) lo
+				sposta soltanto in modo che ☉ stia fermo, come mostra la stessa λ in
+				entrambe le letture. Poi scegli Venere, e nota che il cerchio che diventa
+				quello della Terra è ora il deferente.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">verde</dt>
+						<dd>il deferente, OK e la sua copia ☉P, in entrambi i pannelli</dd>
+						<dt class="c-epicycle">viola</dt>
+						<dd>l&#8217;epiciclo, KP e la sua copia O☉, in entrambi i pannelli</dd>
+						<dt>tratteggio</dt>
+						<dd>in (a), O☉ e ☉P, le copie di KP e OK che chiudono il parallelogramma</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\lambda$</dt>
+						<dd>la longitudine eclittica di P vista da O</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Una sola scala per cinque pianeti</h3>
+
+		<p>
+			Ciascuno dei modelli di Tolomeo misura le sue lunghezze in unità del
+			proprio deferente, quindi nulla lega un modello a un altro. Moltiplicare
+			ogni lunghezza di un modello per lo stesso numero non cambia nessuna
+			direzione vista da O, quindi ogni modello si può ingrandire o rimpicciolire
+			a piacere. Per ogni pianeta scegliamo il numero che rende la lunghezza O☉
+			uguale a 1: dividiamo per $r$ il modello di un pianeta esterno e lasciamo
+			com&#8217;è quello di un pianeta interno.
+		</p>
+
+		<p>
+			Allora tutti e cinque i modelli hanno lo stesso vettore
+			$\vec{\text{O}\odot}$, di lunghezza 1 verso il Sole medio, e quindi lo
+			stesso punto ☉, e si possono disegnare in un&#8217;unica figura. L&#8217;unità di
+			lunghezza è ora la distanza dalla Terra a ☉, l&#8217;<strong>unità
+			astronomica</strong> (au). Il raggio $a$ del cerchio di ciascun pianeta
+			attorno a ☉, la sua distanza media da ☉, è il suo epiciclo letto in un modo
+			nuovo:
+		</p>
+
+		$$a = \frac{1}{r} \ \text{(Marte, Giove, Saturno)}, \qquad a = r \ \text{(Venere, Mercurio)}.$$
+
+		<p>
+			Gli epicicli di Tolomeo danno le distanze della Figura 3 e della tabella
+			qui sotto.
+		</p>
+
+		<!-- Figure 3: Ptolemy's five models and Copernicus' arrangement (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) i cinque modelli di Tolomeo, ciascuno nella propria scala, il deferente 60</p>
+				<canvas id="ptolemy-canvas"></canvas>
+				<div class="panels">
+					<div>
+						<p class="panel-title">(b) una sola scala, fino a Saturno</p>
+						<canvas id="orbits-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(c) il quadrato tratteggiato di (b), ingrandito</p>
+						<canvas id="inner-canvas"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta le grandezze degli epicicli in (a) con i posti dei cerchi in
+				(b) e (c): gli epicicli più grandi appartengono ai pianeti più vicini al
+				cerchio della Terra, e il minuscolo epiciclo di Saturno lo pone più
+				lontano di tutti.
+			</figcaption>
+		</figure>
+
+		<h3>Copernico fissò il Sole</h3>
+
+		<div class="row">
+			<p>
+				Copernico fece un passo in più: «In quiete, tuttavia, nel mezzo di tutto
+				sta il sole», e «tutto ciò che appare come un moto del sole è dovuto
+				piuttosto al moto della terra» (I 10). Sottrarre $\vec{\text{O}\odot}$ da
+				ogni posto sposta l&#8217;intera figura senza ruotarla, come fa il pannello
+				(b) della Figura 2. ☉ sta fermo, la Terra gli gira attorno una volta
+				all&#8217;anno alla longitudine eliocentrica $\bar\lambda_\odot + 180^\circ$,
+				la sua direzione vista da ☉, e ogni direzione dalla Terra a un pianeta
+				resta com&#8217;era.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il centro di Copernico è, a rigore, il centro del cerchio della Terra, che
+			sta vicino al Sole perché il cerchio della Terra è un eccentrico, come lo
+			era quello del Sole nella pagina 2.1 (V 4). Il punto ☉ di questa pagina,
+			alla distanza 1 nella direzione del Sole medio, è quel centro per una Terra
+			che si muove uniformemente su un cerchio attorno a esso.
+		</p>
+
+		<p>
+			Le direzioni dalla Terra dipendono solo da dove stanno i corpi gli uni
+			rispetto agli altri, quindi fissare il Sole non cambia nessuna previsione.
+			Le previsioni vengono dalla disposizione: un solo punto ☉ per i cinque
+			pianeti, e le loro distanze da esso.
+		</p>
+
+		<!-- A photo: Copernicus' own drawing of the order of the spheres -->
+		<figure class="photo">
+			<img src="images/manuscript-9v.jpg" width="700" height="1022" loading="lazy"
+				alt="Una pagina manoscritta con cerchi concentrici attorno alla parola Sol, ciascuna fascia con una scritta in latino, e testo sopra, accanto e sotto.">
+			<figcaption>
+				<span class="fig-label">Foto.</span>
+				Il manoscritto del <em>De Revolutionibus</em> di Copernico, foglio 9
+				verso, con l&#8217;ordine delle sfere di I 10. Leggi le scritte dall&#8217;esterno
+				verso l&#8217;interno, sotto le stelle fisse: Saturno fa un giro in 30 anni,
+				Giove in 12, Marte in 2, la Terra con la Luna in 1, Venere in 9 mesi e
+				Mercurio in 80 giorni, attorno a Sol, il Sole. Nota che i periodi si
+				accorciano verso il Sole; i cerchi non sono disegnati in scala, quindi
+				danno l&#8217;ordine e non le distanze della Figura 3.
+				<span class="credit">Niccolò Copernico, 1520–1541, Biblioteca Jagellonica, Cracovia,
+					tramite <a href="https://commons.wikimedia.org/wiki/File:De_Revolutionibus_manuscript_p9b.jpg">Wikimedia Commons</a>,
+					pubblico dominio.</span>
+			</figcaption>
+		</figure>
+
+		<h3>I periodi attorno al Sole, e l&#8217;ordine</h3>
+
+		<p>
+			Visto da ☉, un pianeta esterno sta nella direzione di
+			$\vec{\text{OK}}$: la sua longitudine eliocentrica è la longitudine
+			eclittica di K, $\bar\lambda + q$, che cresce in media con il moto medio
+			del pianeta, quindi gira attorno a ☉ nel suo periodo in longitudine
+			eclittica $P_\lambda$ della pagina 4.1. Un pianeta interno sta nella
+			direzione di $\vec{\text{KP}}$, che ruota con $n_\odot + n_\mu$. Con il
+			periodo sinodico $S$ e l&#8217;anno $Y$, il tempo $P$ che un pianeta impiega a
+			fare un giro attorno a ☉ è quindi
+		</p>
+
+		$$\frac{1}{P} = \frac{1}{Y} - \frac{1}{S} \ \text{(esterni)}, \qquad \frac{1}{P} = \frac{1}{Y} + \frac{1}{S} \ \text{(interni)}.$$
+
+		<p>
+			La prima è la relazione della pagina 4.1, $1/P_\lambda + 1/S = 1/Y$. Con
+			l&#8217;anno sidereo $Y_\text{s}$ della pagina 2.3 al posto dell&#8217;anno tropico,
+			$P$ si conta rispetto alle stelle, come lo conta Copernico (V 1).
+		</p>
+
+		<div class="row">
+			<p>
+				Moltiplicate per la durata di una relazione fra periodi, le equazioni
+				diventano somme di numeri interi. Tolomeo aveva già notato che per i
+				pianeti esterni gli anni sono uguali ai giri in longitudine più i
+				ritorni in anomalia (IX 3), come nei 79 = 42 + 37 di Marte. Per Venere e
+				Mercurio le sue relazioni fanno fare al pianeta il giro dello zodiaco
+				tante volte quante il Sole; nella disposizione di Copernico i ritorni in
+				anomalia si sommano invece agli anni, e Venere fa il giro del Sole 8 + 5
+				= 13 volte in 8 anni (V 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="babylonian"></div>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>pianeta</th>
+					<th>epiciclo di Tolomeo come distanza $a$</th>
+					<th>periodi sinodici in anni (IX 3)</th>
+					<th>giri attorno al Sole (V 1)</th>
+					<th>un giro in</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercurio</td><td>0,375 au</td><td>145 in 46</td><td>46 + 145 = 191</td><td>0,241 anni</td></tr>
+				<tr><td>Venere</td><td>0,719 au</td><td>5 in 8</td><td>8 + 5 = 13</td><td>0,615 anni</td></tr>
+				<tr><td>Marte</td><td>1,519 au</td><td>37 in 79</td><td>79 − 37 = 42</td><td>1,881 anni</td></tr>
+				<tr><td>Giove</td><td>5,217 au</td><td>65 in 71</td><td>71 − 65 = 6</td><td>11,833 anni</td></tr>
+				<tr><td>Saturno</td><td>9,231 au</td><td>57 in 59</td><td>59 − 57 = 2</td><td>29,500 anni</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<div class="row">
+			<p>
+				Le due colonne mettono i pianeti nello stesso ordine: più è lontano dal
+				Sole, più lungo è il giro. Copernico mantenne il principio degli antichi
+				filosofi, «che la grandezza delle sfere si misura dalla durata del
+				tempo», e trovò in esso «una mirabile simmetria dell&#8217;universo, e un
+				armonioso legame stabilito fra il moto delle sfere e la loro grandezza,
+				quale non si può trovare in nessun altro modo» (I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<h3>Massime elongazioni e cappi</h3>
+
+		<p>
+			In questa disposizione le osservazioni delle pagine 4.1 e 4.2 assumono una
+			forma semplice. Venere e Mercurio sono più lontani dal Sole nel cielo
+			quando la linea di vista da O è tangente al loro cerchio attorno a ☉. Il
+			raggio ☉P è allora perpendicolare a OP, e il triangolo rettangolo O P ☉ dà
+		</p>
+
+		$$\sin\varepsilon_\text{max} = a,$$
+
+		<p>
+			con $\varepsilon_\text{max}$ la massima elongazione (non l&#8217;obliquità).
+			L&#8217;epiciclo di Venere di Tolomeo, 43,17 dove il deferente è 60, dà $a$ =
+			0,719 e una massima elongazione di 46,0°, dentro l&#8217;intervallo di quelle
+			reali, da 45,3° a 47,2° (pagina 4.1).
+		</p>
+
+		<div class="row">
+			<p>
+				Un pianeta esterno torna indietro quando la Terra, muovendosi più in
+				fretta sul suo cerchio più piccolo, lo sorpassa, quindi un cappio cade
+				all&#8217;opposizione, con il pianeta e ☉ da parti opposte della Terra.
+				Copernico chiama questo effetto del moto della Terra una «parallasse» (V
+				1), e spiega: «tutti questi fenomeni, che gli antichi astronomi cercavano
+				[di spiegare] per mezzo di un epiciclo per ciascun pianeta, avvengono a
+				causa del solo moto della terra» (V 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<p>
+			La Figura 4 lo verifica per Marte su due cerchi attorno a ☉, con la
+			distanza e il periodo sinodico di questa pagina, così che solo il moto
+			della Terra possa far tornare indietro la linea di vista.
+		</p>
+
+		<!-- Figure 4: the loops from the Earth's motion, Mars about an opposition (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) la Terra e Marte ogni 15 giorni</p>
+						<canvas id="loop-plan"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la longitudine eclittica di Marte, meno quella all&#8217;opposizione</p>
+						<canvas id="loop-directions"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui i numeri. La Terra si muove più in fretta di Marte e lo sorpassa in
+				5, l&#8217;opposizione. Da 3 a 7 le linee di vista in (a) ruotano in senso
+				orario, e Marte torna indietro in longitudine eclittica, il tratto spesso
+				di (b). Nota che il disegno non ha epiciclo.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-planet">linee</dt>
+						<dd>la linea di vista da ciascun posto numerato della Terra attraverso Marte nello stesso istante</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Un pianeta più lontano ha un $r = 1/a$ più piccolo e torna indietro di
+				meno, quindi i suoi cappi sono più corti: gli archi «appaiono maggiori in
+				Giove che in Saturno e minori che in Marte» (I 10), come nella tabella
+				della pagina 4.1.
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Cambia anche la distanza dalla Terra. Marte è a $a - 1 = 0{,}52$ au
+				all&#8217;opposizione e a $a + 1 = 2{,}52$ au alla congiunzione, quasi cinque
+				volte più lontano, e Copernico nota che «quando brilla tutta la notte,
+				[esso] sembra uguagliare Giove in grandezza» (I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<h3>Copernico senza l&#8217;equante</h3>
+
+		<div class="row">
+			<p>
+				Copernico respinse l&#8217;equante, un moto uniforme attorno a un punto che
+				non è il centro del suo cerchio (V 2, pagina 4.2). Per Marte, Giove e
+				Saturno pose il centro D del suo deferente a $\tfrac32 e$ da ☉, dove il C
+				di Tolomeo era a $e$ e Q a $2e$, e vi mise sopra un piccolo epiciclo,
+				l&#8217;<strong>epiciclo minore</strong>, di raggio un terzo di quello,
+				$\tfrac12 e$. Il pianeta fa un giro dell&#8217;epiciclo minore per ogni giro
+				del deferente, contato dal raggio del deferente, il che fa due giri
+				rispetto a direzioni fisse (V 4).
+			</p>
+			<aside>
+				<div class="note" data-origin="debated"></div>
+				<div class="note detour" data-topic="islamic"></div>
+			</aside>
+		</div>
+
+		<p>
+			La Figura 5 li disegna entrambi sul deferente di Marte, con
+			l&#8217;eccentricità ingrandita perché l&#8217;epiciclo minore si possa vedere.
+		</p>
+
+		<!-- Figure 5: Copernicus' epicyclet beside page 4.2's equant; mean anomaly, play -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="fig-row">
+					<div>
+						<p class="panel-title">il deferente della pagina 4.2 e quello di Copernico, l&#8217;eccentricità di Marte triplicata</p>
+						<canvas id="epicyclet-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="epicyclet-anomaly">anomalia media M</label>
+							<input id="epicyclet-anomaly" type="range" min="0" max="360" step="0.5" value="60">
+							<output></output>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="epicyclet-play">Avvia</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia, e guarda la retta QK e il raggio da D: restano paralleli, ciascuno
+				ruotando regolarmente attorno al proprio punto, mentre il punto blu
+				sull&#8217;epiciclo minore resta vicino a K. Nota dove i due punti si separano
+				un poco, vicino a M = 90° e 270°.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-deferent">verde</dt>
+						<dd>il deferente della pagina 4.2, attorno a C, con il suo equante Q</dd>
+						<dt class="c-earth">blu</dt>
+						<dd>il deferente di Copernico, attorno a D, con il suo epiciclo minore</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			L&#8217;epiciclo minore dà le direzioni dell&#8217;equante al secondo ordine e le
+			sue distanze al primo ordine (Esercizio 2). Al secondo ordine le distanze
+			differiscono: quelle dell&#8217;equante superano le distanze dell&#8217;ellisse di
+			Keplero fino a $\tfrac12 e^2$, quelle dell&#8217;epiciclo minore fino a $e^2$.
+			Fitzpatrick chiama il dispositivo di Copernico «un&#8217;approssimazione
+			marginalmente meno accurata» di quella di Tolomeo (§ 1.3).
+		</p>
+
+		<p>
+			Messo al posto dell&#8217;equante nel Marte della pagina 4.2, con gli stessi
+			parametri, l&#8217;epiciclo minore sposta il pianeta fino a 25′, e l&#8217;errore
+			massimo nel 2010–2025 cresce da 0,88° a 0,91°: rinunciare all&#8217;equante
+			rese il modello un poco peggiore. La Figura 6 confronta i due con il Marte
+			reale e fra loro.
+		</p>
+
+		<!-- Figure 6: the error curve of Mars with Copernicus' epicyclet, page 4.2's equant as ghost; their difference -->
+		<figure class="fig">
+			<div class="frame">
+				<p class="panel-title">(a) l&#8217;errore di ciascun modello contro il Marte reale, 2016–2019</p>
+				<div id="error-mars"></div>
+				<p class="panel-title">(b) l&#8217;epiciclo minore meno l&#8217;equante, 2010–2025</p>
+				<canvas id="error-difference"></canvas>
+			</div>
+			<figcaption>
+				Punta le opposizioni, i punti di (a), e confronta l&#8217;errore
+				dell&#8217;epiciclo minore con il fantasma dell&#8217;equante: i due si separano di
+				più attorno a esse, dove l&#8217;epiciclo ingrandisce ogni spostamento di K.
+				Poi segui (b) nei sedici anni dell&#8217;adattamento della pagina 4.2: la
+				differenza oscilla da una parte all&#8217;altra attraverso ogni opposizione,
+				di una quantità diversa ogni volta.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				Keplero riportò il punto dell&#8217;equante. Nelle parole di Neugebauer, egli
+				«non solo reintrodusse l&#8217;equante per il moto planetario ma lo applicò
+				anche per una migliore rappresentazione del moto della terra, destinato a
+				diventare infine il secondo fuoco dell&#8217;orbita ellittica»
+				(<em>HAMA</em> p. 155). La pagina 4.2 ha trovato che, al primo ordine, il
+				fuoco vuoto di un&#8217;ellisse è un equante, e la pagina 4.5 verifica
+				l&#8217;ellisse stessa.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>I periodi e le distanze dei cinque pianeti</h2>
+
+		<p>
+			Nessun pianeta guadagna un parametro: il suo periodo e la sua distanza sono
+			i moti e l&#8217;epiciclo delle pagine 4.1 e 4.2. Ora che le distanze di
+			pianeti diversi si possono confrontare, li adattiamo tutti e cinque, da
+			osservazioni già fatte, come ogni adattamento del corso.
+		</p>
+
+		<h3>I periodi</h3>
+
+		<p>
+			Eventi distanti fissano meglio un periodo, perché l&#8217;errore di ciascuno
+			viene diviso per il tempo fra essi. I periodi sinodici della sezione 1
+			sono le pendenze delle rette per gli istanti di ogni opposizione, o
+			congiunzione inferiore, del 1926–2025. L&#8217;anomalia zodiacale sposta i
+			singoli intervalli di giorni, ma su un secolo le variazioni si mediano, e
+			le relazioni della sezione 2, con l&#8217;anno sidereo, danno i periodi
+			attorno a ☉.
+		</p>
+
+		<h3>Le distanze</h3>
+
+		<p>
+			Per Venere e Mercurio ogni massima elongazione dà una distanza, $a =
+			\sin\varepsilon_\text{max}$, esattamente per un cerchio. Nel 1986–2025
+			cadono in ogni parte dello zodiaco, quindi prendiamo la media dei loro
+			seni. Le massime elongazioni di Venere variano appena, quelle di Mercurio
+			variano molto (Esercizio 3).
+		</p>
+
+		<p>
+			Per un pianeta esterno il triangolo più semplice sarebbe una quadratura,
+			con il pianeta a 90° dal Sole, dove l&#8217;angolo nella Terra è retto e
+			$\cos\psi = 1/a$. L&#8217;angolo $\psi$ in ☉ verrebbe dal tempo trascorso
+			dall&#8217;opposizione, a $360^\circ/S$ al giorno. Per Saturno, però, $\psi$ è
+			84°, vicino a un angolo retto anch&#8217;esso, e al primo ordine l&#8217;errore di
+			un giorno nella misura del tempo cambia la distanza del 16% (Figura 7).
+		</p>
+
+		<p>
+			L&#8217;arco di un cappio non richiede misure di tempo, perché è la differenza
+			di due posti. Quindi per Giove e Saturno misuriamo l&#8217;epiciclo come la
+			pagina 4.1 ha fatto per Marte, dall&#8217;arco medio dei loro cappi del
+			1986–2025, e prendiamo $a = 1/r$. Marte mantiene l&#8217;equante della pagina
+			4.2; i suoi cappi da soli, misurati allo stesso modo, danno la stessa
+			distanza entro un millesimo di au.
+		</p>
+
+		<!-- Figure 7: the two right triangles (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) Venere alla massima elongazione</p>
+						<canvas id="venus-triangle"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Saturno in quadratura, in scala</p>
+						<canvas id="saturn-triangle"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i due triangoli rettangoli. In (a) l&#8217;angolo retto è nel
+				pianeta e il triangolo è aperto, quindi l&#8217;angolo in O fissa bene $a$. In
+				(b) gli angoli in O e in ☉ sono entrambi vicini a 90°, e ruotare la linea
+				da ☉ del moto di un solo giorno sposta P molto lungo la linea di vista.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt>tratteggio</dt>
+						<dd>l&#8217;angolo in ☉ un giorno prima, $\psi - 360^\circ/S$, e il pianeta P′ che darebbe</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			La tabella dà i periodi e le distanze adattati, che la sezione 4 confronta
+			con il cielo di riferimento. Il cerchio di Venere è anche quello che
+			disegna la Figura 2, con il suo periodo sinodico.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>pianeta</th>
+					<th>periodo attorno al Sole $P$</th>
+					<th>distanza $a$</th>
+					<th>da</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercurio</td><td>87,97 giorni</td><td>0,380 au</td><td>massime elongazioni</td></tr>
+				<tr><td>Venere</td><td>224,70 giorni</td><td>0,723 au</td><td>massime elongazioni</td></tr>
+				<tr><td>Marte</td><td>686,99 giorni</td><td>1,520 au</td><td>equante della pagina 4.2</td></tr>
+				<tr><td>Giove</td><td>4333,50 giorni</td><td>5,201 au</td><td>cappi</td></tr>
+				<tr><td>Saturno</td><td>10·750,40 giorni</td><td>9,562 au</td><td>cappi</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Copernicus' periods and distances -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>I periodi e le distanze di Copernico</h3>
+
+			<div class="row">
+				<p>
+					Copernico prese i suoi periodi dalle relazioni fra periodi che Tolomeo
+					aveva ricevuto da Ipparco, contate in anni «misurati dalle stelle
+					fisse», poiché aveva trovato che gli anni contati dagli equinozi «non
+					sono del tutto uniformi», e le corresse con osservazioni proprie (V 1).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Per la distanza di ogni pianeta esterno usò una sola osservazione
+					lontana dall&#8217;opposizione e risolse il triangolo del pianeta, della
+					Terra e del centro del cerchio della Terra (V 9, V 14, V 19). È il caso
+					generale della quadratura qui sopra, con l&#8217;angolo al centro preso dai
+					suoi moti medi invece che cronometrato. Per Venere usò due massime
+					elongazioni prese con la Terra in direzioni opposte dal centro del
+					cerchio di Venere (V 21, Esercizio 1), e per Mercurio trovò un raggio
+					che cambiava (V 27, Esercizio 3).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Le sue distanze sono gli epicicli di Tolomeo invertiti, come notò
+					pianeta per pianeta: per Marte il risultato «differisce solo di poco da
+					ciò che trovò Tolomeo, ed è quasi identico a esso» (V 19). Il giudizio
+					di Neugebauer è che «la teoria tolemaica rappresenta in modo eccellente,
+					benché inconsapevolmente, l&#8217;ordine di grandezza delle dimensioni reali
+					del sistema planetario» (<em>HAMA</em> p. 147).
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Direzioni e distanze contro il cielo reale</h2>
+
+		<p>
+			Nella disposizione di Copernico, con il modello della pagina 4.2, Marte si
+			vede nelle direzioni che gli dava la pagina 4.2: nei due secoli 1926–2125
+			le due descrizioni concordano quasi esattamente. La loro curva
+			dell&#8217;errore è quindi la Figura 7 della pagina 4.2, entro 0,88° nel
+			2010–2025.
+		</p>
+
+		<p>
+			Le distanze dalla Terra sono una previsione che i modelli separati di
+			Tolomeo non potevano fare, perché ciascuno aveva la propria unità. Nel
+			2010–2025 il modello segue il Marte reale entro 0,020 au, al massimo
+			l&#8217;1,6% (Figura 8), e nei due secoli 1926–2125 resta quasi altrettanto
+			vicino.
+		</p>
+
+		<p>
+			Le opposizioni reali del 2010–2025 caddero a distanze da 0,39 a 0,67 au.
+			Su un cerchio di raggio $a$ centrato su ☉, un deferente con $e = 0$,
+			Marte sarebbe a 0,52 au a ciascuna di esse. Il modello segue le
+			opposizioni reali perché il suo deferente è eccentrico: la pagina 4.2 ha
+			trovato che la distanza di K dipende dal centro C, $\rho \approx 1 +
+			\text{OC}\cos M$.
+		</p>
+
+		<!-- Figure 8: Mars' distance from the Earth, 2010 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) la distanza di Marte dalla Terra a ogni opposizione</p>
+						<canvas id="distance-plot"></canvas>
+						<div id="distance-legend"></div>
+					</div>
+					<div>
+						<p class="panel-title">(b) il modello meno il Marte reale</p>
+						<canvas id="distance-error"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i punti di (a), uno per ogni opposizione: il Marte reale si
+				avvicina di più ad alcune opposizioni che ad altre, e il modello della
+				pagina 4.2 nella disposizione di Copernico lo segue, mentre il deferente
+				concentrico dà ogni volta la stessa distanza.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				Confrontati con il cielo di riferimento, i periodi adattati concordano
+				entro lo 0,1%, e le distanze entro lo 0,3% tranne quella di Mercurio, che
+				risulta più corta dell&#8217;1,9%. Il percorso di Mercurio è allungato, quindi
+				a una massima elongazione la linea di vista non è esattamente
+				perpendicolare al suo raggio, e il seno dà meno della distanza
+				(Esercizio 3).
+			</p>
+			<aside>
+				<div class="note today">
+					La prima approssimazione moderna mantiene questa disposizione: ogni
+					pianeta, Terra compresa, si muove su un&#8217;ellisse di Keplero attorno al
+					Sole. Il cielo di riferimento di questo sito usa ellissi di questo tipo
+					(gli elementi di Standish), con il semiasse maggiore di Marte di 1,524
+					au.
+				</div>
+			</aside>
+		</div>
+
+		<div class="table-scroll">
+		<table class="prose-table planets-table">
+			<thead>
+				<tr>
+					<th>pianeta</th>
+					<th>$a$ adattato</th>
+					<th>$a$ del riferimento</th>
+					<th>$P$ adattato</th>
+					<th>$P$ del riferimento</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercurio</td><td>0,380 au</td><td>0,387 au</td><td>0,241 anni</td><td>0,241 anni</td></tr>
+				<tr><td>Venere</td><td>0,723 au</td><td>0,723 au</td><td>0,615 anni</td><td>0,615 anni</td></tr>
+				<tr><td>Marte</td><td>1,520 au</td><td>1,524 au</td><td>1,881 anni</td><td>1,881 anni</td></tr>
+				<tr><td>Giove</td><td>5,201 au</td><td>5,202 au</td><td>11,864 anni</td><td>11,862 anni</td></tr>
+				<tr><td>Saturno</td><td>9,562 au</td><td>9,541 au</td><td>29,432 anni</td><td>29,457 anni</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Copernicus' check and how his distances fared -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>La verifica di Copernico</h3>
+
+			<div class="row">
+				<p>
+					Copernico verificò i suoi moti medi come aveva fatto Tolomeo, con
+					osservazioni distanti. Per Giove confrontò la propria opposizione del
+					1529 con l&#8217;ultima di Tolomeo, 1392 anni egizi prima, e trovò il moto
+					«certo e confermato perché concorda con i risultati ottenuti a vista»
+					(V 12).
+				</p>
+				<aside>
+					<div class="note" data-origin="copernicus"></div>
+				</aside>
+			</div>
+
+			<p>
+				Le distanze di Copernico non erano abbastanza precise per il passo
+				successivo. Tycho Brahe, che aveva osservato i pianeti per decenni,
+				scrisse a Keplero che non sarebbero servite al suo scopo, e gli suggerì di
+				usare invece le osservazioni di Tycho stesso (Voelkel cap. 2).
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>La disuniformità propria della Terra</h2>
+
+		<p>
+			La disposizione di Copernico dà le direzioni dei modelli di Tolomeo, quindi
+			ne mantiene gli errori. In essa l&#8217;epiciclo di ogni pianeta esterno è una
+			copia del cerchio della Terra, sul quale la Terra si muove uniformemente
+			attorno a ☉, mentre il percorso del Sole non è uniforme (pagina 2.1). La
+			disuniformità della Terra è una sola e la stessa per ogni pianeta, e il
+			modello di questa pagina la trascura per Marte, Giove e Saturno allo
+			stesso modo.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo poteva assorbirla solo nel deferente di ciascun pianeta. Nelle
+				parole di Neugebauer, le eccentricità della Terra e del pianeta
+				«producono un&#8217;eccentricità risultante e che è la somma vettoriale», e
+				«Tolomeo, che non si rese conto di questa situazione, attribuì
+				l&#8217;eccentricità risultante e al deferente dell&#8217;orbita planetaria»
+				(<em>HAMA</em> p. 147). Il residuo della pagina 4.2 ha fatto ruotare
+				l&#8217;epiciclo di Marte con il Sole reale, in direzione e distanza, invece
+				che con quello medio, il che dà al cerchio della Terra la disuniformità
+				del Sole reale, e l&#8217;errore è sceso nettamente.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernico riferì i pianeti al centro del cerchio della Terra, il posto
+				del Sole medio. Keplero trovò che l&#8217;orbita di Marte «doveva tener conto
+				della posizione effettiva del sole», il Sole vero invece di quello medio,
+				e che anche la Terra «accelerava quando si avvicinava al sole e
+				rallentava quando se ne allontanava» (Voelkel cap. 3): la disuniformità
+				che questa pagina trascura.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Prima di Keplero, Tycho Brahe mantenne la disposizione dei pianeti
+				attorno al Sole di Copernico e tenne invece ferma la Terra. Visti dalla
+				Terra, i suoi pianeti hanno le stesse direzioni. Se qualche osservazione
+				possa decidere fra i due è la domanda della pagina 4.4.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Nel 2025 Venere raggiunse la massima elongazione a est del Sole il 10
+				gennaio, 47,166°, e a ovest il 31 maggio, 45,838°. Trova la distanza di
+				Venere da ciascuna, e verifica il raggio adattato del cerchio di Venere
+				portando la vista di Venere della Figura 2 a una massima elongazione del
+				modello, dove $\lambda - \bar\lambda_\odot$ nella lettura raggiunge la sua
+				grandezza massima. Perché le due elongazioni del 2025 differiscono? Poi
+				rifai il calcolo di Copernico di V 21: le sue due massime elongazioni,
+				44°48′ (44,8°) e 47°16′ (47,27°), furono prese con la Terra in direzioni
+				opposte dal centro del cerchio di Venere, con il cerchio della Terra di
+				raggio 1. Trova il raggio del cerchio di Venere e quanto il suo centro
+				dista dal centro di quello della Terra.
+			</p>
+			<details class="hint">
+				<p>
+					Nel caso di Copernico il raggio $a$ è lo stesso in entrambi i
+					triangoli, e le distanze dalla Terra al centro del cerchio di Venere
+					sono $a/\sin\varepsilon_\text{max}$ in ciascuno; la loro somma è 2.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					I seni sono 0,7333 e 0,7174, con media 0,7254; l&#8217;adattamento alle 50
+					massime elongazioni del 1986–2025 dà 0,7226, quindi la massima
+					elongazione del modello, il massimo $\lambda - \bar\lambda_\odot$ nella
+					lettura della vista di Venere della Figura 2, è 46,27° da entrambe le
+					parti.
+				</p>
+				<p>
+					Le distanze reali non sono costanti. Il 10 gennaio 2025 Venere era a
+					0,7213 au dal Sole e la Terra a 0,9834 au, un rapporto di 0,7335, il seno
+					dell&#8217;elongazione; il 31 maggio erano a 0,7280 e 1,0140 au, un rapporto
+					di 0,7179. A gennaio Venere era più vicina al Sole, il che restringe
+					l&#8217;angolo, ma anche la Terra era più vicina, di una frazione maggiore, e
+					l&#8217;angolo risultò più ampio.
+				</p>
+				<p>
+					Copernico: $\sin 44{,}8^\circ = 0{,}7046$ e $\sin 47{,}267^\circ =
+					0{,}7345$, quindi le distanze dal centro sono $a/0{,}7046$ e
+					$a/0{,}7345$, e la loro somma è 2. Questo dà $a = 0{,}7193$ e le due
+					distanze 1,0208 e 0,9792, quindi il centro del cerchio di Venere è a
+					0,0208 dal centro di quello della Terra: i suoi 7193 e 208 parti su
+					10·000.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Copernico sostituì l&#8217;equante con un eccentrico il cui centro è a $d_1$
+				dal centro del moto verso l&#8217;apogeo, che porta un epiciclo minore di
+				raggio $d_2$ (V 4). Nel sistema della linea degli apsidi il pianeta sta in
+				$(d_1 + \cos M - d_2\cos 2M,\ \sin M - d_2\sin 2M)$. Trova $d_1$ e $d_2$
+				che danno la direzione e la distanza dell&#8217;equante al primo ordine, poi
+				sviluppa la direzione e la distanza al secondo ordine e confrontale con
+				quelle dell&#8217;equante. Il Marte di Copernico ha 1460 e 500 dove il
+				deferente è 10·000 (V 19): quanto è vicino ai 6 e 12 di Tolomeo dove esso
+				è 60?
+			</p>
+			<details class="hint">
+				<p>
+					Al primo ordine $q$ è la componente dello spostamento trasversale alla
+					retta di K, e la distanza è 1 più la sua componente lungo di essa. Per il
+					secondo ordine, scrivi il pianeta come $e^{iM}(1 + z)$ con $z = d_1
+					e^{-iM} - d_2 e^{iM}$, così che $q$ sia l&#8217;argomento di $1 + z$, $z -
+					z^2/2$ al secondo ordine.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Trasversalmente al raggio in $M$ gli spostamenti danno $-d_1\sin M -
+					d_2(\sin 2M\cos M - \cos 2M\sin M) = -(d_1 + d_2)\sin M$, e lungo di esso
+					$d_1\cos M - d_2(\cos 2M\cos M + \sin 2M\sin M) = (d_1 - d_2)\cos M$.
+					Quindi $q \approx -(d_1 + d_2)\sin M$ e $\rho \approx 1 + (d_1 -
+					d_2)\cos M$, e i $2e$ ed $e$ dell&#8217;equante richiedono $d_1 = \tfrac32 e$
+					e $d_2 = \tfrac12 e$.
+				</p>
+				<p>
+					Direzione: la parte immaginaria di $z$ è $-(d_1 + d_2)\sin M = -2e\sin
+					M$, e quella di $z^2$ è $(d_2^2 - d_1^2)\sin 2M = -2e^2\sin 2M$, quindi
+					$q \approx -2e\sin M + e^2\sin 2M$, la direzione dell&#8217;equante al secondo
+					ordine (tabella della pagina 4.2). Distanza: $\rho^2 = 1 + d_1^2 + d_2^2
+					+ 2(d_1 - d_2)\cos M - 2d_1 d_2\cos 2M = 1 + 2e\cos M + e^2(1 + 3\sin^2
+					M)$, la cui radice è $1 + e\cos M + 2e^2\sin^2 M$, contro l&#8217;$1 + e\cos M
+					+ \tfrac32 e^2\sin^2 M$ dell&#8217;equante (Fitzpatrick § 4.4–4.5).
+				</p>
+				<p>
+					Una verifica numerica con $e$ = 0,001 dà il coefficiente di $\sin 2M$
+					uguale a $1{,}0000\,e^2$ per entrambi, e $(\rho - 1)/e^2$ in $M =
+					90^\circ$ uguale a 2,000 e 1,500. Per Marte, $e$ = 0,1005, i due
+					differiscono fino a 3,4′ nella direzione di K e 0,0050 nella sua
+					distanza. Il Marte di Copernico ha $d_1 + d_2$ = 0,196 e $d_1 - d_2$ =
+					0,096, contro i $2e$ = 0,2 ed $e$ = 0,1 di Tolomeo, e $d_1/d_2$ = 2,92
+					contro 3.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Fra il 1986 e il 2025 le massime elongazioni di Mercurio andarono da
+				17,835°, il 26 settembre 2003, a 27,789°, il 28 marzo 2000. Che cosa
+				prevede un cerchio di raggio $a$ = 0,3796 attorno a ☉? In quelle due date
+				il cielo di riferimento ha Mercurio a 0,3075 au e 0,4661 au dal Sole, e la
+				Terra a 1,0025 au e 0,9984 au. Spiega l&#8217;intervallo. Poi spiega perché
+				la media dei seni, 0,3796, resta al di sotto della distanza media di
+				Mercurio dal Sole divisa per quella della Terra negli stessi istanti,
+				0,3881.
+			</p>
+			<details class="hint">
+				<p>
+					A una massima elongazione la linea di vista è tangente al percorso di
+					Mercurio. Per un cerchio il raggio è lì perpendicolare a essa; per un
+					percorso allungato questo vale solo nei suoi punti più vicino e più
+					lontano.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Il cerchio dà 22,31° a ogni massima elongazione. Il 26 settembre 2003 il
+					rapporto delle distanze era 0,3068, contro $\sin 17{,}835^\circ =
+					0{,}3063$; il 28 marzo 2000 era 0,4669, contro $\sin 27{,}789^\circ =
+					0{,}4662$. Mercurio era allora vicino ai suoi punti più vicino e più
+					lontano dal Sole, 0,3075 au e 0,4667 au nell&#8217;ellisse di riferimento. La
+					sua distanza cambia della metà fra i due, e le massime elongazioni la
+					seguono, quindi nessun cerchio attorno a ☉ può darle.
+				</p>
+				<p>
+					Altrove il raggio non è perpendicolare alla linea di vista, e
+					$\sin\varepsilon_\text{max}$ è il rapporto delle distanze per il seno
+					dell&#8217;angolo in Mercurio. Nelle 252 massime elongazioni quel seno va da
+					0,956 a 0,999, ed è per questo che la loro media resta al di sotto del
+					rapporto medio. Anche Copernico trovò che nessun cerchio singolo va
+					bene: nel suo modello il raggio di Mercurio cambia da 0,3573 a 0,3953 con
+					il posto della Terra rispetto agli apsidi di Mercurio (V 27).
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IX 1
+				(l&#8217;ordine delle sfere, nessuna parallasse); IX 3 (le relazioni fra
+				periodi, gli anni come somma dei giri e dei ritorni in anomalia); X 1–3
+				(Venere, K visto dall&#8217;equante); X 6 (il raggio dell&#8217;epiciclo parallelo
+				alla linea verso il Sole medio).</li>
+			<li>N. Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen): I 10
+				[f. 7v–10r] (l&#8217;ordine delle sfere, il Sole in quiete, la grandezza delle
+				sfere misurata dal tempo, gli archi di retrogradazione, Marte
+				all&#8217;opposizione); V 1 [f. 133v–135r] (i periodi, in anni siderei, la
+				«parallasse» dei pianeti); V 2 (l&#8217;obiezione all&#8217;equante); V 3 [f.
+				141r–v] (i cappi dal moto della Terra); V 4 [f. 142r–143r] (l&#8217;eccentrico
+				con un epiciclo minore); V 9, V 12, V 14, V 19 [f. 159v–160r], V 21 [f.
+				161v], V 27 [f. 166v–167r] (le distanze, la verifica del moto di Giove);
+				manoscritto, f. 9v (la foto).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Parte prima: Introduzione (p. 11: al-Tusi, Ibn ash-Shatir e
+				Copernico); I C 1 (pp. 145–147: gli epicicli come distanze, le
+				eccentricità come somme vettoriali); I C 2 (p. 155: Keplero e
+				l&#8217;equante).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 1.3 (la scala del sistema
+				di Copernico), § 4.4–4.5 (le orbite di Tolomeo e di Copernico al secondo
+				ordine).</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				cap. 2 (Tycho sulle distanze di Copernico) e cap. 3 (Keplero, la posizione
+				effettiva del Sole e l&#8217;orbita della Terra).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): i pianeti di riferimento, i loro semiassi
+				maggiori e periodi.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/4.3-new-center.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

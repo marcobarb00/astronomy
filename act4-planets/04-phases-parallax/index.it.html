@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.4 · PHASES AND PARALLAX
+     Act IV, the planets. Directions seen from the Earth depend only on
+     where the bodies are relative to one another, so they cannot decide
+     which body is at rest (the frame); they can decide how the motions
+     are linked (the arrangement). Tycho's system is Copernicus'
+     arrangement with the Earth at rest, and gives the same directions.
+     The phases of Venus decide where its circle lies relative to the Sun
+     (fitted: around it); the parallax of the stars decides between
+     Tycho's stars, at rest about the Earth, and Copernicus', at rest about
+     the Sun. Physics, since Newton, makes the frame of the Sun the
+     simpler one. Numbers: tools/numbers/4.4-phases-parallax.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.4 · Fasi e parallasse · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.4">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Tycho Brahe mantenne la disposizione dei pianeti attorno al Sole di
+			Copernico, e tenne ferma la Terra: il Sole gira attorno alla Terra una
+			volta all&#8217;anno, portando con sé i pianeti. Vista dalla Terra, ogni
+			pianeta mantiene la direzione che gli dava Copernico, quindi i due sistemi
+			non si possono distinguere dai posti dei pianeti nel cielo.
+		</p>
+
+		<p>
+			Sono in gioco due questioni, che si confondono facilmente. Una è quale
+			corpo si prende in quiete, il <strong>sistema di riferimento</strong>.
+			L&#8217;altra è come sono collegati i moti, in quale ordine stanno i pianeti e
+			a quali distanze, la <strong>disposizione</strong>. Le direzioni dei pianeti
+			non possono decidere la prima. La seconda si può decidere, con
+			osservazioni di altro tipo: le fasi di Venere e lo spostamento annuo delle
+			stelle.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>Venere al telescopio</h2>
+
+		<p>
+			A occhio nudo Venere è un punto luminoso. Al telescopio ha un disco, e
+			nella Figura 1 seguiamo quel disco per un periodo sinodico, dalla
+			congiunzione superiore del 4 giugno 2024 alla successiva, il 6 gennaio
+			2026.
+		</p>
+
+		<!-- Figure 1: the real Venus at twelve dates, to scale (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) a est del Sole, nel cielo della sera</p>
+						<canvas id="telescope-east"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) a ovest del Sole, nel cielo del mattino</p>
+						<canvas id="telescope-west"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui Venere da sinistra in (a) a destra in (b): cresce mentre si
+				assottiglia, da un piccolo disco rotondo oltre il Sole a un&#8217;ampia falce
+				vicino a esso, poi di nuovo indietro. Nota che è illuminata circa per
+				metà alle sue massime elongazioni, 47° e 46° in questi anni.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>tratteggio</dt>
+						<dd>la parte non illuminata del disco (l&#8217;est è a sinistra)</dd>
+						<dt>sotto ogni disco</dt>
+						<dd>la data e l&#8217;elongazione</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Fra le due congiunzioni Venere passa per tutte le fasi della Luna, e
+			vicino alla congiunzione inferiore, una sottile falce, è larga 6,2 volte
+			quanto quando è piena oltre il Sole.
+		</p>
+
+		<p>
+			Un cambiamento di grandezza era un&#8217;antica obiezione all&#8217;epiciclo di
+			Venere. Andreas Osiander, nella nota non firmata «Al lettore» che apre il
+			<em>De Revolutionibus</em>, chiedeva se qualcuno non vedesse che esso
+			faceva «apparire il diametro del pianeta al perigeo … più di quattro
+			volte, e il corpo del pianeta più di sedici volte, più grande che
+			all&#8217;apogeo», una variazione «smentita dall&#8217;esperienza di ogni età».
+			L&#8217;occhio non poteva vedere il disco, e il telescopio mostrò che la
+			variazione è reale.
+		</p>
+
+		<div class="row">
+			<p>
+				Le fasi erano state discusse prima che qualcuno potesse vederle.
+				Copernico riferisce i seguaci di Platone: poiché i pianeti brillano solo
+				della luce del Sole, Venere e Mercurio, «se fossero sotto il sole, …
+				si vedrebbero dimezzati o comunque meno che pienamente rotondi» (I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Era la questione aperta dell&#8217;ordine di Tolomeo. Gli astronomi più
+				antichi ponevano le sfere di Venere e di Mercurio sotto quella del Sole,
+				alcuni dei loro successori sopra. Poiché «nessuna delle stelle ha una
+				parallasse apprezzabile», Tolomeo mantenne l&#8217;ordine più antico come il
+				più plausibile (IX 1). I suoi modelli fissano le direzioni di ogni
+				pianeta, non la sua distanza.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Sistemi di riferimento e disposizioni</h2>
+
+		<h3>Ciò che un cambio di sistema lascia invariato</h3>
+
+		<p>
+			Per vedere perché nessuna direzione può mostrare quale corpo sia in
+			quiete, siano $\vec x_\text{O}(t)$ il posto della Terra e $\vec
+			x_\text{P}(t)$ quello di un pianeta in una qualche descrizione del
+			sistema. Ciò che misura l&#8217;osservatore sulla Terra è la direzione di
+			$\vec x_\text{P} - \vec x_\text{O}$. Prendiamo un vettore qualunque $\vec
+			c(t)$, una funzione del tempo complicata quanto vogliamo, e sottraiamolo da
+			ogni posto:
+		</p>
+
+		$${\vec x}'_\text{P} - {\vec x}'_\text{O} = \bigl(\vec x_\text{P} - \vec c\,\bigr) - \bigl(\vec x_\text{O} - \vec c\,\bigr) = \vec x_\text{P} - \vec x_\text{O}.$$
+
+		<p>
+			Ogni direzione resta invariata, in ogni istante. Scegliere $\vec c = \vec
+			x_\text{O}$ tiene la Terra in quiete, scegliere il posto del Sole tiene il
+			Sole in quiete, e nessuna delle due scelte può comparire nelle direzioni
+			dei pianeti. Ruotare l&#8217;intera descrizione, stelle comprese, non cambia
+			nemmeno nessuna direzione misurata rispetto alle stelle.
+		</p>
+
+		<div class="row">
+			<p>
+				Copernico mise il principio in una frase: «Ogni cambiamento di posizione
+				osservato è causato da un moto o dell&#8217;oggetto osservato o
+				dell&#8217;osservatore o, naturalmente, da uno spostamento disuguale di
+				ciascuno» (I 5). Tolomeo lo aveva ammesso per la rotazione diurna,
+				concedendo che «forse non c&#8217;è nulla nei fenomeni celesti che contrasti
+				con quell&#8217;ipotesi, almeno da considerazioni più semplici» (I 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>Il sistema di Tycho</h3>
+
+		<div class="row">
+			<p>
+				Tycho pubblicò il suo sistema nel 1588. La Terra sta al centro della
+				sfera delle stelle fisse, la Luna e il Sole le girano attorno, e i
+				pianeti girano attorno al Sole (Voelkel cap. 1–2).
+			</p>
+			<aside>
+				<div class="note" data-origin="tycho"></div>
+				<div class="note detour" data-topic="tycho"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per il Sole, la Luna e i pianeti, il sistema di Tycho è la disposizione di
+			Copernico descritta con $\vec c = \vec x_\text{O}$. Nella descrizione di
+			Copernico la Terra è in $\vec x_\text{O}(t)$, su un cerchio di 1 au
+			attorno al punto ☉ del Sole medio. Sottraendolo da ogni posto si mette la
+			Terra in quiete nell&#8217;origine e il Sole in $-\vec x_\text{O}(t)$, su un
+			cerchio di 1 au attorno alla Terra.
+		</p>
+
+		<p>
+			Ogni pianeta mantiene il suo posto rispetto al Sole, $\vec x_\text{P} -
+			\vec x_\odot$, quindi i cerchi dei pianeti sono portati attorno alla Terra
+			dal Sole, e ogni direzione dalla Terra resta quella di Copernico.
+		</p>
+
+		<p>
+			Per Marte, il sistema di Tycho è ancora una volta il modello della pagina
+			4.2. Nella pagina 4.3 abbiamo scritto il suo posto come
+			$\vec{\text{O}{\odot}} + \vec{\odot\text{P}}$, i due lati tratteggiati di
+			un parallelogramma, e nel sistema di Tycho quei lati sono cerchi, quello
+			del Sole attorno alla Terra e quello di Marte attorno al Sole. La Figura 2
+			disegna Venere, la Terra e Marte in entrambi i sistemi.
+		</p>
+
+		<!-- Figure 2: Copernicus and Tycho, side by side; date 2010 - 2025, play -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) Copernico: ☉ fisso</p>
+						<canvas id="copernicus-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Tycho: la Terra O fissa</p>
+						<canvas id="tycho-canvas"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="systems-day">data</label>
+							<input id="systems-day" type="range" min="0" max="5843" step="0.25" value="1800">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="systems-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="systems-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="systems-play">Avvia</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="systems-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia, e guarda il triangolo ombreggiato O☉P. In (b) è il triangolo di
+				(a) spostato senza ruotarlo, quindi in ogni data OP ha la stessa
+				direzione e la stessa lunghezza in entrambi i pannelli, come mostra la
+				lettura. Nota in (b) che il cerchio di Marte, portato dal Sole, incrocia
+				il cerchio del Sole stesso.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>V, P</dt>
+						<dd>Venere e Marte</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\lambda_\text{P}$, OP</dt>
+						<dd>la longitudine eclittica di Marte vista da O, e la sua distanza da O</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Alle sue opposizioni del 2010–2025 Marte arrivò fra 0,39 e 0,67 au dalla
+			Terra, sempre più vicino del Sole, quindi nel sistema di Tycho il suo
+			cerchio incrocia quello del Sole. Sfere solide non potrebbero
+			incrociarsi, e Tycho, dalle sue osservazioni della cometa del 1577, aveva
+			già dichiarato nel 1588 che le sfere non esistevano (Voelkel cap. 1).
+		</p>
+
+		<p>
+			Tycho mantenne le stelle sulla loro sfera attorno alla Terra in quiete,
+			dove Copernico le ha in quiete attorno al Sole. Per le stelle, dunque, i
+			due sistemi sono disposizioni diverse, e lì le osservazioni possono
+			distinguerli.
+		</p>
+
+		<h3>Dove sta il cerchio di Venere: le fasi</h3>
+
+		<p>
+			Un pianeta brilla della luce del Sole, quindi una sua metà è illuminata,
+			la metà rivolta verso il Sole, e noi vediamo la metà rivolta verso di noi.
+			Sia $\chi$ l&#8217;angolo nel pianeta fra le direzioni verso il Sole e verso la
+			Terra, l&#8217;<strong>angolo di fase</strong>.
+		</p>
+
+		<p>
+			Vista dalla Terra, il bordo della metà illuminata, il terminatore,
+			attraversa il disco come una mezza ellisse la cui semiampiezza è il raggio
+			del disco per $|\cos\chi|$. La parte illuminata è il mezzo disco dalla
+			parte del Sole con quella mezza ellisse aggiunta quando $\chi < 90^\circ$ e
+			tolta quando $\chi > 90^\circ$, quindi la <strong>frazione
+			illuminata</strong> dell&#8217;area del disco è
+		</p>
+
+		$$k = \frac{1 + \cos\chi}{2}.$$
+
+		<p>
+			Nel modello semplice della pagina 4.1, che la pagina 4.3 ha adattato a
+			Venere, il centro K dell&#8217;epiciclo sta sulla linea dalla Terra O al Sole
+			medio, e le direzioni fissano solo il rapporto fra l&#8217;epiciclo e OK. Nulla
+			fissa dove stia K su quella linea rispetto al Sole: è la libertà di scala
+			della pagina 4.3, e le fasi dipendono da essa. Prendiamo OK = 1,
+			l&#8217;epiciclo di raggio $r$, Venere in $\text{P} = \text{K} + r\,\hat
+			u(\mu)$ con l&#8217;anomalia $\mu$ della pagina 4.1, contata qui dalla
+			direzione del Sole, e il Sole alla distanza O☉ sulla stessa linea. Con O
+			nell&#8217;origine e $\hat u_\odot$ il versore verso K e il Sole, i tre punti
+			sono
+		</p>
+
+		$$\vec x_\text{O} = 0, \qquad \vec x_\odot = \text{O}{\odot}\,\hat u_\odot, \qquad \vec x_\text{P} = \hat u_\odot + r\,\hat u(\mu).$$
+
+		<p>
+			Poiché $\hat u(\mu)$ forma l&#8217;angolo $\mu$ con $\hat u_\odot$, il loro
+			prodotto scalare è $\cos\mu$, quindi $\hat u_\odot\cdot\vec x_\text{P} = 1
+			+ r\cos\mu$ e $|\vec x_\text{P}|^2 = 1 + 2r\cos\mu + r^2$. L&#8217;angolo $\chi$
+			in P sta fra le direzioni da P verso il Sole e verso la Terra, quindi il
+			segno di $\cos\chi$ è quello del prodotto
+		</p>
+
+		$$\begin{aligned}
+			&(\vec x_\odot - \vec x_\text{P})\cdot(\vec x_\text{O} - \vec x_\text{P}) \\
+			&\quad = |\vec x_\text{P}|^2 - \vec x_\odot\cdot\vec x_\text{P} \\
+			&\quad = (1 + 2r\cos\mu + r^2) - \text{O}{\odot}\,(1 + r\cos\mu) \\
+			&\quad = (1 + r^2 - \text{O}{\odot}) + r\,(2 - \text{O}{\odot})\cos\mu.
+		\end{aligned}$$
+
+		<p>
+			È lineare in $\cos\mu$, quindi mantiene un solo segno per tutto
+			l&#8217;epiciclo quando i suoi due valori estremi, in $\cos\mu = \pm 1$, hanno
+			lo stesso segno. Valgono $(1 \pm r)(1 \pm r - \text{O}{\odot})$, e ne
+			seguono tre casi.
+		</p>
+
+		<ul>
+			<li>
+				<strong>Sotto il Sole</strong>, l&#8217;intero epiciclo più vicino del Sole,
+				O☉ &gt; (1 + $r$) OK: entrambi i valori sono negativi, $\chi > 90^\circ$ e
+				$k < \tfrac12$ ovunque. Venere non è mai illuminata più della metà, come
+				dicevano i platonici.
+			</li>
+			<li>
+				<strong>Sopra il Sole</strong>, O☉ &lt; (1 − $r$) OK: entrambi sono
+				positivi, e Venere è sempre illuminata più della metà.
+			</li>
+			<li>
+				<strong>Attorno al Sole</strong>, O☉ = OK, K nel Sole: Venere è piena
+				oltre il Sole e nuova fra esso e noi. Alla massima elongazione la linea di
+				vista è tangente al cerchio attorno a ☉, il raggio ☉P le è
+				perpendicolare, $\chi = 90^\circ$ e $k = \tfrac12$.
+			</li>
+		</ul>
+
+		<p>
+			Per la Venere della pagina 4.3, $r$ = 0,72, sotto il Sole significa O☉
+			oltre 1,72 OK e sopra di esso significa O☉ entro 0,28 OK.
+		</p>
+
+		<div class="row">
+			<p>
+				Quanto sotto il Sole Tolomeo mettesse Venere si può leggere nelle sue
+				<em>Ipotesi planetarie</em>. Lì le sfere dei pianeti stanno l&#8217;una
+				dentro l&#8217;altra senza spazi, quindi il punto più lontano di Venere tocca
+				il punto più vicino del Sole, a 1160 raggi terrestri da noi
+				(<em>HAMA</em> pp. 111–112, e Copernico I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			La distanza media del Sole è un poco maggiore, 1210 raggi terrestri
+			(<em>Almagest</em> V 15). Il punto più lontano di Venere è a $(1 + r)$ OK,
+			quindi con OK = 1 il Sole è a $(1 + r) \times 1210/1160$ = 1,80, appena
+			oltre l&#8217;epiciclo. La Figura 3 usa questa distanza per l&#8217;ordine sotto il
+			Sole.
+		</p>
+
+		<p>
+			OP va da $(1 - r)$ OK a $(1 + r)$ OK ovunque sia il Sole, quindi il
+			diametro apparente massimo è $(1 + r)/(1 - r)$ = 6,2 volte il minimo in
+			ogni ordine. Le grandezze verificano $r$, e solo le fasi verificano
+			l&#8217;ordine. Nella Figura 3 mettiamo il Sole in ciascuno dei tre posti.
+		</p>
+
+		<!-- Figure 3: three orders of Venus at once; date over a synodic period, play -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels orders-panels">
+					<div>
+						<p class="panel-title">(a) da sopra l&#8217;eclittica</p>
+						<canvas id="orders-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Venere vista da O nei tre ordini, l&#8217;est a sinistra</p>
+						<canvas id="disk-canvas"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="orders-day">data</label>
+							<input id="orders-day" type="range" min="0" max="584" step="0.25" value="140">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="orders-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="orders-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="orders-play">Avvia</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="orders-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un periodo sinodico e confronta i tre dischi in (b): in ogni data
+				hanno la stessa grandezza, e cambia solo la fase. Sotto il Sole Venere non
+				è mai illuminata più della metà, sopra mai meno.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-sun">punti oro</dt>
+						<dd>il Sole in ciascun ordine: il più lontano da O per «sotto», quello in K per «attorno», il più vicino per «sopra»</dd>
+						<dt class="c-sun">tratteggio oro</dt>
+						<dd>la luce del Sole che raggiunge P da ciascuno</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\lambda - \bar\lambda_\odot$</dt>
+						<dd>l&#8217;elongazione di P da ☉, vista da O, positiva verso est</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Le stelle di Tycho e le stelle di Copernico</h3>
+
+		<p>
+			Nella disposizione di Copernico una stella è in quiete alla distanza $a_*$
+			dal Sole, in au come nella pagina 4.3, nella direzione $\hat u_*$ di
+			longitudine eclittica $\lambda$ e latitudine eclittica $\beta$. La Terra è
+			alla distanza O☉ dal Sole, opposta alla direzione del Sole $\hat u_\odot$,
+			quindi la stella si vede dalla Terra lungo
+		</p>
+
+		$$a_*\,\hat u_* + \text{O}{\odot}\,\hat u_\odot.$$
+
+		<p>
+			Al primo ordine in O☉/$a_*$, il secondo termine sposta la stella verso il
+			Sole dell&#8217;angolo O☉/$a_*$ per la componente di $\hat u_\odot$
+			trasversale alla linea di vista. Scriviamo $\varpi = 1/a_*$ radianti, la
+			<strong>parallasse</strong> della stella (non la $p$ della pagina 2.3),
+			espressa in secondi d&#8217;arco. Lungo l&#8217;eclittica e trasversalmente a
+			essa, con $\lambda_\odot$ la longitudine eclittica del Sole, gli
+			spostamenti sono
+		</p>
+
+		$$\Delta\lambda\cos\beta = \varpi\,\text{O}{\odot}\sin(\lambda_\odot - \lambda), \qquad \Delta\beta = -\varpi\,\text{O}{\odot}\sin\beta\cos(\lambda_\odot - \lambda).$$
+
+		<p>
+			Mentre il Sole fa il giro, la stella percorre una volta all&#8217;anno
+			un&#8217;ellisse di semiassi $\varpi$ lungo l&#8217;eclittica e $\varpi\sin\beta$
+			trasversalmente a essa: un cerchio vicino al polo dell&#8217;eclittica, un
+			breve segmento sull&#8217;eclittica. Nel sistema di Tycho la stella è in quiete
+			attorno alla Terra in quiete e non si muove affatto. Le stelle di
+			Copernico, descritte con la Terra in quiete, percorrono ciascuna un
+			cerchio di 1 au in un anno, di pari passo con il Sole.
+		</p>
+
+		<div class="row">
+			<p>
+				Copernico sapeva che nessun moto del genere era stato visto. «Nessuno di
+				questi fenomeni appare nelle stelle fisse. Questo prova la loro immensa
+				altezza, che fa svanire dai nostri occhi perfino la sfera del moto
+				annuo, o il suo riflesso» (I 10).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+				<div class="note detour" data-topic="parallax"></div>
+			</aside>
+		</div>
+
+		<p>
+			Nella Figura 4 seguiamo 61 Cygni, a latitudine eclittica 51,9°, la cui
+			parallasse Bessel pubblicò nel 1838.
+		</p>
+
+		<!-- Figure 4: a star's parallax with the Sun at rest and with the Earth at rest; date over 2026, play -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) entrambe le stelle attorno alla Terra O in quiete, non in scala</p>
+						<canvas id="parallax-earth"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) 61 Cygni nel cielo, rispetto a T</p>
+						<canvas id="parallax-sky"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="parallax-day">data</label>
+							<input id="parallax-day" type="range" min="0" max="365" step="0.25" value="147">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="parallax-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="parallax-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="parallax-play">Avvia</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="parallax-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Avvia un anno. In (a) la stella di Copernico gira di pari passo con il
+				Sole mentre la stella di Tycho T sta ferma, quindi la linea di vista
+				verso la stella di Copernico oscilla attorno alla direzione fissa di T.
+				In (b), nota quanto è piccolo il percorso reale, mai più di un terzo di
+				secondo d&#8217;arco da T.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-planet">stella piena, cerchio tratteggiato</dt>
+						<dd>la stella di Copernico e il suo cerchio annuo di 1 au attorno a T</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>$\Delta\lambda\cos\beta$, $\Delta\beta$</dt>
+						<dd>lo spostamento lungo l&#8217;eclittica, positivo verso est, e in latitudine eclittica</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Il moto della Terra ha un secondo effetto sulle stelle, trovato da
+				Bradley nel 1729. La luce arriva da una direzione leggermente diversa
+				quando l&#8217;osservatore si muove trasversalmente a essa, del rapporto fra
+				la velocità della Terra e la velocità della luce, 20,5″. La velocità
+				della Terra è a 90° dalla direzione del Sole, quindi la stella percorre
+				la stessa ellisse con un quarto d&#8217;anno di sfasamento rispetto alla
+				parallasse, e molto più grande. L&#8217;effetto dipende dalla velocità della
+				Terra rispetto alle stelle, che la disposizione di Tycho rende nulla.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="aberration"></div>
+			</aside>
+		</div>
+
+		<h3>Il sistema di riferimento discusso con la fisica</h3>
+
+		<div class="row">
+			<p>
+				L&#8217;argomento di Tolomeo per una Terra in quiete era fisico. Se la Terra
+				ruotasse una volta al giorno, «né le nuvole né altri oggetti volanti o
+				lanciati si vedrebbero mai muoversi verso est, perché il moto della terra
+				verso est li supererebbe e li oltrepasserebbe sempre»; e se l&#8217;aria
+				ruotasse con essa, gli oggetti nell&#8217;aria resterebbero comunque indietro,
+				oppure, trascinati con l&#8217;aria, «apparirebbero sempre fermi» (I 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Copernico rispose con un&#8217;altra fisica: la rotazione è naturale per la
+				Terra, non violenta, e l&#8217;aria vicina la condivide. Su una nave «che
+				galleggia tranquilla, i marinai vedono il suo moto riflesso in tutto ciò
+				che è fuori, mentre d&#8217;altra parte credono di essere fermi, insieme a
+				tutto ciò che è a bordo» (I 8).
+			</p>
+			<aside>
+				<div class="note" data-origin="copernicus"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Le leggi del moto di Newton valgono in alcuni sistemi di riferimento e
+				non in altri, i sistemi oggi chiamati inerziali. Egli prese come ipotesi
+				che il centro del sistema del mondo sia immobile, notando che «alcuni
+				sostengono che la terra, altri che il sole, sia fisso in quel centro», e
+				mostrò che questo centro è il comune centro di gravità del Sole, della
+				Terra e dei pianeti, attorno al quale il Sole stesso si muove un poco
+				(<em>Principia</em>, Libro III, Ipotesi I, Proposizioni XI–XII).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+				<div class="note detour" data-topic="newton"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Nel sistema di quel centro le leggi assumono la loro forma semplice, e il
+				Sole vi si muove solo un poco, quindi la fisica rende più semplice la
+				descrizione eliostatica. Nella descrizione geostatica le leggi valgono
+				anch&#8217;esse, una volta date a ogni corpo le forze aggiuntive di un
+				sistema accelerato e rotante.
+			</p>
+			<aside>
+				<div class="note today">
+					Oggi le posizioni si calcolano nel sistema del centro di massa del
+					sistema solare, con gli assi fissati da lontane radiosorgenti, e solo
+					dopo si riferiscono all&#8217;osservatore sulla Terra.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			La rotazione diurna della Terra si vede in un esperimento a terra: a
+			Parigi nel 1851 il pendolo di Foucault ruotò lentamente il suo piano di
+			oscillazione. Il moto annuo è una caduta libera attorno al Sole, che
+			esperimenti di quel tipo non mostrano.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;ordine di Venere</h2>
+
+		<p>
+			L&#8217;ordine di Venere, il rapporto O☉ : OK che colloca K sulla linea verso
+			il Sole, non ruota nessuna direzione, quindi lo fissiamo con la fase. Il
+			momento migliore per leggere la fase è la massima elongazione, dove
+			Venere è illuminata per metà solo se K è nel Sole.
+		</p>
+
+		<p>
+			Alla massima elongazione la linea di vista è tangente all&#8217;epiciclo,
+			quindi P è noto dal solo $r$, e $k$ dipende solo da O☉. Cala al crescere
+			di O☉: vicino a O☉ = OK, ogni 0,01 in $k$ sposta il rapporto di circa
+			0,02. Una fase letta al momento giusto fissa quindi l&#8217;ordine entro pochi
+			punti percentuali.
+		</p>
+
+		<p>
+			Prendiamo le 50 massime elongazioni del 1986–2025 a cui la pagina 4.3 ha
+			adattato $r$, e leggiamo a ciascuna la fase della Venere reale. Ognuna dà
+			un rapporto entro il 3% da 1, e la loro media è O☉ = 0,998 OK. K è nel
+			Sole, l&#8217;ordine è quello di Copernico e di Tycho, e il modello di Venere
+			è quello della pagina 4.3. La Figura 5 legge ciascuna delle 50 fasi sulla
+			curva di $k$ alla massima elongazione, contro gli ordini sotto e sopra il
+			Sole.
+		</p>
+
+		<!-- Figure 5: the phase at greatest elongation against the order, with the fit (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="phase-plot"></canvas>
+				<div id="phase-legend"></div>
+			</div>
+			<figcaption>
+				Leggi la curva da una fase alla massima elongazione a un ordine O☉ : OK.
+				La Venere reale è illuminata per metà a ciascuna delle sue 50 massime
+				elongazioni, il che colloca il Sole in K. Sotto il Sole, come
+				nell&#8217;ordine di Tolomeo, Venere sarebbe illuminata per meno di un terzo,
+				e sopra quasi piena.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				La disposizione lascia libera anche la distanza delle stelle. A occhio
+				nudo nessuna stella si sposta di un primo d&#8217;arco in un anno, e uno
+				spostamento sotto 1′ attraverso l&#8217;orbita della Terra, larga 2 au, pone
+				soltanto le stelle a più di 6875 au, centinaia di volte la distanza di
+				Saturno. Una parallasse misurata fissa la distanza stessa (Esercizio 3).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<!-- History block: Galileo's phases, Bessel's parallax -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le fasi di Galileo e la parallasse di Bessel</h3>
+
+			<div class="row">
+				<p>
+					L&#8217;11 dicembre 1610 Galileo inviò a Giuliano de&#8217; Medici,
+					ambasciatore toscano a Praga, un anagramma che assicurava una scoperta
+					senza rivelarla. Il 1º gennaio 1611 scrisse che osservava Venere da
+					circa tre mesi, da quando era apparsa nel cielo della sera, e diede la
+					soluzione: «Cynthiae figuras aemulatur mater amorum», la madre degli
+					amori imita le forme di Cinzia. Venere mostra tutte le fasi della Luna,
+					quelle gibbose che l&#8217;ordine di Tolomeo non può dare oltre alle falci.
+					Quando cominciò a osservarla, prima o dopo che una lettera del suo
+					antico allievo Castelli chiedesse delle fasi, è dibattuto.
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<figure class="photo">
+				<img src="images/saggiatore-217.jpg" width="700" height="595" loading="lazy"
+					alt="Una pagina stampata: tre righe di testo italiano sopra un&#8217;incisione rettangolare con Saturno affiancato da due piccoli corpi, Giove e Marte come cerchi, e sotto di essi Venere disegnata cinque volte, da un&#8217;ampia falce sottile a un piccolo disco rotondo.">
+				<figcaption>
+					<span class="fig-label">Foto.</span>
+					La figura di Galileo dei pianeti al telescopio, nel <em>Saggiatore</em>
+					(1623), p. 217. Leggi la riga in basso da sinistra a destra: Venere si
+					rimpicciolisce mentre si riempie, da un&#8217;ampia falce a un piccolo disco
+					rotondo. La riga sopra la figura dice che Venere falcata mostra il suo
+					disco 40 volte più grande di quando è rotonda. Quaranta è un rapporto di
+					aree: il diametro reale cresce 6,2 volte, la sua area 38 volte.
+					<span class="credit">Galileo Galilei, 1623, scansione dell&#8217;Internet Archive tramite
+						<a href="https://commons.wikimedia.org/wiki/File:Il_Saggiatore_Galileo_Galilei_1623.djvu">Wikimedia Commons</a>,
+						pubblico dominio.</span>
+				</figcaption>
+			</figure>
+
+			<div class="row">
+				<p>
+					Una parallasse delle stelle richiedeva uno strumento che potesse
+					confrontare due stelle entro un decimo di secondo d&#8217;arco. Bessel usò
+					un eliometro, un telescopio con l&#8217;obiettivo tagliato in due, misurando
+					la distanza di 61 Cygni da due deboli stelle vicine dal 1837 al 1838.
+					Scelse 61 Cygni perché si sposta di 5,3″ all&#8217;anno attraverso il cielo,
+					il che la indicava come vicina. Il suo risultato, 0,314″ nel 1838, la
+					pone a 10,4 anni luce: la sua parallasse era troppo grande del 10%, e la
+					distanza moderna è di 11,4 anni luce.
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Direzioni, fasi e parallasse</h2>
+
+		<p>
+			Nel sistema di Tycho, con il modello della pagina 4.2, Marte ha esattamente
+			le direzioni della disposizione di Copernico e quelle proprie della pagina
+			4.2, fino all&#8217;ultima cifra calcolata nel 1926–2125. Il suo errore è
+			quindi quello della Figura 7 della pagina 4.2, entro 0,88° nel 2010–2025,
+			in entrambi i sistemi.
+		</p>
+
+		<p>
+			Nel 2026–2033, dopo gli anni dell&#8217;adattamento, il modello di Venere con
+			K nel Sole resta entro 0,03 dalla frazione illuminata reale, e il suo
+			diametro apparente entro il 5,5% con OK = 1 au. Nell&#8217;ordine di Tolomeo e
+			nell&#8217;ordine sopra il Sole l&#8217;errore arriva all&#8217;intero disco: una Venere
+			nuova dove quella reale è piena, o il contrario.
+		</p>
+
+		<!-- Figure 6: the phase over 2026 - 2033 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) la frazione illuminata $k$</p>
+						<canvas id="test-phase"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;ordine attorno al Sole meno la Venere reale</p>
+						<canvas id="test-error"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Leggi (a) alle congiunzioni superiori, dove la Venere reale è piena:
+				l&#8217;ordine attorno al Sole la segue, e l&#8217;ordine di Tolomeo mostra una
+				Venere nuova. In (b) l&#8217;errore è massimo nelle settimane attorno a ogni
+				congiunzione inferiore, dove la fase cambia più in fretta.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-planet">rosso</dt>
+						<dd>la Venere reale</dd>
+						<dt class="c-deferent">verde</dt>
+						<dd>la Venere della pagina 4.3 con K nel Sole</dd>
+						<dt class="c-epicycle">tenue, tratteggio</dt>
+						<dd>la stessa con il Sole 1,80 volte più lontano di K (l&#8217;ordine di Tolomeo)</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Per le stelle la verifica è qualitativa. La parallasse misurata fissa la
+			distanza di 61 Cygni, quindi la sua grandezza non è una previsione, ma lo
+			spostamento stesso sì: la disposizione delle stelle di Copernico,
+			descritta con il Sole in quiete o con la Terra in quiete, dà a ogni stella
+			un&#8217;ellisse annua, e quella di Tycho, con le stelle in quiete attorno alla
+			Terra, non ne dà nessuna. Le parallassi delle stelle vicine oggi si
+			misurano di routine, dallo spazio, e ognuna di esse è uno spostamento
+			annuo.
+		</p>
+
+		<!-- History block: Tycho's argument, Bradley's aberration -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le stelle di Tycho, e lo spostamento che trovò Bradley</h3>
+
+			<div class="row">
+				<p>
+					Tycho verificò le stelle di Copernico con le proprie misure. Poteva
+					fissare il posto di una stella entro circa un primo d&#8217;arco e non
+					trovò alcuno spostamento annuo, quindi le stelle di Copernico dovevano
+					stare oltre il limite della sezione 3 (Graney).
+				</p>
+				<aside>
+					<div class="note" data-origin="tycho"></div>
+				</aside>
+			</div>
+
+			<p>
+				Aveva anche misurato i diametri apparenti delle stelle, circa 2′ per una
+				stella di prima grandezza e meno per quelle più deboli. Il suo limite di
+				1′ valeva per l&#8217;intera oscillazione annua, attraverso l&#8217;orbita della
+				Terra, e a quella distanza una stella larga 1′, circa una stella di terza
+				grandezza, sarebbe larga 2,0 au, quanto l&#8217;orbita stessa. Tycho riteneva
+				assurde stelle del genere. Rothmann, un copernicano, rispose chiedendo
+				«che cosa c&#8217;è di così assurdo nel fatto che una Stella di terza Grandezza
+				abbia una grandezza uguale all&#8217;intero orbe annuo?» In seguito si trovò
+				che i dischi venivano dall&#8217;occhio e dallo strumento, non dalla grandezza
+				delle stelle.
+			</p>
+
+			<div class="row">
+				<p>
+					Bradley cercava la parallasse di γ Draconis, una stella che passa quasi
+					allo zenit a Londra. Si spostava, ma il suo punto più a sud cadeva a
+					marzo, non a dicembre come farebbe una parallasse: un quarto d&#8217;anno di
+					sfasamento. In una lettera a Halley, letta alla Royal Society nel
+					gennaio 1729, lo spiegò con il moto della Terra combinato con la velocità
+					della luce, l&#8217;aberrazione della sezione 2. La parallasse stessa attese
+					gli 0,314″ di Bessel nel 1838.
+				</p>
+				<aside>
+					<div class="note" data-origin="modern"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>L&#8217;errore di Marte resta</h2>
+
+		<p>
+			Le osservazioni hanno deciso la disposizione. Le fasi mettono il cerchio di
+			Venere attorno al Sole, e le stelle mostrano lo spostamento annuo che la
+			disposizione di Copernico prevede e quella di Tycho no. Hanno lasciato
+			indeciso il sistema di riferimento, e la fisica rende più semplice la
+			descrizione eliostatica senza rendere sbagliata l&#8217;altra.
+		</p>
+
+		<p>
+			I sistemi di Copernico e di Tycho danno ai pianeti le stesse direzioni,
+			quindi entrambi mantengono gli errori della pagina 4.2, quasi un grado per
+			Marte vicino alle sue opposizioni.
+		</p>
+
+		<div class="row">
+			<p>
+				Keplero cercò nel Sole la causa fisica dei moti dei pianeti
+				(<em>Mysterium Cosmographicum</em>, 1596; Voelkel cap. 2), e con le
+				osservazioni di Marte di Tycho, che Tycho sul letto di morte gli chiese
+				di presentare nel sistema ticonico (Voelkel cap. 3), cercò un&#8217;orbita
+				che eliminasse quell&#8217;errore, e trovò l&#8217;ellisse (<em>Astronomia
+				Nova</em>, 1609).
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra che il sistema di Tycho dà a ogni pianeta, al Sole e alla Luna la
+				direzione che dà loro la disposizione di Copernico, in ogni istante. Poi
+				trova che cosa dovrebbe fare ciascuna delle stelle di Tycho per mostrare
+				la parallasse di Copernico.
+			</p>
+			<details class="hint">
+				<p>
+					Scrivi i posti di Tycho come quelli di Copernico meno quello della
+					Terra, ${\vec x}' = \vec x - \vec x_\text{O}(t)$, e applicalo a una
+					stella in quiete attorno al Sole.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Per qualunque corpo B, ${\vec x}'_\text{B} - {\vec x}'_\text{O} = \vec
+					x_\text{B} - \vec x_\text{O}$, quindi la sua direzione e la sua distanza
+					dalla Terra sono le stesse. Il Sole, in quiete nell&#8217;origine nella
+					disposizione di Copernico, è in $-\vec x_\text{O}(t)$, un cerchio di 1
+					au attorno alla Terra; un pianeta mantiene ${\vec x}'_\text{P} - {\vec
+					x}'_\odot = \vec x_\text{P}$, il suo cerchio attorno al Sole; la Luna,
+					che gira attorno alla Terra in entrambi, resta invariata. Calcolate con
+					il Marte della pagina 4.2 nel 1926–2125, le direzioni di Tycho e di
+					Copernico concordano fino all&#8217;ultima cifra.
+				</p>
+				<p>
+					Una stella in quiete in $a_*\hat u_*$ attorno al Sole diventa $a_*\hat
+					u_* - \vec x_\text{O}(t)$: ogni stella percorre un cerchio di 1 au
+					all&#8217;anno, parallelo al cerchio del Sole e di pari passo con esso. Le
+					stelle di Tycho, in quiete sulla loro sfera, dovrebbero condividere il
+					moto annuo del Sole, il che è la disposizione di Copernico descritta con
+					la Terra in quiete.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Nell&#8217;ordine di Tolomeo, con l&#8217;epiciclo della pagina 4.3 $r$ = 0,7226 e
+				OK = 1, trova la massima frazione illuminata di Venere, prima con il Sole
+				molto lontano, poi con il Sole a 1,797 OK, come nelle sfere annidate.
+				Dov&#8217;è Venere quando è più piena? Verifica il secondo caso nella Figura
+				3, sotto il Sole. Poi, con K nel Sole, trova la fase di Venere a 10,05°
+				dal Sole oltre di esso, come era la Venere reale il 26 novembre 2025.
+			</p>
+			<details class="hint">
+				<p>
+					Con il Sole molto lontano, la direzione da P al Sole è quella di OK, e
+					$\cos\chi = -\cos(\lambda - \bar\lambda_\odot)$, meno il coseno
+					dell&#8217;elongazione. Con il Sole più vicino, scrivi $\cos\chi$ in funzione
+					di $\mu$ e cerca numericamente il suo valore massimo. Con K nel Sole,
+					risolvi il triangolo O☉P, con O☉ = 1, ☉P = $r$ e l&#8217;elongazione in O.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con il Sole molto lontano, $k = (1 - \cos(\lambda -
+					\bar\lambda_\odot))/2$, massimo alla massima elongazione, dove il coseno
+					è $\sqrt{1 - r^2}$: $k = (1 - \sqrt{1 - r^2})/2$ = 0,154, a 46,3° dal
+					Sole. Venere non è mai più di una falce.
+				</p>
+				<p>
+					Con il Sole a 1,797 OK, appena oltre l&#8217;epiciclo, il Sole illumina
+					Venere un poco più di lato. La fase più piena è $k$ = 0,412, quando
+					Venere è oltre K e a 23,8° dal Sole, e alla massima elongazione $k$ =
+					0,305. L&#8217;epiciclo di Tolomeo stesso, 43,17 dove il deferente è 60 (X
+					3), dà 0,411 a 23,6° e 0,304.
+				</p>
+				<p>
+					Con K nel Sole, OP = $\cos 10{,}05^\circ + \sqrt{r^2 - \sin^2
+					10{,}05^\circ}$ = 1,686 OK, e il teorema del coseno nel triangolo dà
+					$\cos\chi = (\text{OP}^2 + r^2 - 1)/(2r\,\text{OP})$ = 0,9704, quindi
+					$k$ = 0,985. La Venere reale era illuminata per 0,986, quasi piena, dove
+					l&#8217;ordine di Tolomeo consente meno della metà.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				La parallasse di 61 Cygni è 0,28599″ e la sua latitudine eclittica
+				51,9°. Quanto dista, in unità astronomiche e in anni luce (63·241 au)?
+				Quando nel 2026 è spostata più a est e più a ovest lungo l&#8217;eclittica,
+				sapendo che la sua longitudine eclittica è 337,4°? Avrebbe potuto Tycho,
+				che fissava il posto di una stella entro circa un primo d&#8217;arco, vedere
+				il suo spostamento annuo? Verifica le date nella Figura 4.
+			</p>
+			<details class="hint">
+				<p>
+					Lo spostamento lungo l&#8217;eclittica è $\varpi\,\text{O}{\odot}\sin(\lambda_\odot
+					- \lambda)$: è massimo quando il Sole è a 90° dalla longitudine
+					eclittica della stella. L&#8217;intera oscillazione annua è il doppio della
+					parallasse.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$a_* = 1/\varpi$, con $\varpi$ in radianti (206·265″ per radiante):
+					721·218 au, ovvero 11,40 anni luce. La stella è spostata più a est
+					quando la longitudine eclittica del Sole è 337,4° + 90°, il 28 maggio
+					2026, e più a ovest quando è 337,4° − 90°, il 29 novembre 2026.
+					Trasversalmente all&#8217;eclittica il semiasse dell&#8217;ellisse è 0,286″ ×
+					sen 51,9° = 0,225″.
+				</p>
+				<p>
+					L&#8217;intera oscillazione annua è 0,572″, e un primo d&#8217;arco vale 105 volte
+					tanto: nessun osservatore prima del telescopio poteva vederla.
+					L&#8217;aberrazione è più grande, 20,5″, e i suoi estremi lungo l&#8217;eclittica
+					cadono con il Sole alla longitudine eclittica della stella e opposto a
+					essa, il 25 febbraio e il 30 agosto, un quarto d&#8217;anno da quelli della
+					parallasse.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): I 7 (gli
+				argomenti fisici, la concessione sulla rotazione); V 15 (la distanza
+				media del Sole, 1210 raggi terrestri); IX 1 (l&#8217;ordine delle sfere,
+				nessuna parallasse); X 3 (l&#8217;epiciclo di Venere).</li>
+			<li>N. Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen): A.
+				Osiander, «Al lettore» (la grandezza di Venere); I 5 [f. 3r–4r] (ogni
+				cambiamento di posizione osservato); I 8 [f. 5v–7r] (il moto naturale,
+				la nave); I 10 [f. 7v–10r] (le fasi dei platonici, le sfere annidate,
+				l&#8217;immensa altezza delle stelle).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Parte prima, I B 5 (pp. 111–112: i gusci annidati delle
+				<em>Ipotesi planetarie</em>).</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				cap. 1 (la cometa del 1577 e le sfere), cap. 2 (il sistema di Tycho, la
+				ricerca di Keplero della causa dei moti nel Sole), cap. 3 (l&#8217;ultima
+				richiesta di Tycho).</li>
+			<li>Galileo Galilei, lettere a Giuliano de&#8217; Medici, 11 dicembre 1610 e 1º
+				gennaio 1611 (<em>Le Opere</em>, Edizione Nazionale, vol. X e XI; Museo
+				Galileo, «Le fasi di Venere»); <em>Il Saggiatore</em> (Roma, 1623), p.
+				217 (la foto).</li>
+			<li>J. Bradley, "A Letter … Giving an Account of a New Discovered Motion of
+				the Fix'd Stars", <em>Philosophical Transactions</em> 35 (1729),
+				637–661.</li>
+			<li>F. W. Bessel, "Bestimmung der Entfernung des 61sten Sterns des
+				Schwans", <em>Astronomische Nachrichten</em> 16 (1838), 65–96.</li>
+			<li>I. Newton, <em>The Mathematical Principles of Natural Philosophy</em>
+				(trad. ingl. A. Motte), Libro III, Ipotesi I, Proposizioni XI–XII.</li>
+			<li>L. Foucault, "Démonstration physique du mouvement de rotation de la
+				terre au moyen du pendule", <em>Comptes rendus de l'Académie des
+				sciences</em> 32 (1851), 135–138.</li>
+			<li>C. M. Graney, "Regarding how Tycho Brahe noted the absurdity of the
+				Copernican Theory regarding the Bigness of Stars, while the Copernicans
+				appealed to God to answer that absurdity", arXiv:1112.1988 (2012): le
+				misure di Tycho e la risposta di Rothmann.</li>
+			<li>SIMBAD (CDS; il mirror di Harvard), con la parallasse di Gaia DR3: 61
+				Cygni A.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 41 (la
+				frazione illuminata di un pianeta).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/4.4-phases-parallax.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

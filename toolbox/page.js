@@ -51,14 +51,14 @@ function planetModel(name) {
 
 const BODIES = [
 	{
-		name: 'Sun',
+		name: bodyName('Sun'),
 		color: COL.sun,
 		model: jd => ({ lon: sunModel(jd), lat: 0 }),
 		reference: jd => Ephem.sun(jd, VSOP),
 		h0: -50 / 60
 	},
 	{
-		name: 'Moon',
+		name: bodyName('Moon'),
 		color: COL.ink,
 		model: jd => ({ lon: moonLongitude(jd), lat: moonLatitude(jd) }),
 		reference: jd => Ephem.moon(jd),
@@ -66,7 +66,7 @@ const BODIES = [
 	}
 ].concat(
 	['mercury', 'venus', 'mars', 'jupiter', 'saturn'].map(name => ({
-		name: name.charAt(0).toUpperCase() + name.slice(1),
+		name: bodyName(name.charAt(0).toUpperCase() + name.slice(1)),
 		color: COL.planet,
 		model: planetModel(name),
 		reference: jd => Ephem.planet(name, jd, VSOP),
@@ -98,8 +98,8 @@ const DAY_LAST = Time.julianDay(2100, 12, 31);
 /* The places of the presets. */
 const PRESET_PLACES = [
 	{ name: 'Greenwich', lat: 51.5, lon: 0 },
-	{ name: 'Rome', lat: PLACES.rome.lat, lon: PLACES.rome.lon },
-	{ name: 'Alexandria', lat: 31.2, lon: 29.9 },
+	{ name: tr('Rome', 'Roma'), lat: PLACES.rome.lat, lon: PLACES.rome.lon },
+	{ name: tr('Alexandria', 'Alessandria'), lat: 31.2, lon: 29.9 },
 	{ name: 'Sydney', lat: -33.9, lon: 151.2 }
 ];
 
@@ -204,12 +204,12 @@ const calculator = {
 		wireSlider(
 			byId('calc-lat'),
 			() => this.update(),
-			value => `${signed(value, 1)}°`
+			value => localNumbers(`${signed(value, 1)}°`)
 		);
 		wireSlider(
 			byId('calc-lon'),
 			() => this.update(),
-			value => `${signed(value, 1)}°`
+			value => localNumbers(`${signed(value, 1)}°`)
 		);
 		wirePresets(byId('calculator'));
 		this.buildPlaces();
@@ -224,7 +224,7 @@ const calculator = {
 			y: [0.5, BODIES.length + 0.5],
 			xTicks: () => [360, 300, 240, 180, 120, 60, 0].map(v => ({ value: 360 - v, label: `${v}°` })),
 			yTicks: () => BODIES.map((body, i) => ({ value: BODIES.length - i, label: body.name })),
-			xLabel: 'ecliptic longitude',
+			xLabel: tr('ecliptic longitude', 'longitudine eclittica'),
 			margin: { left: 76 },
 			minHeight: 250,
 			maxHeight: 250,
@@ -349,9 +349,9 @@ const calculator = {
 			.map(row => {
 				const difference = norm180(row.model.lon - row.reference.lon) * 60;
 
-				return (
+				return localNumbers(
 					`<tr><td>${row.body.name}</td><td>${row.model.lon.toFixed(2)}°</td>` +
-					`<td>${row.reference.lon.toFixed(2)}°</td><td>${signed(difference, 1)}′</td></tr>`
+						`<td>${row.reference.lon.toFixed(2)}°</td><td>${signed(difference, 1)}′</td></tr>`
 				);
 			})
 			.join('');
@@ -359,7 +359,7 @@ const calculator = {
 		place.innerHTML = this.rows
 			.map(
 				row =>
-					`<tr><td>${row.body.name}</td><td>${raText(row.eq.ra)}</td><td>${signed(row.eq.dec, 1)}°</td>` +
+					`<tr><td>${row.body.name}</td><td>${raText(row.eq.ra)}</td><td>${localNumbers(signed(row.eq.dec, 1))}°</td>` +
 					`<td>${clockText(row.times.rise)}</td><td>${clockText(row.times.transit)}</td>` +
 					`<td>${clockText(row.times.set)}</td></tr>`
 			)
@@ -434,9 +434,13 @@ const ladderFigure = {
 			ErrorLadder.panel(
 				byId('ladder-sun'),
 				[
-					{ page: '1.3', name: 'uniform', fn: MeanSun.make(MeanSun.MODERN) },
-					{ page: '2.1', name: 'eccentric', fn: SolarEccentric.make(SolarEccentric.FIT_2026) },
-					{ page: '4.5', name: 'ellipse', fn: sunModel }
+					{ page: '1.3', name: tr('uniform', 'uniforme'), fn: MeanSun.make(MeanSun.MODERN) },
+					{
+						page: '2.1',
+						name: tr('eccentric', 'eccentrico'),
+						fn: SolarEccentric.make(SolarEccentric.FIT_2026)
+					},
+					{ page: '4.5', name: tr('ellipse', 'ellisse'), fn: sunModel }
 				],
 				sun,
 				year(2026),
@@ -447,10 +451,14 @@ const ladderFigure = {
 			ErrorLadder.panel(
 				byId('ladder-moon'),
 				[
-					{ page: '3.1', name: 'uniform', fn: LunarEpicycle.makeUniform(LunarEpicycle.FIT_2026) },
-					{ page: '3.1', name: 'epicycle', fn: LunarEpicycle.make(LunarEpicycle.FIT_2026) },
-					{ page: '3.2', name: 'crank alone', fn: LunarCrank.make(crankAlone) },
-					{ page: '3.2', name: 'crank', fn: moonLongitude }
+					{
+						page: '3.1',
+						name: tr('uniform', 'uniforme'),
+						fn: LunarEpicycle.makeUniform(LunarEpicycle.FIT_2026)
+					},
+					{ page: '3.1', name: tr('epicycle', 'epiciclo'), fn: LunarEpicycle.make(LunarEpicycle.FIT_2026) },
+					{ page: '3.2', name: tr('crank alone', 'sola manovella'), fn: LunarCrank.make(crankAlone) },
+					{ page: '3.2', name: tr('crank', 'manovella'), fn: moonLongitude }
 				],
 				moon,
 				year(2026),
@@ -461,11 +469,15 @@ const ladderFigure = {
 			ErrorLadder.panel(
 				byId('ladder-mars'),
 				[
-					{ page: '4.1', name: 'uniform', fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT) },
-					{ page: '4.1', name: 'epicycle', fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT) },
-					{ page: '4.2', name: 'equant', fn: PlanetEquant.make(PlanetEquant.MARS_FIT) },
-					{ page: '4.3', name: 'epicyclet', fn: PlanetArrangement.makeEpicyclet() },
-					{ page: '4.5', name: 'ellipses', fn: Kepler.make() }
+					{
+						page: '4.1',
+						name: tr('uniform', 'uniforme'),
+						fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT)
+					},
+					{ page: '4.1', name: tr('epicycle', 'epiciclo'), fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT) },
+					{ page: '4.2', name: tr('equant', 'equante'), fn: PlanetEquant.make(PlanetEquant.MARS_FIT) },
+					{ page: '4.3', name: tr('epicyclet', 'epiciclo minore'), fn: PlanetArrangement.makeEpicyclet() },
+					{ page: '4.5', name: tr('ellipses', 'ellissi'), fn: Kepler.make() }
 				],
 				mars,
 				year(2010),
@@ -481,7 +493,10 @@ const ladderFigure = {
 	otherPlanets(year, names) {
 		const rows = ['mercury', 'venus', 'jupiter', 'saturn'].map(name => ({
 			page: '',
-			name: `${name.charAt(0).toUpperCase() + name.slice(1)} ellipses`,
+			name: tr(
+				`${name.charAt(0).toUpperCase() + name.slice(1)} ellipses`,
+				`ellisse di ${bodyName(name.charAt(0).toUpperCase() + name.slice(1))}`
+			),
 			fn: Kepler.make(Kepler.PLANETS_FIT[name]),
 			reference: jd => Ephem.planet(name, jd, VSOP).lon
 		}));
@@ -501,37 +516,45 @@ const ladderFigure = {
    ========================================================================== */
 
 /* A parameter: its TeX symbol, its value and the number of decimals. */
-const param = (symbol, value, digits) => `$${symbol} = ${Number(value).toFixed(digits)}$`;
+const param = (symbol, value, digits) => localTexNumbers(`$${symbol} = ${Number(value).toFixed(digits)}$`);
 
 const PARAMETER_ROWS = [
 	{
 		page: '1.3',
-		model: 'the mean Sun',
+		model: tr('the mean Sun', 'il Sole medio'),
 		values: () => [param('L_0', MeanSun.MODERN.L0, 6), param('n', MeanSun.MODERN.n, 11)],
-		fitted: 'the equinoxes and solstices of 1926–2025; the Sun of 2007–2025'
+		fitted: tr(
+			'the equinoxes and solstices of 1926–2025; the Sun of 2007–2025',
+			'gli equinozi e i solstizi del 1926–2025; il Sole del 2007–2025'
+		)
 	},
 	{
 		page: '2.1',
-		model: "the Sun's eccentric",
+		model: tr("the Sun's eccentric", "l'eccentrico del Sole"),
 		values: () => [
 			param('L_0', SolarEccentric.FIT_2026.L0, 5),
 			param('e', SolarEccentric.FIT_2026.e, 6),
 			param('\\lambda_A', SolarEccentric.FIT_2026.apogee, 3)
 		],
-		fitted: 'the spring and summer of 2026'
+		fitted: tr('the spring and summer of 2026', "la primavera e l'estate del 2026")
 	},
 	{
 		page: '2.3',
-		model: 'precession; the apogee',
+		model: tr('precession; the apogee', "la precessione; l'apogeo"),
 		values: () => [
-			`$p = ${(Precession.MODERN.rate * 3600).toFixed(3)}''$ a year`,
-			`$\\dot\\lambda_A = ${SolarEccentric.MOVING_2026.apogeeRate.toFixed(3)}^\\circ$ a century`
+			localTexNumbers(`$p = ${(Precession.MODERN.rate * 3600).toFixed(3)}''$ ${tr('a year', "all'anno")}`),
+			localTexNumbers(
+				`$\\dot\\lambda_A = ${SolarEccentric.MOVING_2026.apogeeRate.toFixed(3)}^\\circ$ ${tr('a century', 'al secolo')}`
+			)
 		],
-		fitted: 'the shift of γ over 1926.0–2026.0; the seasons of 1826–2025'
+		fitted: tr(
+			'the shift of γ over 1926.0–2026.0; the seasons of 1826–2025',
+			'lo spostamento di γ nel 1926,0–2026,0; le stagioni del 1826–2025'
+		)
 	},
 	{
 		page: '3.1',
-		model: "the Moon's epicycle",
+		model: tr("the Moon's epicycle", "l'epiciclo della Luna"),
 		values: () => [
 			param('L_0', LunarEpicycle.FIT_2026.L0, 6),
 			param('n', LunarEpicycle.FIT_2026.n, 9),
@@ -539,81 +562,104 @@ const PARAMETER_ROWS = [
 			param('n_M', LunarEpicycle.FIT_2026.nM, 9),
 			param('e', LunarEpicycle.FIT_2026.e, 6)
 		],
-		fitted: 'the new Moons of 1926–2025; the eclipses of September 2025, March and August 2026'
+		fitted: tr(
+			'the new Moons of 1926–2025; the eclipses of September 2025, March and August 2026',
+			'le lune nuove del 1926–2025; le eclissi di settembre 2025, marzo e agosto 2026'
+		)
 	},
 	{
 		page: '3.2',
-		model: 'the crank',
+		model: tr('the crank', 'la manovella'),
 		values: () => [param('c', LunarCrank.FIT_2026.c, 6)],
-		fitted: 'the quarter Moons of 2025'
+		fitted: tr('the quarter Moons of 2025', 'i quarti di Luna del 2025')
 	},
 	{
 		page: '3.3',
-		model: "the Moon's inclined circle",
+		model: tr("the Moon's inclined circle", 'il cerchio inclinato della Luna'),
 		values: () => [
 			param('F_0', LunarLatitude.FIT_2026.F0, 6),
 			param('n_F', LunarLatitude.FIT_2026.nF, 9),
 			param('i', LunarLatitude.FIT_2026.i, 4)
 		],
-		fitted: 'the ecliptic latitudes at the new and full Moons of 1926–2025 and of 2025–2026'
+		fitted: tr(
+			'the ecliptic latitudes at the new and full Moons of 1926–2025 and of 2025–2026',
+			'le latitudini eclittiche alle lune nuove e piene del 1926–2025 e del 2025–2026'
+		)
 	},
 	{
 		page: '4.1',
-		model: "Mars' epicycle",
+		model: tr("Mars' epicycle", "l'epiciclo di Marte"),
 		values: () => [
 			param('L_0', PlanetEpicycle.MARS_FIT.L0, 6),
 			param('n', PlanetEpicycle.MARS_FIT.n, 9),
 			param('r', PlanetEpicycle.MARS_FIT.r, 5)
 		],
-		fitted: 'the oppositions of 1931–1946 and 2010–2025, and their loops'
+		fitted: tr(
+			'the oppositions of 1931–1946 and 2010–2025, and their loops',
+			'le opposizioni del 1931–1946 e del 2010–2025, e i loro cappi'
+		)
 	},
 	{
 		page: '4.2',
-		model: "Mars' equant",
+		model: tr("Mars' equant", "l'equante di Marte"),
 		values: () => [
 			param('L_0', PlanetEquant.MARS_FIT.L0, 6),
 			param('\\lambda_A', PlanetEquant.MARS_FIT.apogee, 3),
 			param('e', PlanetEquant.MARS_FIT.e, 6),
 			param('r', PlanetEquant.MARS_FIT.r, 5)
 		],
-		fitted: 'the oppositions to the mean Sun of 1931–1946 and 2010–2025, and the loops of 2010–2025'
+		fitted: tr(
+			'the oppositions to the mean Sun of 1931–1946 and 2010–2025, and the loops of 2010–2025',
+			'le opposizioni al Sole medio del 1931–1946 e del 2010–2025, e i cappi del 2010–2025'
+		)
 	},
 	{
 		page: '4.3',
-		model: 'the arrangement',
+		model: tr('the arrangement', 'la disposizione'),
 		values: () =>
 			PlanetArrangement.PLANETS.map(name => {
 				const fit = PlanetArrangement.FIT[name];
 
-				return `${name}: $S = ${fit.S.toFixed(3)}$ d, $a = ${fit.a.toFixed(4)}$ au`;
+				return localTexNumbers(
+					`${tr(name, bodyName(name.charAt(0).toUpperCase() + name.slice(1)))}: $S = ${fit.S.toFixed(3)}$ d, $a = ${fit.a.toFixed(4)}$ au`
+				);
 			}),
-		fitted: 'the oppositions and inferior conjunctions of 1926–2025; the greatest elongations and loops of 1986–2025'
+		fitted: tr(
+			'the oppositions and inferior conjunctions of 1926–2025; the greatest elongations and loops of 1986–2025',
+			'le opposizioni e le congiunzioni inferiori del 1926–2025; le massime elongazioni e i cappi del 1986–2025'
+		)
 	},
 	{
 		page: '4.5',
-		model: "the Sun's ellipse",
+		model: tr("the Sun's ellipse", "l'ellisse del Sole"),
 		values: () => [
 			param('L_0', Kepler.SUN_2026.L0, 6),
 			param('e', Kepler.SUN_2026.e, 6),
 			param('\\lambda_A', Kepler.SUN_2026.apogee, 4)
 		],
-		fitted: 'the spring and summer of 2026'
+		fitted: tr('the spring and summer of 2026', "la primavera e l'estate del 2026")
 	},
 	{
 		page: '4.5',
-		model: "Mars' ellipse",
+		model: tr("Mars' ellipse", "l'ellisse di Marte"),
 		values: () => [
 			param('L_0', Kepler.MARS_FIT.L0, 6),
 			param('\\lambda_A', Kepler.MARS_FIT.apogee, 4),
 			param('e', Kepler.MARS_FIT.e, 6),
 			param('a', Kepler.MARS_FIT.a, 6)
 		],
-		fitted: 'the oppositions of 1931–1946 and 2010–2025; the third law'
+		fitted: tr(
+			'the oppositions of 1931–1946 and 2010–2025; the third law',
+			'le opposizioni del 1931–1946 e del 2010–2025; la terza legge'
+		)
 	}
 ].concat(
 	['mercury', 'venus', 'jupiter', 'saturn'].map(name => ({
-		page: 'toolbox',
-		model: `${name.charAt(0).toUpperCase() + name.slice(1)}'s ellipse`,
+		page: tr('toolbox', 'cassetta'),
+		model: tr(
+			`${name.charAt(0).toUpperCase() + name.slice(1)}'s ellipse`,
+			`l'ellisse di ${bodyName(name.charAt(0).toUpperCase() + name.slice(1))}`
+		),
 		values: () => {
 			const p = Kepler.PLANETS_FIT[name];
 
@@ -627,8 +673,14 @@ const PARAMETER_ROWS = [
 		},
 		fitted:
 			name === 'mercury' || name === 'venus'
-				? 'the inferior conjunctions of 1926–2025; the third law'
-				: 'the oppositions to the real Sun of 1926–2025; the third law'
+				? tr(
+						'the inferior conjunctions of 1926–2025; the third law',
+						'le congiunzioni inferiori del 1926–2025; la terza legge'
+					)
+				: tr(
+						'the oppositions to the real Sun of 1926–2025; the third law',
+						'le opposizioni al Sole vero del 1926–2025; la terza legge'
+					)
 	}))
 );
 

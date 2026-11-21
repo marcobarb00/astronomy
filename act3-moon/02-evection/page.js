@@ -136,7 +136,7 @@ const equationFigure = {
 			x: [0, 360],
 			y: EQUATION_RANGE,
 			xLabel: tr('anomaly M from the apogee (°)', "anomalia M dall'apogeo (°)"),
-			yLabel: tr("the Moon's equation (°)", "equazione della Luna (°)"),
+			yLabel: tr("the Moon's equation (°)", 'equazione della Luna (°)'),
 			xTicks: anomalyTicks,
 			aspect: 0.5,
 			onDraw: () => this.draw()
@@ -546,7 +546,13 @@ const directionZoomFigure = {
 
 		// the two apogees named at the ends of their lines, each on the side
 		// away from the other line
-		sideLabel(ctx, tr('true apogee', 'apogeo vero'), fromK(g.trueApogee, ZOOM_LINE_END * radius), 'right', COL.earth);
+		sideLabel(
+			ctx,
+			tr('true apogee', 'apogeo vero'),
+			fromK(g.trueApogee, ZOOM_LINE_END * radius),
+			'right',
+			COL.earth
+		);
 		sideLabel(ctx, tr('mean apogee', 'apogeo medio'), fromK(g.meanApogee, ZOOM_LINE_END * radius), 'left', COL.ink);
 		labelOutside(ctx, 'σ', K, SIGMA_ARC * radius, g.meanApogee - 9, COL.ink, this.labels);
 		// M's name in the gap between the mean apogee's line and L′'s radius
@@ -562,8 +568,20 @@ const directionZoomFigure = {
 		labelOutside(ctx, 'K', K, 4, 200, COL.ink, this.labels);
 		labelOutside(ctx, 'L', moon, 8, g.meanApogee - DIRECTION_M - 15, COL.planet, this.labels);
 		labelOutside(ctx, 'L′', ghost, 6, g.trueApogee - DIRECTION_M + 15, COL.muted, this.labels);
-		centeredLabel(ctx, tr('from O', 'da O'), { x: crossing(g.trueApogee + 180) + 34, y: bottom }, COL.earth, this.labels);
-		centeredLabel(ctx, tr('from N', 'da N'), { x: crossing(g.meanApogee + 180) - 34, y: bottom }, COL.ink, this.labels);
+		centeredLabel(
+			ctx,
+			tr('from O', 'da O'),
+			{ x: crossing(g.trueApogee + 180) + 34, y: bottom },
+			COL.earth,
+			this.labels
+		);
+		centeredLabel(
+			ctx,
+			tr('from N', 'da N'),
+			{ x: crossing(g.meanApogee + 180) - 34, y: bottom },
+			COL.ink,
+			this.labels
+		);
 	}
 };
 
@@ -609,13 +627,19 @@ const ourErrorFigure = {
 			fn: LunarCrank.make(CRANK)
 		});
 		curve.addModel({
-			label: tr("Ptolemy's complete model, fitted to 2025–2026", 'il modello completo di Tolomeo, adattato al 2025–2026'),
+			label: tr(
+				"Ptolemy's complete model, fitted to 2025–2026",
+				'il modello completo di Tolomeo, adattato al 2025–2026'
+			),
 			short: tr('complete model', 'modello completo'),
 			color: COL.planet,
 			fn: crank
 		});
 		curve.addMarks({
-			label: tr('the complete model at the quarters (spans of a year or less)', 'il modello completo ai quarti (intervalli di un anno o meno)'),
+			label: tr(
+				'the complete model at the quarters (spans of a year or less)',
+				'il modello completo ai quarti (intervalli di un anno o meno)'
+			),
 			color: COL.planet,
 			fn: crank,
 			dates: quarters.map(phase => phase.jd),

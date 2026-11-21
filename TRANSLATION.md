@@ -25,6 +25,10 @@ page in English first, then its Italian translation in the same commit.
   values, text on a canvas (`canvasText`). A canvas label that is not a
   number but contains one (a page number, "4.2") is drawn with
   `ctx.fillText` or marked `words: true` as a tick.
+- The `$...$` and `$$...$$` of the HTML are typeset as written, so an
+  Italian page writes its decimal commas there by hand (`0{,}5`).
+- A canvas or a column sized for English words may need more room for
+  the Italian ones: `tr(100, 136)` (the row names of the error ladder).
 - HTML comments and code comments stay in English.
 
 ## Conventions
@@ -96,6 +100,7 @@ page in English first, then its Italian translation in the same commit.
 | proper motion | moto proprio |
 | magnitude | magnitudine |
 | anomaly (first, second) | anomalia (prima, seconda) |
+| equation of anomaly, equation of the epicycle, zodiacal equation | equazione dell'anomalia, equazione dell'epiciclo, equazione zodiacale |
 | mean / true / eccentric anomaly | anomalia media / vera / eccentrica |
 | equation of center | equazione del centro |
 | mean motion | moto medio |
@@ -117,16 +122,25 @@ page in English first, then its Italian translation in the same commit.
 | syzygy, quadrature, octant | sizigia, quadratura, ottante |
 | new / full Moon, first / last quarter | Luna nuova / piena, primo / ultimo quarto |
 | elongation, greatest elongation | elongazione, massima elongazione |
+| inner / outer planet | pianeta interno / esterno |
+| phase angle, illuminated fraction | angolo di fase, frazione illuminata |
 | opposition, conjunction | opposizione, congiunzione |
-| retrograde motion, stationary point | moto retrogrado, punto stazionario |
+| retrograde motion, station | moto retrogrado, stazione |
 | loop (retrograde) | cappio |
 | umbra, penumbra | ombra, penombra |
 | eclipse limits | limiti delle eclissi |
+| eclipse year, eclipse season | anno delle eclissi, stagione delle eclissi |
 | geostatic, heliostatic | geostatico, eliostatico |
-| ellipse, focus, semi-major axis | ellisse, fuoco, semiasse maggiore |
+| arrangement (Copernicus', Tycho's) | disposizione |
+| astronomical unit (au) | unità astronomica (au) |
+| ellipse, focus, empty focus | ellisse, fuoco, fuoco vuoto |
+| semi-major / semi-minor axis | semiasse maggiore / minore |
 | area law, Kepler's equation | legge delle aree, equazione di Keplero |
 | third law | terza legge |
 | ephemeris | effemeride |
+| time-degrees | gradi di tempo |
+| convergents (of a continued fraction) | ridotte |
+| *Rudolphine Tables* | *Tavole rudolfine* |
 | reference sky | cielo di riferimento |
 | error curve | curva dell'errore |
 | ghost (an earlier curve, faint) | fantasma |

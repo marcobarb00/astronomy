@@ -162,13 +162,13 @@ const OUTER_RANGE = [0, 360];
    name (year, elongation, alignment). */
 const ELONGATION_PLANETS = {
 	inner: [
-		{ planet: 'venus', name: 'Venus', color: COL.epicycle, label: { x: 2024.75, y: 42, align: 'right' } },
-		{ planet: 'mercury', name: 'Mercury', color: COL.earth, label: { x: 2022.03, y: 43, align: 'left' } }
+		{ planet: 'venus', name: bodyName('Venus'), color: COL.epicycle, label: { x: 2024.75, y: 42, align: 'right' } },
+		{ planet: 'mercury', name: bodyName('Mercury'), color: COL.earth, label: { x: 2022.03, y: 43, align: 'left' } }
 	],
 	outer: [
-		{ planet: 'mars', name: 'Mars', color: COL.planet },
-		{ planet: 'jupiter', name: 'Jupiter', color: COL.deferent },
-		{ planet: 'saturn', name: 'Saturn', color: COL.earth }
+		{ planet: 'mars', name: bodyName('Mars'), color: COL.planet },
+		{ planet: 'jupiter', name: bodyName('Jupiter'), color: COL.deferent },
+		{ planet: 'saturn', name: bodyName('Saturn'), color: COL.earth }
 	]
 };
 
@@ -186,7 +186,7 @@ const elongationFigure = {
 
 		const options = {
 			x: [yearOf(ELONGATION_START), yearOf(ELONGATION_END)],
-			xLabel: 'year',
+			xLabel: tr('year', 'anno'),
 			xTicks: yearTicks(1),
 			aspect: 0.32,
 			maxHeight: 280,
@@ -197,7 +197,7 @@ const elongationFigure = {
 			byId('elongation-inner'),
 			Object.assign({}, options, {
 				y: INNER_RANGE,
-				yLabel: 'elongation (°)',
+				yLabel: tr('elongation (°)', 'elongazione (°)'),
 				onDraw: () => this.draw(this.inner, 'inner')
 			})
 		);
@@ -205,7 +205,7 @@ const elongationFigure = {
 			byId('elongation-outer'),
 			Object.assign({}, options, {
 				y: OUTER_RANGE,
-				yLabel: 'elongation (°)',
+				yLabel: tr('elongation (°)', 'elongazione (°)'),
 				yTicks: quarterTicks,
 				onDraw: () => this.draw(this.outer, 'outer')
 			})
@@ -321,10 +321,16 @@ const arrangementFigure = {
 		);
 		wirePresets(byId('arrangement-day').closest('figure'));
 		wirePlayButton(byId('arrangement-play'), byId('arrangement-day'), ARRANGEMENT_DAYS_PER_SECOND);
-		buildChoice(byId('arrangement-views'), Object.keys(ARRANGEMENT_VIEWS), this.view, name => {
-			this.view = name;
-			this.update();
-		});
+		buildChoice(
+			byId('arrangement-views'),
+			Object.keys(ARRANGEMENT_VIEWS),
+			this.view,
+			name => {
+				this.view = name;
+				this.update();
+			},
+			bodyName
+		);
 		this.update();
 	},
 
@@ -358,7 +364,10 @@ const arrangementFigure = {
 
 		showLines('arrangement-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\lambda - \\bar\\lambda_\\odot = ${fixed(now.elongation, 2).replace('−', '-')}^\\circ`,
-			`\\lambda = ${fixedAngle(d.a, 2)}^\\circ \\text{ in (a)},\\quad ${fixedAngle(d.b, 2)}^\\circ \\text{ in (b)}`
+			tr(
+				`\\lambda = ${fixedAngle(d.a, 2)}^\\circ \\text{ in (a)},\\quad ${fixedAngle(d.b, 2)}^\\circ \\text{ in (b)}`,
+				`\\lambda = ${fixedAngle(d.a, 2)}^\\circ \\text{ in (a)},\\quad ${fixedAngle(d.b, 2)}^\\circ \\text{ in (b)}`
+			)
 		]);
 	},
 
@@ -522,11 +531,11 @@ const arrangementFigure = {
 /* The models of (a), from the Sun outwards, and where (b) and (c) name
    each circle (the angle of the name, deg). */
 const SCALE_PLANETS = [
-	{ planet: 'mercury', name: 'Mercury', angle: 270 },
-	{ planet: 'venus', name: 'Venus', angle: 270 },
-	{ planet: 'mars', name: 'Mars', angle: 40 },
-	{ planet: 'jupiter', name: 'Jupiter', angle: 30 },
-	{ planet: 'saturn', name: 'Saturn', angle: 45 }
+	{ planet: 'mercury', name: bodyName('Mercury'), angle: 270 },
+	{ planet: 'venus', name: bodyName('Venus'), angle: 270 },
+	{ planet: 'mars', name: bodyName('Mars'), angle: 40 },
+	{ planet: 'jupiter', name: bodyName('Jupiter'), angle: 30 },
+	{ planet: 'saturn', name: bodyName('Saturn'), angle: 45 }
 ];
 
 /* Where K sits on each deferent of (a), and the narrowest width (px) at
@@ -648,7 +657,7 @@ const scaleFigure = {
 		// for the Earth's name
 		if (which === 'inner') {
 			labelOutside(ctx, '☉', center, 4, 90, COL.sun, owner.labels);
-			labelOutside(ctx, 'Earth', towards(center, 140, scale), 0, 140, COL.earth, owner.labels);
+			labelOutside(ctx, tr('Earth', 'Terra'), towards(center, 140, scale), 0, 140, COL.earth, owner.labels);
 		}
 
 		shown.forEach(entry => {
@@ -746,8 +755,8 @@ const loopFigure = {
 		this.directions = new Plot2D(byId('loop-directions'), {
 			x: LOOP_DAYS,
 			y: LOOP_RANGE,
-			xLabel: 'days from opposition',
-			yLabel: 'λ − λ at opposition (°)',
+			xLabel: tr('days from opposition', "giorni dall'opposizione"),
+			yLabel: tr('λ − λ at opposition (°)', "λ − λ all'opposizione (°)"),
 			aspect: 0.87,
 			maxHeight: 380,
 			minHeight: 240,
@@ -802,7 +811,7 @@ const loopFigure = {
 		labelOutside(ctx, '☉', sun, 5, 180, COL.sun, owner.labels);
 		labelOutside(
 			ctx,
-			'Earth',
+			tr('Earth', 'Terra'),
 			towards(sun, LOOP_NAMES.earth, scale),
 			0,
 			LOOP_NAMES.earth + 180,
@@ -811,7 +820,7 @@ const loopFigure = {
 		);
 		labelOutside(
 			ctx,
-			'Mars',
+			tr('Mars', 'Marte'),
 			towards(sun, LOOP_NAMES.mars, a * scale),
 			0,
 			LOOP_NAMES.mars,
@@ -1006,19 +1015,22 @@ const errorFigure = {
 			.filter(jd => jd >= FIT_START);
 
 		curve.addGhost({
-			label: "page 4.2's equant",
-			short: "page 4.2's equant",
+			label: tr("page 4.2's equant", "l'equante della pagina 4.2"),
+			short: tr("page 4.2's equant", "l'equante della pagina 4.2"),
 			color: COL.deferent,
 			fn: equant
 		});
 		curve.addModel({
-			label: "Copernicus' epicyclet in place of the equant",
-			short: "Copernicus' epicyclet",
+			label: tr(
+				"Copernicus' epicyclet in place of the equant",
+				"l'epiciclo minore di Copernico al posto dell'equante"
+			),
+			short: tr("Copernicus' epicyclet", 'epiciclo minore di Copernico'),
 			color: COL.earth,
 			fn: epicyclet
 		});
 		curve.addMarks({
-			label: 'the epicyclet at the oppositions',
+			label: tr('the epicyclet at the oppositions', "l'epiciclo minore alle opposizioni"),
 			color: COL.earth,
 			fn: epicyclet,
 			dates: oppositions,
@@ -1044,8 +1056,8 @@ const errorFigure = {
 		this.plot = new Plot2D(byId('error-difference'), {
 			x: [yearOf(FIT_START), yearOf(FIT_END)],
 			y: DIFFERENCE_RANGE,
-			xLabel: 'year',
-			yLabel: 'difference (′)',
+			xLabel: tr('year', 'anno'),
+			yLabel: tr('difference (′)', 'differenza (′)'),
 			xTicks: yearTicks(2),
 			aspect: 0.3,
 			maxHeight: 260,
@@ -1233,7 +1245,7 @@ const distanceFigure = {
 
 		const options = {
 			x: [yearOf(FIT_START), yearOf(FIT_END)],
-			xLabel: 'year',
+			xLabel: tr('year', 'anno'),
 			xTicks: yearTicks(2),
 			maxHeight: 300,
 			minHeight: 200
@@ -1243,7 +1255,7 @@ const distanceFigure = {
 			byId('distance-plot'),
 			Object.assign({}, options, {
 				y: DISTANCE_RANGE,
-				yLabel: 'distance (au)',
+				yLabel: tr('distance (au)', 'distanza (au)'),
 				aspect: 0.36,
 				onDraw: () => this.drawDistance()
 			})
@@ -1252,15 +1264,29 @@ const distanceFigure = {
 			byId('distance-error'),
 			Object.assign({}, options, {
 				y: DISTANCE_ERROR_RANGE,
-				yLabel: 'model − real (au)',
+				yLabel: tr('model − real (au)', 'modello − reale (au)'),
 				aspect: 0.3,
 				onDraw: () => this.drawError()
 			})
 		);
 		Plot2D.legend(byId('distance-legend'), [
-			{ label: 'the real Mars', color: COL.planet, mark: 'dot' },
-			{ label: "page 4.2's model in Copernicus' arrangement", color: COL.deferent, mark: 'dot' },
-			{ label: 'the same model with a concentric deferent ($e = 0$)', color: COL.epicycle, ghost: true }
+			{ label: tr('the real Mars', 'il Marte reale'), color: COL.planet, mark: 'dot' },
+			{
+				label: tr(
+					"page 4.2's model in Copernicus' arrangement",
+					'il modello della pagina 4.2 nella disposizione di Copernico'
+				),
+				color: COL.deferent,
+				mark: 'dot'
+			},
+			{
+				label: tr(
+					'the same model with a concentric deferent ($e = 0$)',
+					'lo stesso modello con un deferente concentrico ($e = 0$)'
+				),
+				color: COL.epicycle,
+				ghost: true
+			}
 		]);
 	},
 

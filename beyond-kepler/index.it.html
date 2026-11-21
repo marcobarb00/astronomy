@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     EPILOGUE · BEYOND KEPLER
+     After Kepler the question changed from what shape the paths have to
+     why. Newton's law of gravitation is named as the answer, without its
+     mathematics, and the page follows the errors that remained after
+     Kepler, each a test of that law: the Moon's perigee, Jupiter and
+     Saturn, the Moon's acceleration and the Earth's clock, Uranus and
+     Neptune, and Mercury's perihelion, where the story stops. Then the
+     topics the course left out, and further reading. No rhythm of
+     observation, model, fit, test and residual, and no exercises
+     (STRUCTURE.md §4, Epilogue). Numbers: tools/numbers/beyond-kepler.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Oltre Keplero · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's layout (no new colours) -->
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../shared/common.js"></script>
+	<script defer src="../shared/time.js"></script>
+	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/vsop87-data.js"></script>
+	<script defer src="../shared/vsop87-planets.js"></script>
+	<script defer src="../shared/vsop87.js"></script>
+	<script defer src="../shared/models/mean-sun.js"></script>
+	<script defer src="../shared/models/precession.js"></script>
+	<script defer src="../shared/models/kepler.js"></script>
+	<script defer src="../shared/plot2d.js"></script>
+	<script defer src="../shared/site-map.js"></script>
+	<script defer src="../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="beyond">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 4.5 ha lasciato Marte entro 6′ dal pianeta reale e il Sole entro
+			un quarto di primo d&#8217;arco. Keplero aveva trovato la forma dei percorsi
+			dei pianeti, e la domanda che si posero i suoi successori fu perché i
+			percorsi abbiano quella forma.
+		</p>
+
+		<!-- ======================= NEWTON'S LAW OF GRAVITATION ======================= -->
+		<h2 id="newton">La legge di gravitazione di Newton</h2>
+
+		<div class="row">
+			<p>
+				Nei <em>Principia</em> (1687) Newton mostrò che un corpo attratto dal
+				Sole con una forza inversamente proporzionale al quadrato della sua
+				distanza, e legato a esso, si muove su un&#8217;ellisse con il Sole in un
+				fuoco, descrive aree uguali in tempi uguali, e ha un periodo il cui
+				quadrato è proporzionale al cubo della sua distanza media. Le tre leggi
+				di Keplero divennero conseguenze delle leggi del moto di Newton e della
+				sua legge di gravitazione (Voelkel cap. 7).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			La stessa legge diceva perché le ellissi non potevano essere esatte. Ogni
+			corpo attrae ogni altro, quindi ogni pianeta è attratto dagli altri
+			pianeti oltre che dal Sole, e la Luna dal Sole oltre che dalla Terra. Le
+			leggi di Keplero valgono esattamente solo per due corpi isolati. Da allora
+			in poi, ogni errore rimasto nelle tavole fu una verifica della legge: o le
+			attrazioni che essa aggiunge spiegano l&#8217;errore, o la legge fallisce.
+		</p>
+
+		<!-- ============================ THE MOON'S PERIGEE ============================ -->
+		<h2 id="perigee">Il perigeo della Luna</h2>
+
+		<div class="row">
+			<p>
+				La Luna mostrò per prima le attrazioni, perché il Sole cambia la sua
+				orbita di gradi nel giro di settimane, mentre le attrazioni reciproche
+				dei pianeti impiegano decenni o secoli per diventare altrettanto grandi.
+				Nella teoria di Newton la sua orbita è un&#8217;ellisse che l&#8217;attrazione del
+				Sole continua a modificare. Tolomeo aveva trovato la maggiore di queste
+				modifiche, l&#8217;evezione della pagina 3.2, e Tycho una seconda, la
+				variazione, massima fra la Luna nuova o piena e i quarti (HAMA p. 85);
+				la pagina 4.5 le ha elencate con le altre.
+			</p>
+			<aside>
+				<div class="note" data-origin="tycho"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				L&#8217;ellisse stessa ruota: il suo perigeo avanza di 3,04° ogni volta che
+				la Luna compie un giro in longitudine eclittica (dai ritmi della pagina
+				3.1). Nei <em>Principia</em> l&#8217;attrazione del Sole, calcolata per
+				un&#8217;orbita quasi circolare, sposta il perigeo di 1,52° a rivoluzione
+				(1°31′28″), la metà, e Newton osservò che «gli apsidi della luna
+				avanzano circa due volte più in fretta» (Libro I, Proposizione 45).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Negli anni Quaranta del Settecento Eulero, d&#8217;Alembert e Clairaut,
+			lavorando separatamente, trovarono tutti la stessa metà. Clairaut propose
+			nel 1747 di modificare la legge di gravitazione aggiungendole un termine,
+			e trovò nel 1749 che la metà mancante veniva dalla stessa legge, portata a
+			un&#8217;approssimazione più alta.
+		</p>
+
+		<!-- ============================ JUPITER AND SATURN ============================ -->
+		<h2 id="jupiter-saturn">Giove e Saturno</h2>
+
+		<div class="row">
+			<p>
+				Halley confrontò le osservazioni antiche di Giove e di Saturno, quelle
+				dell&#8217;<em>Almagest</em>, con quelle moderne, e trovò che nessun moto
+				medio unico andava bene per entrambe: Giove aveva accelerato e Saturno
+				rallentato. Le sue tavole, pubblicate dopo la sua morte, aggiungevano a
+				ciascuno una correzione che cresceva con il tempo.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Laplace lo spiegò nel 1785 con l&#8217;attrazione reciproca dei due pianeti.
+			Cinque giri di Giove richiedono 59,3 anni e due di Saturno 58,9, quindi i
+			pianeti si incontrano quasi negli stessi posti per secoli, e le attrazioni
+			si sommano da un incontro al successivo prima di invertirsi. Il risultato
+			è una variazione periodica di circa 900 anni, la grande disuguaglianza,
+			non una variazione che cresce per sempre.
+		</p>
+
+		<!-- Figure 1: Jupiter's and Saturn's ellipses over four millennia (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="drift-canvas"></canvas>
+			</div>
+			<figcaption>
+				Parti dagli anni ombreggiati, 1926–2025, alle cui opposizioni sono state
+				adattate entrambe le ellissi, e segui le curve indietro nel tempo. Nota
+				che vanno in versi opposti: ciò che Saturno guadagna dall&#8217;attrazione di
+				Giove, Giove lo perde, ed è per questo che Halley trovò un pianeta che
+				accelerava e l&#8217;altro che rallentava.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>curve</dt>
+						<dd>la longitudine eclittica eliocentrica dell&#8217;ellisse meno quella di VSOP87, nel sistema di J2000, mediata su circa un giro del pianeta</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Nel 1926–2025 entrambe le ellissi restano entro 9′ dai pianeti, ma un
+			secolo vede solo un breve tratto di un&#8217;onda di 900 anni e lo scambia per
+			parte del moto medio. Riportata indietro al 1000 a.C., l&#8217;ellisse di
+			Saturno è in media 13° dietro il pianeta. Tavole che durino per secoli
+			richiedono le attrazioni come termini periodici, come li contiene VSOP87,
+			il riferimento della pagina 4.5.
+		</p>
+
+		<p>
+			Oltre a queste lunghe oscillazioni, le attrazioni fanno ruotare ogni
+			ellisse in modo costante: la pagina 4.5 ha trovato l&#8217;afelio di Marte che
+			ruota di 0,43° al secolo fra le stelle.
+		</p>
+
+		<!-- =================== THE MOON'S ACCELERATION AND THE EARTH'S CLOCK =================== -->
+		<h2 id="clock">L&#8217;accelerazione della Luna e l&#8217;orologio della Terra</h2>
+
+		<div class="row">
+			<p>
+				Halley notò anche, nel 1695, che le eclissi antiche erano avvenute dove
+				la Luna sarebbe stata se allora si fosse mossa un po&#8217; più lentamente
+				di oggi: la Luna sembrava accelerare. Nel 1787 Laplace ne trovò una
+				causa nelle attrazioni dei pianeti, che cambiano lentamente
+				l&#8217;eccentricità dell&#8217;orbita della Terra e con essa l&#8217;attrazione del
+				Sole sulla Luna.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Nel 1853 Adams mostrò che la causa di Laplace dà solo circa metà
+			dell&#8217;accelerazione. Delaunay e Ferrel proposero negli anni Sessanta
+			dell&#8217;Ottocento che la maggior parte del resto stia nell&#8217;orologio: le
+			maree rallentano la rotazione della Terra, quindi il giorno con cui si
+			misurava il tempo delle eclissi si allunga. È il ΔT della pagina 1.3,
+			circa 2 ore e mezza ai tempi di Tolomeo, che ogni pagina dalla 2.1 in poi
+			applica a un istante antico.
+		</p>
+
+		<!-- ============================ URANUS AND NEPTUNE ============================ -->
+		<h2 id="neptune">Urano e Nettuno</h2>
+
+		<div class="row">
+			<p>
+				Herschel scoprì Urano nel 1781. Le sue tavole, con le attrazioni di
+				Giove e Saturno incluse, continuavano a fallire: quelle di Bouvard del
+				1821 si allontanarono dal pianeta nel giro di pochi anni. Le Verrier, e
+				Adams indipendentemente, supposero un pianeta oltre Urano e calcolarono
+				dove avrebbe dovuto trovarsi per causare gli errori.
+			</p>
+			<aside>
+				<div class="note" data-origin="debated"></div>
+			</aside>
+		</div>
+
+		<p>
+			Galle e d&#8217;Arrest trovarono Nettuno a Berlino nella notte del 23 settembre
+			1846, entro 1° dal posto di Le Verrier. Fu il primo pianeta trovato dalla
+			sua attrazione su un altro.
+		</p>
+
+		<!-- ========================== MERCURY'S PERIHELION ========================== -->
+		<h2 id="mercury">Il perielio di Mercurio</h2>
+
+		<div class="row">
+			<p>
+				Le Verrier lavorò anche su Mercurio. Nel 1859 trovò che il suo perielio
+				avanza più in fretta di quanto consentano le attrazioni dei pianeti, di
+				38″ al secolo, e Newcomb nel 1882 stimò l&#8217;eccesso in 43″. La tabella dà
+				il bilancio come lo presentò Clemence nel 1947.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<table class="prose-table budget-table">
+			<thead>
+				<tr><th>l&#8217;avanzamento del perielio di Mercurio in un secolo</th><th>secondi d&#8217;arco</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>osservato, rispetto all&#8217;equinozio della data</td><td>5599,7</td></tr>
+				<tr><td>la precessione degli equinozi</td><td>5025,6</td></tr>
+				<tr><td>le attrazioni dei pianeti</td><td>531,5</td></tr>
+				<tr class="hl"><td>resto</td><td>42,6 ± 0,9</td></tr>
+			</tbody>
+		</table>
+
+		<p>
+			Un pianeta all&#8217;interno dell&#8217;orbita di Mercurio, che avrebbe spiegato
+			l&#8217;eccesso, fu cercato e mai trovato. Nel 1915 la teoria della relatività
+			generale di Einstein, che modifica leggermente la legge di Newton vicino
+			al Sole, diede 43″ al secolo per Mercurio (42,98″ con le costanti di
+			oggi), il che rende conto dell&#8217;eccesso.
+		</p>
+
+		<!-- ========================= WHERE THE STORY GOES NEXT ========================= -->
+		<h2 id="next">Dove prosegue la storia</h2>
+
+		<p>
+			Ogni argomento qui sotto è stato lasciato fuori dal corso o porta oltre
+			esso.
+		</p>
+
+		<div id="topics"></div>
+
+		<!-- ============================= FURTHER READING ============================= -->
+		<h2 id="reading">Letture consigliate</h2>
+
+		<ul class="sources reading">
+			<li>J. Evans, <em>The History and Practice of Ancient Astronomy</em>
+				(1998): i modelli antichi con gli strumenti e le osservazioni, per chi
+				vuole rifarli.</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975): come furono trovati i metodi e i parametri
+				dell&#8217;<em>Almagest</em>, e l&#8217;astronomia babilonese.</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em>
+				(1999): una breve vita di Keplero, con il cammino verso l&#8217;ellisse.</li>
+			<li>C. M. Linton, <em>From Eudoxus to Einstein: A History of
+				Mathematical Astronomy</em> (2004): l&#8217;intera storia di questa pagina,
+				con la matematica.</li>
+			<li>R. Fitzpatrick, <em>An Introduction to Celestial Mechanics</em>
+				(2012): le leggi di Newton applicate ai pianeti e alla Luna, compresi la
+				variazione e il moto del perigeo.</li>
+			<li>N. T. Roseveare, <em>Mercury's Perihelion from Le Verrier to
+				Einstein</em> (1982): l&#8217;ultima sezione di questa pagina per esteso.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998): come si
+				calcolano oggi le posizioni, passo per passo.</li>
+		</ul>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				cap. 7 (Newton ricava le leggi di Keplero).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), I B 4, p. 85 (la variazione di Tycho).</li>
+			<li>I. Newton, <em>Philosophiae Naturalis Principia Mathematica</em>
+				(3ª ed., 1726), Libro I, Proposizione 45, Corollario 2, trad. ingl. I.
+				Bruce (17centurymaths.com): l&#8217;apside di 1°31′28″ a rivoluzione.</li>
+			<li>S. Bodenmann, "The 18th-century battle over lunar motion",
+				<em>Physics Today</em> 63, 1 (2010): Clairaut, Eulero e d&#8217;Alembert.</li>
+			<li>J. Laskar, "Is the Solar System stable?", arXiv:1209.5996 (2012): il
+				Giove e il Saturno di Halley e di Laplace.</li>
+			<li>"Tidal acceleration", Wikipedia (in inglese), la storia
+				dell&#8217;accelerazione secolare della Luna (Halley, Laplace, Adams,
+				Delaunay e Ferrel), consultato il 20 novembre 2026.</li>
+			<li>MacTutor History of Mathematics (St Andrews), "Mathematical discovery
+				of planets": Urano, Bouvard, Le Verrier, Adams e Galle.</li>
+			<li>G. M. Clemence, "The relativity effect in planetary motions",
+				<em>Reviews of Modern Physics</em> 19 (1947), 361–364: il bilancio del
+				perielio di Mercurio; con C. M. Will, "The confrontation between general
+				relativity and experiment", <em>Living Reviews in Relativity</em>
+				(2014), per i valori di Le Verrier e di Newcomb.</li>
+			<li>P. Bretagnon e G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988): il riferimento della Figura 1.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/beyond-kepler.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

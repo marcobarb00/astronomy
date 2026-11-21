@@ -1648,7 +1648,6 @@ function canvasText(ctx, text, x, y) {
 	ctx.fillText(localNumbers(text), x, y);
 }
 
-
 /* A year before or after Christ as text: "585 BC" / "585 a.C." and
    "AD 150" / "150 d.C." (the number already formatted, e.g. "13·790"). */
 const bcText = number => tr(`${number} BC`, `${number} a.C.`);
@@ -1672,4 +1671,21 @@ const ITALIAN_PERSON_NAMES = {
 /* A person's name in the page's language: "Ptolemy", "Tolomeo". */
 function personName(name) {
 	return ITALIAN ? (ITALIAN_PERSON_NAMES[name] ?? name) : name;
+}
+
+/* The names of the Sun, the Moon and the planets in Italian. */
+const ITALIAN_BODY_NAMES = {
+	Sun: 'Sole',
+	Moon: 'Luna',
+	Mercury: 'Mercurio',
+	Venus: 'Venere',
+	Earth: 'Terra',
+	Mars: 'Marte',
+	Jupiter: 'Giove',
+	Saturn: 'Saturno'
+};
+
+/* A body's name in the page's language: "Mars", "Marte". */
+function bodyName(name) {
+	return ITALIAN ? (ITALIAN_BODY_NAMES[name] ?? name) : name;
 }

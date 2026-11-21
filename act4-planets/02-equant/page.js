@@ -156,7 +156,7 @@ function longitudePlot(canvas, y, yLabel, onDraw, options = {}) {
 			{
 				x: [0, 360],
 				y,
-				xLabel: 'ecliptic longitude of the opposition (°)',
+				xLabel: tr('ecliptic longitude of the opposition (°)', "longitudine eclittica dell'opposizione (°)"),
 				yLabel,
 				xTicks: quarterTicks,
 				aspect: 0.75,
@@ -206,11 +206,17 @@ const observedFigure = {
 		this.oppositions = longitudePlot(
 			byId('observed-oppositions'),
 			EQUATION_RANGE,
-			'ahead of the mean place (°)',
+			tr('ahead of the mean place (°)', 'avanti rispetto al posto medio (°)'),
 			() => this.drawOppositions(),
 			STACKED_PLOT
 		);
-		this.arcs = longitudePlot(byId('observed-arcs'), ARC_RANGE, 'arc (°)', () => this.drawArcs(), STACKED_PLOT);
+		this.arcs = longitudePlot(
+			byId('observed-arcs'),
+			ARC_RANGE,
+			tr('arc (°)', 'arco (°)'),
+			() => this.drawArcs(),
+			STACKED_PLOT
+		);
 	},
 
 	/* The ecliptic longitudes where the dots change sign: between two
@@ -309,7 +315,7 @@ const jobsFigure = {
 	init() {
 		const plotOptions = {
 			x: [0, 360],
-			xLabel: 'mean anomaly M (°)',
+			xLabel: tr('mean anomaly M (°)', 'anomalia media M (°)'),
 			xTicks: quarterTicks,
 			aspect: 0.5,
 			maxHeight: 240,
@@ -322,7 +328,7 @@ const jobsFigure = {
 			byId('jobs-speed'),
 			Object.assign({}, plotOptions, {
 				y: JOBS_SPEED_RANGE,
-				yLabel: 'speed (n)',
+				yLabel: tr('speed (n)', 'velocità (n)'),
 				onDraw: () => this.drawSpeed()
 			})
 		);
@@ -330,7 +336,7 @@ const jobsFigure = {
 			byId('jobs-distance'),
 			Object.assign({}, plotOptions, {
 				y: JOBS_DISTANCE_RANGE,
-				yLabel: 'distance OK',
+				yLabel: tr('distance OK', 'distanza OK'),
 				onDraw: () => this.drawDistance()
 			})
 		);
@@ -351,8 +357,14 @@ const jobsFigure = {
 		this.center = OC;
 		showLines('jobs-readout', [
 			`\\text{OC} = ${fixed(OC, 3)} = ${fixed(OC / OQ, 2)}\\,\\text{OQ}`,
-			`\\text{speed: } ${fixed(speedSeenFromEarth(0, OC, OQ), 3)}\\,n \\text{ to } ${fixed(speedSeenFromEarth(180, OC, OQ), 3)}\\,n`,
-			`\\text{OK: } ${fixed(PlanetEquant.zodiacal(180, OC, OQ).distance, 3)} \\text{ to } ${fixed(PlanetEquant.zodiacal(0, OC, OQ).distance, 3)}`
+			tr(
+				`\\text{speed: } ${fixed(speedSeenFromEarth(0, OC, OQ), 3)}\\,n \\text{ to } ${fixed(speedSeenFromEarth(180, OC, OQ), 3)}\\,n`,
+				`\\text{velocità: da } ${fixed(speedSeenFromEarth(0, OC, OQ), 3)}\\,n \\text{ a } ${fixed(speedSeenFromEarth(180, OC, OQ), 3)}\\,n`
+			),
+			tr(
+				`\\text{OK: } ${fixed(PlanetEquant.zodiacal(180, OC, OQ).distance, 3)} \\text{ to } ${fixed(PlanetEquant.zodiacal(0, OC, OQ).distance, 3)}`,
+				`\\text{OK: da } ${fixed(PlanetEquant.zodiacal(180, OC, OQ).distance, 3)} \\text{ a } ${fixed(PlanetEquant.zodiacal(0, OC, OQ).distance, 3)}`
+			)
 		]);
 		this.draw();
 		this.speed.redraw();
@@ -432,9 +444,9 @@ const jobsFigure = {
 
 		p.frame();
 		p.hline(1, { color: COL.ink, width: 1 });
-		nameAbove(p, 'apogee', 0);
-		nameAbove(p, 'perigee', 180);
-		nameAbove(p, 'apogee', 360);
+		nameAbove(p, tr('apogee', 'apogeo'), 0);
+		nameAbove(p, tr('perigee', 'perigeo'), 180);
+		nameAbove(p, tr('apogee', 'apogeo'), 360);
 		p.fn(M => 1 - JOBS_OQ * cos(M), { color: COL.muted, width: 1.5, dash: [6, 5] });
 		p.fn(M => speedSeenFromEarth(M, this.center, JOBS_OQ), { color: COL.deferent, width: 2.4 });
 	},
@@ -445,9 +457,9 @@ const jobsFigure = {
 
 		p.frame();
 		p.hline(1, { color: COL.ink, width: 1 });
-		nameAbove(p, 'apogee', 0);
-		nameAbove(p, 'perigee', 180);
-		nameAbove(p, 'apogee', 360);
+		nameAbove(p, tr('apogee', 'apogeo'), 0);
+		nameAbove(p, tr('perigee', 'perigeo'), 180);
+		nameAbove(p, tr('apogee', 'apogeo'), 360);
 		p.fn(M => PlanetEquant.zodiacal(M, this.center, JOBS_OQ).distance, { color: COL.deferent, width: 2.4 });
 	}
 };
@@ -479,8 +491,8 @@ const perpendicularFigure = {
 
 	init() {
 		this.panels = [
-			{ id: 'perp-center', from: 'C', foot: 'H', hypotenuse: '1', leg: 'CQ sin M' },
-			{ id: 'perp-earth', from: 'O', foot: 'G', hypotenuse: 'ρ', leg: 'OQ sin M' }
+			{ id: 'perp-center', from: 'C', foot: 'H', hypotenuse: '1', leg: tr('CQ sin M', 'CQ sen M') },
+			{ id: 'perp-earth', from: 'O', foot: 'G', hypotenuse: 'ρ', leg: tr('OQ sin M', 'OQ sen M') }
 		].map(panel => {
 			const owner = Object.assign({ labels: new LabelPlacer() }, panel);
 
@@ -656,15 +668,15 @@ const OPPOSITION_NEAR = 2333;
    and for Mars, where O, C and Q are a few pixels apart, beyond O and the
    labels of O, C and Q, so that the arc and M stay clear of them. */
 const EQUANT_VIEWS = {
-	'e = 0.2': { e: 0.2, arc: 0.16 },
-	Mars: { e: EQUANT.e, arc: 0.4 }
+	[tr('e = 0.2', 'e = 0,2')]: { e: 0.2, arc: 0.16 },
+	[bodyName('Mars')]: { e: EQUANT.e, arc: 0.4 }
 };
 
 const planetFigure = {
 	state: null,
 	labels: new LabelPlacer(), // keeps the labels of one drawing inside the canvas
 
-	view: 'e = 0.2',
+	view: tr('e = 0.2', 'e = 0,2'),
 	params: null,
 
 	init() {
@@ -869,8 +881,8 @@ const keplerFigure = {
 		this.plot = new Plot2D(byId('kepler-plot'), {
 			x: [0, 360],
 			y: KEPLER_RANGE,
-			xLabel: 'mean anomaly M (°)',
-			yLabel: 'difference ÷ e²',
+			xLabel: tr('mean anomaly M (°)', 'anomalia media M (°)'),
+			yLabel: tr('difference ÷ e²', 'differenza ÷ e²'),
 			xTicks: quarterTicks,
 			aspect: 0.95,
 			maxHeight: 440,
@@ -954,15 +966,15 @@ const keplerFigure = {
 
 		p.frame();
 		p.hline(0, { color: COL.ink, width: 1 });
-		nameAbove(p, 'apogee', 0);
-		nameAbove(p, 'perigee', 180);
-		nameAbove(p, 'apogee', 360);
+		nameAbove(p, tr('apogee', 'apogeo'), 0);
+		nameAbove(p, tr('perigee', 'perigeo'), 180);
+		nameAbove(p, tr('apogee', 'apogeo'), 360);
 		p.fn(M => 0.75 * sin(2 * M), { color: COL.muted, width: 1.5, dash: [6, 5] });
 		p.fn(M => -0.25 * sin(2 * M), { color: COL.deferent, width: 1.5, dash: [6, 5] });
 		p.fn(exact(2 * e), { color: COL.muted, width: 2.4 });
 		p.fn(exact(e), { color: COL.deferent, width: 2.4 });
-		p.text('eccentric', 60, 0.8, { color: COL.muted, align: 'center', dx: 0 });
-		p.text('equant', 135, 0.4, { color: COL.deferent, align: 'center', dx: 0 });
+		p.text(tr('eccentric', 'eccentrico'), 60, 0.8, { color: COL.muted, align: 'center', dx: 0 });
+		p.text(tr('equant', 'equante'), 135, 0.4, { color: COL.deferent, align: 'center', dx: 0 });
 	}
 };
 
@@ -988,10 +1000,13 @@ const fitFigure = {
 			.filter(jd => jd >= FIT_START)
 			.map(jd => ({ jd, lon: marsLongitude(jd) }));
 		this.loops = marsLoops().filter(loop => loop.middle >= FIT_START);
-		this.directions = longitudePlot(byId('fit-directions'), EQUATION_RANGE, 'ahead of the mean place (°)', () =>
-			this.drawDirections()
+		this.directions = longitudePlot(
+			byId('fit-directions'),
+			EQUATION_RANGE,
+			tr('ahead of the mean place (°)', 'avanti rispetto al posto medio (°)'),
+			() => this.drawDirections()
 		);
-		this.arcs = longitudePlot(byId('fit-arcs'), FIT_ARC_RANGE, 'arc (°)', () => this.drawArcs());
+		this.arcs = longitudePlot(byId('fit-arcs'), FIT_ARC_RANGE, tr('arc (°)', 'arco (°)'), () => this.drawArcs());
 
 		wireSlider(
 			byId('fit-oc'),
@@ -1031,7 +1046,10 @@ const fitFigure = {
 		this.state = { parameters, curves, qs };
 		showLines('fit-readout', [
 			`\\text{OC} = ${fixed(center, 3)} = ${fixed(center / equant, 2)}\\,\\text{OQ},\\quad \\text{OQ} = ${fixed(equant, 3)}`,
-			`\\text{rms: loops } ${fixed(rms(arcs), 1)}^\\circ,\\quad \\text{oppositions } ${fixed(60 * rms(directions), 0)}'`
+			tr(
+				`\\text{rms: loops } ${fixed(rms(arcs), 1)}^\\circ,\\quad \\text{oppositions } ${fixed(60 * rms(directions), 0)}'`,
+				`\\text{scarto quadratico medio: cappi } ${fixed(rms(arcs), 1)}^\\circ,\\quad \\text{opposizioni } ${fixed(60 * rms(directions), 0)}'`
+			)
 		]);
 		this.directions.redraw();
 		this.arcs.redraw();
@@ -1086,28 +1104,31 @@ const errorFigure = {
 			start: Time.julianDay(2016, 1, 1),
 			end: Time.julianDay(2020, 1, 1),
 			spans: [
-				{ label: '4 years', years: 4 },
-				{ label: '16 years', years: 16 },
-				{ label: '200 years', years: 200 }
+				{ label: tr('4 years', '4 anni'), years: 4 },
+				{ label: tr('16 years', '16 anni'), years: 16 },
+				{ label: tr('200 years', '200 anni'), years: 200 }
 			],
 			units: 'deg',
 			ghostButtons: false
 		});
 
 		curve.addGhost({
-			label: "page 4.1's epicycle",
-			short: "page 4.1's epicycle",
+			label: tr("page 4.1's epicycle", "l'epiciclo della pagina 4.1"),
+			short: tr("page 4.1's epicycle", "l'epiciclo della pagina 4.1"),
 			color: COL.epicycle,
 			fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT)
 		});
 		curve.addModel({
-			label: 'the equant, fitted to 2010–2025',
-			short: 'equant',
+			label: tr('the equant, fitted to 2010–2025', "l'equante, adattato al 2010–2025"),
+			short: tr('equant', 'equante'),
 			color: COL.deferent,
 			fn: PlanetEquant.make(EQUANT)
 		});
 		curve.addMarks({
-			label: 'the equant at the oppositions (spans of 16 years or less)',
+			label: tr(
+				'the equant at the oppositions (spans of 16 years or less)',
+				"l'equante alle opposizioni (intervalli di 16 anni o meno)"
+			),
 			color: COL.deferent,
 			fn: PlanetEquant.make(EQUANT),
 			dates: marsLoops().map(loop => loop.middle),
@@ -1146,7 +1167,7 @@ const loopsFigure = {
 			.slice(0, -1)
 			.map((jd, i) => ({ lon: marsLongitude(jd), value: oppositions[i + 1] - jd }));
 		this.curves = modelLoops(o.center, o.equant, EQUANT.r, TEST_APOGEE, true);
-		this.arcs = longitudePlot(byId('test-arcs'), ARC_RANGE, 'arc (°)', () =>
+		this.arcs = longitudePlot(byId('test-arcs'), ARC_RANGE, tr('arc (°)', 'arco (°)'), () =>
 			this.draw(this.arcs, this.arcDots, this.curves.arcs, LOOP_41.arc)
 		);
 		this.intervals = longitudePlot(byId('test-intervals'), INTERVAL_RANGE, 'days', () =>

@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.2 · THE EQUANT
+     Act IV, the planets. Page 4.1's epicycle makes every loop of Mars the
+     same size. The oppositions show the zodiacal anomaly alone, and the
+     loops show the distance of the epicycle; one eccentric cannot fit
+     both. Ptolemy's answer (Almagest IX 5 - 6, X 6 - 8): a deferent
+     centered halfway between the Earth and the equant, the point about
+     which the epicycle moves uniformly. Fitted to Mars over 2010 - 2025,
+     with the center and the equant found apart, it brings the error from
+     34° to under 1°; compared with Kepler's ellipse, it agrees to first
+     order in e. Numbers: tools/numbers/4.2-equant.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.2 · L&#8217;equante · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.2">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			La pagina 4.1 ha lasciato Marte con cappi di una sola grandezza, mentre il
+			pianeta reale torna indietro quasi il doppio in una parte dello zodiaco
+			rispetto alla parte opposta. Per seguirlo, l&#8217;epiciclo deve muoversi in
+			modo disuniforme lungo lo zodiaco, e avvicinarsi alla Terra in alcune
+			parti più che in altre.
+		</p>
+
+		<p>
+			La risposta di Tolomeo fu un deferente eccentrico sul quale l&#8217;epiciclo si
+			muove uniformemente visto da un secondo punto, l&#8217;equante. Adattato a
+			Marte, porta l&#8217;errore da 34° a meno di un grado, e risulta concordare con
+			l&#8217;ellisse di Keplero al primo ordine nell&#8217;eccentricità.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>L&#8217;anomalia zodiacale alle opposizioni e nei cappi</h2>
+
+		<p>
+			Per studiare l&#8217;anomalia zodiacale da sola, ci servono istanti in cui
+			l&#8217;anomalia legata al Sole non ha effetto. Le opposizioni al Sole medio
+			sono istanti di questo tipo: lì il pianeta sta sulla linea dalla Terra per
+			K, il centro del suo epiciclo, e si vede dov&#8217;è K (X 6).
+		</p>
+
+		<p>
+			Se K si muovesse uniformemente, il pianeta si vedrebbe lì alla sua
+			longitudine eclittica media $\bar\lambda$, il suo <strong>posto
+			medio</strong>. La Figura 1(a) mostra, a ciascuna delle diciannove
+			opposizioni di Marte al Sole medio del 1986–2025, di quanto Marte era
+			avanti rispetto al suo posto medio: la sua longitudine eclittica meno la
+			$\bar\lambda$ dell&#8217;adattamento della pagina 4.1, negativa quando Marte
+			era indietro. Era fino a circa 12° avanti o indietro, e passò da avanti a
+			indietro vicino alla longitudine eclittica 149° e di nuovo vicino a 333°.
+		</p>
+
+		<!-- Figure 1: the oppositions and the loops of 1986 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels stacked">
+					<div>
+						<p class="panel-title">(a) di quanto Marte è avanti rispetto al suo posto medio</p>
+						<canvas id="observed-oppositions"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) di quanto Marte torna indietro</p>
+						<canvas id="observed-arcs"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui le linee punteggiate da (a), dove Marte passa per il suo posto
+				medio, fino a (b): i cappi più lunghi e i più corti stanno vicino a esse,
+				quindi l&#8217;anomalia zodiacale e la lunghezza dei cappi dipendono dalla
+				stessa linea attraverso lo zodiaco.
+			</figcaption>
+		</figure>
+
+		<p>
+			La Figura 1(b) mette i cappi degli stessi anni in funzione della stessa
+			longitudine eclittica. Marte torna indietro di quasi 20° in una parte dello
+			zodiaco e di soli 10° nella parte opposta.
+		</p>
+
+		<div class="row">
+			<p>
+				Tolomeo notò che questa anomalia si comporta al contrario di quella
+				legata al Sole: «il tempo dalla velocità minima alla media è sempre
+				maggiore del tempo dalla velocità media alla massima» (IX 5). Un cerchio
+				eccentrico produce questo, e «questa è l&#8217;ipotesi che effettivamente
+				usiamo per rappresentare questo tipo di anomalia».
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Trovò anche che le opposizioni e gli archi di retrogradazione richiedono
+				eccentricità diverse: «con una stima approssimativa, l&#8217;eccentricità
+				che si trova dalla massima equazione dell&#8217;anomalia eclittica risulta
+				circa il doppio di quella ricavata dalla grandezza degli archi di
+				retrogradazione alla massima e alla minima distanza dell&#8217;epiciclo» (X
+				6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>Il deferente eccentrico e l&#8217;equante</h2>
+
+		<h3>Un deferente eccentrico</h3>
+
+		<p>
+			L&#8217;osservazione di Tolomeo suggerisce l&#8217;eccentrico che è servito per il
+			Sole, quindi lo proviamo prima sul deferente. Facciamo muovere K
+			uniformemente su un cerchio di raggio 1 il cui centro C sta alla distanza
+			OC = $e$ dalla Terra O, verso l&#8217;apogeo A del cerchio, alla longitudine
+			eclittica $\lambda_A$.
+		</p>
+
+		<p>
+			Come per il Sole nella pagina 2.1, il posto di K sul suo cerchio è dato
+			dalla sua anomalia media $M = \bar\lambda - \lambda_A$: l&#8217;angolo in C
+			dalla direzione dell&#8217;apogeo a K, contato verso est, che cresce
+			uniformemente con il moto medio del pianeta $n$. $M$ appartiene al
+			deferente. L&#8217;angolo del pianeta sul suo epiciclo è ancora $\mu$, come
+			nella pagina 4.1 (nelle pagine della Luna era l&#8217;epiciclo a portare $M$).
+		</p>
+
+		<p>
+			Visto da O, K è in $\bar\lambda + q$ e alla distanza $\rho =
+			\text{OK}$, dove $q$ è l&#8217;equazione del centro della pagina 2.1 con K al
+			posto del Sole. Chiamiamo $q$ <strong>equazione zodiacale</strong>,
+			l&#8217;«equazione dell&#8217;anomalia eclittica» di Tolomeo:
+		</p>
+
+		$$q = -\operatorname{atan2}(e\sin M,\ 1 + e\cos M), \qquad \rho = \sqrt{1 + 2e\cos M + e^2}, \qquad M = \bar\lambda - \lambda_A.$$
+
+		<p>
+			L&#8217;epiciclo resta come nella pagina 4.1, con il suo raggio KP parallelo
+			alla linea dalla Terra al Sole medio, quindi a un&#8217;opposizione al Sole
+			medio il pianeta si vede ancora dov&#8217;è K (X 6). La Figura 1(a) è allora
+			un&#8217;immagine di $q$, e il suo valore massimo è circa $e$ radianti.
+		</p>
+
+		<h3>Una sola eccentricità non basta</h3>
+
+		<p>
+			Adattato alle otto opposizioni al Sole medio del 2010–2025, un giro dello
+			zodiaco, un eccentrico richiede $e$ = 0,200. Con l&#8217;epiciclo dimensionato
+			sui cappi degli stessi anni, i suoi cappi risultano al contrario: il suo
+			cappio più lungo cade nella parte dello zodiaco in cui Marte è tornato
+			indietro di meno, e il più corto dove Marte è tornato indietro di più.
+		</p>
+
+		<h3>La direzione da un punto, la distanza da un altro</h3>
+
+		<p>
+			Per vedere perché, guardiamo che cosa fissa la grandezza di un cappio. Più
+			K è vicino alla Terra, più l&#8217;epiciclo appare grande e più lungo è il
+			cappio. Più in fretta si vede muovere K, più esso porta avanti il cappio,
+			e più corto è il cappio.
+		</p>
+
+		<p>
+			Nell&#8217;eccentrico, C fa due lavori: è il centro del cerchio di K e il punto
+			attorno al quale K si muove uniformemente. Per vedere quale lavoro
+			controlla la velocità e quale la distanza, diamo il secondo a un altro
+			punto. Facciamo muovere K uniformemente visto da un punto Q sulla linea da
+			O all&#8217;apogeo, alla distanza OQ dalla Terra, mentre il suo cerchio resta
+			centrato in C. $M$ è ora l&#8217;angolo in Q dalla direzione dell&#8217;apogeo a K,
+			e cresce ancora con velocità $n$. Nella Figura 2, C si può spostare
+			ovunque fra O e Q con Q fisso; il suo pannello (a) mostra il triangolo OQK
+			usato qui sotto.
+		</p>
+
+		<!-- Figure 2: the equant's two jobs, the deferent alone; OC -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il deferente, C e l&#8217;equante Q</p>
+						<canvas id="jobs-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la velocità di K vista dalla Terra</p>
+						<canvas id="jobs-speed"></canvas>
+						<p class="panel-title">(c) la distanza di K dalla Terra</p>
+						<canvas id="jobs-distance"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="jobs-oc">centro OC</label>
+							<input id="jobs-oc" type="range" min="0" max="0.2" step="0.001" value="0.1">
+							<output></output>
+						</div>
+						<div class="presets" id="jobs-presets">
+							<button type="button" data-target="jobs-oc" data-value="0">C in O</button>
+							<button type="button" data-target="jobs-oc" data-value="0.1">Tolomeo</button>
+							<button type="button" data-target="jobs-oc" data-value="0.2">C in Q</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="jobs-readout" data-lines="3"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Sposta C dalla Terra all&#8217;equante, con OQ fisso a 0,2. La velocità di K
+				in (b) cambia appena e resta sulla sua curva al primo ordine, mentre la
+				distanza in (c) passa da costante a un&#8217;oscillazione di 0,2 da una parte e
+				dall&#8217;altra. In (a), i raggi da Q a passi uguali di M incontrano il cerchio
+				in punti che si addensano vicino all&#8217;apogeo A.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt class="c-muted">tratteggio</dt>
+						<dd>primo ordine, $n\,(1 - \text{OQ}\cos M)$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Chiamiamo OC e OQ gli <strong>scostamenti</strong>, le distanze dei due punti
+			dalla Terra. Sono piccoli rispetto al raggio del cerchio, 1: circa 0,1 e
+			0,2 per Marte. Al primo ordine negli scostamenti teniamo i termini
+			proporzionali a uno scostamento e trascuriamo i quadrati e i prodotti di
+			due, che sono di nuovo circa dieci volte più piccoli, come nella pagina
+			3.2.
+		</p>
+
+		<p>
+			<strong>Direzione:</strong><br>
+			Q sta sulla linea da O verso A, fra i due, quindi visto da Q la Terra sta
+			opposta all&#8217;apogeo. Nel triangolo OQK l&#8217;angolo in Q è quindi
+			$180^\circ - M$. L&#8217;angolo in K è la differenza fra le direzioni di QK e
+			OK, $\bar\lambda$ e $\bar\lambda + q$, quindi è $-q$. Il teorema dei seni
+			nel triangolo OQK dà
+		</p>
+
+		$$\sin(-q) = \frac{\text{OQ}\,\sin(180^\circ - M)}{\rho} = \frac{\text{OQ}\,\sin M}{\rho}.$$
+
+		<p>
+			Il secondo membro è già proporzionale a OQ, quindi al primo ordine $\rho$
+			si può prendere uguale a 1 e $\sin(-q)$ uguale a $-q$, in radianti: $q
+			\approx -\text{OQ}\sin M$. Mentre K gira, $M$ cresce con velocità $n$,
+			quindi la direzione di K, $\bar\lambda + q$, cambia con
+		</p>
+
+		$$\frac{d(\bar\lambda + q)}{dt} = n + \frac{dq}{dM}\,\frac{dM}{dt} \approx n\,(1 - \text{OQ}\cos M).$$
+
+		<p>
+			Si vede K muoversi più lentamente all&#8217;apogeo, con $n\,(1 - \text{OQ})$,
+			e più in fretta al perigeo, con $n\,(1 + \text{OQ})$. K ruota sempre con
+			la stessa velocità attorno a Q, ma all&#8217;apogeo è più lontano dalla Terra
+			che da Q di OQ, e al perigeo più vicino di OQ, e lo stesso moto visto da
+			più lontano appare più lento.
+		</p>
+
+		<p>
+			<strong>Distanza:</strong><br>
+			Tracciamo la perpendicolare da C sulla retta QK, e chiamiamo H il suo
+			piede. Visto da Q, C sta opposto all&#8217;apogeo alla distanza CQ = OQ − OC,
+			quindi il segmento QC forma l&#8217;angolo $180^\circ - M$ con QK. Ha quindi la
+			lunghezza $\text{CQ}\sin M$ trasversalmente alla retta, la perpendicolare
+			CH, e $-\text{CQ}\cos M$ lungo di essa, da Q verso K: H sta a
+			$-\text{CQ}\cos M$ da Q, e $\text{HK} = \text{QK} + \text{CQ}\cos M$. La
+			Figura 3(a) disegna il triangolo rettangolo CHK.
+		</p>
+
+		<!-- Figure 3: the perpendiculars onto QK, the two right triangles (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il triangolo CHK: QK</p>
+						<canvas id="perp-center"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il triangolo OGK: la distanza ρ</p>
+						<canvas id="perp-earth"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Confronta i due triangoli rettangoli ombreggiati. In ciascuno, il cateto
+				corto è uno scostamento per $\sin M$, e il cateto lungo sta lungo la retta
+				QK, più lungo di QK dello scostamento per $\cos M$, perché il piede cade
+				dietro Q. Disegnati con scostamenti tre volte quelli di Marte e $M$ = 60°.
+			</figcaption>
+		</figure>
+
+		<p>
+			CHK è un triangolo rettangolo la cui ipotenusa CK è il raggio, 1, e il cui
+			cateto corto CH è $\text{CQ}\sin M$. Pitagora dà il cateto lungo HK, e
+			poiché $\text{QK} = \text{HK} - \text{CQ}\cos M$, dà anche QK, entrambi
+			esattamente:
+		</p>
+
+		$$\text{HK} = \sqrt{1 - \text{CQ}^2\sin^2 M}, \qquad \text{QK} = \sqrt{1 - \text{CQ}^2\sin^2 M} - \text{CQ}\cos M.$$
+
+		<p>
+			Solo la radice richiede un&#8217;approssimazione. CQ è del primo ordine, quindi
+			$\text{CQ}^2\sin^2 M$ sotto la radice è del secondo ordine. Al primo
+			ordine lo trascuriamo, così la radice diventa $\sqrt{1} = 1$ e il cateto
+			lungo HK si prende uguale all&#8217;intero raggio. Poiché $\sqrt{1 - x}
+			\approx 1 - x/2$, ciò che si trascura è circa $\tfrac12\text{CQ}^2\sin^2
+			M$, al massimo 0,005 per Marte. Quindi
+		</p>
+
+		$$\text{QK} \approx 1 - \text{CQ}\cos M.$$
+
+		<p>
+			All&#8217;apogeo, per esempio, C sta sulla retta QK, H è C stesso, e QK = 1 −
+			CQ esattamente.
+		</p>
+
+		<p>
+			La stessa costruzione da O dà la distanza $\rho$. O sta sulla stessa retta
+			di C, alla distanza OQ da Q, quindi la sua perpendicolare OG su QK ha
+			lunghezza $\text{OQ}\sin M$, e il suo piede G sta a $-\text{OQ}\cos M$ da
+			Q, così che $\text{GK} = \text{QK} + \text{OQ}\cos M$. Nel triangolo
+			rettangolo OGK della Figura 3(b) l&#8217;ipotenusa è OK, e Pitagora dà,
+			esattamente,
+		</p>
+
+		$$\rho = \sqrt{\text{GK}^2 + \text{OQ}^2\sin^2 M}.$$
+
+		<p>
+			Anche qui il cateto corto compare solo al quadrato, e trascuriamo
+			$\text{OQ}^2\sin^2 M$ sotto la radice, il che lascia $\rho \approx
+			\text{GK} = \text{QK} + \text{OQ}\cos M$. Con il QK appena trovato, $\rho
+			\approx 1 + (\text{OQ} - \text{CQ})\cos M$, e poiché OQ − CQ = OC, i due
+			risultati al primo ordine sono
+		</p>
+
+		<div class="box">
+			$$\frac{d(\bar\lambda + q)}{dt} \approx n\,(1 - \text{OQ}\cos M), \qquad \rho \approx 1 + \text{OC}\cos M.$$
+		</div>
+
+		<p>
+			La direzione e la velocità di K dipendono solo da OQ, e la sua distanza
+			solo da OC. Le opposizioni misurano la direzione, quindi fissano OQ, circa
+			0,2 per Marte. Nell&#8217;eccentrico OC è lo stesso 0,2, e K è a 1,20 dalla
+			Terra all&#8217;apogeo e a 0,80 al perigeo. La variazione di distanza prevale
+			allora sulla variazione di velocità, e i cappi sono più lunghi al perigeo.
+			I cappi reali sono più lunghi vicino all&#8217;apogeo, quindi OC deve essere
+			minore di OQ.
+		</p>
+
+		<h3>L&#8217;equante</h3>
+
+		<div class="row">
+			<p>
+				Tolomeo separò i due punti. L&#8217;epiciclo, scrive, «è portato su un
+				eccentrico che, pur uguale in grandezza all&#8217;eccentrico che produce
+				l&#8217;anomalia, non è descritto attorno allo stesso centro», e per ogni
+				pianeta tranne Mercurio il suo centro «è il punto che divide a metà la
+				linea che congiunge il centro dell&#8217;eccentrico che produce l&#8217;anomalia
+				con il centro dell&#8217;eclittica» (IX 5). Il centro del moto uniforme, Q, si
+				chiama oggi <strong>equante</strong>.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Quindi OC = $e$, OQ = $2e$ e CQ = $e$. I due triangoli rettangoli qui
+			sopra danno tutto esattamente, senza trascurare nulla. Il primo dà QK,
+			della stessa forma della distanza della manovella della pagina 3.2. Nel
+			secondo, con ipotenusa OK, l&#8217;angolo in K è $-q$, fra il cateto $2e\sin M$
+			e il cateto $\text{QK} + 2e\cos M$:
+		</p>
+
+		<div class="box">
+			$$\text{QK} = -e\cos M + \sqrt{1 - e^2\sin^2 M}, \qquad q = -\operatorname{atan2}(2e\sin M,\ \text{QK} + 2e\cos M).$$
+		</div>
+
+		<p>
+			L&#8217;ipotenusa è la distanza, $\rho = \sqrt{4e^2\sin^2 M + (\text{QK} +
+			2e\cos M)^2}$. Al primo ordine $q \approx -2e\sin M$ e $\rho \approx 1 +
+			e\cos M$: l&#8217;equante dà le direzioni di un eccentrico con $2e$ e le
+			distanze di uno con $e$. Per il Marte di Tolomeo, 12 e 6 dove il deferente
+			è 60, la distanza di K cambia la metà che in un eccentrico con le stesse
+			direzioni.
+		</p>
+
+		<div class="row">
+			<p>
+				La retta QK ruota uniformemente attorno a un punto che non è il centro
+				del cerchio di K, quindi K non si muove lungo il suo cerchio a velocità
+				costante. Copernico respinse l&#8217;equante per questa ragione: in esso «un
+				moto circolare può essere uniforme rispetto a un centro estraneo, non
+				suo» (<em>De Revolutionibus</em> V 2, e IV 2 per la Luna).
+			</p>
+			<aside>
+				<div class="note detour" data-topic="islamic"></div>
+			</aside>
+		</div>
+
+		<h3>Il pianeta</h3>
+
+		<div class="row">
+			<p>
+				Il pianeta P si muove sul suo epiciclo, di raggio $r$, come nella pagina
+				4.1: la sua anomalia è $\mu = \bar\lambda_\odot - \bar\lambda$, dove
+				$\bar\lambda_\odot$ è la longitudine eclittica del Sole medio, così che KP
+				resti parallelo alla linea verso il Sole medio. Tolomeo conta questa
+				anomalia dal diametro dell&#8217;epiciclo «che punta verso» l&#8217;equante (IX
+				6), l&#8217;apogeo medio sulla retta QK. L&#8217;apogeo dell&#8217;epiciclo visto dalla
+				Terra sta sulla retta OK, $q$ più avanti, quindi il pianeta è a $\mu - q$
+				da esso.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Tolomeo trova poi il pianeta in due passi, prima K, poi il pianeta
+			sull&#8217;epiciclo (XI 9). La longitudine eclittica del pianeta $\lambda$,
+			vista dalla Terra, è la direzione di K, $\bar\lambda + q$, più
+			l&#8217;equazione dell&#8217;epiciclo $\eta$ della pagina 4.1, ora con l&#8217;anomalia
+			$\mu - q$ e l&#8217;epiciclo alla distanza $\rho$:
+		</p>
+
+		<div class="box">
+			$$\lambda = \bar\lambda + q + \eta, \qquad \eta = \operatorname{atan2}\big(r\sin(\mu - q),\ \rho + r\cos(\mu - q)\big).$$
+		</div>
+
+		<p>
+			Con $e = 0$ questo è il modello della pagina 4.1. L&#8217;apogeo del deferente
+			è fisso fra le stelle: Tolomeo lo fa muovere «circa della stessa ...
+			quantità determinata per la sfera delle stelle fisse» (IX 5), quindi in
+			longitudine eclittica della data si muove con la velocità di precessione
+			della pagina 2.3. La Figura 4 disegna l&#8217;intero modello, con l&#8217;epiciclo,
+			sugli anni dell&#8217;adattamento.
+		</p>
+
+
+		<!-- Figure 4: the whole model, deferent, equant and epicycle; date, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="planet-views"></div>
+				<div class="fig-row">
+					<div>
+						<canvas id="planet-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="planet-day">data</label>
+							<input id="planet-day" type="range" min="0" max="5844" step="0.25" value="3100">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="planet-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="planet-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets" id="planet-presets">
+							<button type="button" class="play" id="planet-play">Avvia</button>
+							<button type="button" data-target="planet-day" data-value="2333" id="planet-opposition">un&#8217;opposizione</button>
+						</div>
+						<div class="readout" id="planet-readout" data-lines="4"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Comincia con $e$ = 0,2, il doppio di quella di Marte, poi scegli Marte.
+				Premi «un&#8217;opposizione», o avvia, e guarda P: ogni volta che è opposto al
+				Sole medio sta sulla retta OK, quindi si vede dov&#8217;è K. I suoi cappi sono
+				più lunghi dalla parte dell&#8217;apogeo A.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-sun">☉, tratteggio</dt>
+						<dd>la direzione del Sole medio</dd>
+						<dt class="c-planet">tenue</dt>
+						<dd>il percorso di P nell&#8217;ultimo periodo sinodico</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>L&#8217;equante e l&#8217;ellisse di Keplero</h3>
+
+		<div class="row">
+			<p>
+				La separazione di direzioni e distanze dell&#8217;equante è la caratteristica
+				che sopravvisse nell&#8217;ellisse di Keplero. Lavorando su Marte, Keplero
+				rinunciò prima all&#8217;uguaglianza delle due eccentricità, e alla fine la
+				ripristinò come i due fuochi di un&#8217;ellisse (<em>HAMA</em> p. 172), lungo
+				la quale il raggio da un fuoco spazza aree uguali in tempi uguali
+				(Voelkel cap. 3; pagina 4.5).
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Keplero mise il Sole in quel fuoco. Qui sovrapponiamo l&#8217;ellisse al
+			deferente di Tolomeo solo per confrontare le due curve: con lo stesso $e$
+			e semiasse maggiore 1, il suo centro è C e i suoi fuochi sono O e Q.
+			Sviluppando entrambi in $e$, con $M$ contato dall&#8217;apogeo (Esercizio 1), e
+			aggiungendo l&#8217;eccentrico del Sole con il centro a $2e$, si ottiene la
+			tabella:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table series-table">
+			<thead>
+				<tr>
+					<th>modello</th>
+					<th>direzione, $q$</th>
+					<th>distanza</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>eccentrico, OC = $2e$</td>
+					<td>$-2e\sin M + 2e^2\sin 2M$</td>
+					<td>$1 + 2e\cos M + 2e^2\sin^2 M$</td>
+				</tr>
+				<tr>
+					<td>equante, OC = $e$, OQ = $2e$</td>
+					<td>$-2e\sin M + e^2\sin 2M$</td>
+					<td>$1 + e\cos M + \tfrac32 e^2\sin^2 M$</td>
+				</tr>
+				<tr>
+					<td>ellisse di Keplero</td>
+					<td>$-2e\sin M + \tfrac54 e^2\sin 2M$</td>
+					<td>$1 + e\cos M + e^2\sin^2 M$</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			L&#8217;equante e l&#8217;ellisse concordano al primo ordine in $e$, in direzione e
+			in distanza. In direzione differiscono di $-\tfrac14 e^2\sin 2M$, al
+			massimo $e^2/4$, e in distanza di $\tfrac12 e^2\sin^2 M$. Anche
+			l&#8217;eccentrico ha le direzioni dell&#8217;ellisse al primo ordine, ma le sue
+			distanze variano il doppio, come hanno trovato le pagine 2.1 e 3.2 per il
+			Sole e la Luna.
+		</p>
+
+		<div class="row">
+			<p>
+				Visto dal fuoco vuoto Q, il punto dell&#8217;ellisse corre avanti rispetto a
+				una rotazione uniforme di $\tfrac14 e^2\sin 2M$, quindi al primo ordine il
+				fuoco vuoto è un equante. Gli sviluppi si possono verificare
+				numericamente: il coefficiente di $\sin 2M$ nel $q$ esatto, con $e =
+				0{,}001$, è $1{,}0000\,e^2$ per l&#8217;equante e $1{,}2500\,e^2$ per
+				l&#8217;ellisse.
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Con $e$ = 0,1, circa il valore di Marte, la massima differenza in
+			direzione è 10,4′, dove il termine del secondo ordine $e^2/4$ dà 8,6′; i
+			termini del terzo ordine fanno il resto. Con l&#8217;$e$ = 0,0167 del Sole la
+			massima differenza è circa il 3% sopra $e^2/4$.
+		</p>
+
+		<!-- Figure 5: the equant and Kepler's ellipse (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il deferente e l&#8217;ellisse, $e = 0{,}3$</p>
+						<canvas id="kepler-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la direzione da O, meno quella dell&#8217;ellisse</p>
+						<canvas id="kepler-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Leggi le ampiezze in (b): l&#8217;equante differisce dall&#8217;ellisse di circa un
+				quarto di $e^2$, l&#8217;eccentrico della pagina 2.1 di tre quarti. Per Marte
+				le curve esatte contengono anche il terzo ordine, che approfondisce i
+				lobi dalla parte del perigeo e appiattisce quelli dalla parte
+				dell&#8217;apogeo.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-deferent">K</dt>
+						<dd>QK ruota uniformemente</dd>
+						<dt class="c-planet">K′</dt>
+						<dd>OK′ spazza aree uguali in tempi uguali</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Nel pannello (b)</p>
+					<dl class="key">
+						<dt>continua</dt>
+						<dd>esatta, per Marte</dd>
+						<dt>tratteggio</dt>
+						<dd>secondo ordine, $-\tfrac14\sin 2M$ e $\tfrac34\sin 2M$</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>Marte dalle sue opposizioni e dai suoi cappi</h2>
+
+		<p>
+			Il modello ha sei parametri: il moto medio $n$, la longitudine eclittica
+			media $L_0$ a J2000.0, l&#8217;apogeo $\lambda_A$, OQ, OC e l&#8217;epiciclo $r$.
+			Teniamo separati OC e OQ, così che siano le osservazioni, e non Tolomeo, a
+			decidere come sono legati. Il moto medio resta come nella pagina 4.1:
+			opposizioni distanti 79 anni cadono nello stesso posto dello zodiaco e
+			nella stessa configurazione con il Sole, quindi entrambe le anomalie si
+			annullano, qualunque sia il deferente.
+		</p>
+
+		<h3>L&#8217;equante dalle opposizioni</h3>
+
+		<p>
+			Le direzioni di K sono ciò che il punto equante cambia, e a ogni
+			opposizione al Sole medio il pianeta si vede nella direzione di K. Le otto
+			opposizioni del 2010–2025 fanno un giro dello zodiaco, come richiede un
+			giro completo di un&#8217;anomalia, e danno otto valori di $\bar\lambda + q$.
+			Poiché $q \approx -\text{OQ}\sin M$, fissano $L_0$, $\lambda_A$ e OQ; il
+			centro C li cambia solo al secondo ordine.
+		</p>
+
+		<h3>Il centro dai cappi</h3>
+
+		<p>
+			Note le direzioni, i cappi misurano la distanza di K. La loro grandezza
+			media fissa $r$, come nella pagina 4.1, e il modo in cui cambia lungo lo
+			zodiaco fissa OC. La Figura 6 mostra entrambe le osservazioni del
+			2010–2025 contro il modello, con OC libero. In (a) la curva del modello è
+			$q$, di quanto K si vede avanti rispetto al suo posto medio.
+		</p>
+
+		<!-- Figure 6: the oppositions fix Q, the loops fix C; OC -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) di quanto Marte è avanti rispetto al suo posto medio</p>
+						<canvas id="fit-directions"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) di quanto Marte torna indietro</p>
+						<canvas id="fit-arcs"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl">
+							<label for="fit-oc">centro OC</label>
+							<input id="fit-oc" type="range" min="0" max="0.2007" step="0.0001" value="0.0983">
+							<output></output>
+						</div>
+						<div class="presets" id="fit-presets">
+							<button type="button" data-target="fit-oc" data-value="0">C in O</button>
+							<button type="button" data-target="fit-oc" data-value="0.0983">adattato</button>
+							<button type="button" data-target="fit-oc" data-value="0.2007">C in Q</button>
+						</div>
+					</div>
+					<div>
+						<div class="readout" id="fit-readout" data-lines="2"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Sposta C dalla Terra all&#8217;equante e confronta le curve del modello con i
+				punti osservati. La curva di (a) si muove appena, mentre i cappi in (b) si
+				capovolgono: più lunghi all&#8217;apogeo con C in O, più lunghi al perigeo con
+				C in Q, e sui cappi osservati solo vicino a metà strada.
+			</figcaption>
+		</figure>
+
+		<p>
+			Ogni passo usa il risultato dell&#8217;altro, quindi alterniamo fra i due
+			finché nulla cambia, il che richiede due giri. Le opposizioni danno OQ =
+			0,2007 e i cappi OC = 0,0983, un rapporto di 0,49, vicino alla metà di
+			Tolomeo.
+		</p>
+
+		<p>
+			Prendiamo quindi la bisezione di Tolomeo e adattiamo di nuovo con OC = $e$
+			e OQ = $2e$. Marte ha allora $e$ = 0,1005, il suo apogeo alla longitudine
+			eclittica $\lambda_A$ = 151,1° e $L_0$ = 355,38°. Dove il deferente è 60,
+			le lunghezze adattate sono vicine a quelle di Tolomeo:
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table fit-table">
+			<thead>
+				<tr>
+					<th>dove il deferente è 60</th>
+					<th>OC</th>
+					<th>OQ</th>
+					<th>epiciclo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>adattato al 2010–2025</td><td>6,03</td><td>12,06</td><td>39,48</td></tr>
+				<tr><td>Tolomeo (X 7, X 8)</td><td>6</td><td>12</td><td>39,5</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<!-- History block: Ptolemy's three oppositions and the bisection -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le opposizioni di Tolomeo e la sua bisezione</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo osservò tre opposizioni di Marte «con la massima precisione
+					possibile, usando gli strumenti astrolabici», nel 130, nel 135 e nel 139
+					d.C. (X 7). Le opposizioni mostrano K dalla Terra, mentre il moto uniforme
+					è attorno all&#8217;equante, quindi egli prese dapprima il centro del
+					deferente uguale all&#8217;equante (<em>HAMA</em> p. 174), poi corresse gli
+					archi fra le opposizioni e ricalcolò altre due volte. Trovò l&#8217;apogeo a
+					Cancro 25° 30′ (115,5°) e 12 per la doppia eccentricità, e Toomer trova
+					che un altro giro li cambierebbe appena. L&#8217;Esercizio 2 rifà il calcolo.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Non mostra come arrivò alla bisezione. A parte la stima approssimativa
+					di X 6, la disposizione simmetrica è data per scontata nel suo calcolo
+					(<em>HAMA</em> p. 173), e Neugebauer suggerisce che la sua somiglianza
+					con il modello di Venere, trovato da osservazioni molto più dirette (X
+					1–3), ne abbia favorito l&#8217;accettazione (p. 172).
+				</p>
+				<aside>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;equante contro il Marte reale</h2>
+
+		<p>
+			Per vedere quanto dell&#8217;errore della pagina 4.1 toglie l&#8217;equante, la
+			Figura 7 dà la curva dell&#8217;errore del modello adattato al 2010–2025,
+			$\Delta\lambda = \lambda_\text{modello} - \lambda_\text{rif}$ in gradi, la
+			longitudine eclittica del pianeta $\lambda$ data dal modello meno quella
+			del Marte reale, con l&#8217;epiciclo della pagina 4.1 come fantasma.
+		</p>
+
+		<!-- Figure 7: the equant fitted to 2010 - 2025 against the reference Mars -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Punta le opposizioni, i punti, dove l&#8217;epiciclo della pagina 4.1
+				sbagliava di decine di gradi, e leggi lì l&#8217;errore dell&#8217;equante. Poi
+				passa a duecento anni e nota che la sua fascia resta stretta quanto sui
+				sedici anni dell&#8217;adattamento.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nel 2010–2025 l&#8217;equante resta entro 0,9° dal Marte reale, dove
+			l&#8217;epiciclo della pagina 4.1 sbagliava fino a 34°. Il suo moto medio è
+			venuto da opposizioni distanti 79 anni, e nei due secoli 1926–2126 resta
+			entro circa un grado.
+		</p>
+
+		<p>
+			I cappi erano il residuo della pagina 4.1, quindi sono la seconda
+			verifica. La Figura 8 ripete la Figura 7 della pagina 4.1 con i cappi
+			dell&#8217;equante al posto del valore unico dell&#8217;epiciclo. Gli undici cappi
+			del 1986–2009, fuori dall&#8217;adattamento, sono entro 1,2° da quelli reali.
+			Le opposizioni del modello sono al Sole medio, quindi (b) confronta i
+			tempi fra le opposizioni reali al Sole medio, e quelli del modello
+			concordano con essi entro un giorno.
+		</p>
+
+		<!-- Figure 8: the loops of Mars against the ecliptic longitude, with the equant (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) di quanto torna indietro Marte</p>
+						<canvas id="test-arcs"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il tempo fino all&#8217;opposizione successiva</p>
+						<canvas id="test-intervals"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui i punti, i cappi del 1986–2025, lungo lo zodiaco: le curve
+				dell&#8217;equante ora salgono e scendono con essi, dove l&#8217;epiciclo della
+				pagina 4.1 dava un solo valore per ogni cappio.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-epicycle">tenue, tratteggio</dt>
+						<dd>l&#8217;epiciclo della pagina 4.1</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- History block: Ptolemy's check and his Mars in his own time -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Il Marte di Tolomeo nel suo tempo</h3>
+
+			<div class="row">
+				<p>
+					Tolomeo verificò il suo risultato ricalcolando da esso gli archi fra le
+					sue tre opposizioni, e li trovò «in accordo con la quantità osservata»
+					(X 7). Diede poi le posizioni di Marte a un&#8217;epoca del regno di
+					Nabonassar (X 10), così che il modello si potesse portare a qualunque
+					data.
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+
+			<p>
+				Confrontato con il cielo di riferimento, il suo Marte del 130–139 d.C.
+				resta entro circa 2° dal pianeta reale ed è in media un grado indietro.
+				La sua longitudine eclittica media di Marte è un grado indietro in quegli
+				anni, come il suo Sole medio (pagina 2.1), e il pianeta porta con sé
+				quell&#8217;errore.
+			</p>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>L&#8217;epiciclo e il Sole</h2>
+
+		<p>
+			Il raggio dell&#8217;epiciclo KP segue il Sole medio, che si muove
+			uniformemente, mentre il Sole reale no (pagina 2.1). Per vedere quanto
+			dell&#8217;errore viene da questo, facciamo invece ruotare l&#8217;epiciclo con il
+			Sole reale, con la sua direzione e la sua distanza dal cielo di
+			riferimento, e adattiamo di nuovo.
+		</p>
+
+		<p>
+			Il modello resta allora entro 32′ da Marte, e la sua eccentricità diventa
+			0,0935. La teoria dietro il cielo di riferimento descrive Marte con
+			un&#8217;ellisse di eccentricità 0,0934, che l&#8217;$e$ dell&#8217;equante riproduce al
+			primo ordine.
+		</p>
+
+		<p>
+			Quasi tutto il resto è la differenza al secondo ordine fra l&#8217;equante e
+			l&#8217;ellisse. Con l&#8217;$e$ adattato di nuovo arriva a circa 9′ nella
+			direzione di K, 7,5′ dal termine $e^2/4$, e vicino all&#8217;opposizione è
+			quasi triplicata dal fattore $1/(1 - r)$ della pagina 4.1.
+		</p>
+
+		<p>
+			Il modello ha quindi bisogno della disuniformità propria del Sole
+			nell&#8217;epiciclo di Marte. Nei modelli di Tolomeo gli epicicli di Marte,
+			Giove e Saturno vanno tutti di pari passo con il Sole medio, e i centri
+			degli epicicli di Venere e Mercurio si muovono con esso (pagina 4.1).
+			Perché il moto di un pianeta debba essere legato al Sole è la domanda
+			della pagina 4.3.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Sviluppa l&#8217;equante e l&#8217;ellisse di Keplero al secondo ordine in $e$ e
+				confrontali termine per termine. Per l&#8217;ellisse, con $M$ e l&#8217;anomalia
+				eccentrica $E$ (non l&#8217;equazione del tempo della pagina 2.2) contate
+				dall&#8217;apogeo, il punto sta in $(e + \cos E,\ \sqrt{1 - e^2}\,\sin E)$ dal
+				fuoco O, la sua distanza è $1 + e\cos E$, e la legge delle aree dà
+				l&#8217;equazione di Keplero $M = E + e\sin E$. Poi trova le massime differenze
+				per Marte, $e$ = 0,1005, e per il Sole, $e$ = 0,0167, e confronta con
+				l&#8217;eccentrico della pagina 2.1.
+			</p>
+			<details class="hint">
+				<p>
+					Inverti l&#8217;equazione di Keplero in $E \approx M - e\sin M + \tfrac12
+					e^2\sin 2M$. La direzione del punto da O è $E - e\sin E + \tfrac14
+					e^2\sin 2E$ al secondo ordine (Fitzpatrick (4.21), contata lì dal
+					perigeo). Per l&#8217;equante, sviluppa prima QK, poi usa $\arctan x \approx
+					x$, che basta al secondo ordine.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Equante: $\text{QK} = 1 - e\cos M - \tfrac12 e^2\sin^2 M$. Allora $q =
+					-\arctan\big(2e\sin M/(\text{QK} + 2e\cos M)\big)$ con $\text{QK} +
+					2e\cos M \approx 1 + e\cos M$ dà $q \approx -2e\sin M\,(1 - e\cos M) =
+					-2e\sin M + e^2\sin 2M$. Per la distanza, il triangolo rettangolo OGK
+					della Figura 3 dà $\rho^2 = 4e^2\sin^2 M + (\text{QK} + 2e\cos M)^2$, e
+					al secondo ordine $\text{QK} + 2e\cos M \approx 1 + e\cos M - \tfrac12
+					e^2\sin^2 M$, quindi $\rho^2 \approx (1 + e\cos M)^2 + 3e^2\sin^2 M$, la
+					cui radice è $1 + e\cos M + \tfrac32 e^2\sin^2 M$.
+				</p>
+				<p>
+					Ellisse: $E \approx M - e\sin M + \tfrac12 e^2\sin 2M$. La direzione da
+					O, $\operatorname{atan2}\big(\sqrt{1 - e^2}\sin E,\ e + \cos E\big)$, è al
+					secondo ordine $E - e\sin E + \tfrac14 e^2\sin 2E$. Con $\sin E \approx
+					\sin M - \tfrac12 e\sin 2M$ questo è $M - 2e\sin M + \tfrac54 e^2\sin
+					2M$, quindi $q \approx -2e\sin M + \tfrac54 e^2\sin 2M$; la distanza $1
+					+ e\cos E$ è $1 + e\cos M + e^2\sin^2 M$.
+				</p>
+				<p>
+					L&#8217;equante meno l&#8217;ellisse è $-\tfrac14 e^2\sin 2M$ in direzione e
+					$\tfrac12 e^2\sin^2 M$ in distanza. Per Marte, $e^2/4$ è 8,7′ e la massima
+					differenza esatta 10,5′; la distanza differisce al massimo di 0,0050.
+					L&#8217;eccentrico della pagina 2.1, $q = -2e\sin M + 2e^2\sin 2M$, differisce
+					dall&#8217;ellisse di $\tfrac34 e^2\sin 2M$, 26,0′ (esattamente 31,4′). Per il
+					Sole l&#8217;equante differirebbe dall&#8217;ellisse di 0,24′ e l&#8217;eccentrico di
+					0,72′, il valore della nota «Oggi» della pagina 2.1.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Rifai il calcolo di Tolomeo di X 7. Le sue tre opposizioni di Marte
+				furono a Gemelli 21° (81°), Leone 28° 50′ (148,833°) e Sagittario 2° 34′
+				(242,567°), e fra esse la longitudine media avanzò di 81° 44′ (81,733°) e
+				di 95° 28′ (95,467°). Con OC = $e$ e OQ = $2e$, trova $2e$ e l&#8217;apogeo,
+				prima al primo ordine, poi esattamente.
+			</p>
+			<details class="hint">
+				<p>
+					Al primo ordine la direzione di K è $\bar\lambda - X\sin\bar\lambda +
+					Y\cos\bar\lambda$ (in radianti), con $X = 2e\cos\lambda_A$ e $Y =
+					2e\sin\lambda_A$. Sottrai le equazioni di opposizioni vicine, e metti le
+					longitudini osservate nei seni e nei coseni. Per la soluzione esatta usa
+					il metodo di Newton sulle tre equazioni.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Gli archi osservati, 67,833° e 93,733°, sono più corti di quelli medi di
+					13,900° e 1,733°. Al primo ordine questo dà due equazioni lineari in $X$
+					e $Y$, la cui soluzione è $2e$ = 0,218 (13,1 dove il deferente è 60) e
+					l&#8217;apogeo a 111,2°.
+				</p>
+				<p>
+					Il primo ordine mette le longitudini osservate dove andrebbero quelle
+					medie, e alle tre opposizioni di Tolomeo le due differiscono di $q$, fino
+					a 8,6°: troppo per un&#8217;eccentricità di 0,2. Il metodo di Newton sulle tre
+					equazioni esatte, con incognite $e$, $\lambda_A$ e $\bar\lambda$ alla
+					terza opposizione, converge a $2e$ = 0,20001, 12,000 dove il deferente è
+					60, e all&#8217;apogeo a 115,49°, Cancro 25° 30′, i valori di Tolomeo.
+					L&#8217;anomalia media alla terza opposizione è 135,66°, contro i 135° 39′
+					(135,65°) di Tolomeo.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="predict">
+			<p>
+				Tieni OQ = 0,2007 e $r$ = 0,658 e sposta C nella Figura 6. Prima di
+				spostarlo, prevedi dove i cappi saranno più lunghi, all&#8217;apogeo o al
+				perigeo, con C sulla Terra, e con C in Q. Poi verifica, e confronta con
+				gli archi di Tolomeo stesso per Marte alla massima e alla minima distanza
+				(XII 4): 19° 53′ 32″ (19,89°) e 11° 12′ 14″ (11,20°).
+			</p>
+			<details class="hint">
+				<p>
+					Usa i due risultati al primo ordine della sezione 2: la velocità di K
+					vista da O dipende solo da OQ, la sua distanza solo da OC.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con C in O la distanza non cambia, e cambia solo la velocità: K è più
+					lento all&#8217;apogeo, quindi lì i cappi sono più lunghi, 31,9°, e quasi
+					scompaiono al perigeo, 1,4°. Con C in Q la distanza cambia quanto la
+					velocità, e la vicinanza conta di più: 11,0° all&#8217;apogeo e 31,8° al
+					perigeo. Con il C adattato i cappi sono 20,0° e 10,9°.
+				</p>
+				<p>
+					Il modello di Tolomeo stesso, con i suoi moti, 12, 6 e 39,5, dà 19,85° e
+					11,30° agli apsidi, vicino ai suoi 19,89° e 11,20°, che calcolò con
+					alcune approssimazioni proprie.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IX 5
+				(l&#8217;anomalia zodiacale si adatta all&#8217;eccentrico, l&#8217;eccentricità divisa
+				a metà, gli apogei che si muovono con le stelle fisse); IX 6 (il modello
+				dei pianeti esterni, l&#8217;anomalia contata dal diametro verso l&#8217;equante); X
+				1–3 (Venere); X 6 (le opposizioni al Sole medio, l&#8217;eccentricità «circa
+				il doppio»); X 7 (le tre opposizioni di Marte, l&#8217;iterazione, la
+				verifica, con le note di Toomer); X 8 (l&#8217;epiciclo di Marte); X 10
+				(l&#8217;epoca); XI 9 (la posizione calcolata in due passi); XII 4 (le
+				retrogradazioni di Marte alla massima e alla minima distanza).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Parte prima: I C 4 (pp. 170–177: il perfezionamento del modello,
+				l&#8217;equante, la bisezione di Tolomeo, Keplero e i fuochi).</li>
+			<li>N. Copernico, <em>De Revolutionibus</em> (trad. ingl. E. Rosen): IV 2 e
+				V 2 [f. 140v] (l&#8217;obiezione a un moto uniforme attorno a un centro non
+				suo).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 4.2–4.4 (i modelli di
+				Keplero, Ipparco e Tolomeo sviluppati al secondo ordine).</li>
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				cap. 3 (il lavoro di Keplero su Marte, la legge delle aree).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): i pianeti di riferimento.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/4.2-equant.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

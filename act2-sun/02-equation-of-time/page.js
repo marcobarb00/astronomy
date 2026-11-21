@@ -270,7 +270,9 @@ const reductionFigure = {
 			value => `${fixed(value, 2)}°`
 		);
 		wirePresets(figure);
-		wirePlayButton(byId('red-play'), byId('red-lon'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
+		wirePlayButton(byId('red-play'), byId('red-lon'), PLAY_DAYS_PER_SECOND, {
+			playLabel: tr('Play a year', 'Avvia un anno')
+		});
 
 		this.update();
 	},
@@ -299,9 +301,15 @@ const reductionFigure = {
 
 		showLines('reduction-readout', [
 			`\\lambda = ${fixed(lon, 0)}^\\circ,\\quad \\alpha = ${fixedAngle(alpha, 2)}^\\circ`,
-			tr(`\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min of time}`, `\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min di tempo}`),
+			tr(
+				`\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min of time}`,
+				`\\lambda - \\alpha = ${texSigned(toAlpha)}^\\circ = ${texSigned(toAlpha * MIN_PER_DEG)}\\,\\text{min di tempo}`
+			),
 			`e_\\varepsilon = \\tan^2(\\varepsilon/2) = ${fixed(EquationOfTime.reductionEccentricity(eps), 4)}`,
-			tr(`\\text{greatest } ${fixed(greatest.value, 2)}^\\circ \\text{ at } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`, `\\text{massimo } ${fixed(greatest.value, 2)}^\\circ \\text{ a } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`)
+			tr(
+				`\\text{greatest } ${fixed(greatest.value, 2)}^\\circ \\text{ at } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`,
+				`\\text{massimo } ${fixed(greatest.value, 2)}^\\circ \\text{ a } \\lambda = ${fixed(greatest.lon, 1)}^\\circ`
+			)
 		]);
 	},
 
@@ -432,11 +440,21 @@ const partsFigure = {
 	/* The values on a day, or, off the plot, their range over the year. */
 	showReadout(day) {
 		if (day === null) {
-			const range = list => tr(`${texSigned(Math.min(...list))} \\text{ to } ${texSigned(Math.max(...list))}`, `${texSigned(Math.min(...list))} \\text{ a } ${texSigned(Math.max(...list))}`);
+			const range = list =>
+				tr(
+					`${texSigned(Math.min(...list))} \\text{ to } ${texSigned(Math.max(...list))}`,
+					`${texSigned(Math.min(...list))} \\text{ a } ${texSigned(Math.max(...list))}`
+				);
 
 			showLines('parts-readout', [
-				tr(`\\text{${YEAR}:}\\quad E \\text{ from } ${range(this.total)}\\,\\text{min}`, `\\text{${YEAR}:}\\quad E \\text{ da } ${range(this.total)}\\,\\text{min}`),
-				tr(`\\text{amplitudes: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`, `\\text{ampiezze: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`)
+				tr(
+					`\\text{${YEAR}:}\\quad E \\text{ from } ${range(this.total)}\\,\\text{min}`,
+					`\\text{${YEAR}:}\\quad E \\text{ da } ${range(this.total)}\\,\\text{min}`
+				),
+				tr(
+					`\\text{amplitudes: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`,
+					`\\text{ampiezze: } -q\\ \\ ${fixed(Math.max(...this.eccentricity), 2)},\\quad \\lambda - \\alpha\\ \\ ${fixed(Math.max(...this.obliquity), 2)}\\,\\text{min}`
+				)
 			]);
 			return;
 		}
@@ -508,7 +526,9 @@ const analemmaFigure = {
 
 		wireSlider(byId('ana-day'), () => this.update(), dayText);
 		wirePresets(figure);
-		wirePlayButton(byId('ana-play'), byId('ana-day'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
+		wirePlayButton(byId('ana-play'), byId('ana-day'), PLAY_DAYS_PER_SECOND, {
+			playLabel: tr('Play a year', 'Avvia un anno')
+		});
 
 		this.update();
 	},
@@ -668,15 +688,24 @@ const testFigure = {
 	showReadout(day) {
 		if (day === null) {
 			showLines('test-readout', [
-				tr(`\\text{${YEAR}: model} - \\text{real from } ${texSigned(Math.min(...this.error), 1)} \\text{ to } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`, `\\text{${YEAR}: modello} - \\text{reale da } ${texSigned(Math.min(...this.error), 1)} \\text{ a } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`),
+				tr(
+					`\\text{${YEAR}: model} - \\text{real from } ${texSigned(Math.min(...this.error), 1)} \\text{ to } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`,
+					`\\text{${YEAR}: modello} - \\text{reale da } ${texSigned(Math.min(...this.error), 1)} \\text{ a } ${texSigned(Math.max(...this.error), 1)}\\,\\text{s}`
+				),
 				tr('\\text{Point at either plot to read a date.}', '\\text{Punta un grafico per leggere una data.}')
 			]);
 			return;
 		}
 
 		showLines('test-readout', [
-			tr(`\\text{${dayText(day)}:}\\quad \\text{model } ${texMinSec(this.model[day])},\\quad \\text{real } ${texMinSec(this.real[day])}`, `\\text{${dayText(day)}:}\\quad \\text{modello } ${texMinSec(this.model[day])},\\quad \\text{reale } ${texMinSec(this.real[day])}`),
-			tr(`\\text{model} - \\text{real} = ${texSigned(this.error[day], 1)}\\,\\text{s}`, `\\text{modello} - \\text{reale} = ${texSigned(this.error[day], 1)}\\,\\text{s}`)
+			tr(
+				`\\text{${dayText(day)}:}\\quad \\text{model } ${texMinSec(this.model[day])},\\quad \\text{real } ${texMinSec(this.real[day])}`,
+				`\\text{${dayText(day)}:}\\quad \\text{modello } ${texMinSec(this.model[day])},\\quad \\text{reale } ${texMinSec(this.real[day])}`
+			),
+			tr(
+				`\\text{model} - \\text{real} = ${texSigned(this.error[day], 1)}\\,\\text{s}`,
+				`\\text{modello} - \\text{reale} = ${texSigned(this.error[day], 1)}\\,\\text{s}`
+			)
 		]);
 	}
 };
@@ -758,9 +787,18 @@ const centuriesFigure = {
 		// one value to a line, so that every line fits a phone (the year
 		// is shown beside its slider)
 		showLines('centuries-readout', [
-			tr(`\\text{minimum } ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ`, `\\text{minimo } ${texSigned(least.E)}\\,\\text{min a } \\lambda = ${fixed(least.lon, 0)}^\\circ`),
-			tr(`\\text{maximum } ${texSigned(greatest.E)}\\,\\text{min at } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`, `\\text{massimo } ${texSigned(greatest.E)}\\,\\text{min a } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`),
-			tr(`\\text{range } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{time-degrees}`, `\\text{escursione } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{gradi di tempo}`)
+			tr(
+				`\\text{minimum } ${texSigned(least.E)}\\,\\text{min at } \\lambda = ${fixed(least.lon, 0)}^\\circ`,
+				`\\text{minimo } ${texSigned(least.E)}\\,\\text{min a } \\lambda = ${fixed(least.lon, 0)}^\\circ`
+			),
+			tr(
+				`\\text{maximum } ${texSigned(greatest.E)}\\,\\text{min at } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`,
+				`\\text{massimo } ${texSigned(greatest.E)}\\,\\text{min a } \\lambda = ${fixed(greatest.lon, 0)}^\\circ`
+			),
+			tr(
+				`\\text{range } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{time-degrees}`,
+				`\\text{escursione } ${fixed(range, 2)}\\,\\text{min} = ${fixed(range / MIN_PER_DEG, 2)}\\ \\text{gradi di tempo}`
+			)
 		]);
 	},
 

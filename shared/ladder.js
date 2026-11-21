@@ -45,9 +45,10 @@ const ErrorLadder = (function () {
 	];
 	const RANGE = [Math.log10(0.1), Math.log10(6000)];
 
-	/* The height of a row (px), and the default room for the row names. */
+	/* The height of a row (px), and the default room for the row names
+	   (wider in Italian, whose names are longer: "4.3 epiciclo minore"). */
 	const ROW = 34;
-	const NAMES = 100;
+	const NAMES = tr(100, 136);
 
 	/* The y value of row i of n, the first row at the top: from n down to
 	   1, so that no row falls on y = 0, where Plot2D draws a stronger
@@ -93,7 +94,8 @@ const ErrorLadder = (function () {
 			x: RANGE,
 			y: [0.5, rows.length + 0.5],
 			xTicks: () => MARKS.map(mark => ({ value: Math.log10(mark.arcmin), label: mark.label })),
-			yTicks: () => rows.map((row, i) => ({ value: ys[i], label: `${row.page} ${row.name}`.trim(), words: true })),
+			yTicks: () =>
+				rows.map((row, i) => ({ value: ys[i], label: `${row.page} ${row.name}`.trim(), words: true })),
 			xLabel: tr('largest error', 'errore massimo'),
 			margin: { left: options.names ?? NAMES },
 			minHeight: height,

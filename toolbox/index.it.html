@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     THE TOOLBOX
+     Every model of the course gathered to be used, reached only from the
+     hub (STRUCTURE.md §4, Epilogue): the positions of the Sun, the Moon
+     and the five planets on any date, where to look and when; the largest
+     error of every model; the key formulas, the fitted parameters and the
+     notation. The ellipses of Mercury, Venus, Jupiter and Saturn are
+     fitted here by page 4.5's method, and every planet is judged against
+     VSOP87. No rhythm of observation, model, fit, test and residual, and
+     no exercises. Numbers: tools/numbers/toolbox.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>La cassetta degli attrezzi · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's layout (no new colours) -->
+	<link rel="stylesheet" href="../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../shared/common.js"></script>
+	<script defer src="../shared/time.js"></script>
+	<script defer src="../shared/ephemeris.js"></script>
+	<script defer src="../shared/vsop87-data.js"></script>
+	<script defer src="../shared/vsop87-planets.js"></script>
+	<script defer src="../shared/vsop87.js"></script>
+	<script defer src="../shared/models/diurnal.js"></script>
+	<script defer src="../shared/models/frames.js"></script>
+	<script defer src="../shared/models/mean-sun.js"></script>
+	<script defer src="../shared/models/clock.js"></script>
+	<script defer src="../shared/models/precession.js"></script>
+	<script defer src="../shared/models/solar-eccentric.js"></script>
+	<script defer src="../shared/models/lunar-epicycle.js"></script>
+	<script defer src="../shared/models/lunar-crank.js"></script>
+	<script defer src="../shared/models/lunar-latitude.js"></script>
+	<script defer src="../shared/models/planet-epicycle.js"></script>
+	<script defer src="../shared/models/planet-equant.js"></script>
+	<script defer src="../shared/models/planet-arrangement.js"></script>
+	<script defer src="../shared/models/kepler.js"></script>
+	<script defer src="../shared/plot2d.js"></script>
+	<script defer src="../shared/ladder.js"></script>
+	<script defer src="../shared/site-map.js"></script>
+	<script defer src="../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="toolbox">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			Ogni pagina del corso ha costruito un modello, lo ha adattato a
+			osservazioni moderne e lo ha verificato con il cielo di riferimento.
+			Riuniti qui, i modelli danno le posizioni del Sole, della Luna e dei
+			pianeti in qualunque giorno dal 1900 al 2100, e le loro verifiche dicono
+			quanto fidarsi di ciascuno.
+		</p>
+
+		<!-- ========================= POSITIONS ON A DATE ========================= -->
+		<h2 id="positions">Le posizioni in una data</h2>
+
+		<p>
+			Per ogni corpo il calcolatore usa il modello migliore del corso:
+			l&#8217;ellisse del Sole della pagina 4.5, la manovella della pagina 3.2 per
+			la Luna (con il cerchio inclinato della pagina 3.3 per la sua latitudine
+			eclittica), e un&#8217;ellisse per ogni pianeta, vista dalla Terra
+			sull&#8217;ellisse del Sole. Ogni posizione viene poi convertita in ascensione
+			retta e declinazione, e negli istanti in cui il corpo sorge, transita al
+			meridiano e tramonta, con i sistemi di riferimento e l&#8217;orologio
+			dell&#8217;Atto I.
+		</p>
+
+		<p>
+			Poiché le ellissi stanno nell&#8217;eclittica, il calcolatore dà a ogni
+			pianeta latitudine eclittica 0. La Venere reale arriva a 7,6°
+			dall&#8217;eclittica nel 2026, quindi la sua declinazione, e con essa gli
+			istanti del sorgere e del tramonto, può sbagliare altrettanto; il corso ha
+			lasciato le latitudini dei pianeti a una pagina dedicata.
+		</p>
+
+		<p>
+			Il corso ha adattato un&#8217;ellisse solo a Marte. Quelle di Mercurio,
+			Venere, Giove e Saturno sono adattate qui nello stesso modo di quella di
+			Marte nella pagina 4.5. In un&#8217;opposizione al Sole vero, la longitudine
+			eclittica geocentrica di un pianeta esterno è quella eliocentrica, e in
+			una congiunzione inferiore la longitudine eclittica eliocentrica di un
+			pianeta interno è quella della Terra. Così un secolo di questi eventi,
+			1926–2025, dà per ogni pianeta la longitudine media, il moto medio,
+			l&#8217;afelio e l&#8217;eccentricità, e la terza legge dà la sua distanza.
+		</p>
+
+		<p>
+			Nel 2026 le ellissi dei pianeti restano entro pochi primi d&#8217;arco dal
+			riferimento, quella di Giove entro 3,2′. Gli errori di Mercurio e di
+			Venere sono i maggiori, circa 12′, soprattutto perché le ellissi
+			trascurano l&#8217;inclinazione delle loro orbite sull&#8217;eclittica, 7,0° e
+			3,4°, come la pagina 4.5 trascurava quella di Marte.
+		</p>
+
+		<!-- The calculator -->
+		<figure class="fig" id="calculator">
+			<div class="frame">
+				<div class="calc-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="calc-day">data</label>
+							<input id="calc-day" type="range" min="0" max="1" step="1" value="0">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="calc-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="calc-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="ctl">
+							<label for="calc-hour">ora (UT)</label>
+							<input id="calc-hour" type="range" min="0" max="23.75" step="0.25" value="21">
+							<output></output>
+						</div>
+						<div class="calc-date-row">
+							<label for="calc-date">qualunque data</label>
+							<input id="calc-date" type="date">
+							<button type="button" id="calc-now">adesso</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="calc-lat">latitudine geografica φ</label>
+							<input id="calc-lat" type="range" min="-66" max="66" step="0.1" value="51.5">
+							<output></output>
+						</div>
+						<div class="ctl">
+							<label for="calc-lon">longitudine geografica ℓ</label>
+							<input id="calc-lon" type="range" min="-180" max="180" step="0.1" value="0">
+							<output></output>
+						</div>
+						<div class="presets" id="calc-places"></div>
+					</div>
+				</div>
+
+				<canvas id="calc-strip"></canvas>
+
+				<div class="calc-tables">
+					<div class="table-scroll">
+					<table class="calc-table" id="calc-longitudes">
+						<caption>longitudine eclittica</caption>
+						<thead>
+							<tr><th></th><th>modello</th><th>riferimento</th><th>Δλ</th></tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					</div>
+					<div class="table-scroll">
+					<table class="calc-table" id="calc-place">
+						<caption>nel luogo, in UT</caption>
+						<thead>
+							<tr><th></th><th>α</th><th>δ</th><th>sorge</th><th>transita</th><th>tramonta</th></tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					</div>
+				</div>
+				<div class="readout" id="calc-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Scegli una data e un luogo, o premi adesso, e scorri i giorni per
+				guardare i corpi muoversi lungo la striscia. Nota quali pianeti stanno
+				nella banda vicino al Sole, e di quanto sbaglia la Luna rispetto ai
+				pianeti.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>punto, anello</dt>
+						<dd>la posizione del modello e quella del riferimento, est a sinistra</dd>
+						<dt>banda</dt>
+						<dd>entro 15° dal Sole, dove un pianeta di solito si perde nella sua luce</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>sorge, tramonta</dt>
+						<dd>il bordo superiore per il Sole (−50′) e la Luna, il centro per i pianeti; — quando non avviene in quel giorno UT</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- ===================== HOW FAR EACH MODEL CAN BE TRUSTED ===================== -->
+		<h2 id="ladder">Quanto fidarsi di ciascun modello</h2>
+
+		<p>
+			L&#8217;errore massimo di ogni modello dice a che cosa può servire:
+			l&#8217;eccentrico del Sole della pagina 2.1 colloca il Sole entro 2′, il che
+			basta per una meridiana, mentre la manovella della pagina 3.2 lascia la
+			Luna fuori di quasi 2°, più di tre volte il suo diametro apparente. La
+			Figura 2 mette ogni modello del corso su un&#8217;unica scala, ciascuno sugli
+			anni usati dalla sua verifica, con le quattro nuove ellissi sul 2026.
+		</p>
+
+		<!-- The error ladder (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels ladder-panels">
+					<div>
+						<p class="panel-title">(a) il Sole, sul 2026</p>
+						<canvas id="ladder-sun"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la Luna, sul 2026</p>
+						<canvas id="ladder-moon"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(c) Marte, sul 2010–2025</p>
+						<canvas id="ladder-mars"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(d) gli altri pianeti, sul 2026</p>
+						<canvas id="ladder-planets"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Leggi l&#8217;errore massimo di ogni modello sulla scala, e segui il Sole, la
+				Luna e Marte lungo le loro righe, pagina per pagina. La Luna finisce dove
+				il Sole è cominciato: il suo modello migliore del corso vale circa
+				quanto il Sole uniforme.
+			</figcaption>
+		</figure>
+
+		<!-- =============================== FORMULAS =============================== -->
+		<h2 id="formulas">Formule</h2>
+
+		<p>
+			Ogni formula qui sotto è un risultato chiave di una pagina, nell&#8217;ordine
+			del corso; il suo numero rimanda alla pagina che la ricava.
+		</p>
+
+		<h3>La scena</h3>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act1-stage/01-turning-sky/index.it.html">1.1</a> L&#8217;altezza di una stella di declinazione $\delta$ all&#8217;angolo orario $H$, per la latitudine geografica $\varphi$</p>
+			$$\sin a = \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act1-stage/02-frames/index.it.html">1.2</a> Dalle coordinate eclittiche $(\lambda, \beta)$ alle coordinate equatoriali $(\alpha, \delta)$</p>
+			$$\begin{aligned}
+				\cos\delta \cos\alpha &= \cos\beta \cos\lambda, \\
+				\cos\delta \sin\alpha &= \cos\varepsilon \cos\beta \sin\lambda - \sin\varepsilon \sin\beta, \\
+				\sin\delta &= \sin\varepsilon \cos\beta \sin\lambda + \cos\varepsilon \sin\beta.
+			\end{aligned}$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act1-stage/02-frames/index.it.html">1.2</a> Dalle coordinate equatoriali all&#8217;azimut $A$ e all&#8217;altezza $a$</p>
+			$$\begin{aligned}
+				\sin a &= \sin\varphi \sin\delta + \cos\varphi \cos\delta \cos H, \\
+				\cos a \sin A &= -\cos\delta \sin H, \\
+				\cos a \cos A &= \cos\varphi \sin\delta - \sin\varphi \cos\delta \cos H.
+			\end{aligned}$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act1-stage/03-clocks/index.it.html">1.3</a> Il tempo siderale a Greenwich e alla longitudine geografica $\ell$, e l&#8217;angolo orario</p>
+			$$\theta_G = L_0 + (360^\circ + n)\,d, \qquad \theta = \theta_G + \ell, \qquad H = \theta - \alpha.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act1-stage/03-clocks/index.it.html">1.3</a> Sorgere e tramonto: l&#8217;angolo orario $H_0$ in cui un corpo attraversa l&#8217;altezza $h_0$ che vale come il suo sorgere (0 per l&#8217;orizzonte geometrico della pagina 1.1, −50′ per il bordo superiore del Sole con la rifrazione), e la durata del giorno solare</p>
+			$$\cos H_0 = \frac{\sin h_0 - \sin\varphi \sin\delta}{\cos\varphi \cos\delta}, \qquad \text{giorno} = \frac{2H_0}{15^\circ}\ \text{h}.$$
+		</div>
+
+		<h3>Il Sole</h3>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act2-sun/01-uneven-year/index.it.html">2.1</a> L&#8217;equazione del centro dell&#8217;eccentrico, con $M$ contata dall&#8217;apogeo</p>
+			$$q = -\operatorname{atan2}(e \sin M,\ 1 + e \cos M), \qquad \lambda = \bar\lambda + q, \qquad M = \bar\lambda - \lambda_A.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act2-sun/02-equation-of-time/index.it.html">2.2</a> L&#8217;equazione del tempo, tempo solare vero meno tempo solare medio, e il suo primo ordine (radianti)</p>
+			$$E = -q + (\lambda - \alpha), \qquad E \approx e\sin M + e_\varepsilon \sin 2\bar\lambda, \qquad e_\varepsilon = \tan^2\frac{\varepsilon}{2}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act2-sun/03-precession/index.it.html">2.3</a> La precessione: la variazione della declinazione, e l&#8217;anno sidereo</p>
+			$$\frac{d\delta}{dt} = \frac{p\,\sin\varepsilon\,\cos\beta\,\cos\lambda}{\cos\delta}, \qquad \frac{Y_\text{s}}{Y} = \frac{360^\circ}{360^\circ - pY}.$$
+		</div>
+
+		<h3>La Luna</h3>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act3-moon/01-first-anomaly/index.it.html">3.1</a> L&#8217;epiciclo: l&#8217;equazione dell&#8217;anomalia, $e = r/R$, e i moti medi dal mese sinodico</p>
+			$$q = -\operatorname{atan2}(e\sin M,\ 1 + e\cos M), \qquad n = n_\odot + \frac{360^\circ}{P_s}, \qquad n_M = \frac{269 \times 360^\circ}{251\,P_s}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act3-moon/02-evection/index.it.html">3.2</a> La manovella: la distanza del centro dell&#8217;epiciclo, la direzione del suo apogeo, e l&#8217;equazione</p>
+			$$\rho = c\cos 2D + \sqrt{(1 - c)^2 - c^2 \sin^2 2D}, \qquad \sigma = -\operatorname{atan2}(c\sin 2D,\ \rho + c\cos 2D), \qquad q = -\operatorname{atan2}\big(e\sin(M - \sigma),\ \rho + e\cos(M - \sigma)\big).$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act3-moon/03-eclipses/index.it.html">3.3</a> Il cerchio inclinato, e l&#8217;anno delle eclissi</p>
+			$$\sin\beta = \sin i\,\sin F, \qquad \tan(\lambda - \Omega) = \cos i\,\tan F, \qquad \frac{1}{Y_\text{e}} = \frac{1}{P_d} - \frac{1}{P_s}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act3-moon/03-eclipses/index.it.html">3.3</a> I limiti delle eclissi: l&#8217;ombra alla distanza della Luna, e un&#8217;eclisse di Sole vista da qualche luogo</p>
+			$$u = 1{,}01\,\pi + \pi_\odot - s_\odot, \qquad |\beta| < \pi - \pi_\odot + s + s_\odot.$$
+		</div>
+
+		<h3>I pianeti</h3>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/01-going-backwards/index.it.html">4.1</a> L&#8217;epiciclo semplice, e il periodo sinodico di un pianeta esterno</p>
+			$$\lambda = \bar\lambda + \eta, \qquad \eta = \operatorname{atan2}(r\sin\mu,\ 1 + r\cos\mu), \qquad \frac{1}{P_\lambda} + \frac{1}{S} = \frac{1}{Y}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/01-going-backwards/index.it.html">4.1</a> Le stazioni, con $k = n_\mu / n$</p>
+			$$\cos\mu_s = -\frac{1 + r^2\,(1 + k)}{r\,(2 + k)}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/02-equant/index.it.html">4.2</a> L&#8217;equante, OC = $e$ e OQ = $2e$</p>
+			$$\text{QK} = -e\cos M + \sqrt{1 - e^2\sin^2 M}, \qquad q = -\operatorname{atan2}(2e\sin M,\ \text{QK} + 2e\cos M).$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/03-new-center/index.it.html">4.3</a> I periodi attorno al Sole, e le distanze (au)</p>
+			$$\frac{1}{P} = \frac{1}{Y} \mp \frac{1}{S}, \qquad a = \frac{1}{r} \ \text{(esterni)}, \qquad a = r \ \text{(interni)}, \qquad \sin\varepsilon_\text{max} = a.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/04-phases-parallax/index.it.html">4.4</a> La frazione illuminata del disco di un pianeta</p>
+			$$k = \frac{1 + \cos\chi}{2}.$$
+		</div>
+
+		<div class="formula">
+			<p class="formula-name"><a href="../act4-planets/05-kepler/index.it.html">4.5</a> L&#8217;equazione di Keplero, la sua soluzione con il metodo di Newton, la distanza e la terza legge</p>
+			$$M = E + e\sin E, \qquad E \leftarrow E - \frac{E + e\sin E - M}{1 + e\cos E}, \qquad r = a(1 + e\cos E), \qquad P^2 = a^3.$$
+		</div>
+
+		<!-- =========================== FITTED PARAMETERS =========================== -->
+		<h2 id="parameters">Parametri adattati</h2>
+
+		<p>
+			Gli insiemi di parametri dei modelli qui sotto sono stati adattati a
+			osservazioni moderne, con il cielo di riferimento al loro posto. Gli
+			angoli sono in gradi, i moti diurni in gradi al giorno, e l&#8217;epoca di
+			ogni longitudine media è J2000.0 (1º gennaio 2000, 12h TT).
+		</p>
+
+		<div class="table-scroll">
+			<table class="params-table" id="params-table">
+				<thead>
+					<tr><th>pagina</th><th>modello</th><th>parametri</th><th>adattato a</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+
+		<!-- =============================== NOTATION =============================== -->
+		<h2 id="notation">Notazione</h2>
+
+		<p>
+			Il corso usa un&#8217;unica notazione dall&#8217;inizio alla fine. Alcune lettere
+			servono due volte, e la pagina fra parentesi dice quale significato vale
+			dove.
+		</p>
+
+		<div class="table-scroll">
+			<table class="notation-table">
+				<thead>
+					<tr><th>simbolo</th><th>significato</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>$\alpha,\ \delta$</td><td>ascensione retta, declinazione</td></tr>
+					<tr><td>$\lambda,\ \beta$</td><td>longitudine eclittica, latitudine eclittica</td></tr>
+					<tr><td>$A,\ a$</td><td>azimut (da nord verso est), altezza</td></tr>
+					<tr><td>$\varphi$</td><td>la latitudine geografica dell&#8217;osservatore</td></tr>
+					<tr><td>$\ell$</td><td>longitudine geografica, positiva verso est</td></tr>
+					<tr><td>$\varepsilon$</td><td>l&#8217;obliquità dell&#8217;eclittica</td></tr>
+					<tr><td>$\theta,\ \theta_G$</td><td>l&#8217;angolo di cui il cielo ha ruotato da quando γ ha attraversato il meridiano (tempo siderale locale), e lo stesso a Greenwich: $\theta = \theta_G + \ell$</td></tr>
+					<tr><td>$H$</td><td>angolo orario, $H = \theta - \alpha$</td></tr>
+					<tr><td>$d$</td><td>giorni da J2000.0, $\text{JD} - 2451545{,}0$</td></tr>
+					<tr><td>γ; P, K, Z</td><td>il punto vernale; il polo nord celeste, il polo nord dell&#8217;eclittica, lo zenit</td></tr>
+					<tr><td>$n$</td><td>il moto diurno del Sole medio; per la Luna o un pianeta, il suo moto diurno, e quello del Sole è allora $n_\odot$ (3.1, 4.1)</td></tr>
+					<tr><td>$\bar\lambda,\ \lambda_A$</td><td>longitudine eclittica media, longitudine eclittica dell&#8217;apogeo (dell&#8217;afelio per l&#8217;ellisse di un pianeta)</td></tr>
+					<tr><td>$L_0,\ M_0,\ F_0$</td><td>la longitudine eclittica media, l&#8217;anomalia media e l&#8217;argomento della latitudine medio all&#8217;epoca</td></tr>
+					<tr><td>$h_0,\ H_0$</td><td>l&#8217;altezza che vale come sorgere e tramonto (0 nella pagina 1.1, −50′ per il Sole nella 1.3), e l&#8217;angolo orario in cui un corpo la attraversa (1.1, 1.3)</td></tr>
+					<tr><td>$M$</td><td>anomalia media, contata dall&#8217;apogeo (dall&#8217;afelio nella 4.5)</td></tr>
+					<tr><td>$q$</td><td>l&#8217;equazione del centro, $\lambda = \bar\lambda + q$, negativa dall&#8217;apogeo al perigeo; per la Luna l&#8217;equazione dell&#8217;anomalia (3.1), per un pianeta l&#8217;equazione zodiacale (4.2)</td></tr>
+					<tr><td>$e$</td><td>eccentricità: dell&#8217;eccentrico (2.1), $r/R$ per la Luna (3.1), OC per un pianeta (4.2), C☉ / $a$ di un&#8217;ellisse (4.5)</td></tr>
+					<tr><td>$R,\ r$</td><td>i raggi del deferente e dell&#8217;epiciclo; nella 4.5, $R$ la distanza Terra–Sole e $r$ la distanza ☉P</td></tr>
+					<tr><td>$E$</td><td>l&#8217;equazione del tempo, tempo solare vero meno tempo solare medio (2.2); l&#8217;anomalia eccentrica (4.5)</td></tr>
+					<tr><td>$e_\varepsilon$</td><td>$\tan^2(\varepsilon/2)$, l&#8217;eccentricità della riduzione all&#8217;equatore (2.2)</td></tr>
+					<tr><td>$\Delta\lambda$</td><td>modello meno riferimento, in primi d&#8217;arco</td></tr>
+					<tr><td>$p$</td><td>il ritmo della precessione in longitudine eclittica (2.3)</td></tr>
+					<tr><td>$Y,\ Y_\text{s}$</td><td>l&#8217;anno tropico e l&#8217;anno sidereo (1.3, 2.3)</td></tr>
+					<tr><td>$\dot\lambda_A$</td><td>il moto dell&#8217;apogeo rispetto a γ (2.3)</td></tr>
+					<tr><td>$n_M$</td><td>il moto diurno della Luna in anomalia (3.1)</td></tr>
+					<tr><td>$D$</td><td>l&#8217;elongazione media della Luna, $\bar\lambda - \bar\lambda_\odot$ (3.2)</td></tr>
+					<tr><td>$c$</td><td>OC, la distanza del centro dell&#8217;eccentrico lunare di Tolomeo, con OA = 1 (3.2)</td></tr>
+					<tr><td>$\rho,\ \sigma$</td><td>la distanza OK del centro dell&#8217;epiciclo, e lo spostamento della direzione del suo apogeo (3.2); $\rho$ = OK per un pianeta (4.2)</td></tr>
+					<tr><td>$i,\ \Omega$</td><td>l&#8217;inclinazione del cerchio della Luna, la longitudine eclittica del suo nodo ascendente, ☊ e ☋ nelle figure (3.3)</td></tr>
+					<tr><td>$F,\ \bar F,\ n_F$</td><td>l&#8217;argomento della latitudine, il suo valore medio $\bar\lambda - \Omega$, e il suo moto diurno (3.3)</td></tr>
+					<tr><td>$P_s,\ P_a,\ P_d,\ Y_\text{e}$</td><td>i mesi sinodico, anomalistico e draconitico, e l&#8217;anno delle eclissi (3.1, 3.3)</td></tr>
+					<tr><td>$s,\ s_\odot;\ \pi,\ \pi_\odot;\ u$</td><td>i raggi apparenti e le parallassi orizzontali della Luna e del Sole; il raggio dell&#8217;ombra alla distanza della Luna (3.3)</td></tr>
+					<tr><td>$\mu,\ \eta,\ n_\mu$</td><td>l&#8217;anomalia di un pianeta sul suo epiciclo, contata verso est dal suo apogeo; l&#8217;equazione dell&#8217;epiciclo; il moto diurno in anomalia (4.1)</td></tr>
+					<tr><td>$\mu_s$</td><td>l&#8217;anomalia a una stazione (4.1)</td></tr>
+					<tr><td>$S,\ P_\lambda$</td><td>il periodo sinodico di un pianeta e il suo periodo in longitudine eclittica (4.1)</td></tr>
+					<tr><td>Q</td><td>l&#8217;equante, OQ = $2e$ (4.2)</td></tr>
+					<tr><td>$a$</td><td>la distanza di un pianeta dal Sole, in au (4.3), il semiasse maggiore della sua ellisse (4.5); l&#8217;altezza nelle pagine dell&#8217;Atto I</td></tr>
+					<tr><td>$P$</td><td>il periodo di un pianeta attorno al Sole (4.3)</td></tr>
+					<tr><td>$\varepsilon_\text{max}$</td><td>la massima elongazione di un pianeta interno (4.3)</td></tr>
+					<tr><td>$k$</td><td>la frazione illuminata del disco di un pianeta (4.4); $n_\mu / n$ nelle stazioni della 4.1</td></tr>
+					<tr><td>$\chi,\ \varpi$</td><td>l&#8217;angolo di fase nel pianeta; la parallasse di una stella (4.4)</td></tr>
+					<tr><td>$b$</td><td>il semiasse minore di un&#8217;ellisse (4.5)</td></tr>
+					<tr><td>$\lambda_\text{h}$</td><td>una longitudine eclittica eliocentrica (4.5)</td></tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>I modelli, i loro adattamenti e le loro fonti: le pagine del corso, e
+				i loro script in <code>tools/numbers/</code>.</li>
+			<li>P. Bretagnon e G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988), 309–315: il riferimento del Sole e dei
+				pianeti in questa pagina, dai file dell&#8217;IMCCE, verificato con JPL
+				Horizons (DE441).</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 15
+				(sorgere e tramonto, le altezze del Sole, della Luna e dei pianeti),
+				cap. 47 (la Luna di riferimento).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/toolbox.js</code>.</li>
+		</ul>
+	</article>
+</div>
+</body>
+</html>

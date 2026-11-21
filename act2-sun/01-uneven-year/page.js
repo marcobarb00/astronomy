@@ -236,7 +236,12 @@ const motionFigure = {
 			ctx.font = right - left >= SEASON_NAME_ROOM ? FONT_NAME : FONT_NAME_SMALL;
 			ctx.fillText(SEASON_NAMES[(i + MOTION_FIRST_SEASON) % 4], x, p.box.top - SEASON_HEADER.name);
 			ctx.font = FONT_TICK;
-			canvasText(ctx, `${fixed(this.seasons[i + 1] - this.seasons[i], 2)} d`, x, p.box.top - SEASON_HEADER.length);
+			canvasText(
+				ctx,
+				`${fixed(this.seasons[i + 1] - this.seasons[i], 2)} d`,
+				x,
+				p.box.top - SEASON_HEADER.length
+			);
 		}
 	}
 };
@@ -480,7 +485,9 @@ const centreFigure = {
 
 		wireSlider(byId('eoc-day'), () => this.update(), dayText);
 		wirePresets(byId('eoc-day').closest('figure'));
-		wirePlayButton(byId('eoc-play'), byId('eoc-day'), PLAY_DAYS_PER_SECOND, { playLabel: tr('Play a year', 'Avvia un anno') });
+		wirePlayButton(byId('eoc-play'), byId('eoc-day'), PLAY_DAYS_PER_SECOND, {
+			playLabel: tr('Play a year', 'Avvia un anno')
+		});
 
 		buildChoice(
 			byId('eoc-views'),

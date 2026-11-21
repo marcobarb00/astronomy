@@ -324,6 +324,18 @@ section.
   timeline under each astronomer whose model it rebuilds or whose
   observations it uses. → STYLE.md §4.9, STRUCTURE.md §4 (Hub)
 
+- **The site in Italian too: a twin page `index.it.html` beside each
+  page, switched by a flag at the top right.** Asked by Marco on
+  2026-11-21. The twins share the page's script, styles and images;
+  the scripts pick their words with `tr()`, and the decimal comma is
+  added where numbers reach the screen, so the computations are the
+  same in both languages. The intro (Act 0) is not translated while
+  Marco is writing it. Technical terms follow the Italian textbooks
+  (ascensione retta, not "destra"; tempo siderale but anno sidereo),
+  collected in TRANSLATION.md with the other conventions. The flags
+  keep their own colours, the one exception to the locked palette. →
+  TRANSLATION.md, STYLE.md §2
+
 ## Writing
 
 - **Every longitude and latitude names its kind** (ecliptic, geographic,

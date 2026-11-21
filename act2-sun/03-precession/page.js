@@ -179,7 +179,11 @@ const sixStarsFigure = {
 
 		// the longitude line runs from lower left to upper right: its name
 		// goes below it, to the right
-		p.text(tr('λ, all six stars', 'λ, tutte e sei le stelle'), -1200, -45, { color: COL.ink, kind: 'name', dy: 26 });
+		p.text(tr('λ, all six stars', 'λ, tutte e sei le stelle'), -1200, -45, {
+			color: COL.ink,
+			kind: 'name',
+			dy: 26
+		});
 		p.text(tr('β, all six stars', 'β, tutte e sei le stelle'), -2400, 0, { color: COL.ink, kind: 'name', dy: -8 });
 	},
 
@@ -260,7 +264,9 @@ const modelFigure = {
 
 		wireSlider(byId('model-year'), () => this.update(), yearText);
 		wirePresets(figure);
-		wirePlayButton(byId('model-play'), byId('model-year'), PLAY_YEARS_PER_SECOND, { playLabel: tr('Play a turn', 'Avvia un giro') });
+		wirePlayButton(byId('model-play'), byId('model-year'), PLAY_YEARS_PER_SECOND, {
+			playLabel: tr('Play a turn', 'Avvia un giro')
+		});
 
 		this.update();
 	},
@@ -412,7 +418,10 @@ const polePathFigure = {
 				['alf Dra', 'Thuban', 9, 4],
 				['alf Lyr', 'Vega', 10, 4]
 			],
-			label: tr('Chart of the northern sky around the celestial pole, with the path of the pole over one turn of precession, a circle around the ecliptic pole.', "Carta del cielo settentrionale attorno al polo celeste, con il percorso del polo in un giro di precessione, un cerchio attorno al polo dell'eclittica.")
+			label: tr(
+				'Chart of the northern sky around the celestial pole, with the path of the pole over one turn of precession, a circle around the ecliptic pole.',
+				"Carta del cielo settentrionale attorno al polo celeste, con il percorso del polo in un giro di precessione, un cerchio attorno al polo dell'eclittica."
+			)
 		});
 
 		const poleAt = year => Ephem.precessEquatorial(0, 90, jdOfYear(year), Plate.EPOCH);
@@ -503,14 +512,23 @@ const recordsFigure = {
 		// lines, the fitted line and Ptolemy's rule below their own
 		const fitted = year => this.line.a + this.line.b * year;
 
-		p.text(tr('real Spica', 'Spica reale'), 800, fitted(800), { color: COL.planet, kind: 'name', align: 'right', dy: -14 });
+		p.text(tr('real Spica', 'Spica reale'), 800, fitted(800), {
+			color: COL.planet,
+			kind: 'name',
+			align: 'right',
+			dy: -14
+		});
 		p.text(tr('fitted to the records', 'adattata ai registri'), 1150, fitted(1150), {
 			color: COL.ink,
 			kind: 'name',
 			dx: 8,
 			dy: 24
 		});
-		p.text(tr("Ptolemy's rule", 'regola di Tolomeo'), 600, this.ptolemy(600), { color: COL.epicycle, kind: 'name', dy: 24 });
+		p.text(tr("Ptolemy's rule", 'regola di Tolomeo'), 600, this.ptolemy(600), {
+			color: COL.epicycle,
+			kind: 'name',
+			dy: 24
+		});
 
 		// the records, one name per observer
 		const named = new Set();
@@ -520,7 +538,12 @@ const recordsFigure = {
 
 			if (!named.has(r.who)) {
 				named.add(r.who);
-				p.text(personName(r.who), r.year, r.lon, Object.assign({ color: COL.ink, kind: 'name' }, RECORD_LABELS[r.who]));
+				p.text(
+					personName(r.who),
+					r.year,
+					r.lon,
+					Object.assign({ color: COL.ink, kind: 'name' }, RECORD_LABELS[r.who])
+				);
 			}
 		});
 	}
@@ -704,7 +727,12 @@ const ptolemyFigure = {
 
 			if (!named.has(r.who)) {
 				named.add(r.who);
-				p.text(personName(r.who), r.year, r.error, Object.assign({ color: color, kind: 'name' }, ERROR_LABELS[r.who]));
+				p.text(
+					personName(r.who),
+					r.year,
+					r.error,
+					Object.assign({ color: color, kind: 'name' }, ERROR_LABELS[r.who])
+				);
 			}
 		});
 	}

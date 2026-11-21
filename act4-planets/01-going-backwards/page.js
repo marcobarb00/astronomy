@@ -124,7 +124,10 @@ const plateFigure = {
 				['bet Gem', 'Pollux', -8, -10, 'end'],
 				['alf Gem', 'Castor', -9, -6, 'end']
 			],
-			label: 'Chart of the sky from Gemini to Cancer, with the ecliptic and, highlighted, the path of Mars from October 2024 to April 2025.'
+			label: tr(
+				'Chart of the sky from Gemini to Cancer, with the ecliptic and, highlighted, the path of Mars from October 2024 to April 2025.',
+				"Carta del cielo dai Gemelli al Cancro, con l'eclittica e, evidenziato, il percorso di Marte dall'ottobre 2024 all'aprile 2025."
+			)
 		});
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const ecliptic = [];
@@ -135,7 +138,7 @@ const plateFigure = {
 
 		const eclipticName = Ephem.eclipticToEquatorial(94, 0, eps);
 
-		Plate.line(chart, ecliptic, 'ecliptic', [eclipticName.ra, eclipticName.dec, -8, 18]);
+		Plate.line(chart, ecliptic, tr('ecliptic', 'eclittica'), [eclipticName.ra, eclipticName.dec, -8, 18]);
 
 		// the path, every day; a plain tick on the first of each month, and
 		// a dated one at the two stations and the opposition
@@ -164,7 +167,7 @@ const plateFigure = {
 
 		const nameAt = at(PLATE_FROM);
 
-		Plate.highlightCurve(chart, path, 'Mars', [nameAt.ra, nameAt.dec, 10, 22], ticks, -1);
+		Plate.highlightCurve(chart, path, bodyName('Mars'), [nameAt.ra, nameAt.dec, 10, 22], ticks, -1);
 	}
 };
 
@@ -214,7 +217,7 @@ const motionFigure = {
 			x: MOTION_VIEWS.Mars.x,
 			y: MOTION_VIEWS.Mars.y,
 			xLabel: this.xLabel('outer'),
-			yLabel: 'daily motion (°)',
+			yLabel: tr('daily motion (°)', 'moto giornaliero (°)'),
 			aspect: 0.5,
 			margin: { top: 26 },
 			onDraw: () => this.draw()
@@ -226,16 +229,20 @@ const motionFigure = {
 			value => this.loopDate(Number(value))
 		);
 		wirePresets(figure);
-		buildChoice(byId('motion-views'), Object.keys(MOTION_VIEWS), this.view, name => this.choose(name));
+		buildChoice(byId('motion-views'), Object.keys(MOTION_VIEWS), this.view, name => this.choose(name), bodyName);
 		this.choose(this.view);
 	},
 
 	xLabel(kind) {
-		return kind === 'outer' ? 'days from opposition' : 'days from inferior conjunction';
+		return kind === 'outer'
+			? tr('days from opposition', "giorni dall'opposizione")
+			: tr('days from inferior conjunction', 'giorni dalla congiunzione inferiore');
 	},
 
 	middleName(kind) {
-		return kind === 'outer' ? 'opposition' : 'inferior conjunction';
+		return kind === 'outer'
+			? tr('opposition', 'opposizione')
+			: tr('inferior conjunction', 'congiunzione inferiore');
 	},
 
 	/* The date of a loop's middle, beside the stepper. */
@@ -383,8 +390,14 @@ const motionFigure = {
 		const loop = this.data[this.view].loops[readNumber('motion-loop')];
 
 		showLines('motion-readout', [
-			`\\text{goes back } ${fixed(loop.arc, 1)}^\\circ \\text{ in } ${fixed(loop.days, 0)} \\text{ days}`,
-			`\\text{centered on ecliptic longitude } ${fixedAngle(loop.lon, 1)}^\\circ`
+			tr(
+				`\\text{goes back } ${fixed(loop.arc, 1)}^\\circ \\text{ in } ${fixed(loop.days, 0)} \\text{ days}`,
+				`\\text{torna indietro di } ${fixed(loop.arc, 1)}^\\circ \\text{ in } ${fixed(loop.days, 0)} \\text{ giorni}`
+			),
+			tr(
+				`\\text{centered on ecliptic longitude } ${fixedAngle(loop.lon, 1)}^\\circ`,
+				`\\text{centrato sulla longitudine eclittica } ${fixedAngle(loop.lon, 1)}^\\circ`
+			)
 		]);
 	},
 
@@ -478,8 +491,8 @@ const epicycleFigure = {
 		this.plot = new Plot2D(byId('epicycle-plot'), {
 			x: [0, 360],
 			y: EPICYCLE_VIEWS.Mars.y,
-			xLabel: 'anomaly μ (°)',
-			yLabel: 'daily motion (°)',
+			xLabel: tr('anomaly μ (°)', 'anomalia μ (°)'),
+			yLabel: tr('daily motion (°)', 'moto giornaliero (°)'),
 			xTicks: quarterTicks,
 			aspect: 0.95,
 			maxHeight: 440,
@@ -566,16 +579,25 @@ const epicycleFigure = {
 	showReadout() {
 		const { jd, now, parameters, motions, loop } = this.state;
 		const motion = PlanetEpicycle.dailyMotion(now.mu, parameters.r, motions.n, motions.nMu);
-		const direction = motion < 0 ? 'back' : 'forward';
+		const direction = motion < 0 ? tr('back', 'indietro') : tr('forward', 'avanti');
 		const threshold = PlanetEpicycle.loopThreshold(motions.n, motions.nMu);
 		const stations = Number.isFinite(loop.mu)
-			? `\\text{stations at } \\mu = ${fixed(loop.mu, 1)}^\\circ, ${fixed(360 - loop.mu, 1)}^\\circ;\\ \\text{back } ${fixed(loop.arc, 1)}^\\circ`
-			: `\\text{no loop: } r \\le n/(n + n_\\mu) = ${fixed(threshold, 3)}`;
+			? tr(
+					`\\text{stations at } \\mu = ${fixed(loop.mu, 1)}^\\circ, ${fixed(360 - loop.mu, 1)}^\\circ;\\ \\text{back } ${fixed(loop.arc, 1)}^\\circ`,
+					`\\text{stazioni in } \\mu = ${fixed(loop.mu, 1)}^\\circ; ${fixed(360 - loop.mu, 1)}^\\circ;\\ \\text{indietro di } ${fixed(loop.arc, 1)}^\\circ`
+				)
+			: tr(
+					`\\text{no loop: } r \\le n/(n + n_\\mu) = ${fixed(threshold, 3)}`,
+					`\\text{senza cappio: } r \\le n/(n + n_\\mu) = ${fixed(threshold, 3)}`
+				);
 
 		showLines('epicycle-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 1)}^\\circ,\\quad \\mu = ${fixedAngle(now.mu, 1)}^\\circ`,
 			`\\eta = ${texSigned(now.eta, 1)},\\quad \\lambda = \\bar\\lambda + \\eta = ${fixedAngle(now.lambda, 1)}^\\circ`,
-			`\\text{daily motion } ${texSigned(motion, 3)} \\text{ (${direction})}`,
+			tr(
+				`\\text{daily motion } ${texSigned(motion, 3)} \\text{ (${direction})}`,
+				`\\text{moto giornaliero } ${texSigned(motion, 3)} \\text{ (${direction})}`
+			),
 			stations
 		]);
 	},
@@ -722,9 +744,9 @@ const epicycleFigure = {
 
 		p.hline(0, { color: COL.ink, width: 1 });
 		p.hline(motions.n, { color: COL.muted, width: 1.5, dash: [6, 5] });
-		nameAbove(p, 'apogee', 0);
-		nameAbove(p, 'perigee', 180);
-		nameAbove(p, 'apogee', 360);
+		nameAbove(p, tr('apogee', 'apogeo'), 0);
+		nameAbove(p, tr('perigee', 'perigeo'), 180);
+		nameAbove(p, tr('apogee', 'apogeo'), 360);
 		p.curve(xs, ys, { color: COL.planet, width: 2.4 });
 		p.marker(now.mu, PlanetEpicycle.dailyMotion(now.mu, r, motions.n, motions.nMu), {
 			color: COL.planet,
@@ -787,7 +809,7 @@ const ratioFigure = {
 
 		const options = {
 			x: FIT_R_RANGE,
-			xLabel: 'epicycle r',
+			xLabel: tr('epicycle r', 'epiciclo r'),
 			aspect: 0.75,
 			maxHeight: 360
 		};
@@ -796,7 +818,7 @@ const ratioFigure = {
 			byId('ratio-arc-plot'),
 			Object.assign({}, options, {
 				y: FIT_ARC_RANGE,
-				yLabel: 'arc (°)',
+				yLabel: tr('arc (°)', 'arco (°)'),
 				onDraw: () => this.drawArcs()
 			})
 		);
@@ -804,7 +826,7 @@ const ratioFigure = {
 			byId('ratio-station-plot'),
 			Object.assign({}, options, {
 				y: FIT_MU_RANGE,
-				yLabel: 'anomaly μ (°)',
+				yLabel: tr('anomaly μ (°)', 'anomalia μ (°)'),
 				onDraw: () => this.drawStations()
 			})
 		);
@@ -868,28 +890,31 @@ const errorFigure = {
 			start: Time.julianDay(2016, 1, 1),
 			end: Time.julianDay(2020, 1, 1),
 			spans: [
-				{ label: '4 years', years: 4 },
-				{ label: '16 years', years: 16 },
-				{ label: '200 years', years: 200 }
+				{ label: tr('4 years', '4 anni'), years: 4 },
+				{ label: tr('16 years', '16 anni'), years: 16 },
+				{ label: tr('200 years', '200 anni'), years: 200 }
 			],
 			units: 'deg',
 			ghostButtons: false
 		});
 
 		curve.addGhost({
-			label: 'the uniform planet',
-			short: 'uniform planet',
+			label: tr('the uniform planet', 'il pianeta uniforme'),
+			short: tr('uniform planet', 'pianeta uniforme'),
 			color: COL.muted,
 			fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT)
 		});
 		curve.addModel({
-			label: 'the epicycle, fitted to 2010–2025',
-			short: 'epicycle',
+			label: tr('the epicycle, fitted to 2010–2025', "l'epiciclo, adattato al 2010–2025"),
+			short: tr('epicycle', 'epiciclo'),
 			color: COL.epicycle,
 			fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT)
 		});
 		curve.addMarks({
-			label: 'the epicycle at the oppositions (spans of 16 years or less)',
+			label: tr(
+				'the epicycle at the oppositions (spans of 16 years or less)',
+				"l'epiciclo alle opposizioni (intervalli di 16 anni o meno)"
+			),
 			color: COL.epicycle,
 			fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT),
 			dates: marsLoops().map(loop => loop.middle),
@@ -1044,7 +1069,7 @@ const loopsFigure = {
 
 		const options = {
 			x: [0, 360],
-			xLabel: 'ecliptic longitude of the opposition (°)',
+			xLabel: tr('ecliptic longitude of the opposition (°)', "longitudine eclittica dell'opposizione (°)"),
 			xTicks: quarterTicks,
 			aspect: 0.75,
 			maxHeight: 360
@@ -1054,7 +1079,7 @@ const loopsFigure = {
 			byId('arcs-plot'),
 			Object.assign({}, options, {
 				y: ARC_RANGE,
-				yLabel: 'arc (°)',
+				yLabel: tr('arc (°)', 'arco (°)'),
 				onDraw: () => this.draw(this.arcs, loop => loop.arc, MARS_LOOP.arc)
 			})
 		);
@@ -1062,7 +1087,7 @@ const loopsFigure = {
 			byId('intervals-plot'),
 			Object.assign({}, options, {
 				y: INTERVAL_RANGE,
-				yLabel: 'days',
+				yLabel: tr('days', 'giorni'),
 				onDraw: () => this.draw(this.intervals, loop => loop.next, 360 / MARS_MOTIONS.nMu)
 			})
 		);

@@ -109,7 +109,7 @@ const sunFigure = {
 			y: SUN_RANGE,
 			xTicks: () => MONTH_TICKS.map(([value, label]) => ({ value, label })),
 			xLabel: SUN_YEAR.toString(),
-			yLabel: 'from the mean (%)',
+			yLabel: tr('from the mean (%)', 'rispetto alla media (%)'),
 			aspect: 0.45,
 			maxHeight: 340,
 			minHeight: 220,
@@ -117,9 +117,9 @@ const sunFigure = {
 		});
 
 		Plot2D.legend(byId('sun-legend'), [
-			{ label: 'daily motion', color: COL.sun, mark: 'band' },
-			{ label: 'apparent diameter', color: COL.earth },
-			{ label: 'diameter squared', color: COL.deferent }
+			{ label: tr('daily motion', 'moto diurno'), color: COL.sun, mark: 'band' },
+			{ label: tr('apparent diameter', 'diametro apparente'), color: COL.earth },
+			{ label: tr('diameter squared', 'diametro al quadrato'), color: COL.deferent }
 		]);
 	},
 
@@ -197,7 +197,7 @@ const triangleFigure = {
 			y: TRIANGLE_RANGE,
 			xTicks: quarterTicks,
 			yTicks: () => [-0.008, -0.006, -0.004, -0.002, 0, 0.002].map(value => ({ value, label: fixed(value, 3) })),
-			xLabel: 'heliocentric ecliptic longitude',
+			xLabel: tr('heliocentric ecliptic longitude', 'longitudine eclittica eliocentrica'),
 			yLabel: 'au',
 			aspect: 0.8,
 			maxHeight: 380,
@@ -373,14 +373,20 @@ const ellipseFigure = {
 		wireSlider(
 			byId('ellipse-day'),
 			() => this.update(),
-			value => `${fixed(value, 0)} days`
+			value => tr(`${fixed(value, 0)} days`, `${fixed(value, 0)} giorni`)
 		);
 		wirePresets(byId('ellipse-day').closest('figure'));
 		wirePlayButton(byId('ellipse-play'), byId('ellipse-day'), ELLIPSE_DAYS_PER_SECOND);
-		buildChoice(byId('ellipse-views'), Object.keys(ELLIPSE_VIEWS), this.view, name => {
-			this.view = name;
-			this.update();
-		});
+		buildChoice(
+			byId('ellipse-views'),
+			Object.keys(ELLIPSE_VIEWS),
+			this.view,
+			name => {
+				this.view = name;
+				this.update();
+			},
+			name => (name === 'Mars' ? bodyName(name) : localNumbers(name))
+		);
 		this.update();
 	},
 
@@ -577,9 +583,9 @@ const marsErrorFigure = {
 			start: Time.julianDay(2016, 1, 1),
 			end: Time.julianDay(2020, 1, 1),
 			spans: [
-				{ label: '4 years', years: 4 },
-				{ label: '16 years', years: 16 },
-				{ label: '200 years', years: 200 }
+				{ label: tr('4 years', '4 anni'), years: 4 },
+				{ label: tr('16 years', '16 anni'), years: 16 },
+				{ label: tr('200 years', '200 anni'), years: 200 }
 			],
 			units: 'arcmin',
 			yMax: MARS_ERROR_HALF,
@@ -588,19 +594,22 @@ const marsErrorFigure = {
 		const model = Kepler.make();
 
 		curve.addGhost({
-			label: "page 4.2's equant",
-			short: "page 4.2's equant",
+			label: tr("page 4.2's equant", "l'equante della pagina 4.2"),
+			short: tr("page 4.2's equant", "l'equante della pagina 4.2"),
 			color: COL.epicycle,
 			fn: PlanetEquant.make(PlanetEquant.MARS_FIT)
 		});
 		curve.addModel({
-			label: "Kepler's ellipses, fitted to 2010–2025",
-			short: 'ellipses',
+			label: tr("Kepler's ellipses, fitted to 2010–2025", 'le ellissi di Keplero, adattate al 2010–2025'),
+			short: tr('ellipses', 'ellissi'),
 			color: COL.deferent,
 			fn: model
 		});
 		curve.addMarks({
-			label: 'the ellipses at the oppositions (spans of 16 years or less)',
+			label: tr(
+				'the ellipses at the oppositions (spans of 16 years or less)',
+				'le ellissi alle opposizioni (intervalli di 16 anni o meno)'
+			),
 			color: COL.deferent,
 			fn: model,
 			dates: oppositions(Time.julianDay(2010, 1, 1), Time.julianDay(2026, 1, 1)),
@@ -618,23 +627,23 @@ const sunErrorFigure = {
 			start: Time.julianDay(2026, 1, 1),
 			end: Time.julianDay(2027, 1, 1),
 			spans: [
-				{ label: '1 year', years: 1 },
-				{ label: '100 years', years: 100 },
-				{ label: '1000 years', years: 1000 }
+				{ label: tr('1 year', '1 anno'), years: 1 },
+				{ label: tr('100 years', '100 anni'), years: 100 },
+				{ label: tr('1000 years', '1000 anni'), years: 1000 }
 			],
 			units: 'arcmin',
 			ghostButtons: false
 		});
 
 		curve.addGhost({
-			label: "page 2.1's eccentric, its apogee moving",
-			short: "page 2.1's eccentric",
+			label: tr("page 2.1's eccentric, its apogee moving", "l'eccentrico della pagina 2.1, con l'apogeo in moto"),
+			short: tr("page 2.1's eccentric", "l'eccentrico della pagina 2.1"),
 			color: COL.sun,
 			fn: SolarEccentric.make(SolarEccentric.MOVING_2026)
 		});
 		curve.addModel({
-			label: "Kepler's ellipse, fitted to 2026",
-			short: 'ellipse',
+			label: tr("Kepler's ellipse, fitted to 2026", "l'ellisse di Keplero, adattata al 2026"),
+			short: tr('ellipse', 'ellisse'),
 			color: COL.deferent,
 			fn: Kepler.makeSun()
 		});
@@ -656,16 +665,16 @@ const sunErrorFigure = {
    from, its name and the model (jd -> longitude). */
 const SUMMARY_MODELS = {
 	sun: [
-		{ page: '1.3', name: 'uniform', fn: MeanSun.make(MeanSun.MODERN) },
-		{ page: '2.1', name: 'eccentric', fn: SolarEccentric.make(SolarEccentric.FIT_2026) },
-		{ page: '4.5', name: 'ellipse', fn: Kepler.makeSun() }
+		{ page: '1.3', name: tr('uniform', 'uniforme'), fn: MeanSun.make(MeanSun.MODERN) },
+		{ page: '2.1', name: tr('eccentric', 'eccentrico'), fn: SolarEccentric.make(SolarEccentric.FIT_2026) },
+		{ page: '4.5', name: tr('ellipse', 'ellisse'), fn: Kepler.makeSun() }
 	],
 	mars: [
-		{ page: '4.1', name: 'uniform', fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT) },
-		{ page: '4.1', name: 'epicycle', fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT) },
-		{ page: '4.2', name: 'equant', fn: PlanetEquant.make(PlanetEquant.MARS_FIT) },
-		{ page: '4.3', name: 'epicyclet', fn: PlanetArrangement.makeEpicyclet() },
-		{ page: '4.5', name: 'ellipses', fn: Kepler.make() }
+		{ page: '4.1', name: tr('uniform', 'uniforme'), fn: PlanetEpicycle.makeUniform(PlanetEpicycle.MARS_FIT) },
+		{ page: '4.1', name: tr('epicycle', 'epiciclo'), fn: PlanetEpicycle.make(PlanetEpicycle.MARS_FIT) },
+		{ page: '4.2', name: tr('equant', 'equante'), fn: PlanetEquant.make(PlanetEquant.MARS_FIT) },
+		{ page: '4.3', name: tr('epicyclet', 'epiciclo minore'), fn: PlanetArrangement.makeEpicyclet() },
+		{ page: '4.5', name: tr('ellipses', 'ellissi'), fn: Kepler.make() }
 	]
 };
 

@@ -558,7 +558,10 @@ class ErrorCurve {
 
 		if (this.canLeaveRange()) {
 			items.push({
-				label: tr('outside the valid range of the reference sky', 'fuori dall\'intervallo di validità del cielo di riferimento'),
+				label: tr(
+					'outside the valid range of the reference sky',
+					"fuori dall'intervallo di validità del cielo di riferimento"
+				),
 				color: COL.muted,
 				mark: 'band'
 			});
@@ -626,12 +629,14 @@ class ErrorCurve {
 		const reference = this.reference(jd);
 		const parts = [...this.ghosts, ...this.models].map(entry => {
 			const delta = norm180(entry.fn(jd) - reference);
-			const value = this.inDegrees ? signed(delta, 2) + '°' : arcmin(delta);
+			// the decimal comma on the value only: a name may hold a page
+			// number ("page 4.1's epicycle")
+			const value = localNumbers(this.inDegrees ? signed(delta, 2) + '°' : arcmin(delta));
 
 			return `${entry.short ?? stripTex(entry.label)}: ${value}`;
 		});
 
-		this.readout.textContent = localNumbers(`${Time.formatDate(jd)} · ${parts.join(' · ')}`);
+		this.readout.textContent = `${Time.formatDate(jd)} · ${parts.join(' · ')}`;
 	}
 }
 

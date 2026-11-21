@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.1 · GOING BACKWARDS
+     Act IV, the planets. Every planet goes back among the stars once in
+     every return to the same place relative to the Sun: the outer planets
+     at opposition, the inner ones at inferior conjunction. An epicycle
+     whose radius stays parallel to the line to the mean Sun (Almagest
+     IX 5, X 6) explains when and why; its stations follow from the speed
+     (XII 1). Fitted to Mars over 2010 - 2025, it places the planet within
+     35°, and its loops are all the same size, while Mars' are not.
+     Numbers: tools/numbers/4.1-going-backwards.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.1 · Il moto retrogrado · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			L&#8217;Atto III si è chiuso con la Luna collocata abbastanza bene da trovare
+			ogni eclissi di un decennio. I pianeti richiedono qualcosa che il Sole e
+			la Luna non richiedevano: una volta a ogni ritorno nella stessa posizione
+			rispetto al Sole, ciascuno di essi si ferma fra le stelle, torna indietro
+			verso ovest per settimane, si ferma di nuovo e prosegue.
+		</p>
+
+		<p>
+			Tolomeo spiegò questo con un epiciclo che va di pari passo con il Sole.
+			Con esso possiamo seguire come il suo modello faccia tornare indietro
+			Marte, Giove e Saturno quando sono opposti al Sole, e di quanto. Adattato
+			a Marte, l&#8217;epiciclo colloca il pianeta entro 35°, dove un pianeta in
+			moto uniforme sbaglierebbe fino a 54°, e mostra ciò che ancora manca: i
+			cappi di Marte non sono tutti della stessa grandezza.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>I cappi, e quando avvengono</h2>
+
+		<p>
+			Marte si sposta verso est lungo lo zodiaco di circa mezzo grado al giorno
+			in media, un giro in poco meno di due anni, ma nell&#8217;inverno 2024–2025 è
+			tornato indietro. Il 6 dicembre 2024 si è fermato fra le stelle del Cancro,
+			è tornato indietro verso ovest nei Gemelli, e si è fermato di nuovo il 24
+			febbraio 2025, 19,2° più a ovest e 79 giorni dopo, prima di proseguire
+			verso est. Le due fermate sono le <strong>stazioni</strong>, e il moto verso
+			ovest fra esse è il <strong>moto retrogrado</strong> del pianeta.
+		</p>
+
+		<!-- Figure 1: Mars among the stars, autumn 2024 to spring 2025, a blue plate (STYLE.md §7) -->
+		<figure class="plate-figure">
+			<div class="plate">
+				<div class="chart" id="plate-mars"></div>
+				<div class="side">
+					<div class="plate-label"></div>
+					<div class="plate-title">Marte torna indietro</div>
+					<p>
+						Il cielo dai Gemelli al Cancro, guardando a sud, con il nord in alto
+						e l&#8217;est a sinistra, sulla griglia equatoriale.
+					</p>
+					<p>
+						<span class="hl">Il percorso di Marte</span> dal 15 ottobre 2024 al
+						15 aprile 2025, con una tacca il primo giorno di ogni mese, e le
+						date delle due stazioni. Marte fu opposto al Sole il 16 gennaio,
+						alla tacca al centro del lato superiore del cappio.
+					</p>
+				</div>
+			</div>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>griglia</dt>
+						<dd>ascensione retta ogni ora, declinazione ogni 10°</dd>
+						<dt>stelle</dt>
+						<dd>tutte le stelle più luminose della magnitudine 4,6; più grandi se più luminose</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<div class="row">
+			<p>
+				Il percorso forma un cappio perché Marte si sposta anche un poco a nord e
+				a sud dell&#8217;eclittica, fra circa 0,9° e 4,3° a nord di essa in questi
+				sei mesi. Questa pagina segue solo la sua longitudine eclittica, che va
+				avanti, indietro e di nuovo avanti, e lascia da parte la latitudine
+				eclittica, come fa Tolomeo nella sua teoria del moto in longitudine
+				(<em>Almagest</em> IX 2).
+			</p>
+			<aside>
+				<div class="note detour" data-topic="latitudes"></div>
+			</aside>
+		</div>
+
+		<p>
+			Ogni pianeta torna indietro in questo modo, una volta a ogni ritorno nella
+			stessa posizione rispetto al Sole. La tabella dà i cappi dei quarant&#8217;anni
+			dal 1986 al 2025 nel cielo di riferimento: di quanto ogni pianeta è tornato
+			indietro, per quanto tempo, e ogni quanto. I cappi di Giove, Saturno e
+			Venere cambiano appena di grandezza, quelli di Marte e di Mercurio cambiano
+			molto.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table loops-table">
+			<thead>
+				<tr>
+					<th>Pianeta</th>
+					<th>torna indietro di</th>
+					<th>in</th>
+					<th>ogni</th>
+					<th>il centro del cappio</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Marte</td>
+					<td>10,0°–19,5°</td>
+					<td>60–81 g</td>
+					<td>764–811 g</td>
+					<td>opposizione</td>
+				</tr>
+				<tr>
+					<td>Giove</td>
+					<td>9,8°–10,1°</td>
+					<td>118–124 g</td>
+					<td>395–403 g</td>
+					<td>opposizione</td>
+				</tr>
+				<tr>
+					<td>Saturno</td>
+					<td>6,6°–7,0°</td>
+					<td>134–141 g</td>
+					<td>377–379 g</td>
+					<td>opposizione</td>
+				</tr>
+				<tr>
+					<td>Venere</td>
+					<td>15,4°–16,5°</td>
+					<td>41–43 g</td>
+					<td>580–588 g</td>
+					<td>congiunzione inferiore</td>
+				</tr>
+				<tr>
+					<td>Mercurio</td>
+					<td>8,5°–16,3°</td>
+					<td>20–24 g</td>
+					<td>106–129 g</td>
+					<td>congiunzione inferiore</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			Marte, Giove e Saturno sono al centro di ogni cappio quando sono opposti al
+			Sole, all&#8217;<strong>opposizione</strong>: in ciascuno dei 94 cappi della
+			tabella l&#8217;opposizione cade entro due giorni dal centro.
+		</p>
+
+		<div class="row">
+			<p>
+				Questi tre si possono vedere a qualunque angolo dal Sole, mentre Venere e
+				Mercurio non se ne allontanano mai molto, Venere non più di circa 47° in
+				longitudine eclittica e Mercurio non più di circa 28°. Passano per la
+				longitudine eclittica del Sole due volte a ogni ritorno, una mentre
+				tornano indietro, alla <strong>congiunzione inferiore</strong>, al centro
+				del cappio, e una mentre si muovono più in fretta, alla
+				<strong>congiunzione superiore</strong>. Tolomeo fa la stessa divisione, fra
+				i tre pianeti «che possono raggiungere qualunque elongazione dal sole» e i
+				due che non possono (XII 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 2: the daily motion through each loop (a view per planet, a stepper through the loops) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="motion-views"></div>
+				<canvas id="motion-plot"></canvas>
+				<div class="ctl stepper">
+					<label for="motion-loop">cappio</label>
+					<input id="motion-loop" type="range" min="0" max="8" step="1" value="8">
+					<output></output>
+					<span class="stepper-buttons">
+						<button type="button" class="stepper-btn" data-target="motion-loop" data-step="-1"
+							aria-label="cappio precedente">‹ cappio precedente</button>
+						<button type="button" class="stepper-btn" data-target="motion-loop" data-step="1"
+							aria-label="cappio successivo">cappio successivo ›</button>
+					</span>
+				</div>
+				<div class="readout" id="motion-readout" data-lines="2"></div>
+			</div>
+			<figcaption>
+				Scegli un pianeta e scorri i suoi cappi dal 2006 al 2025. Nota quanto
+				lentamente il moto giornaliero scende attraverso il moto medio tratteggiato
+				dopo la congiunzione, e quanto in fretta poi cala sotto lo zero, dove il
+				pianeta torna indietro. Per Marte, nota che il cappio è più profondo in
+				alcuni ritorni che in altri.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-planet">colore pieno</dt>
+						<dd>il cappio scelto, dalla congiunzione con il Sole prima di esso a quella dopo (per Venere e Mercurio, le congiunzioni superiori; il loro moto medio è quello del Sole medio)</dd>
+						<dt class="c-planet">tenue</dt>
+						<dd>gli altri cappi del 2006–2025</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Due anomalie</h3>
+
+		<div class="row">
+			<p>
+				La Figura 2 mostra due tipi di disuniformità, che Tolomeo chiama le due
+				anomalie del pianeta, «una ... legata al sole, l&#8217;altra alla posizione
+				nell&#8217;eclittica» (IX 2). L&#8217;anomalia legata al Sole è la forma che tutte
+				le curve condividono: il pianeta rallenta, torna indietro e accelera di
+				nuovo allo stesso modo ogni volta che torna nella stessa posizione
+				rispetto al Sole. L&#8217;anomalia legata all&#8217;eclittica,
+				l&#8217;<strong>anomalia zodiacale</strong>, è la dispersione fra le curve: i
+				cappi di Marte, e i tempi fra essi, dipendono da dove nello zodiaco cade
+				l&#8217;opposizione.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Tolomeo segnala un&#8217;altra caratteristica dell&#8217;anomalia legata al Sole:
+				«il tempo dalla velocità massima alla media è sempre maggiore del tempo
+				dalla velocità media alla minima» (IX 5). Dopo la sua congiunzione con il
+				Sole nel novembre 2023, Marte impiegò circa dieci mesi e mezzo a
+				rallentare fino al suo moto medio, e poi solo tre mesi e mezzo a
+				raggiungere la sua velocità minima, andando all&#8217;indietro,
+				all&#8217;opposizione del gennaio 2025.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>L&#8217;epiciclo che va di pari passo con il Sole</h2>
+
+		<h3>Deferente ed epiciclo</h3>
+
+		<div class="row">
+			<p>
+				Per l&#8217;anomalia legata al Sole Tolomeo usa un epiciclo, come per la Luna
+				nella pagina 3.1. Nella sua forma più semplice, il modello di questa
+				pagina, è un piccolo cerchio il cui centro K si muove uniformemente
+				attorno alla Terra su un cerchio più grande, il deferente, mentre il
+				pianeta P si muove uniformemente sull&#8217;epiciclo (IX 5). L&#8217;epiciclo è più
+				antico di Tolomeo: egli attribuisce ad Apollonio di Perga, alla fine del
+				III secolo a.C., e ad altri matematici un teorema sulle stazioni di un
+				pianeta su un epiciclo (XII 1).
+			</p>
+			<aside>
+				<div class="note" data-origin="greek"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Per Marte, Giove e Saturno, Tolomeo lega l&#8217;epiciclo al Sole. Trova che
+				per ciascuno di essi «la somma dei moti medi in longitudine e in anomalia
+				... è uguale al moto medio del sole», e conclude che il raggio da K al
+				pianeta resta parallelo alla linea dalla Terra al Sole medio (X 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Sia 1 il raggio del deferente, l&#8217;unità di ogni lunghezza di questa
+			pagina; Tolomeo lo fa uguale a 60, quindi i suoi raggi sono $60\,r$. Il
+			centro K si muove alla longitudine eclittica media del pianeta
+			$\bar\lambda = L_0 + n\,d$. L&#8217;angolo del pianeta sull&#8217;epiciclo è la sua
+			anomalia $\mu$, contata dall&#8217;apogeo dell&#8217;epiciclo, il punto più
+			lontano dalla Terra, nella direzione del moto, verso est, con la velocità
+			$n_\mu$. Con $\hat u(\lambda)$ il versore alla longitudine eclittica
+			$\lambda$, come nella pagina 3.1, il pianeta sta in
+		</p>
+
+		$$\vec{OP} = \hat u(\bar\lambda) + r\,\hat u(\bar\lambda + \mu).$$
+
+		<p>
+			Il raggio KP punta alla longitudine eclittica $\bar\lambda + \mu$, quindi
+			resta parallelo alla linea verso il Sole medio, in $\bar\lambda_\odot$, se
+		</p>
+
+		$$\mu = \bar\lambda_\odot - \bar\lambda, \qquad n + n_\mu = n_\odot.$$
+
+		<p>
+			La seconda equazione è la relazione di Tolomeo fra i moti medi. Il moto in
+			anomalia è ciò che il Sole medio guadagna sul centro del pianeta, quindi il
+			pianeta torna nello stesso punto del suo epiciclo ogni volta che il Sole
+			medio torna nella stessa posizione rispetto a K.
+		</p>
+
+		<h3>L&#8217;equazione dell&#8217;epiciclo</h3>
+
+		<p>
+			In un sistema ruotato nella direzione di K, il pianeta sta in $(1 +
+			r\cos\mu,\ r\sin\mu)$, e si vede dalla Terra in
+		</p>
+
+		<div class="box">
+			$$\lambda = \bar\lambda + \eta, \qquad \eta = \operatorname{atan2}(r\sin\mu,\ 1 + r\cos\mu).$$
+		</div>
+
+		<p>
+			Chiamiamo $\eta$ <strong>equazione dell&#8217;epiciclo</strong>. È la funzione
+			delle pagine 2.1 e 3.1 con il segno invertito, perché $\mu$ si conta
+			nell&#8217;altro senso: $\eta$ è positiva dall&#8217;apogeo al perigeo. Il suo
+			valore massimo è $\arcsin r$, dove la linea di vista è tangente
+			all&#8217;epiciclo, in $\cos\mu = -r$. L&#8217;epiciclo di Marte di Tolomeo è 39,5
+			dove il deferente è 60, $r = 0{,}658$, quindi nel suo modello Marte si può
+			vedere fino a 41,2° da K.
+		</p>
+
+		<h3>La velocità, e il senso del moto</h3>
+
+		<p>
+			Per vedere come varia la velocità del pianeta deriviamo $\lambda =
+			\bar\lambda + \eta$ rispetto al tempo, con $d\bar\lambda/dt = n$ e
+			$d\mu/dt = n_\mu$:
+		</p>
+
+		$$\frac{d\lambda}{dt} = n + n_\mu\,\frac{r\,(r + \cos\mu)}{1 + 2r\cos\mu + r^2}.$$
+
+		<p>
+			Il pianeta è più veloce all&#8217;apogeo dell&#8217;epiciclo, dove la velocità è
+			$n + n_\mu\,r/(1 + r)$, e più lento al perigeo, $n - n_\mu\,r/(1 - r)$. Si
+			muove alla sua velocità media $n$ dove la frazione si annulla, in $\cos\mu
+			= -r$. Dall&#8217;apogeo a quel punto l&#8217;anomalia cresce di $\arccos(-r)$, più
+			di 90°, e da lì al perigeo di meno di 90°, quindi il tempo dalla velocità
+			massima alla media è il più lungo, come osservò Tolomeo.
+		</p>
+
+		<div class="row">
+			<p>
+				Questo fissa il senso del moto sull&#8217;epiciclo. Se il pianeta si fosse
+				mosso verso ovest vicino all&#8217;apogeo, come fa la Luna, sarebbe più lento
+				all&#8217;apogeo e più veloce al perigeo, e il tempo più lungo cadrebbe fra la
+				velocità minima e la media. Tolomeo ragiona allo stesso modo: il pianeta
+				deve muoversi «non come fa la luna, in avanti [rispetto al moto]
+				dell&#8217;universo, ma invece all&#8217;indietro» (IX 5), cioè verso est.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>Perché il pianeta torna indietro all&#8217;opposizione</h3>
+
+		<p>
+			Al perigeo il moto del pianeta sull&#8217;epiciclo va contro il moto di K, e il
+			pianeta torna indietro se il primo è il più veloce:
+		</p>
+
+		$$n_\mu\,\frac{r}{1 - r} > n \quad\Longleftrightarrow\quad r > \frac{n}{n + n_\mu}.$$
+
+		<div class="row">
+			<p>
+				Tolomeo enuncia questa condizione (XII 1). Per Marte il secondo membro è
+				0,532, e lo 0,658 di Tolomeo è ben al di sopra, quindi il suo Marte torna
+				indietro una volta a ogni giro dell&#8217;anomalia.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il perigeo è in $\mu = 180^\circ$, dove K è opposto al Sole medio. Poiché
+			KP punta al Sole medio, il pianeta sta allora sulla linea dalla Terra per
+			K, anch&#8217;esso opposto al Sole medio. Quindi nel modello ogni cappio è
+			centrato sull&#8217;opposizione al Sole medio. Dal 2010 al 2025 ogni
+			opposizione di Marte al Sole medio è caduta entro un giorno e mezzo dalla
+			sua opposizione al Sole reale.
+		</p>
+
+		<h3>Le stazioni</h3>
+
+		<p>
+			Le stazioni sono dove la velocità è zero. Scrivendo $k = n_\mu / n$, la
+			condizione $d\lambda/dt = 0$ diventa $1 + 2r\cos\mu + r^2 + k\,r\,(r +
+			\cos\mu) = 0$, quindi la prima stazione è in
+		</p>
+
+		$$\cos\mu_s = -\frac{1 + r^2\,(1 + k)}{r\,(2 + k)},$$
+
+		<p>
+			e la seconda in $360^\circ - \mu_s$, simmetrica rispetto al perigeo. Fra
+			esse l&#8217;anomalia avanza di $2\,(180^\circ - \mu_s)$, in
+			$2\,(180^\circ - \mu_s)/n_\mu$ giorni, mentre K avanza $n$ volte tanto e
+			l&#8217;equazione dell&#8217;epiciclo scende da $\eta(\mu_s)$ a $-\eta(\mu_s)$. Il
+			pianeta torna indietro dalla longitudine eclittica $\lambda_1$ della prima
+			stazione alla $\lambda_2$ della seconda, l&#8217;arco
+		</p>
+
+		$$\lambda_1 - \lambda_2 = 2\,\eta(\mu_s) - 2\,(180^\circ - \mu_s)\,\frac{n}{n_\mu}.$$
+
+		<p>
+			L&#8217;arco cresce con $r$, e si annulla alla soglia $r = n/(n + n_\mu)$, dove
+			le due stazioni si incontrano al perigeo. La Figura 3 parte
+			dall&#8217;epiciclo di Marte di Tolomeo.
+		</p>
+
+		<!-- Figure 3: the epicycle of Mars; date and r -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) il deferente e l&#8217;epiciclo</p>
+						<canvas id="epicycle-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il moto giornaliero in funzione dell&#8217;anomalia</p>
+						<canvas id="epicycle-plot"></canvas>
+					</div>
+				</div>
+				<div class="panel-controls">
+					<div>
+						<div class="ctl stepper">
+							<label for="epi-day">data</label>
+							<input id="epi-day" type="range" min="0" max="1600" step="0.25" value="300">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="epi-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="epi-play">Avvia</button>
+						</div>
+					</div>
+					<div>
+						<div class="ctl">
+							<label for="epi-r">epiciclo $r$</label>
+							<input id="epi-r" type="range" min="0" max="0.8" step="0.001" value="0.658">
+							<output></output>
+						</div>
+						<div class="presets" id="epicycle-ratios">
+							<button type="button" data-target="epi-r" data-value="0.6583" data-ratio="ptolemy">Tolomeo</button>
+							<button type="button" data-target="epi-r" data-value="0.531" data-ratio="threshold">senza cappio</button>
+							<button type="button" data-target="epi-r" data-value="0" data-ratio="none">senza epiciclo</button>
+						</div>
+					</div>
+				</div>
+				<div class="readout" id="epicycle-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Avvia, e nota che KP resta parallelo alla linea tratteggiata da O a ☉. Il
+				pianeta P torna indietro nel cielo mentre attraversa l&#8217;arco ombreggiato,
+				sul lato dell&#8217;epiciclo rivolto verso O, che è la parte ombreggiata di
+				(b). Rimpicciolisci l&#8217;epiciclo, e l&#8217;arco e il cappio del percorso tenue
+				si riducono a nulla in «senza cappio».
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nel pannello (a)</p>
+					<dl class="key">
+						<dt class="c-sun">☉, tratteggio</dt>
+						<dd>la direzione del Sole medio dalla Terra O</dd>
+						<dt class="c-planet">tenue</dt>
+						<dd>il percorso di P nell&#8217;ultimo periodo sinodico</dd>
+						<dt class="c-deferent">punteggiato</dt>
+						<dd>da O per K fino all&#8217;apogeo dell&#8217;epiciclo</dd>
+						<dt class="c-epicycle">$\mu$</dt>
+						<dd>contato verso est (in senso antiorario) dall&#8217;apogeo</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>Venere e Mercurio</h3>
+
+		<div class="row">
+			<p>
+				Per i due pianeti che restano vicini al Sole, Tolomeo mette K sulla linea
+				verso il Sole medio: il loro moto medio in longitudine eclittica è quello
+				del Sole medio (IX 3), $\bar\lambda = \bar\lambda_\odot$, e l&#8217;anomalia
+				$\mu$ gira con una velocità propria. Vale la stessa equazione
+				dell&#8217;epiciclo. Visto dalla Terra, il pianeta può allora trovarsi al
+				massimo a $\arcsin r$ dal Sole medio, dove la linea di vista è tangente
+				all&#8217;epiciclo. L&#8217;epiciclo di Venere di Tolomeo, 43,17 dove il deferente
+				è 60, dà 46,0°, vicino alle massime elongazioni della sezione 1. Il
+				perigeo cade alla congiunzione inferiore, e lì il pianeta torna
+				indietro.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<h3>Il periodo sinodico</h3>
+
+		<p>
+			Il tempo da un&#8217;opposizione alla successiva, o da una congiunzione
+			inferiore alla successiva, è il <strong>periodo sinodico</strong> $S$, e
+			l&#8217;anomalia fa un giro in esso, $n_\mu = 360^\circ/S$. Per un pianeta
+			esterno, con $P_\lambda$ il suo periodo in longitudine eclittica e $Y$
+			l&#8217;anno, $n + n_\mu = n_\odot$ diventa
+		</p>
+
+		$$\frac{1}{P_\lambda} + \frac{1}{S} = \frac{1}{Y}.$$
+
+		<p>
+			Per Marte, $P_\lambda$ = 686,93 giorni, e $S$ = 779,9 giorni, la media a
+			lungo termine attorno alla quale si disperdono gli intervalli della sezione
+			1, da 764 a 810 giorni. L&#8217;Esercizio 2 trova il periodo sinodico di ogni
+			pianeta.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>Marte dalle sue opposizioni e dai suoi cappi</h2>
+
+		<p>
+			Il modello di Marte ha tre parametri: il moto medio $n$, la longitudine
+			eclittica media $L_0$ in un istante, e l&#8217;epiciclo $r$, con il Sole medio
+			della pagina 1.3. Li adattiamo tutti e tre a osservazioni già fatte, le
+			posizioni di Marte nel cielo di riferimento fino al 2025, prendendo tanti
+			anni quanti ne servono a ciascun parametro.
+		</p>
+
+		<h3>Il moto medio</h3>
+
+		<p>
+			Una velocità si fissa meglio con due osservazioni distanti, perché
+			l&#8217;errore di ciascuna viene diviso per il tempo fra esse. Esse dovrebbero
+			anche trovare il pianeta nello stesso posto dello zodiaco e nella stessa
+			configurazione con il Sole, così che entrambe le anomalie siano le stesse
+			ai due estremi e si annullino. Opposizioni distanti 79 anni fanno entrambe
+			le cose: in 79 anni Marte va in opposizione 37 volte e fa il giro dello
+			zodiaco 42 volte e un poco di più, il periodo che Tolomeo prese da Ipparco
+			(IX 3).
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table pairs-table">
+			<thead>
+				<tr>
+					<th>Opposizione</th>
+					<th>79 anni dopo</th>
+					<th>oltre i 42 giri</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>28 gen 1931</td><td>30 gen 2010</td><td>2,88°</td></tr>
+				<tr><td>3 mar 1933</td><td>5 mar 2012</td><td>2,84°</td></tr>
+				<tr><td>8 apr 1935</td><td>10 apr 2014</td><td>2,99°</td></tr>
+				<tr><td>20 mag 1937</td><td>23 mag 2016</td><td>3,49°</td></tr>
+				<tr><td>22 lug 1939</td><td>26 lug 2018</td><td>4,57°</td></tr>
+				<tr><td>9 ott 1941</td><td>12 ott 2020</td><td>4,25°</td></tr>
+				<tr><td>5 dic 1943</td><td>7 dic 2022</td><td>3,33°</td></tr>
+				<tr><td>14 gen 1946</td><td>16 gen 2025</td><td>2,95°</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<p>
+			La tabella accoppia ogni opposizione di Marte al Sole medio dal 2010 al 2025
+			con quella di 79 anni prima. Ogni coppia dà l&#8217;angolo percorso da Marte,
+			42 giri più l&#8217;eccesso della tabella, e il tempo impiegato, quindi un
+			valore di $n$. La loro media è $n$ = 0,524070° al giorno, un periodo in
+			longitudine eclittica di 686,93 giorni.
+		</p>
+
+		<h3>La longitudine eclittica media dalle opposizioni</h3>
+
+		<div class="row">
+			<p>
+				A un&#8217;opposizione al Sole medio il pianeta sta sulla linea dalla Terra
+				per K, quindi la longitudine eclittica osservata lì è $\bar\lambda$
+				stessa, qualunque sia la grandezza dell&#8217;epiciclo. Tolomeo scelse queste
+				osservazioni per questa ragione: in esse «il pianeta si vede, in teoria,
+				[lungo la linea] per il centro dell&#8217;epiciclo, proprio come se il suo
+				moto sull&#8217;epiciclo non esistesse» (X 6).
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<p>
+			Ciascuna delle otto opposizioni al Sole medio del 2010–2025, riportata a
+			J2000.0 con la velocità $n$, dà un valore di $L_0$. Vanno da 12° sotto la
+			loro media a 11° sopra, perché l&#8217;anomalia zodiacale della sezione 1
+			allontana il pianeta da $\bar\lambda$ di quantità diverse in parti diverse
+			dello zodiaco. La loro media è $L_0$ = 355,83°.
+		</p>
+
+		<h3>L&#8217;epiciclo dai cappi</h3>
+
+		<p>
+			La grandezza dell&#8217;epiciclo si vede più chiaramente nei cappi: più è
+			grande, più il pianeta torna indietro. Ciò che misuriamo è l&#8217;arco di ogni
+			cappio, la differenza fra le longitudini eclittiche a cui il pianeta si
+			ferma, $\lambda_1 - \lambda_2$. L&#8217;istante di una stazione è difficile da
+			fissare, perché il pianeta si muove appena per giorni attorno a essa: nei
+			cinque giorni dopo la sua stazione del 6 dicembre 2024 Marte si è spostato
+			di 10′. Per la stessa ragione il suo posto alla stazione è facile da
+			misurare, e l&#8217;arco, la differenza di due posti distanti solo
+			settimane, dipende appena da $\bar\lambda$.
+		</p>
+
+		<p>
+			L&#8217;anomalia alle stazioni, $\mu_s$, non si misura: segue da $r$. Per un
+			valore di prova di $r$, la condizione della sezione 2 dà $\mu_s$, e con
+			essa l&#8217;arco. Con $r$ = 0,6 le stazioni sono in $\mu_s$ = 166,0° e l&#8217;arco
+			è 6,5°; con $r$ = 0,7, in 162,4° e circa 25°. L&#8217;$r$ adattato è quello il
+			cui arco è uguale all&#8217;arco osservato. Cronometrare le stazioni per
+			trovare $\mu_s$ non andrebbe bene: una stazione sbagliata di cinque giorni
+			sposta $\mu_s$ di 2,3°, mentre tutti i valori di $r$ da 0,6 a 0,7 lo
+			spostano solo di 3,6° (Figura 4b).
+		</p>
+
+		<p>
+			Gli otto cappi del 2010–2025 sono tornati indietro in media di 16,7°, il
+			che dà $r$ = 0,660, ovvero 39,6 dove il deferente è 60, contro i 39,5 di
+			Tolomeo.
+		</p>
+
+		<p>
+			Ogni cappio da solo dà un epiciclo diverso, da circa 0,63 per il cappio
+			corto del 2018 a 0,67 per quelli lunghi del 2010 e del 2012, quindi nessun
+			epiciclo singolo li riproduce tutti (Figura 4a).
+		</p>
+
+		<!-- Figure 4: the arc and the anomaly of the first station against r (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) di quanto torna indietro il modello</p>
+						<canvas id="ratio-arc-plot"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) l&#8217;anomalia della prima stazione</p>
+						<canvas id="ratio-station-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Leggi ogni punto in (a) fino al suo $r$: l&#8217;arco cresce in fretta con
+				$r$, quindi ogni cappio dà un valore netto di $r$, eppure gli otto punti
+				si disperdono da 0,63 a 0,67. In (b) gli stessi valori di $r$ spostano
+				appena la stazione: la curva resta dentro la fascia da $r$ = 0,61 alla
+				fine dell&#8217;asse.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-planet">punti</dt>
+						<dd>in entrambi i pannelli, gli otto cappi del 2010–2025, ciascuno all&#8217;$r$ che dà il suo arco</dd>
+						<dt class="c-muted">tratteggio</dt>
+						<dd>in (a), l&#8217;arco medio degli otto cappi e l&#8217;$r$ adattato a esso</dd>
+						<dt class="c-planet">fascia</dt>
+						<dd>in (b), la prima stazione per $r$ = 0,660, cronometrata cinque giorni prima o dopo</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- History block: Ptolemy's mean motions and oppositions -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>I moti medi e le opposizioni di Tolomeo</h3>
+
+			<div class="row">
+				<p>
+					Per i moti medi Tolomeo parte da relazioni fra periodi «calcolate da
+					Ipparco»: per Marte, 37 ritorni in anomalia in 79 anni, in cui il
+					pianeta fa 42 volte il giro dello zodiaco (IX 3). Toomer nota che sono
+					relazioni «ben note (a noi)» dall&#8217;astronomia babilonese, che Tolomeo
+					sembra non aver riconosciuto come tali. Tolomeo le corresse
+					confrontando posizioni distanti secoli, aggiungendo 3,22 giorni ai 79
+					anni e 3°10′ (3,17°) ai 42 giri; l&#8217;Esercizio 2 calcola la sua relazione
+					corretta.
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Nei registri più antichi, «le serie di osservazioni più continue
+					riguardano stazioni e fasi», prime e ultime visibilità vicino al Sole
+					(IX 2). Toomer le ritiene osservazioni babilonesi, probabilmente note a
+					Tolomeo solo attraverso la raccolta di Ipparco. Tolomeo trovava le
+					stazioni difficili da usare: «non si possono fissare in un istante
+					preciso, perché il moto locale del pianeta per parecchi giorni sia prima
+					sia dopo la stazione vera e propria è troppo piccolo per essere
+					osservabile» (IX 2).
+				</p>
+				<aside>
+					<div class="note" data-origin="babylonian"></div>
+					<div class="note" data-origin="debated"></div>
+				</aside>
+			</div>
+
+			<div class="row">
+				<p>
+					Costruì la teoria di ogni pianeta esterno su tre opposizioni al Sole
+					medio osservate da lui stesso (X 7 per Marte), perché solo lì «troviamo
+					isolata l&#8217;anomalia eclittica», le congiunzioni essendo invisibili (X
+					6). Prese la grandezza dell&#8217;epiciclo da un&#8217;ulteriore posizione
+					lontana dall&#8217;opposizione, avvistata tre giorni dopo la terza (X 8).
+				</p>
+				<aside>
+					<div class="note" data-origin="ptolemy"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>L&#8217;epiciclo contro il Marte reale</h2>
+
+		<p>
+			Per vedere quanto spiega un solo epiciclo, la Figura 5 dà la curva
+			dell&#8217;errore del modello adattato al 2010–2025, $\Delta\lambda =
+			\lambda_\text{modello} - \lambda_\text{rif}$, ora in gradi, accanto a
+			quella del pianeta uniforme, uno che si muove in $\bar\lambda$ senza
+			epiciclo.
+		</p>
+
+		<!-- Figure 5: the epicycle fitted to 2010 - 2025 against the reference Mars -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Punta le opposizioni del 2016 e del 2018, i punti, dove l&#8217;errore
+				dell&#8217;epiciclo cambia più in fretta. Passa a sedici anni, gli anni
+				dell&#8217;adattamento, e nota che lì l&#8217;errore è positivo ad alcune
+				opposizioni e negativo ad altre. Poi passa a duecento anni: la fascia non
+				si allarga.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nel 2010–2025 l&#8217;epiciclo sbaglia fino a 34°, due settimane dopo
+			l&#8217;opposizione del maggio 2016, contro 54° del pianeta uniforme, e il suo
+			errore quadratico medio è un terzo di quello del pianeta uniforme. Il suo
+			moto medio è venuto da opposizioni distanti 79 anni, quindi l&#8217;errore
+			resta della stessa grandezza nei due secoli attorno al 2026.
+		</p>
+
+		<p>
+			Gli errori sono massimi vicino alle opposizioni, 33° all&#8217;opposizione del
+			maggio 2016 stessa, e restano entro 7,2° alle congiunzioni. Vicino al
+			perigeo un errore nel posto di K viene ingrandito. Poiché $\mu =
+			\bar\lambda_\odot - \bar\lambda$, l&#8217;equazione dell&#8217;epiciclo dà lì
+		</p>
+
+		$$\frac{\partial\lambda}{\partial\bar\lambda} = 1 - \frac{d\eta}{d\mu} = \frac{1}{1 - r},$$
+
+		<p>
+			quasi 3. All&#8217;opposizione del maggio 2016 il Marte reale era 12° indietro
+			rispetto a K, e il modello lo metteva 33° avanti rispetto al pianeta reale
+			(Figura 6).
+		</p>
+
+		<!-- Figure 6: an error in K at the perigee, magnified (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="magnify-canvas"></canvas>
+			</div>
+			<figcaption>
+				Confronta i due angoli nella Terra O. P e P′ distano fra loro quanto K e
+				K′, ma sono circa tre volte più vicini a O, quindi la direzione del
+				pianeta ruota di 33° quando K si sposta di 12°.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt class="c-epicycle">tratteggio</dt>
+						<dd>l&#8217;epiciclo e il suo raggio dopo che K è tornato indietro lungo il deferente fino a K′</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- History block: Hipparchus and the simple models -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Ipparco e i modelli del suo tempo</h3>
+
+			<div class="row">
+				<p>
+					Prima di Tolomeo, gli astronomi che usavano epicicli ed eccentrici per i
+					pianeti avevano costruito le loro dimostrazioni, dice, «sulla base di
+					una sola anomalia invariabile e di un solo arco di retrogradazione» (IX
+					2). Ipparco, dice, non cominciò nemmeno una teoria dei pianeti, «non
+					almeno nei suoi scritti che ci sono pervenuti». Raccolse le osservazioni
+					dei pianeti, e mostrò «per mezzo di queste che i fenomeni non erano in
+					accordo con le ipotesi degli astronomi di quel tempo» (IX 2): ogni
+					pianeta aveva due anomalie, e archi di retrogradazione «che non sono
+					costanti».
+				</p>
+				<aside>
+					<div class="note" data-origin="hipparchus"></div>
+				</aside>
+			</div>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Cappi di grandezze diverse</h2>
+
+		<p>
+			I cappi di Marte sono lunghi in una parte dello zodiaco e corti nella parte
+			opposta, mentre il cappio del modello non cambia mai. La Figura 7 mette
+			ogni cappio del 1986–2025 in funzione della longitudine eclittica della sua
+			opposizione: Marte torna indietro di circa 10° in una parte e di quasi 20°
+			nell&#8217;altra, dove il modello torna sempre indietro di circa 17°. I tempi
+			fra le opposizioni cambiano con i cappi.
+		</p>
+
+		<!-- Figure 7: the loops of Mars against the ecliptic longitude (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) di quanto torna indietro Marte</p>
+						<canvas id="arcs-plot"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) il tempo fino all&#8217;opposizione successiva</p>
+						<canvas id="intervals-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Segui i punti, uno per ogni cappio del 1986–2025, lungo lo zodiaco. Sia
+				l&#8217;arco sia il tempo fino all&#8217;opposizione successiva salgono e scendono
+				una volta in un giro di Marte, mentre la linea del modello adattato al
+				2010–2025 resta orizzontale al centro di ciascuno.
+			</figcaption>
+		</figure>
+
+		<div class="row">
+			<p>
+				Quindi l&#8217;anomalia zodiacale cambia i cappi oltre al posto di K, e un
+				epiciclo semplice non può seguirla: senza un&#8217;eccentricità i suoi archi
+				hanno tutti la stessa lunghezza, come osserva Neugebauer (<em>HAMA</em>
+				p. 191).
+			</p>
+			<aside>
+				<div class="note" data-origin="modern"></div>
+			</aside>
+		</div>
+
+		<p>
+			Perché i cappi cambino grandezza lungo lo zodiaco, il modello ha bisogno di
+			una disuniformità che dipenda dalla longitudine eclittica del pianeta,
+			nella distanza di K dalla Terra e nella sua velocità. La pagina 4.2 dà
+			quella di Tolomeo, un deferente eccentrico e l&#8217;equante.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="derive">
+			<p>
+				Mostra la forma di Apollonio della condizione per una stazione (XII 1): a
+				una stazione, metà della corda che la linea di vista taglia
+				dall&#8217;epiciclo, divisa per la distanza dalla Terra al pianeta, è uguale a
+				$n/n_\mu$, la velocità di K diviso la velocità del pianeta sull&#8217;epiciclo.
+				Poi prendi il Marte di Tolomeo, $r = 39{,}5/60$ con i suoi moti medi $n$ =
+				0,5240597° e $n_\mu$ = 0,4615756° al giorno (IX 3). Trova le stazioni con
+				la formula della sezione 2, di quanto torna indietro Marte e per quanto
+				tempo, e confronta con i 16°18′44″ (16,312°) e i circa 73 giorni di
+				Tolomeo alla distanza media (XII 4). Quanto piccolo potrebbe essere
+				l&#8217;epiciclo prima che Marte smetta di tornare indietro?
+			</p>
+			<details class="hint">
+				<p>
+					Lavora in un sistema che ruota con la retta OK, con velocità $n$. Lì K
+					sta fermo e il pianeta gira sull&#8217;epiciclo con $n_\mu$. Quanto in
+					fretta ruota il pianeta attorno a O in quel sistema?
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Nel sistema rotante il pianeta si muove con velocità $n_\mu r$,
+					perpendicolare a KP. Sia T il piede della perpendicolare da K alla linea
+					di vista, il punto medio della corda. La componente della velocità
+					trasversale alla linea di vista è $n_\mu r\cos\alpha$, dove $\alpha$ è
+					l&#8217;angolo fra KP e la linea, e $r\cos\alpha$ = TP, metà della corda.
+					Quindi in quel sistema il pianeta ruota attorno a O con
+					$n_\mu\,\text{TP}/\text{OP}$, all&#8217;indietro sul lato vicino
+					dell&#8217;epiciclo. Nel cielo sta fermo quando questo annulla la rotazione
+					del sistema, $n_\mu\,\text{TP}/\text{OP} = n$:
+				</p>
+				$$\frac{\text{TP}}{\text{OP}} = \frac{n}{n_\mu}.$$
+				<p>
+					Con i numeri di Tolomeo $k = n_\mu/n$ = 0,88077 (il suo rapporto è
+					0,88083, XII 4), quindi $\cos\mu_s = -0{,}95709$ e $\mu_s$ = 163,15°,
+					16,85° prima del perigeo. Lì $\eta(\mu_s)$ = 27,28°. Fra le stazioni
+					l&#8217;anomalia avanza di 33,69°, in 73,0 giorni, durante i quali K avanza
+					di 38,25°, quindi Marte torna indietro di $2 \times 27{,}28^\circ -
+					38{,}25^\circ$ = 16,312° = 16°18,7′ in 73,0 giorni: i 16°18′44″ e i
+					circa 73 giorni di Tolomeo. Alla stazione OP = 0,4162 e TP = 0,4726, e
+					TP/OP = 1,1354 = $n/n_\mu$.
+				</p>
+				<p>
+					Marte smette di tornare indietro quando $r = n/(n + n_\mu)$ = 0,5317,
+					31,9 dove il deferente è 60. Il Giove e il Saturno di Tolomeo, con
+					epicicli di 11,5 e 6,5, sono molto sopra le loro soglie, 0,0843 e
+					0,0340, e tornano indietro di 9,9° in 120 giorni e di 7,2° in 138
+					giorni, contro 9,9° in 120 giorni e 6,7° in 138 giorni in media nel
+					1986–2025.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Misurata rispetto alle stelle invece che da γ, la relazione $n + n_\mu =
+				n_\odot$ vale con i periodi di ritorno alla stessa stella. Il Sole medio
+				torna alla stessa stella ogni 365,256 giorni, la longitudine eclittica
+				media di Marte ogni 686,98 giorni, di Giove ogni 4332,59 giorni e di
+				Saturno ogni 10·759,22 giorni. Per Venere e Mercurio, il cui K segue il
+				Sole medio, il raggio KP dell&#8217;epiciclo torna alla stessa stella ogni
+				224,70 e 87,97 giorni. Trova i cinque periodi sinodici e confrontali con
+				gli intervalli della sezione 1. Poi prendi la relazione di Tolomeo per
+				Marte (IX 3; <em>HAMA</em> p. 151): 37 ritorni in anomalia in 79 anni e
+				3,217 giorni, anni di 365,24667 giorni, durante i quali Marte fa 42 volte
+				il giro dello zodiaco e 3°10′ (3,167°) in più. Trova il periodo sinodico e
+				il periodo in longitudine eclittica, e confrontali con quelli
+				dell&#8217;adattamento della sezione 3, 779,935 e 686,931 giorni. Perché il
+				numero di anni deve essere la somma degli altri due numeri?
+			</p>
+			<details class="hint">
+				<p>
+					Per Venere e Mercurio, KP ruota con $n_\odot + n_\mu$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con $Y_\text{s}$ l&#8217;anno sidereo e $P_\lambda$ il periodo rispetto alle
+					stelle, per un pianeta esterno $1/S = 1/Y_\text{s} - 1/P_\lambda$, e per
+					uno interno, il cui KP ruota con $n_\odot + n_\mu$, $1/S = 1/P_\lambda -
+					1/Y_\text{s}$. Mercurio: 115,88 giorni; Venere: 583,92 giorni; Marte:
+					779,94 giorni; Giove: 398,88 giorni; Saturno: 378,09 giorni. Ciascuno
+					sta dentro gli intervalli della sezione 1.
+				</p>
+				<p>
+					I 79 anni e 3,217 giorni di Tolomeo sono 28·857,70 giorni (egli scrive
+					28·857,72), quindi il suo periodo sinodico è $28857{,}70 / 37 =
+					779{,}938$ giorni, 4,3 minuti dai 779,935 della sezione 3, e il suo
+					periodo in longitudine eclittica $28857{,}70 / 42{,}0088 = 686{,}944$
+					giorni, 20 minuti più lungo di 686,931. Moltiplicando $n + n_\mu =
+					n_\odot$ per la durata del periodo si ottiene che i giri di K più i giri
+					dell&#8217;anomalia sono uguali ai giri del Sole medio, cioè agli anni: $42
+					+ 37 = 79$, una regola che Tolomeo stesso enuncia (IX 3). Anche le
+					frazioni concordano: in 3,217 giorni il suo Sole medio si sposta di
+					3,170°, i 3°10′ di cui Marte va oltre i suoi 42 giri.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Usa il modello adattato al 2010–2025 ($L_0$ = 355,83° a J2000.0, $n$ =
+				0,524070° al giorno, $r$ = 0,660, e il Sole medio della pagina 1.3) per
+				prevedere le opposizioni di Marte del 1999 e del 2003, fuori dagli anni
+				dell&#8217;adattamento: l&#8217;istante in cui K è opposto al Sole medio, la
+				longitudine eclittica lì, e il cappio. Confronta con il cielo di
+				riferimento, dove Marte fu in opposizione il 24 aprile 1999 a 214,1° e
+				tornò indietro di 17,8° in 78 giorni, e il 28 agosto 2003 a 335,0°,
+				tornando indietro di 10,0° in 60 giorni. Perché il modello sbaglia ogni
+				volta in modo diverso?
+			</p>
+			<details class="hint">
+				<p>
+					L&#8217;opposizione del modello è dove $\bar\lambda = \bar\lambda_\odot -
+					180^\circ$, e il suo cappio è lo stesso a ogni opposizione.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Il modello mette l&#8217;opposizione del 1999 il 19 maggio a 237,0°, 25,1
+					giorni in ritardo e 23,0° troppo a est, anche se il suo cappio, 16,7° in
+					73 giorni, è vicino a quello reale. Mette quella del 2003 il 26 agosto a
+					334,5°, solo 2,0 giorni in anticipo e sbagliata di 0,4°, ma il suo
+					cappio torna indietro di 16,7° invece di 10,0°.
+				</p>
+				<p>
+					Il modello fa muovere K uniformemente, mentre il Marte reale corre
+					avanti rispetto al moto uniforme in alcune parti dello zodiaco e resta
+					indietro in altre. Alla sua opposizione al Sole medio del 1999 il Marte
+					reale era 11,0° indietro rispetto a K, quindi il Sole medio raggiunse il
+					punto opposto a K più di tre settimane dopo aver raggiunto quello opposto
+					al pianeta reale; nel 2003 il Marte reale era solo a 0,4° da K, ma nella
+					parte dello zodiaco in cui i suoi cappi sono più corti. Quella
+					disuniformità, e i cappi che cambiano con essa, è l&#8217;anomalia zodiacale,
+					che il modello trascura.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>Tolomeo, <em>Almagest</em> (trad. ingl. G. J. Toomer, 1984): IX 2 (le
+				due anomalie, stazioni e fasi difficili da osservare, la raccolta di
+				Ipparco e il suo giudizio sui modelli precedenti, con le note di Toomer);
+				IX 3 (le relazioni fra periodi «calcolate da Ipparco» e i moti medi, con
+				la nota di Toomer sulla loro origine babilonese); IX 5 (il tempo dalla
+				velocità massima alla media, il senso del moto sull&#8217;epiciclo); X 6 (le
+				opposizioni al Sole medio, il raggio dell&#8217;epiciclo parallelo alla linea
+				verso il Sole medio); X 7–8 (le opposizioni di Marte, la grandezza del suo
+				epiciclo); X 2, XI 2, XI 6 (gli epicicli di Venere, Giove e Saturno); XII
+				1 (il teorema di Apollonio sulle stazioni, la condizione per la
+				retrogradazione, i pianeti che raggiungono qualunque elongazione); XII 4
+				(la retrogradazione di Marte alla distanza media).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Parte prima: I C 1 (pp. 145–152: i raggi degli epicicli, le due
+				anomalie, le relazioni fra periodi dai testi babilonesi degli «anni
+				obiettivo»); I C 6 (pp. 190–191: il teorema di Apollonio, archi costanti
+				senza un&#8217;eccentricità); I D 3 (pp. 267–268: le stazioni).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 8.1 e § 8.3 (l&#8217;epiciclo
+				di un pianeta esterno, le sue congiunzioni, opposizioni e stazioni).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): i pianeti di riferimento, i loro moti medi e
+				periodi siderei.</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/4.1-going-backwards.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

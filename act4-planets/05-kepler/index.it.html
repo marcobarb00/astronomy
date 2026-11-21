@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     PAGE 4.5 · KEPLER
+     Act IV, the planets. The Sun's speed changes twice as much as its
+     size, and Mars' triangulated path falls inside the circle through its
+     apsides: Kepler's ellipse with the Sun at a focus, and the area law.
+     Kepler's equation and its solution; the third law. The Earth's
+     ellipse fitted to the seasons of 2026, Mars' to its oppositions to the
+     real Sun of 2010 - 2025, its distance from the third law. Tested
+     against VSOP87 (the site's Standish planets are themselves ellipses):
+     Mars within 6', the Sun within a quarter of an arcminute. What is left
+     comes from the planets' pulls on one another, Newton's subject.
+     Numbers: tools/numbers/4.5-kepler.js.
+     Italian translation of index.html (TRANSLATION.md): keep the two in step.
+     ========================================================================== -->
+<html lang="it">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>4.5 · Keplero · Prevedere il cielo</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+	<!-- The English original (components.js draws its flag) -->
+	<link rel="alternate" hreflang="en" href="index.html">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme, then the page's figure layout (no new colours) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+	<link rel="stylesheet" href="page.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/vsop87-data.js"></script>
+	<script defer src="../../shared/vsop87.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/models/kepler.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/ladder.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="4.5">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<p class="lead">
+			L&#8217;equante della pagina 4.2, trasportato nella disposizione di Copernico
+			e nel sistema di Tycho nelle pagine 4.3 e 4.4, dà a Marte direzioni il cui
+			errore arriva a 0,88° vicino alle opposizioni. Far ruotare l&#8217;epiciclo
+			con il Sole vero invece che con il Sole medio ha ridotto l&#8217;errore a 32′,
+			e ha lasciato la parte che viene dalla forma del percorso di Marte.
+			Keplero, lavorando sulle osservazioni di Marte di Tycho, trovò quella
+			forma: un&#8217;ellisse.
+		</p>
+
+		<!-- ============================ 1. OBSERVATION ============================ -->
+		<h2 id="observation"><span class="step">1 · Osservazione</span>La velocità del Sole e le distanze di Marte</h2>
+
+		<p>
+			Ogni modello finora è stato giudicato dalle direzioni che prevede. Le due
+			osservazioni di questa sezione riguardano le distanze: quanto il Sole è
+			lontano da noi nel corso dell&#8217;anno, e quanto Marte è lontano dal Sole
+			lungo il suo percorso. Entrambe si possono misurare senza alcun modello
+			del moto.
+		</p>
+
+		<h3>La velocità del Sole e il suo diametro apparente</h3>
+
+		<p>
+			Il diametro apparente del Sole misura la sua distanza, poiché i due sono
+			inversamente proporzionali. Per vedere come la sua velocità dipende dalla
+			distanza mettiamo le due grandezze a confronto nella Figura 1, ciascuna in
+			percentuale della sua media sul 2025: il moto diurno più veloce supera il
+			più lento del 7,0%, il diametro più grande il più piccolo solo del 3,4%.
+		</p>
+
+		<!-- Figure 1: the Sun's daily motion and apparent diameter through 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="sun-plot"></canvas>
+				<div id="sun-legend"></div>
+			</div>
+			<figcaption>
+				Segui il moto diurno nel corso dell&#8217;anno e confrontalo con le due
+				curve del diametro. Non segue il diametro ma il suo quadrato: il Sole
+				si muove più in fretta all&#8217;inizio di gennaio, quando è più vicino e
+				più grande.
+			</figcaption>
+		</figure>
+
+		<p>
+			La velocità varia come il quadrato del diametro, quindi come l&#8217;inverso
+			del quadrato della distanza $r$: il prodotto di $r^2$ per la velocità
+			angolare resta costante nel corso dell&#8217;anno entro lo 0,10%, mentre $r$
+			per la velocità angolare varia del 3,5%. L&#8217;eccentrico della pagina 2.1,
+			un moto uniforme su un cerchio visto da un punto fuori dal centro, dà una
+			velocità che varia come $1/r$ al primo ordine. Per riprodurre la velocità
+			del Sole gli serve una distanza che varia il doppio di quella reale: per
+			questo le sue distanze, e quelle della Luna della pagina 3.2, variavano il
+			doppio del dovuto.
+		</p>
+
+		<h3>Marte per triangolazione</h3>
+
+		<p>
+			La distanza di Marte dal Sole non si legge a occhio dalla sua grandezza,
+			ma si può trovare per triangolazione. Dopo un periodo sidereo, 686,98
+			giorni, Marte è tornato nello stesso punto del suo percorso fra le
+			stelle, mentre la Terra è in un altro posto del proprio. Le due linee di
+			vista, una da ciascun posto, si incontrano in quel punto. I due posti
+			della Terra si ricavano dalla direzione del Sole e dalla sua distanza,
+			che il suo diametro apparente fornisce.
+		</p>
+
+		<p>
+			Dal 2010 al 2025, un primo avvistamento ogni dieci giorni, con il suo
+			compagno un periodo dopo, dà 103 punti. Le coppie le cui linee si
+			incontrano a meno di 20° sono escluse, perché un piccolo errore in una
+			delle due direzioni sposterebbe il punto di molto lungo le linee. Le
+			distanze trovate concordano con il riferimento entro 0,0010 au, abbastanza
+			per verificare la forma del percorso. Nella Figura 2 le confrontiamo con
+			un cerchio: il suo diametro sta sulla linea degli apsidi e va dalla
+			distanza minima alla massima.
+		</p>
+
+		<!-- Figure 2: Mars triangulated, 2010 - 2025 (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels">
+					<div>
+						<p class="panel-title">(a) i punti, visti da sopra l&#8217;eclittica</p>
+						<canvas id="triangle-canvas"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) la distanza da ☉, meno quella del cerchio</p>
+						<canvas id="triangle-plot"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				In (a), segui una coppia: la Terra in O e in O′, un periodo sidereo di
+				Marte dopo, e le due linee di vista che si incontrano in P. In (b),
+				nota che i punti toccano il cerchio solo vicino agli apsidi A e Π, e
+				cadono più all&#8217;interno a metà strada fra essi.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>tratteggio</dt>
+						<dd>in (a), il cerchio per gli apsidi</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<p>
+			Vicino agli apsidi i punti stanno sul cerchio, e fra essi cadono
+			all&#8217;interno, fino a 0,0064 au, sei volte la dispersione dei punti. Il
+			percorso di Marte è più stretto di un cerchio trasversalmente al suo asse
+			maggiore.
+		</p>
+
+		<!-- =============================== 2. MODEL =============================== -->
+		<h2 id="model"><span class="step">2 · Modello</span>L&#8217;ellisse di Keplero e la legge delle aree</h2>
+
+		<h3>L&#8217;ellisse</h3>
+
+		<div class="row">
+			<p>
+				Un&#8217;ellisse è l&#8217;insieme dei punti le cui distanze da due punti fissi,
+				i suoi fuochi, hanno per somma la stessa lunghezza $2a$. Il suo centro C
+				sta a metà fra essi, $a$ è il semiasse maggiore, e i fuochi sono alla
+				distanza $ea$ da C, con $e$ l&#8217;eccentricità. Keplero pose il Sole ☉ in
+				un fuoco. Chiamiamo Q l&#8217;altro fuoco, e gli estremi dell&#8217;asse maggiore
+				l&#8217;<strong>afelio</strong> A, il punto più lontano dal Sole, e il
+				<strong>perielio</strong> Π.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Il cerchio sull&#8217;asse maggiore, di centro C e raggio $a$, schiacciato
+			verso l&#8217;asse nel rapporto $b/a$, dà l&#8217;ellisse, dove $b = a \sqrt{1 -
+			e^2}$ è il semiasse minore. Il punto P′ del cerchio all&#8217;angolo $E$
+			dall&#8217;afelio, visto da C, va nel punto P dell&#8217;ellisse sulla stessa
+			perpendicolare all&#8217;asse. $E$ è l&#8217;<strong>anomalia eccentrica</strong>
+			(non l&#8217;equazione del tempo della pagina 2.2). Misurato dal Sole, con $x$
+			lungo l&#8217;asse verso A, P è in
+		</p>
+
+		$$\bigl(a(e + \cos E),\ b\sin E\bigr), \qquad r = {\odot}\text{P} = a(1 + e\cos E).$$
+
+		<p>
+			La distanza segue dalla somma dei quadrati, poiché $b^2 = a^2(1 - e^2)$.
+			Lo schiacciamento è massimo trasversalmente all&#8217;asse maggiore, in $E =
+			90^\circ$, dove l&#8217;ellisse sta all&#8217;interno del suo cerchio di $a - b
+			\approx ae^2/2$. Il cerchio per gli apsidi della Figura 2 è questo
+			cerchio, quindi i punti che lì cadono all&#8217;interno sono questo
+			schiacciamento: con i valori di Marte trovati nella sezione 3, $a - b$ è
+			0,0067 au.
+		</p>
+
+		<h3>Aree uguali in tempi uguali</h3>
+
+		<div class="row">
+			<p>
+				La seconda regola di Keplero fissa con che velocità il corpo percorre
+				l&#8217;orbita: la linea dal Sole al corpo descrive aree uguali in tempi
+				uguali. L&#8217;area descritta fra due istanti è circa $\tfrac12 r^2$ per
+				l&#8217;angolo percorso, quindi la velocità angolare vista dal Sole varia
+				come $1/r^2$, che è ciò che il Sole ha mostrato nella Figura 1.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Per collocare il corpo in una data ci serve l&#8217;area descritta
+			dall&#8217;afelio in funzione di $E$. Nel cerchio, la regione descritta da A
+			a P′ attorno al fuoco ☉ è il settore A C P′ più il triangolo C ☉ P′, la
+			cui base C☉ = $ea$ ha l&#8217;altezza $a\sin E$:
+		</p>
+
+		$$\text{area}_\text{cerchio} = \tfrac12 a^2 E + \tfrac12\,ea \cdot a\sin E = \tfrac12 a^2 (E + e\sin E),$$
+
+		<p>
+			con $E$ in radianti. Lo schiacciamento verso l&#8217;asse moltiplica ogni
+			area per $b/a$, quindi l&#8217;area descritta nell&#8217;ellisse è $\tfrac12
+			ab(E + e\sin E)$, e l&#8217;intera ellisse ha area $\pi ab$. Per la legge
+			delle aree la frazione del periodo $P$ trascorsa dall&#8217;afelio,
+			all&#8217;istante $t_A$, è la frazione dell&#8217;area descritta:
+		</p>
+
+		$$\frac{t - t_A}{P} = \frac{\tfrac12 ab\,(E + e\sin E)}{\pi ab} = \frac{E + e\sin E}{2\pi}.$$
+
+		<p>
+			Il primo membro, per $2\pi$, è l&#8217;angolo che un punto che ruota a
+			velocità costante, una volta per periodo, avrebbe percorso dall&#8217;afelio:
+			$M = 2\pi(t - t_A)/P$, ovvero $n(t - t_A)$ in gradi con $n$ il moto medio.
+			È l&#8217;anomalia media di ogni pagina dalla 2.1 in poi. Lì un Sole medio
+			ruotava uniformemente, alla longitudine media $\bar\lambda = \lambda_A +
+			M$, e il Sole vero lo precedeva o lo seguiva dell&#8217;equazione del centro
+			$q$. Anche qui $M$ è il tempo trascorso dall&#8217;afelio scritto come
+			angolo, il posto di un corpo in moto uniforme, e il corpo reale è in $M +
+			q$. I due si incontrano in A e in Π. Uguagliando i due membri si ottiene
+			l&#8217;<strong>equazione di Keplero</strong>:
+		</p>
+
+		<div class="box">
+			$$M = E + e\sin E.$$
+		</div>
+
+		<p>
+			Data la data conosciamo $M$, e ci serve $E$. L&#8217;equazione non si può
+			risolvere per $E$ in forma chiusa, ma l&#8217;iterazione la risolve. Scritta
+			come $E = M - e\sin E$, dice che $E$ è $M$ meno una piccola correzione.
+			Partendo da $E = M$ e rimettendo ogni valore nel secondo membro si
+			ottengono i passi $E \leftarrow M - e\sin E$. Il metodo di Newton cerca
+			invece la radice di $f(E) = E + e\sin E - M$, la cui derivata è $f'(E) =
+			1 + e\cos E$, e ogni passo $E \leftarrow E - f(E)/f'(E)$ è
+		</p>
+
+		$$E \leftarrow E - \frac{E + e\sin E - M}{1 + e\cos E}.$$
+
+		<p>
+			L&#8217;Esercizio 1 confronta i due metodi. Noto $E$, P si colloca con le
+			coordinate scritte sopra, e la sua direzione dal Sole, $M + q$, è
+			l&#8217;<strong>anomalia vera</strong>. Nella Figura 3 puoi seguire il corpo
+			attraverso aree descritte in tempi uguali.
+		</p>
+
+		<!-- Figure 3: the ellipse and the area law; date, play, two views -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="presets" id="ellipse-views"></div>
+				<div class="fig-row">
+					<div>
+						<canvas id="ellipse-canvas"></canvas>
+					</div>
+					<div>
+						<div class="ctl stepper">
+							<label for="ellipse-day">giorni da A</label>
+							<input id="ellipse-day" type="range" min="0" max="687" step="0.25" value="57" data-unit=" d">
+							<output></output>
+							<span class="stepper-buttons">
+								<button type="button" class="stepper-btn" data-target="ellipse-day" data-step="-1"
+									aria-label="giorno precedente">‹ giorno precedente</button>
+								<button type="button" class="stepper-btn" data-target="ellipse-day" data-step="1"
+									aria-label="giorno successivo">giorno successivo ›</button>
+							</span>
+						</div>
+						<div class="presets">
+							<button type="button" class="play" id="ellipse-play">Avvia</button>
+						</div>
+						<div class="readout" id="ellipse-readout" data-lines="5"></div>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Comincia con $e$ = 0,6 e avvia: ☉P descrive ogni settore ombreggiato, un
+				dodicesimo del periodo, nello stesso tempo, lentamente vicino ad A e in
+				fretta vicino a Π. Intanto QP precede e segue a turno la linea
+				tratteggiata da Q. Con Marte, la cui ellisse si distingue a fatica dal
+				suo cerchio, confronta ∠AQP e ∠A☉P con $M$ nella lettura: solo QP resta
+				sulla linea tratteggiata.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">Nella figura</p>
+					<dl class="key">
+						<dt>cerchio tratteggiato</dt>
+						<dd>il cerchio sull&#8217;asse maggiore</dd>
+						<dt class="c-epicycle">tratteggio, da Q</dt>
+						<dd>la direzione che ruota uniformemente, all&#8217;angolo $M$ da A</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Lettura</p>
+					<dl class="key">
+						<dt>∠AQP, ∠A☉P</dt>
+						<dd>contati da A nel verso del moto</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<h3>L&#8217;ellisse e l&#8217;equante</h3>
+
+		<div class="row">
+			<p>
+				L&#8217;ellisse conserva del modello di Tolomeo più di quanto la sua forma
+				suggerisca. Sviluppata in $e$ (pagina 4.2, Esercizio 1), dà $q \approx
+				-2e\sin M + \tfrac54 e^2\sin 2M$ e $r \approx a(1 + e\cos M + e^2\sin^2
+				M)$, e l&#8217;equante della pagina 4.2 con la stessa $e$ ha gli stessi
+				termini del primo ordine. Visto dal fuoco vuoto Q, il punto
+				dell&#8217;ellisse ruota uniformemente al primo ordine, come K ruota attorno
+				all&#8217;equante. Nella Figura 3, per Marte, la direzione di P vista da Q
+				resta entro 8,2′ da $M$, e vista da ☉ entro 10,7°. Keplero, che in un
+				primo tempo aveva abbandonato la divisione in parti uguali
+				dell&#8217;eccentricità di Tolomeo, la ripristinò come i due fuochi
+				dell&#8217;ellisse (<em>HAMA</em> p. 172).
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			L&#8217;eccentrico della pagina 2.1 richiede $2e$ per le stesse direzioni,
+			quindi la sua distanza varia il doppio di quella dell&#8217;ellisse. La
+			velocità del Sole nella Figura 1 distingueva i due: sull&#8217;ellisse la
+			distanza cambia del fattore $(1 + e)/(1 - e)$ fra perielio e afelio, e la
+			velocità angolare del suo quadrato.
+		</p>
+
+		<h3>La terza legge</h3>
+
+		<div class="row">
+			<p>
+				La disposizione di Copernico dava a ogni orbita una grandezza relativa
+				a quella della Terra, misurata dalle elongazioni o dai cappi (pagina
+				4.3), ma nessuna regola legava quella grandezza ad altro. Keplero ne
+				trovò una che la lega al periodo $P$ (il simbolo della pagina 4.3): il
+				quadrato del periodo è proporzionale al cubo del semiasse maggiore. In
+				anni e unità astronomiche,
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<div class="box">
+			$$P^2 = a^3.$$
+		</div>
+
+		<p>
+			I periodi della legge sono siderei, misurati rispetto alle stelle. Nella
+			tabella, i periodi attorno al Sole della pagina 4.3 sono resi siderei con
+			la precessione e messi accanto alle sue distanze. Per Venere, Marte, Giove
+			e Saturno la distanza concorda entro lo 0,3% con quella data dalla legge,
+			quindi $P^2/a^3$ è 1 entro l&#8217;1%. La distanza di Mercurio è corta
+			dell&#8217;1,9%, l&#8217;errore che la pagina 4.3 trovò per il suo percorso
+			allungato.
+		</p>
+
+		<div class="table-scroll">
+		<table class="prose-table">
+			<thead>
+				<tr>
+					<th>pianeta</th>
+					<th>$P$ (anni)</th>
+					<th>$a$, pagina 4.3 (au)</th>
+					<th>$P^2/a^3$</th>
+					<th>$a$ da $P$ (au)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr><td>Mercurio</td><td>0,2408</td><td>0,3796</td><td>1,060</td><td>0,3871</td></tr>
+				<tr><td>Venere</td><td>0,6152</td><td>0,7226</td><td>1,003</td><td>0,7233</td></tr>
+				<tr><td>Marte</td><td>1,8808</td><td>1,5197</td><td>1,008</td><td>1,5237</td></tr>
+				<tr><td>Giove</td><td>11,8643</td><td>5,2009</td><td>1,001</td><td>5,2019</td></tr>
+				<tr><td>Saturno</td><td>29,4325</td><td>9,5623</td><td>0,991</td><td>9,5327</td></tr>
+			</tbody>
+		</table>
+		</div>
+
+		<h3>Marte visto dalla Terra</h3>
+
+		<p>
+			Nel modello di Keplero ogni pianeta e la Terra si muovono sulle proprie
+			ellissi attorno al Sole. Vista dalla Terra, il Sole è alla longitudine
+			eclittica $\lambda_\odot$ e alla distanza $R$ (non il raggio del
+			deferente), l&#8217;ellisse della Terra descritta dalla Terra, e Marte alla
+			sua longitudine eclittica eliocentrica $\lambda_\text{h}$ e alla distanza
+			$r$ dal Sole. Trascurando la piccola inclinazione del piano di Marte
+			sull&#8217;eclittica, la direzione del pianeta dalla Terra è quella di
+		</p>
+
+		$$\bigl(r\cos\lambda_\text{h} + R\cos\lambda_\odot,\ \ r\sin\lambda_\text{h} + R\sin\lambda_\odot\bigr).$$
+
+		<p>
+			È il modello del residuo della pagina 4.2, l&#8217;epiciclo fatto ruotare dal
+			Sole vero, con il cerchio dell&#8217;equante sostituito dall&#8217;ellisse di
+			Marte e l&#8217;epiciclo da quella della Terra.
+		</p>
+
+		<!-- =============================== 3. FIT ================================ -->
+		<h2 id="fit"><span class="step">3 · Adattamento</span>L&#8217;ellisse della Terra e quella di Marte</h2>
+
+		<p>
+			Ogni ellisse ha cinque parametri: il moto medio $n$, la longitudine
+			eclittica media $L_0$ a J2000.0, la longitudine eclittica dell&#8217;afelio
+			$\lambda_A$, l&#8217;eccentricità $e$ e il semiasse maggiore $a$. Viene prima
+			quella della Terra, poiché ogni avvistamento di Marte è fatto da essa.
+			Vista dalla Terra è l&#8217;ellisse del Sole, con l&#8217;apogeo opposto
+			all&#8217;afelio della Terra, e la adattiamo in questa forma, come la pagina
+			2.1 adattò l&#8217;eccentrico.
+		</p>
+
+		<h3>L&#8217;ellisse del Sole dalle stagioni</h3>
+
+		<p>
+			La pagina 2.1 adattò l&#8217;eccentrico alle durate della primavera e
+			dell&#8217;estate, il metodo di Ipparco, e le stesse due durate fissano
+			l&#8217;ellisse. Cambia solo la legge del moto.
+		</p>
+
+		<p>
+			Gli equinozi e i solstizi sono posizioni del Sole vero, alle longitudini
+			eclittiche 0°, 90° e 180°, e ciò che osserviamo sono gli istanti in cui
+			le raggiunge. Nel modello la posizione del Sole dipende dal tempo solo
+			attraverso $M$, che cresce uniformemente, $M = n(t - t_A)$. Quindi, per
+			trovare quando il Sole del modello raggiunge una data longitudine
+			eclittica, si risale da quella posizione a $M$, e i giorni fra due
+			posizioni sono la differenza dei loro valori di $M$, divisa per $n$. Nel
+			2026, per esempio, l&#8217;ellisse adattata dà 91,404° di $M$ per la
+			primavera, i 92,735 giorni osservati con $n$ = 0,98565° al giorno.
+			Risalire richiede tre passi: la longitudine eclittica dà l&#8217;anomalia
+			vera $v = \lambda - \lambda_A$, poi $v$ dà $E$, e l&#8217;equazione di Keplero
+			dà $M$.
+		</p>
+
+		<p>
+			Il primo passo usa il posto del corpo trovato nella sezione 2. Visto dal
+			fuoco è in $a(e + \cos E,\ \sqrt{1 - e^2}\sin E)$, alla distanza $a(1 +
+			e\cos E)$, quindi $\cos v = (e + \cos E)/(1 + e\cos E)$. Sostituendo nella
+			formula di bisezione $\tan^2(v/2) = (1 - \cos v)/(1 + \cos v)$, i
+			denominatori si semplificano e
+		</p>
+
+		$$\tan^2\frac{v}{2} = \frac{(1 - e)(1 - \cos E)}{(1 + e)(1 + \cos E)} = \frac{1 - e}{1 + e}\,\tan^2\frac{E}{2}, \qquad \tan\frac{E}{2} = \sqrt{\frac{1 + e}{1 - e}}\,\tan\frac{v}{2}.$$
+
+		<p>
+			Delle due radici prendiamo quella con il segno di $\tan(v/2)$, poiché $E$
+			e $v$ stanno sempre dalla stessa parte dell&#8217;asse maggiore. L&#8217;equazione
+			di Keplero dà poi $M = E + e\sin E$. Per un valore di prova di $e$ e
+			dell&#8217;apogeo, le tre longitudini eclittiche danno tre valori di $M$, e
+			quindi le durate delle due stagioni. Il metodo di Newton corregge $e$ e
+			l&#8217;apogeo finché queste coincidono con quelle osservate, in pochi passi.
+		</p>
+
+		<p>
+			Con le stagioni del 2026 e il moto medio della pagina 1.3, l&#8217;ellisse ha
+			$e$ = 0,016655, dove l&#8217;eccentrico della pagina 2.1 richiedeva il doppio,
+			e il suo apogeo alla longitudine eclittica 103,38°. Le stagioni di
+			qualunque altro anno del 2016–2025 cambiano $e$ di meno dell&#8217;1%. La
+			longitudine eclittica media segue dall&#8217;istante dell&#8217;equinozio di
+			primavera, l&#8217;apogeo si muove con il ritmo della pagina 2.3, e $a$ = 1
+			au per definizione.
+		</p>
+
+		<h3>Marte dalle sue opposizioni al Sole vero</h3>
+
+		<div class="row">
+			<p>
+				In un&#8217;opposizione al Sole vero la Terra sta fra il Sole e Marte,
+				quindi la longitudine eclittica geocentrica del pianeta è quella
+				eliocentrica, quali che siano le due distanze. Le otto opposizioni del
+				2010–2025 danno perciò otto direzioni eliocentriche di Marte in istanti
+				noti, come le opposizioni al Sole medio davano le direzioni di K nella
+				pagina 4.2.
+			</p>
+			<aside>
+				<div class="note" data-origin="kepler"></div>
+			</aside>
+		</div>
+
+		<p>
+			Manteniamo il moto medio della pagina 4.1, adattato a opposizioni a 79
+			anni di distanza sul cielo di riferimento precedente (come il moto medio
+			del Sole e il ritmo del suo apogeo vengono dalle pagine 1.3 e 2.3), e
+			adattiamo gli altri tre parametri con i minimi quadrati, con l&#8217;afelio
+			fisso fra le stelle come nella pagina 4.2. L&#8217;ellisse passa entro 0,75′
+			dalle otto opposizioni, con $e$ = 0,0934. L&#8217;equante della pagina 4.2,
+			riadattato con il Sole vero, aveva trovato 0,0935, come richiede il suo
+			accordo con l&#8217;ellisse al primo ordine.
+		</p>
+
+		<p>
+			Per la grandezza usiamo la terza legge. Il moto medio della pagina 4.1,
+			tolta la precessione, è un giro fra le stelle in 686,981 giorni, 1,88082
+			anni siderei, quindi $a$ = 1,5237 au, dove la pagina 4.3 trovò 1,5197 au
+			dai cappi. Nessuna osservazione di distanza entra in questo adattamento,
+			quindi ogni distanza che il modello dà è una previsione.
+		</p>
+
+		<!-- History block: Kepler's Mars -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Il Marte di Keplero</h3>
+
+			<div class="row">
+				<p>
+					Keplero raggiunse Tycho nel 1600 e fu messo a lavorare sulla teoria
+					di Marte. Fu il primo a riferire tutte le osservazioni al Sole vero
+					invece che al Sole medio (<em>HAMA</em> p. 171).
+				</p>
+				<aside>
+					<div class="note" data-origin="kepler"></div>
+					<div class="note detour" data-topic="tycho"></div>
+				</aside>
+			</div>
+
+			<p>
+				Dalle osservazioni di Marte ricavò anche il moto della Terra, e trovò
+				che anche la Terra si muoveva più in fretta vicino al Sole (Voelkel
+				cap. 3). Diede al suo cerchio un equante, come Tolomeo aveva fatto per i
+				pianeti (<em>HAMA</em> p. 155), e così dimezzò l&#8217;eccentricità
+				dell&#8217;eccentrico del Sole (Fitzpatrick § 1.4).
+			</p>
+
+			<p>
+				Per Marte adattò dapprima alle opposizioni un cerchio con un equante,
+				con i due punti collocati liberamente. Andava bene per le longitudini
+				eclittiche ma non per le distanze, e per un certo tempo usò un modello
+				per le longitudini e un altro per le distanze (<em>HAMA</em> pp. 98,
+				172). Con l&#8217;eccentricità dimezzata, come le distanze richiedevano, le
+				longitudini sbagliavano fino a circa 8′ (Fitzpatrick § 1.4).
+			</p>
+
+			<p>
+				Prendendo la velocità inversamente proporzionale alla distanza, così
+				che la somma delle distanze misuri il tempo, e prendendo quella somma
+				come un&#8217;area, giunse alla legge delle aree. Su un cerchio eccentrico
+				essa teneva Marte troppo a lungo sui fianchi dell&#8217;orbita
+				(l&#8217;Esercizio 3 calcola di quanto), quindi lì l&#8217;orbita doveva essere
+				stretta, «come se si tenesse una salsiccia panciuta e la si stringesse
+				nel mezzo», nelle parole di Voelkel. Una prima ellisse sbagliava di
+				quasi esattamente la quantità opposta, e quella intermedia aveva il
+				Sole in un fuoco (Voelkel cap. 3). L&#8217;<em>Astronomia Nova</em>, che
+				esponeva l&#8217;ellisse e la legge delle aree, uscì nel 1609.
+			</p>
+
+			<p>
+				La terza legge venne per ultima, il 15 maggio 1618, mentre Keplero
+				terminava gli <em>Harmonices Mundi</em>, da periodi noti da secoli e da
+				distanze ricavate dalle osservazioni di Tycho (Voelkel cap. 4), i
+				numeri dell&#8217;Esercizio 2.
+			</p>
+		</div>
+
+		<!-- =============================== 4. TEST =============================== -->
+		<h2 id="test"><span class="step">4 · Verifica</span>Le ellissi contro il Marte e il Sole reali</h2>
+
+		<p>
+			Per vedere quanta parte dell&#8217;errore dell&#8217;equante le ellissi eliminano,
+			la Figura 4 dà la curva dell&#8217;errore delle due ellissi adattate al
+			2010–2025, con l&#8217;equante della pagina 4.2 come fantasma, entrambi contro
+			il Marte di VSOP87.
+		</p>
+
+		<!-- Figure 4: Kepler's Mars against the reference, with page 4.2's equant -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-mars"></div>
+			</div>
+			<figcaption>
+				Punta sulle opposizioni, i punti, dove l&#8217;equante della pagina 4.2
+				sbagliava di più, e leggi lì l&#8217;errore delle ellissi. Poi passa a
+				duecento anni e guarda la banda allargarsi lentamente da entrambi i lati
+				degli anni dell&#8217;adattamento.
+			</figcaption>
+		</figure>
+
+		<p>
+			Nel 2010–2025 le ellissi restano entro 5,7′ dal Marte reale, dove
+			l&#8217;equante della pagina 4.2 sbaglia fino a 0,81° su questo riferimento.
+			Nei due secoli 1926–2126 l&#8217;errore cresce fino a 18′, l&#8217;argomento del
+			residuo.
+		</p>
+
+		<p>
+			Le distanze sono la verifica più forte, poiché nessuna è entrata
+			nell&#8217;adattamento. La distanza di Marte dalla Terra resta entro 0,0019
+			au da quella reale nel 2010–2025, dieci volte più vicino dell&#8217;equante
+			della pagina 4.2 con la scala della pagina 4.3 (0,0205 au), e i punti
+			triangolati della Figura 2 stanno entro 0,0010 au dall&#8217;ellisse.
+		</p>
+
+		<p>
+			La stessa verifica per il Sole, nella Figura 5, mette l&#8217;ellisse a
+			confronto con l&#8217;eccentrico della pagina 2.1, con il suo apogeo che si
+			muove con il ritmo della pagina 2.3. Nel 2026 l&#8217;ellisse resta entro un
+			quarto di primo d&#8217;arco dal Sole reale, dove l&#8217;eccentrico sbaglia di
+			1,74′. Nei cinque secoli dopo il 2026 l&#8217;errore dell&#8217;eccentrico cresce
+			più in fretta di quello dell&#8217;ellisse. Nel Cinquecento e nel Seicento,
+			però, l&#8217;errore dell&#8217;ellisse è leggermente maggiore, al più 2,7′ contro
+			2,4′.
+		</p>
+
+		<!-- Figure 5: the Sun's ellipse against the reference, with page 2.1's eccentric -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-sun"></div>
+			</div>
+			<figcaption>
+				Confronta le due curve sul 2026: l&#8217;ellisse elimina la maggior parte
+				dell&#8217;errore dell&#8217;eccentrico, e ciò che resta oscilla una volta al
+				mese. Poi passa a mille anni: dopo il 2026 l&#8217;errore dell&#8217;eccentrico
+				cresce più in fretta, mentre nel Cinquecento e nel Seicento è maggiore
+				quello dell&#8217;ellisse.
+			</figcaption>
+		</figure>
+
+		<p>
+			La distanza del Sole verifica ciò che le pagine 2.1 e 3.2 avevano lasciato
+			aperto. Nel 2026 la distanza massima del Sole reale era 1,0339 volte la
+			minima. L&#8217;ellisse dà lo stesso rapporto, entro 0,0001 au a ciascun
+			estremo, e l&#8217;eccentrico della pagina 2.1 1,0693.
+		</p>
+
+		<p>
+			Per confrontare tutto il percorso in una volta, la Figura 6 mette su
+			un&#8217;unica scala l&#8217;errore massimo di ogni modello del Sole e di Marte,
+			ciascuno sugli anni usati dalla sua verifica.
+		</p>
+
+		<!-- Figure 6: every model of the Sun and of Mars (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<div class="panels" id="summary-panels">
+					<div>
+						<p class="panel-title">(a) il Sole, sul 2026</p>
+						<canvas id="summary-sun"></canvas>
+					</div>
+					<div>
+						<p class="panel-title">(b) Marte, sul 2010–2025</p>
+						<canvas id="summary-mars"></canvas>
+					</div>
+				</div>
+			</div>
+			<figcaption>
+				Leggi l&#8217;errore massimo di ogni modello sulla scala, e segui ogni corpo
+				lungo le sue righe, pagina per pagina. Nota l&#8217;unico passo che ha reso
+				l&#8217;errore più grande: l&#8217;epiciclo minore di Copernico al posto
+				dell&#8217;equante.
+			</figcaption>
+		</figure>
+
+		<!-- History block: the Rudolphine Tables and the transit of 1631 -->
+		<div class="history">
+			<h3><span class="history-label">Storia</span>Le Tavole rudolfine</h3>
+
+			<div class="row">
+				<p>
+					I modelli di Keplero raggiunsero gli altri astronomi attraverso le
+					<em>Tavole rudolfine</em>, stampate nel 1627, con le quali chiunque
+					poteva calcolare il posto di un pianeta in qualunque data. Erano
+					circa cinquanta volte più precise di quelle di Tolomeo e di Copernico
+					(Voelkel cap. 6).
+				</p>
+				<aside>
+					<div class="note" data-origin="kepler"></div>
+				</aside>
+			</div>
+
+			<p>
+				Con esse Keplero previde che Mercurio sarebbe passato davanti al disco
+				del Sole il 7 novembre 1631. Morì prima di quel giorno, e il transito
+				avvenne entro sei ore dall&#8217;istante da lui calcolato. «L&#8217;ho trovato,
+				l&#8217;ho visto dove nessuno l&#8217;aveva mai visto prima!», scrisse Gassendi in
+				una lettera aperta dalla Francia (Voelkel cap. 7).
+			</p>
+
+			<figure class="photo" id="frontispiece">
+				<img src="images/rudolphine-frontispiece.jpg" width="700" height="1167" loading="lazy"
+					alt="Un&#8217;incisione di un tempio a cupola su dodici colonne, semplici quelle dietro e ornate quelle davanti, con astronomi in piedi e seduti fra di esse, i nomi Copernico e Tycho Brahe su due piedistalli, figure femminili allegoriche sul tetto, un&#8217;aquila in alto, e nei pannelli della base la mappa di un&#8217;isola e un uomo a un tavolo.">
+				<figcaption>
+					<span class="fig-label">Foto.</span>
+					Il frontespizio delle <em>Tavole rudolfine</em> (1627) raffigura
+					l&#8217;astronomia come un tempio le cui colonne migliorano di epoca in
+					epoca. Seguile dalle colonne grezze sul fondo, dove sta un osservatore
+					babilonese, a quella di mattoni di Ipparco e Tolomeo, fino alle
+					colonne di Copernico e di Tycho sul davanti, con i nomi sui
+					piedistalli. Poi guarda la base, a sinistra, dove Keplero lavora a lume
+					di candela a un modello del tetto del tempio (Voelkel cap. 6).
+					<span class="credit">Giovanni Keplero, <em>Tabulae Rudolphinae</em>,
+						Ulma, 1627, la copia della John Carter Brown Library, tramite
+						l&#8217;<a href="https://archive.org/details/tabulrudolphinqu00kepl">Internet Archive</a>,
+						pubblico dominio.</span>
+				</figcaption>
+			</figure>
+		</div>
+
+		<!-- ============================= 5. RESIDUAL ============================= -->
+		<h2 id="residual"><span class="step">5 · Residuo</span>Ciò che le ellissi lasciano</h2>
+
+		<div class="row">
+			<p>
+				Ciò che resta dell&#8217;errore di Marte, pochi primi d&#8217;arco, viene dalle
+				attrazioni reciproche dei pianeti, che la gravitazione di Newton spiega
+				e il modello di Keplero trascura. Una parte è periodica. Il resto
+				cresce con il tempo, perché ogni ellisse ruota e cambia lentamente.
+				Adattato alle opposizioni del 1931–1946 oltre che a quelle del
+				2010–2025, l&#8217;afelio di Marte ruota di 0,43° al secolo fra le stelle.
+				Con questa rotazione, e con il moto medio adattato di nuovo alle stesse
+				opposizioni sul riferimento di questa pagina, l&#8217;errore nel 1926–2126
+				scende da 18′ a 8,4′.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="perturbations"></div>
+				<div class="note detour" data-topic="newton"></div>
+			</aside>
+		</div>
+
+		<div class="row">
+			<p>
+				Il modello trascura anche l&#8217;inclinazione del piano di Marte, 1,85°
+				sull&#8217;eclittica, che cambia la longitudine eclittica eliocentrica al
+				più di 0,9′.
+			</p>
+			<aside>
+				<div class="note detour" data-topic="latitudes"></div>
+				<div class="note today">
+					Oggi le posizioni si calcolano integrando le equazioni di Newton (le
+					effemeridi del JPL) o da serie come VSOP87, che partono dalle ellissi
+					di Keplero e aggiungono le attrazioni dei pianeti come termini
+					ulteriori.
+				</div>
+			</aside>
+		</div>
+
+		<p>
+			Circa metà dell&#8217;errore residuo del Sole viene dalla Luna. Ogni mese la
+			Terra gira attorno al centro di massa della Terra e della Luna, il che
+			sposta il Sole visto dalla Terra fino a 6,9″ da una parte e dall&#8217;altra,
+			l&#8217;oscillazione della Figura 5. In media su un mese, l&#8217;errore resta
+			sotto 0,13′. Una parte di esso è la nutazione, che il riferimento include
+			e il modello trascura, e che cresce nelle verifiche su più secoli.
+		</p>
+
+		<h3>La Luna dopo Keplero</h3>
+
+		<p>
+			Un&#8217;ellisse è anche il primo termine del moto della Luna, i 6,29° della
+			pagina 3.1. Il Sole, però, attrae la Luna molto più di quanto i pianeti si
+			attraggano fra loro, e l&#8217;ellisse lascia termini grandi. I due maggiori
+			sono l&#8217;evezione della pagina 3.2, 1,27°, e la variazione, 0,66°.
+			Seguono termini minori, e il perigeo e i nodi ruotano, in 8,85 e 18,61
+			anni. Tutti vengono dall&#8217;attrazione del Sole, che è l&#8217;argomento di
+			Newton, non di Keplero.
+		</p>
+
+		<!-- ============================== EXERCISES ============================== -->
+		<h2 id="exercises">Esercizi</h2>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Risolvi l&#8217;equazione di Keplero per Marte, $e$ = 0,0934, in $M =
+				30^\circ$, prima ripetendo $E \leftarrow M - e\sin E$, poi con il metodo
+				di Newton, entrambi partendo da $E = M$, e conta i passi finché $E$
+				cambia di meno di $10^{-8}$ gradi. Trova l&#8217;anomalia vera $M + q$ e $r$.
+				Poi fai lo stesso per la vista $e$ = 0,6 della Figura 3 in $M =
+				90^\circ$, verificando $E$ nella lettura, e per la cometa di Halley, $e$
+				= 0,967, in $M = 30^\circ$. Perché il primo metodo rallenta?
+			</p>
+			<details class="hint">
+				<p>
+					Tieni $e\sin E$ in radianti, moltiplicato per $180^\circ/\pi$, quando
+					$E$ è in gradi. Per il primo metodo, confronta l&#8217;errore prima e dopo
+					un passo: $E_{k+1} - E = -e(\sin E_k - \sin E)$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Per Marte, $E$ = 27,526769°: il primo metodo richiede 9 passi
+					(27,3243°, 27,5436°, 27,5254°, 27,5269°, …), quello di Newton 3
+					(27,52452063°, 27,52676909°, 27,52676909°). Il punto è in $(e + \cos
+					E,\ \sqrt{1 - e^2}\sin E)$ = (0,9802; 0,4601) in unità di $a$, quindi
+					$M + q$ = 25,1472°, $q$ = −4,8528°, e $r = 1 + e\cos E$ = 1,08283 $a$.
+				</p>
+				<p>
+					Per $e$ = 0,6 in $M = 90^\circ$, $E$ = 60,175677°: 19 passi contro i 5
+					di Newton. Per la cometa di Halley, $E$ = 15,341451°: il primo metodo
+					salta fra 2,30°, 27,78°, 4,18°, 25,96°, … e richiede 312 passi, il
+					metodo di Newton 4.
+				</p>
+				<p>
+					Vicino alla radice, $E_{k+1} - E \approx -e\cos E\,(E_k - E)$: ogni
+					passo moltiplica l&#8217;errore per $e|\cos E|$, 0,083 per Marte, 0,298
+					per $e$ = 0,6 e 0,933 per la cometa. Il metodo di Newton eleva al
+					quadrato l&#8217;errore a ogni passo, una volta che è piccolo: per Marte gli
+					errori sono $2{,}2 \times 10^{-3}$ gradi, poi $1{,}8 \times 10^{-9}$.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="compute">
+			<p>
+				Keplero disponeva di questi periodi (giorni) e distanze (millesimi di
+				quella della Terra): Mercurio 88 e 388, Venere 225 e 724, la Terra 365
+				e 1000, Marte 687 e 1524, Giove 4333 e 5200, Saturno 10·759 e 9510
+				(Voelkel cap. 4). Calcola $P/a$ e $P^2/a^3$, in anni e unità
+				astronomiche, per ciascuno. Poi trova la distanza di Marte dal periodo
+				sidereo della pagina 4.1, 686,981 giorni, e dall&#8217;anno sidereo di
+				365,2564 giorni, e confrontala con l&#8217;adattamento.
+			</p>
+			<details class="hint">
+				<p>
+					Dividi prima i periodi per 365 e le distanze per 1000.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					$P/a$ va da 0,621 (Mercurio) a 3,100 (Saturno): il periodo cresce più
+					in fretta della distanza. $P^2/a^3$ è 0,995, 1,001, 1,000, 1,001, 1,002
+					e 1,010 da Mercurio a Saturno, lo stesso entro l&#8217;1%.
+				</p>
+				<p>
+					Marte: $P$ = 686,981/365,2564 = 1,88082 anni, e $a = P^{2/3}$ =
+					1,52369 au, il valore dell&#8217;adattamento, contro l&#8217;1,524 di Keplero e
+					l&#8217;1,5197 della pagina 4.3.
+				</p>
+			</details>
+		</div>
+
+		<div class="exercise" data-kind="break">
+			<p>
+				Il primo tentativo di Keplero metteva Marte su un cerchio eccentrico di
+				raggio $a$, con il Sole alla distanza $ea$ dal centro, in moto secondo
+				la legge delle aree. Mostra che porta all&#8217;equazione di Keplero, con
+				l&#8217;angolo $E'$ al centro al posto di $E$. Sviluppa la sua equazione del
+				centro al secondo ordine, confrontala con quella dell&#8217;ellisse e
+				dell&#8217;equante, e trova la massima differenza dall&#8217;ellisse per Marte,
+				$e$ = 0,0934.
+			</p>
+			<details class="hint">
+				<p>
+					L&#8217;area descritta è quella della sezione 2 con $b = a$, e la
+					direzione dal Sole è $\operatorname{atan2}(\sin E',\ e + \cos E')$.
+					Sviluppala con $E' \approx M - e\sin M + \tfrac12 e^2\sin 2M$.
+				</p>
+			</details>
+			<details class="answer">
+				<p>
+					Con $b = a$ l&#8217;area descritta dall&#8217;afelio è $\tfrac12 a^2(E' +
+					e\sin E')$, quindi la legge delle aree dà $M = E' + e\sin E'$. La
+					direzione dal Sole è $E' - e\sin E' + \tfrac12 e^2\sin 2E'$ al secondo
+					ordine, e con $\sin E' \approx \sin M - \tfrac12 e\sin 2M$ diventa $M -
+					2e\sin M + \tfrac32 e^2\sin 2M$. L&#8217;ellisse, schiacciata di $b/a$, ha
+					$\tfrac54 e^2$, l&#8217;equante $e^2$: calcolati con $e$ = 0,001 i tre
+					coefficienti sono 1,5000, 1,2500 e 1,0000.
+				</p>
+				<p>
+					Quindi il cerchio con la legge delle aree sbaglia di $+\tfrac14 e^2\sin
+					2M$ e l&#8217;equante di $-\tfrac14 e^2\sin 2M$: falliscono in direzioni
+					opposte, e l&#8217;ellisse sta a metà fra essi. Per Marte il cerchio sbaglia
+					fino a 7,53′ in longitudine eclittica eliocentrica e l&#8217;equante fino a
+					8,96′, dove il secondo ordine dà $e^2/4$ = 7,50′.
+				</p>
+			</details>
+		</div>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Fonti</h2>
+
+		<ul class="sources">
+			<li>J. R. Voelkel, <em>Johannes Kepler and the New Astronomy</em> (1999),
+				cap. 3 (Marte, la posizione reale del Sole, il moto non uniforme della
+				Terra, la legge delle aree, la salsiccia, l&#8217;ellisse), cap. 4 (la terza
+				legge e i periodi e le distanze di Keplero), cap. 6 (le <em>Tavole
+				rudolfine</em> e il loro frontespizio), cap. 7 (il transito di Mercurio
+				del 1631).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Parte prima: p. 98 (i due modelli di Marte di Keplero, per le
+				longitudini e per le distanze), p. 155 (l&#8217;equante ripristinato, anche
+				per la Terra), pp. 171–172 (il Sole vero; i fuochi).</li>
+			<li>R. Fitzpatrick, <em>A Modern Almagest</em>, § 1.4 (lo scarto di 8′ di
+				Keplero), § 4.2 (il modello di Keplero, la sua equazione, gli sviluppi
+				in $e$).</li>
+			<li>P. Bretagnon e G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988), 309–315: il riferimento di questa pagina,
+				dai file dell&#8217;IMCCE, verificato con JPL Horizons (DE441).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): il cielo di riferimento delle pagine
+				precedenti.</li>
+			<li>J. Meeus, <em>Astronomical Algorithms</em> (2ª ed., 1998), cap. 30
+				(l&#8217;equazione di Keplero), Tabella 47.A (i termini della Luna).</li>
+			<li>Ogni numero di questa pagina: <code>tools/numbers/4.5-kepler.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Pagina precedente e successiva"></nav>
+	</article>
+</div>
+</body>
+</html>

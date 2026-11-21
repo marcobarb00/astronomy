@@ -273,7 +273,10 @@ const plateFigure = {
 				['alf CMi', 'Procyon', 9, 4],
 				['bet Leo', 'Denebola', 9, 4]
 			],
-			label: tr("Chart of the sky from Gemini to Virgo, with the ecliptic and, highlighted, the Moon's path of 11 to 15 August 2026.", "Carta del cielo dai Gemelli alla Vergine, con l'eclittica e, evidenziato, il percorso della Luna dall'11 al 15 agosto 2026.")
+			label: tr(
+				"Chart of the sky from Gemini to Virgo, with the ecliptic and, highlighted, the Moon's path of 11 to 15 August 2026.",
+				"Carta del cielo dai Gemelli alla Vergine, con l'eclittica e, evidenziato, il percorso della Luna dall'11 al 15 agosto 2026."
+			)
 		});
 		const eps = Ephem.meanObliquity(Plate.EPOCH);
 		const equatorial = (lon, lat) => Ephem.eclipticToEquatorial(lon, lat, eps);
@@ -307,7 +310,14 @@ const plateFigure = {
 
 		const nameAt = path[Math.round(path.length * 0.62)];
 
-		Plate.highlightCurve(chart, path, tr("the Moon's path", 'il percorso della Luna'), [nameAt.ra, nameAt.dec, 10, 26], ticks, -1);
+		Plate.highlightCurve(
+			chart,
+			path,
+			tr("the Moon's path", 'il percorso della Luna'),
+			[nameAt.ra, nameAt.dec, 10, 26],
+			ticks,
+			-1
+		);
 
 		// the Sun at the new Moon, and the node
 		const newMoon = Eclipses.reference(Eclipses.indexNear(Time.julianDay(2026, 8, 12), true));
@@ -452,7 +462,10 @@ const orbitFigure = {
 	showReadout() {
 		const { jd, moon, sunFromNode } = this.state;
 		const dateAndNode = `\\text{${dateYearText(jd)}:}\\quad \\Omega = ${fixed(moon.node, 1)}^\\circ`;
-		const sunAndNode = tr(`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`, `\\text{il Sole } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'prima del' : 'dopo il'} nodo più vicino}`);
+		const sunAndNode = tr(
+			`\\text{the Sun } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'before' : 'past'} the nearest node}`,
+			`\\text{il Sole } ${fixed(Math.abs(sunFromNode), 1)}^\\circ \\text{ ${sunFromNode < 0 ? 'prima del' : 'dopo il'} nodo più vicino}`
+		);
 
 		if (this.view === TURN_VIEW) {
 			// only the slow motion: the node, and how far it has turned
@@ -460,7 +473,10 @@ const orbitFigure = {
 
 			showLines('orbit-readout', [
 				dateAndNode,
-				tr(`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`, `\\text{ruotato di } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ verso ovest dal 1º gennaio ${YEAR}}`)
+				tr(
+					`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`,
+					`\\text{ruotato di } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ verso ovest dal 1º gennaio ${YEAR}}`
+				)
 			]);
 			return;
 		}
@@ -1466,20 +1482,29 @@ const latitudeErrorFigure = {
 		const syzygies = syzygyIndices(middle - 190, middle + 190).map(k => Eclipses.reference(k).syzygy);
 
 		curve.addModel({
-			label: tr('fitted to the new and full Moons of 2025–2026', 'adattata alle Lune nuove e piene del 2025–2026'),
+			label: tr(
+				'fitted to the new and full Moons of 2025–2026',
+				'adattata alle Lune nuove e piene del 2025–2026'
+			),
 			short: tr('fitted', 'adattata'),
 			color: COL.planet,
 			fn: fit
 		});
 		curve.addMarks({
-			label: tr('the fitted latitude at the new and full Moons', 'la latitudine adattata alle Lune nuove e piene'),
+			label: tr(
+				'the fitted latitude at the new and full Moons',
+				'la latitudine adattata alle Lune nuove e piene'
+			),
 			color: COL.planet,
 			fn: fit,
 			dates: syzygies,
 			maxYears: 1.01
 		});
 		curve.addMarks({
-			label: tr('the mean inclination, 5.145°, at the same new and full Moons (dots: spans of a year or less)', "l'inclinazione media, 5,145°, alle stesse Lune nuove e piene (punti: intervalli di un anno o meno)"),
+			label: tr(
+				'the mean inclination, 5.145°, at the same new and full Moons (dots: spans of a year or less)',
+				"l'inclinazione media, 5,145°, alle stesse Lune nuove e piene (punti: intervalli di un anno o meno)"
+			),
 			color: COL.epicycle,
 			fn: meanInclination,
 			dates: syzygies,

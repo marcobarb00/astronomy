@@ -18,31 +18,46 @@ const SITE_MAP = (function () {
 			id: 0,
 			name: tr('Act 0', 'Atto 0'),
 			title: tr('Intro', 'Introduzione'),
-			blurb: tr("Ptolemy's Mars against tonight's sky: how can circles do this well, and why are they still wrong?", 'Il Marte di Tolomeo contro il cielo di stanotte: come possono dei cerchi riuscire così bene, e perché sbagliano comunque?')
+			blurb: tr(
+				"Ptolemy's Mars against tonight's sky: how can circles do this well, and why are they still wrong?",
+				'Il Marte di Tolomeo contro il cielo di stanotte: come possono dei cerchi riuscire così bene, e perché sbagliano comunque?'
+			)
 		},
 		{
 			id: 1,
 			name: tr('Act I', 'Atto I'),
 			title: tr('The stage', 'La scena'),
-			blurb: tr('The language needed to state any prediction: the sphere, its frames and its clocks.', 'Il linguaggio che serve per formulare qualunque previsione: la sfera, i suoi sistemi di riferimento e i suoi orologi.')
+			blurb: tr(
+				'The language needed to state any prediction: the sphere, its frames and its clocks.',
+				'Il linguaggio che serve per formulare qualunque previsione: la sfera, i suoi sistemi di riferimento e i suoi orologi.'
+			)
 		},
 		{
 			id: 2,
 			name: tr('Act II', 'Atto II'),
 			title: tr('The Sun', 'Il Sole'),
-			blurb: tr('The first anomaly and the simplest complete model.', 'La prima anomalia e il modello completo più semplice.')
+			blurb: tr(
+				'The first anomaly and the simplest complete model.',
+				'La prima anomalia e il modello completo più semplice.'
+			)
 		},
 		{
 			id: 3,
 			name: tr('Act III', 'Atto III'),
 			title: tr('The Moon', 'La Luna'),
-			blurb: tr('Four kinds of month, two anomalies, and the eclipses that test them.', 'Quattro tipi di mese, due anomalie, e le eclissi che le mettono alla prova.')
+			blurb: tr(
+				'Four kinds of month, two anomalies, and the eclipses that test them.',
+				'Quattro tipi di mese, due anomalie, e le eclissi che le mettono alla prova.'
+			)
 		},
 		{
 			id: 4,
 			name: tr('Act IV', 'Atto IV'),
 			title: tr('The planets', 'I pianeti'),
-			blurb: tr('Loops, the equant, a new center, what the observations can decide, and the ellipse that removes the last error.', "I cappi, l'equante, un nuovo centro, ciò che le osservazioni possono decidere, e l'ellisse che elimina l'ultimo errore.")
+			blurb: tr(
+				'Loops, the equant, a new center, what the observations can decide, and the ellipse that removes the last error.',
+				"I cappi, l'equante, un nuovo centro, ciò che le osservazioni possono decidere, e l'ellisse che elimina l'ultimo errore."
+			)
 		},
 		{
 			id: 5,
@@ -107,7 +122,10 @@ const SITE_MAP = (function () {
 			act: 2,
 			ready: true,
 			title: tr('The equation of time', "L'equazione del tempo"),
-			question: tr('Why does the sundial disagree with the clock?', "Perché la meridiana non va d'accordo con l'orologio?"),
+			question: tr(
+				'Why does the sundial disagree with the clock?',
+				"Perché la meridiana non va d'accordo con l'orologio?"
+			),
 			path: 'act2-sun/02-equation-of-time/index.html',
 			italian: true
 		},
@@ -116,7 +134,10 @@ const SITE_MAP = (function () {
 			act: 2,
 			ready: true,
 			title: tr('Precession', 'La precessione'),
-			question: tr("Why do the stars' ecliptic longitudes grow?", 'Perché le longitudini eclittiche delle stelle crescono?'),
+			question: tr(
+				"Why do the stars' ecliptic longitudes grow?",
+				'Perché le longitudini eclittiche delle stelle crescono?'
+			),
 			path: 'act2-sun/03-precession/index.html',
 			italian: true
 		},
@@ -125,7 +146,10 @@ const SITE_MAP = (function () {
 			act: 3,
 			ready: true,
 			title: tr('The first anomaly', 'La prima anomalia'),
-			question: tr("Why does the Moon's speed vary, and with what period?", 'Perché la velocità della Luna varia, e con quale periodo?'),
+			question: tr(
+				"Why does the Moon's speed vary, and with what period?",
+				'Perché la velocità della Luna varia, e con quale periodo?'
+			),
 			path: 'act3-moon/01-first-anomaly/index.html',
 			italian: true
 		},
@@ -143,7 +167,10 @@ const SITE_MAP = (function () {
 			act: 3,
 			ready: true,
 			title: tr('Eclipses', 'Le eclissi'),
-			question: tr('When does a new Moon become a solar eclipse?', "Quando una Luna nuova diventa un'eclissi di Sole?"),
+			question: tr(
+				'When does a new Moon become a solar eclipse?',
+				"Quando una Luna nuova diventa un'eclissi di Sole?"
+			),
 			path: 'act3-moon/03-eclipses/index.html',
 			italian: true
 		},
@@ -152,7 +179,10 @@ const SITE_MAP = (function () {
 			act: 4,
 			ready: true,
 			title: tr('Going backwards', 'Il moto retrogrado'),
-			question: tr('Why do planets loop, and why always at opposition?', "Perché i pianeti descrivono un cappio, e perché sempre all'opposizione?"),
+			question: tr(
+				'Why do planets loop, and why always at opposition?',
+				"Perché i pianeti descrivono un cappio, e perché sempre all'opposizione?"
+			),
 			path: 'act4-planets/01-going-backwards/index.html',
 			italian: true
 		},
@@ -179,7 +209,10 @@ const SITE_MAP = (function () {
 			act: 4,
 			ready: true,
 			title: tr('Phases and parallax', 'Fasi e parallasse'),
-			question: tr('Can the observations decide which body is at rest?', 'Le osservazioni possono decidere quale corpo è in quiete?'),
+			question: tr(
+				'Can the observations decide which body is at rest?',
+				'Le osservazioni possono decidere quale corpo è in quiete?'
+			),
 			path: 'act4-planets/04-phases-parallax/index.html',
 			italian: true
 		},
@@ -242,9 +275,30 @@ const SITE_MAP = (function () {
 			pages: ['1.2', '1.3', '2.2', '3.2', '3.3', '4.1', '4.2'],
 			above: false
 		},
-		{ name: tr('Copernicus', 'Copernico'), year: 1543, date: '1543', work: 'De revolutionibus', pages: ['4.3'], above: true },
-		{ name: 'Tycho', year: 1588, date: '1588', work: tr('his system', 'il suo sistema'), pages: ['4.4'], above: false },
-		{ name: tr('Kepler', 'Keplero'), year: 1609, date: '1609', work: tr('the ellipse', "l'ellisse"), pages: ['4.5'], above: true }
+		{
+			name: tr('Copernicus', 'Copernico'),
+			year: 1543,
+			date: '1543',
+			work: 'De revolutionibus',
+			pages: ['4.3'],
+			above: true
+		},
+		{
+			name: 'Tycho',
+			year: 1588,
+			date: '1588',
+			work: tr('his system', 'il suo sistema'),
+			pages: ['4.4'],
+			above: false
+		},
+		{
+			name: tr('Kepler', 'Keplero'),
+			year: 1609,
+			date: '1609',
+			work: tr('the ellipse', "l'ellisse"),
+			pages: ['4.5'],
+			above: true
+		}
 	];
 
 	/* The toolbox (STRUCTURE.md §4, Epilogue): every model of the course
@@ -255,7 +309,10 @@ const SITE_MAP = (function () {
 		kicker: tr('Toolbox', 'Cassetta degli attrezzi'),
 		ready: true,
 		title: tr('The toolbox', 'La cassetta degli attrezzi'),
-		question: tr('Every model of the course, ready to use on any date', "Tutti i modelli del corso, pronti all'uso in qualunque data"),
+		question: tr(
+			'Every model of the course, ready to use on any date',
+			"Tutti i modelli del corso, pronti all'uso in qualunque data"
+		),
 		path: 'toolbox/index.html',
 		italian: true
 	};
@@ -265,57 +322,82 @@ const SITE_MAP = (function () {
 	const TOPICS = {
 		nutation: {
 			title: tr('nutation', 'nutazione'),
-			sentence: tr('the small wobble of the pole on top of precession', 'la piccola oscillazione del polo che si aggiunge alla precessione'),
+			sentence: tr(
+				'the small wobble of the pole on top of precession',
+				'la piccola oscillazione del polo che si aggiunge alla precessione'
+			),
 			path: null,
 			ready: false
 		},
 		aberration: {
 			title: tr('aberration', 'aberrazione'),
-			sentence:
-				tr("the Earth's yearly motion relative to the solar system's center of mass tilts the incoming starlight by about 20″", 'il moto annuo della Terra rispetto al centro di massa del sistema solare inclina la luce delle stelle in arrivo di circa 20″'),
+			sentence: tr(
+				"the Earth's yearly motion relative to the solar system's center of mass tilts the incoming starlight by about 20″",
+				'il moto annuo della Terra rispetto al centro di massa del sistema solare inclina la luce delle stelle in arrivo di circa 20″'
+			),
 			path: null,
 			ready: false
 		},
 		parallax: {
 			title: tr('stellar parallax', 'parallasse stellare'),
-			sentence: tr('the annual shift that finally measured the distance to the stars', 'lo spostamento annuo che permise finalmente di misurare la distanza delle stelle'),
+			sentence: tr(
+				'the annual shift that finally measured the distance to the stars',
+				'lo spostamento annuo che permise finalmente di misurare la distanza delle stelle'
+			),
 			path: null,
 			ready: false
 		},
 		latitudes: {
 			title: tr('planetary ecliptic latitudes', 'latitudini eclittiche dei pianeti'),
-			sentence: tr('how far the planets wander north and south of the ecliptic', "quanto i pianeti si allontanano a nord e a sud dell'eclittica"),
+			sentence: tr(
+				'how far the planets wander north and south of the ecliptic',
+				"quanto i pianeti si allontanano a nord e a sud dell'eclittica"
+			),
 			path: null,
 			ready: false
 		},
 		tycho: {
 			title: tr('Tycho Brahe', 'Tycho Brahe'),
-			sentence: tr("the observations, ten times better than Ptolemy's, that Kepler had to fit", 'le osservazioni, dieci volte più precise di quelle di Tolomeo, che Keplero dovette riprodurre'),
+			sentence: tr(
+				"the observations, ten times better than Ptolemy's, that Kepler had to fit",
+				'le osservazioni, dieci volte più precise di quelle di Tolomeo, che Keplero dovette riprodurre'
+			),
 			path: null,
 			ready: false
 		},
 		islamic: {
 			title: tr('the Islamic critiques of the equant', "le critiche islamiche all'equante"),
-			sentence: tr("al-Tusi's couple and Ibn al-Shatir's models, whose devices reappear in Copernicus", 'la coppia di al-Tusi e i modelli di Ibn al-Shatir, i cui dispositivi ricompaiono in Copernico'),
+			sentence: tr(
+				"al-Tusi's couple and Ibn al-Shatir's models, whose devices reappear in Copernicus",
+				'la coppia di al-Tusi e i modelli di Ibn al-Shatir, i cui dispositivi ricompaiono in Copernico'
+			),
 			path: null,
 			ready: false
 		},
 		newton: {
 			title: tr('Newton and gravitation', 'Newton e la gravitazione'),
-			sentence: tr("why Kepler's laws hold nearly, and where they fail", 'perché le leggi di Keplero valgono quasi esattamente, e dove non valgono'),
+			sentence: tr(
+				"why Kepler's laws hold nearly, and where they fail",
+				'perché le leggi di Keplero valgono quasi esattamente, e dove non valgono'
+			),
 			path: null,
 			ready: false
 		},
 		perturbations: {
 			title: tr('perturbations', 'perturbazioni'),
-			sentence: tr('why the ellipses themselves slowly turn and change', 'perché le ellissi stesse ruotano e cambiano lentamente'),
+			sentence: tr(
+				'why the ellipses themselves slowly turn and change',
+				'perché le ellissi stesse ruotano e cambiano lentamente'
+			),
 			path: null,
 			ready: false
 		},
 		moon: {
 			title: tr('the Moon after Kepler', 'la Luna dopo Keplero'),
-			sentence:
-				tr("the evection, the variation and the annual equation as effects of the Sun's pull, and the series of terms that compute the Moon today", "l'evezione, la variazione e l'equazione annua come effetti dell'attrazione del Sole, e le serie di termini con cui oggi si calcola la Luna"),
+			sentence: tr(
+				"the evection, the variation and the annual equation as effects of the Sun's pull, and the series of terms that compute the Moon today",
+				"l'evezione, la variazione e l'equazione annua come effetti dell'attrazione del Sole, e le serie di termini con cui oggi si calcola la Luna"
+			),
 			path: null,
 			ready: false
 		},
@@ -327,13 +409,19 @@ const SITE_MAP = (function () {
 		},
 		instruments: {
 			title: tr('instruments', 'strumenti'),
-			sentence: tr('armillary spheres, quadrants and how the old numbers were measured', 'sfere armillari, quadranti, e come furono misurati i numeri antichi'),
+			sentence: tr(
+				'armillary spheres, quadrants and how the old numbers were measured',
+				'sfere armillari, quadranti, e come furono misurati i numeri antichi'
+			),
 			path: null,
 			ready: false
 		},
 		deltaT: {
 			title: tr('the slowing Earth (ΔT)', 'la Terra che rallenta (ΔT)'),
-			sentence: tr("tides lengthen the day, so clocks and the Earth's rotation drift apart by hours over millennia", 'le maree allungano il giorno, così gli orologi e la rotazione della Terra si scostano di ore nel corso dei millenni'),
+			sentence: tr(
+				"tides lengthen the day, so clocks and the Earth's rotation drift apart by hours over millennia",
+				'le maree allungano il giorno, così gli orologi e la rotazione della Terra si scostano di ore nel corso dei millenni'
+			),
 			path: null,
 			ready: false
 		}

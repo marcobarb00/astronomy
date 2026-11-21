@@ -307,7 +307,10 @@ const epicycleFigure = {
 		showLines('epicycle-readout', [
 			`\\text{${dateHourText(YEAR_START + day)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 2)}^\\circ,\\quad M = ${fixedAngle(now.M, 2)}^\\circ`,
 			`q = ${texSigned(now.q)},\\quad \\lambda = \\bar\\lambda + q = ${fixedAngle(now.lambda, 2)}^\\circ`,
-			tr(`\\text{daily motion } ${fixed(motion, 2)}^\\circ \\text{ (mean } ${fixed(parameters.n, 2)}^\\circ)`, `\\text{moto giornaliero } ${fixed(motion, 2)}^\\circ \\text{ (medio } ${fixed(parameters.n, 2)}^\\circ)`)
+			tr(
+				`\\text{daily motion } ${fixed(motion, 2)}^\\circ \\text{ (mean } ${fixed(parameters.n, 2)}^\\circ)`,
+				`\\text{moto giornaliero } ${fixed(motion, 2)}^\\circ \\text{ (medio } ${fixed(parameters.n, 2)}^\\circ)`
+			)
 		]);
 	},
 
@@ -505,7 +508,10 @@ const equivalenceFigure = {
 
 			showLines('equivalence-readout', [
 				`\\text{${dateYearText(jd)}:}\\quad \\lambda_A = ${fixedAngle(now.apogee, 2)}^\\circ`,
-				tr(`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`, `\\text{ruotato di } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ verso est dal 1º gennaio ${YEAR}}`)
+				tr(
+					`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`,
+					`\\text{ruotato di } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ verso est dal 1º gennaio ${YEAR}}`
+				)
 			]);
 			return;
 		}
@@ -513,8 +519,14 @@ const equivalenceFigure = {
 		showLines('equivalence-readout', [
 			`\\text{${dateYearText(jd)}:}\\quad \\bar\\lambda = ${fixedAngle(now.meanLongitude, 2)}^\\circ,\\quad M = ${fixedAngle(now.M, 2)}^\\circ`,
 			`\\lambda_A = \\bar\\lambda - M = ${fixedAngle(now.apogee, 2)}^\\circ`,
-			tr(`\\text{epicycle: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`, `\\text{epiciclo: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`),
-			tr(`\\text{eccentric: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`, `\\text{eccentrico: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`)
+			tr(
+				`\\text{epicycle: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`,
+				`\\text{epiciclo: } \\lambda = ${fixedAngle(viaEpicycle, 2)}^\\circ`
+			),
+			tr(
+				`\\text{eccentric: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`,
+				`\\text{eccentrico: } \\lambda = ${fixedAngle(viaEccentric, 2)}^\\circ`
+			)
 		]);
 	},
 
@@ -628,8 +640,14 @@ const CONTOUR_CELLS = 120;
    read-out. */
 const TRIPLE_SOURCES = {
 	babylon: tr("\\text{Ptolemy: } 0.08694,\\ M_2 = 12^\\circ 24'", "\\text{Tolomeo: } 0.08694,\\ M_2 = 12^\\circ 24'"),
-	alexandria: tr("\\text{Ptolemy: } 0.08722,\\ M_2 = 64^\\circ 38'", "\\text{Tolomeo: } 0.08722,\\ M_2 = 64^\\circ 38'"),
-	copernicus: tr("\\text{Copernicus: } 0.08604,\\ M_2 = 74^\\circ 27'", "\\text{Copernico: } 0.08604,\\ M_2 = 74^\\circ 27'"),
+	alexandria: tr(
+		"\\text{Ptolemy: } 0.08722,\\ M_2 = 64^\\circ 38'",
+		"\\text{Tolomeo: } 0.08722,\\ M_2 = 64^\\circ 38'"
+	),
+	copernicus: tr(
+		"\\text{Copernicus: } 0.08604,\\ M_2 = 74^\\circ 27'",
+		"\\text{Copernico: } 0.08604,\\ M_2 = 74^\\circ 27'"
+	),
 	ours: tr('\\text{the reference sky, 2025 – 2026}', '\\text{il cielo di riferimento, 2025 – 2026}')
 };
 
@@ -696,8 +714,14 @@ const eclipsesFigure = {
 		showLines('eclipses-readout', [
 			`a_{12} = ${fixed(a12, 2)}^\\circ,\\quad a_{23} = ${fixed(a23, 2)}^\\circ`,
 			`d_{12} = ${texSigned(d12)},\\quad d_{23} = ${texSigned(d23)}`,
-			tr(`\\text{first order: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`, `\\text{primo ordine: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`),
-			tr(`\\text{exact: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`, `\\text{esatto: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`),
+			tr(
+				`\\text{first order: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`,
+				`\\text{primo ordine: } r/R = ${fixed(s.first.e, 5)},\\ M_2 = ${fixedAngle(s.first.M2, 1)}^\\circ`
+			),
+			tr(
+				`\\text{exact: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`,
+				`\\text{esatto: } r/R = ${fixed(s.e, 5)},\\ M_2 = ${fixedAngle(s.M2, 1)}^\\circ`
+			),
 			TRIPLE_SOURCES[this.name]
 		]);
 	},
@@ -745,7 +769,13 @@ const eclipsesFigure = {
 
 		drawDot(ctx, center.x, center.y, 3.5, COL.ink);
 		centeredLabel(ctx, tr('apogee', 'apogeo'), onCircle(0, radius * 1.12 + 14), COL.epicycle, this.labels);
-		centeredLabel(ctx, tr('to the Earth', 'verso la Terra'), { x: center.x, y: center.y + radius * 1.25 + 14 }, COL.earth, this.labels);
+		centeredLabel(
+			ctx,
+			tr('to the Earth', 'verso la Terra'),
+			{ x: center.x, y: center.y + radius * 1.25 + 14 },
+			COL.earth,
+			this.labels
+		);
 	},
 
 	/* An arc of the circle 'radius' about 'center', clockwise on the
@@ -919,7 +949,10 @@ const ourErrorFigure = {
 			fn: LunarEpicycle.make(LunarEpicycle.FIT_2026)
 		});
 		curve.addMarks({
-			label: tr('the epicycle at new and full Moon (spans of a year or less)', "l'epiciclo alla Luna nuova e piena (intervalli di un anno o meno)"),
+			label: tr(
+				'the epicycle at new and full Moon (spans of a year or less)',
+				"l'epiciclo alla Luna nuova e piena (intervalli di un anno o meno)"
+			),
 			color: COL.epicycle,
 			fn: LunarEpicycle.make(LunarEpicycle.FIT_2026),
 			dates: syzygies(middle - 190, middle + 190).map(s => s.jd),
