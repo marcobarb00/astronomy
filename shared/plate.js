@@ -24,6 +24,10 @@
    keeps (options.keep: the star its caption speaks of), the numbers of
    its ring or border and the pole's P.
 
+   Plate.FIGURES, the stick figures of the constellations (lines between
+   stars of PLATE_STARS, by SIMBAD identifier), is also read by page 0.1,
+   which draws the zodiac in ink on parchment.
+
    TABLE OF CONTENTS
 	 1. SVG helpers
 	 2. Stars and constellation figures
@@ -1280,6 +1284,7 @@ const Plate = (function () {
 
 	return {
 		EPOCH,
+		FIGURES,
 		polar,
 		rectangular,
 		highlightCircle,

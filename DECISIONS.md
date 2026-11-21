@@ -26,7 +26,7 @@ section.
   → STRUCTURE.md §4
 - **Act I comes first even though it is the least exciting.** The
   foundations (the turning sky, frames, clocks) are needed to state any
-  prediction. Act 0, the intro ("Where is Mars tonight?"), is built last,
+  prediction. Act 0, the intro ("Ptolemy's Mars tonight"), is built last,
   because it needs the Act IV models. → STRUCTURE.md §4, §12
 - **The story ends with Kepler.** Newton, perturbations and modern
   ephemerides are in a short epilogue, "Beyond Kepler", with pointers to
@@ -233,6 +233,16 @@ section.
   first page, "Where is Mars tonight?", built last); the name is the one
   the reader sees on the hub. Its folder is `act0-intro/`. Decided by
   Marco on 2026-11-20. → STRUCTURE.md §4, §9; shared/site-map.js
+- **Page 0.1 is "Ptolemy's Mars tonight", built on 2026-11-21.** The
+  question title "Where is Mars tonight?" became "Ptolemy's Mars
+  tonight", with "How good was a model built from circles?" as the
+  subtitle, for the reason page 4.4 was retitled. The plan's "a few
+  degrees" was wrong: Ptolemy's Mars is about 10° behind today, most of
+  it from his year and his apogee, and the page says so. No rhythm of
+  §5 and no exercises, as on the epilogue pages. Figure 1 follows the
+  date of the visit, the prose quotes 20 November 2026 (the smoke test's
+  date). Decided by Marco on 2026-11-21. → STRUCTURE.md §4 (page 0.1),
+  shared/site-map.js
 
 ## Look
 

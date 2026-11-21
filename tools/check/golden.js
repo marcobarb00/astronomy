@@ -96,7 +96,8 @@ const PAGE_FILES = [
 	'act4-planets/04-phases-parallax/index.html',
 	'act4-planets/05-kepler/index.html',
 	'toolbox/index.html',
-	'beyond-kepler/index.html'
+	'beyond-kepler/index.html',
+	'act0-intro/01-mars-tonight/index.html'
 ];
 
 /* ==========================================================================
@@ -1541,6 +1542,45 @@ function beyondKepler(c) {
 	);
 }
 
+function page01(c) {
+	const { Time } = c;
+	const years = [138, 1000, 2026];
+
+	title('8q. PAGE 0.1 (act0-intro/01-mars-tonight/page.js)');
+	row('titleCase', ['LEO', 'CAPRICORNUS'].map(name => quote(inContext(c, 'titleCase')(name))).join(' '));
+	row('meanSunLag', years.map(y => num(c.meanSunLag(Time.julianDay(y, 1, 1)), 6)).join(' '));
+	row(
+		'ptolemyMars, realMars',
+		years
+			.map(y => {
+				const jd = Time.julianDay(y, 1, 1);
+
+				return `${num(inContext(c, 'ptolemyMars')(jd), 6)}/${num(c.realMars(jd), 6)}`;
+			})
+			.join(' ')
+	);
+	row(
+		'MODELS_OF_MARS',
+		inContext(c, 'MODELS_OF_MARS')
+			.map(m => quote(`${m.page} ${m.name}`.trim()))
+			.join(' ')
+	);
+	row('visibility', [-5, -91, 40, 170].map(e => quote(inContext(c, 'tonightFigure').visibility(e))).join(' '));
+	row(
+		'fixed ranges',
+		num(inContext(c, 'STRIP_HALF_WIDTH')),
+		num(inContext(c, 'STRIP_HALF_HEIGHT')),
+		num(inContext(c, 'STRIP_MAG_LIMIT')),
+		num(inContext(c, 'SUN_GLARE')),
+		num(inContext(c, 'OPPOSITE')),
+		num(inContext(c, 'ERROR_Y_MAX')),
+		num(inContext(c, 'ERROR_RESOLUTION_DAYS')),
+		num(inContext(c, 'NAME_INSET')),
+		num(inContext(c, 'NAME_GAP')),
+		num(inContext(c, 'EXAMPLE_UT'))
+	);
+}
+
 function page22(c) {
 	title('8e. PAGE 2.2 (act2-sun/02-equation-of-time/page.js)');
 	row('YEAR_START', num(inContext(c, 'YEAR_START')));
@@ -1629,6 +1669,7 @@ function buildTable() {
 	page45(pages[13]);
 	toolbox(pages[14]);
 	beyondKepler(pages[15]);
+	page01(pages[16]);
 	numbersSection();
 
 	return lines.join('\n') + '\n';

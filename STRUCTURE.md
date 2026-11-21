@@ -55,16 +55,39 @@ next page.
 
 ### Act 0: Intro
 
-#### 0.1 · Where is Mars tonight?
+#### 0.1 · Ptolemy's Mars tonight
 
 - **Question:** how good was a model built from circles?
-- **Content:** Ptolemy's Mars, with the *Almagest* parameters, run forward
-  from his epoch to tonight, beside the real Mars. The error is a few degrees
-  after almost nineteen centuries. Two questions follow: how can circles do
-  this well, and why are they still wrong? The rest of the site answers both.
-- **Figures:** a strip of the zodiac with both positions; a date slider; the
-  error curve over 2000 years.
+- **Content:** Ptolemy's Mars, page 4.2's model with the *Almagest*
+  parameters (`PlanetEquant.PTOLEMY`), run from his epoch (Nabonassar
+  1, 747 BC) to tonight, beside the real Mars. Within 2° in his own
+  decade (AD 130–139), about 10° behind today, at worst 12° in
+  2016–2036. Most of that is his year (365;14,48 days, 6.4 min too long,
+  III 1): his mean Sun falls 0.44° a century behind, and Mars inherits
+  the lag because its mean motion is the Sun's less the anomaly's (IX 3).
+  Around that drift the error swings by several degrees today, because
+  his mean anomaly drifts: his apogee moves 1° a century, fixed among the
+  stars (IX 5), the real aphelion 1.8° (faster precession, and the
+  apsides turning among the stars), so his apogee is 22° behind by 2026
+  while his mean Mars is 9° behind, and his mean anomaly goes from 5° off
+  to 13° off; near the close oppositions the error is seen about three
+  times larger. The same circles refitted to modern observations stay
+  within about a degree over 1926–2126 (page 4.2). The page ends on the
+  turning sky (*Almagest* I 3), handing over to page 1.1.
+- **Sections** (no rhythm of §5, no step labels, no exercises): the lead;
+  Mars tonight, by Ptolemy's model; nineteen centuries of error; where
+  the error comes from; the models of the course; sources.
+- **Figures:** (1) a strip of the zodiac on parchment, drawn once for
+  the date of the visit (the prose's example date if the device's clock
+  is outside the reference's range), the real Mars at its ecliptic
+  latitude and Ptolemy's on the ecliptic, the stars and stick figures of
+  the zodiac of that date, a four-line read-out; (2) the error curve of
+  Ptolemy's Mars, 2000 years (AD 100–2100) and 20 years around 2026,
+  with the lag of his mean Sun as a dashed line; (3) the error ladder of
+  every model of Mars, 2010–2025, against VSOP87, with the *Almagest*'s
+  model first (page 4.5's Figure 6 for Mars).
 - **Note:** this page uses the Act IV machinery, so it is **built last**.
+  Retitled from "Where is Mars tonight?" on 2026-11-21 (DECISIONS.md).
 
 ### Act I: The stage
 

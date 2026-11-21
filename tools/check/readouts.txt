@@ -1,6 +1,37 @@
 PREDICTING THE SKY - READ-OUTS (tools/check/smoke.js)
 Regenerate with: node tools/check/smoke.js --update
 
+=== act0-intro/01-mars-tonight/index.html ===
+  as loaded
+    #tonight-readout: \text{20 Nov 2026 21:00 UT} | \text{Mars: } \lambda = 147.9^\circ | \text{Ptolemy's Mars: } \lambda = 137.6^\circ | \text{Morning sky, 91° west of the Sun}
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  opened 0 hints and answers
+  button "2000 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  button "20 years"
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #tonight-strip at 0.3
+    #tonight-readout: \text{20 Nov 2026 21:00 UT} | \text{Mars: } \lambda = 147.9^\circ | \text{Ptolemy's Mars: } \lambda = 137.6^\circ | \text{Morning sky, 91° west of the Sun}
+  hover #tonight-strip at 0.6
+    #tonight-readout: \text{20 Nov 2026 21:00 UT} | \text{Mars: } \lambda = 147.9^\circ | \text{Ptolemy's Mars: } \lambda = 137.6^\circ | \text{Morning sky, 91° west of the Sun}
+  hover #tonight-strip at 0.9
+    #tonight-readout: \text{20 Nov 2026 21:00 UT} | \text{Mars: } \lambda = 147.9^\circ | \text{Ptolemy's Mars: } \lambda = 137.6^\circ | \text{Morning sky, 91° west of the Sun}
+  hover #tonight-strip left
+    #tonight-readout: \text{20 Nov 2026 21:00 UT} | \text{Mars: } \lambda = 147.9^\circ | \text{Ptolemy's Mars: } \lambda = 137.6^\circ | \text{Morning sky, 91° west of the Sun}
+  hover #error-ptolemy-plot at 0.3
+    .errorcurve-readout: 22 Feb 2021 · his mean Sun: −9.20° · Ptolemy's Mars: −8.93°
+  hover #error-ptolemy-plot at 0.6
+    .errorcurve-readout: 29 Aug 2027 · his mean Sun: −9.23° · Ptolemy's Mars: −9.06°
+  hover #error-ptolemy-plot at 0.9
+    .errorcurve-readout: 5 Mar 2034 · his mean Sun: −9.26° · Ptolemy's Mars: −8.69°
+  hover #error-ptolemy-plot left
+    .errorcurve-readout: Point at the plot to read each curve's error on a date (dashed line).
+  hover #ladder-mars at 0.3
+  hover #ladder-mars at 0.6
+  hover #ladder-mars at 0.9
+  hover #ladder-mars left
+  dragged 0 spheres
+
 === act1-stage/01-turning-sky/index.html ===
   as loaded
     OUTPUT (sky-lat): 41.9°

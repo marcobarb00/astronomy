@@ -2970,6 +2970,93 @@ The stars of the blue plates at 2026.0 (as plate.js places them)
   averagedDrift at 1000 BC       5.051628 -13.111470
   fixed ranges                   [-999,3000]  [-15,7]  [1926,2026]
 
+=== 8q. PAGE 0.1 (act0-intro/01-mars-tonight/page.js) ===
+  titleCase                      "Leo" "Capricornus"
+  meanSunLag                     -1.006099 -4.718857 -9.224650
+  ptolemyMars, realMars          322.455034/323.354537 111.118077/116.784323 274.698701/282.674715
+  MODELS_OF_MARS                 "Almagest" "4.1 uniform" "4.1 epicycle" "4.2 equant" "4.3 epicyclet" "4.5 ellipses"
+  visibility                     "Lost in the Sun's light, 5° from it" "Morning sky, 91° west of the Sun" "Evening sky, 40° east of the Sun" "Up all night, 170° from the Sun"
+  fixed ranges                   30.000000000  12.000000000  4.500000000  15.000000000  150.000000000  14.000000000  25.000000000  4.000000000  6.000000000  2461365.375000000
+
+=== 9. tools/numbers/0.1-mars-tonight.js ===
+
+=== Lead and Figure 1: Mars on 20 November 2026, 21:00 UT ===
+real Mars: ecliptic longitude 147.88°, ecliptic latitude 2.05°
+Ptolemy's Mars: ecliptic longitude 137.65°
+difference (Ptolemy - real): -10.23°
+the Sun: 238.55°; Mars - Sun -90.7°
+Regulus: ecliptic longitude 150.20°, latitude 0.47°
+near the real Mars: eta Leo (λ 148.3°, β 4.9°, mag 3.48), gam Leo (λ 150.0°, β 8.8°, mag 2.01), alf Leo (λ 150.2°, β 0.5°, mag 1.36), omi Leo (λ 144.6°, β -3.8°, mag 3.52)
+near Ptolemy's Mars: eps Leo (λ 141.1°, β 9.7°, mag 2.98)
+
+=== Ptolemy's epoch, and the years since his observations ===
+epoch: 26 Feb 747 BC (JD 1448637.917, UT)
+his oppositions of Mars: AD 130 - 139; years from AD 138 to 2026: 1888
+
+=== Figure 2: the error of Ptolemy's Mars (Ptolemy - real) ===
+AD 130 - 140: from -1.91° to -0.41°, on average -1.07°
+AD 1000 - 1010: from -6.24° to -0.52°, on average -4.61°
+AD 1500 - 1510: from -8.88° to -5.32°, on average -6.95°
+AD 2016 - 2036: from -11.91° to -0.62°, on average -8.54°
+
+=== The drift: his mean Sun and his mean Mars, behind the modern ones ===
+1 Jan 138: his mean Sun -1.01°, his mean Mars -1.03°
+1 Jan 1000: his mean Sun -4.72°, his mean Mars -4.56°
+1 Jan 2026: his mean Sun -9.22°, his mean Mars -8.81°
+at his epoch (26 Feb 747 BC): his mean Sun 2.76°
+
+=== His year ===
+his year 365.246667 d (365;14,48 = 365.246667), modern 365.2421940 d
+longer by 6.44 min; his mean Sun falls behind 0.441° a century
+from AD 138 to 2026: 8.32° (check: lag 2026 - lag 138 = -8.22°)
+
+=== His mean motion in anomaly against the modern one (Mars' synodic motion) ===
+his synodic period 779.937 d, modern 779.936 d
+his anomaly drifts -0.48° from AD 138 to 2026
+
+=== The swing: the error less the lag of his mean Sun ===
+AD 130 - 140: from -0.91° to 0.60°
+AD 2016 - 2036: from -2.68° to 8.57°
+
+=== His apogee ===
+his apogee moves 1.001° a century, the modern precession 1.397°
+in 2026: his apogee 134.4°, page 4.2's fit 151.4°, behind by 17.0°
+in AD 138: his apogee 115.5°, page 4.2's fit carried back 125.1°
+
+=== Mars' real aphelion against Ptolemy's apogee ===
+the apsidal line turns 0.45° a century among the stars; with precession 1.85°
+138: real aphelion 121.7°, his apogee 115.5°, behind by 6.1°
+2026: real aphelion 156.6°, his apogee 134.4°, behind by 22.2°
+
+=== The mean anomaly: Ptolemy's against the real one ===
+139: his M 58.60°, real 53.47°, his less real 5.12°
+2026: his M 149.06°, real 135.71°, his less real 13.35°
+
+=== Tonight: the lag of his mean Sun and the rest ===
+error -10.23°, lag of his mean Sun -9.23°, the rest -1.01°
+
+=== Page 4.2's equant against the reference sky ===
+2010 - 2025: -0.783° to 0.876°; 1926 - 2126: -0.896° to 1.026°
+
+=== The magnification at opposition, rho / (rho - r) ===
+rho 0.90: 3.72
+rho 1.00: 2.93
+rho 1.10: 2.49
+
+=== Figure 3: the largest error of each model of Mars, 2010 - 2025, against VSOP87 ===
+Almagest: 11.887° = 713.2′
+4.1 uniform: 53.680° = 3220.8′
+4.1 epicycle: 34.417° = 2065.0′
+4.2 equant: 0.814° = 48.8′
+4.3 epicyclet: 0.921° = 55.3′
+4.5 ellipses: 0.096° = 5.7′
+
+=== Scales ===
+Figure 2, AD 100 - 2100: from -12.29° to -0.07°
+Figure 2, AD 2016 - 2036: from -11.91° to -0.62°
+Figure 1, AD 2000 - 3000: the difference from -17.46° to -0.35°
+Figure 1, AD 2000 - 3000: Mars' ecliptic latitude from -6.87° to 4.62°
+
 === 9. tools/numbers/1.1-turning-sky.js ===
 
 === Fit: the rate, from meridian crossings a century apart ===

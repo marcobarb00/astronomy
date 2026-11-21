@@ -59,7 +59,7 @@ const SITE_MAP = (function () {
 			number: '0.1',
 			act: 0,
 			ready: false,
-			title: 'Where is Mars tonight?',
+			title: "Ptolemy's Mars tonight",
 			question: 'How good was a model built from circles?',
 			path: 'act0-intro/01-mars-tonight/index.html'
 		},

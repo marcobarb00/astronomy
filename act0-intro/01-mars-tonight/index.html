@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!-- ==========================================================================
+     ACT 0 · 0.1 PTOLEMY'S MARS TONIGHT
+     The intro: Ptolemy's Mars, with the Almagest's parameters, run from his
+     epoch to tonight beside the real Mars. About 10° off today, within 2°
+     in his own time. Most of the error comes from his year, which Mars
+     inherits through his mean motions, and from his apogee, which moves at
+     his rate of precession; the same circles fitted to modern observations
+     stay within a degree. No rhythm of observation, model, fit, test and
+     residual, and no exercises (STRUCTURE.md §4, Act 0).
+     Numbers: tools/numbers/0.1-mars-tonight.js.
+     ========================================================================== -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ptolemy's Mars tonight · Predicting the Sky</title>
+	<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+
+	<!-- KaTeX (equation typesetting), pinned version, with auto-render for $...$.
+	     The integrity hashes pin the exact cdnjs files: keep them with the version. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"
+		integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"
+		integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+		integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+	<!-- Fonts (STYLE.md §3), before the theme so they start loading at once -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Cormorant+SC:wght@500;600&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+
+	<!-- Shared theme (no page.css: the figures need no layout of their own) -->
+	<link rel="stylesheet" href="../../shared/theme.css">
+
+	<!-- Shared code, in dependency order, then the page's own script -->
+	<script defer src="../../shared/common.js"></script>
+	<script defer src="../../shared/time.js"></script>
+	<script defer src="../../shared/ephemeris.js"></script>
+	<script defer src="../../shared/vsop87-data.js"></script>
+	<script defer src="../../shared/vsop87.js"></script>
+	<script defer src="../../shared/stars.js"></script>
+	<script defer src="../../shared/plate-stars.js"></script>
+	<script defer src="../../shared/plate.js"></script>
+	<script defer src="../../shared/models/mean-sun.js"></script>
+	<script defer src="../../shared/models/precession.js"></script>
+	<script defer src="../../shared/models/solar-eccentric.js"></script>
+	<script defer src="../../shared/models/planet-epicycle.js"></script>
+	<script defer src="../../shared/models/planet-equant.js"></script>
+	<script defer src="../../shared/models/planet-arrangement.js"></script>
+	<script defer src="../../shared/models/kepler.js"></script>
+	<script defer src="../../shared/plot2d.js"></script>
+	<script defer src="../../shared/ladder.js"></script>
+	<script defer src="../../shared/errorcurve.js"></script>
+	<script defer src="../../shared/site-map.js"></script>
+	<script defer src="../../shared/components.js"></script>
+	<script defer src="page.js"></script>
+</head>
+
+<body data-page="0.1">
+<div class="page">
+
+	<!-- Page header: title, subtitle and contents, from the site map -->
+	<header class="page-head"></header>
+
+	<article>
+
+		<div class="row">
+			<p class="lead">
+				Around AD 150 Ptolemy published the <em>Almagest</em>, a complete
+				set of models and tables for the Sun, the Moon and the planets. With
+				it anyone could compute where Mars would be on any date, past or
+				future. We can still do that today, with his own numbers, and set his
+				Mars beside the one in tonight's sky.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- ===================== MARS TONIGHT, BY PTOLEMY'S MODEL ===================== -->
+		<h2 id="tonight">Mars tonight, by Ptolemy's model</h2>
+
+		<p>
+			Ptolemy's Mars moves on two circles. The planet goes round a small
+			circle, the epicycle, once in each synodic period, the time between two
+			of its conjunctions with the Sun, which is why it seems to stop and
+			turn back from time to time. The center of the epicycle goes round the
+			Earth on a larger circle, the deferent, whose center is off the Earth,
+			at a speed that is uniform as seen from a third point, the equant.
+			Page 4.2 builds this model step by step.
+		</p>
+
+		<p>
+			Running it takes his numbers: where Mars and the Sun stood at one
+			moment, how fast each moves, and the sizes and directions of the
+			circles. Ptolemy gives them all in the <em>Almagest</em> (III 2, III 7,
+			IX 3, IX 5, X 7–10). His moment, the epoch, is noon at Alexandria on 26
+			February 747 BC, the first day of the era of Nabonassar, from which,
+			he says, "the ancient observations are, on the whole, preserved down
+			to our own time" (III 7). From the epoch the model counts the days to
+			any date, tonight included.
+		</p>
+
+		<p>
+			This page was written on the evening of 20 November 2026. At 21:00 UT
+			that evening the real Mars was near Regulus in Leo, at ecliptic
+			longitude 148°, and Ptolemy's model put it at 138°, about 10° to the
+			west, as wide as twenty full Moons side by side. Figure 1 is drawn
+			again for the moment you open the page.
+		</p>
+
+		<!-- Figure 1: the two places of Mars among the stars, on the date of the visit (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="tonight-strip"></canvas>
+				<div class="readout" id="tonight-readout" data-lines="4"></div>
+			</div>
+			<figcaption>
+				Find the real Mars and Ptolemy's among the stars, and compare the
+				labelled gap between them with the size of the constellations around
+				them. Then use the read-out to find Mars in tonight's sky.
+			</figcaption>
+			<div class="keys">
+				<div>
+					<p class="key-title">In the figure</p>
+					<dl class="key">
+						<dt class="c-epicycle">Ptolemy's Mars</dt>
+						<dd>drawn on the ecliptic: only his ecliptic longitudes are rebuilt</dd>
+						<dt>east</dt>
+						<dd>to the left, as in the sky seen looking south</dd>
+					</dl>
+				</div>
+				<div>
+					<p class="key-title">Read-out</p>
+					<dl class="key">
+						<dt>$\lambda$</dt>
+						<dd>ecliptic longitude, counted eastward along the ecliptic</dd>
+					</dl>
+				</div>
+			</div>
+		</figure>
+
+		<!-- ======================== THE ERROR FROM AD 100 TO 2100 ======================== -->
+		<h2 id="error">The error from AD 100 to 2100</h2>
+
+		<p>
+			A single date cannot tell a steady drift from a swing that comes and
+			goes, so we take the difference between Ptolemy's ecliptic longitude
+			of Mars and the real one, negative when his Mars is behind, on every
+			date from AD 100 to 2100, and plot it in Figure 2. Every model of the course is judged by a curve of this
+			kind, its error curve.
+		</p>
+
+		<div class="row">
+			<p>
+				Ptolemy fitted the eccentricity and the apogee of his model to three
+				oppositions of Mars he observed in AD 130–139 (X 7), when Mars stood
+				opposite the Sun. In that decade his
+				Mars is never more than 2° from the real one, about 1° behind on
+				average. Since then it has fallen steadily further behind, and in
+				the twenty years around 2026 it is at worst 12° behind.
+			</p>
+			<aside>
+				<div class="note" data-origin="ptolemy"></div>
+			</aside>
+		</div>
+
+		<!-- Figure 2: the error curve of Ptolemy's Mars -->
+		<figure class="fig">
+			<div class="frame">
+				<div id="error-ptolemy"></div>
+			</div>
+			<figcaption>
+				Over 2000 years, notice that the error keeps to the dashed line as it
+				falls. Then switch to the 20 years around 2026. The error swings once
+				from one opposition of Mars to the next, about every two years and
+				two months.
+			</figcaption>
+		</figure>
+
+		<!-- ========================= WHERE THE ERROR COMES FROM ========================= -->
+		<h2 id="causes">Where the error comes from</h2>
+
+		<p>
+			Most of the error comes from the length of Ptolemy's year. He took
+			the year, from one equinox to the same equinox, as 365 days 5 h 55 min
+			12 s (III 1), 6.4 minutes longer than the modern value. The mean Sun
+			of his model, the Sun moving at its average speed, was already 1°
+			behind the modern mean Sun in his own time, and it falls a little
+			further behind every century, to 9° by 2026. This lag is the dashed
+			line of Figure 2.
+		</p>
+
+		<p>
+			In Ptolemy's model the mean longitude of Mars and its anomaly, the
+			angle on the epicycle, always add up to the mean longitude of the Sun,
+			and he computed the planet's motion in longitude as the Sun's less the
+			motion in anomaly (IX 3). His motion in anomaly is still right to half
+			a degree after nineteen centuries, so almost all of the error in his
+			year passes to Mars. On 20 November 2026, 9.2° of the 10.2° was this
+			lag.
+		</p>
+
+		<p>
+			Around the dashed line the error swings, by less than a degree in
+			Ptolemy's time and by several degrees today. The swing depends on the
+			mean anomaly, the angle of Mars from the apogee of the deferent, the
+			point farthest from the Earth, since that angle sets where Mars moves
+			fastest and where it moves slowest.
+		</p>
+
+		<p>
+			Ptolemy's apogee moves 1° a century, at his rate of precession, and
+			keeps its place among the stars (IX 5). The real direction of Mars'
+			aphelion moves 1.8° a century, because the modern precession is
+			faster and the apsidal line of Mars also turns among the stars. So his
+			apogee has fallen 22° behind the real one since his time, while his
+			mean Mars fell only 9° behind, and his mean anomaly, 5° off in his own
+			time, is 13° off today.
+		</p>
+
+		<p>
+			Near an opposition, when Mars is on the near side of its epicycle and
+			closest to the Earth, an error in the direction of the epicycle's
+			center is seen about three times larger in the direction of Mars. The
+			largest swings of Figure 2, in 2018 and 2033, fall at such
+			oppositions.
+		</p>
+
+		<p>
+			Page 4.2 refits the same circles to modern observations, with the
+			mean motion of Mars measured from oppositions 79 years apart, and over
+			the two centuries 1926–2126 they stay within about a degree of the
+			real Mars. Over two centuries the circles themselves are good to about
+			a degree, and the ten degrees of tonight come from rates that were
+			slightly wrong and were carried over nineteen centuries.
+		</p>
+
+		<!-- ========================== THE MODELS OF THE COURSE ========================== -->
+		<h2 id="course">The models of the course</h2>
+
+		<p>
+			We rebuild the models of Mars in the order in which they were made,
+			and fit each one to modern observations, so that its error measures
+			its geometry. Figure 3 gives the largest error of each over 2010–2025,
+			with Ptolemy's model as he left it in the first row.
+		</p>
+
+		<!-- Figure 3: every model of Mars in the course (static) -->
+		<figure class="fig">
+			<div class="frame">
+				<canvas id="ladder-mars"></canvas>
+			</div>
+			<figcaption>
+				Follow the rows down, page by page. Notice that Ptolemy's model as
+				he left it does worse than the same model fitted on page 4.2, and
+				that the simple epicycle of page 4.1 does worse than both.
+			</figcaption>
+		</figure>
+
+		<p>
+			Copernicus' arrangement has no row of its own. Moving Ptolemy's circles
+			into it, with the Sun at rest, gives Mars the same directions, so its
+			error is that of page 4.2. His epicyclet, which replaces the equant,
+			is the one step in the figure that made the error larger.
+		</p>
+
+		<p>
+			Every position on this page was measured against the sky as it turns
+			each day about the poles, carrying the stars, the Sun and Mars with it.
+			Ptolemy's first argument in the <em>Almagest</em> is that the heavens
+			move like a sphere (I 3), and the next page starts there too.
+		</p>
+
+		<!-- =============================== SOURCES =============================== -->
+		<h2 id="sources">Sources</h2>
+
+		<ul class="sources">
+			<li>Ptolemy, <em>Almagest</em> (transl. G. J. Toomer, 1984): III 1 (the
+				length of the year); III 2 and III 7 (the mean motion
+				of the Sun and its epoch); IX 3 (the periods of the planets; the mean
+				motion in longitude as the Sun's less the anomaly's); IX 5 (the
+				apogees moving with the fixed stars); X 7–10 (Mars: the oppositions of
+				AD 130–139, the epicycle, the correction of the mean motions from an
+				observation of 272 BC, the epoch); I 3 (the heavens move like a
+				sphere); Toomer's introduction (the date
+				of the <em>Almagest</em>, not before about AD 150).</li>
+			<li>O. Neugebauer, <em>A History of Ancient Mathematical Astronomy</em>
+				(1975), Part One: I C 4 (the model of the outer planets, the equant).</li>
+			<li>E. M. Standish, <em>Keplerian Elements for Approximate Positions of the
+				Major Planets</em> (JPL): the reference sky of Figures 1 and 2.</li>
+			<li>P. Bretagnon and G. Francou, "Planetary theories in rectangular and
+				spherical variables. VSOP 87 solutions", <em>Astronomy and
+				Astrophysics</em> 202 (1988), 309–315: the reference of Figure 3, as on
+				page 4.5.</li>
+			<li>SIMBAD (CDS, Strasbourg) and the Extended Hipparcos Compilation
+				(Anderson and Francis, 2012): the stars of Figure 1.</li>
+			<li>Every number on this page: <code>tools/numbers/0.1-mars-tonight.js</code>.</li>
+		</ul>
+
+		<!-- Previous / next, from the site map -->
+		<nav class="pager" aria-label="Previous and next page"></nav>
+	</article>
+</div>
+</body>
+</html>

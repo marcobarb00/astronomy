@@ -18,6 +18,7 @@ const { ROOT, pageScripts } = require('./load.js');
 
 /* Every page with scripts of its own, and the test page. */
 const PAGES = [
+	'act0-intro/01-mars-tonight/index.html',
 	'act1-stage/01-turning-sky/index.html',
 	'act1-stage/02-frames/index.html',
 	'act1-stage/03-clocks/index.html',
