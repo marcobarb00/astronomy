@@ -510,7 +510,7 @@ const equivalenceFigure = {
 				`\\text{${dateYearText(jd)}:}\\quad \\lambda_A = ${fixedAngle(now.apogee, 2)}^\\circ`,
 				tr(
 					`\\text{turned } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ east since 1 January ${YEAR}}`,
-					`\\text{ruotato di } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ verso est dal 1º gennaio ${YEAR}}`
+					`\\text{ruotato di } ${fixedAngle(norm360(now.apogee - start), 1)}^\\circ \\text{ verso est dal }1^{\\text{o}}\\text{ gennaio ${YEAR}}`
 				)
 			]);
 			return;

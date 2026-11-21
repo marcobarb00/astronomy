@@ -475,7 +475,7 @@ const orbitFigure = {
 				dateAndNode,
 				tr(
 					`\\text{turned } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ west since 1 January ${YEAR}}`,
-					`\\text{ruotato di } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ verso ovest dal 1º gennaio ${YEAR}}`
+					`\\text{ruotato di } ${fixed(norm360(start - moon.node), 1)}^\\circ \\text{ verso ovest dal }1^{\\text{o}}\\text{ gennaio ${YEAR}}`
 				)
 			]);
 			return;
